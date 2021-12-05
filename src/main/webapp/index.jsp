@@ -377,7 +377,7 @@
         <div class="carousel-item-b">
           <div class="card-box-a card-shadow">
             <div class="img-box-a">
-              <img src="#" alt="" class="img-a img-fluid">
+              <img src="${pageContext.request.contextPath }/resources/images/600x800.jpg" alt="" class="img-a img-fluid">
             </div>
             <div class="card-overlay">
               <div class="card-overlay-a-content">
@@ -424,7 +424,7 @@
         <div class="carousel-item-b">
           <div class="card-box-a card-shadow">
             <div class="img-box-a">
-              <img src="#" alt="" class="img-a img-fluid">
+              <img src="${pageContext.request.contextPath }/resources/images/600x800.jpg" alt="" class="img-a img-fluid">
             </div>
             <div class="card-overlay">
               <div class="card-overlay-a-content">
@@ -471,7 +471,7 @@
         <div class="carousel-item-b">
           <div class="card-box-a card-shadow">
             <div class="img-box-a">
-              <img src="#" alt="" class="img-a img-fluid">
+              <img src="${pageContext.request.contextPath }/resources/images/600x800.jpg" alt="" class="img-a img-fluid">
             </div>
             <div class="card-overlay">
               <div class="card-overlay-a-content">
@@ -518,7 +518,7 @@
         <div class="carousel-item-b">
           <div class="card-box-a card-shadow">
             <div class="img-box-a">
-              <img src="#" alt="" class="img-a img-fluid">
+              <img src="${pageContext.request.contextPath }/resources/images/600x800.jpg" alt="" class="img-a img-fluid">
             </div>
             <div class="card-overlay">
               <div class="card-overlay-a-content">
@@ -588,7 +588,7 @@
         <div class="col-md-4">
           <div class="card-box-d">
             <div class="card-img-d">
-              <img src="#" alt="" class="img-d img-fluid">
+              <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
             </div>
             <div class="card-overlay card-overlay-hover">
               <div class="card-header-d">
@@ -647,7 +647,7 @@
         <div class="col-md-4">
           <div class="card-box-d">
             <div class="card-img-d">
-              <img src="#" alt="" class="img-d img-fluid">
+              <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
             </div>
             <div class="card-overlay card-overlay-hover">
               <div class="card-header-d">
@@ -706,7 +706,7 @@
         <div class="col-md-4">
           <div class="card-box-d">
             <div class="card-img-d">
-              <img src="#" alt="" class="img-d img-fluid">
+              <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
             </div>
             <div class="card-overlay card-overlay-hover">
               <div class="card-header-d">
@@ -788,7 +788,7 @@
         <div class="carousel-item-c">
           <div class="card-box-b card-shadow news-box">
             <div class="img-box-b">
-              <img src="#" alt="" class="img-b img-fluid">
+              <img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b img-fluid">
             </div>
             <div class="card-overlay">
               <div class="card-header-b">
@@ -811,7 +811,7 @@
         <div class="carousel-item-c">
           <div class="card-box-b card-shadow news-box">
             <div class="img-box-b">
-              <img src="#" alt="" class="img-b img-fluid">
+              <img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b img-fluid">
             </div>
             <div class="card-overlay">
               <div class="card-header-b">
@@ -834,7 +834,7 @@
         <div class="carousel-item-c">
           <div class="card-box-b card-shadow news-box">
             <div class="img-box-b">
-              <img src="#" alt="" class="img-b img-fluid">
+              <img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b img-fluid">
             </div>
             <div class="card-overlay">
               <div class="card-header-b">
@@ -857,7 +857,7 @@
         <div class="carousel-item-c">
           <div class="card-box-b card-shadow news-box">
             <div class="img-box-b">
-              <img src="#" alt="" class="img-b img-fluid">
+              <img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b img-fluid">
             </div>
             <div class="card-overlay">
               <div class="card-header-b">
@@ -900,7 +900,7 @@
             <div class="row">
               <div class="col-sm-12 col-md-6">
                 <div class="testimonial-img">
-                  <img src="#" alt="" class="img-fluid">
+                  <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
@@ -915,7 +915,7 @@
                   </p>
                 </div>
                 <div class="testimonial-author-box">
-                  <img src="#" alt="" class="testimonial-avatar">
+                  <img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="testimonial-avatar">
                   <h5 class="testimonial-author">Albert & Erika</h5>
                 </div>
               </div>
@@ -927,7 +927,7 @@
             <div class="row">
               <div class="col-sm-12 col-md-6">
                 <div class="testimonial-img">
-                  <img src="#" alt="" class="img-fluid">
+                  <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
@@ -942,7 +942,7 @@
                   </p>
                 </div>
                 <div class="testimonial-author-box">
-                  <img src="#" alt="" class="testimonial-avatar">
+                  <img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="testimonial-avatar">
                   <h5 class="testimonial-author">Pablo & Emma</h5>
                 </div>
               </div>
