@@ -165,7 +165,8 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">Community</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="property-single.html">커뮤니티</a>
+              <a class="dropdown-item" href="property-single.html">전체</a>
+              <a class="dropdown-item" href="#">자유게시판</a>
               <a class="dropdown-item" href="blog-single.html">칼럼</a>
               <a class="dropdown-item" href="agents-grid.html">Q&A</a>
               <a class="dropdown-item" href="agent-single.html">스터디</a>
