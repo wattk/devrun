@@ -66,16 +66,13 @@
     line-height: 20px;
 }
 /*실시간 순위 끝*/
-
 </style>
-
 </head>
-
 
 <body>
     <div id="shopMainOuter">
         <div id="shopHeaderBarDiv">
-            <img src="/99.DEVRUN/바.png" alt="">
+            <img src="https://i.ibb.co/yQfL23L/image.png" alt="">
             <div id="sideMenuBtnDiv">           
             </div>
             <div id="shopTop-10Div">
