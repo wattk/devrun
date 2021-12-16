@@ -33,10 +33,10 @@
 				<th>아이디<sup class="text-danger">*</sup></th>
 				<td>
 					<div id="memberId-container">
-						<input type="text" name="id" id="id" placeholder="4글자 이상" required/>
-						<span class="guide ok">사용 가능한 아이디입니다.</span>
-						<span class="guide error">사용할 수 없는 아이디입니다.</span>
-						<span class="guide duplicate">중복된 아이디입니다.</span>
+						<input type="text" name="id" id="id" placeholder="4글자 이상" class="duplicate-check" required/>
+						<span class="guide id-guide ok">사용 가능한 아이디입니다.</span>
+						<span class="guide id-guide error text-danger">사용할 수 없는 아이디입니다.</span>
+						<span class="guide id-guide duplicate text-danger">중복된 아이디입니다.</span>
 						<input type="hidden" id="idValid" value="0" />
 					</div>
 				</td>
@@ -62,7 +62,12 @@
 			<tr>
 				<th>닉네임<sup class="text-danger">*</sup></th>
 				<td>
-					<input type="text" name="nickname" id="nickname" />
+					<div>
+						<input type="text" name="nickname" id="nickname" class="duplicate-check" />
+						<span class="guide nickname-guide ok">사용 가능한 닉네임입니다.</span>
+						<span class="guide nickname-guide error text-danger">사용할 수 없는 닉네임입니다.</span>
+						<span class="guide nickname-guide duplicate text-danger">중복된 닉네임입니다.</span>
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -74,7 +79,12 @@
 			<tr>
 				<th>이메일<sup class="text-danger">*</sup></th>
 				<td>
-					<input type="email" name="email" id="email" />
+					<div>
+						<input type="email" name="email" id="email" class="duplicate-check"/>
+						<span class="guide email-guide ok">사용 가능한 이메일입니다.</span>
+						<span class="guide email-guide error text-danger">사용할 수 없는 이메일입니다.</span>
+						<span class="guide email-guide duplicate text-danger">중복된 이메일입니다.</span>
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -127,44 +137,51 @@ $(".checkbox-group").on("click", ".normal", ((e)=>{
     $("#checkAll").prop("checked", isChecked);
 }));
 
-//아이디 유효성 검사 & 중복 검사
-$(id).keyup((e)=>{
-	const $id = $(e.target);
-	const $error = $(".guide.error");
-	const $ok = $(".guide.ok");
-	const $duplicate = $(".guide.duplicate");
-	const $idValid = $(idValid);
+
+//아이디, 닉네임, 이메일 유효성 검사 & 중복 검사
+$(".duplicate-check").keyup((e)=>{
+	const $target = $(e.target);
+	const val = $target.prop("id");
 	
-	if(!/^[a-zA-Z0-9]{4,}$/.test($id.val())){
-		$(".guide").hide();
-		$error.show();
-		$idValid.val(0);
-		return;
+	const $error = $(`.\${val}-guide.error`);
+	const $ok = $(`.\${val}-guide.ok`);
+	const $duplicate = $(`.\${val}-guide.duplicate`);
+	const $valid = $(`#\${val}Valid`);
+	const data = {
+			[val] : $target.val()
+	};
+	console.log(data);
+	
+	if(val == "id"){
+		if(!/^[a-zA-Z0-9]{4,}$/.test($target.val())){
+			$(".guide").hide();
+			$error.show();
+			$valid.val(0);
+			return;
+		}
 	}
-	else{
-		$.ajax({
-			url : `${pageContext.request.contextPath}/member/checkIdDuplicate.do`,
-			data : { id : $id.val()},
-			method : "GET",
-			success(data){
-				console.log(data);
-				const {available} = data;
-				if(available){
-					$ok.show();
-					$error.hide();
-					$duplicate.hide();
-					$idValid.val(1);
-				}
-				else{
-					$duplicate.show();
-					$error.hide();
-					$ok.hide();
-					$idValid.val(0);
-				}
-			},
-			error : console.log
-		});
-	}
+	$.ajax({
+		url : `${pageContext.request.contextPath}/member/checkEnrollDuplicate/\${val}`,
+		data : data,
+		method : "GET",
+		success(data){
+			console.log(data);
+			const {available} = data;
+			if(available){
+				$ok.show();
+				$error.hide();
+				$duplicate.hide();
+				$valid.val(1);
+			}
+			else{
+				$duplicate.show();
+				$error.hide();
+				$ok.hide();
+				$valid.val(0);
+			}
+		},
+		error : console.log
+	});
 });
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
