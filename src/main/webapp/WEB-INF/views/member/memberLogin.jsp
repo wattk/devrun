@@ -43,8 +43,9 @@
 			<input type="text" id="id" name="id" placeholder="아이디"/><br />
 			<input type="password" id="password" name="password" placeholder="비밀번호"/><br />
 			
-			<button id="login-btn">로그인</button>
+			<button id="login-btn">로그인.</button>
 		</div>
+		
 		
 	</div>
  <!--/ login 본문 end /-->
