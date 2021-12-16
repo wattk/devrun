@@ -5,13 +5,10 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
-<jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="데브런" name="title"/>
-</jsp:include>
-
- <!--/ login 본문 start /-->
 <!DOCTYPE html>
-
+<html>
+<head>
+<meta charset="UTF-8">
 <title>로그인</title>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -26,9 +23,14 @@
 <!-- 사용자작성 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
 
+<c:if test="${param.error != null}">
+alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+</c:if>
+
+
 <style>
-	#login-container{width:100%text-align: center; margin-top:150px;background-color:gray;}
-	#title{font-weight: bold; font-size: 4rem; margin-bottom:50px;} /* 헤더 굵기 */
+	#login-container{width:50%; height:500px;text-align:center; margin-top:150px;background-color:#e9ecefb3;margin-left: auto;margin-right: auto;}
+	#title{font-weight: bold; font-size: 4rem; margin-bottom:50px; text-align: center;} /* 헤더 굵기 */
 	#login-frm{text-align:center; width:500px; height:300px; border:1px solid #80808099; margin: auto;}
 	#id,#password{width:300px; height:40px;}
 	#id{margin-top:80px; margin-bottom:30px;}
@@ -39,14 +41,10 @@
 
 	<div id="login-container">
 		<h1 id=title>Devrun</h1>
-		<div id="login-frm">
+		<div id="login-frm">		
 			<input type="text" id="id" name="id" placeholder="아이디"/><br />
 			<input type="password" id="password" name="password" placeholder="비밀번호"/><br />
-			
 			<button id="login-btn">로그인.</button>
-		</div>
-		
-		
+		<div/>	
 	</div>
- <!--/ login 본문 end /-->
-<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+
