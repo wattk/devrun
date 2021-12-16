@@ -20,5 +20,12 @@ public class Member {
 	private String email;
 	private int phone;
 	private int point;
+	private Date enrollDate;
+	private String proPhoto;
+	private boolean blackYn;
+	private boolean smsYn;
+	private int warningCount;
+	private String url;
+	private String intro;
 
 }
