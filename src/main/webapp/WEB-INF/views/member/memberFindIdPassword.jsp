@@ -23,8 +23,12 @@ h3 {
 	font-weight: bold;
 }
 
+.find-form div {
+	padding: 10px;
+}
+
 </style>
-<div class="container">
+<div class="container find-form" style="margin-top:175px;">
 	
 	<div class="row">
 	
