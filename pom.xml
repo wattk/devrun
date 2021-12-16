@@ -206,6 +206,15 @@
 	        <version>${org.aspectj-version}</version>
 	    </dependency>
 	    
+	    <!-- https://mvnrepository.com/artifact/org.springframework/springloaded -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>springloaded</artifactId>
+		    <version>1.2.8.RELEASE</version>
+		    <scope>provided</scope>
+		    <!-- scope 기본값 compile | provided: compile시에는 사용. runtime 시 사용하지 않음. -->
+		</dependency>
+	    
 	    <dependency>
 		    <groupId>commons-io</groupId>
 		    <artifactId>commons-io</artifactId>
