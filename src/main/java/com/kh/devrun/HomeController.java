@@ -23,7 +23,7 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.debug("HomeController ---- forward ----> index.jsp");
-		
+
 		// welcompage를 직접가지 않고, handler를 거쳐가는 설정
 		return "forward:/index.jsp";
 	}

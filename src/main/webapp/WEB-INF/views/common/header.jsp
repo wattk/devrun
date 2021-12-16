@@ -192,11 +192,13 @@
         data-target="#navbarTogglerDemo01" aria-expanded="false">
         <span class="fa fa-search" aria-hidden="true"></span>
       </button>
-     <button
-     	id="loginBtn"
-      	type="button"
-      	onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do' ">
-      	로그인 </button>
+      <div class="header-login">
+	     <button
+	     	id="header-login-btn"
+	      	type="button"
+	      	onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do' ">
+	      	로그인 </button>
+      </div>
     </div>
   </nav>
   

@@ -5,12 +5,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param value="데브런" name="title"/>
+</jsp:include>
 
-
+ <!--/ login 본문 start /-->
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
+
 <title>로그인</title>
 
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -24,64 +25,27 @@
 
 <!-- 사용자작성 css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
-<script>
-<c:if test="${param.error != null}">
-alert("아이디 또는 비밀번호가 일치하지 않습니다 ㅠㅠ");
-</c:if>
 
-$(() => {
-	$(loginModal)
-		.modal()
-		.on("hide.bs.modal", (e) => {
-			location.href = '${empty header.referer ? pageContext.request.contextPath : header.referer}';
-		});
-		
-});
+<style>
+	#login-container{width:100%text-align: center; margin-top:150px;background-color:gray;}
+	#title{font-weight: bold; font-size: 4rem; margin-bottom:50px;} /* 헤더 굵기 */
+	#login-frm{text-align:center; width:500px; height:300px; border:1px solid #80808099; margin: auto;}
+	#id,#password{width:300px; height:40px;}
+	#id{margin-top:80px; margin-bottom:30px;}
+	#password{margin-bottom:50px;}
+	#login-btn{width:300px; height:40px; background-color:rgb(26, 129, 255); color:white; font-weight: 800;}
+	
+</style>
 
-</script>
-</head>
-<body>
-
-	<!-- Modal시작 -->
-	<!-- https://getbootstrap.com/docs/4.1/components/modal/#live-demo -->
-	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog"
-		aria-labelledby="loginModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="loginModalLabel">로그인</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<!--로그인폼 -->
-				<!-- https://getbootstrap.com/docs/4.1/components/forms/#overview -->
-				<form:form
-					action="${pageContext.request.contextPath}/member/memberLogin.do"
-					method="post">
-					<div class="modal-body">
-					<c:if test="${param.error != null }">
-						<span class="text-danger">아이디 또는 비밀번호가 일치하지 않습니다.</span>
-					</c:if>
-						<input type="text" class="form-control" name="id" value="honggd"
-							placeholder="아이디" required> <br /> <input
-							type="password" class="form-control" name="password" value="1234"
-							placeholder="비밀번호" required>
-					</div>
-					<div class="modal-footer justify-content-between" >
-						<div>
-							<input type="checkbox" name="remember-me" id="remember-me" class="form-check-input" />
-							<label for="remember-me" class="form-check-label">Remember-me</label>
-						</div>
-						<div>
-							<button type="submit" class="btn btn-outline-success">로그인</button>
-							<button type="button" class="btn btn-outline-success" data-dismiss="modal">취소</button>
-						</div>
-					</div>
-				</form:form>
-			</div>
+	<div id="login-container">
+		<h1 id=title>Devrun</h1>
+		<div id="login-frm">
+			<input type="text" id="id" name="id" placeholder="아이디"/><br />
+			<input type="password" id="password" name="password" placeholder="비밀번호"/><br />
+			
+			<button id="login-btn">로그인</button>
 		</div>
+		
 	</div>
-	<!-- Modal 끝-->
-</body>
-</html>
+ <!--/ login 본문 end /-->
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
