@@ -1,13 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
+<beans:beans xmlns="http://www.springframework.org/schema/security"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:security="http://www.springframework.org/schema/security"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.0.xsd">
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 	<!-- #8.1 암호화처리 bean등록 -->
-	<bean
-		id="bcryptPasswordEncoder" 
-		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
-
-</beans>
+	<beans:bean 
+		id="bcryptPasswordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+		
+	<!-- #8.3 인증/권한 검사 설정 -->
+	<!-- security에 의한 인증/권한 검사에서 제외 -->
+	<http security="none" pattern="/resources/**"/>
+	<http auto-config="true">
+		<intercept-url pattern="/" access="permitAll"/>
+		<intercept-url pattern="/index.jsp" access="permitAll"/>
+		<intercept-url pattern="/member/memberLogin.do" access="permitAll"/>
+		<intercept-url pattern="/admin/**" access="hasRole('AM')"/>
+		<!-- 모든 경로 대상으로 로그인 했는지를 물어본다는 뜻 -->
+		<intercept-url pattern="/**" access="isAuthenticated()"/>
+		
+		<!-- 커스텀 로그인 설정 -->
+		<!-- login-page : 커스텀 로그인 폼 페이지. 핸들러 작성 필요. -->
+		<!-- login-processing-url : security가 인증을 처리할 주소. loginForm이 제출될(POST) 주소. 핸들러 작성 불필요. -->
+		<form-login 
+			login-page="/member/memberLogin.do"
+			login-processing-url="/member/memberLogin.do"
+			username-parameter="id"
+			password-parameter="password"
+		/>
+		
+		<!-- 로그아웃 설정 -->
+		<!-- logout-url : 핸들러 작성 불필요 -->
+		<!-- logout-success-url : 로그아웃 이후 리다이렉트 url. 기본값 "/login?logout"-->
+		<logout logout-url="/member/memberLogout.do" logout-success-url="/"/>
+		
+		<access-denied-handler error-page="/error/accessDenied.do"/>
+		
+		<!-- csrf 공격 대비 기능 -->
+		<!-- 
+			Cross-site Request Forgery 
+			특정 권한이 있는 사용자로 하여금 해커가 유도한 행동을 하도록 함으로써 보안을 취약하게 하거나 개인정보를 탈취하는 기법 
+		-->
+		<!-- <csrf disabled="false"/> -->
+		
+		<!-- 
+			remember-me
+			 - token-validity-seconds : 초단위 토큰 유효시간을 설정 60*60*24*14
+		 -->
+		<remember-me
+			data-source-ref="dataSource"
+			token-validity-seconds="1209600"/>
+	</http>
+	
+	<authentication-manager>
+		<authentication-provider user-service-ref="securityService">
+			<password-encoder ref="bcryptPasswordEncoder"/>
+		</authentication-provider>
+	</authentication-manager>
+	
+	<context:component-scan base-package="com.kh.devrun.security"/>
+</beans:beans>
