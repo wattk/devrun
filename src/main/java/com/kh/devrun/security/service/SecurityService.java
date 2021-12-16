@@ -1,5 +1,7 @@
 package com.kh.devrun.security.service;
 
+import javax.naming.NameNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +24,10 @@ public class SecurityService implements UserDetailsService{
 		
 		UserDetails member = securityDao.loadUserByUsername(username);
 		log.debug("member = {}", member);
+		
+		if(member == null) 
+			throw new UsernameNotFoundException(username);
+		
 		
 		return member;
 	}
