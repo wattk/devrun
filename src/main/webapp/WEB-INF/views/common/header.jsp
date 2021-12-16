@@ -151,7 +151,7 @@
         <span></span>
         <span></span>
       </button>
-      <a class="navbar-brand text-brand" href="index.html">Dev<span class="color-b">run</span></a>
+      <a class="navbar-brand text-brand" href="index.html">Dev<span class="color-b">Run</span></a>
       <button type="button" class="btn btn-link nav-search navbar-toggle-box-collapse d-md-none" data-toggle="collapse"
         data-target="#navbarTogglerDemo01" aria-expanded="false">
         <span class="fa fa-search" aria-hidden="true"></span>
@@ -175,11 +175,6 @@
           <li class="nav-item">
             <a class="nav-link" href="blog-grid.html">Shop</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link" href="property-grid.html" >
-              Career
-            </a>
-          </li>
           <li class="nav-item">
             <a class="nav-link" href="about.html">About</a>
           </li>
@@ -189,6 +184,7 @@
         data-target="#navbarTogglerDemo01" aria-expanded="false">
         <span class="fa fa-search" aria-hidden="true"></span>
       </button>
+      <a class="btn btn-primary" href="${pageContext.request.contextPath}/member/memberLogin.do" role="button">로그인</a>
     </div>
   </nav>
   <!--/ Nav End /-->
