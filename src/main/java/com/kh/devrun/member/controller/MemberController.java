@@ -42,5 +42,16 @@ public class MemberController{
 	/**
 	 * 혜진 회원가입 끝
 	 */
+	
+	/**
+	 * 지영 아이디/비밀번호 찾기 시작
+	 */
+	
+	@GetMapping("/memberFindIdPassword.do")
+	public void memberFindIdPassword() {}
+	
+	/**
+	 * 지영 아이디/비밀번호 찾기 끝
+	 */
 }
 
