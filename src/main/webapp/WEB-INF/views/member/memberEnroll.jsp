@@ -36,8 +36,9 @@
 					<div id="memberId-container">
 						<input type="text" name="id" id="id" placeholder="4글자 이상" required/>
 						<span class="guide ok">사용 가능한 아이디입니다.</span>
-						<span class="guide error">사용 중인 아이디입니다.</span>
-						<input type="hidden" name="idValid" value="0" />
+						<span class="guide error">사용할 수 없는 아이디입니다.</span>
+						<span class="guide duplicate">중복된 아이디입니다.</span>
+						<input type="hidden" id="idValid" value="0" />
 					</div>
 				</td>
 			</tr>
@@ -84,27 +85,18 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="text-left">
-				  <input type="checkbox" id="check_all" class="">
-				  <label for="check_all" class="">전체 동의</label>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="text-left">
+				<td colspan="2" class="text-left checkbox-group">
+				  <input type="checkbox" id="checkAll" >
+				  <label for="checkAll" class="">전체 동의</label>
+				  <br />
 				  <input type="checkbox" id="check1" class="normal" >
-				  <label for="check_1"><span class="text-danger">(필수)</span>개인정보 처리방침 동의</label>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="text-left">
+				  <label for="check1"><span class="text-danger">(필수)</span>개인정보 처리방침 동의</label>
+				  <br />
 				  <input type="checkbox" id="check2" class="normal" >
-				  <label for="check_2"><span class="text-danger">(필수)</span>서비스 이용약관 동의</label>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2" class="text-left">
+				  <label for="check2"><span class="text-danger">(필수)</span>서비스 이용약관 동의</label>
+				  <br />
 				  <input type="checkbox" id="check3" class="normal" name="smsYn">
-				  <label for="check_3"><span>(선택)</span>마케팅 수신 동의</label>
+				  <label for="check3"><span>(선택)</span>마케팅 수신 동의</label>
 				</td>
 			</tr>
 		</table>
@@ -115,33 +107,65 @@
 </div>
 <script>
 //체크박스 전체 선택
-$(".checkbox_group").on("click", "#check_all", function () {
-  var checked = $(this).is(":checked");
+$(".checkbox-group").on("click", "#checkAll", ((e)=>{
+  let checked = $(e.target).is(":checked");
 
   if(checked){
-  	$(this).parents(".checkbox_group").find('input').prop("checked", true);
+  	$(e.target).parents(".checkbox-group").find('input').prop("checked", true);
   } else {
-  	$(this).parents(".checkbox_group").find('input').prop("checked", false);
+  	$(e.target).parents(".checkbox-group").find('input').prop("checked", false);
   }
-});
+}));
 
 //체크박스 개별 선택
-$(".checkbox_group").on("click", ".normal", function() {
-    var is_checked = true;
+$(".checkbox-group").on("click", ".normal", ((e)=>{
+    let isChecked = true;
     
-    $(".checkbox_group .normal").each(function(){
-        is_checked = is_checked && $(this).is(":checked");
+    $(".checkbox-group .normal").each((e)=>{
+        isChecked = isChecked && $(e.target).is(":checked");
     });
     
-    $("#check_all").prop("checked", is_checked);
-});
+    $("#checkAll").prop("checked", isChecked);
+}));
 
 $(id).keyup((e)=>{
 	const $id = $(e.target);
 	const $error = $(".guide.error");
 	const $ok = $(".guide.ok");
+	const $duplicate = $(".guide.duplicate");
 	const $idValid = $(idValid);
 	
+	if(!/^[a-zA-Z0-9]{4,}$/.test($id.val())){
+		$(".guide").hide();
+		$error.show();
+		$idValid.val(0);
+		return;
+	}
+	else{
+		$.ajax({
+			url : `${pageContext.request.contextPath}/member/checkIdDuplicate.do`,
+			data : {
+				id: $id.val()
+			},
+			success(data){
+				const {available} = data;
+				if(available){
+					$ok.show();
+					$error.hide();
+					$duplicate.hide();
+					$idValid.val(1);
+				}
+				else{
+					$duplicate.show();
+					$error.hide();
+					$ok.hide();
+					$idValid.val(0);
+				}
+			},
+			error : console.log
+		});
+	}
+		
 	
 })
 </script>
