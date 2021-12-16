@@ -34,14 +34,25 @@ public class MemberController{
 	@GetMapping("/checkIdDuplicate.do")
 	public Map<String, Object> checkIdDuplicate(@RequestParam String id){
 		Map<String, Object> map = new HashMap<>();
-		//Member member = memberService.selectOneMember(id);
-		//map.put("available", member == null);
+		Member member = memberService.selectOneMember(id);
+		map.put("available", member == null);
 		
 		return map;
 	}
 	
 	/**
 	 * 혜진 회원가입 끝
+	 */
+	
+	/**
+	 * 지영 아이디/비밀번호 찾기 시작
+	 */
+	
+	@GetMapping("/memberFindIdPassword.do")
+	public void memberFindIdPassword() {}
+	
+	/**
+	 * 지영 아이디/비밀번호 찾기 끝
 	 */
 }
 

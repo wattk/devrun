@@ -13,7 +13,6 @@
 }
 #memberEnrollContainer{
 	border: 1px solid #000;
-	margin-top : 200px;
 	width : 450px;
 	height : 700px;
 }

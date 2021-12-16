@@ -40,6 +40,7 @@ public class Member implements Serializable, UserDetails {
 	private int point;
 	private Date enrollDate;
 	private String proPhoto;
+<<<<<<< HEAD
 	private String blackYn;
 	private String smsYn;
 	private int warningCount;
@@ -80,5 +81,12 @@ public class Member implements Serializable, UserDetails {
 		// TODO Auto-generated method stub
 		return true;
 	}
+=======
+	private boolean blackYn;
+	private boolean smsYn;
+	private int warningCount;
+	private String url;
+	private String intro;
+>>>>>>> branch 'master' of https://github.com/wattk/devrun.git
 
 }
