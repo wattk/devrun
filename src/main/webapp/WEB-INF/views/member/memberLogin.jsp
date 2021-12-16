@@ -56,8 +56,8 @@ alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 				<input type="password" id="password" name="password" placeholder="비밀번호" required/><br />
 			<div/>	
 			<div id="find-container">
-				<span class="find" id="find-id"><a href="">아이디 찾기</a></span>
-				<span class="find" id="find-pass"><a href="">비밀번호 찾기</a></span>
+				<span class="find" id="find-id"><a href="${pageContext.request.contextPath}/member/memberFindIdPassword.do">아이디 찾기</a></span>
+				<span class="find" id="find-pass"><a href="${pageContext.request.contextPath}/member/memberFindIdPassword.do">패스워드 찾기</a></span>
 			</div>
 				<button id="login-btn" type="submit">로그인</button>
 		</form>
