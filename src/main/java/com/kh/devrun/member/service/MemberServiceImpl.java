@@ -10,4 +10,12 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberDao memberDao;
+	
+	/**
+	 * 혜진 서비스 시작
+	 */
+	
+	/**
+	 * 혜진 서비스 끝
+	 */
 }

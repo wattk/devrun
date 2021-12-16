@@ -10,4 +10,11 @@ public class MemberDaoImpl implements MemberDao {
 	@Autowired
 	private SqlSession session;
 
+	/**
+	 * 혜진 dao 시작
+	 */
+	
+	/**
+	 * 혜진 dao 끝
+	 */
 }
