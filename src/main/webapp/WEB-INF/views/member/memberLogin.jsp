@@ -47,7 +47,7 @@ alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 	<div id="login-container">
 
 		<img src="${pageContext.request.contextPath }/resources/images/logo-devrun.png" id="title" />
-		<form 
+		<form:form 
 			name="login-form"
 			method="POST">
 						
@@ -60,7 +60,7 @@ alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 				<span class="find" id="find-pass"><a href="${pageContext.request.contextPath}/member/memberFindIdPassword.do">패스워드 찾기</a></span>
 			</div>
 				<button id="login-btn" type="submit">로그인</button>
-		</form>
+		</form:form>
 	</div>
 	
 	<br /><hr />
