@@ -36,8 +36,9 @@
 					<div id="memberId-container">
 						<input type="text" name="id" id="id" placeholder="4글자 이상" required/>
 						<span class="guide ok">사용 가능한 아이디입니다.</span>
-						<span class="guide error">사용 중인 아이디입니다.</span>
-						<input type="hidden" name="idValid" value="0" />
+						<span class="guide error">사용할 수 없는 아이디입니다.</span>
+						<span class="guide duplicate">중복된 아이디입니다.</span>
+						<input type="hidden" id="idValid" value="0" />
 					</div>
 				</td>
 			</tr>
@@ -131,8 +132,40 @@ $(id).keyup((e)=>{
 	const $id = $(e.target);
 	const $error = $(".guide.error");
 	const $ok = $(".guide.ok");
+	const $duplicate = $(".guide.duplicate");
 	const $idValid = $(idValid);
 	
+	if(!/^[a-zA-Z0-9]{4,}$/.test($id.val())){
+		$(".guide").hide();
+		$error.show();
+		$idValid.val(0);
+		return;
+	}
+	else{
+		$.ajax({
+			url : `${pageContext.request.contextPath}/member/checkIdDuplicate.do`,
+			data : {
+				id: $id.val()
+			},
+			success(data){
+				const {available} = data;
+				if(available){
+					$ok.show();
+					$error.hide();
+					$duplicate.hide();
+					$idValid.val(1);
+				}
+				else{
+					$duplicate.show();
+					$error.hide();
+					$ok.hide();
+					$idValid.val(0);
+				}
+			},
+			error : console.log
+		});
+	}
+		
 	
 })
 </script>
