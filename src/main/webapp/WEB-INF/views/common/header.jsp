@@ -16,7 +16,9 @@
 <!--   <link href="#" rel="icon">
   <link href="#" rel="apple-touch-icon"> -->
 
-  <!-- Google Fonts -->
+
+  
+    <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
 
   <!-- Bootstrap CSS File -->
@@ -34,6 +36,9 @@
   <link href="${pageContext.request.contextPath }/resources/css/animate.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath }/resources/css/ionicons/css/ionicons.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" rel="stylesheet">
+  
+   <!-- 태영 css -->
+  <link href="${pageContext.request.contextPath }/resources/css/header/header.css" rel="stylesheet">
 
   <!-- Main Stylesheet File -->
   <link href="${pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet">
@@ -101,7 +106,6 @@
 		      	로그인 </button>
 	      </div>
 
-    </div>
   </nav>
   
   <script>

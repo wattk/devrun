@@ -27,8 +27,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
 
 <style>
-	#login-container{width:100%text-align: center; margin-top:150px;background-color:gray;}
-	#title{font-weight: bold; font-size: 4rem; margin-bottom:50px;} /* 헤더 굵기 */
+	#login-container{width:50%; height:500px;text-align:center; margin-top:150px;background-color:#e9ecefb3;margin-left: auto;margin-right: auto;}
+	#title{font-weight: bold; font-size: 4rem; margin-bottom:50px; text-align: center;} /* 헤더 굵기 */
 	#login-frm{text-align:center; width:500px; height:300px; border:1px solid #80808099; margin: auto;}
 	#id,#password{width:300px; height:40px;}
 	#id{margin-top:80px; margin-bottom:30px;}
@@ -39,12 +39,12 @@
 
 	<div id="login-container">
 		<h1 id=title>Devrun</h1>
-		<div id="login-frm">
+		<div id="login-frm">		
 			<input type="text" id="id" name="id" placeholder="아이디"/><br />
 			<input type="password" id="password" name="password" placeholder="비밀번호"/><br />
-			
 			<button id="login-btn">로그인.</button>
-		</div>
+		<div/>	
+	</div>
 		
 		
 	</div>
