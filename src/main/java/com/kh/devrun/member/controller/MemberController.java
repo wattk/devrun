@@ -21,9 +21,10 @@ public class MemberController{
 	@Autowired
 	private MemberService memberService;
 	
-	@RequestMapping("/memberLogin")
+	
+	@GetMapping("/memberLogin.do")
 	public void memberLogin() {}
-
+	
 	/**
 	 * 혜진 회원가입 시작
 	 */
