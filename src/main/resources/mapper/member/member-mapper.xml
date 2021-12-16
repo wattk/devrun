@@ -12,5 +12,6 @@
   	where
   		id = #{id}
   </select>
+  
   <!-- 혜진 mapper 끝 -->
 </mapper>

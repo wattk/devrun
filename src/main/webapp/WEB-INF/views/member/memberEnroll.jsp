@@ -30,7 +30,7 @@
 		<hr />
 		<table id="memberEnrollTbl" class="mx-auto">
 			<tr>
-				<th>아이디</th>
+				<th>아이디<sup class="text-danger">*</sup></th>
 				<td>
 					<div id="memberId-container">
 						<input type="text" name="id" id="id" placeholder="4글자 이상" required/>
@@ -42,13 +42,13 @@
 				</td>
 			</tr>
 			<tr>
-				<th>비밀번호</th>
+				<th>비밀번호<sup class="text-danger">*</sup></th>
 				<td>
 					<input type="password" name="password" id="password" required/>
 				</td>
 			</tr>
 			<tr>
-				<th>비밀번호 확인</th>
+				<th>비밀번호 확인<sup class="text-danger">*</sup></th>
 				<td>
 					<input type="password" name="password" id="passwordCheck" required/>
 				</td>
@@ -60,7 +60,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>닉네임</th>
+				<th>닉네임<sup class="text-danger">*</sup></th>
 				<td>
 					<input type="text" name="nickname" id="nickname" />
 				</td>
@@ -72,7 +72,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>이메일</th>
+				<th>이메일<sup class="text-danger">*</sup></th>
 				<td>
 					<input type="email" name="email" id="email" />
 				</td>
@@ -127,6 +127,7 @@ $(".checkbox-group").on("click", ".normal", ((e)=>{
     $("#checkAll").prop("checked", isChecked);
 }));
 
+//아이디 유효성 검사 & 중복 검사
 $(id).keyup((e)=>{
 	const $id = $(e.target);
 	const $error = $(".guide.error");
@@ -143,11 +144,10 @@ $(id).keyup((e)=>{
 	else{
 		$.ajax({
 			url : `${pageContext.request.contextPath}/member/checkIdDuplicate.do`,
-			data : {
-				id: $id.val()
-			},
+			data : { id : $id.val()},
 			method : "GET",
 			success(data){
+				console.log(data);
 				const {available} = data;
 				if(available){
 					$ok.show();
@@ -165,8 +165,6 @@ $(id).keyup((e)=>{
 			error : console.log
 		});
 	}
-		
-	
-})
+});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
