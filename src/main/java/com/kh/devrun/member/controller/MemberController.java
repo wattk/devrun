@@ -34,8 +34,8 @@ public class MemberController{
 	@GetMapping("/checkIdDuplicate.do")
 	public Map<String, Object> checkIdDuplicate(@RequestParam String id){
 		Map<String, Object> map = new HashMap<>();
-		//Member member = memberService.selectOneMember(id);
-		//map.put("available", member == null);
+		Member member = memberService.selectOneMember(id);
+		map.put("available", member == null);
 		
 		return map;
 	}
