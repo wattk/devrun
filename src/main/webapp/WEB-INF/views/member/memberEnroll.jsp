@@ -146,6 +146,7 @@ $(id).keyup((e)=>{
 			data : {
 				id: $id.val()
 			},
+			method : "GET",
 			success(data){
 				const {available} = data;
 				if(available){
