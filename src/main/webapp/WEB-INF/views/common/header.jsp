@@ -34,9 +34,6 @@
   <link href="${pageContext.request.contextPath }/resources/css/animate.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath }/resources/css/ionicons/css/ionicons.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" rel="stylesheet">
-  
-  <!-- 태영 설정 css -->
-  <link href="${pageContext.request.contextPath }/resources/css/header/header.css" rel="stylesheet">
 
   <!-- Main Stylesheet File -->
   <link href="${pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet">
@@ -73,7 +70,7 @@
             <a class="nav-link active" href="index.html">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath}/community/communityList.do" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">Community</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="property-single.html">전체</a>
@@ -95,11 +92,6 @@
         data-target="#navbarTogglerDemo01" aria-expanded="false">
         <span class="fa fa-search" aria-hidden="true"></span>
       </button>
-     <button
-     	id="loginBtn"
-      	type="button"
-      	onclick="location.href='${pageContext.request.contextPath}/member/memberLogin.do' ">
-      	로그인 </button>
     </div>
   </nav>
   
