@@ -1,6 +1,5 @@
 package com.kh.devrun.security.service;
 
-import javax.naming.NameNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,10 +17,11 @@ public class SecurityService implements UserDetailsService{
 	
 	@Autowired
 	private SecurityDao securityDao;
+	
+
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
 		UserDetails member = securityDao.loadUserByUsername(username);
 		log.debug("member = {}", member);
 		
@@ -31,7 +31,6 @@ public class SecurityService implements UserDetailsService{
 		
 		return member;
 	}
-	
-	
+
 
 }

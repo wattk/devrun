@@ -1,0 +1,8 @@
+@charset "UTF-8";
+
+/* object-fit : 가로세로 비율은 유지하면서 컨테이너에 꽉 차도록 설정된다. */
+img {
+	width: 300px;
+	height: 200px;
+	object-fit: cover;
+}
