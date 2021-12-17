@@ -1,11 +1,11 @@
-package com.kh.devrun.member.service;
+package com.kh.devrun.member.model.service;
 
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.devrun.member.dao.MemberDao;
+import com.kh.devrun.member.model.dao.MemberDao;
 import com.kh.devrun.member.model.vo.Member;
 
 @Service
@@ -22,6 +22,12 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member selectOneMember(Map<String, Object> param) {
 		return memberDao.selectOneMember(param);
+	}
+
+
+	@Override
+	public int insertMember(Member member) {
+		return memberDao.insertMember(member);
 	}
 
 	

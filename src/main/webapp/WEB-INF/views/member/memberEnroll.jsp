@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="회원가입" name="title"/>
@@ -31,7 +33,7 @@
 	<span class="font-weight-light">더 나은 개발라이프를 위한 적절한 해결책</span>
 </div>
 <div id="memberEnrollContainer" class="mx-auto text-center">
-	<form action="${pageContext.request.contextPath}/member/memberEnroll.do" name="memberEnrollFrm" method="post" class="p-3">
+	<form:form action="${pageContext.request.contextPath}/member/memberEnroll.do" name="memberEnrollFrm" method="post" class="p-3">
 		<table id="memberEnrollTbl" class="mx-auto">
 			<tr>
 				<th>아이디<sup class="text-danger">*</sup></th>
@@ -76,7 +78,7 @@
 						<span class="guide nickname-guide ok">사용 가능한 닉네임입니다.</span>
 						<span class="guide nickname-guide error text-danger">사용할 수 없는 닉네임입니다.</span>
 						<span class="guide nickname-guide duplicate text-danger">중복된 닉네임입니다.</span>
-						<input type="hidden" id="nicknameValid" value="0" />
+						<input type="hidden" id="nicknameValid"  value="0" />
 					</div>
 				</td>
 			</tr>
@@ -121,9 +123,9 @@
 			</tr>
 		</table>
 		<hr />
-		<button type="button" class="btn btn-primary">가입</button>
+		<button type="button" id="memberEnrollBtn" class="btn btn-primary">가입</button>
 		<button type="button" class="btn btn-primary">취소</button>
-	</form>
+	</form:form>
 </div>
 <script>
 //체크박스 전체 선택
@@ -232,6 +234,30 @@ $("[name=password]").keyup((e)=>{
 		$ok.show();
 		$valid.val(1);
 	}
+	
+});
+
+//가입 버튼 클릭 시 회원가입
+$(memberEnrollBtn).click((e)=>{
+	const idValid = $(idValid).val();
+	const passwordValid = $(passwordValid).val();
+	const nicknameValid = $(nicknameValid).val();
+	const emailValid = $(emailValid).val();
+	const check1 = $(check1).is(":checked");
+	const check2 = $(check2).is(":checked");
+	
+	if(idValid != 1)
+		$(id).focus(); return;
+	if(passwordValid != 1)
+		$(password).focus(); return;
+	if(nicknameValid != 1)
+		$(nickname).focus(); return;
+	if(emailValid != 1)
+		$(email).focus(); return;
+	if(check1) alert("개인정보 처리방침 동의는 필수입니다."); return;
+	if(check2) alert("서비스 이용약관 동의는 필수입니다."); return;
+	
+	$(document.memberEnrollFrm).submit();
 	
 });
 </script>

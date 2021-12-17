@@ -1,12 +1,14 @@
-package com.kh.devrun.member.dao;
+package com.kh.devrun.member.model.service;
 
 import java.util.Map;
 
 import com.kh.devrun.member.model.vo.Member;
 
-public interface MemberDao {
+public interface MemberService {
 
 	Member selectOneMember(Map<String, Object> param);
+
+	int insertMember(Member member);
 
 
 }
