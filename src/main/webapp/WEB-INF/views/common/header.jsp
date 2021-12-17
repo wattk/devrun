@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,6 +53,9 @@
     License: https://bootstrapmade.com/license/
   ======================================================= -->
 </head>
+<style>
+/* #navLoginContainer{margin-left:40px;} */
+</style>
 
 <body>
 
@@ -98,7 +104,30 @@
         data-target="#navbarTogglerDemo01" aria-expanded="false">
         <span class="fa fa-search" aria-hidden="true"></span>
       </button>
-      <a class="btn btn-primary" href="${pageContext.request.contextPath}/member/memberLogin.do" role="button">로그인</a>
+      
+      <!-- 로그인 안 되어 있을 때 -->
+      <sec:authorize access="isAnonymous()">
+      <div id="navLoginContainer">
+    	  <a class="btn btn-primary log-con" id="navLoginBtn" href="${pageContext.request.contextPath}/member/memberLogin.do" >로그인</a>
+      </div>
+      </sec:authorize>
+      
+      <!-- 로그인 되어있을 때 -->
+      <sec:authorize access="isAuthenticated()">
+      <sec:authentication property="principal.username"/>
+      <div id="navLoginContainer">      		
+	    	<a class="btn btn-primary log-con" id ="navDetail" href="${pageContext.request.contextPath}/member/memberDetail.do">내 정보</a>
+	    <form:form
+	    	id="navLogoutFrm"
+	    	method="POST"
+	    	action="${pageContext.request.contextPath}/member/memberLogout.do">
+	    	<button
+	    		class="btn btn-primary log-con"
+	    		type="submit">로그아웃</button>
+	    </form:form>
+      </div>
+      </sec:authorize>
+      
     </div>
 
   </nav>
