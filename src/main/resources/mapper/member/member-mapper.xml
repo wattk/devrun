@@ -42,4 +42,15 @@
 	</selectKey>
   </insert>
   <!-- 혜진 mapper 끝 -->
+  
+  <!-- 지영 mapper 시작 -->
+  <select id="findId" resultType="string">
+  	select
+  		id
+  	from
+  		member
+  	where
+  		name = #{name} and email = #{email}
+  </select>
+  <!-- 지영 mapper 끝 -->
 </mapper>
