@@ -10,5 +10,7 @@ public interface MemberDao {
 
 	int insertMember(Member member);
 
+	String findId(Map<String, Object> param);
+
 
 }

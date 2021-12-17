@@ -50,5 +50,34 @@
 			#{memberNo}
 		)
 	</insert>
+	
+	<insert id="insertMember">
+  	insert into 
+  		member
+  	values(
+  		seq_member_no.nextval,
+  		#{id},
+  		#{name},
+  		#{nickname},
+  		#{password},
+  		#{birthday},
+  		#{email},
+  		#{phone},
+  		default,
+  		default,
+  		default,
+  		default,
+  		#{smsYn},
+  		default,
+  		null,
+  		null
+  	)
+	<selectKey keyProperty="memberNo" resultType="_int" order="AFTER">
+		select
+			seq_member_no.currval
+		from
+			dual
+	</selectKey>
+  </insert>
   
 </mapper>

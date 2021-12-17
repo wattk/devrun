@@ -48,7 +48,8 @@ alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 		<img src="${pageContext.request.contextPath }/resources/images/logo-devrun.png" id="title" />
 		<form:form 
 			name="login-form"
-			method="POST">
+			method="POST"
+			action="${pageContext.request.contextPath}/member/memberLogin.do">
 						
 			<div id="form-container">		
 				<input type="text" id="id" name="id" placeholder="아이디" required><br />
@@ -62,7 +63,6 @@ alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 				<button id="login-btn" type="submit">로그인</button>
 		</form:form>
 	</div>
-	
 	<br /><hr />
 	<div>간편 로그인</div>
 	<img src="${pageContext.request.contextPath }/resources/images/kakao.jpg" class="simple-login">

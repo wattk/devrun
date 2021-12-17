@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
+import com.kh.devrun.member.model.vo.Member;
+
 @Repository
 public class SecurityDaoImpl implements SecurityDao {
 
@@ -20,6 +22,5 @@ public class SecurityDaoImpl implements SecurityDao {
 	public int insertAuthorities(int memberNo) {
 		return session.insert("security.insertAuthorities", memberNo);
 	}
-	
 	
 }

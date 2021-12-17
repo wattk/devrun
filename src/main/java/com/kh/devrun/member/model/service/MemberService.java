@@ -10,5 +10,7 @@ public interface MemberService {
 
 	int insertMember(Member member);
 
+	String findId(Map<String, Object> param);
+
 
 }
