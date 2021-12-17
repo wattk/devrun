@@ -116,7 +116,7 @@
         </ul>
       </div>
 	  <div class="search-box">
-          <form class="form-inline" name="unifiedSearchFrm" action="${pageContext.request.contextPath}/search/search.do" method="GET">
+          <form class="form-inline" name="unifiedSearchFrm" action="${pageContext.request.contextPath}/common/search.do" method="GET">
 		    <div class="input-group">
 		      <input type="text" id="searchKeyword" name="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="Username" aria-describedby="basic-addon1">
 		      <button type="button" id="unifiedSearchBtn" class="btn btn-b-n d-none d-md-block" data-toggle="collapse"

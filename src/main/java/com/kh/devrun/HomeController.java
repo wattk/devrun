@@ -30,4 +30,7 @@ public class HomeController {
 	
 	@RequestMapping("/error/accessDenied.do")
 	public void errorPage() {}
+	
+	@RequestMapping(value = "/common/search.do", method = RequestMethod.GET)
+	public void search() {}
 }
