@@ -12,6 +12,11 @@
 <style>
 .guide{
 	display:none;
+	font-size:smaller;
+}
+.guide-box{
+	height: 7px;
+	width: 230px;
 }
 #memberEnrollContainer{
 	border: 1px solid #000;
@@ -23,13 +28,17 @@
 }
 #memberEnrollTbl td{
 	width : 230px;
+	height : 55px;
 }
 #memberEnrollTbl input:not([type="checkbox"]){
 	width : 100%;
 }
+.enroll-head{
+	margin-top : 50px;
+}
 </style>
 <div class="mx-auto text-center">
-	<h1 class="text-brand mt-3">Dev<span class="color-b">Run</span></h1>
+	<h1 class="text-brand mt-3 enroll-head">Dev<span class="color-b">Run</span></h1>
 	<span class="font-weight-light">더 나은 개발라이프를 위한 적절한 해결책</span>
 </div>
 <div id="memberEnrollContainer" class="mx-auto text-center">
@@ -40,10 +49,12 @@
 				<td>
 					<div id="memberId-container">
 						<input type="text" name="id" id="id" placeholder="4글자 이상" class="duplicate-check" required/>
-						<span class="guide id-guide ok">사용 가능한 아이디입니다.</span>
-						<span class="guide id-guide error text-danger">사용할 수 없는 아이디입니다.</span>
-						<span class="guide id-guide duplicate text-danger">중복된 아이디입니다.</span>
-						<input type="hidden" id="idValid" value="0" />
+						<div class="guide-box">
+							<span class="guide id-guide ok">사용 가능한 아이디입니다.</span>
+							<span class="guide id-guide error text-danger">사용할 수 없는 아이디입니다.</span>
+							<span class="guide id-guide duplicate text-danger">중복된 아이디입니다.</span>
+							<input type="hidden" id="idValid" value="0" />
+						</div>
 					</div>
 				</td>
 			</tr>
@@ -58,14 +69,16 @@
 				<td>
 					<div>
 						<input type="password" name="password" id="passwordCheck" required/>
-						<span class="guide password-guide ok">사용 가능한 비밀번호입니다.</span>
-						<span class="guide password-guide error text-danger">비밀번호가 일치하지 않습니다.</span>
-						<input type="hidden" id="passwordValid" value="0" />
+						<div class="guide-box">
+							<span class="guide password-guide ok">사용 가능한 비밀번호입니다.</span>
+							<span class="guide password-guide error text-danger">비밀번호가 일치하지 않습니다.</span>
+							<input type="hidden" id="passwordValid" value="0" />
+						</div>
 					</div>
 				</td>
 			</tr>
 			<tr>
-				<th>이름</th>
+				<th>이름<sup class="text-danger">*</sup></th>
 				<td>
 					<input type="text" name="name" id="name" />
 				</td>
@@ -75,15 +88,17 @@
 				<td>
 					<div>
 						<input type="text" name="nickname" id="nickname" class="duplicate-check" />
-						<span class="guide nickname-guide ok">사용 가능한 닉네임입니다.</span>
-						<span class="guide nickname-guide error text-danger">사용할 수 없는 닉네임입니다.</span>
-						<span class="guide nickname-guide duplicate text-danger">중복된 닉네임입니다.</span>
-						<input type="hidden" id="nicknameValid"  value="0" />
+						<div class="guide-box">
+							<span class="guide nickname-guide ok">사용 가능한 닉네임입니다.</span>
+							<span class="guide nickname-guide error text-danger">사용할 수 없는 닉네임입니다.</span>
+							<span class="guide nickname-guide duplicate text-danger">중복된 닉네임입니다.</span>
+							<input type="hidden" id="nicknameValid"  value="0" />
+						</div>
 					</div>
 				</td>
 			</tr>
 			<tr>
-				<th>생년월일</th>
+				<th>생년월일<sup class="text-danger">*</sup></th>
 				<td>
 					<input type="date" name="birthday" id="birthday" />
 				</td>
@@ -93,15 +108,17 @@
 				<td>
 					<div>
 						<input type="email" name="email" id="email" class="duplicate-check"/>
-						<span class="guide email-guide ok">사용 가능한 이메일입니다.</span>
-						<span class="guide email-guide error text-danger">사용할 수 없는 이메일입니다.</span>
-						<span class="guide email-guide duplicate text-danger">중복된 이메일입니다.</span>
-						<input type="hidden" id="emailValid" value="0" />
+						<div class="guide-box">
+							<span class="guide email-guide ok">사용 가능한 이메일입니다.</span>
+							<span class="guide email-guide error text-danger">사용할 수 없는 이메일입니다.</span>
+							<span class="guide email-guide duplicate text-danger">중복된 이메일입니다.</span>
+							<input type="hidden" id="emailValid" value="0" />
+						</div>
 					</div>
 				</td>
 			</tr>
 			<tr>
-				<th>연락처</th>
+				<th>연락처<sup class="text-danger">*</sup></th>
 				<td>
 					<input type="tel" name="phone" id="phone" placeholder="(-없이)01012345678"/>
 				</td>
@@ -184,10 +201,10 @@ $(".duplicate-check").keyup((e)=>{
 	}
 	else if(val == "email"){
 		if(!(/^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/).test($target.val())){
-				$(".guide").hide();
-				$error.show();
-				$valid.val(0);
-				return;
+			$(".guide").hide();
+			$error.show();
+			$valid.val(0);
+			return;
 		};
 	}
 	$.ajax({
@@ -261,6 +278,21 @@ $(memberEnrollBtn).click((e)=>{
 		$(email).focus(); 
 		return;
 	}
+	
+	const $memberName = $("#memberName");
+	if(/^[가-힣]{2,}$/.test($memberName.val()) == false){
+		$memberName.select();
+		return;
+	}
+	
+	const $phone = $("#phone");
+	//-제거하기
+	$phone.val($phone.val().replace(/[^0-9]/g, ""));//숫자아닌 문자(복수개)제거하기
+	if(/^010[0-9]{8}$/.test($phone.val()) == false){
+		$phone.select();
+		return;
+	}
+	
 	if(!check1){
 		alert("개인정보 처리방침 동의는 필수입니다."); 
 		return;
