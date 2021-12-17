@@ -25,7 +25,7 @@ public class CommunityController {
 	}	
 	
 	// 커뮤니티-칼럼
-	@GetMapping("/communityColumn.do")
+	@GetMapping("communityColumn.do")
 	public String communityColumn() {
 		
 		return "community/communityColumn";

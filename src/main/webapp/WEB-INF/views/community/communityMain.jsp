@@ -28,7 +28,7 @@
 	<!-- bootstrap css -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 </head>
-
+<body>
     <!-- 본문 -->
     <div id="page-content-wrapper">
       <div class="container-fluid">
@@ -46,10 +46,10 @@
               <option value="2">Two</option>
               <option value="3">Three</option>
             </select>
-            <input type="text" class="form-control" placeholder="검색 키워드를 입력하세요!">
-            <span class="input-group-btn">
-              <button class="btn btn-secondary" type="button">찾기</button>
-            </span>
+            <div class="custom-file">
+			  <input type="file" class="custom-file-input" id="customFile">
+			  <label class="custom-file-label" for="customFile">Choose file</label>
+			</div>
           </div>
   
         </div>

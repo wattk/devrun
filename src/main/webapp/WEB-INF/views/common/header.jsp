@@ -97,9 +97,10 @@
             <a class="nav-link active" href="index.html">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath}/community/communityMain.do" id="navbarDropdown" role="button" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">Community</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityMain.do">전체</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityColumn.do">칼럼</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityQnA.do">Q&A</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityStudy.do">스터디</a>
@@ -130,7 +131,7 @@
       <!-- 로그인 되어있을 때 -->
       <sec:authorize access="isAuthenticated()">&nbsp;&nbsp;
 	      <a href="${pageContext.request.contextPath}/member/memberDetail.do">
-	      	[<sec:authentication property="principal.nickName"/>]
+	      	[<sec:authentication property="principal.nickname"/>]
 	      </a> 님 안녕하세요
 	      <div id="navLoginContainer">      		
 		    	<a class="btn btn-primary log-con" id ="navDetail" href="${pageContext.request.contextPath}/member/memberDetail.do">내 정보</a>
