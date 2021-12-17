@@ -3,6 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,6 +53,9 @@
     License: https://bootstrapmade.com/license/
   ======================================================= -->
 </head>
+<style>
+/* #navLoginContainer{margin-left:40px;} */
+</style>
 
 <body>
 
@@ -75,14 +81,15 @@
             <a class="nav-link active" href="index.html">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link dropdown-toggle" href="${pageContext.request.contextPath}/community/communityList.do" id="navbarDropdown" role="button" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">Community</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="property-single.html">전체</a>
-              <a class="dropdown-item" href="#">자유게시판</a>
+              <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityMain.do">전체</a>
+              <a class="dropdown-item" href="#">커뮤니티</a>
               <a class="dropdown-item" href="blog-single.html">칼럼</a>
               <a class="dropdown-item" href="agents-grid.html">Q&A</a>
               <a class="dropdown-item" href="agent-single.html">스터디</a>
+              <a class="dropdown-item" href="agent-single.html">자유게시판</a>
             </div>
           </li>
           <li class="nav-item">
@@ -98,7 +105,30 @@
         data-target="#navbarTogglerDemo01" aria-expanded="false">
         <span class="fa fa-search" aria-hidden="true"></span>
       </button>
-      <a class="btn btn-primary" href="${pageContext.request.contextPath}/member/memberLogin.do" role="button">로그인</a>
+      
+      <!-- 로그인 안 되어 있을 때 -->
+      <sec:authorize access="isAnonymous()">
+      <div id="navLoginContainer">
+    	  <a class="btn btn-primary log-con" id="navLoginBtn" href="${pageContext.request.contextPath}/member/memberLogin.do" >로그인</a>
+      </div>
+      </sec:authorize>
+      
+      <!-- 로그인 되어있을 때 -->
+      <sec:authorize access="isAuthenticated()">
+      <sec:authentication property="principal.username"/>
+      <div id="navLoginContainer">      		
+	    	<a class="btn btn-primary log-con" id ="navDetail" href="${pageContext.request.contextPath}/member/memberDetail.do">내 정보</a>
+	    <form:form
+	    	id="navLogoutFrm"
+	    	method="POST"
+	    	action="${pageContext.request.contextPath}/member/memberLogout.do">
+	    	<button
+	    		class="btn btn-primary log-con"
+	    		type="submit">로그아웃</button>
+	    </form:form>
+      </div>
+      </sec:authorize>
+      
     </div>
 
   </nav>

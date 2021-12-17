@@ -24,6 +24,7 @@ import com.kh.devrun.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 @Slf4j
 @Controller
 @RequestMapping("/member")

@@ -20,6 +20,7 @@
 		<intercept-url pattern="/admin/**" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
 		<intercept-url pattern="/member/memberLogin.do" access="permitAll"/>
+		<intercept-url pattern="/member/memberLogout.do" access="permitAll"/>
 		<intercept-url pattern="/member/memberEnroll.do" access="permitAll"/>
 		<intercept-url pattern="/member/checkEnrollDuplicate/**" access="permitAll"/>
 		<intercept-url pattern="/member/memberFindIdPassword.do" access="permitAll"/>
@@ -43,9 +44,7 @@
 		<!-- 로그아웃 설정 -->
 		<!-- logout-url : 핸들러 작성 불필요 -->
 		<!-- logout-success-url : 로그아웃 이후 리다이렉트 url. 기본값 "/login?logout"-->
-		<logout logout-url="/member/memberLogout.do" logout-success-url="/"/>
-		
-		<access-denied-handler error-page="/error/accessDenied.do"/>
+		<logout logout-url="/member/memberLogout.do" logout-success-url="/" />
 		
 		<!-- csrf 공격 대비 기능 -->
 		<!-- 
@@ -58,9 +57,9 @@
 			remember-me
 			 - token-validity-seconds : 초단위 토큰 유효시간을 설정 60*60*24*14
 		 -->
-		<remember-me
+	<!-- 	<remember-me
 			data-source-ref="dataSource"
-			token-validity-seconds="1209600"/>
+			token-validity-seconds="1209600"/> -->
 	</http>
 	
 	<authentication-manager>

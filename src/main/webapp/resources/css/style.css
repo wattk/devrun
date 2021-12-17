@@ -28,6 +28,7 @@ a {
   transition: all .5s ease;
 }
 
+
 a:hover {
   color: #1a81ff;
   text-decoration: none;
