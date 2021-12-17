@@ -10,7 +10,8 @@
   	from
   		member
   	where
-  		id = #{id}
+  		${checkKeyword} = #{value}
   </select>
+  
   <!-- 혜진 mapper 끝 -->
 </mapper>

@@ -1,27 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<fmt:requestEncoding value="utf-8"/>
+<jsp:include page="/WEB-INF/views/common/header.jsp">
+	<jsp:param value="" name=""/>
+</jsp:include>
 <title>ShopMainPage</title>
 
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-
-<!-- bootstrap js: jquery load 이후에 작성할것.-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-<!-- bootstrap css -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-
 <style>
-    #shopHeaderBarDiv{
-        display: flex;
-    }
 
-    /*실시간 순위 시작*/
-    #content {
+/*실시간 순위 시작*/
+#content {
     margin: 20px;
     padding: 10px;
     background: #393;
@@ -66,16 +57,30 @@
     line-height: 20px;
 }
 /*실시간 순위 끝*/
+
+#shopSerachDiv input {
+    width: 500px;
+}
+#sideMenuBtn{
+    padding-left: 15px;
+    padding-top: 10px;
+}
+#shopSerachDiv, #shopMainEventbtnDiv{
+    margin: auto 0 ;
+}
+/* #shopMainEventbtnDiv{
+    margin-left: 20px;
+} */
+
 </style>
-</head>
 
 <body>
     <div id="shopMainOuter">
-        <div id="shopHeaderBarDiv">
-            <img src="https://i.ibb.co/yQfL23L/image.png" alt="">
-            <div id="sideMenuBtnDiv">           
+        <div class = "row " id="shopHeaderBarDiv" style="background-color: #f8f9fa">
+            <div class = "col-md-1" id="sideMenuBtnDiv">           
+                <img id="sideMenuBtn" src="https://i.ibb.co/yQfL23L/image.png" alt="">
             </div>
-            <div id="shopTop-10Div">
+            <div class = "col-md-3" id="shopTop-10Div">
                 <div id="content">
                     <dl id="rank-list">
                         <dt>실시간 급상승 검색어</dt>
@@ -95,7 +100,6 @@
                         </dd>
                     </dl>
                 </div>
-        
             </div>
             <div id="shopSerachDiv">
                 <nav class="navbar navbar-light bg-light">
@@ -105,7 +109,7 @@
                     </form>
                   </nav>
             </div>
-            <div id="shopMainEventbtnDiv">
+            <div class= "col-md-2" id="shopMainEventbtnDiv">
                 <button type="button" class="btn btn-warning">이벤트보기</button>
             </div>
         </div>
@@ -156,27 +160,26 @@
                 <div id="shopItemsAccordionDiv">
                 </div>
             </div>
-
         </div>
     </div>
+    
+<script>
+/*실시간 순위 시작*/
+$(function() {
+    var count = $('#rank-list li').length;
+    var height = $('#rank-list li').height();
 
-    <script>
-    /*실시간 순위 시작*/
-    $(function() {
-        var count = $('#rank-list li').length;
-        var height = $('#rank-list li').height();
+    function step(index) {
+        $('#rank-list ol').delay(2000).animate({
+            top: -height * index,
+        }, 500, function() {
+            step((index + 1) % count);
+        });
+    }
+    step(1);
+});
 
-        function step(index) {
-            $('#rank-list ol').delay(2000).animate({
-                top: -height * index,
-            }, 500, function() {
-                step((index + 1) % count);
-            });
-        }
-        step(1);
-    });
-
-    /*실시간 순위 끝*/
-    </script>
+/*실시간 순위 끝*/
+</script>
 </body>
 </html>

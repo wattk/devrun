@@ -6,9 +6,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.member.service.MemberService;
@@ -34,10 +36,13 @@ public class MemberController{
 	@GetMapping("/memberEnroll")
 	public void memberEnroll() {}
 	
-	@GetMapping("/checkIdDuplicate.do")
-	public Map<String, Object> checkIdDuplicate(@RequestParam String id){
+	@ResponseBody
+	@GetMapping("/checkEnrollDuplicate")
+	public Map<String, Object> checkIdDuplicate(@RequestParam Map<String, Object> param){
+		log.debug("param = {}", param);
 		Map<String, Object> map = new HashMap<>();
-		Member member = memberService.selectOneMember(id);
+		Member member = memberService.selectOneMember(param);
+		log.debug("member = {}", member);
 		map.put("available", member == null);
 		
 		return map;

@@ -19,36 +19,40 @@
 #memberEnrollTbl th{
 	padding: 10px 5px;
 }
+#memberEnrollTbl td{
+	width : 230px;
+}
 #memberEnrollTbl input:not([type="checkbox"]){
 	width : 100%;
 }
 </style>
+<div class="mx-auto text-center">
+	<h1 class="text-brand mt-3">Dev<span class="color-b">Run</span></h1>
+	<span class="font-weight-light">더 나은 개발라이프를 위한 적절한 해결책</span>
+</div>
 <div id="memberEnrollContainer" class="mx-auto text-center">
-	<form action="${pageContext.request.contextPath}/member/memberEnroll.do" name="memberEnrollFrm" method="post">
-		<h1 class="text-brand mt-3">Dev<span class="color-b">Run</span></h1>
-		<span class="font-weight-light">더 나은 개발라이프를 위한 적절한 해결책</span>
-		<hr />
+	<form action="${pageContext.request.contextPath}/member/memberEnroll.do" name="memberEnrollFrm" method="post" class="p-3">
 		<table id="memberEnrollTbl" class="mx-auto">
 			<tr>
-				<th>아이디</th>
+				<th>아이디<sup class="text-danger">*</sup></th>
 				<td>
 					<div id="memberId-container">
-						<input type="text" name="id" id="id" placeholder="4글자 이상" required/>
-						<span class="guide ok">사용 가능한 아이디입니다.</span>
-						<span class="guide error">사용할 수 없는 아이디입니다.</span>
-						<span class="guide duplicate">중복된 아이디입니다.</span>
+						<input type="text" name="id" id="id" placeholder="4글자 이상" class="duplicate-check" required/>
+						<span class="guide id-guide ok">사용 가능한 아이디입니다.</span>
+						<span class="guide id-guide error text-danger">사용할 수 없는 아이디입니다.</span>
+						<span class="guide id-guide duplicate text-danger">중복된 아이디입니다.</span>
 						<input type="hidden" id="idValid" value="0" />
 					</div>
 				</td>
 			</tr>
 			<tr>
-				<th>비밀번호</th>
+				<th>비밀번호<sup class="text-danger">*</sup></th>
 				<td>
 					<input type="password" name="password" id="password" required/>
 				</td>
 			</tr>
 			<tr>
-				<th>비밀번호 확인</th>
+				<th>비밀번호 확인<sup class="text-danger">*</sup></th>
 				<td>
 					<input type="password" name="password" id="passwordCheck" required/>
 				</td>
@@ -60,27 +64,37 @@
 				</td>
 			</tr>
 			<tr>
-				<th>닉네임</th>
+				<th>닉네임<sup class="text-danger">*</sup></th>
 				<td>
-					<input type="text" name="nickname" id="nickname" />
+					<div>
+						<input type="text" name="nickname" id="nickname" class="duplicate-check" />
+						<span class="guide nickname-guide ok">사용 가능한 닉네임입니다.</span>
+						<span class="guide nickname-guide error text-danger">사용할 수 없는 닉네임입니다.</span>
+						<span class="guide nickname-guide duplicate text-danger">중복된 닉네임입니다.</span>
+					</div>
 				</td>
 			</tr>
 			<tr>
-				<th>생일</th>
+				<th>생년월일</th>
 				<td>
 					<input type="date" name="birthday" id="birthday" />
 				</td>
 			</tr>
 			<tr>
-				<th>이메일</th>
+				<th>이메일<sup class="text-danger">*</sup></th>
 				<td>
-					<input type="email" name="email" id="email" />
+					<div>
+						<input type="email" name="email" id="email" class="duplicate-check"/>
+						<span class="guide email-guide ok">사용 가능한 이메일입니다.</span>
+						<span class="guide email-guide error text-danger">사용할 수 없는 이메일입니다.</span>
+						<span class="guide email-guide duplicate text-danger">중복된 이메일입니다.</span>
+					</div>
 				</td>
 			</tr>
 			<tr>
 				<th>연락처</th>
 				<td>
-					<input type="tel" name="phone" id="phone" />
+					<input type="tel" name="phone" id="phone" placeholder="(-없이)01012345678"/>
 				</td>
 			</tr>
 			<tr>
@@ -127,45 +141,54 @@ $(".checkbox-group").on("click", ".normal", ((e)=>{
     $("#checkAll").prop("checked", isChecked);
 }));
 
-$(id).keyup((e)=>{
-	const $id = $(e.target);
-	const $error = $(".guide.error");
-	const $ok = $(".guide.ok");
-	const $duplicate = $(".guide.duplicate");
-	const $idValid = $(idValid);
+
+//아이디, 닉네임, 이메일 유효성 검사 & 중복 검사
+$(".duplicate-check").keyup((e)=>{
+	const $target = $(e.target);
+	const val = $target.prop("id");
 	
-	if(!/^[a-zA-Z0-9]{4,}$/.test($id.val())){
-		$(".guide").hide();
-		$error.show();
-		$idValid.val(0);
-		return;
-	}
-	else{
-		$.ajax({
-			url : `${pageContext.request.contextPath}/member/checkIdDuplicate.do`,
-			data : {
-				id: $id.val()
-			},
-			success(data){
-				const {available} = data;
-				if(available){
-					$ok.show();
-					$error.hide();
-					$duplicate.hide();
-					$idValid.val(1);
-				}
-				else{
-					$duplicate.show();
-					$error.hide();
-					$ok.hide();
-					$idValid.val(0);
-				}
-			},
-			error : console.log
-		});
-	}
-		
+	const $error = $(`.\${val}-guide.error`);
+	const $ok = $(`.\${val}-guide.ok`);
+	const $duplicate = $(`.\${val}-guide.duplicate`);
+	const $valid = $(`#\${val}Valid`);
+	const data = {
+			value : $target.val(),
+			checkKeyword : val
+	};
+	console.log(data);
+	const jsonData = JSON.stringify(data);
 	
-})
+	if(val == "id"){
+		if(!/^[a-zA-Z0-9]{4,}$/.test($target.val())){
+			$(".guide").hide();
+			$error.show();
+			$valid.val(0);
+			return;
+		}
+	}
+	$.ajax({
+		url : `${pageContext.request.contextPath}/member/checkEnrollDuplicate`,
+		data : data,
+		contentType : "application/json; charset=utf-8",
+		method : "GET",
+		success(data){
+			console.log(data);
+			const {available} = data;
+			if(available){
+				$ok.show();
+				$error.hide();
+				$duplicate.hide();
+				$valid.val(1);
+			}
+			else{
+				$duplicate.show();
+				$error.hide();
+				$ok.hide();
+				$valid.val(0);
+			}
+		},
+		error : console.log
+	});
+});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
