@@ -38,7 +38,7 @@ alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 	#password{margin-bottom:20px;}
 	#login-btn{width:300px; height:40px; background-color:rgb(26, 129, 255); color:white; font-weight: 800; margin-top:45px; border: unset;}
 	#find-id{border-right:1.5px solid gray; padding-right:13px;}
-	#find-pass{margin-left:10px;}
+	#find-pass{margin-left:10px;border-right:1.5px solid gray; padding-right:13px;}
 	#find-container{width:300px; text-align: right;}
 	#form-container{width:300px;}
 	.simple-login{width:50px; margin-top:40px; margin-right:20px;}
@@ -57,6 +57,7 @@ alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 			<div id="find-container">
 				<span class="find" id="find-id"><a href="${pageContext.request.contextPath}/member/memberFindIdPassword.do">아이디 찾기</a></span>
 				<span class="find" id="find-pass"><a href="${pageContext.request.contextPath}/member/memberFindIdPassword.do">패스워드 찾기</a></span>
+				<span class="find" id="member-enroll"><a href="${pageContext.request.contextPath}/member/memberEnroll.do">회원가입</a></span>
 			</div>
 				<button id="login-btn" type="submit">로그인</button>
 		</form:form>
