@@ -92,7 +92,40 @@
     margin: auto 80px;
 }
 #shopIconCategoryDiv{
-    margin: 50px 0;
+    margin: 60px 0;
+}
+#shopMainMidEventBannerDiv{
+    display: table;
+    margin: auto auto;
+    
+}
+#shopMostSearchedKeywordDiv{
+    margin-left: 50px;
+    margin-top: 60px;
+}
+#hotKeywordP{
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Song Myung', serif;
+}
+.keyword{
+    width: 330px;
+    height: 150px;
+    margin: auto 20px;
+}
+#shopMainBestReviewsDiv{
+    margin-left: 50px;
+    margin-top: 60px;
+}
+#bestReviewsP{
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Song Myung', serif;
+}
+.bestReview{
+    width: 200px;
+    height: 200px;
+    margin: auto 30px;
 }
 
 </style>
@@ -177,22 +210,52 @@
             </div>
             <div id="shopIconCategoryDiv">
                 <div id="iconBoxDiv">
-                    <img class="icon" src="https://i.ibb.co/7zcnV7J/monitor.png" alt="">
-                    <img class="icon" src="https://i.ibb.co/vvXdtzx/keyboard.png" alt="">
-                    <img class="icon" src="https://i.ibb.co/WxvDnGD/mouse.png" alt="">
-                    <img class="icon" src="https://i.ibb.co/z4n9ZXF/desk.png" alt="">
-                    <img class="icon" src="https://i.ibb.co/HGP3PCL/chair.png" alt="">
-                    <img class="icon" src="https://i.ibb.co/N386GVd/gitf.png" alt="">
+                    <a href="#"><img class="icon" src="https://i.ibb.co/7zcnV7J/monitor.png" alt=""></a>
+                    <a href="#"><img class="icon" src="https://i.ibb.co/vvXdtzx/keyboard.png" alt=""></a>
+                    <a href="#"><img class="icon" src="https://i.ibb.co/WxvDnGD/mouse.png" alt=""></a>
+                    <a href="#"><img class="icon" src="https://i.ibb.co/z4n9ZXF/desk.png" alt=""></a>
+                    <a href="#"><img class="icon" src="https://i.ibb.co/HGP3PCL/chair.png" alt=""></a>
+                    <a href="#"><img class="icon" src="https://i.ibb.co/N386GVd/gitf.png" alt=""></a>
                 </div>
             </div>
             <div id="shopDisplayDiv">
                 <div id="shopItemsSlideByCategoryDiv">
                 </div>
                 <div id="shopMainMidEventBannerDiv">
+                    <a href=""><img src="https://i.ibb.co/zRCKwsF/image.png" alt=""></a>
                 </div>
+                <hr>
                 <div id="shopMostSearchedKeywordDiv">
+                    <p id="hotKeywordP">인기 키워드</p>
+                    <div class="row">
+                        <div class="keyword" id="keywordDiv1">
+                            <a href=""><img src="https://i.ibb.co/q9d5jz7/hot-Keyword.png" alt=""></a>
+                        </div>
+                        <div class="keyword" id="keywordDiv2">
+                            <a href=""><img src="https://i.ibb.co/tqsJ6XS/hot-Keyword3.png" alt=""></a>
+                        </div>
+                        <div class="keyword" id="keywordDiv3">
+                            <a href=""><img src="https://i.ibb.co/0nkJQXL/hot-Keyword2.png" alt=""></a>
+                        </div>
+                        <div class="keyword" id="keywordDiv4">
+                            <a href=""><img src="https://i.ibb.co/q9d5jz7/hot-Keyword.png" alt=""></a>
+                        </div>
+                    </div>
                 </div>
+                <hr>
                 <div id="shopMainBestReviewsDiv">
+                    <p id="bestReviewsP">이달의 Best Reviews</p>
+                    <div class="row">
+                        <div class="bestReview" id="bestReviewDiv1">
+                            <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
+                        </div>
+                        <div class="bestReview" id="bestReviewDiv2">
+                            <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
+                        </div>
+                        <div class="bestReview" id="bestReviewDiv3">
+                            <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
+                        </div> 
+                    </div>
                 </div>
                 <div id="shopItemsAccordionDiv">
                 </div>
