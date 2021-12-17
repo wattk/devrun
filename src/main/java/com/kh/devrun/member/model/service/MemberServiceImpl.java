@@ -31,12 +31,12 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectOneMember(param);
 	}
 
-	@Transactional(
-			propagation = Propagation.REQUIRED,
-			isolation = Isolation.READ_COMMITTED,
-			rollbackFor = Exception.class
-	)
 	@Override
+	@Transactional(
+		propagation = Propagation.REQUIRED,
+		isolation = Isolation.READ_COMMITTED,
+		rollbackFor = Exception.class
+	)
 	public int insertMember(Member member) {
 		int result = 0;
 		try {

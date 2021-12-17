@@ -33,8 +33,13 @@
   		default,
   		null,
   		null
-  		
   	)
+	<selectKey keyProperty="memberNo" resultType="_int" order="AFTER">
+		select
+			seq_member_no.currval
+		from
+			dual
+	</selectKey>
   </insert>
   <!-- 혜진 mapper 끝 -->
 </mapper>
