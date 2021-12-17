@@ -11,7 +11,7 @@
 
 <style>
 
-/*실시간 순위 시작*/
+ /*실시간 순위 시작*/
 #content {
     margin: 20px;
     padding: 10px;
@@ -65,12 +65,22 @@
     padding-left: 15px;
     padding-top: 10px;
 }
-#shopSerachDiv, #shopMainEventbtnDiv{
+#shopSerachDiv, #shopMainEventBtnDiv{
     margin: auto 0 ;
 }
-/* #shopMainEventbtnDiv{
-    margin-left: 20px;
-} */
+#shopMainEventBtnDiv{
+    margin-left: 100px;
+}
+#shopMainEventBtn{
+    color: white;
+    font-weight: bold;
+}
+#sideMenuBtn:hover{
+    cursor: pointer;
+}
+#sideMenuBtn {
+    border-radius: 30;
+}
 
 </style>
 
@@ -78,7 +88,7 @@
     <div id="shopMainOuter">
         <div class = "row " id="shopHeaderBarDiv" style="background-color: #f8f9fa">
             <div class = "col-md-1" id="sideMenuBtnDiv">           
-                <img id="sideMenuBtn" src="https://i.ibb.co/yQfL23L/image.png" alt="">
+                <img id="sideMenuBtn" src="https://i.ibb.co/zFxp8tw/3.png" alt="" >
             </div>
             <div class = "col-md-3" id="shopTop-10Div">
                 <div id="content">
@@ -103,14 +113,21 @@
             </div>
             <div id="shopSerachDiv">
                 <nav class="navbar navbar-light bg-light">
-                    <form class="form-inline">
-                      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="form-inline"> 
+                        <!-- 쇼핑몰 검색도 카테고리 나눌 건가?
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Open this select menu</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </select> -->
+                      <input class="form-control mr-sm-2" type="search" placeholder="검색어를 입력하세요" aria-label="Search">
                       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                     </form>
                   </nav>
             </div>
-            <div class= "col-md-2" id="shopMainEventbtnDiv">
-                <button type="button" class="btn btn-warning">이벤트보기</button>
+            <div id="shopMainEventBtnDiv">
+                <button type="button" class="btn btn-warning" id= "shopMainEventBtn" style="width: 200px">이벤트보러가기</button>
             </div>
         </div>
  
@@ -149,7 +166,6 @@
             </div>
             <div id="shopDisplayDiv">
                 <div id="shopItemsSlideByCategoryDiv">
-
                 </div>
                 <div id="shopMainMidEventBannerDiv">
                 </div>
@@ -162,7 +178,7 @@
             </div>
         </div>
     </div>
-    
+
 <script>
 /*실시간 순위 시작*/
 $(function() {
