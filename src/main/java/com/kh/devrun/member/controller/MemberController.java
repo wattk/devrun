@@ -35,22 +35,12 @@ public class MemberController{
 	@GetMapping("/memberEnroll")
 	public void memberEnroll() {}
 	
-	/*
-	 * @ResponseBody
-	 * 
-	 * @GetMapping("/checkIdDuplicate.do") public Map<String, Object>
-	 * checkIdDuplicate(@RequestParam String id){ Map<String, Object> map = new
-	 * HashMap<>(); Member member = memberService.selectOneMember(id);
-	 * log.debug("member = {}", member); map.put("available", member == null);
-	 * 
-	 * return map; }
-	 */
-	
 	@ResponseBody
-	@GetMapping("/checkEnrollDuplicate/id")
-	public Map<String, Object> checkIdDuplicate(@RequestParam String id){
+	@GetMapping("/checkEnrollDuplicate")
+	public Map<String, Object> checkIdDuplicate(@RequestParam Map<String, Object> param){
+		log.debug("param = {}", param);
 		Map<String, Object> map = new HashMap<>();
-		Member member = memberService.selectOneMember(id);
+		Member member = memberService.selectOneMember(param);
 		log.debug("member = {}", member);
 		map.put("available", member == null);
 		

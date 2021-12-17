@@ -19,15 +19,19 @@
 #memberEnrollTbl th{
 	padding: 10px 5px;
 }
+#memberEnrollTbl td{
+	width : 230px;
+}
 #memberEnrollTbl input:not([type="checkbox"]){
 	width : 100%;
 }
 </style>
+<div class="mx-auto text-center">
+	<h1 class="text-brand mt-3">Dev<span class="color-b">Run</span></h1>
+	<span class="font-weight-light">더 나은 개발라이프를 위한 적절한 해결책</span>
+</div>
 <div id="memberEnrollContainer" class="mx-auto text-center">
-	<form action="${pageContext.request.contextPath}/member/memberEnroll.do" name="memberEnrollFrm" method="post">
-		<h1 class="text-brand mt-3">Dev<span class="color-b">Run</span></h1>
-		<span class="font-weight-light">더 나은 개발라이프를 위한 적절한 해결책</span>
-		<hr />
+	<form action="${pageContext.request.contextPath}/member/memberEnroll.do" name="memberEnrollFrm" method="post" class="p-3">
 		<table id="memberEnrollTbl" class="mx-auto">
 			<tr>
 				<th>아이디<sup class="text-danger">*</sup></th>
@@ -71,7 +75,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>생일</th>
+				<th>생년월일</th>
 				<td>
 					<input type="date" name="birthday" id="birthday" />
 				</td>
@@ -90,7 +94,7 @@
 			<tr>
 				<th>연락처</th>
 				<td>
-					<input type="tel" name="phone" id="phone" />
+					<input type="tel" name="phone" id="phone" placeholder="(-없이)01012345678"/>
 				</td>
 			</tr>
 			<tr>
@@ -148,9 +152,11 @@ $(".duplicate-check").keyup((e)=>{
 	const $duplicate = $(`.\${val}-guide.duplicate`);
 	const $valid = $(`#\${val}Valid`);
 	const data = {
-			[val] : $target.val()
+			value : $target.val(),
+			checkKeyword : val
 	};
 	console.log(data);
+	const jsonData = JSON.stringify(data);
 	
 	if(val == "id"){
 		if(!/^[a-zA-Z0-9]{4,}$/.test($target.val())){
@@ -161,8 +167,9 @@ $(".duplicate-check").keyup((e)=>{
 		}
 	}
 	$.ajax({
-		url : `${pageContext.request.contextPath}/member/checkEnrollDuplicate/\${val}`,
+		url : `${pageContext.request.contextPath}/member/checkEnrollDuplicate`,
 		data : data,
+		contentType : "application/json; charset=utf-8",
 		method : "GET",
 		success(data){
 			console.log(data);

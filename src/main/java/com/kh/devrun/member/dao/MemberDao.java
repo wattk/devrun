@@ -6,7 +6,7 @@ import com.kh.devrun.member.model.vo.Member;
 
 public interface MemberDao {
 
-	Member selectOneMember(String id);
+	Member selectOneMember(Map<String, Object> param);
 
 
 }

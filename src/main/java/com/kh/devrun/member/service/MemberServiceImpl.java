@@ -18,9 +18,10 @@ public class MemberServiceImpl implements MemberService {
 	/**
 	 * 혜진 서비스 시작
 	 */
+
 	@Override
-	public Member selectOneMember(String id) {
-		return memberDao.selectOneMember(id);
+	public Member selectOneMember(Map<String, Object> param) {
+		return memberDao.selectOneMember(param);
 	}
 
 	
