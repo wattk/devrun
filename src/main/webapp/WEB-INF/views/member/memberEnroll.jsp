@@ -54,7 +54,12 @@
 			<tr>
 				<th>비밀번호 확인<sup class="text-danger">*</sup></th>
 				<td>
-					<input type="password" name="password" id="passwordCheck" required/>
+					<div>
+						<input type="password" name="password" id="passwordCheck" required/>
+						<span class="guide password-guide ok">사용 가능한 비밀번호입니다.</span>
+						<span class="guide password-guide error text-danger">비밀번호가 일치하지 않습니다.</span>
+						<input type="hidden" id="passwordValid" value="0" />
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -71,6 +76,7 @@
 						<span class="guide nickname-guide ok">사용 가능한 닉네임입니다.</span>
 						<span class="guide nickname-guide error text-danger">사용할 수 없는 닉네임입니다.</span>
 						<span class="guide nickname-guide duplicate text-danger">중복된 닉네임입니다.</span>
+						<input type="hidden" id="nicknameValid" value="0" />
 					</div>
 				</td>
 			</tr>
@@ -88,6 +94,7 @@
 						<span class="guide email-guide ok">사용 가능한 이메일입니다.</span>
 						<span class="guide email-guide error text-danger">사용할 수 없는 이메일입니다.</span>
 						<span class="guide email-guide duplicate text-danger">중복된 이메일입니다.</span>
+						<input type="hidden" id="emailValid" value="0" />
 					</div>
 				</td>
 			</tr>
@@ -166,6 +173,22 @@ $(".duplicate-check").keyup((e)=>{
 			return;
 		}
 	}
+	else if(val == "nickname"){
+		if(!/^[가-힣]{2,}$/.test($target.val())){
+			$(".guide").hide();
+			$error.show();
+			$valid.val(0);
+			return;
+		}
+	}
+	else if(val == "email"){
+		if(!(/^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/).test($target.val())){
+				$(".guide").hide();
+				$error.show();
+				$valid.val(0);
+				return;
+		};
+	}
 	$.ajax({
 		url : `${pageContext.request.contextPath}/member/checkEnrollDuplicate`,
 		data : data,
@@ -189,6 +212,27 @@ $(".duplicate-check").keyup((e)=>{
 		},
 		error : console.log
 	});
+});
+
+//비밀번호 일치 확인
+$("[name=password]").keyup((e)=>{
+	const password1 = $(password).val();
+	const password2 = $(passwordCheck).val();
+	const $error = $(".password-guide.error");
+	const $ok = $(".password-guide.ok");
+	const $valid = $("#passwordValid");
+	
+	if(password1 != password2){
+		$error.show();
+		$ok.hide();
+		$valid.val(0);
+	}
+	else{
+		$error.hide();
+		$ok.show();
+		$valid.val(1);
+	}
+	
 });
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
