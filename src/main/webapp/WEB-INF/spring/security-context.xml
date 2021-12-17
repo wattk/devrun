@@ -19,6 +19,7 @@
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/admin/**" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
+		<intercept-url pattern="/common/**" access="permitAll"/>
 		<intercept-url pattern="/member/memberLogin.do" access="permitAll"/>
 		<intercept-url pattern="/member/memberLogout.do" access="permitAll"/>
 		<intercept-url pattern="/member/memberEnroll.do" access="permitAll"/>
