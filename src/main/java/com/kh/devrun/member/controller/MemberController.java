@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -110,6 +111,26 @@ public class MemberController{
 	
 	@GetMapping("/memberFindIdPassword.do")
 	public void memberFindIdPassword() {}
+	
+	/**
+	 * 아이디 찾기
+	 */
+	@GetMapping("/{name}/{email}/findId.do")
+	public String findId(@PathVariable String name, @PathVariable String email, Model model) {
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("name", name);
+		param.put("email", email);
+		
+		// 이름과 이메일로 아이디 조회
+		String id = memberService.findId(param);
+		log.debug("id = {}", id);
+		
+		model.addAttribute("id", id);
+		
+		return "member/memberFindIdPopup";
+		
+	}
 	
 	/**
 	 * 지영 아이디/비밀번호 찾기 끝

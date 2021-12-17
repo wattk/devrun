@@ -53,4 +53,18 @@ public class MemberServiceImpl implements MemberService {
 	/**
 	 * 혜진 서비스 끝
 	 */
+	
+	
+	/**
+	 * 지영 서비스 시작
+	 */
+	
+	@Override
+	public String findId(Map<String, Object> param) {
+		return memberDao.findId(param);
+	}
+	
+	/**
+	 * 지영 서비스 끝
+	 */
 }

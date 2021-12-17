@@ -33,4 +33,17 @@ public class MemberDaoImpl implements MemberDao {
 	/**
 	 * 혜진 dao 끝
 	 */
+	
+	/**
+	 * 지영 dao 시작
+	 */
+	
+	@Override
+	public String findId(Map<String, Object> param) {
+		return session.selectOne("member.findId", param);
+	}
+	
+	/**
+	 * 지영 dao 끝
+	 */
 }
