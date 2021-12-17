@@ -4,15 +4,22 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.devrun.member.model.dao.MemberDao;
 import com.kh.devrun.member.model.vo.Member;
+import com.kh.devrun.security.dao.SecurityDao;
 
 @Service
 public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberDao memberDao;
+	
+	@Autowired
+	private SecurityDao securityDao;
 
 	
 	/**
@@ -24,10 +31,22 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectOneMember(param);
 	}
 
-
+	@Transactional(
+			propagation = Propagation.REQUIRED,
+			isolation = Isolation.READ_COMMITTED,
+			rollbackFor = Exception.class
+	)
 	@Override
 	public int insertMember(Member member) {
-		return memberDao.insertMember(member);
+		int result = 0;
+		try {
+			result = memberDao.insertMember(member); 
+			result = securityDao.insertAuthorities(member.getMemberNo());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 	

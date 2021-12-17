@@ -15,6 +15,11 @@ public class SecurityDaoImpl implements SecurityDao {
 	public UserDetails loadUserByUsername(String username) {
 		return session.selectOne("security.loadUserByUsername",username);
 	}
+
+	@Override
+	public int insertAuthorities(int memberNo) {
+		return session.insert("security.insertAuthorities", memberNo);
+	}
 	
 	
 }

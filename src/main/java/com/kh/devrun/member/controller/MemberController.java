@@ -1,12 +1,18 @@
 package com.kh.devrun.member.controller;
 
+import java.beans.PropertyEditor;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,6 +65,9 @@ public class MemberController{
 			String rawPassword = member.getPassword();
 			String encryptedPassword = passwordEncoder.encode(rawPassword);
 			member.setPassword(encryptedPassword);
+			if(member.getSmsYn() == null) {
+				member.setSmsYn("N");
+			}
 			
 			int result = memberService.insertMember(member);
 			
@@ -69,6 +78,14 @@ public class MemberController{
 		}
 		
 		return "redirect:/";
+	}
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		// 형식객체, 빈값허용여부("" -> null)
+		PropertyEditor editor = new CustomDateEditor(sdf, true);
+		binder.registerCustomEditor(Date.class, editor);
 	}
 	
 	/**

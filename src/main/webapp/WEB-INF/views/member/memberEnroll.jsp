@@ -117,7 +117,7 @@
 				  <input type="checkbox" id="check2" class="normal" >
 				  <label for="check2"><span class="text-danger">(필수)</span>서비스 이용약관 동의</label>
 				  <br />
-				  <input type="checkbox" id="check3" class="normal" name="smsYn">
+				  <input type="checkbox" id="check3" class="normal" name="smsYn" value="Y">
 				  <label for="check3"><span>(선택)</span>마케팅 수신 동의</label>
 				</td>
 			</tr>
@@ -164,7 +164,6 @@ $(".duplicate-check").keyup((e)=>{
 			value : $target.val(),
 			checkKeyword : val
 	};
-	console.log(data);
 	const jsonData = JSON.stringify(data);
 	
 	if(val == "id"){
@@ -197,7 +196,6 @@ $(".duplicate-check").keyup((e)=>{
 		contentType : "application/json; charset=utf-8",
 		method : "GET",
 		success(data){
-			console.log(data);
 			const {available} = data;
 			if(available){
 				$ok.show();
@@ -239,23 +237,38 @@ $("[name=password]").keyup((e)=>{
 
 //가입 버튼 클릭 시 회원가입
 $(memberEnrollBtn).click((e)=>{
-	const idValid = $(idValid).val();
-	const passwordValid = $(passwordValid).val();
-	const nicknameValid = $(nicknameValid).val();
-	const emailValid = $(emailValid).val();
-	const check1 = $(check1).is(":checked");
-	const check2 = $(check2).is(":checked");
+	const idValid = $("#idValid").val();
+	const passwordValid = $("#passwordValid").val();
+	const nicknameValid = $("#nicknameValid").val();
+	const emailValid = $("#emailValid").val();
+	const check1 = $("#check1").is(":checked");
+	const check2 = $("#check2").is(":checked");
+	const check3 = $("#check3").is(":checked");
 	
-	if(idValid != 1)
-		$(id).focus(); return;
-	if(passwordValid != 1)
-		$(password).focus(); return;
-	if(nicknameValid != 1)
-		$(nickname).focus(); return;
-	if(emailValid != 1)
-		$(email).focus(); return;
-	if(check1) alert("개인정보 처리방침 동의는 필수입니다."); return;
-	if(check2) alert("서비스 이용약관 동의는 필수입니다."); return;
+	if(idValid != 1){
+		$(id).focus(); 
+		return;
+	}
+	if(passwordValid != 1){
+		$(password).focus(); 
+		return;
+	}
+	if(nicknameValid != 1){
+		$(nickname).focus(); 
+		return;
+	}
+	if(emailValid != 1){
+		$(email).focus(); 
+		return;
+	}
+	if(!check1){
+		alert("개인정보 처리방침 동의는 필수입니다."); 
+		return;
+	}
+	if(!check2){
+		alert("서비스 이용약관 동의는 필수입니다."); 
+		return;
+	}
 	
 	$(document.memberEnrollFrm).submit();
 	
