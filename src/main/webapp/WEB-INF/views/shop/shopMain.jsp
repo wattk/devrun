@@ -9,6 +9,11 @@
 </jsp:include>
 <title>ShopMainPage</title>
 
+<!-- 구글폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
+
 <style>
 
  /*실시간 순위 시작*/
@@ -114,7 +119,7 @@
     margin: auto 20px;
 }
 #shopMainBestReviewsDiv{
-    margin-left: 50px;
+    margin-left: 100px;
     margin-top: 60px;
 }
 #bestReviewsP{
@@ -122,11 +127,32 @@
     font-weight: bold;
     font-family: 'Song Myung', serif;
 }
-.bestReview{
-    width: 200px;
-    height: 200px;
+.bestReview img{
+    width: 300px;
+    height: 300px;
     margin: auto 30px;
 }
+#bestReviewDiv2 img{
+    width: 600px;
+}
+#hr2{
+    border: 3px solid black;
+}
+#shopItemsAccordionDiv{
+    text-align: center;
+}
+#shopItemsAccordionDiv p{
+    font-size: 30px;
+    font-weight: bold;
+    font-family: 'Song Myung', serif;
+
+}
+.arrordionItemsC img{
+    width: 200px;
+    height: 200px;
+    margin: auto 30px; 
+}
+
 
 </style>
 
@@ -250,14 +276,85 @@
                             <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
                         </div>
                         <div class="bestReview" id="bestReviewDiv2">
-                            <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
+                            <a href=""><img src="https://i.ibb.co/Pzt3ZKY/Giant-Thumb.jpg" alt=""></a>
                         </div>
                         <div class="bestReview" id="bestReviewDiv3">
                             <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
                         </div> 
                     </div>
                 </div>
+                <hr id="hr2">
                 <div id="shopItemsAccordionDiv">
+                    <div id="shopAccordionDiv1">
+                        <p>
+                            <a class="" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                               1만원 이하 인기 상품 ▽
+                            </a>
+                        </p>
+                        <div class="collapse" id="collapseExample">
+                          <div class="card card-body">
+                            <div class="arrordionItemsC">
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div id="shopAccordionDiv2">
+                        <p>
+                            <a class="" data-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
+                               MD추천상품 ▽
+                            </a>
+                        </p>
+                        <div class="collapse" id="collapseExample2">
+                            <div class="arrordionItemsC">
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                            </div>
+                          <div class="card card-body">
+                           
+                          </div>
+                        </div>
+                    </div>
+                    <div id="shopAccordionDiv3">
+                        <p>
+                            <a class="" data-toggle="collapse" href="#collapseExample3" role="button" aria-expanded="false" aria-controls="collapseExample">
+                               손목 고통은 이제 안녕~ ▽
+                            </a>
+                        </p>
+                        <div class="collapse" id="collapseExample3">
+                          <div class="card card-body">
+                            <div class="arrordionItemsC">
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                                <a href=""><img src="https://i.ibb.co/3mfJ4nb/item.png" alt=""></a>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -281,4 +378,9 @@ $(function() {
 /*실시간 순위 끝*/
 </script>
 </body>
+
+<jsp:include page="/WEB-INF/views/common/footer.jsp">
+	<jsp:param value="" name=""/>
+</jsp:include>
+
 </html>
