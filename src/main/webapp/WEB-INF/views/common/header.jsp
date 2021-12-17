@@ -1,3 +1,9 @@
+<%@page import="java.util.Collection"%>
+<%@page import="org.springframework.security.core.GrantedAuthority"%>
+<%@page import="org.springframework.security.core.context.SecurityContext"%>
+<%@page import="org.springframework.security.core.Authentication"%>
+<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
+<%@page import="com.kh.devrun.member.model.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -5,6 +11,15 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<%
+	//SecurityContext securityContext = SecurityContextHolder.getContext();
+	//Authentication authentication = securityContext.getAuthentication();
+	//Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+	
+	//System.out.print("권한 = " + authorities);
+
+%>
 
 <!DOCTYPE html>
 <html>
@@ -15,8 +30,9 @@
   <meta content="" name="keywords">
   <meta content="" name="description">
 
+
   <!-- Favicons -->
-<!--   <link href="#" rel="icon">
+  <!--   <link href="#" rel="icon">
   <link href="#" rel="apple-touch-icon"> -->
 
 
@@ -112,22 +128,27 @@
       </sec:authorize>
       
       <!-- 로그인 되어있을 때 -->
-      <sec:authorize access="isAuthenticated()">
-      <sec:authentication property="principal.username"/>
-      <div id="navLoginContainer">      		
-	    	<a class="btn btn-primary log-con" id ="navDetail" href="${pageContext.request.contextPath}/member/memberDetail.do">내 정보</a>
-	    <form:form
-	    	id="navLogoutFrm"
-	    	method="POST"
-	    	action="${pageContext.request.contextPath}/member/memberLogout.do">
-	    	<button
-	    		class="btn btn-primary log-con"
-	    		type="submit">로그아웃</button>
-	    </form:form>
-      </div>
-      </sec:authorize>
-      
-    </div>
+      <sec:authorize access="isAuthenticated()">&nbsp;&nbsp;
+	      <a href="${pageContext.request.contextPath}/member/memberDetail.do">
+	      	[<sec:authentication property="principal.nickName"/>]
+	      </a> 님 안녕하세요
+	      <div id="navLoginContainer">      		
+		    	<a class="btn btn-primary log-con" id ="navDetail" href="${pageContext.request.contextPath}/member/memberDetail.do">내 정보</a>
+		    <form:form
+		    	id="navLogoutFrm"
+		    	method="POST"
+		    	action="${pageContext.request.contextPath}/member/memberLogout.do">
+		    	<button
+		    		class="btn btn-primary log-con"
+		    		type="submit">로그아웃</button>
+		    </form:form>
+	      </div>		
+	 </sec:authorize>
+	 
+      <!-- 관리자가 로그인 하였을 때 -->
+	 <sec:authorize  access="hasRole('AM')">
+	 	<h1>관리자 ㅎㅇ</h1> 	
+	 </sec:authorize>
 
   </nav>
   

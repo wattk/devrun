@@ -28,4 +28,6 @@ public class HomeController {
 		return "forward:/index.jsp";
 	}
 	
+	@RequestMapping("/error/accessDenied.do")
+	public void errorPage() {}
 }
