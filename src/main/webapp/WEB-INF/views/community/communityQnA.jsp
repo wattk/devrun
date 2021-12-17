@@ -7,5 +7,8 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-		
+<jsp:include page="/WEB-INF/views/community/common/nav.jsp">
+	<jsp:param value="" name="title"/>
+</jsp:include>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
