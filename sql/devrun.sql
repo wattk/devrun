@@ -18,8 +18,34 @@ CREATE TABLE "MEMBER" (
 	"INTRO"	VARCHAR2(1000)		NULL
 );
 
+
+
 -- 회원 번호 시퀀스 생성
 create sequence seq_member_no;
+
+select * from authorities;
+select* from member;
+
+insert into
+    member
+values(
+    seq_member_no.nextval,'admin','관리자','대장','1234',to_date('2000/10/10','YYYY/MM/DD'),'admin@naver.com','01011111111',0,to_date('2020/12/16','YYYY/MM/DD'),null,'N','N',0,NULL,NULL
+);
+
+insert into
+    authorities
+values(
+    'M1',29
+);
+
+insert into
+    authorities
+values(
+    'AM',29
+);
+
+
+
 
 -- 회원 테이블 코멘트 추가
 COMMENT ON COLUMN "MEMBER"."MEMBER_NO" IS '회원 번호';

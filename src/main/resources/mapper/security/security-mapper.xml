@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="security">
+	<select id="loadUserByUsername" resultMap="memberMap">
+		select
+    *
+	from
+	    member m left join authorities a
+	        on m.member_no = a.member_no
+	where
+	    m.id = #{username}
+			
+	</select>
+	
+	<resultMap type="member" id="memberMap">
+		<id column="member_no" property="memberNo"/>
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="nickname" property="nickName"/>
+		<result column="password" property="password"/>
+		<result column="birthday" property="birthday"/>
+		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="point" property="point"/>		
+		<result column="enroll_date" property="enrollDate"/>
+		<result column="pro_photo" property="proPhoto"/>
+		<result column="black_yn" property="blackYn"/>
+		<result column="sms_yn" property="smsYn"/>
+		<result column="warning_count" property="warningCount"/>
+		<result column="url" property="url"/>
+		<result column="intro" property="intro"/>
+		
+		<collection 
+			property="authorities" 
+			ofType="org.springframework.security.core.authority.SimpleGrantedAuthority">
+			<constructor>
+				<arg column="authority" javaType="string"/>
+			</constructor>
+		</collection>
+				
+	</resultMap>
+  
+</mapper>

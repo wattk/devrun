@@ -23,7 +23,7 @@
                       Dev <span class="color-b">run </span>
                       <br>For a better life as a developer</h1>
                     <p class="intro-subtitle intro-price">
-                      <a href="#"><span class="price-a">About Devrun</span></a>
+                      <a href="#"><span class="price-a">About DevRun</span></a>
                     </p>
                   </div>
                 </div>
