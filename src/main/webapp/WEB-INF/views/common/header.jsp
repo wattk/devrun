@@ -86,7 +86,7 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="blog-grid.html">Shop</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/shop/shopMain.do">Shop</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="about.html">About</a>
