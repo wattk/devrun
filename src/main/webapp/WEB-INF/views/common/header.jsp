@@ -130,7 +130,7 @@
       <!-- 로그인 되어있을 때 -->
       <sec:authorize access="isAuthenticated()">&nbsp;&nbsp;
 	      <a href="${pageContext.request.contextPath}/member/memberDetail.do">
-	      	[<sec:authentication property="principal.nickName"/>]
+	      	[<sec:authentication property="principal.nickname"/>]
 	      </a> 님 안녕하세요
 	      <div id="navLoginContainer">      		
 		    	<a class="btn btn-primary log-con" id ="navDetail" href="${pageContext.request.contextPath}/member/memberDetail.do">내 정보</a>
