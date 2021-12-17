@@ -81,6 +81,19 @@
 #sideMenuBtn {
     border-radius: 30;
 }
+#iconBoxDiv{
+    margin-left: 50px;
+    border: solid;
+    width: 95%;
+}
+.icon {
+    width: 70px;
+    height: 70px;
+    margin: auto 80px;
+}
+#shopIconCategoryDiv{
+    margin: 50px 0;
+}
 
 </style>
 
@@ -163,6 +176,14 @@
                   </div>
             </div>
             <div id="shopIconCategoryDiv">
+                <div id="iconBoxDiv">
+                    <img class="icon" src="https://i.ibb.co/7zcnV7J/monitor.png" alt="">
+                    <img class="icon" src="https://i.ibb.co/vvXdtzx/keyboard.png" alt="">
+                    <img class="icon" src="https://i.ibb.co/WxvDnGD/mouse.png" alt="">
+                    <img class="icon" src="https://i.ibb.co/z4n9ZXF/desk.png" alt="">
+                    <img class="icon" src="https://i.ibb.co/HGP3PCL/chair.png" alt="">
+                    <img class="icon" src="https://i.ibb.co/N386GVd/gitf.png" alt="">
+                </div>
             </div>
             <div id="shopDisplayDiv">
                 <div id="shopItemsSlideByCategoryDiv">
@@ -178,7 +199,6 @@
             </div>
         </div>
     </div>
-
 <script>
 /*실시간 순위 시작*/
 $(function() {
