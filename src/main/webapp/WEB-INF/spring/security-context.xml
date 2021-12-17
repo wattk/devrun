@@ -17,12 +17,13 @@
 	<http security="none" pattern="/resources/**"/>
 	<http auto-config="true">
 		<intercept-url pattern="/" access="permitAll"/>
+		<intercept-url pattern="/admin/**" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
 		<intercept-url pattern="/member/memberLogin.do" access="permitAll"/>
 		<intercept-url pattern="/member/memberEnroll.do" access="permitAll"/>
 		<intercept-url pattern="/member/checkEnrollDuplicate/**" access="permitAll"/>
 		<intercept-url pattern="/member/memberFindIdPassword.do" access="permitAll"/>
-		<intercept-url pattern="/admin/**" access="hasRole('AM')"/>
+		<!-- <intercept-url pattern="/admin/**" access="hasRole('AM')"/> -->
 		<!-- 모든 경로 대상으로 로그인 했는지를 물어본다는 뜻 -->
 		<intercept-url pattern="/**" access="isAuthenticated()"/>
 		
