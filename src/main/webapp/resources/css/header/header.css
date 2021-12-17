@@ -1,3 +1,6 @@
 @charset "UTF-8";
 
 .header-login button{margin-left:50px; color:white; background-color:rgb(26, 129, 255)}
+#navLoginContainer{margin-left:50px}
+.log-con{width:100px;}
+#navLogoutFrm{display:inline-block;}

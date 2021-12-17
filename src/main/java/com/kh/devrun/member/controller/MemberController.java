@@ -17,6 +17,7 @@ import com.kh.devrun.member.service.MemberService;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 @Slf4j
 @Controller
 @RequestMapping("/member")
@@ -46,6 +47,7 @@ public class MemberController{
 		
 		return map;
 	}
+	
 	
 	/**
 	 * 혜진 회원가입 끝
