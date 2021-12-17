@@ -146,5 +146,11 @@
 			}
 		}
 	});
+	
+	//통합 검색 버튼 클릭
+	$('#unifiedSearchBtn').click((e)=>{
+		if($("#searchKeyword").val() == '') return;
+		$(document.unifiedSearchFrm).submit();
+	});
 
 })(jQuery);
