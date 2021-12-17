@@ -41,5 +41,14 @@
 		</collection>
 				
 	</resultMap>
+	
+	<insert id="insertAuthorities">
+		insert into
+			authorities
+		values(
+			default,
+			#{memberNo}
+		)
+	</insert>
   
 </mapper>
