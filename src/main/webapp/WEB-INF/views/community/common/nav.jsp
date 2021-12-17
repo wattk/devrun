@@ -28,10 +28,8 @@
     <div id="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
-          <a href="#">Community</a>
+          <a href="${pageContext.request.contextPath}/community/communityMain.do">Community</a>
         </li>
-        <li><a href="#">전체</a></li>
-        <li><a href="${pageContext.request.contextPath}/community/communityList.do">커뮤니티</a></li>
         <li><a href="${pageContext.request.contextPath}/community/communityColumn.do">칼럼</a></li>
         <li><a href="${pageContext.request.contextPath}/community/communityQnA.do">Q&A</a></li>
         <li><a href="${pageContext.request.contextPath}/community/communityStudy.do">스터디</a></li>

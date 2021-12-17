@@ -22,15 +22,7 @@ public class CommunityController {
 	public String communityMain() {
 		
 		return "community/communityMain";
-	}
-	
-	// 커뮤니티-커뮤니티
-	@GetMapping("/communityList.do")
-	public String communityList() {
-		
-		
-		return "community/communityList";
-	}
+	}	
 	
 	// 커뮤니티-칼럼
 	@GetMapping("/communityColumn.do")
