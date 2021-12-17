@@ -147,9 +147,10 @@
 	 </sec:authorize>
 	 
       <!-- 관리자가 로그인 하였을 때 -->
-	 <sec:authorize  access="hasRole('AM')">
-	 	<h1>관리자 ㅎㅇ</h1> 	
-	 </sec:authorize>
+      <sec:authorize access="hasRole('AM')">
+      	
+      </sec:authorize>
+	
 
   </nav>
   

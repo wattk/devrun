@@ -311,7 +311,6 @@ $(memberEnrollBtn).click((e)=>{
 
 	const $memberName = $("#name");
 	if(!/^[가-힣]{2,}$/.test($memberName.val())){
-
 		$(".guide.name-guide.error").show();
 		$memberName.focus();
 		return;
@@ -342,5 +341,6 @@ $(memberEnrollBtn).click((e)=>{
 $(memberEnrollCancelBtn).click((e)=>{
 	window.history.back();
 });
+
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
