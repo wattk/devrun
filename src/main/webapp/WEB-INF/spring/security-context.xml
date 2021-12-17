@@ -21,7 +21,7 @@
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
 		<intercept-url pattern="/member/memberLogin.do" access="permitAll"/>
 		<intercept-url pattern="/member/memberEnroll.do" access="permitAll"/>
-		<intercept-url pattern="/member/checkIdDuplicate.do" access="permitAll"/>
+		<intercept-url pattern="/member/checkEnrollDuplicate/**" access="permitAll"/>
 		<intercept-url pattern="/member/memberFindIdPassword.do" access="permitAll"/>
 		<intercept-url pattern="/shop/**" access="permitAll"/>
 		
