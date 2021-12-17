@@ -81,4 +81,5 @@ public class Member implements Serializable, UserDetails {
 		return true;
 	}
 
+
 }
