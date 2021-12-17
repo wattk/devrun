@@ -18,7 +18,7 @@
 		<id column="member_no" property="memberNo"/>
 		<result column="id" property="id"/>
 		<result column="name" property="name"/>
-		<result column="nickname" property="nickName"/>
+		<result column="nickname" property="nickname"/>
 		<result column="password" property="password"/>
 		<result column="birthday" property="birthday"/>
 		<result column="email" property="email"/>

@@ -310,7 +310,7 @@ $(memberEnrollBtn).click((e)=>{
 	}
 	
 	const $memberName = $("#memberName");
-	if(/^[가-힣]{2,}$/.test($memberName.val()) == false){
+	if(!/^[가-힣]{2,}$/.test($memberName.val()) == false){
 		$(".guide.name-guide.error").show();
 		$memberName.focus();
 		return;
