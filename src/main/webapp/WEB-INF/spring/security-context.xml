@@ -42,7 +42,7 @@
 			login-processing-url="/member/memberLogin.do"
 			username-parameter="id"
 			password-parameter="password"
-		/>
+		/> 
 		
 		<!-- 로그아웃 설정 -->
 		<!-- logout-url : 핸들러 작성 불필요 -->

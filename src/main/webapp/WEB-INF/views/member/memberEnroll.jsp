@@ -69,7 +69,7 @@
 				<th>비밀번호 확인<sup class="text-danger">*</sup></th>
 				<td>
 					<div>
-						<input type="password" name="password" id="passwordCheck" required/>
+						<input type="password" name="passwordCheck" id="passwordCheck" required/>
 						<div class="guide-box">
 							<span class="guide password-guide ok">사용 가능한 비밀번호입니다.</span>
 							<span class="guide password-guide error text-danger">비밀번호가 일치하지 않습니다.</span>
@@ -309,8 +309,8 @@ $(memberEnrollBtn).click((e)=>{
 		return;
 	}
 	
-	const $memberName = $("#memberName");
-	if(/^[가-힣]{2,}$/.test($memberName.val()) == false){
+	const $memberName = $("#name");
+	if(!/^[가-힣]{2,}$/.test($memberName.val())){
 		$(".guide.name-guide.error").show();
 		$memberName.focus();
 		return;
@@ -318,7 +318,7 @@ $(memberEnrollBtn).click((e)=>{
 	
 	const $phone = $("#phone");
 	$phone.val($phone.val().replace(/[^0-9]/g, ""));//숫자아닌 문자(복수개)제거하기
-	if(/^010[0-9]{8}$/.test($phone.val()) == false){
+	if(!/^010[0-9]{8}$/.test($phone.val())){
 		$(".guide.phone-guide.error").show();
 		$phone.focus();
 		return;
