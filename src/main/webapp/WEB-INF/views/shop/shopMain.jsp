@@ -9,15 +9,10 @@
 </jsp:include>
 <title>ShopMainPage</title>
 
-
-
 <style>
-    #shopHeaderBarDiv{
-        display: flex;
-    }
 
-    /*실시간 순위 시작*/
-    #content {
+/*실시간 순위 시작*/
+#content {
     margin: 20px;
     padding: 10px;
     background: #393;
@@ -62,16 +57,30 @@
     line-height: 20px;
 }
 /*실시간 순위 끝*/
+
+#shopSerachDiv input {
+    width: 500px;
+}
+#sideMenuBtn{
+    padding-left: 15px;
+    padding-top: 10px;
+}
+#shopSerachDiv, #shopMainEventbtnDiv{
+    margin: auto 0 ;
+}
+/* #shopMainEventbtnDiv{
+    margin-left: 20px;
+} */
+
 </style>
-</head>
 
 <body>
     <div id="shopMainOuter">
-        <div id="shopHeaderBarDiv">
-            <img src="https://i.ibb.co/yQfL23L/image.png" alt="">
-            <div id="sideMenuBtnDiv">           
+        <div class = "row " id="shopHeaderBarDiv" style="background-color: #f8f9fa">
+            <div class = "col-md-1" id="sideMenuBtnDiv">           
+                <img id="sideMenuBtn" src="https://i.ibb.co/yQfL23L/image.png" alt="">
             </div>
-            <div id="shopTop-10Div">
+            <div class = "col-md-3" id="shopTop-10Div">
                 <div id="content">
                     <dl id="rank-list">
                         <dt>실시간 급상승 검색어</dt>
@@ -91,7 +100,6 @@
                         </dd>
                     </dl>
                 </div>
-        
             </div>
             <div id="shopSerachDiv">
                 <nav class="navbar navbar-light bg-light">
@@ -101,7 +109,7 @@
                     </form>
                   </nav>
             </div>
-            <div id="shopMainEventbtnDiv">
+            <div class= "col-md-2" id="shopMainEventbtnDiv">
                 <button type="button" class="btn btn-warning">이벤트보기</button>
             </div>
         </div>
@@ -152,27 +160,26 @@
                 <div id="shopItemsAccordionDiv">
                 </div>
             </div>
-
         </div>
     </div>
+    
+<script>
+/*실시간 순위 시작*/
+$(function() {
+    var count = $('#rank-list li').length;
+    var height = $('#rank-list li').height();
 
-    <script>
-    /*실시간 순위 시작*/
-    $(function() {
-        var count = $('#rank-list li').length;
-        var height = $('#rank-list li').height();
+    function step(index) {
+        $('#rank-list ol').delay(2000).animate({
+            top: -height * index,
+        }, 500, function() {
+            step((index + 1) % count);
+        });
+    }
+    step(1);
+});
 
-        function step(index) {
-            $('#rank-list ol').delay(2000).animate({
-                top: -height * index,
-            }, 500, function() {
-                step((index + 1) % count);
-            });
-        }
-        step(1);
-    });
-
-    /*실시간 순위 끝*/
-    </script>
+/*실시간 순위 끝*/
+</script>
 </body>
 </html>
