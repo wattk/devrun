@@ -24,8 +24,11 @@
 		<intercept-url pattern="/member/memberEnroll.do" access="permitAll"/>
 		<intercept-url pattern="/member/checkEnrollDuplicate/**" access="permitAll"/>
 		<intercept-url pattern="/member/memberFindIdPassword.do" access="permitAll"/>
+		<intercept-url pattern="/admin/**" access="hasRole('AM')"/>
 		<intercept-url pattern="/shop/**" access="permitAll"/>
 		
+		<!-- 접근권한 없을시 이동할 커스텀 페이지 -->
+		<access-denied-handler error-page="/ㅊ/accessDenied.do"/>
 		
 		<!-- <intercept-url pattern="/admin/**" access="hasRole('AM')"/> -->
 		<!-- 모든 경로 대상으로 로그인 했는지를 물어본다는 뜻 -->
