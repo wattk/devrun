@@ -19,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CommunityMainPage</title>
     
-    <link href="${pageContext.request.contextPath}/resources/css/community/communityMain.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/community/nav.css" rel="stylesheet">
     
 	<!-- bootstrap js: jquery load 이후에 작성할것.-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

@@ -308,9 +308,10 @@ $(memberEnrollBtn).click((e)=>{
 		$(email).focus(); 
 		return;
 	}
-	
+
 	const $memberName = $("#name");
 	if(!/^[가-힣]{2,}$/.test($memberName.val())){
+
 		$(".guide.name-guide.error").show();
 		$memberName.focus();
 		return;
