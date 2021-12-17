@@ -13,5 +13,28 @@
   		${checkKeyword} = #{value}
   </select>
   
+  <insert id="insertMember">
+  	insert into 
+  		member
+  	values(
+  		seq_member_no.nextval,
+  		#{id},
+  		#{name},
+  		#{nickname},
+  		#{password},
+  		#{birthday},
+  		#{email},
+  		#{phone},
+  		default,
+  		default,
+  		default,
+  		default,
+  		#{smsYn},
+  		default,
+  		null,
+  		null
+  		
+  	)
+  </insert>
   <!-- 혜진 mapper 끝 -->
 </mapper>

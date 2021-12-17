@@ -32,7 +32,7 @@ public class Member implements Serializable, UserDetails {
 	private int memberNo;
 	private String id;
 	private String name;
-	private String nickName;
+	private String nickname;
 	private String password;
 	private Date birthday;
 	private String email;
