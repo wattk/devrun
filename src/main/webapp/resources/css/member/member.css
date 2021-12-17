@@ -1,0 +1,28 @@
+@charset "UTF-8";
+.guide{
+	display:none;
+	font-size:smaller;
+}
+.guide-box{
+	height: 7px;
+	width: 230px;
+}
+#memberEnrollContainer{
+	border: 1px solid #000;
+	width : 450px;
+	height : 700px;
+}
+#memberEnrollTbl th{
+	padding: 10px 5px;
+	text-align : left;
+}
+#memberEnrollTbl td{
+	width : 230px;
+	height : 55px;
+}
+#memberEnrollTbl input:not([type="checkbox"]){
+	width : 100%;
+}
+.enroll-head{
+	font-size:xxx-large;
+}

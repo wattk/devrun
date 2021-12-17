@@ -12,14 +12,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<%
-	//SecurityContext securityContext = SecurityContextHolder.getContext();
-	//Authentication authentication = securityContext.getAuthentication();
-	//Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-	
-	//System.out.print("권한 = " + authorities);
-
-%>
 
 <!DOCTYPE html>
 <html>
@@ -86,7 +78,7 @@
         <span></span>
         <span></span>
       </button>
-      <a class="navbar-brand text-brand" href="index.html">Dev<span class="color-b">Run</span></a>
+      <a class="navbar-brand text-brand" href="${pageContext.request.contextPath}/">Dev<span class="color-b">Run</span></a>
       <button type="button" class="btn btn-link nav-search navbar-toggle-box-collapse d-md-none" data-toggle="collapse"
         data-target="#navbarTogglerDemo01" aria-expanded="false">
         <span class="fa fa-search" aria-hidden="true"></span>
@@ -94,7 +86,7 @@
       <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" href="index.html">Home</a>
+            <a class="nav-link active" href="${pageContext.request.contextPath}/">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
@@ -115,11 +107,17 @@
           </li>
         </ul>
       </div>
-
-      <button type="button" class="btn btn-b-n navbar-toggle-box-collapse d-none d-md-block" data-toggle="collapse"
-        data-target="#navbarTogglerDemo01" aria-expanded="false">
-        <span class="fa fa-search" aria-hidden="true"></span>
-      </button>
+	  <div class="search-box">
+          <form class="form-inline" name="unifiedSearchFrm" action="${pageContext.request.contextPath}/common/search.do" method="GET">
+		    <div class="input-group">
+		      <input type="text" id="searchKeyword" name="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="Username" aria-describedby="basic-addon1">
+		      <button type="button" id="unifiedSearchBtn" class="btn btn-b-n d-none d-md-block" data-toggle="collapse"
+		        data-target="#navbarTogglerDemo01" aria-expanded="false">
+		        <span class="fa fa-search" aria-hidden="true"></span>
+		      </button>
+		    </div>
+		  </form>
+	  </div>
       
       <!-- 로그인 안 되어 있을 때 -->
       <sec:authorize access="isAnonymous()">
@@ -145,13 +143,6 @@
 		    </form:form>
 	      </div>		
 	 </sec:authorize>
-	 
-      <!-- 관리자가 로그인 하였을 때 -->
-      <sec:authorize access="hasRole('AM')">
-      	
-      </sec:authorize>
-	
-
   </nav>
   
   <script>
