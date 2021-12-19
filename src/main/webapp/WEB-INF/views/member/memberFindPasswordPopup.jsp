@@ -14,14 +14,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 <!-- bootstrap css -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-<style>
-.popup-find-pw {
-	width: 400px;
-	height: 299px;
-	display: table-cell;
-	vertical-align:middle;
-}
-</style>
+<link href="${pageContext.request.contextPath }/resources/css/member/member.css" rel="stylesheet">
+
 </head>
 <body>
 	
