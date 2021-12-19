@@ -15,10 +15,12 @@
 	<!-- #8.3 인증/권한 검사 설정 -->
 	<!-- security에 의한 인증/권한 검사에서 제외 -->
 	<http security="none" pattern="/resources/**"/>
-	<http auto-config="true">
+	
+	<http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/admin/**" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
+		<intercept-url pattern="/common/**" access="permitAll"/>
 		<intercept-url pattern="/member/memberLogin.do" access="permitAll"/>
 		<intercept-url pattern="/member/memberLogout.do" access="permitAll"/>
 		<intercept-url pattern="/member/memberEnroll.do" access="permitAll"/>
@@ -29,7 +31,7 @@
 		<intercept-url pattern="/shop/**" access="permitAll"/>
 		
 		<!-- 접근권한 없을시 이동할 커스텀 페이지 -->
-		<access-denied-handler error-page="/ㅊ/accessDenied.do"/>
+		<access-denied-handler error-page="/error/accessDenied.do"/>
 		
 		<!-- <intercept-url pattern="/admin/**" access="hasRole('AM')"/> -->
 		<!-- 모든 경로 대상으로 로그인 했는지를 물어본다는 뜻 -->
@@ -43,7 +45,9 @@
 			login-processing-url="/member/memberLogin.do"
 			username-parameter="id"
 			password-parameter="password"
+			authentication-success-handler-ref="loginHandler"
 		/> 
+		<!--  application.xml에서 등록한 login 핸들러 참조하여 사용 -->
 		
 		<!-- 로그아웃 설정 -->
 		<!-- logout-url : 핸들러 작성 불필요 -->

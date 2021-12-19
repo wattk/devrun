@@ -9,35 +9,8 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="회원가입" name="title"/>
 </jsp:include>
-<style>
-.guide{
-	display:none;
-	font-size:smaller;
-}
-.guide-box{
-	height: 7px;
-	width: 230px;
-}
-#memberEnrollContainer{
-	border: 1px solid #000;
-	width : 450px;
-	height : 700px;
-}
-#memberEnrollTbl th{
-	padding: 10px 5px;
-	text-align : left;
-}
-#memberEnrollTbl td{
-	width : 230px;
-	height : 55px;
-}
-#memberEnrollTbl input:not([type="checkbox"]){
-	width : 100%;
-}
-.enroll-head{
-	font-size:xxx-large;
-}
-</style>
+<link href="${pageContext.request.contextPath }/resources/css/member/member.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath }/resources/js/member/member.js"></script>
 <div class="mx-auto text-center">
 	<h1 class="text-brand pt-3 enroll-head">Dev<span class="color-b">Run</span></h1>
 	<span class="font-weight-light pb-3 d-block">더 나은 개발라이프를 위한 적절한 해결책</span>
@@ -155,29 +128,6 @@
 	</form:form>
 </div>
 <script>
-//체크박스 전체 선택
-$(".checkbox-group").on("click", "#checkAll", ((e)=>{
-  let checked = $(e.target).is(":checked");
-
-  if(checked){
-  	$(e.target).parents(".checkbox-group").find('input').prop("checked", true);
-  } else {
-  	$(e.target).parents(".checkbox-group").find('input').prop("checked", false);
-  }
-}));
-
-//체크박스 개별 선택
-$(".checkbox-group").on("click", ".normal", ((e)=>{
-    let isChecked = true;
-    
-    $(".checkbox-group .normal").each((e)=>{
-        isChecked = isChecked && $(e.target).is(":checked");
-    });
-    
-    $("#checkAll").prop("checked", isChecked);
-}));
-
-
 //아이디, 닉네임, 이메일 유효성 검사 & 중복 검사
 $(".duplicate-check").keyup((e)=>{
 	const $target = $(e.target);
@@ -308,7 +258,7 @@ $(memberEnrollBtn).click((e)=>{
 		$(email).focus(); 
 		return;
 	}
-	
+
 	const $memberName = $("#name");
 	if(!/^[가-힣]{2,}$/.test($memberName.val())){
 		$(".guide.name-guide.error").show();
@@ -341,5 +291,6 @@ $(memberEnrollBtn).click((e)=>{
 $(memberEnrollCancelBtn).click((e)=>{
 	window.history.back();
 });
+
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
