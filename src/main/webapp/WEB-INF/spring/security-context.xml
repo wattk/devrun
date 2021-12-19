@@ -15,7 +15,8 @@
 	<!-- #8.3 인증/권한 검사 설정 -->
 	<!-- security에 의한 인증/권한 검사에서 제외 -->
 	<http security="none" pattern="/resources/**"/>
-	<http auto-config="true">
+	
+	<http auto-config="true" use-expressions="true">
 		<intercept-url pattern="/" access="permitAll"/>
 		<intercept-url pattern="/admin/**" access="permitAll"/>
 		<intercept-url pattern="/index.jsp" access="permitAll"/>
@@ -44,7 +45,9 @@
 			login-processing-url="/member/memberLogin.do"
 			username-parameter="id"
 			password-parameter="password"
+			authentication-success-handler-ref="loginHandler"
 		/> 
+		<!--  application.xml에서 등록한 login 핸들러 참조하여 사용 -->
 		
 		<!-- 로그아웃 설정 -->
 		<!-- logout-url : 핸들러 작성 불필요 -->

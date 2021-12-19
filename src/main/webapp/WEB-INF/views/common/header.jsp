@@ -12,14 +12,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-<%
-	//SecurityContext securityContext = SecurityContextHolder.getContext();
-	//Authentication authentication = securityContext.getAuthentication();
-	//Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-	
-	//System.out.print("권한 = " + authorities);
-
-%>
 
 <!DOCTYPE html>
 <html>
@@ -151,12 +143,6 @@
 		    </form:form>
 	      </div>		
 	 </sec:authorize>
-	 
-      <!-- 관리자가 로그인 하였을 때 -->
-	 <sec:authorize  access="hasRole('AM')">
-	 	<h1>관리자 ㅎㅇ</h1> 	
-	 </sec:authorize>
-	</div>
   </nav>
   
   <script>

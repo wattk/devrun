@@ -21,6 +21,10 @@
 		<property name="password" value="${datasource.password}"/>
 	</bean>
 	
+	<!-- 로그인 핸들러 빈 등록 -->
+	<bean id="loginHandler" class="com.kh.devrun.common.security.CostomLoginSucessHandler"/>
+	
+	
 	<!-- #10.1 log4jdbcProxyDataSource 빈 설정. realDataSource를 참조 -->
 	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">  
         <constructor-arg ref="realDataSource" />

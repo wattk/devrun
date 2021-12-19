@@ -20,6 +20,7 @@ CREATE TABLE "MEMBER" (
 
 
 
+
 -- 회원 번호 시퀀스 생성
 create sequence seq_member_no;
 
@@ -29,13 +30,13 @@ select* from member;
 insert into
     member
 values(
-    seq_member_no.nextval,'admin','관리자','대장','1234',to_date('2000/10/10','YYYY/MM/DD'),'admin@naver.com','01011111111',0,to_date('2020/12/16','YYYY/MM/DD'),null,'N','N',0,NULL,NULL
+    seq_member_no.nextval,'admin3','관리자','관리대대장','$2a$10$TbR6ofHw9G5.aBQCElFq3eVhEGsEznJApYteJG3rJ06h10DoNkPaO',to_date('2000/10/10','YYYY/MM/DD'),'admin@naver.com','01011111111',0,to_date('2020/12/16','YYYY/MM/DD'),null,'N','N',0,NULL,NULL
 );
 
 insert into
     authorities
 values(
-    'M1',29
+    'ROLE_AM',47
 );
 
 insert into
@@ -119,6 +120,7 @@ CREATE TABLE "DELETE_AUTHORITIES" (
 	"MEMBER_NO"	NUMBER		NOT NULL,
 	"AUTHORITY"	CHAR(2)		NOT NULL
 );
+
 
 -- 삭제된 권한 테이블 코멘트 추가
 COMMENT ON COLUMN "DELETE_AUTHORITIES"."MEMBER_NO" IS '회원번호';
@@ -1094,11 +1096,13 @@ CREATE SEQUENCE  SEQ_ORDER_LOG_NO;
 --권한 테이블 생성
 --===========================
 CREATE TABLE "AUTHORITIES" (
-	"AUTHORITY"	CHAR(2)	DEFAULT 'M1'	NOT NULL,
+	"AUTHORITY"	varchar2(30)	DEFAULT 'ROLE_M1'	NOT NULL,
 	"MEMBER_NO"	NUMBER		NOT NULL,
 	CONSTRAINT PK_AUTHORITIES_AUTHORITY_MEMBER_NO PRIMARY KEY(AUTHORITY, MEMBER_NO),
 	CONSTRAINT FK_AUTHORITIES_MEMBER_NO FOREIGN KEY(MEMBER_NO) REFERENCES MEMBER(MEMBER_NO)
 );
+
+drop table authorities;
 
 --권한 테이블 코멘트 추가
 COMMENT ON COLUMN "AUTHORITIES"."AUTHORITY" IS '회원 M1, M2, 관리자 AM';
