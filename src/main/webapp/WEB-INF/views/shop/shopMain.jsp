@@ -123,6 +123,7 @@
 #shopMainBestReviewsDiv{
     margin-left: 50px;
     margin-top: 60px;
+    margin-bottom: 60px;
 }
 #bestReviewsP{
     font-size: 30px;
@@ -133,9 +134,7 @@
     width: 300px;
     height: 300px;
     margin: auto 30px;
-}
-#bestReviewDiv2 img{
-    width: 600px;
+    border-radius: 10%;
 }
 #hr2{
     border: 3px solid black;
@@ -816,12 +815,15 @@
                         <div class="bestReview" id="bestReviewDiv1">
                             <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
                         </div>
-                        <div class="bestReview" id="bestReviewDiv2">
-                            <a href=""><img src="https://i.ibb.co/Pzt3ZKY/Giant-Thumb.jpg" alt=""></a>
-                        </div>
                         <div class="bestReview" id="bestReviewDiv3">
                             <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
                         </div> 
+                        <div class="bestReview" id="bestReviewDiv3">
+                            <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
+                        </div>
+                        <div class="bestReview" id="bestReviewDiv3">
+                            <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
+                        </div>  
                     </div>
                 </div>
                 <hr id="hr2">
