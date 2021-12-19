@@ -88,10 +88,10 @@
     border-radius: 30;
 }
 #iconBoxDiv{
-    margin-left: 50px;
     border: solid;
+    /*margin-left: 50px;
     width: 85%;
-    margin: auto;
+    margin: auto;*/
 }
 .icon {
     width: 70px;
@@ -213,6 +213,7 @@
 }
 
 
+
 /*슬라이드 카테고리 시작*/
 
 .mySlides {display: none}
@@ -252,16 +253,6 @@
   background-color: rgba(0,0,0,0.8);
 }
 
-/* Caption text */
-/* .text {
-  color: #f2f2f2;
-  font-size: 15px;
-  padding: 8px 12px;
-  position: absolute;
-  bottom: 8px;
-  width: 100%;
-  text-align: center;
-} */
 
 /* Number text (1/3 etc) */
 /* .numbertext {
@@ -320,6 +311,15 @@
     font-family: 'Song Myung', serif;
 }
 /*슬라이드 카테고리 끝*/
+
+
+#shopItemsAccordionDiv{
+	margin-top: 30px;
+}
+
+.space-evenly{
+	justify-content: space-evenly;
+}
 </style>
 
 <body>
@@ -419,7 +419,7 @@
                   </div>
             </div>
             <div id="shopIconCategoryDiv">
-                <div id="iconBoxDiv">
+                <div id="iconBoxDiv" class="row space-evenly">
                     <a href="#"><img class="icon" src="https://i.ibb.co/7zcnV7J/monitor.png" alt=""></a>
                     <a href="#"><img class="icon" src="https://i.ibb.co/vvXdtzx/keyboard.png" alt=""></a>
                     <a href="#"><img class="icon" src="https://i.ibb.co/WxvDnGD/mouse.png" alt=""></a>
@@ -782,7 +782,7 @@
                 <hr>
                 <div id="shopMostSearchedKeywordDiv">
                     <p id="hotKeywordP">인기 키워드</p>
-                    <div class="row">
+                    <div class="row space-evenly">
                         <div class="keyword" id="keywordDiv1">
                             <div class="keywordImg" >
                                 <a href=""><img src="https://i.ibb.co/tQyHz8m/hot-Keyword.png" alt=""></a>
@@ -812,7 +812,7 @@
                 <hr>
                 <div id="shopMainBestReviewsDiv">
                     <p id="bestReviewsP">이달의 Best Reviews</p>
-                    <div class="row">
+                    <div class="row space-evenly">
                         <div class="bestReview" id="bestReviewDiv1">
                             <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
                         </div>
