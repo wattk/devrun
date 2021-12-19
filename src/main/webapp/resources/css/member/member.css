@@ -26,3 +26,44 @@
 .enroll-head{
 	font-size:xxx-large;
 }
+
+/* 아이디 비밀번호 찾기 관련 css 시작 */
+.find-form h3 {
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+/* 탭 중앙 정렬 */
+.find-form > .row {
+	justify-content: center;
+}
+
+.find-form {
+	margin-top: 175px;
+}
+
+.find-form div {
+	padding: 10px;
+}
+
+/* 로고 이미지 크기 */
+.find-form .logo {
+	width: 150px;
+	height: auto;
+}
+
+.popup-find-id {
+	width: 400px;
+	height: 299px;
+	display: table-cell;
+	vertical-align:middle;
+}
+
+.popup-find-pw {
+	width: 400px;
+	height: 299px;
+	display: table-cell;
+	vertical-align:middle;
+}
+
+/* 아이디 비밀번호 찾기 관련 css 끝 */
