@@ -17,7 +17,7 @@
 
 <style>
 
- /*실시간 순위 시작*/
+ /*실시간 순위 시작*/ 
 #content {
     margin: 20px;
     padding: 10px;
@@ -90,12 +90,13 @@
 #iconBoxDiv{
     margin-left: 50px;
     border: solid;
-    width: 95%;
+    width: 85%;
+    margin: auto;
 }
 .icon {
     width: 70px;
     height: 70px;
-    margin: auto 80px;
+    margin: auto 70px;
 }
 #shopIconCategoryDiv{
     margin: 60px 0;
@@ -283,7 +284,7 @@
   transition: background-color 0.6s ease;
 }
 
-.active, .dot:hover {
+.active2, .dot:hover {
   background-color: #717171;
 }
 
@@ -1246,10 +1247,10 @@ function showSlides(n) {
       slides[i].style.display = "none";  
   }
   for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
+      dots[i].className = dots[i].className.replace(" active2", "");
   }
   slides[slideIndex-1].style.display = "block";  
-  dots[slideIndex-1].className += " active";
+  dots[slideIndex-1].className += " active2";
 }
 /*상품 카테고리 슬라이드 끝 */
  
