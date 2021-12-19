@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.devrun.community.model.dao.CommunityDao;
+import com.kh.devrun.community.model.vo.Community;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,4 +15,9 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Autowired
 	private CommunityDao communityDao;
+
+	@Override
+	public int insertColumn(Community community) {
+		return communityDao.insertColumn(community);
+	}
 }
