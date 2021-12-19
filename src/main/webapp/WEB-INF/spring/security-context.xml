@@ -26,7 +26,7 @@
 		<intercept-url pattern="/member/memberEnroll.do" access="permitAll"/>
 		<intercept-url pattern="/member/checkEnrollDuplicate/**" access="permitAll"/>
 		<intercept-url pattern="/member/memberFindIdPassword.do" access="permitAll"/>
-		<intercept-url pattern="/member/**/findId.do" access="permitAll"/>
+		<intercept-url pattern="/member/**/find*.do" access="permitAll"/>
 		<intercept-url pattern="/admin/**" access="hasRole('AM')"/>
 		<intercept-url pattern="/shop/**" access="permitAll"/>
 		

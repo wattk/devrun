@@ -44,6 +44,7 @@
 
   <!-- Libraries CSS Files -->
   <link href="${pageContext.request.contextPath }/resources/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/f1def33959.js" crossorigin="anonymous"></script>
   <link href="${pageContext.request.contextPath }/resources/css/animate.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath }/resources/css/ionicons/css/ionicons.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" rel="stylesheet">
@@ -105,44 +106,68 @@
           <li class="nav-item">
             <a class="nav-link" href="about.html">About</a>
           </li>
+          <li class="nav-item">
+			  <div class="search-box">
+		          <form class="form-inline" name="unifiedSearchFrm" action="${pageContext.request.contextPath}/common/search.do" method="GET">
+				    <div class="input-group">
+				      <input type="text" id="searchKeyword" name="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="Username" aria-describedby="basic-addon1">
+				      <button type="button" id="unifiedSearchBtn" class="btn btn-b-n d-none d-md-block" data-toggle="collapse"
+				        data-target="#navbarTogglerDemo01" aria-expanded="false">
+				        <span class="fa fa-search" aria-hidden="true"></span>
+				      </button>
+				    </div>
+				  </form>
+			  </div>
+          </li>
+          <li class="nav-item">
+          
+		      <!-- 로그인 안 되어 있을 때 -->
+		      <sec:authorize access="isAnonymous()">
+		      <div id="navLoginContainer">
+		    	  <a class="btn btn-primary log-con" id="navLoginBtn" href="${pageContext.request.contextPath}/member/memberLogin.do" >로그인</a>
+		      </div>
+		      </sec:authorize>
+		      
+		      <!-- 로그인 되어있을 때 -->
+		      <sec:authorize access="isAuthenticated()">
+		      	<div class="pt-2" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	   	            <a class="" href="#">[<sec:authentication property="principal.nickname"/>]</a><span class="">님 안녕하세요</span>
+		      	</div>
+	            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+	              <a class="dropdown-item" href="${pageContext.request.contextPath}/member/memberDetail.do">마이페이지</a>
+	              <a class="dropdown-item" href="#">쪽지</a>
+	              <a class="dropdown-item" href="#">주문/배송</a>
+	              <a class="dropdown-item" href="${pageContext.request.contextPath}/member/cart.do">장바구니</a>
+	              <a class="dropdown-item" href="#">
+	              	<form:form
+				    	id="navLogoutFrm"
+				    	method="POST"
+				    	action="${pageContext.request.contextPath}/member/memberLogout.do">
+				    	<button
+				    		class="btn btn-primary log-con"
+				    		type="submit">로그아웃</button>
+				    </form:form>
+	              </a>
+	            </div>
+			    <%--   <a href="${pageContext.request.contextPath}/member/memberDetail.do">
+			      	
+			      </a> 
+			      <div id="navLoginContainer">      		
+			    	<a class="btn btn-primary log-con" id ="navDetail" href="${pageContext.request.contextPath}/member/memberDetail.do">내 정보</a>
+				    <form:form
+				    	id="navLogoutFrm"
+				    	method="POST"
+				    	action="${pageContext.request.contextPath}/member/memberLogout.do">
+				    	<button
+				    		class="btn btn-primary log-con"
+				    		type="submit">로그아웃</button>
+				    </form:form>
+			      </div> --%>		
+			 </sec:authorize>
+          </li>
         </ul>
       </div>
-	  <div class="search-box">
-          <form class="form-inline" name="unifiedSearchFrm" action="${pageContext.request.contextPath}/common/search.do" method="GET">
-		    <div class="input-group">
-		      <input type="text" id="searchKeyword" name="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="Username" aria-describedby="basic-addon1">
-		      <button type="button" id="unifiedSearchBtn" class="btn btn-b-n d-none d-md-block" data-toggle="collapse"
-		        data-target="#navbarTogglerDemo01" aria-expanded="false">
-		        <span class="fa fa-search" aria-hidden="true"></span>
-		      </button>
-		    </div>
-		  </form>
-	  </div>
       
-      <!-- 로그인 안 되어 있을 때 -->
-      <sec:authorize access="isAnonymous()">
-      <div id="navLoginContainer">
-    	  <a class="btn btn-primary log-con" id="navLoginBtn" href="${pageContext.request.contextPath}/member/memberLogin.do" >로그인</a>
-      </div>
-      </sec:authorize>
-      
-      <!-- 로그인 되어있을 때 -->
-      <sec:authorize access="isAuthenticated()">&nbsp;&nbsp;
-	      <a href="${pageContext.request.contextPath}/member/memberDetail.do">
-	      	[<sec:authentication property="principal.nickname"/>]
-	      </a> 님 안녕하세요
-	      <div id="navLoginContainer">      		
-		    	<a class="btn btn-primary log-con" id ="navDetail" href="${pageContext.request.contextPath}/member/memberDetail.do">내 정보</a>
-		    <form:form
-		    	id="navLogoutFrm"
-		    	method="POST"
-		    	action="${pageContext.request.contextPath}/member/memberLogout.do">
-		    	<button
-		    		class="btn btn-primary log-con"
-		    		type="submit">로그아웃</button>
-		    </form:form>
-	      </div>		
-	 </sec:authorize>
   </nav>
   
   <script>

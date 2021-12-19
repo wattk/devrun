@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>아이디 찾기</title>
+<title>비밀번호 찾기</title>
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 <!-- bootstrap js: jquery load 이후에 작성할것.-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -15,7 +15,7 @@
 <!-- bootstrap css -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 <style>
-.popup-find-id {
+.popup-find-pw {
 	width: 400px;
 	height: 299px;
 	display: table-cell;
@@ -25,21 +25,22 @@
 </head>
 <body>
 	
-	<div class="popup-find-id">
+	<div class="popup-find-pw">
 	
 		<div class="text-center align-middle">
 		
 			<c:choose>
 			
-				<%-- 조회된 아이디가 없는 경우 --%>
-				<c:when test="${empty id}">
-					<p class="font-weight-bold">${name} / ${email} 로 아이디를 찾은 결과, 일치하는 아이디가 없습니다.</p>
+				<%-- 조회된 회원이 없는 경우 --%>
+				<c:when test="${empty member}">
+					<p class="font-weight-bold">${id} / ${email} 의 <br>회원 정보가 존재하지 않습니다.</p>
 				</c:when>
 				
-				<%-- 조회된 아이디가 있는 경우 --%>
+				<%-- 조회된 회원이 있는 경우 --%>
 				<c:otherwise>
-					<p class="font-weight-bold">회원님의 아이디는 <span class="text-primary">${id}</span>입니다.</p>
-					
+					<p class="font-weight-bold">임시 비밀번호를 <span class="text-primary">이메일</span>로 전송 하였습니다.</p>
+					<span class="">임시 비밀번호를 확인하여 로그인 하신 후</span>
+					<p class="text-danger">꼭 비밀번호를 변경해주세요.</p>
 				</c:otherwise>
 				
 			</c:choose>

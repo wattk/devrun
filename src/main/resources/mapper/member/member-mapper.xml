@@ -52,5 +52,23 @@
   	where
   		name = #{name} and email = #{email}
   </select>
+  
+  <select id="selectOneMemberByIdEmail" resultType="member">
+  	select
+  		*
+  	from
+  		member
+  	where
+  		id = #{id} and email = #{email}
+  </select>
+  
+  <update id="updateMemberPassword">
+  	update 
+	    member
+	set
+	    password = #{password}
+	where
+	    id = #{id} and email = #{email}
+  </update>
   <!-- 지영 mapper 끝 -->
 </mapper>
