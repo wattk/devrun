@@ -42,6 +42,18 @@ public class MemberDaoImpl implements MemberDao {
 	public String findId(Map<String, Object> param) {
 		return session.selectOne("member.findId", param);
 	}
+
+
+	@Override
+	public Member selectOneMemberByIdEmail(Map<String, Object> param) {
+		return session.selectOne("member.selectOneMemberByIdEmail", param);
+	}
+
+
+	@Override
+	public int updateMemberPassword(Member member) {
+		return session.update("member.updateMemberPassword", member);
+	}
 	
 	/**
 	 * 지영 dao 끝

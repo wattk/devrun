@@ -12,5 +12,9 @@ public interface MemberDao {
 
 	String findId(Map<String, Object> param);
 
+	Member selectOneMemberByIdEmail(Map<String, Object> param);
+
+	int updateMemberPassword(Member member);
+
 
 }
