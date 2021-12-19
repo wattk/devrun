@@ -161,7 +161,7 @@
     top:433px; 
     right:10px;
     padding: 3px 10px;
-    /* z-index: 5; */
+    z-index: 5;
 }
 #sideboxHeader{
     background-color: cornflowerblue;
@@ -183,6 +183,22 @@
 }
 
 /*오늘 본 상품 div 끝*/
+
+/*인기 키워드 시작*/
+.keywordImg{
+    position: relative;
+}
+.keywordSpan {
+    position: absolute;
+    top: 57px;
+    left: 89px;
+    z-index: 1;
+    color: white;
+    font-size: 23px;
+    width: 142px;
+    font-weight: bold;
+}
+/*인기 키워드 끝*/
 
 </style>
 
@@ -303,16 +319,28 @@
                     <p id="hotKeywordP">인기 키워드</p>
                     <div class="row">
                         <div class="keyword" id="keywordDiv1">
-                            <a href=""><img src="https://i.ibb.co/q9d5jz7/hot-Keyword.png" alt=""></a>
+                            <div class="keywordImg" >
+                                <a href=""><img src="https://i.ibb.co/tQyHz8m/hot-Keyword.png" alt=""></a>
+                                <a href=""><span class="keywordSpan">#신입개발자</span></a>
+                            </div>
                         </div>
                         <div class="keyword" id="keywordDiv2">
-                            <a href=""><img src="https://i.ibb.co/tqsJ6XS/hot-Keyword3.png" alt=""></a>
+                            <div class="keywordImg" >
+                                <a href=""><img src="https://i.ibb.co/M8vtK1H/hot-Keyword3.png" alt=""></a>
+                                <a href=""><span class="keywordSpan">#5년대세일</span></a>
+                            </div>
                         </div>
                         <div class="keyword" id="keywordDiv3">
-                            <a href=""><img src="https://i.ibb.co/0nkJQXL/hot-Keyword2.png" alt=""></a>
+                            <div class="keywordImg" >
+                                <a href=""><img src="https://i.ibb.co/tQyHz8m/hot-Keyword.png" alt=""></a>
+                                <a href=""><span class="keywordSpan">#겨울용품</span></a>
+                            </div>
                         </div>
                         <div class="keyword" id="keywordDiv4">
-                            <a href=""><img src="https://i.ibb.co/q9d5jz7/hot-Keyword.png" alt=""></a>
+                            <div class="keywordImg" >
+                                <a href=""><img src="https://i.ibb.co/M8vtK1H/hot-Keyword3.png" alt=""></a>
+                                <a href=""><span class="keywordSpan">#허허허헣허</span></a>
+                            </div>
                         </div>
                     </div>
                 </div>
