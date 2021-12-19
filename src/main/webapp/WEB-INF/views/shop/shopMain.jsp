@@ -88,9 +88,9 @@
     border-radius: 30;
 }
 #iconBoxDiv{
-    margin-left: 50px;
     border: solid;
     width: 85%;
+    margin-left: 50px;
     margin: auto;
 }
 .icon {
@@ -123,6 +123,7 @@
 #shopMainBestReviewsDiv{
     margin-left: 50px;
     margin-top: 60px;
+    margin-bottom: 60px;
 }
 #bestReviewsP{
     font-size: 30px;
@@ -133,9 +134,7 @@
     width: 300px;
     height: 300px;
     margin: auto 30px;
-}
-#bestReviewDiv2 img{
-    width: 600px;
+    border-radius: 10%;
 }
 #hr2{
     border: 3px solid black;
@@ -213,6 +212,7 @@
 }
 
 
+
 /*슬라이드 카테고리 시작*/
 
 .mySlides {display: none}
@@ -252,16 +252,6 @@
   background-color: rgba(0,0,0,0.8);
 }
 
-/* Caption text */
-/* .text {
-  color: #f2f2f2;
-  font-size: 15px;
-  padding: 8px 12px;
-  position: absolute;
-  bottom: 8px;
-  width: 100%;
-  text-align: center;
-} */
 
 /* Number text (1/3 etc) */
 /* .numbertext {
@@ -320,6 +310,15 @@
     font-family: 'Song Myung', serif;
 }
 /*슬라이드 카테고리 끝*/
+
+
+#shopItemsAccordionDiv{
+	margin-top: 30px;
+}
+
+.space-evenly{
+	justify-content: space-evenly;
+}
 </style>
 
 <body>
@@ -343,7 +342,7 @@
                 </div>
             </div>
         </div>
-        <div class = "row col-md-12" id="shopHeaderBarDiv" style="background-color: #f8f9fa">
+        <div class = "row col-md-12 space-evenly" id="shopHeaderBarDiv" style="background-color: #f8f9fa">
             <div class = "col-md-1" id="sideMenuBtnDiv">           
                 <img id="sideMenuBtn" src="https://i.ibb.co/zFxp8tw/3.png" alt="" >
             </div>
@@ -419,7 +418,7 @@
                   </div>
             </div>
             <div id="shopIconCategoryDiv">
-                <div id="iconBoxDiv">
+                <div id="iconBoxDiv" class="row space-evenly">
                     <a href="#"><img class="icon" src="https://i.ibb.co/7zcnV7J/monitor.png" alt=""></a>
                     <a href="#"><img class="icon" src="https://i.ibb.co/vvXdtzx/keyboard.png" alt=""></a>
                     <a href="#"><img class="icon" src="https://i.ibb.co/WxvDnGD/mouse.png" alt=""></a>
@@ -782,7 +781,7 @@
                 <hr>
                 <div id="shopMostSearchedKeywordDiv">
                     <p id="hotKeywordP">인기 키워드</p>
-                    <div class="row">
+                    <div class="row space-evenly">
                         <div class="keyword" id="keywordDiv1">
                             <div class="keywordImg" >
                                 <a href=""><img src="https://i.ibb.co/tQyHz8m/hot-Keyword.png" alt=""></a>
@@ -812,16 +811,19 @@
                 <hr>
                 <div id="shopMainBestReviewsDiv">
                     <p id="bestReviewsP">이달의 Best Reviews</p>
-                    <div class="row">
+                    <div class="row space-evenly">
                         <div class="bestReview" id="bestReviewDiv1">
                             <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
-                        </div>
-                        <div class="bestReview" id="bestReviewDiv2">
-                            <a href=""><img src="https://i.ibb.co/Pzt3ZKY/Giant-Thumb.jpg" alt=""></a>
                         </div>
                         <div class="bestReview" id="bestReviewDiv3">
                             <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
                         </div> 
+                        <div class="bestReview" id="bestReviewDiv3">
+                            <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
+                        </div>
+                        <div class="bestReview" id="bestReviewDiv3">
+                            <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
+                        </div>  
                     </div>
                 </div>
                 <hr id="hr2">
