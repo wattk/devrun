@@ -10,26 +10,7 @@
 	<jsp:param value="통합검색" name="title"/>
 </jsp:include>
 <style>
-.list-group-item{
-	border : 0px;
-}
-#resultText{
-	border-top : 1px solid rgba(0,0,0,.125);
-	border-bottom : 1px solid rgba(0,0,0,.125);
-}
-.shop-like-icon{
-	bottom : 3%;
-	left : 5%;
-	font-size : 30px;
-}
-.shop-cart-icon{
-	bottom : 3%;
-	right : 5%;
-	font-size : 30px;
-}
-i:hover{
-	color : #fff;
-}
+
 </style>
 <div class="mx-auto text-center p-4" id="resultText">
 	<p class="m-0">검색어 <strong>"마우스"</strong>에 대한 총 <strong>30건</strong>의 결과를 찾았습니다.</p>
