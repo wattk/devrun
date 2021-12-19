@@ -101,6 +101,9 @@ public class MemberController{
 		binder.registerCustomEditor(Date.class, editor);
 	}
 	
+	@GetMapping("/cart.do")
+	public void cart() {}
+	
 	/**
 	 * 혜진 회원가입 끝
 	 */
