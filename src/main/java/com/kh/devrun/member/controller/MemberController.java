@@ -109,6 +109,9 @@ public class MemberController{
 	@GetMapping("/order.do")
 	public void order() {}
 	
+	@GetMapping("/wishlist.do")
+	public void wishlist() {}
+	
 	/**
 	 * 혜진 회원가입 끝
 	 */
