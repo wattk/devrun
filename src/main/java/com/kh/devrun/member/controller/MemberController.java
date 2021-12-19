@@ -106,6 +106,9 @@ public class MemberController{
 	@GetMapping("/cart.do")
 	public void cart() {}
 	
+	@GetMapping("/order.do")
+	public void order() {}
+	
 	/**
 	 * 혜진 회원가입 끝
 	 */
