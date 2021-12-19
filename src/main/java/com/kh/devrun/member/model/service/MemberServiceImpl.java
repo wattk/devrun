@@ -59,11 +59,30 @@ public class MemberServiceImpl implements MemberService {
 	 * 지영 서비스 시작
 	 */
 	
+	/**
+	 * 아이디 찾기
+	 */
 	@Override
 	public String findId(Map<String, Object> param) {
 		return memberDao.findId(param);
 	}
 	
+	/**
+	 * 비밀번호 찾기 - 아이디 이메일로 회원 조회
+	 */
+	@Override
+	public Member selectOneMemberByIdEmail(Map<String, Object> param) {
+		return memberDao.selectOneMemberByIdEmail(param);
+	}
+
+	/**
+	 * 비밀번호 찾기 - 임시 비밀번호로 변경
+	 */
+	@Override
+	public int updateMemberPassword(Member member) {
+		return memberDao.updateMemberPassword(member);
+	}
+
 	/**
 	 * 지영 서비스 끝
 	 */
