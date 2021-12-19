@@ -76,13 +76,13 @@
 							<!-- 이름 -->
 							<label for="name" class="col-md-12 col-form-label">이름</label>
 							<div class="col-md-12">
-								<input type="text" placeholder="이름" class="form-control" name="name" id="name" value="테스트" required>
+								<input type="text" placeholder="이름" class="form-control" name="name" id="name" required>
 							</div>
 							
 							<!-- 이메일 -->
 							<label for="email" class="col-md-12 col-form-label">이메일</label>
 							<div class="col-md-12">
-								<input type="email" placeholder="이메일" class="form-control" name="email" id="email" value="test@naver.com" required>
+								<input type="email" placeholder="이메일" class="form-control" name="email" id="email" required>
 							</div>
 							
 							<!-- 찾기 -->
@@ -106,8 +106,7 @@
 			  		
 					<form 
 						id="memberFindPasswordFrm" 
-						action="" 
-						method="">
+						action="" >
 						
 						<div class="row">
 						
@@ -118,9 +117,9 @@
 							<h3 class="mx-auto">비밀번호 찾기</h2>
 						
 							<!-- 이름 -->
-							<label for="name" class="col-md-12 col-form-label">이름</label>
+							<label for="name" class="col-md-12 col-form-label">아이디</label>
 							<div class="col-md-12">
-								<input type="text" placeholder="이름" class="form-control" name="name" id="name" required>
+								<input type="text" placeholder="아이디" class="form-control" name="id" id="id" required>
 							</div>
 							
 							<!-- 이메일 -->
@@ -183,11 +182,60 @@ $(memberFindIdFrm).submit((e) => {
 
 	// 팝업요청
 	const url = `${pageContext.request.contextPath}/member/\${name}/\${email}/findId.do`;
-	const spec = "width=500px, height=500px";
-	open(url, name, spec);
+	
+	// 띄울 팝업창 높이
+	const popHeight = 300;		                                      
+	// 띄울 팝업창 너비
+	const popWidth = 400;                                       
+	// 현재창의 높이
+	const winHeight = document.body.clientHeight;	  
+	// 현재창의 너비
+	const winWidth = document.body.clientWidth;	  
+	// 현재창의 x좌표
+	const winX = window.screenLeft;	                          
+	// 현재창의 y좌표
+	const winY = window.screenTop;	                          
+
+	const popX = winX + (winWidth - popWidth)/2;
+	const popY = winY + (winHeight - popHeight)/2;
+
+	open(url, name, `top=\${popY}, left=\${popX}, width=\${popWidth}, height=\${popHeight}`);
 	
 });
 
+//비밀번호 찾기
+$(memberFindPasswordFrm).submit((e) => {
+	e.preventDefault(); // 폼제출방지
+	
+	//console.log($(e.target));
+	
+	// 이름
+	const id = $(e.target).find("input[name=id]").val();
+	// 이메일
+	const email = $(e.target).find("input[name=email]").val();
+
+	// 팝업요청
+	const url = `${pageContext.request.contextPath}/member/\${id}/\${email}/findPassword.do`;
+	
+	// 띄울 팝업창 높이
+	const popHeight = 300;		                                      
+	// 띄울 팝업창 너비
+	const popWidth = 400;                                       
+	// 현재창의 높이
+	const winHeight = document.body.clientHeight
+	// 현재창의 너비
+	const winWidth = document.body.clientWidth;	  
+	// 현재창의 x좌표
+	const winX = window.screenLeft;	                          
+	// 현재창의 y좌표
+	const winY = window.screenTop;	                          
+
+	const popX = winX + (winWidth - popWidth)/2;
+	const popY = winY + (winHeight - popHeight)/2;
+
+	open(url, name, `top=\${popY}, left=\${popX}, width=\${popWidth}, height=\${popHeight}`);
+	
+});
 
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
