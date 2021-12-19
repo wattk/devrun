@@ -44,6 +44,7 @@
 
   <!-- Libraries CSS Files -->
   <link href="${pageContext.request.contextPath }/resources/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/f1def33959.js" crossorigin="anonymous"></script>
   <link href="${pageContext.request.contextPath }/resources/css/animate.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath }/resources/css/ionicons/css/ionicons.min.css" rel="stylesheet">
   <link href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" rel="stylesheet">
