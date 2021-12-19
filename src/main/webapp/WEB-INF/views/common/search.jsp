@@ -18,13 +18,13 @@
 	border-bottom : 1px solid rgba(0,0,0,.125);
 }
 .shop-like-icon{
-	bottom : 3px;
-	left : 5px;
+	bottom : 3%;
+	left : 5%;
 	font-size : 30px;
 }
 .shop-cart-icon{
-	bottom : 3px;
-	left : 200px;
+	bottom : 3%;
+	right : 5%;
 	font-size : 30px;
 }
 i:hover{
