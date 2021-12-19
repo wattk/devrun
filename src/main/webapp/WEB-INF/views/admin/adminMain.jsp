@@ -29,7 +29,7 @@
 
 </head>
 
-<body id="page-top">
+<body id="pageTop">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -379,12 +379,212 @@
                 <!-- End of Topbar -->
 
                 <!-- 페이지 body 시작 -->
-                <div class="container-fluid">
-					<div id="top-content">
+				<div id="contentBody">
+				
+					<!-- 내용의 윗 부분 -->
+					<div id="contentTop" class="content row">
+						 <!-- 일 매출 알림표 -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                일매출</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">0원</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <!-- 월 매출 알림표 -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                월매출</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">0원</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <!-- 접수 대기중인 문의 -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                접수 대기중인 문의</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">0개</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						 <!-- 총 게시글 수 -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                총 게시글 수</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">0개</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					
+					</div>
+
+					<!-- 내용의 중간 부분 1  -->					
+					<div id="contentMid1"class="content">
+						<!--  매출 현황  -->
+						<div class="row-xl-8 col-lg-8 mid">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">매출 현황</h6>                                 
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"> </canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						<!--  회원 현황  -->
+						<div class="row-xl-8 col-lg-4 mid">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">회원 현황</h6>                                 
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area" id="memberCount">
+                                        <h3>누적 회원 수 </h3>
+                                        <h3>신규 회원 수  </h3>
+                                        <h3>차단된 회원 수  </h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 						
 					</div>
-                </div>
-                <!-- 페이지 body 끝 -->
+					
+					<!-- 내용의 중간 부분 2  -->					
+					<div id="contentMid2"class="content">
+						<!--  일일 배송 통계  -->
+						<div class="row-xl-8 col-lg-6 mid">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">일일 배송 통계</h6>                                 
+                                </div>
+                                <!-- Card Body -->
+                               <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> 배송
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-warning"></i> 교환
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> 반품
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-dark"></i> 환불
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-secondary"></i> 접수
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> 완료
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						<!--  게시판 방문자 수  -->
+						<div class="row-xl-8 col-lg-6 mid">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">게시판 방문자 수</h6>                                 
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-primary"></i> 칼럼
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Q&A
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-info"></i> 스터디
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-warning"></i> 자유
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+						
+					</div>
+					<!-- 내용의 아래 부분  -->		
+					<div id="contentFoot" class="content">
+						<!--  매출 현황  -->
+						<div class="row-xl-8 col-lg-12 mid">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">게시판 게시글 수ㄴ</h6>                                 
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"> </canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+					</div>				
+					
+				</div>
+				<!-- 페이지 body 끝 -->
 
             </div>
             <!-- End of Main Content -->
@@ -406,7 +606,7 @@
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
+    <a class="scroll-to-top rounded" href="#pageTop">
         <i class="fas fa-angle-up"></i>
     </a>
 
