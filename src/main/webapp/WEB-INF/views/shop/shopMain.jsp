@@ -89,9 +89,9 @@
 }
 #iconBoxDiv{
     border: solid;
-    /*margin-left: 50px;
     width: 85%;
-    margin: auto;*/
+    margin-left: 50px;
+    margin: auto;
 }
 .icon {
     width: 70px;
@@ -343,7 +343,7 @@
                 </div>
             </div>
         </div>
-        <div class = "row col-md-12" id="shopHeaderBarDiv" style="background-color: #f8f9fa">
+        <div class = "row col-md-12 space-evenly" id="shopHeaderBarDiv" style="background-color: #f8f9fa">
             <div class = "col-md-1" id="sideMenuBtnDiv">           
                 <img id="sideMenuBtn" src="https://i.ibb.co/zFxp8tw/3.png" alt="" >
             </div>
