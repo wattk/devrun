@@ -9,15 +9,8 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="장바구니" name="title"/>
 </jsp:include>
-<style>
-#cartPayBtn{
-	font-size : x-large;
-}
-.cart-container{
-	margin : 0 10% 0 10%;
-}
-</style>
-<div class="row p-5 d-flex justify-content-around cart-container">
+<link href="${pageContext.request.contextPath }/resources/css/shop/order.css" rel="stylesheet">
+<div class="row p-5 d-flex justify-content-around order-container">
   <div class="col-7">
   	<h4>장바구니</h4>
   	<table class="table m-3 pr-3">

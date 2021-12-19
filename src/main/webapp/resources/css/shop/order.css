@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+#cartPayBtn{
+	font-size : x-large;
+}
+
+.table td, .table th{
+	border-top: 0;
+}
+.card-header{
+	background-color: inherit;
+}
+.card{
+	border: 0;
+}
+.btn-link{
+	color : #000;
+	font-size : x-large;
+}
+.delivery-option{
+	border: 1px solid #1A81FF;
+}
+.order-form-control{
+	width: 80%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 0;
+    border-bottom: 1px solid #ced4da;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.list-group-item{
+	border: 0;
+}
+#orderPaymentBtn{
+	font-size : x-large;
+}
+.order-list{
+	display:none;
+}
+.order-container{
+	margin: 0 10% 0 10%;
+}

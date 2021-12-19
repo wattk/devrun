@@ -9,48 +9,8 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="order" name="title"/>
 </jsp:include>
-<style>
-.table td, .table th{
-	border-top: 0;
-}
-.card-header{
-	background-color: inherit;
-}
-.card{
-	border: 0;
-}
-.btn-link{
-	color : #000;
-	font-size : x-large;
-}
-.delivery-option{
-	border: 1px solid #1A81FF;
-}
-.order-form-control{
-	width: 80%;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 0;
-    border-bottom: 1px solid #ced4da;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
-.list-group-item{
-	border: 0;
-}
-#orderPaymentBtn{
-	font-size : x-large;
-}
-.order-list{
-	display:none;
-}
-.order-container{
-	margin: 0 10% 0 10%;
-}
-</style>
+<link href="${pageContext.request.contextPath }/resources/css/shop/order.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath }/resources/js/shop/order.js"></script>
 <div class="row p-5 d-flex justify-content-around order-container">
   <div class="col-7">
   	<div class="accordion" id="orderAccordion">
@@ -212,26 +172,4 @@
 	</table>
   </div>
 </div>
-<script>
-//버튼 클릭 시 아코디언 헤더의 상세 내용 숨기거나 드러내기
-$(".order-btn").click((e)=>{
-	const target = $(e.target).data("target");
-	
-	if(target == '#collapseThree'){
-		$("#orderOne").show();
-		$("#orderTwo").show();
-	}
-	else if(target == '#collapseOne'){
-		$("#orderOne").hide();
-		$("#orderTwo").show();
-		
-	}
-	else if(target == '#collapseTwo'){
-		$("#orderOne").show();
-		$("#orderTwo").hide();
-		
-	}
-		
-});
-</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
