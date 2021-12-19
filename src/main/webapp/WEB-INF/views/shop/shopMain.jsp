@@ -369,7 +369,7 @@
             </div>
             <div id="shopSerachDiv">
                 <nav class="navbar navbar-light bg-light">
-                    <form class="form-inline"> 
+                    <form class="form-inline" action="${pageContext.request.contextPath}/shop/search.do"> 
                         <!-- 쇼핑몰 검색도 카테고리 나눌 건가?
                         <select class="form-select" aria-label="Default select example">
                             <option selected>Open this select menu</option>
