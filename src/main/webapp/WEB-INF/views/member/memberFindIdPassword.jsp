@@ -152,6 +152,25 @@
 	
 </div>
 <script>
+// 처음 로딩 시 아이디 찾기 또는 비밀번호 찾기 탭 활성화 결정
+$(document).ready(function(){
+	// 탭 구분
+	const tab = (window.location.search).slice(-2);
+	console.log(tab);
+	
+	if(tab == 'pw') {
+		$("#pills-home-tab").removeClass('active');
+		$("#pills-profile-tab").addClass('active');
+		$("#pills-home").removeClass('show active');
+		$("#pills-profile").addClass('show active');
+	} else {
+		$("#pills-home-tab").addClass('active');
+		$("#pills-profile-tab").removeClass('active');
+		$("#pills-home").addClass('show active');
+		$("#pills-profile").removeClass('show active');
+	}
+	
+});
 
 // 아이디 찾기 탭 클릭 시 비밀번호 찾기 input 초기화
 $(".find-id-tab").click((e) => {
