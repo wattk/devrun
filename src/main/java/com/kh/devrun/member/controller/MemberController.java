@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.devrun.common.mail.MailUtils;
 import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.security.service.SecurityService;
@@ -101,6 +103,9 @@ public class MemberController{
 		binder.registerCustomEditor(Date.class, editor);
 	}
 	
+	@GetMapping("/cart.do")
+	public void cart() {}
+	
 	/**
 	 * 혜진 회원가입 끝
 	 */
@@ -129,6 +134,45 @@ public class MemberController{
 		model.addAttribute("id", id);
 		
 		return "member/memberFindIdPopup";
+		
+	}
+	
+	/**
+	 * 비밀번호 찾기 - 임시 비밀번호 이메일 발송
+	 */
+	@GetMapping("/{id}/{email}/findPassword.do")
+	public String findPassword(@PathVariable String id, @PathVariable String email, Model model) throws Exception {
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("id", id);
+		param.put("email", email);
+		
+		// 기존 DB에 입력한 아이디와 이메일이 있는지 확인
+		Member member = memberService.selectOneMemberByIdEmail(param);
+		
+		// member 조회 성공 시
+		if(member != null) {
+			// 암호화 처리되지 않은 비밀번호
+			// RandomStringUtils의 randomAlphanumeric메소드를 호출하면 알파벳(대소문자)+숫자 랜덤 값을 얻을 수 있다.
+			String rawPassword = RandomStringUtils.randomAlphanumeric(6);
+			param.put("rawPassword", rawPassword);
+			
+			// 암호화 처리된 비밀번호
+			String encryptedPassword = passwordEncoder.encode(rawPassword);
+			member.setPassword(encryptedPassword);
+			
+			log.info("{} -> {}", rawPassword, encryptedPassword);
+			
+			// 임시 비밀번호 이메일 발송
+			MailUtils.mailSendWithPassword(id, rawPassword, email);
+			
+			// 비밀번호 업데이트
+			int result = memberService.updateMemberPassword(member);
+		}
+		
+		model.addAttribute("member", member);
+
+		return "member/memberFindPasswordPopup";
 		
 	}
 	

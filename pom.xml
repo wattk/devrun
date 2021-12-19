@@ -249,6 +249,14 @@
 		    <artifactId>spring-messaging</artifactId>
 		    <version>${org.springframework-version}</version>
 		</dependency>
+		
+		<!-- 메일 api -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-email</artifactId>
+		    <version>1.5</version>
+		</dependency>
+
 		   
 		<!-- summernote image upload 관련 -->
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
