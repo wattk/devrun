@@ -31,6 +31,14 @@ public class CommunityController {
 		return "community/communityColumn";
 	}
 	
+	// 커뮤니티-칼럼-글쓰기
+	@GetMapping("communityColumnForm.do")
+	public String communityColumnForm() {
+	
+		return "community/communityColumnForm";
+	}
+	
+	
 	// 커뮤니티-Q&A
 	@GetMapping("/communityQnA.do")
 	public String communityQnA() {

@@ -19,6 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 	<title>Carousel</title> 
 
+	<link href="${pageContext.request.contextPath}/resources/css/community/nav.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/resources/css/community/communityColumn.css" rel="stylesheet">
 
 	<!-- bootstrap js: jquery load 이후에 작성할것.-->
