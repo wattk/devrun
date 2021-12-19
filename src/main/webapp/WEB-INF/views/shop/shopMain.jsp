@@ -203,7 +203,11 @@
     font-size : 30px;
 }
 /*혜진상품끝*/
-
+#shopHeaderBarDiv{
+	margin-left: 0px;
+    position: fixed;
+    z-index: 10;
+}
 </style>
 
 <body>
@@ -227,7 +231,7 @@
                 </div>
             </div>
         </div>
-        <div class = "row " id="shopHeaderBarDiv" style="background-color: #f8f9fa">
+        <div class = "row col-md-12" id="shopHeaderBarDiv" style="background-color: #f8f9fa">
             <div class = "col-md-1" id="sideMenuBtnDiv">           
                 <img id="sideMenuBtn" src="https://i.ibb.co/zFxp8tw/3.png" alt="" >
             </div>
@@ -762,7 +766,6 @@ $(window).scroll(function() {
                  .animate({"top":position+currentPosition+"px"},1000); 
 });
 /*오늘 본 상품 div 끝*/
-
 </script>
 </body>
 
