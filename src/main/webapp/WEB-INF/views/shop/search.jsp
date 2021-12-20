@@ -9,6 +9,12 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="shopSearch" name="title"/>
 </jsp:include>
+
+<!-- shopHeader 관련 임포트 -->
+<jsp:include page="/WEB-INF/views/shop/shopHeader.jsp"/>
+<link href="${pageContext.request.contextPath}/resources/css/shop/shopMain.css" rel="stylesheet">
+
+
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
 <div class="shop-container">
 	<div class="mx-auto text-left p-5" id="">
@@ -98,4 +104,6 @@
 	  </ul>
 	</nav>
 </div>
+<!-- shopHeader js  -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

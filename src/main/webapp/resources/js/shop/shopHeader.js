@@ -1,5 +1,4 @@
-window.onload = function(){ 
-	  /*반응형 사이드바 시작*/
+  /*반응형 사이드바 시작*/
    var slideMq = window.matchMedia("(min-width: 479px)");
   
   /* Sliding side navigation */
@@ -75,46 +74,3 @@ window.onload = function(){
    });
    
    /*실시간 순위 끝*/
-   
-   /*오늘 본 상품 div 시작*/
-   var currentPosition = parseInt($("#sidebox").css("top")); 
-   $(window).scroll(function() { 
-       var position = $(window).scrollTop(); 
-       $("#sidebox").stop()
-                    .animate({"top":position+currentPosition+"px"},1000); 
-   });
-   /*오늘 본 상품 div 끝*/
-    
-    
-   /*상품 카테고리 슬라이드 시작 */
-   var slideIndex = 1;
-   showSlides(slideIndex);
-   
-   function plusSlides(n) {
-     showSlides(slideIndex += n);
-   }
-   
-   function currentSlide(n) {
-     showSlides(slideIndex = n);
-   }
-   
-   function showSlides(n) {
-     var i;
-     var slides = document.getElementsByClassName("mySlides");
-     var dots = document.getElementsByClassName("dot");
-     if (n > slides.length) {slideIndex = 1}    
-     if (n < 1) {slideIndex = slides.length}
-     for (i = 0; i < slides.length; i++) {
-         slides[i].style.display = "none";  
-     }
-     for (i = 0; i < dots.length; i++) {
-         dots[i].className = dots[i].className.replace(" active2", "");
-     }
-     slides[slideIndex-1].style.display = "block";  
-     dots[slideIndex-1].className += " active2";
-   }
-   /*상품 카테고리 슬라이드 끝 */
-	
-}
- 
- 
