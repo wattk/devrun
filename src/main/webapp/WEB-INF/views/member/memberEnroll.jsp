@@ -179,7 +179,7 @@ $(".duplicate-check").keyup((e)=>{
 	$.ajax({
 		url : `${pageContext.request.contextPath}/member/checkEnrollDuplicate`,
 		data : data,
-		contentType : "application/json; charset=utf-8",
+		contentType : "application/json ; charset=utf-8",
 		method : "GET",
 		success(data){
 			const {available} = data;
