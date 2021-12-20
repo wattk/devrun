@@ -21,4 +21,15 @@ public class MypageController {
 	public String mypage() {
 		return "mypage/mypage";
 	}
+	
+	/**
+	 * 혜진 교환/환불/취소 시작
+	 */
+	
+	@GetMapping("/claim.do")
+	public void claim() {}
+	
+	/**
+	 * 혜진 교환/환불/취소 끝
+	 */
 }

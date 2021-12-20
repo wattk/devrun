@@ -9,15 +9,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="shopSearch" name="title"/>
 </jsp:include>
-<link href="${pageContext.request.contextPath }/resources/css/shop/order.css" rel="stylesheet">
-<style>
-.shop-container{
-	margin : 0 10% 0 10%;
-}
-.shop-sort:not(last-of-type) {
-	border-right : 1px solid rgba(0,0,0,.125);
-}
-</style>
+<link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
 <div class="shop-container">
 	<div class="mx-auto text-left p-5" id="">
 		<h5 class="m-0"><strong>"마우스"</strong>에 대한 스토어 검색 결과 <strong>30개</strong></h5>
