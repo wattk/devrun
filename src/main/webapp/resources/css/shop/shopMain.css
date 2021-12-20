@@ -1,0 +1,475 @@
+@charset "UTF-8";
+
+  /*반응형 사이드바 시작 */
+    /* sliding  vertical navigation
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+  
+  .hamburger {
+      font-size: 4em;
+      float: left;
+    }
+  
+  #slidingSideNav.overlay {
+      top: 216px;
+      height: 80%;
+      width: 0%;
+  }
+  
+  .overlay { 
+    
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #262626; /* rgb(0,0,0);*/
+     /* background-color: rgba(0,0,0, 0.9);*/
+      overflow-y: hidden;
+      transition: 0.5s;}
+  
+  .side-overlay-content {
+     position: relative;
+      top: 5%;
+      width: 100%;
+      margin-top: 3rem;
+  }
+  
+  .overlay a {
+      padding: 1rem 3rem;
+      text-decoration: none;
+      font-size: 16px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+  }
+  
+  .overlay a:hover, .overlay a:focus {
+      color: #f1f1f1;
+  }
+  
+  
+  .sideClosebtn {
+      position: absolute;
+      top: 3%;
+      right: 5%;
+      font-size: 6rem;
+  }
+  
+  @media screen and (max-height: 450px) {
+    .overlay {
+     overflow-y: auto;}
+    .overlay a {font-size: 2rem;}
+   }
+  @media only screen and (max-width: 479px) {
+    .sideClosebtn {
+      right: 2%;
+  }
+  }
+  
+  /*Copyright (c) 2017 by Ryan Bobrowski, Susan Jensen (https://codepen.io/rbobrowski/pen/likvA)*/
+  
+  * {
+    margin: 0; padding: 0;
+  }
+  
+  .accordion h1, h2, h3, h4{
+    cursor: pointer;
+      margin: 0;
+    padding: 0;
+  }
+  
+  /* percentages listed next to the background colors are from the chart here: https://www.w3schools.com/colors/colors_picker.asp  Listing them this way should make it relatively easy to swap them out for a different base color (hue), while maintaining the same color values.*/
+   #accordion { 
+     padding: 0 0 0 2rem;
+     margin: 0;
+     font-size: 1.3em;}
+  .accordion h1 { 
+     padding: 1.5rem 2rem;
+     font-size: 1.1em;
+  }
+  .accordion h1, #accordion {
+     background-color: #262626; /* Darkest - 15%*/
+    
+    font-weight: normal;
+    color: white;
+  }
+  .accordion h1:hover {
+    background-color: #666666; /* 40%*/
+    color: white;
+  }
+  
+  .accordion h1:not(:last-of-type) {
+    border-bottom: 1px dotted #999999; /* 60%*/
+  }
+  .accordion div, .accordion p {
+    display: none;
+  }
+  .accordion h2 {
+    padding: .5rem 4rem;
+    background-color:  #404040; /* 25%*/
+    font-size: 1.5rem;
+    color: white;
+  }
+  .accordion h2:hover {
+    background-color:#666666; /* 40%*/
+  }
+  .accordion h3 {
+    padding: .5rem 6rem;
+    background-color:#8c8c8c; /* 55%*/
+    font-size: 1.5rem;
+    color: white; 
+  }
+  .accordion h3:hover {
+    background-color: #a6a6a6; /* 65%*/
+  }
+  .accordion div ul li a {
+    padding: .5rem 8rem;
+    list-style: none;
+    background-color: #bfbfbf; /* 75%*/
+    font-size: 1.4rem;
+    color: #0059b3; 
+  }
+  
+  .accordion div ul li a:hover{
+    background-color: #d9d9d9; /*lightest 85%*/
+    color: #1a8cff; 
+  }
+  .accordion p {
+    padding: 1.5rem 3.5rem;
+    background-color: #f2f2f2;
+    font-size: 1.2rem;
+    color: #333;
+    line-height: 1.3rem;
+  }
+  .accordion .in-stock-open {
+    display: block;
+  }
+  
+  .accordion a {font-size: 1rem;}
+  
+  /*사이드바*/  
+  
+    /*실시간 순위 시작*/ 
+   #content {
+       margin: 30px;
+       padding: 10px;
+       background: #393;
+   }
+   
+   #rank-list a {
+       color: #FFF;
+       text-decoration: none;
+   }
+   
+   #rank-list a:hover {
+       text-decoration: underline;
+   }
+   
+   #rank-list {
+       overflow: hidden;
+       width: 160px;
+       height: 20px;
+       margin: 0;
+   }
+   
+   #rank-list dt {
+       display: none;
+   }
+   
+   #rank-list dd {
+       position: relative;
+       margin: 0;
+   }
+   
+   #rank-list ol {
+       position: absolute;
+       top: 0;
+       left: 0;
+       margin: 0;
+       padding: 0;
+       list-style-type: none;
+   }
+   
+   #rank-list li {
+       height: 20px;
+       line-height: 20px;
+   }
+   /*실시간 순위 끝*/
+   
+   #shopSerachDiv input {
+       width: 500px;
+   }
+   #sideMenuBtn{
+       padding-left: 15px;
+       padding-top: 10px;
+   }
+   #shopSerachDiv, #shopMainEventBtnDiv{
+       margin: auto 0 ;
+   }
+   #shopMainEventBtnDiv{
+       margin-left: 100px;
+   }
+   #shopMainEventBtn{
+       color: white;
+       font-weight: bold;
+   }
+   #sideMenuBtn:hover{
+       cursor: pointer;
+   }
+   #sideMenuBtn {
+       border-radius: 30;
+   }
+   #iconBoxDiv{
+       border: solid 5px sandybrown;
+       width: 85%;
+       margin-left: 50px;
+       margin: auto;
+       padding: 5px 5px;
+   }
+   .icon {
+       width: 70px;
+       height: 70px;
+       margin: auto 70px;
+   }
+   #shopIconCategoryDiv{
+       margin: 60px 0;
+   }
+   #shopMainMidEventBannerDiv{
+       display: table;
+       margin: auto auto;
+	   width: 100%;
+	   background-color: lightcoral;
+	   text-align: center;
+	   padding: 10px 10px;
+	}
+	
+	#shopMainMidEventBannerDiv img {
+	   width: 1300px;
+       height: 160px;
+	}
+       
+   #shopMostSearchedKeywordDiv{
+       margin-left: 50px;
+       margin-top: 60px;
+   }
+   #hotKeywordP{
+       font-size: 30px;
+       font-weight: bold;
+       font-family: 'Song Myung', serif;
+   }
+   .keyword{
+       width: 330px;
+       height: 150px;
+       margin: auto 20px;
+   }
+   #shopMainBestReviewsDiv{
+       margin-left: 50px;
+       margin-top: 60px;
+       margin-bottom: 60px;
+   }
+   #bestReviewsP{
+       font-size: 30px;
+       font-weight: bold;
+       font-family: 'Song Myung', serif;
+   }
+   .bestReview img{
+       width: 300px;
+       height: 300px;
+       margin: auto 30px;
+       border-radius: 10%;
+   }
+   #hr2{
+       border: 3px solid black;
+   }
+   .accordionP{
+       font-size: 30px;
+       font-weight: bold;
+       font-family: 'Song Myung', serif;
+   }
+   
+   /*오늘 본 상품 div 시작*/
+   #sidebox { 
+       text-align: center;
+       background-color:#F0F0F0; 
+       position:absolute; 
+       width:120px; 
+       top:300px; 
+       right:10px;
+       z-index: 5;
+       padding-bottom: 5px;
+   }
+   #sideboxHeader{
+       background-color: cornflowerblue;
+   }
+   #sideboxHeader>p{
+       color: white;
+       font-family: 'Nanum Pen Script', cursive;
+   }
+   .todayView{
+       width: 98px;
+       height: 98px;
+       margin-bottom: 10px;
+   }
+   .errow-img{
+       width: 20px;
+   }
+   #sideboxFooter{
+       margin-bottom: 10px;
+   }
+   
+   /*오늘 본 상품 div 끝*/
+   
+   /*인기 키워드 시작*/
+   .keywordImg{
+       position: relative;
+   }
+   .keywordSpan {
+       position: absolute;
+       top: 57px;
+       left: 89px;
+       z-index: 1;
+       color: white;
+       font-size: 23px;
+       width: 142px;
+       font-weight: bold;
+   }
+   /*인기 키워드 끝*/
+   
+   /*혜진상품시작*/
+   .shop-like-icon{
+       bottom : 3%;
+       left : 5%;
+       font-size : 30px;
+   }
+   .shop-cart-icon{
+       bottom : 3%;
+       right : 5%;
+       font-size : 30px;
+   }
+   /*혜진상품끝*/
+   #shopHeaderBarDiv{
+   
+     margin-left: 0px;
+       position: fixed;
+       z-index: 10;
+       border-bottom: 3px solid rgb(102, 101, 101);
+   }
+   
+   
+   
+   /*슬라이드 카테고리 시작*/
+   
+   .mySlides {display: none}
+   
+   
+   /* Slideshow container */
+   .slideshow-container {
+     max-width: 1000px;
+     position: relative;
+     margin: auto;
+   }
+   
+   /* Next & previous buttons */
+   .prev, .next {
+     cursor: pointer;
+     position: absolute;
+     top: 50%;
+     width: auto;
+     padding: 16px;
+     margin-top: -22px;
+     color: white;
+     font-weight: bold;
+     font-size: 18px;
+     transition: 0.6s ease;
+     border-radius: 0 3px 3px 0;
+     user-select: none;
+   }
+   
+   /* Position the "next button" to the right */
+   .next {
+     right: 0;
+     border-radius: 3px 0 0 3px;
+   }
+   
+   /* On hover, add a black background color with a little bit see-through */
+   .prev:hover, .next:hover {
+     background-color: rgba(0,0,0,0.8);
+   }
+   
+   
+   /* Number text (1/3 etc) */
+   /* .numbertext {
+     color: #f2f2f2;
+     font-size: 12px;
+     padding: 8px 12px;
+     position: absolute;
+     top: 0;
+   } */
+   
+   /* The dots/bullets/indicators */
+   .dot {
+     cursor: pointer;
+     height: 15px;
+     width: 15px;
+     margin: 0 2px;
+     background-color: #bbb;
+     border-radius: 50%;
+     display: inline-block;
+     transition: background-color 0.6s ease;
+   }
+   
+   .active2, .dot:hover {
+     background-color: #da4265;
+   }
+   
+   /* Fading animation */
+   .fade {
+     -webkit-animation-name: fade;
+     -webkit-animation-duration: 100000s;
+     animation-name: fade;
+     animation-duration: 100000s;
+   }
+   
+   @-webkit-keyframes fade {
+     from {opacity: 1} 
+     to {opacity: 1}
+   }
+   
+   @keyframes fade {
+     from {opacity: 1} 
+     to {opacity: 1}
+   }
+   
+   /* On smaller screens, decrease text size */
+   @media only screen and (max-width: 300px) {
+     .prev, .next, .text {font-size: 11px}
+   }
+   #shopItemsSlideByCategoryDiv{
+    margin: 50px auto;
+    height: 1190px;
+   }
+   .cateText {
+       color: black;
+       font-size: 30px;
+       margin-left: 3%;
+       font-family: 'Song Myung', serif;
+   }
+   /*슬라이드 카테고리 끝*/
+   
+   
+   #shopItemsAccordionDiv{
+     margin-top: 30px;
+   }
+   
+   .space-evenly{
+     justify-content: space-evenly;
+   }
+   
+   .carousel-item > img{
+   	 height: 618px;
+   }
+   .carousel-item {
+   	height: 618px;
+   }
+   .shop-item-img + div p{
+   	height: 73px;
+   }
