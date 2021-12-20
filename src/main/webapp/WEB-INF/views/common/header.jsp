@@ -104,7 +104,7 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/shop/shopMain.do">Shop</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="about.html">About</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/about.do">About</a>
           </li>
           <li class="nav-item">
 			  <div class="search-box">
