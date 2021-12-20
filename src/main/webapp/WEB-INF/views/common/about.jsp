@@ -12,24 +12,21 @@
 <style>
 .about-container{
 	margin : 0 10% 0 10%;
-	padding-top : 10%;	
+	padding-top : 5%;	
 }
 .about-detail{
 	width : 50%;
 	margin : 5% 0 5% 10%;
 }
-.about-title-img{
-	position: absolute;
-    z-index: -999;
-    opacity: 0.5;
-    right: -15rem;
-    top: 12rem;
+.about-title{
+	margin-left : 10%;
+	font-weight : 700;
 }
 </style>
 <div class="about-container">
 	<div class="about-page">
-		<img src="${pageContext.request.contextPath }/resources/images/developer.jpg" alt="" class="w-75 img-thumbnail about-title-img"/>
-		<h2 class="">더 나은 개발 라이프를 위한 적절한 해결책</h2>
+		<h2 class="about-title mb-5">더 나은 개발 라이프를 위한 적절한 해결책</h2>
+		<img src="${pageContext.request.contextPath }/resources/images/developer.jpg" alt="" class="w-75 img-thumbnail about-title-img d-block mx-auto"/>
 		<div class="about-detail">
 			<strong>데브런은 개발자 개개인의 보다 나은 개발 라이프를 지원합니다.</strong> 
 			<br />
@@ -62,6 +59,7 @@
 			같이 가치를 이해하고, 공유하는 사람들과 의견을 나누어 보세요.
 			
 		</div>
+		
 	</div>
 	<section class="section-testimonials section-t8 nav-arrow-a">
     <div class="container">
