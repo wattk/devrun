@@ -52,8 +52,8 @@
 			<p class="text-right mt-3 mb-1">총 <span class="text-primary">00</span> 건의 자주 묻는 질문이 있습니다.</p>
 			
 			<!-- 선택에 따른 값 불러오기 - 아코디언 형식 -->
-			<table class="table table-condensed" style="border-collapse:collapse;">
-			    <thead>
+			<table class="table">
+				<thead>
 			        <tr>
 			            <th>번호</th>
 			            <th>분류</th>
@@ -61,137 +61,137 @@
 			        </tr>
 			    </thead>
 			    <tbody>
-			        <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+			    	<tr class="faq-title">
 			            <td>1</td>
 			            <td>쇼핑몰</td>
 			            <td>제목제목제목제목제목제목제목제목</td>
 			        </tr>
-			        <tr >
+			        <tr class="faq-content">
 			            <td colspan="3" class="hiddenRow">
-			            	<div class="accordian-body collapse" id="demo1">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-					
-			        <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
-			            <td>2</td>
-			            <td>커뮤니티</td>
-			            <td>제목</td>
-			        </tr>
-			        <tr>
-			            <td colspan="3" class="hiddenRow">
-			            	<div id="demo2" class="accordian-body collapse">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-					
-			        <tr data-toggle="collapse" data-target="#demo3" class="accordion-toggle">
-			            <td>3</td>
-			            <td>기타</td>
-			            <td>제목</td>
-			        </tr>
-			        <tr>
-			            <td colspan="3"  class="hiddenRow">
-			            	<div id="demo3" class="accordian-body collapse">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			
-			        <tr data-toggle="collapse" data-target="#demo4" class="accordion-toggle">
-			            <td>4</td>
-			            <td>쇼핑몰</td>
-			            <td>제목</td>
-			        </tr>
-			        <tr>
-			            <td colspan="3"  class="hiddenRow">
-			            	<div id="demo4" class="accordian-body collapse">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			
-			        <tr data-toggle="collapse" data-target="#demo5" class="accordion-toggle">
-			            <td>5</td>
-			            <td>커뮤니티</td>
-			            <td>제목</td>
-			        </tr>
-			        <tr>
-			            <td colspan="3"  class="hiddenRow">
-			            	<div id="demo5" class="accordian-body collapse">
+			            	<div class="">
 			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
 			            	</div>
 			            </td>
 			        </tr>
 			        
-			        <tr data-toggle="collapse" data-target="#demo6" class="accordion-toggle">
-			            <td>6</td>
+			        <tr class="faq-title">
+			            <td>1</td>
 			            <td>쇼핑몰</td>
 			            <td>제목제목제목제목제목제목제목제목</td>
 			        </tr>
-			        <tr >
+			        <tr class="faq-content">
 			            <td colspan="3" class="hiddenRow">
-			            	<div class="accordian-body collapse" id="demo6">
+			            	<div class="">
 			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
 			            	</div>
 			            </td>
 			        </tr>
-					
-			        <tr data-toggle="collapse" data-target="#demo7" class="accordion-toggle">
-			            <td>7</td>
-			            <td>커뮤니티</td>
-			            <td>제목</td>
-			        </tr>
-			        <tr>
-			            <td colspan="3" class="hiddenRow">
-			            	<div id="demo7" class="accordian-body collapse">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-					
-			        <tr data-toggle="collapse" data-target="#demo8" class="accordion-toggle">
-			            <td>8</td>
-			            <td>기타</td>
-			            <td>제목</td>
-			        </tr>
-			        <tr>
-			            <td colspan="3"  class="hiddenRow">
-			            	<div id="demo8" class="accordian-body collapse">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			
-			        <tr data-toggle="collapse" data-target="#demo9" class="accordion-toggle">
-			            <td>9</td>
+			        
+			        <tr class="faq-title">
+			            <td>1</td>
 			            <td>쇼핑몰</td>
-			            <td>제목</td>
+			            <td>제목제목제목제목제목제목제목제목</td>
 			        </tr>
-			        <tr>
-			            <td colspan="3"  class="hiddenRow">
-			            	<div id="demo9" class="accordian-body collapse">
+			        <tr class="faq-content">
+			            <td colspan="3" class="hiddenRow">
+			            	<div class="">
 			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
 			            	</div>
 			            </td>
 			        </tr>
-			
-			        <tr data-toggle="collapse" data-target="#demo10" class="accordion-toggle">
-			            <td>10</td>
-			            <td>커뮤니티</td>
-			            <td>제목</td>
+			        
+			        <tr class="faq-title">
+			            <td>1</td>
+			            <td>쇼핑몰</td>
+			            <td>제목제목제목제목제목제목제목제목</td>
 			        </tr>
-			        <tr>
-			            <td colspan="3"  class="hiddenRow">
-			            	<div id="demo10" class="accordian-body collapse">
+			        <tr class="faq-content">
+			            <td colspan="3" class="hiddenRow">
+			            	<div class="">
 			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
 			            	</div>
 			            </td>
-			        </tr>	
+			        </tr>
+			        
+			        <tr class="faq-title">
+			            <td>1</td>
+			            <td>쇼핑몰</td>
+			            <td>제목제목제목제목제목제목제목제목</td>
+			        </tr>
+			        <tr class="faq-content">
+			            <td colspan="3" class="hiddenRow">
+			            	<div class="">
+			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
+			            	</div>
+			            </td>
+			        </tr>
+			        
+			        <tr class="faq-title">
+			            <td>1</td>
+			            <td>쇼핑몰</td>
+			            <td>제목제목제목제목제목제목제목제목</td>
+			        </tr>
+			        <tr class="faq-content">
+			            <td colspan="3" class="hiddenRow">
+			            	<div class="">
+			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
+			            	</div>
+			            </td>
+			        </tr>
+			        
+			        <tr class="faq-title">
+			            <td>1</td>
+			            <td>쇼핑몰</td>
+			            <td>제목제목제목제목제목제목제목제목</td>
+			        </tr>
+			        <tr class="faq-content">
+			            <td colspan="3" class="hiddenRow">
+			            	<div class="">
+			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
+			            	</div>
+			            </td>
+			        </tr>
+			        
+			        <tr class="faq-title">
+			            <td>1</td>
+			            <td>쇼핑몰</td>
+			            <td>제목제목제목제목제목제목제목제목</td>
+			        </tr>
+			        <tr class="faq-content">
+			            <td colspan="3" class="hiddenRow">
+			            	<div class="">
+			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
+			            	</div>
+			            </td>
+			        </tr>
+			        
+			        <tr class="faq-title">
+			            <td>1</td>
+			            <td>쇼핑몰</td>
+			            <td>제목제목제목제목제목제목제목제목</td>
+			        </tr>
+			        <tr class="faq-content">
+			            <td colspan="3" class="hiddenRow">
+			            	<div class="">
+			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
+			            	</div>
+			            </td>
+			        </tr>
+			        
+			        <tr class="faq-title">
+			            <td>1</td>
+			            <td>쇼핑몰</td>
+			            <td>제목제목제목제목제목제목제목제목</td>
+			        </tr>
+			        <tr class="faq-content">
+			            <td colspan="3" class="hiddenRow">
+			            	<div class="">
+			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
+			            	</div>
+			            </td>
+			        </tr>
 			    </tbody>
-			</table>
+		    </table>
 			<!-- 선택에 따른 값 불러오기 - 아코디언 형식 끝 -->
 			
 			<%-- 시간 된다면 페이징 까지 해보기 (필수는 아님) --%>
@@ -218,22 +218,13 @@
 			  </ul>
 			</nav>
 			<!-- 페이징 끝 -->
-			
 
 		</div>
 		<!-- 본문 끝 -->
+		
 	</div>
 
 </div>
 
-<script>
-// 작동안함.
-/* $('.accordian-body').on('show.bs.collapse', function () {
-    $(this).closest("table")
-        .find(".collapse.in")
-        .not(this)
-        .collapse('toggle')
-}) */
-</script>
-
+<script src="${pageContext.request.contextPath }/resources/js/customerCenter/customerCenter.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

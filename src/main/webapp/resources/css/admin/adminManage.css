@@ -11,3 +11,8 @@
 .order-search-container>label{
 	margin-right : 0.5rem;
 }
+
+/*리뷰 신고*/
+.report-save-btn{
+	margin-right : 5%;
+}

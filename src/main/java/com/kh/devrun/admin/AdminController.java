@@ -35,6 +35,24 @@ public class AdminController {
 	
 	@GetMapping("/shipmentManage.do")
 	public void shipmentManage() {}
+	
+	@GetMapping("/reviewReport.do")
+	public String reviewReport() {
+		
+		return "/admin/report/reviewReport";
+	}
+	
+	@GetMapping("/boardReport.do")
+	public String boardReport() {
+		
+		return "/admin/report/boardReport";
+	}
+	
+	@GetMapping("/blacklistReport.do")
+	public String blacklistReport() {
+		
+		return "/admin/report/blacklistReport";
+	}
 	/**
 	 * 혜진 끝
 	 */
