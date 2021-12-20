@@ -34,22 +34,16 @@
         <div class="col-sm-12 col-md-4 section-md-t3">
           <div class="widget-a">
             <div class="w-header-a">
-              <h3 class="w-title-a text-brand">FAQ</h3>
+              <h3 class="w-title-a text-brand">CUSTOMER CENTER</h3>
             </div>
             <div class="w-body-a">
               <div class="w-body-a">
                 <ul class="list-unstyled">
                   <li class="item-list-a">
-                    <i class="fa fa-angle-right"></i> <a href="#">자주 묻는 질문</a>
+                    <i class="fa fa-angle-right"></i> <a href="${pageContext.request.contextPath}/customerCenter/noticeList.do">공지사항</a>
                   </li>
                   <li class="item-list-a">
-                    <i class="fa fa-angle-right"></i> <a href="#">쇼핑몰</a>
-                  </li>
-                  <li class="item-list-a">
-                    <i class="fa fa-angle-right"></i> <a href="#">커뮤니티</a>
-                  </li>
-                  <li class="item-list-a">
-                    <i class="fa fa-angle-right"></i> <a href="#">공지사항</a>
+                    <i class="fa fa-angle-right"></i> <a href="${pageContext.request.contextPath}/customerCenter/faq.do">자주 묻는 질문</a>
                   </li>
                 </ul>
               </div>
