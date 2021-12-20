@@ -1,4 +1,5 @@
-   /*반응형 사이드바 시작*/
+window.onload = function(){ 
+	  /*반응형 사이드바 시작*/
    var slideMq = window.matchMedia("(min-width: 479px)");
   
   /* Sliding side navigation */
@@ -54,9 +55,12 @@
     }
   });  
    /*반응형 사이드바 끝*/
+	 
+
    
    /*실시간 순위 시작*/
    $(function() {
+	console.log("js작동하나요?")
        var count = $('#rank-list li').length;
        var height = $('#rank-list li').height();
    
@@ -110,3 +114,7 @@
      dots[slideIndex-1].className += " active2";
    }
    /*상품 카테고리 슬라이드 끝 */
+	
+}
+ 
+ 
