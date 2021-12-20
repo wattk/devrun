@@ -1,0 +1,13 @@
+@charset "UTF-8";
+.admin-tbl{
+	width : 90%;
+}
+.admin-tbl th, .admin-tbl td{
+	padding: 0.5rem;
+	border: 1px solid #e3e6f0;
+}
+
+/*주문 내역 관리 페이지*/
+.order-search-container>label{
+	margin-right : 0.5rem;
+}

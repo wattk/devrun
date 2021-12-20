@@ -9,15 +9,7 @@
 <jsp:include page="/WEB-INF/views/admin/admin-common/header.jsp">
 	<jsp:param value="배송관리" name="title"/>
 </jsp:include>
-<style>
-.shipment-tbl{
-	width : 90%;
-}
-.shipment-tbl th, .shipment-tbl td{
-	padding: 0.5rem;
-	border: 1px solid #e3e6f0;
-}
-</style>
+<link href="${pageContext.request.contextPath }/resources/css/admin/orderManage.css" rel="stylesheet"/>
 <div class="shipment-container">
 	<h3 class="m-5">배송내역</h3>
 </div>
@@ -53,7 +45,7 @@
 <hr class="w-100"/>
 <div class="shipment-list">
 	<strong class="m-5">배송 목록</strong>
-	<table class="shipment-tbl table table-hover mx-auto mt-3">
+	<table class="admin-tbl table table-hover mx-auto mt-3">
 	  <thead>
 	    <tr>
 	      <th scope="col">배송 번호</th>
