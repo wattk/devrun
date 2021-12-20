@@ -174,7 +174,7 @@
   
     /*실시간 순위 시작*/ 
    #content {
-       margin: 20px;
+       margin: 30px;
        padding: 10px;
        background: #393;
    }
@@ -243,10 +243,11 @@
        border-radius: 30;
    }
    #iconBoxDiv{
-       border: solid;
+       border: solid 5px sandybrown;
        width: 85%;
        margin-left: 50px;
        margin: auto;
+       padding: 5px 5px;
    }
    .icon {
        width: 70px;
@@ -259,8 +260,17 @@
    #shopMainMidEventBannerDiv{
        display: table;
        margin: auto auto;
+	   width: 100%;
+	   background-color: lightcoral;
+	   text-align: center;
+	   padding: 10px 10px;
+	}
+	
+	#shopMainMidEventBannerDiv img {
+	   width: 1300px;
+       height: 160px;
+	}
        
-   }
    #shopMostSearchedKeywordDiv{
        margin-left: 50px;
        margin-top: 60px;
@@ -430,7 +440,7 @@
    }
    
    .active2, .dot:hover {
-     background-color: #717171;
+     background-color: #da4265;
    }
    
    /* Fading animation */
@@ -473,6 +483,13 @@
    
    .space-evenly{
      justify-content: space-evenly;
+   }
+   
+   .carousel-item > img{
+   	 height: 618px;
+   }
+   .carousel-item {
+   	height: 618px;
    }
    </style>
    
@@ -611,22 +628,22 @@
     
            <!--구분-->
            <div id="shopitemsDiv">
-               <div id="shopEventSlideDiv">
+               <div id="shopEventSlideDiv" >
                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                        <ol class="carousel-indicators">
                          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                        </ol>
-                       <div class="carousel-inner" s>
+                       <div class="carousel-inner">
                          <div class="carousel-item active">
                            <img class="d-block w-100" src="https://i.ibb.co/cDFYP1c/image.jpg" alt="First slide">
                          </div>
                          <div class="carousel-item">
-                           <img class="d-block w-100" src="https://i.ibb.co/cDFYP1c/image.jpg" alt="Second slide">
+                           <img class="d-block w-100"  src="https://i.ibb.co/MDTWkNY/2.png" alt="Second slide">
                          </div>
                          <div class="carousel-item">
-                           <img class="d-block w-100" src="https://i.ibb.co/cDFYP1c/image.jpg" alt="Third slide">
+                           <img class="d-block w-100" src="https://i.ibb.co/3F96Sy0/3.png" alt="Third slide">
                          </div>
                        </div>
                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
