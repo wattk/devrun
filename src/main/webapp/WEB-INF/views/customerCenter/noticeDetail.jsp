@@ -10,50 +10,7 @@
 	<jsp:param value="공지사항 상세" name="title"/>
 </jsp:include>
 
-<style>
-/* 고객센터 본문 */
-.customer-center {
-	margin-top: 145px;
-}
-
-.customer-center h2 {
-	font-size: 1.375rem;
-	color: #414141;
-	font-weight: 700;
-}
-
-/* 공지사항 상세 */
-.notice-detail h3 {
-	font-size: 1.2rem;
-}
-
-.notice-detail .notice-header {
-	padding: 20px;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #ddd;
-    background-color: #f6f6f6;
-}
-
-.notice-detail .notice-header p {
-	font-size: 0.9rem;
-	margin-bottom: 0;
-}
-
-.notice-detail .notice-content {
-	padding: 27px 20px;
-    border-bottom: 1px solid #ddd;
-}
-
-.notice-detail .notice-list {
-	height: 48px;
-    font-size: 18px;
-    padding: 0 40px;
-    line-height: 48px;
-    color: #ffffff;
-    background: #484848;
-    border: 1px solid #484848;
-}
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/customerCenter/customerCenter.css" />
 
 <div class="container customer-center">
 	<div class="row">

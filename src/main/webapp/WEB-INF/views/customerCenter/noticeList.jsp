@@ -10,32 +10,7 @@
 	<jsp:param value="공지사항" name="title"/>
 </jsp:include>
 
-<style>
-/* 고객센터 본문 */
-.customer-center {
-	margin-top: 145px;
-}
-
-.customer-center h2 {
-	font-size: 1.375rem;
-	color: #414141;
-	font-weight: 700;
-}
-
-.customer-center .search {
-	border-top: 2px solid #414141;
-}
-
-.customer-center .search-form > input {
-	width: 85%;
-}
-
-.customer-center .search-form > button {
-	margin-left: 1%;
-	width: 14%;
-}
-
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/customerCenter/customerCenter.css" />
 
 <div class="container customer-center">
 	<div class="row">

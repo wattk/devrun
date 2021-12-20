@@ -10,49 +10,7 @@
 	<jsp:param value="자주 묻는 질문" name="title"/>
 </jsp:include>
 
-<style>
-/* 고객센터 본문 */
-.customer-center {
-	margin-top: 145px;
-}
-
-.customer-center h2 {
-	font-size: 1.375rem;
-	color: #414141;
-	font-weight: 700;
-}
-
-.faq .nav li {
-	border-radius: 0.25rem;
-	background: #eee;
-	margin: 0 1%;
-}
-
-.faq .nav li:first-child {
-	margin-left: 0;
-}
-
-.faq .nav li:last-child {
-	margin-right: 0;
-}
-
-.faq .navbar {
-	justify-content: center;
-}
-
-.faq .navbar input {
-	width: 260px;
-}
-
-.faq table tr {
-	cursor: pointer;
-}
-
-.faq table .hiddenRow {
-	padding: 0 4px !important;
-    background-color: #eeeeee;
-}
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/customerCenter/customerCenter.css" />
 
 <div class="container customer-center">
 	<div class="row">
