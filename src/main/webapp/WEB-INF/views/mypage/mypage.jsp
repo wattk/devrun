@@ -19,7 +19,8 @@ main {height:1500px; background:linear-gradient(to top, white 70%, #1A81FF 30%);
 #tabContainer div.col-9 {border-left:1px solid #E0E0E0;}
 #tabContainer div.card {padding:20px; margin-bottom:40px; border-radius:10px;}
 
-#profileImg .bi {font-size:100px; color:#1A81FF;}
+#profileImg i:first-child {font-size:100px; color:#1A81FF;}
+#profileImg img:first-child {font-size:100px;}
 
 #myGrade img {width:40px; height:40px;}
 #myGrade span {display:block; width:80px; margin:0 auto; border:1px solid black; border-radius:20px; background-color:#66ABFF;}
@@ -64,7 +65,8 @@ main {height:1500px; background:linear-gradient(to top, white 70%, #1A81FF 30%);
 			       			<!-- 프로필 이미지 : 프로필 이미지가 null일 경우, 기본 이미지 출력 -->
 			       			<div id="profileImg">
 			       				<c:if test="${member.proPhoto eq null}"><i class="bi bi-person-circle"></i></c:if>
-					       		<c:if test="${member.proPhoto ne null}"><img src="${member.proPhoto}" alt="" /></c:if>
+					       		<c:if test="${member.proPhoto ne null}"><img src="${member.proPhoto}" alt=""/></c:if>
+					       		<i class="bi bi-pencil-square"></i>
 					        </div>
 					        <div>
 					        	<div onclick="location.href='#';">${member.nickname}님<i class="bi bi-chevron-right"></i></div>
@@ -115,7 +117,7 @@ main {height:1500px; background:linear-gradient(to top, white 70%, #1A81FF 30%);
 			       			<span class="row" id="myActivity">
 				       			<span class="col-6 row" onclick="location.href='#';">
 					       			<span class="bi bi-envelope"> &nbsp; 쪽지</span>
-					       			<span>건<i class="bi bi-chevron-right"></i></span>
+					       			<span>${totalMessage}건<i class="bi bi-chevron-right"></i></span>
 				       			</span>
 					       		<span class="col-6 row" onclick="location.href='#';">
 						       		<span class="bi bi-coin"> &nbsp; 포인트</span>
