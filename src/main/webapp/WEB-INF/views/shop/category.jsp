@@ -15,7 +15,9 @@
 <link href="${pageContext.request.contextPath}/resources/css/shop/shopMain.css" rel="stylesheet">
 
 
-
+<!-- shopSideBox 관련 임포트 -->
+<jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
 
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
 <div class="shop-container">

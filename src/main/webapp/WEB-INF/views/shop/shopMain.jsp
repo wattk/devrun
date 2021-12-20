@@ -15,12 +15,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script>
 
 
-<!-- 구글폰트 -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
-
 <!-- css 임포트 -->
 <link href="${pageContext.request.contextPath}/resources/css/shop/shopMain.css" rel="stylesheet">
 
