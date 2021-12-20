@@ -34,4 +34,9 @@ public class HomeController {
 	
 	@RequestMapping(value = "/common/search.do", method = RequestMethod.GET)
 	public void search() {}
+	
+	@RequestMapping(value = "/about.do", method = RequestMethod.GET)
+	public String about() {
+		return "/common/about";
+	}
 }
