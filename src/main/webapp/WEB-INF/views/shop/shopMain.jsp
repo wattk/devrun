@@ -34,7 +34,7 @@
     font-size: 1.5rem;}
   
   #slidingSideNav.overlay {
-    top: 90px;
+      top: 210px;
       height: 100%;
       width: 0%;
   }
@@ -1429,7 +1429,7 @@
    function openSideNav() {
   if (slideMq.matches) {
     /* the viewport is at least 479 pixels wide */
-    document.getElementById("slidingSideNav").style.width = "40%";
+    document.getElementById("slidingSideNav").style.width = "30%";
     
   } else {
     /* the viewport is less than 479 pixels wide */
