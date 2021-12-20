@@ -51,8 +51,11 @@
 }
 
 .faq table .hiddenRow {
-	padding: 0 4px !important;
     background-color: #eeeeee;
+}
+
+.faq-content {
+    display: none;
 }
 /* faq 끝 */
 
