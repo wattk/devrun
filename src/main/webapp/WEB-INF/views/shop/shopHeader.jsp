@@ -22,37 +22,67 @@
                     <a href="" class="subCategory"><span style="font-size: 15px;">신상품</span></a>
                     <a href="" class="subCategory" style="padding-top: 0;"><span style="font-size: 15px;">할인상품</span></a>
                     <aside class="accordion">
-                      <h1>모니터</h1>
-                      <div>
-                        <a href="">Sub Category</a>
-                        <a href="">Sub Category</a>
-                        <a href="">Sub Category</a>
-                        <a href="">Sub Category</a>
-                      </div>
+                    	<h1>모니터</h1>
+							<div>
+								<a style="margin-left: 16px;" href="${pageContext.request.contextPath}/shop/shopCategory.do">전체보기</a>
+								<h2>해상도별 보기</h2>
+								<div>
+									<ul>
+										<li>
+											<a href="#">1920*1080(FHD)</a>
+										</li>
+										<li>
+											<a href="#">2560*1440(QHD)</a>
+										</li>
+									</ul>
+								</div>
+								<h2>화면크기별 보기</h2>
+								<div>
+									<ul>
+										<li>
+											<a href="#">61cm(24인치)</a>
+										</li>
+										<li>
+											<a href="#">68cm(27인치)</a>
+										</li>
+									</ul>
+								</div>
+								<h2>사용별 보기</h2>
+								<div>
+									<ul>
+										<li>
+											<a href="#">게이밍 모니터</a>
+										</li>
+										<li>
+											<a href="#">휴대용모니터</a>
+										</li>
+									</ul>
+								</div>								
+							</div>
                       <h1>키보드</h1>
                       <div>
-                        <a href="">Sub Category</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopCategory.do">전체보기</a>
                         <a href="">Sub Category</a>
                         <a href="">Sub Category</a>
                         <a href="">Sub Category</a>
                       </div>
                       <h1>마우스</h1>
                       <div>
-                        <a href="">Sub Category</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopCategory.do">전체보기</a>
                         <a href="">Sub Category</a>
                         <a href="">Sub Category</a>
                         <a href="">Sub Category</a>
                       </div>
                       <h1>책상</h1>
                       <div>
-                        <a href="">Sub Category</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopCategory.do">전체보기</a>
                         <a href="">Sub Category</a>
                         <a href="">Sub Category</a>
                         <a href="">Sub Category</a>
                       </div>
                       <h1>의자</h1>
                       <div>
-                        <a href="">Sub Category</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopCategory.do">전체보기</a>
                         <a href="">Sub Category</a>
                         <a href="">Sub Category</a>
                         <a href="">Sub Category</a>
