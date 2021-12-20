@@ -18,7 +18,18 @@ public class shopController {
 		
 	}
 	
+	/**
+	 * 혜진 작업 시작
+	 */
 	@GetMapping("/search.do")
 	public void search() {}
+	
+	@GetMapping("/category.do")
+	public void category() {}
+	
+	/**
+	 * 혜진 작업 끝
+	 */
+	
 
 }
