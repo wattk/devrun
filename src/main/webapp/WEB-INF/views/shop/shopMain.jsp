@@ -898,6 +898,10 @@
 
 
 
+<!-- js 임포트 -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script>
+
+
 <!-- footer 임포트 -->
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 <!-- footer 임포트 -->
