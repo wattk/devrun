@@ -38,10 +38,10 @@ public class CommunityController {
 	}	
 	
 	// 커뮤니티-칼럼
-	@GetMapping("/communityColumn.do")
-	public String communityColumn() {
+	@GetMapping("/communityColumnList.do")
+	public String communityColumnList() {
 		
-		return "community/communityColumn";
+		return "community/communityColumnList";
 	}
 	
 	// 커뮤니티-칼럼-글쓰기

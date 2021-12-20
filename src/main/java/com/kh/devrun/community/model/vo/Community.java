@@ -16,9 +16,6 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Community implements Serializable {
 
-	/**
-	 * communityEntity는 냅두고 확장해서 사용한다.
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private int communityNo;
