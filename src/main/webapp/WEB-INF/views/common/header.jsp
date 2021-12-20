@@ -155,20 +155,6 @@
 				    </form:form>
 	              </a>
 	            </div>
-			    <%--   <a href="${pageContext.request.contextPath}/member/memberDetail.do">
-			      	
-			      </a> 
-			      <div id="navLoginContainer">      		
-			    	<a class="btn btn-primary log-con" id ="navDetail" href="${pageContext.request.contextPath}/member/memberDetail.do">내 정보</a>
-				    <form:form
-				    	id="navLogoutFrm"
-				    	method="POST"
-				    	action="${pageContext.request.contextPath}/member/memberLogout.do">
-				    	<button
-				    		class="btn btn-primary log-con"
-				    		type="submit">로그아웃</button>
-				    </form:form>
-			      </div> --%>		
 			 </sec:authorize>
           </li>
         </ul>
