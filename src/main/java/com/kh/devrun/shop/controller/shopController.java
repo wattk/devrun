@@ -17,5 +17,8 @@ public class shopController {
 		return "shop/shopMain";
 		
 	}
+	
+	@GetMapping("/search.do")
+	public void search() {}
 
 }

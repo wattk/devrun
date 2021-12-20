@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <fmt:requestEncoding value="utf-8"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CommunityMainPage</title>
     
-    <link href="${pageContext.request.contextPath}/resources/css/community/communityMain.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
     
 	<!-- bootstrap js: jquery load 이후에 작성할것.-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -23,18 +24,23 @@
 </head>
 
 <body>
+  <!-- 사이드바 -->
   <div id="page-wrapper">
-    <!-- 사이드바 -->
     <div id="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
           <a href="${pageContext.request.contextPath}/community/communityMain.do">Community</a>
         </li>
-        <li><a href="${pageContext.request.contextPath}/community/communityColumn.do">칼럼</a></li>
+        <li><a href="${pageContext.request.contextPath}/community/communityColumnList.do">칼럼</a></li>
+        
+        <!-- 권한 부여 해야함 -->
+		<li><a href="${pageContext.request.contextPath}/community/communityColumnForm.do">글쓰기</a></li>
+		
         <li><a href="${pageContext.request.contextPath}/community/communityQnA.do">Q&A</a></li>
         <li><a href="${pageContext.request.contextPath}/community/communityStudy.do">스터디</a></li>
         <li><a href="${pageContext.request.contextPath}/community/communityBoard.do">자유게시판</a></li>
       </ul>
     </div>
-    <!-- /사이드바 -->
+  
+  <!-- </div> -->
 </body>

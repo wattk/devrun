@@ -94,7 +94,7 @@
               aria-haspopup="true" aria-expanded="false">Community</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityMain.do">전체</a>
-              <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityColumn.do">칼럼</a>
+              <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityColumnList.do">칼럼</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityQnA.do">Q&A</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityStudy.do">스터디</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityBoard.do">자유게시판</a>
@@ -134,7 +134,7 @@
 	   	            <a class="" href="#">[<sec:authentication property="principal.nickname"/>]</a><span class="">님 안녕하세요</span>
 		      	</div>
 	            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-	              <a class="dropdown-item" href="${pageContext.request.contextPath}/member/memberDetail.do">마이페이지</a>
+	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage">마이페이지</a>
 	              <a class="dropdown-item" href="#">쪽지</a>
 	              <a class="dropdown-item" href="#">주문/배송</a>
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/member/cart.do">장바구니</a>

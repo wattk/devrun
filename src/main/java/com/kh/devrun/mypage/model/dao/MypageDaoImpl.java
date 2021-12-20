@@ -9,5 +9,10 @@ public class MypageDaoImpl implements MypageDao {
 
 	@Autowired
 	private SqlSession session;
+
+	@Override
+	public int selectMessageTotalCount(int memberNo2) {
+		return session.selectOne("mypage.selectMessageTotalCount", memberNo2);
+	}
 	
 }
