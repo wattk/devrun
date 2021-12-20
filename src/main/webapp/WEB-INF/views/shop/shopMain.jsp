@@ -516,7 +516,7 @@
   
   
            <!--쇼핑몰 헤더부분-->
-           <div class = "row col-md-12 space-evenly" id="shopHeaderBarDiv" style="background-color: #f8f9fa">
+           <div class = "row col-12 space-evenly" id="shopHeaderBarDiv" style="background-color: #f8f9fa">
                <div class = "col-md-1" id="sideMenuBtnDiv">           
                    <!--반응형 사이드바 시작-->
                    <div>
