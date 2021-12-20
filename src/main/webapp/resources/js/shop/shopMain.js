@@ -1,4 +1,4 @@
-window.onload = function(){ 
+
 	  /*반응형 사이드바 시작*/
    var slideMq = window.matchMedia("(min-width: 479px)");
   
@@ -115,6 +115,4 @@ window.onload = function(){
    }
    /*상품 카테고리 슬라이드 끝 */
 	
-}
- 
  

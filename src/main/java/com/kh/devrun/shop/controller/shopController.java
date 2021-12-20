@@ -21,10 +21,10 @@ public class shopController {
 	/**
 	 * 혜진 작업 시작
 	 */
-	@GetMapping("/search.do")
+	@GetMapping("/shopSearch.do")
 	public void search() {}
 	
-	@GetMapping("/category.do")
+	@GetMapping("/shopCategory.do")
 	public void category() {}
 	
 	/**
