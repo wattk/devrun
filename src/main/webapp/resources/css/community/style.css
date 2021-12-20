@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-/* 사이드바 래퍼 스타일 */
+/* 사이드바 래퍼 스타일*/
 
 #page-wrapper {
   padding-left: 250px;
@@ -12,19 +12,19 @@
   height: 100%;
   margin-left: -250px;
   background: #1467CC;
-  overflow-x: hidden;
-  overflow-y: auto;
+
 }
 
 #page-content-wrapper {
   width: 100%;
   padding: 20px;
 }
+
 /* 사이드바 스타일 */
  
 .sidebar-nav {
   width: 250px;
-  margin: 200px 0px;
+  margin: 100px 0px;
   padding: 0;
   list-style: none;
 }
@@ -52,5 +52,10 @@
   font-size: 1.3em;
   line-height: 3em;
   margin-bottom: 50px;
+}
+
+/* 페이지 버튼 가운데 정렬 */
+.pagination {
+	justify-content: center;
 }
 
