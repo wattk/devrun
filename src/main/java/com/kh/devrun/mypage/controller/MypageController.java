@@ -39,4 +39,15 @@ public class MypageController {
 			return "redirect:error.do";
 		}
 	}
+	
+	/**
+	 * 혜진 교환/환불/취소 시작
+	 */
+	
+	@GetMapping("/claim.do")
+	public void claim() {}
+	
+	/**
+	 * 혜진 교환/환불/취소 끝
+	 */
 }

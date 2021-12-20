@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+/* 통합검색 */
+#resultText{
+	border-top : 1px solid rgba(0,0,0,.125);
+	border-bottom : 1px solid rgba(0,0,0,.125);
+}
+.shop-like-icon{
+	bottom : 3%;
+	left : 5%;
+	font-size : 30px;
+}
+.shop-cart-icon{
+	bottom : 3%;
+	right : 5%;
+	font-size : 30px;
+}
+i:hover{
+	color : #66ABFF;
+}
+.list-group-item{
+	border: 0;
+}
+
+/* 상품검색 */
+.shop-container{
+	margin : 0 10% 0 10%;
+}
+.shop-sort:not(last-of-type) {
+	border-right : 1px solid rgba(0,0,0,.125);
+}
