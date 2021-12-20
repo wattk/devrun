@@ -10,5 +10,10 @@ public class MypageServiceImpl implements MypageService {
 
 	@Autowired
 	private MypageDao mypageDao;
+
+	@Override
+	public int selectMessageTotalCount(int memberNo2) {
+		return mypageDao.selectMessageTotalCount(memberNo2);
+	}
 	
 }
