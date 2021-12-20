@@ -18,8 +18,15 @@ public class AdminController {
 	public String productManage() {
 		
 		
-		return "/admin/product/product";
+		return "/admin/product/productMain";
 	}
+	@GetMapping("/insertProduct.do")
+	public String insertProduct() {
+		
+		
+		return "/admin/product/insertProduct";
+	}
+	
 	
 	
 }
