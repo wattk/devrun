@@ -26,6 +26,21 @@ i:hover{
 .shop-container{
 	margin : 0 10% 0 10%;
 }
-.shop-sort:not(last-of-type) {
+.shop-sort:not(:last-of-type) {
 	border-right : 1px solid rgba(0,0,0,.125);
+}
+
+/* 상품 대/소분류 페이지 */
+.category-container{
+	border : 1px solid rgba(0,0,0,.125);
+	height : 5rem;
+}
+.category-badge{
+	font-size : 15px;
+	font-weight : 400;
+}
+.banner{
+	width : 1300px;
+	height : 170px;
+	background-color: lime;
 }
