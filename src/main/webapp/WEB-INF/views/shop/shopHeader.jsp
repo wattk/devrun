@@ -95,7 +95,7 @@
                </div>
                <div id="shopSerachDiv">
                    <nav class="navbar navbar-light bg-light">
-                       <form class="form-inline" action="${pageContext.request.contextPath}/shop/search.do"> 
+                       <form class="form-inline" action="${pageContext.request.contextPath}/shop/shopSearch.do"> 
                          <input class="form-control mr-sm-2" type="search" placeholder="검색어를 입력하세요" aria-label="Search">
                          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                        </form>
