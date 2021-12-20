@@ -306,8 +306,8 @@
                 <div id="collapseOrder" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="utilities-color.html">주문 관리</a>
-                        <a class="collapse-item" href="utilities-border.html">배송 관리</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/orderManage.do">주문 관리</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/shipmentManage.do">배송 관리</a>
                     </div>
                 </div>
             </li>

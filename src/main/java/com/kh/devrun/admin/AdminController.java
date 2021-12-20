@@ -27,6 +27,16 @@ public class AdminController {
 		return "/admin/product/insertProduct";
 	}
 	
+	/**
+	 * 혜진 시작 
+	 */
+	@GetMapping("/orderManage.do")
+	public void orderManage() {}
 	
+	@GetMapping("/shipmentManage.do")
+	public void shipmentManage() {}
+	/**
+	 * 혜진 끝
+	 */
 	
 }
