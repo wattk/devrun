@@ -13,4 +13,13 @@ public class AdminController {
 	
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
+	
+	@GetMapping("/productManage.do")
+	public String productManage() {
+		
+		
+		return "/admin/product/product";
+	}
+	
+	
 }
