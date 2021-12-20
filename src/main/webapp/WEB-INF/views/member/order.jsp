@@ -72,10 +72,10 @@
 	    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#orderAccordion">
 	      <div class="card-body">
 	      	<ul class="list-group">
-			  <li class="list-group-item">이름 : <input type="text" class="order-form-control" name="" id="" /></li>
-			  <li class="list-group-item">이메일 : <input type="text" class="order-form-control" name="" id="" /></li>
-			  <li class="list-group-item">전화번호 : <input type="text" class="order-form-control" name="" id="" /></li>
-			  <li class="list-group-item">상세주소 : <input type="text" class="order-form-control" name="" id="" /></li>
+			  <li class="address-item list-group-item">이름 : <input type="text" class="order-form-control" name="" id="" /></li>
+			  <li class="address-item list-group-item">이메일 : <input type="text" class="order-form-control" name="" id="" /></li>
+			  <li class="address-item list-group-item">전화번호 : <input type="text" class="order-form-control" name="" id="" /></li>
+			  <li class="address-item list-group-item">상세주소 : <input type="text" class="order-form-control" name="" id="" /></li>
 			</ul>
 		    <button 
 		  	  type="button" 
@@ -115,7 +115,7 @@
   		<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-25 p-2">
   	</div>
     <hr class="w-100"/>
-	<table class="table">
+	<table class="table order-tbl">
 	  <tbody>
 	  	<tr>
 	  		<th colspan="2">주문 내역</th>
@@ -139,7 +139,7 @@
 	  </tbody>
 	</table>
 	<hr class="w-100"/>
-	<table class="table">
+	<table class="table order-tbl">
 	  <tbody>
 	    <tr>
 	      <th>
