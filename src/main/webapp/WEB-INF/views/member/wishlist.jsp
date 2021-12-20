@@ -7,80 +7,78 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="장바구니" name="title"/>
+	<jsp:param value="wishlist" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/shop/order.css" rel="stylesheet">
 <div class="row p-5 d-flex justify-content-around order-container">
   <div class="col-7">
-  	<h4>장바구니</h4>
+  	<h4>위시리스트</h4>
   	<table class="table m-3 pr-3">
 	  <tbody>
 	    <tr>
-	      <td rowspan="2">
+	      <td>
 	      	<input type="checkbox" class="ml-3" name="" id="" />
 		  </td>
-	      <td rowspan="2" class="col-3">
+	      <td class="col-4">
 	      	<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-75">
 		  </td>
-	      <td class="col-5 align-middle">제품명</td>
+	      <td class="col-4 align-middle">제품명</td>
 	      <td class="col-3 align-middle">가격</td>
-	    </tr>
-	    <tr>
-	      <td colspan="2" class="align-middle">
-	      	<input type="number" name="" id="" class="" placeholder="수량" />
-	      	<button type="button" class="btn btn-primary">삭제</button>
+	      <td colspan="" class="align-middle">
+	      	<i class="wish-icon fas fa-cart-plus pr-3"></i>
+	      </td>
+	      <td colspan="" class="align-middle">
+	      	<i class="wish-icon fas fa-trash-alt"></i>
 	      </td>
 	    </tr>
 	    <tr>
-	      <td rowspan="2">
+	      <td>
 	      	<input type="checkbox" class="ml-3" name="" id="" />
 		  </td>
-	      <td rowspan="2" class="col-3">
+	      <td class="col-4">
 	      	<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-75">
 		  </td>
-	      <td class="col-5 align-middle">제품명</td>
+	      <td class="col-4 align-middle">제품명</td>
 	      <td class="col-3 align-middle">가격</td>
-	    </tr>
-	    <tr>
-	      <td colspan="2" class="align-middle">
-	      	<input type="number" name="" id="" class="" placeholder="수량" />
-	      	<button type="button" class="btn btn-primary">삭제</button>
+	      <td colspan="" class="align-middle">
+	      	<i class="wish-icon fas fa-cart-plus pr-3"></i>
+	      </td>
+	      <td colspan="" class="align-middle">
+	      	<i class="wish-icon fas fa-trash-alt"></i>
 	      </td>
 	    </tr>
 	    <tr>
-	      <td rowspan="2" >
+	      <td>
 	      	<input type="checkbox" class="ml-3" name="" id="" />
 		  </td>
-	      <td rowspan="2" class="col-3">
+	      <td class="col-4">
 	      	<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-75">
 		  </td>
-	      <td class="col-5 align-middle">제품명</td>
+	      <td class="col-4 align-middle">제품명</td>
 	      <td class="col-3 align-middle">가격</td>
-	    </tr>
-	    <tr>
-	      <td colspan="2" class="align-middle">
-	      	<input type="number" name="" id="" class="" placeholder="수량" />
-	      	<button type="button" class="btn btn-primary">삭제</button>
+	      <td colspan="" class="align-middle">
+	      	<i class="wish-icon fas fa-cart-plus pr-3"></i>
+	      </td>
+	      <td colspan="" class="align-middle">
+	      	<i class="wish-icon fas fa-trash-alt"></i>
 	      </td>
 	    </tr>
 	  </tbody>
 	</table>
   </div>
   <div class="col-4 m-3 pl-3 pt-5 d-flex flex-column justify-content-start">
-	  <strong>주문 내역</strong>
-	  <p>5만원 이상 결제 시 배송비 무료입니다.</p>
-	  <p>이 금액에는 배송비가 포함되어 있지 않으며, 배송지에 따라 구매가 불가할 수 있습니다.</p>
+	  <strong>위시리스트 요약</strong>
 	  <hr class="w-100"/>
-	  <strong>총 주문 금액</strong>
+	  <strong>정가</strong>
 	  <h4 class="text-right">0,000원</h4>
 	  <button 
 	  	type="button" 
-	  	id="cartPayBtn" 
+	  	id="wishCartBtn" 
 	  	class="btn btn-primary w-100 h-25 mt-5"
-	  	onclick="location.href='${pageContext.request.contextPath}/member/order.do'">
-	  	결제하기 <i class="fas fa-chevron-circle-right"></i>
+	  	onclick="location.href='${pageContext.request.contextPath}/member/cart.do'">
+	  	모든 제품 장바구니에 추가하기 <i class="fas fa-chevron-circle-right"></i>
 	  </button>
 	  <hr class="w-100"/>
   </div>
-</div>
+</div>	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

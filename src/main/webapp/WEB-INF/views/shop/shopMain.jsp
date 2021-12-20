@@ -17,7 +17,7 @@
 
 <style>
 
- /*실시간 순위 시작*/
+ /*실시간 순위 시작*/ 
 #content {
     margin: 20px;
     padding: 10px;
@@ -88,14 +88,15 @@
     border-radius: 30;
 }
 #iconBoxDiv{
-    margin-left: 50px;
     border: solid;
-    width: 95%;
+    width: 85%;
+    margin-left: 50px;
+    margin: auto;
 }
 .icon {
     width: 70px;
     height: 70px;
-    margin: auto 80px;
+    margin: auto 70px;
 }
 #shopIconCategoryDiv{
     margin: 60px 0;
@@ -122,6 +123,7 @@
 #shopMainBestReviewsDiv{
     margin-left: 50px;
     margin-top: 60px;
+    margin-bottom: 60px;
 }
 #bestReviewsP{
     font-size: 30px;
@@ -132,9 +134,7 @@
     width: 300px;
     height: 300px;
     margin: auto 30px;
-}
-#bestReviewDiv2 img{
-    width: 600px;
+    border-radius: 10%;
 }
 #hr2{
     border: 3px solid black;
@@ -204,9 +204,120 @@
 }
 /*혜진상품끝*/
 #shopHeaderBarDiv{
+
 	margin-left: 0px;
     position: fixed;
     z-index: 10;
+    border-bottom: 3px solid rgb(102, 101, 101);
+}
+
+
+
+/*슬라이드 카테고리 시작*/
+
+.mySlides {display: none}
+
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+
+/* Number text (1/3 etc) */
+/* .numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+} */
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active2, .dot:hover {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 100000s;
+  animation-name: fade;
+  animation-duration: 100000s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: 1} 
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: 1} 
+  to {opacity: 1}
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev, .next, .text {font-size: 11px}
+}
+#shopItemsSlideByCategoryDiv{
+ margin: 50px auto;
+}
+.cateText {
+    color: black;
+    font-size: 30px;
+    margin-left: 3%;
+    font-family: 'Song Myung', serif;
+}
+/*슬라이드 카테고리 끝*/
+
+
+#shopItemsAccordionDiv{
+	margin-top: 30px;
+}
+
+.space-evenly{
+	justify-content: space-evenly;
 }
 </style>
 
@@ -231,7 +342,7 @@
                 </div>
             </div>
         </div>
-        <div class = "row col-md-12" id="shopHeaderBarDiv" style="background-color: #f8f9fa">
+        <div class = "row col-md-12 space-evenly" id="shopHeaderBarDiv" style="background-color: #f8f9fa">
             <div class = "col-md-1" id="sideMenuBtnDiv">           
                 <img id="sideMenuBtn" src="https://i.ibb.co/zFxp8tw/3.png" alt="" >
             </div>
@@ -258,7 +369,7 @@
             </div>
             <div id="shopSerachDiv">
                 <nav class="navbar navbar-light bg-light">
-                    <form class="form-inline"> 
+                    <form class="form-inline" action="${pageContext.request.contextPath}/shop/search.do"> 
                         <!-- 쇼핑몰 검색도 카테고리 나눌 건가?
                         <select class="form-select" aria-label="Default select example">
                             <option selected>Open this select menu</option>
@@ -307,7 +418,7 @@
                   </div>
             </div>
             <div id="shopIconCategoryDiv">
-                <div id="iconBoxDiv">
+                <div id="iconBoxDiv" class="row space-evenly">
                     <a href="#"><img class="icon" src="https://i.ibb.co/7zcnV7J/monitor.png" alt=""></a>
                     <a href="#"><img class="icon" src="https://i.ibb.co/vvXdtzx/keyboard.png" alt=""></a>
                     <a href="#"><img class="icon" src="https://i.ibb.co/WxvDnGD/mouse.png" alt=""></a>
@@ -316,8 +427,353 @@
                     <a href="#"><img class="icon" src="https://i.ibb.co/N386GVd/gitf.png" alt=""></a>
                 </div>
             </div>
+            
             <div id="shopDisplayDiv">
                 <div id="shopItemsSlideByCategoryDiv">
+                <!-- 카테고리 슬라이드 시작 -->
+				  <div style="text-align:center">
+				    <span class="dot" onclick="currentSlide(1)"></span> 
+				    <span class="dot" onclick="currentSlide(2)"></span> 
+				    <span class="dot" onclick="currentSlide(3)"></span> 
+				  </div>
+				  <div class="slideshow-container">
+				    <div class="mySlides fade">
+                      <div class="cateText">신상품</div>
+				      <!-- <div class="numbertext">1 / 3</div> -->
+				      <div class="row">
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>5,490원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>5,490원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>5,490원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>5,490원</strong>
+				              </div>
+				            </div>
+				          </a>
+				              <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>5,490원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>5,490원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>5,490원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>5,490원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        </div>
+				    </div>
+				    
+				    <div class="mySlides fade">
+                      <div class="cateText">이번주 top-8</div>
+				      <!-- <div class="numbertext">2 / 3</div> -->
+				      <div class="row">
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">삼성 Galxay 우주를 담은 키보드</p>
+				                <strong>20,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">삼성 Galxay 우주를 담은 키보드</p>
+				                <strong>20,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">삼성 Galxay 우주를 담은 키보드</p>
+				                <strong>20,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">삼성 Galxay 우주를 담은 키보드</p>
+				                <strong>20,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				              <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">삼성 Galxay 우주를 담은 키보드</p>
+				                <strong>20,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">삼성 Galxay 우주를 담은 키보드</p>
+				                <strong>20,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">삼성 Galxay 우주를 담은 키보드</p>
+				                <strong>20,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">삼성 Galxay 우주를 담은 키보드</p>
+				                <strong>20,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        </div>
+				    </div>
+				    <div class="mySlides fade">
+                      <div class="cateText">할인상품</div>
+				      <!-- <div class="numbertext">3 / 3</div> -->
+				      <div class="row">
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>10,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>10,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>10,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>10,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				              <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>10,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>10,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>10,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        <a href="#" class="col-md-3 p-5">
+				            <div class="card-box-d">
+				              <div class="card-img-d shop-item-img position-relative">
+				                <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+				                <i class="shop-like-icon fas fa-heart position-absolute"></i>
+				                <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+				              </div>
+				              <div>
+				                <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+				                <strong>10,000원</strong>
+				              </div>
+				            </div>
+				          </a>
+				        </div>
+				    </div>
+				    
+				    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+				    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+				    
+				  </div>
+                <!-- 카테고리 슬라이드 끝 -->
                 </div>
                 <div id="shopMainMidEventBannerDiv">
                     <a href=""><img src="https://i.ibb.co/zRCKwsF/image.png" alt=""></a>
@@ -325,7 +781,7 @@
                 <hr>
                 <div id="shopMostSearchedKeywordDiv">
                     <p id="hotKeywordP">인기 키워드</p>
-                    <div class="row">
+                    <div class="row space-evenly">
                         <div class="keyword" id="keywordDiv1">
                             <div class="keywordImg" >
                                 <a href=""><img src="https://i.ibb.co/tQyHz8m/hot-Keyword.png" alt=""></a>
@@ -355,16 +811,19 @@
                 <hr>
                 <div id="shopMainBestReviewsDiv">
                     <p id="bestReviewsP">이달의 Best Reviews</p>
-                    <div class="row">
+                    <div class="row space-evenly">
                         <div class="bestReview" id="bestReviewDiv1">
                             <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
-                        </div>
-                        <div class="bestReview" id="bestReviewDiv2">
-                            <a href=""><img src="https://i.ibb.co/Pzt3ZKY/Giant-Thumb.jpg" alt=""></a>
                         </div>
                         <div class="bestReview" id="bestReviewDiv3">
                             <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
                         </div> 
+                        <div class="bestReview" id="bestReviewDiv3">
+                            <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
+                        </div>
+                        <div class="bestReview" id="bestReviewDiv3">
+                            <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
+                        </div>  
                     </div>
                 </div>
                 <hr id="hr2">
@@ -502,7 +961,8 @@
                         </div>
                         <div class="collapse" id="collapseExample2">
                             <div class="arrordionItemsC">
-                            	    <div class="row">
+                            	                                   <!--혜진상품시작-->
+                                	  	<div class="row">
 									  	  <a href="#" class="col-md-3 p-5">
 									          <div class="card-box-d">
 									            <div class="card-img-d shop-item-img position-relative">
@@ -608,9 +1068,8 @@
 									          </div>
 								          </a>
 								        </div>
+                                <!--혜진상품끝-->
                             </div>
-                          <div class="card card-body">
-                           
                           </div>
                         </div>
                     </div>
@@ -766,6 +1225,37 @@ $(window).scroll(function() {
                  .animate({"top":position+currentPosition+"px"},1000); 
 });
 /*오늘 본 상품 div 끝*/
+ 
+ 
+/*상품 카테고리 슬라이드 시작 */
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}    
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active2", "");
+  }
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active2";
+}
+/*상품 카테고리 슬라이드 끝 */
+ 
 </script>
 </body>
 

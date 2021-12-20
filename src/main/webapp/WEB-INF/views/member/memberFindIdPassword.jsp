@@ -10,35 +10,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="아아디/비밀번호 찾기" name="title"/>
+	<jsp:param value="아이디/비밀번호 찾기" name="title"/>
 </jsp:include>
-<style>
 
-.find-form h3 {
-	font-size: 1.5rem;
-	font-weight: bold;
-}
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/member/member.css" />
 
-/* 탭 중앙 정렬 */
-.find-form > .row {
-	justify-content: center;
-}
-
-.find-form {
-	margin-top: 175px;
-}
-
-.find-form div {
-	padding: 10px;
-}
-
-/* 로고 이미지 크기 */
-.find-form .logo {
-	width: 150px;
-	height: auto;
-}
-
-</style>
 <div class="container find-form">
 	
 	<div class="row">
@@ -48,10 +24,10 @@
 			<!-- Tab 메뉴 -->
 			<ul class="nav nav-pills nav-fill" id="pills-tab" role="tablist">
 				<li class="nav-item find-id-tab">
-			    	<a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">아이디 찾기</a>
+			    	<a class="nav-link active" id="pills-id-tab" data-toggle="pill" href="#pills-id" role="tab" aria-controls="pills-id" aria-selected="true">아이디 찾기</a>
 			  	</li>
 			  	<li class="nav-item find-pw-tab">
-			    	<a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">비밀번호 찾기</a>
+			    	<a class="nav-link" id="pills-pw-tab" data-toggle="pill" href="#pills-pw" role="tab" aria-controls="pills-pw" aria-selected="false">비밀번호 찾기</a>
 			  	</li>
 			</ul>
 			
@@ -59,7 +35,7 @@
 			<div class="tab-content border" id="pills-tabContent">
 			
 				<!-- 아이디 찾기 Tab 내용 -->
-				<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+				<div class="tab-pane fade show active" id="pills-id" role="tabpanel" aria-labelledby="pills-id-tab">
 					
 					<form 
 						id="memberFindIdFrm" 
@@ -102,7 +78,7 @@
 				</div>
 				
 				<!-- 비밀번호 찾기 Tab 내용 -->
-			  	<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+			  	<div class="tab-pane fade" id="pills-pw" role="tabpanel" aria-labelledby="pills-pw-tab">
 			  		
 					<form 
 						id="memberFindPasswordFrm" 
@@ -151,91 +127,5 @@
 	</div>
 	
 </div>
-<script>
-
-// 아이디 찾기 탭 클릭 시 비밀번호 찾기 input 초기화
-$(".find-id-tab").click((e) => {
-	
-	// 폼 리셋
-	$(memberFindPasswordFrm)[0].reset();
-	
-});
-
-// 비밀번호 찾기 탭 클릭 시 아이디 찾기 input 초기화
-$(".find-pw-tab").click((e) => {
-	
-	// 폼 리셋
-	$(memberFindIdFrm)[0].reset();
-	
-});
-
-// 아이디 찾기
-$(memberFindIdFrm).submit((e) => {
-	e.preventDefault(); // 폼제출방지
-	
-	//console.log($(e.target));
-	
-	// 이름
-	const name = $(e.target).find("input[name=name]").val();
-	// 이메일
-	const email = $(e.target).find("input[name=email]").val();
-
-	// 팝업요청
-	const url = `${pageContext.request.contextPath}/member/\${name}/\${email}/findId.do`;
-	
-	// 띄울 팝업창 높이
-	const popHeight = 300;		                                      
-	// 띄울 팝업창 너비
-	const popWidth = 400;                                       
-	// 현재창의 높이
-	const winHeight = document.body.clientHeight;	  
-	// 현재창의 너비
-	const winWidth = document.body.clientWidth;	  
-	// 현재창의 x좌표
-	const winX = window.screenLeft;	                          
-	// 현재창의 y좌표
-	const winY = window.screenTop;	                          
-
-	const popX = winX + (winWidth - popWidth)/2;
-	const popY = winY + (winHeight - popHeight)/2;
-
-	open(url, name, `top=\${popY}, left=\${popX}, width=\${popWidth}, height=\${popHeight}`);
-	
-});
-
-//비밀번호 찾기
-$(memberFindPasswordFrm).submit((e) => {
-	e.preventDefault(); // 폼제출방지
-	
-	//console.log($(e.target));
-	
-	// 이름
-	const id = $(e.target).find("input[name=id]").val();
-	// 이메일
-	const email = $(e.target).find("input[name=email]").val();
-
-	// 팝업요청
-	const url = `${pageContext.request.contextPath}/member/\${id}/\${email}/findPassword.do`;
-	
-	// 띄울 팝업창 높이
-	const popHeight = 300;		                                      
-	// 띄울 팝업창 너비
-	const popWidth = 400;                                       
-	// 현재창의 높이
-	const winHeight = document.body.clientHeight
-	// 현재창의 너비
-	const winWidth = document.body.clientWidth;	  
-	// 현재창의 x좌표
-	const winX = window.screenLeft;	                          
-	// 현재창의 y좌표
-	const winY = window.screenTop;	                          
-
-	const popX = winX + (winWidth - popWidth)/2;
-	const popY = winY + (winHeight - popHeight)/2;
-
-	open(url, name, `top=\${popY}, left=\${popX}, width=\${popWidth}, height=\${popHeight}`);
-	
-});
-
-</script>
+<script src="${pageContext.request.contextPath }/resources/js/member/memberFindIdPassword.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
