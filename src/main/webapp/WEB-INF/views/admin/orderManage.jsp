@@ -9,7 +9,7 @@
 <jsp:include page="/WEB-INF/views/admin/admin-common/header.jsp">
 	<jsp:param value="주문관리" name="title"/>
 </jsp:include>
-<link href="${pageContext.request.contextPath }/resources/css/admin/orderManage.css" rel="stylesheet"/>
+<link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
 <div class="order-container">
 	<h3 class="m-5">주문내역</h3>
 </div>
