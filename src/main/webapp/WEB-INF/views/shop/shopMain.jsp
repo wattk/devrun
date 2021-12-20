@@ -11,31 +11,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 <style>
-  /*사이드바*/
+  /*반응형 사이드바 시작 */
     /* sliding  vertical navigation
   –––––––––––––––––––––––––––––––––––––––––––––––––– */
   
   .hamburger {
-       font-size: 4em;
+      font-size: 4em;
       float: left;
     }
-  /* body {font-family:  "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;}
-  p {float: left;
-  font-size: 4rem;}
-      .clear {
-        clear: both;
-        display: block;
-        overflow: hidden;
-        visibility: hidden;
-        width: 0;
-        height: 0;
-      } */
-  .para {
-    font-size: 1.5rem;}
+/*   .para {
+    font-size: 1.5rem;} */
   
   #slidingSideNav.overlay {
-      top: 210px;
-      height: 100%;
+      top: 216px;
+      height: 80%;
       width: 0%;
   }
   
@@ -60,7 +49,7 @@
   .overlay a {
       padding: 1rem 3rem;
       text-decoration: none;
-      font-size: 24px;
+      font-size: 16px;
       color: #818181;
       display: block;
       transition: 0.3s;
@@ -105,10 +94,10 @@
    #accordion { 
      padding: 0 0 0 2rem;
      margin: 0;
-     font-size: 1.75em;}
+     font-size: 1.3em;}
   .accordion h1 { 
      padding: 1.5rem 2rem;
-     font-size: 1.25em;
+     font-size: 1.1em;
   }
   .accordion h1, #accordion {
      background-color: #262626; /* Darkest - 15%*/
@@ -174,7 +163,7 @@
   
     /*실시간 순위 시작*/ 
    #content {
-       margin: 20px;
+       margin: 30px;
        padding: 10px;
        background: #393;
    }
@@ -243,10 +232,11 @@
        border-radius: 30;
    }
    #iconBoxDiv{
-       border: solid;
+       border: solid 5px sandybrown;
        width: 85%;
        margin-left: 50px;
        margin: auto;
+       padding: 5px 5px;
    }
    .icon {
        width: 70px;
@@ -259,8 +249,17 @@
    #shopMainMidEventBannerDiv{
        display: table;
        margin: auto auto;
+	   width: 100%;
+	   background-color: lightcoral;
+	   text-align: center;
+	   padding: 10px 10px;
+	}
+	
+	#shopMainMidEventBannerDiv img {
+	   width: 1300px;
+       height: 160px;
+	}
        
-   }
    #shopMostSearchedKeywordDiv{
        margin-left: 50px;
        margin-top: 60px;
@@ -308,6 +307,7 @@
        top:300px; 
        right:10px;
        z-index: 5;
+       padding-bottom: 5px;
    }
    #sideboxHeader{
        background-color: cornflowerblue;
@@ -430,7 +430,7 @@
    }
    
    .active2, .dot:hover {
-     background-color: #717171;
+     background-color: #da4265;
    }
    
    /* Fading animation */
@@ -457,6 +457,7 @@
    }
    #shopItemsSlideByCategoryDiv{
     margin: 50px auto;
+    height: 1190px;
    }
    .cateText {
        color: black;
@@ -473,6 +474,16 @@
    
    .space-evenly{
      justify-content: space-evenly;
+   }
+   
+   .carousel-item > img{
+   	 height: 618px;
+   }
+   .carousel-item {
+   	height: 618px;
+   }
+   .shop-item-img + div p{
+   	height: 73px;
    }
    </style>
    
@@ -516,7 +527,7 @@
                     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
                     <!-- The overlay -->
                    <!-- Overlay content -->
-                  <div id="slidingSideNav" class="overlay" style="overflow: scroll;">
+                  <div id="slidingSideNav" class="overlay" style="overflow-x: hidden; overflow-y: scroll;">
                     <a href="javascript:void(0)" class="sideClosebtn" onclick="closeSideNav()">&times;</a>
                     <div class="side-overlay-content">
                     <!-- ACCORDION
@@ -567,7 +578,7 @@
                         <a href="">Sub Category</a>
                         <a href="">Sub Category</a>
                       </div>
-                      <h1>Category E</h1>
+                      <h1 style="font-size:10px;">고객센터</h1>
                       <p>'Tis not so deep as a well, nor so wide as a church-door; but 'tis enough,'twill serve: ask for me to-morrow, and you shall find me a grave man. </p>
                     </aside>
                     </div>
@@ -611,22 +622,22 @@
     
            <!--구분-->
            <div id="shopitemsDiv">
-               <div id="shopEventSlideDiv">
+               <div id="shopEventSlideDiv" >
                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                        <ol class="carousel-indicators">
                          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
                          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
                          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
                        </ol>
-                       <div class="carousel-inner" s>
+                       <div class="carousel-inner">
                          <div class="carousel-item active">
                            <img class="d-block w-100" src="https://i.ibb.co/cDFYP1c/image.jpg" alt="First slide">
                          </div>
                          <div class="carousel-item">
-                           <img class="d-block w-100" src="https://i.ibb.co/cDFYP1c/image.jpg" alt="Second slide">
+                           <img class="d-block w-100"  src="https://i.ibb.co/MDTWkNY/2.png" alt="Second slide">
                          </div>
                          <div class="carousel-item">
-                           <img class="d-block w-100" src="https://i.ibb.co/cDFYP1c/image.jpg" alt="Third slide">
+                           <img class="d-block w-100" src="https://i.ibb.co/3F96Sy0/3.png" alt="Third slide">
                          </div>
                        </div>
                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -664,6 +675,58 @@
                  <!-- <div class="numbertext">1 / 3</div> -->
                  <div class="row">
                    <a href="#" class="col-md-3 p-5">
+                       <div class="card-box-d">
+                         <div class="card-img-d shop-item-img position-relative">
+                           <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+                           <i class="shop-like-icon fas fa-heart position-absolute"></i>
+                           <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+                         </div>
+                         <div>
+                           <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+                           <strong>5,490원</strong>
+                         </div>
+                       </div>
+                     </a>
+                   <a href="#" class="col-md-3 p-5">
+                       <div class="card-box-d">
+                         <div class="card-img-d shop-item-img position-relative">
+                           <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+                           <i class="shop-like-icon fas fa-heart position-absolute"></i>
+                           <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+                         </div>
+                         <div>
+                           <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+                           <strong>5,490원</strong>
+                         </div>
+                       </div>
+                     </a>
+                   <a href="#" class="col-md-3 p-5">
+                       <div class="card-box-d">
+                         <div class="card-img-d shop-item-img position-relative">
+                           <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+                           <i class="shop-like-icon fas fa-heart position-absolute"></i>
+                           <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+                         </div>
+                         <div>
+                           <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+                           <strong>5,490원</strong>
+                         </div>
+                       </div>
+                     </a>
+                   <a href="#" class="col-md-3 p-5">
+                       <div class="card-box-d">
+                         <div class="card-img-d shop-item-img position-relative">
+                           <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+                           <i class="shop-like-icon fas fa-heart position-absolute"></i>
+                           <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+                         </div>
+                         <div>
+                           <p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
+                           <strong>5,490원</strong>
+                         </div>
+                       </div>
+                     </a>
+                     <a href="#" class="col-md-3 p-5">
                        <div class="card-box-d">
                          <div class="card-img-d shop-item-img position-relative">
                            <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
@@ -1422,7 +1485,7 @@
        </div>
    
    <script>
-   /*사이드바*/
+   /*반응형 사이드바 시작*/
    var slideMq = window.matchMedia("(min-width: 479px)");
   
   /* Sliding side navigation */
@@ -1477,7 +1540,7 @@
      
     }
   });  
-   /*사이드바*/
+   /*반응형 사이드바 끝*/
    
    /*실시간 순위 시작*/
    $(function() {
