@@ -4,7 +4,7 @@
 	font-size : x-large;
 }
 
-.table td, .table th{
+.order-tbl td, .order-tbl th{
 	border-top: 0;
 }
 .card-header{
@@ -32,7 +32,7 @@
     border-bottom: 1px solid #ced4da;
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
-.list-group-item{
+.address-item{
 	border: 0;
 }
 #orderPaymentBtn{
@@ -45,26 +45,42 @@
 	margin: 0 10% 0 10%;
 }
 
-/* 통합검색 */
-#resultText{
-	border-top : 1px solid rgba(0,0,0,.125);
-	border-bottom : 1px solid rgba(0,0,0,.125);
-}
-.shop-like-icon{
-	bottom : 3%;
-	left : 5%;
-	font-size : 30px;
-}
-.shop-cart-icon{
-	bottom : 3%;
-	right : 5%;
-	font-size : 30px;
-}
-i:hover{
-	color : #66ABFF;
-}
+
 
 /* 위시리스트 */
 .wish-icon{
 	font-size : 25px;	
+}
+
+/* 교환/환불/취소 */
+.claim-container{
+	margin : 0 10% 0 10%;
+	height : 950px;
+}
+.table td{
+	vertical-align : middle;
+}
+.claim-text{
+	font-size : 25px;
+}
+.claim-card.show{
+	width : 85%;
+	display:block;
+}
+.claim-card{
+	width : 85%;
+	display:none;
+	border:1px solid rgba(0,0,0,.125);
+	border-radius:0.25rem;
+}
+.claim-detail{
+	display:none;
+}
+.claim-detail textarea{
+	resize:none;
+	border:1px solid rgba(0,0,0,.125);
+	border-radius:0.25rem;
+}
+textarea::placeholder{
+	color:red;
 }

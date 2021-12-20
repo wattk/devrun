@@ -15,10 +15,10 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
-	<title>Document</title>
+	<title>communityColumnForm</title>
 	
 	<!-- 사이드바 css -->
-	<link href="${pageContext.request.contextPath}/resources/css/community/nav.css" rel="stylesheet">
+	<link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
 	
 	<!-- bootstrap js: jquery load 이후에 작성할것.-->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -31,12 +31,6 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 	
-<style>
-body {
-  padding-top: 70px;
-  padding-bottom: 30px;
-}
-</style>
 </head>
 
 <body>
@@ -63,41 +57,10 @@ body {
 			focus: true, // 에디터 로딩 후 포커스를 맞출 지 여부
 			lang: "ko-KR", // 한글 설정
 			placeholder: "내용을 입력해 주세요"  // placeholder 설정
-		
-			// 이미지 첨부
-			onImageUpload: function(files){
-				uploadSummernoteImageFile(files[0], this);
-			},
-			onPaste: function (e){
-				var clipboardData = e.originalEvent.clipboardData;
-				if(clipboardData && clipboardData.items && clipboardData.items.length){
-					var item = clipboardData.items[0];
-					if(item.king === 'file' && item.type.indexOf('image/') !== -1){
-						e.preventDefault();
-					}
-				}
-			}
 		});
 	});
 	
-	// 이미지 파일 업로드
-	function uploadSummernoteImageFile(file, editor) {
-		data = new FormData();
-		data.append("file", file);
-		$.ajax({
-			data : data,
-			type : "POST",
-			url : "/uploadSummernoteImageFile",
-			contentType : false,
-			processData : false,
-			success : function(data){
-				// 항상 업로드된 파일의 url이 있어야 한다.
-				$(editor).summernote('insertImage', dta.url);
-			}
-		});
-	};
 </script>
-
 	<article>
 		<div class="container" role="main">
 			<h2>칼럼 글쓰기</h2>

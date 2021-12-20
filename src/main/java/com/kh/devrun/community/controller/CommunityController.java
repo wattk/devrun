@@ -58,14 +58,14 @@ public class CommunityController {
 			log.error("컬럼 등록 오류", e);
 			throw e;
 		}
-		return "redirect:/community/communityColumn.do";
+		return "redirect:/community/communityColumnList.do";
 	}
 	
-	// 커뮤니티-Q&A
-	@GetMapping("/communityQnA.do")
-	public String communityQnA() {
+	// 커뮤니티 - Q&A
+	@GetMapping("/communityQnAList.do")
+	public String communityQnAList() {
 		
-		return "community/communityQnA";
+		return "community/communityQnAList";
 	}
 	
 	// 커뮤니티-스터디
