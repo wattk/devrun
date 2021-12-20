@@ -38,10 +38,10 @@ public class CommunityController {
 	}	
 	
 	// 커뮤니티-칼럼
-	@GetMapping("/communityColumn.do")
-	public String communityColumn() {
+	@GetMapping("/communityColumnList.do")
+	public String communityColumnList() {
 		
-		return "community/communityColumn";
+		return "community/communityColumnList";
 	}
 	
 	// 커뮤니티-칼럼-글쓰기
@@ -58,14 +58,14 @@ public class CommunityController {
 			log.error("컬럼 등록 오류", e);
 			throw e;
 		}
-		return "redirect:/community/communityColumn.do";
+		return "redirect:/community/communityColumnList.do";
 	}
 	
-	// 커뮤니티-Q&A
-	@GetMapping("/communityQnA.do")
-	public String communityQnA() {
+	// 커뮤니티 - Q&A
+	@GetMapping("/communityQnAList.do")
+	public String communityQnAList() {
 		
-		return "community/communityQnA";
+		return "community/communityQnAList";
 	}
 	
 	// 커뮤니티-스터디

@@ -522,10 +522,10 @@ a:hover {
   transition: all .5s ease-in-out;
   background-color: #ffffff;
   padding-top: 28px;
-  padding-bottom: 28px;
+  padding-bottom: 30px;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  box-shadow: 1px 2px 15px rgba(100, 100, 100, 0.3);
+/*   box-shadow: 1px 2px 15px rgba(100, 100, 100, 0.3); */
 }
 
 .navbar-default .nav-search {
@@ -623,9 +623,9 @@ a:hover {
 }
 
 .navbar-default.navbar-reduce {
-  transition: all .5s ease-in-out;
+/*   transition: all .5s ease-in-out;
   padding-top: 19px;
-  padding-bottom: 19px;
+  padding-bottom: px; */
 }
 
 .navbar-default.navbar-reduce .nav-link {
