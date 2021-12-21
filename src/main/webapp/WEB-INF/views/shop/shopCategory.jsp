@@ -9,6 +9,16 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="category" name="title"/>
 </jsp:include>
+
+<!-- shopHeader 관련 임포트 -->
+<jsp:include page="/WEB-INF/views/shop/shopHeader.jsp"/>
+<link href="${pageContext.request.contextPath}/resources/css/shop/shopMain.css" rel="stylesheet">
+
+
+<!-- shopSideBox 관련 임포트 -->
+<jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
+
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
 <div class="shop-container">
 	<div class="mx-auto text-center p-5">
@@ -117,4 +127,7 @@
 	  </ul>
 	</nav>
 </div>
+
+<!-- shopHeader js  -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

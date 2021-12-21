@@ -31,6 +31,7 @@ public class AdminController {
 		return "/admin/product/insertProduct";
 	}
 	
+
 	@PostMapping("/insertProduct.do")
 	public String insertProduct(Product product) {
 		log.debug("product = {}", product);
@@ -39,8 +40,36 @@ public class AdminController {
 	}
 	
 
+
+	/**
+	 * 혜진 시작 
+	 */
+	@GetMapping("/orderManage.do")
+	public void orderManage() {}
+
 	
+	@GetMapping("/shipmentManage.do")
+	public void shipmentManage() {}
 	
+	@GetMapping("/reviewReport.do")
+	public String reviewReport() {
+		
+		return "/admin/report/reviewReport";
+	}
 	
+	@GetMapping("/boardReport.do")
+	public String boardReport() {
+		
+		return "/admin/report/boardReport";
+	}
+	
+	@GetMapping("/blacklistReport.do")
+	public String blacklistReport() {
+		
+		return "/admin/report/blacklistReport";
+	}
+	/**
+	 * 혜진 끝
+	 */
 	
 }

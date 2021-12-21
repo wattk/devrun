@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+ /*오늘 본 상품 div 시작*/
+   #sidebox { 
+       text-align: center;
+       background-color:#F0F0F0; 
+       position:absolute; 
+       width:120px; 
+       top:300px; 
+       right:10px;
+       z-index: 5;
+       padding-bottom: 5px;
+   }
+   #sideboxHeader{
+       background-color: cornflowerblue;
+   }
+   #sideboxHeader>p{
+       color: white;
+       font-family: 'Nanum Pen Script', cursive;
+   }
+   .todayView{
+       width: 98px;
+       height: 98px;
+       margin-bottom: 10px;
+   }
+   .errow-img{
+       width: 20px;
+   }
+   #sideboxFooter{
+       margin-bottom: 10px;
+   }
+   
+   /*오늘 본 상품 div 끝*/
+   

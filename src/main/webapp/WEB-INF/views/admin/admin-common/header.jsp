@@ -308,8 +308,8 @@
                 <div id="collapseOrder" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="utilities-color.html">주문 관리</a>
-                        <a class="collapse-item" href="utilities-border.html">배송 관리</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/orderManage.do">주문 관리</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/shipmentManage.do">배송 관리</a>
                     </div>
                 </div>
             </li>
@@ -340,9 +340,9 @@
                 <div id="collapseNotify" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="utilities-color.html">리뷰/쪽지 신고</a>
-                        <a class="collapse-item" href="utilities-border.html">게시물 신고</a>
-                        <a class="collapse-item" href="utilities-animation.html">블랙리스트 관리</a>                     
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/reviewReport.do">리뷰/쪽지 신고</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/boardReport.do">게시물 신고</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/blacklistReport.do">블랙리스트 관리</a>                     
                     </div>
                 </div>
             </li>

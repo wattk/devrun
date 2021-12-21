@@ -13,6 +13,8 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +32,12 @@
 
   
     <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <!-- 구글폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
 
   <!-- Bootstrap CSS File -->
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -104,7 +111,7 @@
             <a class="nav-link" href="${pageContext.request.contextPath}/shop/shopMain.do">Shop</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="about.html">About</a>
+            <a class="nav-link" href="${pageContext.request.contextPath}/about.do">About</a>
           </li>
           <li class="nav-item">
 			  <div class="search-box">
@@ -134,7 +141,7 @@
 	   	            <a class="" href="#">[<sec:authentication property="principal.nickname"/>]</a><span class="">님 안녕하세요</span>
 		      	</div>
 	            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage">마이페이지</a>
+	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a>
 	              <a class="dropdown-item" href="#">쪽지</a>
 	              <a class="dropdown-item" href="#">주문/배송</a>
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/member/cart.do">장바구니</a>
@@ -149,20 +156,6 @@
 				    </form:form>
 	              </a>
 	            </div>
-			    <%--   <a href="${pageContext.request.contextPath}/member/memberDetail.do">
-			      	
-			      </a> 
-			      <div id="navLoginContainer">      		
-			    	<a class="btn btn-primary log-con" id ="navDetail" href="${pageContext.request.contextPath}/member/memberDetail.do">내 정보</a>
-				    <form:form
-				    	id="navLogoutFrm"
-				    	method="POST"
-				    	action="${pageContext.request.contextPath}/member/memberLogout.do">
-				    	<button
-				    		class="btn btn-primary log-con"
-				    		type="submit">로그아웃</button>
-				    </form:form>
-			      </div> --%>		
 			 </sec:authorize>
           </li>
         </ul>
