@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
 
+
 @font-face {
       font-family: 'SANJUGotgam';
       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/SANJUGotgam.woff') format('woff');
@@ -11,6 +12,13 @@
   @font-face {
     font-family: 'OTWelcomeRA';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -65,7 +73,7 @@ color: green;
   margin-left: -1px; 
   position: relative;
   left: 1px; 
-  width: 350px;
+  width: 301px;
   text-align: center;
   /*둥근 모양 제거*/
   /* border-radius: 10px 10px 0px 0px;
@@ -149,7 +157,7 @@ color: green;
   margin-left: 40px;
 }
 .reviewContent{
- width: 1100px; 
+ width: 900px; 
 }
 .height600{
   height: 600px;
@@ -163,8 +171,12 @@ color: green;
   justify-content: space-evenly;
   
 }
-#recommendedPicDiv i{
-  font-size: 350px;
+#recommendedPicDiv img{
+  width: 330px;
+  height: 330px;
+}
+#recommendedPicDiv img:hover {
+	cursor: pointer;
 }
 
 #infoForARefund h3,h5{
@@ -175,9 +187,9 @@ color: green;
 #infoForARefund  p, #ThirdInfo tr{
   font-family: 'OTWelcomeRA';
 }
-#itemDetailBicPicDiv i {
-	margin-left: 80px;
-	font-size:  500px;
+#itemDetailBicPicDiv img {
+	width: 500px;
+	height: 500px;
 }
 #itemDetailSmallPicDiv i {
 	font-size: 150px;
@@ -189,6 +201,7 @@ color: green;
 #orderBtnDiv{
 	display: flex;
     justify-content: center;
+	height: 60px;
 }
 #itemDetailInfoDiv{
 	font-size: 18px;
@@ -200,6 +213,7 @@ color: green;
 }
 #itemDetailNameDiv{
     margin-top: 30px;
+    height: 125px;
 }
 #itemDetailNameDiv > p{
 	font-size: 30px;
@@ -209,13 +223,76 @@ color: green;
 	height: 460px;
 }
 #itemDetailDisplayDiv{
-	width: 1400px;
+	width: 1200px;
 	margin: auto auto;
 }
 #itemDetailDisplayDiv{
 	display: flex;
-    justify-content: center;
+    justify-content: space-between;
+	height: 520px;
 }
 .form-select {
 	height: 40px;
+}
+.reviewPhoto > img{
+	width: 100px;
+	height: 100px;
+}
+.reviewPhoto >img:hover{
+	cursor: pointer;
+}
+.reviewPhoto {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.reviewProfile >img {
+	width: 80px;
+	height: 80px;
+}
+.reviewLikeBtn i:hover{
+	cursor: pointer;
+}
+.tab-span{
+	font-family: 'NanumSquareRound';
+	font-size: 16px;
+}
+.item-sort-container{
+	font-family: 'NanumSquareRound';
+}
+#jeju{
+	display: flex;
+    justify-content: space-between;
+}
+#jeju >span{
+	color: gray;
+	font-size: 11px;
+
+}
+#jeju  i {
+	font-size: 30px;
+}
+#jeju  i:hover{
+	cursor: pointer;
+}
+#sortBy span:hover{
+	cursor: pointer;
+}
+.forFont{
+	font-family: 'NanumSquareRound';
+}
+
+.forFont2{
+	font-family: 'NanumSquareRound';
+}
+
+.forFont2 > span{
+	font-size: 18px;
+}
+
+.reviewDiv {
+	margin-bottom: 30px;
+}
+.sub{
+	font-size: 20px;
 }
