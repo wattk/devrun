@@ -12,9 +12,6 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@Setter
-@Getter
 public class ProductParentCategory implements Serializable {
 
 	/**

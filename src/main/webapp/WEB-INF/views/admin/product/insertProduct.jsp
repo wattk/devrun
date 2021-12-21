@@ -40,9 +40,9 @@
 					<tr>
 						<th>상품 상태</th>
 						<td>
-							<input type="radio" name="status" id="public" />
+							<input type="radio" id="public" name="status" value="Y"/>
 							<label for="public">공개</label>
-							<input type="radio" name="status" id="private" />
+							<input type="radio" id="private" name="status" value="N" checked />
 							<label for="private">비공개</label> 
 						</td>
 						
@@ -50,7 +50,7 @@
 					<tr>
 						<th>상품 카테고리</th>
 						<td>
-							<select id ="largeCategory"class="form-select form-select-lg mb-2" aria-label=".form-select-lg example">
+							<select id ="largeCategory" class="form-select form-select-lg mb-2" aria-label=".form-select-lg example">
 								<option selected>--대분류--</option>
 								<option value="ke">키보드</option>
 								<option value="mo">마우스</option>
@@ -59,7 +59,7 @@
 								<option value="ot">기타</option>
 							</select>
 							
-							<select id="smallCategory" class="form-select form-select-sm" aria-label=".form-select-sm example">
+							<select id="smallCategory"  name="childCategoryCode" class="form-select form-select-sm" aria-label=".form-select-sm example">
 								<option value="0">소분류</option>
 							</select>
 						</td>
@@ -74,9 +74,16 @@
 </div>
 
 <script>
+$("#smallCategory").change(e=>{
+	const value = e.target.value;
+	console.log(value);	
+});
+
+
+
 $("#largeCategory").change((e)=>{	
 	const value = e.target.value;
-	console.log(value);
+	/* console.log(value); */
 	
 	const obj={"value" : value};
 	
@@ -87,14 +94,13 @@ $("#largeCategory").change((e)=>{
 		method : "GET",
 		success(data){
 			for(var i = 0; i < data.list.length; i++){
-				const {childCategoryTitle} = data["list"][i];
-				console.log(childCategoryTitle);
-				$("#smallCategory").append(`<option>\${childCategoryTitle}</option>`);		
-			}
-						
+				const {childCategoryTitle,childCategoryCode} = data["list"][i];
+				/* console.log(childCategoryTitle,childCategoryCode); */
+				$("#smallCategory").append(`<option value=\${childCategoryCode}>\${childCategoryTitle}</option>`);		
+			}						
 		},
 		error:console.log
-	});
+	});	
 	$("#smallCategory").html("");
 	
 });
