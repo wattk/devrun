@@ -10,6 +10,6 @@ public interface AdminService {
 
 	List<ProductChildCategory> selectChildCategory(Map<String, Object> param);
 
-	int insertProduct(Product product);
+	int insertProduct(Product product, String childCategoryCode);
 	
 }
