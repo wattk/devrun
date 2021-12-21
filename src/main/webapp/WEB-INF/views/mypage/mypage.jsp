@@ -66,20 +66,20 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 		<nav id="tabBtns">
 			<ul class="nav nav-tabs">
 				<li class="nav-item">
-				   <a id="mycommunityTab" data-toggle="tab" href="#mycommunity" role="tab" aria-controls="mycommunity" aria-selected="false">나의 커뮤니티</a>
+				   <a class="nav-link" id="mycommunityTab" data-toggle="tab" href="#mycommunity" role="tab" aria-controls="mycommunity" aria-selected="false">나의 커뮤니티</a>
 				</li>
 				<li class="nav-item">
-				   <a id="myshoppingTab" data-toggle="tab" href="#myshopping" role="tab" aria-controls="myshopping" aria-selected="false">나의 쇼핑</a>
+				   <a class="nav-link" id="myshoppingTab" data-toggle="tab" href="#myshopping" role="tab" aria-controls="myshopping" aria-selected="false">나의 쇼핑</a>
 				</li>
 				<li class="nav-item">
-				   <a id="myinfoTab" data-toggle="tab" href="#myinfo" role="tab" aria-controls="myinfo" aria-selected="false">나의 정보</a>
+				   <a class="nav-link" id="myinfoTab" data-toggle="tab" href="#myinfo" role="tab" aria-controls="myinfo" aria-selected="false">나의 정보</a>
 				</li>
 				<li class="nav-item">
-				   <a class="active" id="mypageTab" data-toggle="tab" href="#mypage" role="tab" aria-controls="mypage" aria-selected="true">마이페이지</a>
+				   <a class="nav-link active" id="mypageTab" data-toggle="tab" href="#mypage" role="tab" aria-controls="mypage" aria-selected="true">마이페이지</a>
 				</li>
 			</ul>
 		</nav>
-			
+		
 		<%-- tap container --%>
 		<section class="col-12 tab-content" id="tabContainer">
 		
@@ -147,7 +147,7 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 		       			<!-- member activity info : message / point -->
 		       			<section class="row cursor" id="myActivity">
 			       			<span class="col-6 row" onclick="location.href='#';">
-				       			<span class="bi bi-envelope"> &nbsp; 쪽지</span>
+				       			<span class="bi bi-envelope"> &nbsp; 채팅</span>
 				       			<span>건<i class="bi bi-chevron-right"></i></span>
 			       			</span>
 				       		<span class="col-6 row" onclick="location.href='#';">
