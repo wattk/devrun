@@ -15,5 +15,22 @@
 		#{viewCount},
 		#{status}
 	)	
+	
 	</insert>
+	
+	<insert id="insertProductCategory">
+		insert into
+			product_category
+		values(
+			#{childCategoryCode},
+			#{productCode}
+		)
+				
+	</insert>
+	
+	
+	
 </mapper>
+
+
+

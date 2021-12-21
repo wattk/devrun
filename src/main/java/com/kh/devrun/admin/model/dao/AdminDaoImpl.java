@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
+import com.kh.devrun.product.ProductCategory;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -24,5 +25,10 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public int insertProduct(Product product) {
 		return session.insert("product.insertProduct",product);
+	}
+
+	@Override
+	public int insertProducCategory(ProductCategory productCategory) {
+		return session.insert("product.insertProductCategory",productCategory);
 	}
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kh.devrun.admin.model.service.AdminService;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
+import com.kh.devrun.product.ProductCategory;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -63,9 +64,13 @@ public class AdminController {
 	}
 
 	@PostMapping("/insertProduct.do")
-	public String insertProduct(Product product) {
+	public String insertProduct(
+			Product product,
+			@RequestParam String childCategoryCode ) {
+		
 		log.debug("product = {}", product);
-		int result = adminService.insertProduct(product);
+		
+		int result = adminService.insertProduct(product,childCategoryCode);
 		
 		return "/admin/product/productMain";
 	}
