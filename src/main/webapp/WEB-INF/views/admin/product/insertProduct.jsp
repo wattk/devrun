@@ -14,54 +14,91 @@
 		<div id="productImg">
 			-
 		</div>
-		<div id="productInfo" >
-			<div>
-				<h3 class="fw600">[상품 코드] 상품명</h3>
-			</div><hr />
-			
-			<table id="infoTable">
-				<tr>
-					<th>상품가격</th>
-					<td><input type="text" placeholder="상품 가격"/></td>
-				</tr>
-				<tr>
-					<th>내용</th>
-					<td><input type="text" placeholder="상품 내용"/></td>
-				</tr>
-				<tr>
-					<th>상품 상태</th>
-					<td>
-						<input type="radio" name="status" id="public" />
-						<label for="public">공개</label>
-						<input type="radio" name="status" id="private" />
-						<label for="private">비공개</label> 
-					</td>
-					
-				</tr>
-				<tr>
-					<th>상품 카테고리</th>
-					<td>
-						<select class="form-select form-select-lg mb-2" aria-label=".form-select-lg example">
-							<option selected>대분류</option>
-							<option value="keyboard">키보드</option>
-							<option value="mouse">마우스</option>
-							<option value="chair">의자</option>
-							<option value="desk">책상</option>
-							<option value="other">기타</option>
-						</select>
+		<div id="productInfo" >					
+			<form
+				id="productFrm" 
+				action="${pageContext.request.contextPath}/admin/insertProduct.do"
+				method="POST">
+				
+				<table id="infoTable">
+					<tr>
+						<th>상품코드</th>
+						<td><input type="text" name="productCode" placeholder="상품 코드" value="test_001" required/></td>
+					</tr>
+					<tr>
+						<th>상품이름</th>
+						<td><input type="text" name="name" placeholder="상품 이름" value="실험책상"required/></td>
+					</tr>
+					<tr>
+						<th>상품가격</th>
+						<td><input type="text" name="price" placeholder="상품 가격" value="10000" required/></td>
+					</tr>
+					<tr>
+						<th>내용</th>
+						<td><input type="text" name="content" placeholder="상품 내용"/></td>
+					</tr>
+					<tr>
+						<th>상품 상태</th>
+						<td>
+							<input type="radio" name="status" id="public" />
+							<label for="public">공개</label>
+							<input type="radio" name="status" id="private" />
+							<label for="private">비공개</label> 
+						</td>
 						
-						<select class="form-select form-select-sm" aria-label=".form-select-sm example">
-							<option value="0">소분류</option>
-						</select>
-					</td>
-				</tr>
-			</table>
+					</tr>
+					<tr>
+						<th>상품 카테고리</th>
+						<td>
+							<select id ="largeCategory"class="form-select form-select-lg mb-2" aria-label=".form-select-lg example">
+								<option selected>--대분류--</option>
+								<option value="ke">키보드</option>
+								<option value="mo">마우스</option>
+								<option value="ch">의자</option>
+								<option value="de">책상</option>
+								<option value="ot">기타</option>
+							</select>
+							
+							<select id="smallCategory" class="form-select form-select-sm" aria-label=".form-select-sm example">
+								<option value="0">소분류</option>
+							</select>
+						</td>
+					</tr>
+				</table>
+				<input id="submitBtn" type="submit" value="상품등록" />
+			</form>
 					
 		</div>
 	</div>
 	
-	
 </div>
+
+<script>
+$("#largeCategory").change((e)=>{	
+	const value = e.target.value;
+	console.log(value);
+	
+	const obj={"value" : value};
+	
+	$.ajax({
+		url:`${pageContext.request.contextPath}/admin/selectCategory`,
+		data:obj,
+		contentType : "application/json; charset=utf-8",
+		method : "GET",
+		success(data){
+			for(var i = 0; i < data.list.length; i++){
+				const {childCategoryTitle} = data["list"][i];
+				console.log(childCategoryTitle);
+				$("#smallCategory").append(`<option>\${childCategoryTitle}</option>`);		
+			}
+						
+		},
+		error:console.log
+	});
+	$("#smallCategory").html("");
+	
+});
+</script>
 
 
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>
