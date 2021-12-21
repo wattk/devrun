@@ -25,7 +25,7 @@
 	<h3 class="mt-5 ml-5">이벤트 관리</h3>
 	<strong class="ml-5 pl-2">이벤트 등록</strong>
 </div>
-<form:form>
+<form:form name="promotionEnrollFrm" action="${pageContext.request.contextPath}/admin/promotionEnroll.do" method="post" enctype="multipart/form-data">
 	<div class="event-list">
 		<hr />
 		<strong class="ml-5 pl-5">이벤트 정보</strong>
@@ -44,31 +44,26 @@
 				    		<span>~</span>
 				    		<input type="date" name="endDate" id="endDate" class="bg-light border-0 small"/>
 				    		<span>총 <span id="calculateDate"></span>일</span>
-				    		<input type="hidden" name="validDates" id="validDates" disabled />
+				    		<input type="hidden" name="validDates" id="validDates"/>
 				    	</td>
 				    </tr>
 				    <tr>
 				    	<th>해당 이벤트 아이템</th>
 				    	<td >
 				    		<div class="d-flex">
-					    		<input type="text" id="productCodeSearch" class="bg-light border-0 small" placeholder="상품번호를 입력하세요."
-						             aria-label="Search" aria-describedby="basic-addon2">
-						         <div class="input-group-append">
-						             <button class="btn btn-primary" type="button">
-						                 <i class="fas fa-plus-square"></i>
-						             </button>
-						         </div>
+					    		<input type="text" id="productCodeSearch" class="bg-light border-0 small" placeholder="상품번호를 입력하세요.">
+					             <button id="productAddBtn" class="btn btn-primary" type="button">
+					                 <i class="fas fa-plus-square"></i>
+					             </button>
 				    		</div>
-				    		<ul class="list-group">
-							  <li class="list-group-item">
-							  </li>
+				    		<ul id="productCodeList" class="list-group">
 							</ul>
 				    	</td>
 				    </tr>
 				    <tr>
 				    	<th>배너 파일</th>
 				    	<td>
-				    		<input type="file" name="banner" id="banner" />
+				    		<input type="file" name="upFile" id="banner" />
 				    	</td>
 				    </tr>
 				    <tr>
@@ -153,31 +148,63 @@ $(document).ready(function() {
 		let validDates = validMillis / (1000*60*60*24);
 		
 		$("#calculateDate").text(validDates);
+		$("#validDates").val(validDates);
 	});
 	
 	//상품번호 autocomplete
-	$(productCodeSearch).autocomplete({
+	$("#productCodeSearch").autocomplete({
 		source(request, response){
 			const {term : searchCode} = request;
+			
 			$.ajax({
 				url : "${pageContext.request.contextPath}/admin/promotionAutocomplete",
 				data : {searchCode},
 				success(data){
-					console.log(data);
+					const temp = $.map(data, ({productCode, name}, i)=>{
+						return {
+							label : productCode + "/" + name,
+							value : productCode + "/" + name
+						}
+					});
+					console.log(temp);
+					response(temp);
 				},
 				error : console.log
 			});
-		}
+		}	
+	});
+	
+	//상품 코드 추가 버튼 클릭 시 코드 추가
+	$("#productAddBtn").click((e)=>{
+		const value = $("#productCodeSearch").val();
+		const code = value.split("/"); 
+		const $productList = $("[name = productCode]");
+		let isValid = 0;
+		
+		if($productList.length > 0){
+			$productList.each((i, item)=>{
+				if($(item).val() == code[0]){
+					alert("이미 상품이 존재합니다.");
+					isValid = 1;
+					return;
+				};
+			});
+		};
+		
+		if(isValid == 1) return;
+		
+		$("#productCodeList").append(`<li class="list-group-item">
+	\${value}
+	<input type="hidden" name="productCode" value="\${code[0]}" />
+</li>`);
 	});
 	
 	
 	//등록 버튼 클릭 시 form 제출
 	$(promotionEnrollBtn).click((e)=>{
-		
+		$(document.promotionEnrollFrm).submit();	
 	});										
 });
-
-
 
 
 </script>
