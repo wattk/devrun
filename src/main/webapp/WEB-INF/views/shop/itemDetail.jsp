@@ -46,7 +46,7 @@
 					</div>
 					<div id="itemDetailOptionDiv">
 						<span>59,590</span>원
-						<br><span>혜택 : </span><span>180p</span>적립
+						<br><span>혜택 : </span><span style="color:pink;">180p </span>적립
 						<br><span>배송 : </span><span>무료배송</span>
 						<br><span style="font-size: 10px;">제주도/도서산간 지역 4,000원 추가</span>
 						<hr>
@@ -249,7 +249,7 @@
 					          <label for="tab-4">추천</label>
 					          <div class="content height600">
 					            <div id="recommendedDiv">
-					              <div class="p-4" style="font-family: 'Song Myung', serif;"><h2>비슷한 상품</h2></div>
+					              <div class="p-4 ml-5" style="font-family: 'SANJUGotgam';"><h2>비슷한 상품</h2></div>
 					              <div id="recommendedPicDiv" class="d-flex">
 					                <div class="recom-info">
 					                  <a href=""><i class="far fa-square"></i></a>
