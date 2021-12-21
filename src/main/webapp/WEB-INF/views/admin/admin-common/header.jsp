@@ -377,8 +377,7 @@
             
             <!-- 이벤트 관리 메뉴 -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEvent"
-                    aria-expanded="true" aria-controls="collapseEvent">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/promotionManage.do">
                     <i class="fas fa-receipt"></i>
                     <span>이벤트 관리</span>
                 </a>            
