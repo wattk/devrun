@@ -3,5 +3,32 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="promotion">
-  
+	<insert id="insertPromotion">
+		insert into
+			promotion
+		values(
+			#{promotionCode},
+			#{name},
+			#{startDate},
+			#{validDates},
+			#{banner},
+			#{viewCount},
+			#{memberNo},
+			#{sideNote},
+			#{isRegular},
+			default
+		)
+	</insert>
+	
+	<insert id="insertProductPromotion">
+		insert into
+			product_promotion
+		values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.productCode},
+			#{item.promotionCode}
+		)
+		</foreach>
+	</insert>
 </mapper>

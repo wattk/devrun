@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.kh.devrun.product.Product;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +29,8 @@ public class Promotion implements Serializable {
 	private String banner;
 	private int viewCount;
 	private int memberNo;
+	private Date enrollDate;
 	
-	//private List<Product> productList;
+	private List<Product> productList;
 
 }
