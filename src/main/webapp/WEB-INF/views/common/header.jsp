@@ -164,30 +164,15 @@
   </nav>
   
   <script>
-	// 채팅 클릭
+  	// 채팅 클릭
 	$('#chat').click((e) => {
-		e.preventDefault();
-		
-		console.log("하이");
+
 		// 팝업요청 // url 부분 로그인 회원 받게 수정할 것
 		const url = `${pageContext.request.contextPath}/chat/chatList.do`;
-		
-		// 띄울 팝업창 높이
-		const popHeight = 300;		                                      
-		// 띄울 팝업창 너비
-		const popWidth = 400;                                       
-		// 현재창의 높이
-		const winHeight = document.body.clientHeight
-		// 현재창의 너비
-		const winWidth = document.body.clientWidth;
-		// 현재창의 x좌표
-		const winX = window.screenLeft;
-		// 현재창의 y좌표
-		const winY = window.screenTop;	                          
-		const popX = winX + (winWidth - popWidth)/2;
-		const popY = winY + (winHeight - popHeight)/2;
-		open(url, name, `top=\${popY}, left=\${popX}, width=\${popWidth}, height=\${popHeight}`);
-		
+		const name = 'chatList'; // 팝업창 Window객체의 name.
+		const spec = "width=400px, height=550px";
+		open(url, name, spec);
+
 	});
   </script>
   <!--/ Nav End /-->
