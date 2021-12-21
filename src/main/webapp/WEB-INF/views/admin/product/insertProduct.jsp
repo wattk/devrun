@@ -40,9 +40,9 @@
 					<tr>
 						<th>상품 상태</th>
 						<td>
-							<input type="radio" name="status" id="public" />
+							<input type="radio" name="status" value="Y"/>
 							<label for="public">공개</label>
-							<input type="radio" name="status" id="private" />
+							<input type="radio" name="status" value="N" checked />
 							<label for="private">비공개</label> 
 						</td>
 						

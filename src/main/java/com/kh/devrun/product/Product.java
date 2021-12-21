@@ -26,6 +26,7 @@ public class Product implements Serializable {
 	private Date regDate;
 	private String thumbnail;
 	private String content;
+	private int viewCount;
 	private char status;
 	
 
