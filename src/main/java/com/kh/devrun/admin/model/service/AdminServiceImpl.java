@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.devrun.admin.model.dao.AdminDao;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
@@ -26,6 +27,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	// 상품 등록, 상품-분류 추가
+	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int insertProduct(Product product, String childCategoryCode) {
 		int result = 0;
@@ -38,9 +40,12 @@ public class AdminServiceImpl implements AdminService {
 			
 			// 상품-분류 테이블에 추가
 			productCode = product.getProductCode();
-			ProductCategory productCategory = new ProductCategory(productCode,childCategoryCode);
+			ProductCategory productCategory = new ProductCategory(childCategoryCode,productCode);
 			
-			result = adminDao.insertProducCategory(productCategory);
+			productCategory.setProductCode(product.getProductCode());
+			log.debug("productCategory = {}", productCategory);
+			
+			result = insertProducCategory(productCategory);
 			
 		}catch(Exception e) {
 			throw e;
@@ -48,6 +53,14 @@ public class AdminServiceImpl implements AdminService {
 		
 		
 		return result;
+	}
+	
+
+
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int insertProducCategory(ProductCategory productCategory) {
+		return adminDao.insertProducCategory(productCategory);
 	}
 	
 	

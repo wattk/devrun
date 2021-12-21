@@ -138,6 +138,7 @@ CREATE TABLE "PRODUCT" (
 	"STATUS"	CHAR(1)	DEFAULT 'Y'	NOT NULL
 );
 
+
 -- 상품 테이블 코멘트 추가
 COMMENT ON COLUMN "PRODUCT"."PRODUCT_CODE" IS '상품코드';
 COMMENT ON COLUMN "PRODUCT"."NAME" IS '상품명';
@@ -1207,10 +1208,34 @@ values('pm','ot','팜레스트');
 
 
 select*from PRODUCT_CHILD_CATEGORY;
+select*from PRODUCT_PARENT_CATEGORY;
+
+select * from product_category;
+
+select * from product;
 
 
 
+-- 상품- 분류
 
+
+-- rank() over()---
+SELECT
+   A.PRODUCT_CODE
+FROM (
+   SELECT
+      PRODUCT_CODE,
+      ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) RN
+   FROM PRODUCT
+   ORDER BY REG_DATE DESC
+) A
+WHERE RN = 1;
+
+select
+    *
+from   
+    product p left join product_category pc 
+        on p.product_code = pc.product_code;
 
 
 
