@@ -32,15 +32,16 @@ public class MypageController {
 //		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 //		log.debug("[authorities] authorities = {}", authorities);		
 		//읽지 않은 총 쪽지 개수 totalMessage
-		if(member != null) {
-			int memberNo2 = member.getMemberNo();
-			int totalMessage = mypageService.selectMessageTotalCount(memberNo2);
-			log.debug("totalMessage = {}", totalMessage);
-			model.addAttribute("totalMessage", totalMessage);
-			return "mypage/mypage";
-		} else {
-			return "redirect:error.do";
-		}
+//		if(member != null) {
+//			int memberNo2 = member.getMemberNo();
+//			int totalMessage = mypageService.selectMessageTotalCount(memberNo2);
+//			log.debug("totalMessage = {}", totalMessage);
+//			model.addAttribute("totalMessage", totalMessage);
+//			return "mypage/mypage";
+//		} else {
+//			return "redirect:error.do";
+//		}
+		return "mypage/mypage";
 	}
 	/**
 	 * 지원 마이페이지 메인 끝
