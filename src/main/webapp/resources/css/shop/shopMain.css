@@ -106,7 +106,7 @@
   .accordion h2 {
     padding: .5rem 4rem;
     background-color:  #404040; /* 25%*/
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     color: white;
   }
   .accordion h2:hover {
@@ -115,7 +115,7 @@
   .accordion h3 {
     padding: .5rem 6rem;
     background-color:#8c8c8c; /* 55%*/
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     color: white; 
   }
   .accordion h3:hover {
@@ -125,7 +125,7 @@
     padding: .5rem 8rem;
     list-style: none;
     background-color: #bfbfbf; /* 75%*/
-    font-size: 1.4rem;
+    font-size: 1.0rem;
     color: #0059b3; 
   }
   

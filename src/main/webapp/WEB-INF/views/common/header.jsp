@@ -36,6 +36,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
 
   <!-- Bootstrap CSS File -->
@@ -140,7 +141,7 @@
 	   	            <a class="" href="#">[<sec:authentication property="principal.nickname"/>]</a><span class="">님 안녕하세요</span>
 		      	</div>
 	            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage">마이페이지</a>
+	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a>
 	              <a class="dropdown-item" href="#">쪽지</a>
 	              <a class="dropdown-item" href="#">주문/배송</a>
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/member/cart.do">장바구니</a>

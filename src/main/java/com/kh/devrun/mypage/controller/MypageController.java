@@ -20,7 +20,10 @@ public class MypageController {
 	@Autowired
 	private MypageService mypageService;
 	
-	@GetMapping("")
+	/**
+	 * 지원 마이페이지 메인 시작
+	 */
+	@GetMapping("/mypage.do")
 	public String mypage(Model model, Authentication authentication) {
 		Member member = (Member) authentication.getPrincipal();
 		log.debug("[principal] member = {}", member);
@@ -39,6 +42,22 @@ public class MypageController {
 			return "redirect:error.do";
 		}
 	}
+	/**
+	 * 지원 마이페이지 메인 끝
+	 */
+	
+	/**
+	 * 지원 활동 배지 시작
+	 */
+	@GetMapping("/myinfo/activityBadge.do")
+	public String activityBagde() {
+
+		return "mypage/activityBadge";
+		
+	}
+	/**
+	 * 지원 활동 배지 끝
+	 */
 	
 	/**
 	 * 혜진 교환/환불/취소 시작

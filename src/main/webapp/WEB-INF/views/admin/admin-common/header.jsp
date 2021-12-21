@@ -11,7 +11,9 @@
 	    pageEncoding="UTF-8"%>
 	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-	<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+	<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>	
+	<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 	
 	<!-- bootstrap 사용  -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -338,9 +340,9 @@
                 <div id="collapseNotify" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="utilities-color.html">리뷰/쪽지 신고</a>
-                        <a class="collapse-item" href="utilities-border.html">게시물 신고</a>
-                        <a class="collapse-item" href="utilities-animation.html">블랙리스트 관리</a>                     
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/reviewReport.do">리뷰/쪽지 신고</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/boardReport.do">게시물 신고</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/blacklistReport.do">블랙리스트 관리</a>                     
                     </div>
                 </div>
             </li>
@@ -375,8 +377,7 @@
             
             <!-- 이벤트 관리 메뉴 -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEvent"
-                    aria-expanded="true" aria-controls="collapseEvent">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/promotionManage.do">
                     <i class="fas fa-receipt"></i>
                     <span>이벤트 관리</span>
                 </a>            

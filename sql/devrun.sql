@@ -741,6 +741,11 @@ CREATE TABLE "PROMOTION" (
     CONSTRAINT CK_PROMOTION_IS_REGULAR CHECK(IS_REGULAR IN('Y', 'N'))
 );
 
+-- SIDE_NOTE 컬럼 데이터타입 CLOB으로 변경
+ALTER TABLE "PROMOTION" DROP COLUMN SIDE_NOTE;
+ALTER TABLE "PROMOTION" ADD (SIDE_NOTE CLOB);
+COMMIT;
+
 -- 판매 이벤트 정보 테이블 코멘트 추가
 COMMENT ON COLUMN "PROMOTION"."PROMOTION_CODE" IS '이벤트 코드';
 COMMENT ON COLUMN "PROMOTION"."NAME" IS '이벤트 명';
@@ -1124,4 +1129,93 @@ COMMENT ON COLUMN "OPTION_CATEGORY"."OPTION_NAME" IS '옵션 카테고리명';
 
 --옵션 카테고리 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_OPTION_CATEGORY_NO;
+
+---------------------------------------------
+--==카테고리 데이터 추가
+
+--대분류
+insert into PRODUCT_PARENT_CATEGORY
+values('ch','의자');
+insert into PRODUCT_PARENT_CATEGORY
+values('de','책상');
+insert into PRODUCT_PARENT_CATEGORY
+values('mo','마우스');
+insert into PRODUCT_PARENT_CATEGORY
+values('ke','키보드');
+insert into PRODUCT_PARENT_CATEGORY
+values('mon','모니터');
+insert into PRODUCT_PARENT_CATEGORY
+values('ot','기타');
+
+select*from PRODUCT_PARENT_CATEGORY;
+
+--소분류(의자)
+insert into PRODUCT_CHILD_CATEGORY
+values('tc','ch','책상의자');
+insert into PRODUCT_CHILD_CATEGORY
+values('gc','ch','게이밍 의자');
+insert into PRODUCT_CHILD_CATEGORY
+values('sc','ch','좌식 의자');
+insert into PRODUCT_CHILD_CATEGORY
+values('ec','ch','안락 의자');
+insert into PRODUCT_CHILD_CATEGORY
+values('dc','ch','식탁의자');
+
+-- 소분류(책상/책장)
+insert into PRODUCT_CHILD_CATEGORY
+values('bc','de','책장');
+insert into PRODUCT_CHILD_CATEGORY
+values('pd','de','컴퓨터 책상');
+insert into PRODUCT_CHILD_CATEGORY
+values('nd','de','일반 책상');
+
+
+select*from PRODUCT_CHILD_CATEGORY;
+
+-- 소분류(마우스)
+insert into PRODUCT_CHILD_CATEGORY
+values('gm','mo','게이밍 마우스');
+insert into PRODUCT_CHILD_CATEGORY
+values('wm','mo','무선 마우스');
+insert into PRODUCT_CHILD_CATEGORY
+values('lm','mo','저소음 마우스');
+
+
+--소분류(키보드)
+insert into PRODUCT_CHILD_CATEGORY
+values('ck','ke','무접점 키보드');
+insert into PRODUCT_CHILD_CATEGORY
+values('mk','ke','기계식 키보드');
+insert into PRODUCT_CHILD_CATEGORY
+values('wk','ke','무선 키보드');
+insert into PRODUCT_CHILD_CATEGORY
+values('gk','ke','게이밍 키보드');
+
+
+--소분류(모니터)
+insert into PRODUCT_CHILD_CATEGORY
+values('sm','mo','표준 모니터');
+insert into PRODUCT_CHILD_CATEGORY
+values('gmo','mo','게이밍 모니터');
+insert into PRODUCT_CHILD_CATEGORY
+values('pm','mo','전문가용 모니터');
+insert into PRODUCT_CHILD_CATEGORY
+values('hm','mo','휴대용 모니터');
+
+--소분류(기타)
+insert into PRODUCT_CHILD_CATEGORY
+values('sm','ot','손목 보호대');
+insert into PRODUCT_CHILD_CATEGORY
+values('gmo','ot','거치대');
+insert into PRODUCT_CHILD_CATEGORY
+values('pm','ot','팜레스트');
+
+
+select*from PRODUCT_CHILD_CATEGORY;
+
+
+
+
+
+
 
