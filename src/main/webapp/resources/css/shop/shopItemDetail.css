@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+
 @font-face {
       font-family: 'SANJUGotgam';
       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/SANJUGotgam.woff') format('woff');
@@ -131,18 +132,18 @@ color: green;
 /*탭 끝*/  
 
 /*body 전체길이*/
+/*탭 top준거 나중에 다시 수정*/
 #shopItemDetailOuterDiv{
+	position: relative;
+    top: 200px;	
 	height: 1500px
 	
 }
 /*body 전체길이*/
 
-/*탭 top준거 나중에 다시 수정*/
 #itemDetailMenuTabDiv{
-    position: relative;
-    top: 300px;	
+	margin-top: 90px;
 }
-/*탭 top준거 나중에 다시 수정*/  
 
 .reviewDiv{
   margin-left: 40px;
@@ -154,7 +155,7 @@ color: green;
   height: 600px;
 }
 .a-question-div{
-  width: 1100px; 
+  width: 95%; 
   margin-left: 40px;
 }
 #recommendedPicDiv {
@@ -173,4 +174,48 @@ color: green;
 
 #infoForARefund  p, #ThirdInfo tr{
   font-family: 'OTWelcomeRA';
+}
+#itemDetailBicPicDiv i {
+	margin-left: 80px;
+	font-size:  500px;
+}
+#itemDetailSmallPicDiv i {
+	font-size: 150px;
+}
+#priceDiv{
+	display: flex;
+    justify-content: space-between;
+}
+#orderBtnDiv{
+	display: flex;
+    justify-content: center;
+}
+#itemDetailInfoDiv{
+	font-size: 18px;
+	font-family: 'SANJUGotgam';
+}
+#priceDiv span{
+	font-size: 22px;
+
+}
+#itemDetailNameDiv{
+    margin-top: 30px;
+}
+#itemDetailNameDiv > p{
+	font-size: 30px;
+}
+#itemDetailInfoDiv {
+	width: 570px;
+	height: 460px;
+}
+#itemDetailDisplayDiv{
+	width: 1400px;
+	margin: auto auto;
+}
+#itemDetailDisplayDiv{
+	display: flex;
+    justify-content: center;
+}
+.form-select {
+	height: 40px;
 }
