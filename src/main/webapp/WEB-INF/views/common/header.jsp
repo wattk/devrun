@@ -142,7 +142,7 @@
 		      	</div>
 	            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a>
-	              <a class="dropdown-item" href="#">쪽지</a>
+	              <a class="dropdown-item" id="chat">채팅</a>
 	              <a class="dropdown-item" href="#">주문/배송</a>
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/member/cart.do">장바구니</a>
 	              <a class="dropdown-item" href="#">
@@ -164,7 +164,31 @@
   </nav>
   
   <script>
-
+	// 채팅 클릭
+	$('#chat').click((e) => {
+		e.preventDefault();
+		
+		console.log("하이");
+		// 팝업요청 // url 부분 로그인 회원 받게 수정할 것
+		const url = `${pageContext.request.contextPath}/chat/chatList.do`;
+		
+		// 띄울 팝업창 높이
+		const popHeight = 300;		                                      
+		// 띄울 팝업창 너비
+		const popWidth = 400;                                       
+		// 현재창의 높이
+		const winHeight = document.body.clientHeight
+		// 현재창의 너비
+		const winWidth = document.body.clientWidth;
+		// 현재창의 x좌표
+		const winX = window.screenLeft;
+		// 현재창의 y좌표
+		const winY = window.screenTop;	                          
+		const popX = winX + (winWidth - popWidth)/2;
+		const popY = winY + (winHeight - popHeight)/2;
+		open(url, name, `top=\${popY}, left=\${popX}, width=\${popWidth}, height=\${popHeight}`);
+		
+	});
   </script>
   <!--/ Nav End /-->
   <section style="margin-top:115px;">
