@@ -1,5 +1,20 @@
 @charset "UTF-8";
 
+@font-face {
+      font-family: 'SANJUGotgam';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/SANJUGotgam.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'OTWelcomeRA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 /*탭 시작*/
 #menu-tab {
 /*background: white;*/
@@ -127,4 +142,35 @@ color: green;
     position: relative;
     top: 300px;	
 }
-/*탭 top준거 나중에 다시 수정*/
+/*탭 top준거 나중에 다시 수정*/  
+
+.reviewDiv{
+  margin-left: 40px;
+}
+.reviewContent{
+ width: 1100px; 
+}
+.height600{
+  height: 600px;
+}
+.a-question-div{
+  width: 1100px; 
+  margin-left: 40px;
+}
+#recommendedPicDiv {
+  display: flex;
+  justify-content: space-evenly;
+  
+}
+#recommendedPicDiv i{
+  font-size: 350px;
+}
+
+#infoForARefund h3,h5{
+  font-family: 'SANJUGotgam'
+  /*상주곶감체*/
+}
+
+#infoForARefund  p, #ThirdInfo tr{
+  font-family: 'OTWelcomeRA';
+}
