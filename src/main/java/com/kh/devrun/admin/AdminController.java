@@ -53,6 +53,23 @@ public class AdminController {
 		
 		return "/admin/report/blacklistReport";
 	}
+	
+	@GetMapping("/promotionManage.do")
+	public String promotionManage() {
+		
+		return "/admin/promotion/promotionManage";
+	}
+	
+	@GetMapping("/promotionDetail.do")
+	public String promotionDetail() {
+		return "/admin/promotion/promotionDetail";
+	}
+	
+	@GetMapping("/promotionEnroll.do")
+	public String promotionEnroll() {
+		return "/admin/promotion/promotionEnroll";
+	}
+
 	/**
 	 * 혜진 끝
 	 */
