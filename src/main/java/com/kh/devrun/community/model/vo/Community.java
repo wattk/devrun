@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-// @Data : getter, setter, toString
+// @Data : getter, setter, toString을 포함한다.
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

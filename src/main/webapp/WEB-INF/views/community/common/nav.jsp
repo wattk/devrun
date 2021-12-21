@@ -36,9 +36,9 @@
         <!-- 권한 부여 해야함 -->
 		<li><a href="${pageContext.request.contextPath}/community/communityColumnForm.do">글쓰기</a></li>
 		
-        <li><a href="${pageContext.request.contextPath}/community/communityQnA.do">Q&A</a></li>
-        <li><a href="${pageContext.request.contextPath}/community/communityStudy.do">스터디</a></li>
-        <li><a href="${pageContext.request.contextPath}/community/communityBoard.do">자유게시판</a></li>
+        <li><a href="${pageContext.request.contextPath}/community/communityQnAList.do">Q&A</a></li>
+        <li><a href="${pageContext.request.contextPath}/community/communityStudyList.do">스터디</a></li>
+        <li><a href="${pageContext.request.contextPath}/community/communityFreeboardList.do">자유게시판</a></li>
       </ul>
     </div>
   

@@ -103,7 +103,7 @@
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityColumnList.do">칼럼</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityQnAList.do">Q&A</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityStudy.do">스터디</a>
-              <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityBoard.do">자유게시판</a>
+              <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityFreeboardList.do">자유게시판</a>
             </div>
           </li>
           <li class="nav-item">
