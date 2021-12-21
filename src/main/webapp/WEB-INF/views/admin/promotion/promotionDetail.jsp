@@ -29,7 +29,7 @@
 	<div class="event-list">
 		<hr />
 		<strong class="ml-5 pl-5">이벤트 정보</strong>
-			<table class="admin-tbl table mx-auto mt-3 col-md-10">
+			<table id="promotionDetailTbl" class="admin-tbl table mx-auto mt-3 col-md-10">
 				<tbody>
 				    <tr>
 				    	<th>이벤트 등록일</th>
@@ -96,14 +96,15 @@
             <label for="contents" class="col-form-label"></label>
             <textarea id="summernote" name="editordata"></textarea>
         </div>
-        <div class="promotion-detail-btns d-flex justify-content-center col-10 mx-auto mt-5 mb-5">
-        	<button type="button" class="promotion-btn btn btn-primary">수정</button>
-        	<button type="button" class="promotion-btn btn btn-secondary">삭제</button>
-        	<button type="button" class="promotion-btn btn btn-dark">목록</button>
+        <div id="promotionDetailBtns" class="d-flex justify-content-center col-10 mx-auto mt-5 mb-5">
+        	<button type="button" id="promotionEditBtn" class="promotion-btn btn btn-primary">수정</button>
+        	<button type="button" id="promotionDeleteBtn" class="promotion-btn btn btn-secondary">삭제</button>
+        	<button type="button" id="promotionCancelBtn" class="promotion-btn btn btn-dark">목록</button>
         </div>
 	</div>
 </form:form>
 <script>
+//썸머노트 작동
 $(document).ready(function() {
 	$('#summernote')
 		.summernote({
@@ -116,5 +117,32 @@ $(document).ready(function() {
 		})
 		.summernote('disable');
 });
+
+//수정 버튼 클릭 시 비활성화 풀기 & 수정 버튼 등록 버튼으로 변경하고 삭제/목록 버튼 대신 취소 버튼 만들기
+$(promotionEditBtn).click((e)=>{
+	const $inputArr = $('#promotionDetailTbl input');
+	$inputArr.each((i, item)=>{
+		$(item).prop('disabled', false);
+	});
+	$('#summernote').summernote('enable');
+	
+	$(promotionDetailBtns)
+		.html('')
+		.append(`<button type="button" id="promotionUpdateBtn" class="promotion-btn btn btn-primary">등록</button>
+	        	<button type="button" id="promotionResetBtn" class="promotion-btn btn btn-secondary">취소</button>`);
+	
+	//취소 버튼 클릭 시 디테일창으로
+	$(promotionResetBtn).click((e)=>{
+		location.href = "${pageContext.request.contextPath}/admin/promotionDetail.do";
+	});
+	
+	//등록 버튼 클릭 시 form 제출
+	$(promotionUpdateBtn).click((e)=>{
+		
+	});
+});
+
+
+
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>

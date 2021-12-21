@@ -1,8 +1,15 @@
 package com.kh.devrun.admin;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.kh.devrun.promotion.model.service.PromotionService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,6 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping("/admin")
 public class AdminController {
+	
+	@Autowired
+	private PromotionService promotionService;
 	
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
@@ -68,6 +78,12 @@ public class AdminController {
 	@GetMapping("/promotionEnroll.do")
 	public String promotionEnroll() {
 		return "/admin/promotion/promotionEnroll";
+	}
+	
+	@GetMapping("/promotionAutocomplete")
+	@ResponseBody
+	public void promotionAutocomplete(@RequestParam String searchCode) {
+		//List<String> list = promotionService.selectProductListByProductCode(searchCode);
 	}
 
 	/**
