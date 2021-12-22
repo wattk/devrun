@@ -50,6 +50,11 @@ public class AdminDaoImpl implements AdminDao {
 	public int insertProductPromotion(List<Map<String, Object>> list) {
 		return session.insert("promotion.insertProductPromotion", list);
 	}
+
+	@Override
+	public List<Promotion> selectAllPromotionList() {
+		return session.selectList("promotion.selectAllPromotionList");
+	}
 	
 	
 	/**
