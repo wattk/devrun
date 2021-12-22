@@ -27,21 +27,81 @@
 
 	<!-- body 영역 시작 -->
 		<div id="shopItemDetailOuterDiv">
-			<!--신고 모달 시작-->
-			<!--신고 모달 끝-->
-	
 			<!--리뷰작성모달 시작-->
 			<!--리뷰작성모달 끝-->
 	
 			<!--문의 글 작성 시작-->
 			<!--문의 글 작성 끝-->
-	
-	
-	
-	
-	
-	
+
 			<div id="itemDetailDisplayDiv" class="row">
+				<!--신고 모달 시작 (부트스트랩)-->
+					<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">신고하기</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							</div>
+							<div class="modal-body">
+								<div class="m-body1">
+									<p>신고대상 ID 및 내용</p>
+									<div>
+										<span id="reportId">해당 ID : </span> watt0930
+										<hr id="reportHr">
+										<p style="font-weight: bold;">신고 대상 글  </p>
+										<span>그지같은깽깽이야 이삐리리삐리리 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum mollitia quo dolorum nobis ut unde commodi blanditiis! Distinctio adipisci quidem, repellendus eum cupiditate at sunt ab iste, voluptates, aperiam alias!</span>
+									</div>
+								</div>
+								<div class="m-body2 mt-3">
+									<p>신고사유</p>
+									<div class="checkboxReport">
+										<form action="#">
+											<table>
+												<tr>
+													<td>
+														<input type="radio" id="check1" name="chch">
+														<label for="check1">욕설/비방 &emsp;&emsp;&emsp;&emsp;</label>
+													</td>
+													<td>
+														<input type="radio" id="check2" name="chch">
+														<label for="check2">광고/홍보글</label>
+													</td>
+													<td>
+														<input type="radio" id="check3" name="chch">
+														<label for="check3">음란/선정성</label>
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<input type="radio" id="check4" name="chch">
+														<label for="check4">게시글도배</label>
+													</td>
+													<td>
+														<input type="radio" id="check5" name="chch">
+														<label for="check5">관련없는 이미지/내용 &emsp;&nbsp; &nbsp; </label>
+													</td>
+													<td>													
+														<input type="radio" id="check6" name="chch">
+														<label for="check6">기타</label>
+													</td>
+												</tr>
+											</table>
+											<textarea name="" id="reportText" cols="30" rows="10"></textarea>
+										</form>
+										<p style="font-size: 12px;">ⓘ 신고해주신 내용은 관리자 검토 후 내부정책에 의거 조치가 진행됩니다.</p>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer justify-content-center">
+							<button type="button" class="btn btn-primary col-4">신고하기</button>
+							<button type="button" class="btn btn-secondary col-4" data-dismiss="modal">취소하기</button>
+							</div>
+						</div>
+						</div>
+					</div>
+				<!--신고 모달 끝 (부트스트랩)-->
 				<!--리뷰사진확대 모달 시작-->
 				<div id="reviewModal" class="review-modal-div" style="position: absolute;">
 					<img id="closeIcon" src="https://i.ibb.co/rmVYp7Z/x-icon.png" alt="" onclick="expandClose()">
@@ -121,7 +181,9 @@
 									  <i class="fas fa-star"></i>
 									  <i class="fas fa-star"></i>
 									  <i class="fas fa-star"></i>
-									  <br><span>greendory</span> | <span>21.11.06</span> | <a href="">신고</a>
+									  <br><span>greendory</span> | <span>21.11.06</span> | 
+									  <!-- Button trigger modal -->
+									  <button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
 									  <br><span>상품옵션 : </span> <span>핑크</span>
 									  <div class="reviewP mt-3">
 										너무 좋아요 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus deserunt perferendis aspernatur dolores aliquid labore laborum id aut beatae nulla, a sequi reiciendis placeat, quia corrupti voluptatum accusantium vel voluptas. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Saepe, a error? Expedita harum accusantium provident praesentium consectetur at autem in dicta facere, dolor rem nesciunt repudiandae saepe. Ducimus, expedita eveniet. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis veniam, id, libero, vel molestiae recusandae sunt quod debitis nam ut laudantium ducimus quas accusantium assumenda eligendi. Eaque, est. Unde, tenetur.
@@ -148,7 +210,8 @@
 										<i class="fas fa-star"></i>
 										<i class="fas fa-star"></i>
 										<i class="fas fa-star"></i>
-										<br><span>greendory</span> | <span>21.11.06</span> | <a href="">신고</a>
+										<br><span>greendory</span> | <span>21.11.06</span> |
+										<button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
 										<br><span>상품옵션 : </span> <span>핑크</span>
 										<div class="reviewP mt-3">
 										  너무 좋아요 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus deserunt perferendis aspernatur dolores aliquid labore laborum id aut beatae nulla, a sequi reiciendis placeat, quia corrupti voluptatum accusantium vel voluptas. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Saepe, a error? Expedita harum accusantium provident praesentium consectetur at autem in dicta facere, dolor rem nesciunt repudiandae saepe. Ducimus, expedita eveniet. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis veniam, id, libero, vel molestiae recusandae sunt quod debitis nam ut laudantium ducimus quas accusantium assumenda eligendi. Eaque, est. Unde, tenetur.
@@ -174,7 +237,8 @@
 										<i class="fas fa-star"></i>
 										<i class="fas fa-star"></i>
 										<i class="fas fa-star"></i>
-										<br><span>greendory</span> | <span>21.11.06</span> | <a href="">신고</a>
+										<br><span>greendory</span> | <span>21.11.06</span> |
+										<button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
 										<br><span>상품옵션 : </span> <span>핑크</span>
 										<div class="reviewP mt-3">
 										  너무 좋아요
@@ -318,9 +382,9 @@
 					  </div>
 				<!-- 탭 끝  -->
 			</div>
-		</div>	
+		</div>
 	<!-- body 영역 끝 -->	
-	
+			
 
 <!-- shopHeader js  -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>

@@ -1,4 +1,4 @@
-/**모달 시작*/
+/**리뷰사진확대모달 시작*/
 function expandPic(target) {
 
 	
@@ -12,4 +12,4 @@ function expandClose() {
 const $reviewModal = $("#reviewModal");
 $reviewModal.hide();
 }
-/**모달 끝*/
+/**리뷰사진확대모달 끝*/
