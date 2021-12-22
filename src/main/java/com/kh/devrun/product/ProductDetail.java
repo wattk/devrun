@@ -18,7 +18,7 @@ public class ProductDetail implements Serializable {
 
 	private int detailNo;
 	private String productCode;
-	private int optionNo;
+	private String optionNo;
 	private String optionContent;
 	private String sku; // 제품 단위
 	private int quantity; // 재고

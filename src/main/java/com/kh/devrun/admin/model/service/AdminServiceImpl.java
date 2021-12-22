@@ -13,9 +13,9 @@ import com.kh.devrun.admin.model.dao.AdminDao;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
 import com.kh.devrun.product.ProductCategory;
+import com.kh.devrun.product.ProductDetail;
 import com.kh.devrun.promotion.model.exception.PromotionException;
 import com.kh.devrun.promotion.model.vo.Promotion;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -33,7 +33,7 @@ public class AdminServiceImpl implements AdminService {
 	// 상품 등록, 상품-분류 추가
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public int insertProduct(Product product, String childCategoryCode) {
+	public int insertProduct(Product product, String childCategoryCode, ProductDetail productDetail) {
 		int result = 0;
 		String productCode="";
 		
@@ -45,11 +45,14 @@ public class AdminServiceImpl implements AdminService {
 			// 상품-분류 테이블에 추가
 			productCode = product.getProductCode();
 			ProductCategory productCategory = new ProductCategory(childCategoryCode,productCode);
-			
 			productCategory.setProductCode(product.getProductCode());
-			log.debug("productCategory = {}", productCategory);
-			
 			result = insertProducCategory(productCategory);
+			
+			// 상품 디테일 테이블에 추가
+			productDetail.setProductCode(product.getProductCode());
+			result = insertProductDetail(productDetail);
+			
+			
 			
 		}catch(Exception e) {
 			throw e;
@@ -58,14 +61,25 @@ public class AdminServiceImpl implements AdminService {
 		return result;
 	}
 
-	
-	
-
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int insertProducCategory(ProductCategory productCategory) {
 		return adminDao.insertProducCategory(productCategory);
 	}
+	
+
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int insertProductDetail(ProductDetail productDetail) {
+		return adminDao.insertProductDetail(productDetail);
+	}
+	
+	
+	
+	/**
+	 * 태영 끝 --------------------------------------------	
+	 */	
+
 	
 	
 

@@ -82,26 +82,67 @@ public class AdminController {
 	public String insertProduct(
 			Product product,
 			@RequestParam String childCategoryCode,
-			@RequestParam int optionNo,
 			@RequestParam String optionContent,
 			@RequestParam String sku,
 			@RequestParam int quantity,
+			@RequestParam String option1,
+			@RequestParam String option2,
+			MultipartFile upFile,
+			
 			RedirectAttributes redirectAttr) {
-		
-		ProductDetail productDetail = new ProductDetail();
-		log.debug("optionNo = {}", optionNo);
+		// 사용자 입력값
+		log.debug("product = {}", product);
+		log.debug("childCategoryCode = {}", childCategoryCode);
+			
 		log.debug("optionContent = {}", optionContent);
 		log.debug("sku = {}", sku);
 		log.debug("quantity = {}", quantity);
+		log.debug("option1 = {}", option1);
+		log.debug("option2= {}", option2);
 		
-		log.debug("product = {}", product);
-		log.debug("childCategoryCode = {}", childCategoryCode);
+		// 받아온 옵션값 합쳐주기
+		String option = option1+"/"+option2;
 		
+		// 소분류 코드 + 옵션 + seq.no 으로 상품코드를 만둘어준 뒤 pruduct에 set
+		String product_code = childCategoryCode+"-"+option+"-"; 
+		product.setProductCode(product_code);
+		
+		// 상품상세 객체로 묶어 전달
+		ProductDetail productDetail = new ProductDetail();
+		productDetail.setOptionNo(option);
+		productDetail.setOptionContent(optionContent);
+		productDetail.setSku(sku);
+		productDetail.setQuantity(quantity);
+		
+		log.debug("upFile = {}",upFile);
+		String productImg = product.getProductCode() +".png";
+		log.debug("productImg = {}",productImg);
+		
+		// 파일저장 : 절대경로
+		String saveDirectory  = application.getRealPath("/resources/upload/product");
+		log.debug("saveDirectory = {}",saveDirectory);
+		
+		//prduct thumbnail값 세팅
+		product.setThumbnail(productImg);
+		
+		// 업무로직 : db저장 		
+		if(upFile.isEmpty()) {		
+			try {									
+				// 서버 컴퓨터 저장
+				File dest = new File(saveDirectory, productImg);
+				upFile.transferTo(dest);
 				
-//		int result = adminService.insertProduct(product,childCategoryCode);
-//		String msg = result > 0 ? "상품등록을 성공했습니다!":"상품등록에 실패했습니다!!!!!!";  
-//		redirectAttr.addFlashAttribute("msg",msg);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+					
+		}
 		
+		int result = adminService.insertProduct(product,childCategoryCode,productDetail);
+		String msg = result > 0 ? "상품등록을 성공했습니다!":"상품등록에 실패했습니다!!!!!!";  
+		redirectAttr.addFlashAttribute("msg",msg);
+		
+																					
 		return "redirect:/admin/productMain.do";
 	}
 	
