@@ -476,3 +476,6 @@
    .shop-item-img + div p{
    	height: 73px;
    }
+   .hamburger:hover{
+   cursor: pointer;
+   }

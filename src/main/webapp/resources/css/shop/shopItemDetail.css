@@ -65,19 +65,21 @@ color: green;
 }
     
 .tab label {
-  background: rgba(170, 185, 185, 0.97);
-  padding: 40px;
-  border: 1px solid #ccc; 
-  margin-left: -1px; 
-  position: relative;
-  left: 1px; 
-  width: 301px;
-  text-align: center;
+   background: rgba(170, 185, 185, 0.97);
+   padding: 37px;
+   border: 1px solid #ccc;
+   margin-left: -1px;
+   position: relative;
+   left: 1px;
+   width: 300px;
+   text-align: center;
   /*둥근 모양 제거*/
   /* border-radius: 10px 10px 0px 0px;
   box-shadow: 3px -3px 6px rgba(0, 0, 0, 0.71); */
 }
-    
+.tab label:hover{
+	cursor:pointer;
+}    
 .tab [type=radio] {
   display: none;   
 }
