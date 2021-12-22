@@ -10,15 +10,8 @@
 <jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-<link href="${pageContext.request.contextPath}/resources/css/community/communityMain/style.css" rel="stylesheet">
+<!--  <link href="${pageContext.request.contextPath}/resources/css/community/communityMain/style.css" rel="stylesheet"> -->
 
-<<<<<<< HEAD
-<!-- 사이드바 css -->
-<link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
-
-<!-- header.jsp와 연결되는 것을 유념하자. -->
-=======
->>>>>>> branch 'master' of https://github.com/wattk/devrun.git
 
 <div class="container-fluid">
 	<div class="row">
@@ -135,9 +128,9 @@
 			<!-- 인기 게시물 시작 -->
 			<div class="row">
 				<div class="col-md-12">
-					<h3>
-						인기 게시물
-					</h3>
+					<h2>
+						<strong>인기 게시물</strong>
+					</h2>
 				</div>
 			</div>
 			
@@ -377,13 +370,6 @@
 </div>
 </div>
 
-<<<<<<< HEAD
-    <script src="${pageContext.request.contextPath}/resources/js/community/communityMain/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/community/communityMain/scripts.js"></script>
-  </body>
-</html>
-=======
-    <script src="${pageContext.request.contextPath}/resources/js/community/communityMain/scripts.js"></script>
->>>>>>> branch 'master' of https://github.com/wattk/devrun.git
+<script src="${pageContext.request.contextPath}/resources/js/community/communityMain/scripts.js"></script>
 	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

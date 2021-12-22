@@ -15,7 +15,7 @@
 </div>
 <form:form>
 	<div class="promotion-list">
-		<span class="m-5 pl-4">[총 3개]</span>
+		<span class="m-5 pl-4">[총 ${fn:length(promotionList)}개]</span>
 		<br />
 		<strong class="ml-5 mr-2 pl-4">선택한 항목을 </strong>
 		<button type="button" class="btn btn-secondary" data-dismiss="modal">삭제</button>
@@ -37,24 +37,33 @@
 			    </tr>
 			</thead>
 			<tbody>
-			    <tr>
-			      <td>
-			      	<input type="checkbox" name="eventCheck" id="" class="event-check" />
-			      </td>
-			      <td>0</td>
-			      <td>0</td>
-			      <td>
-			      	<a href="${pageContext.request.contextPath}/admin/promotionDetail.do">이벤트 123</a>
-			      </td>
-			      <td>
-			      	<button type="button" class="btn btn-light" data-toggle="modal" data-target="#boardModal" >확인</button>
-			      </td>
-			      <td>0</td>
-			      <td>0</td>
-			      <td>0</td>
-			      <td>0</td>
-			      <td>0</td>
-			    </tr>
+			<c:if test="${promotionList != null}">
+				<c:forEach items="${promotionList}" var="promotion" varStatus="vs">
+				    <tr>
+				      <td>
+				      	<input type="checkbox" name="eventCheck" id="" class="event-check" />
+				      </td>
+				      <td>${vs.count}</td>
+				      <td><fmt:formatDate value="${promotion.enrollDate}" pattern="yyyy-MM-dd"/></td>
+				      <td>
+				      	<a href="${pageContext.request.contextPath}/admin/promotionDetail.do?promotionCode=${promotion.promotionCode}">${promotion.name}</a>
+				      </td>
+				      <td>
+				      	<button type="button" class="btn btn-light" data-toggle="modal" data-target="#boardModal" >확인</button>
+				      </td>
+				      <td>${promotion.regular?"정기":"비정기"}</td>
+				      <td><fmt:formatDate value="${promotion.startDate}" pattern="yyyy-MM-dd"/></td>
+				      <td><fmt:formatDate value="${promotion.endDate}" pattern="yyyy-MM-dd"/></td>
+				      <td>${promotion.nickname}</td>
+				      <td>${promotion.viewCount}</td>
+				    </tr>
+			    </c:forEach>
+			 </c:if>
+			 <c:if test="${promotionList == null }">
+			 	<tr>
+			 		<td colspan="10">이벤트가 존재하지 않습니다.</td>
+			 	</tr>
+			 </c:if>
 	  	 </tbody>
 	</table>
 	<div class="text-right">

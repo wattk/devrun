@@ -15,6 +15,7 @@ import javax.servlet.ServletContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -148,24 +149,37 @@ public class AdminController {
 		
 		return "/admin/report/blacklistReport";
 	}
+	
+	//이벤트 메인 페이지 관련 메소드
 	@GetMapping("/promotionManage.do")
-	public String promotionManage() {
-		
+	public String promotionManage(Model model) {
+		List<Promotion> list = adminService.selectAllPromotionList();
+		log.debug("list = {}", list);
+		model.addAttribute("promotionList", list);
 		return "/admin/promotion/promotionManage";
 	}
 	
+	
+	//이벤트 상세 페이지 관련 메소드
 	@GetMapping("/promotionDetail.do")
 	public String promotionDetail() {
 		return "/admin/promotion/promotionDetail";
 	}
 	
+	
+	//이벤트 등록 관련 메소드
 	@GetMapping("/promotionEnroll.do")
 	public String promotionEnroll() {
 		return "/admin/promotion/promotionEnroll";
 	}
 	
 	@PostMapping("/promotionEnroll.do")
-	public String promotionEnroll(Promotion promotion, MultipartFile upFile, @RequestParam String[] productCode, RedirectAttributes redirectAttr) {
+	public String promotionEnroll(
+			Promotion promotion, 
+			MultipartFile upFile, 
+			@RequestParam String[] productCode, 
+			RedirectAttributes redirectAttr) 
+	{
 		try {
 			log.debug("promotion = {}, productCode = {}", promotion, productCode);
 			//promotion_code 생성

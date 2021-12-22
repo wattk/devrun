@@ -10,25 +10,59 @@
 			#{promotionCode},
 			#{name},
 			#{startDate},
-			#{validDates},
+			#{endDate},
+			#{sideNote},
+			#{isRegular},
 			#{banner},
 			#{viewCount},
 			#{memberNo},
-			#{sideNote},
-			#{isRegular},
-			default
+			default,
+			#{nickname}
 		)
 	</insert>
 	
-	<insert id="insertProductPromotion">
-		insert into
+	<update id="insertProductPromotion">
+		<foreach collection="list" item="item" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
+		into
 			product_promotion
 		values
-		<foreach collection="list" item="item" separator=",">
-		(
-			#{item.productCode},
-			#{item.promotionCode}
-		)
+		(#{item.productCode},#{item.promotionCode})
 		</foreach>
-	</insert>
+	</update>
+	
+	<select id="selectAllPromotionList" resultMap="promotionCollection">
+		select
+		    pm.*,
+		    pp.product_code,
+		    pp.name product_name,
+		    pp.price,
+		    pp.thumbnail,
+		    pp.status
+		from
+		    promotion pm left join product_promotion pd
+		        on pm.promotion_code = pd.promotion_code
+		            left join product pp
+		                on pp.product_code = pd.product_code
+	</select>
+	<resultMap type="promotion" id="promotionCollection">
+		<id column="promotion_code" property="promotionCode"/>
+		<result column="name" property="name"/>
+		<result column="start_date" property="startDate"/>
+		<result column="end_date" property="endDate"/>
+		<result column="side_note" property="sideNote"/>
+		<result column="is_regular" property="isRegular"/>
+		<result column="banner" property="banner"/>
+		<result column="view_count" property="viewCount"/>
+		<result column="memberNo" property="memberNo"/>
+		<result column="nickname" property="nickname"/>
+		<result column="enroll_date" property="enrollDate"/>
+		<collection property="productList" ofType="product">
+			<id column="product_code" property="productCode"/>
+			<result column="product_name" property="name"/>
+			<result column="product_name" property="name"/>
+			<result column="price" property="price"/>
+			<result column="thumbnail" property="thumbnail"/>
+			<result column="status" property="status"/>
+		</collection>
+	</resultMap>
 </mapper>
