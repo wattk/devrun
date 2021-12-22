@@ -8,6 +8,7 @@
 	<jsp:param value="상품관리" name="title"/>
 </jsp:include>
 
+
 <div id="productInsertContainer" class="productContainer">
 	<h2>상품 등록</h2>
 	<div id=imgInfoContainer>
@@ -34,8 +35,24 @@
 						<td><input type="text" name="price" placeholder="상품 가격" value="10000" required/></td>
 					</tr>
 					<tr>
+						<th>옵션번호</th>
+						<td><input type="text" name="optionNo" placeholder="옵션 번호" value="0" /></td>
+					</tr>
+					<tr>
+						<th>옵션 내용</th>
+						<td><input type="text" name="optionContent" placeholder="옵션 내용" value="-" /></td>
+					</tr>
+					<tr>
+						<th>제품 단위</th>
+						<td><input type="text" name="sku" placeholder="재품 단위" value="개" /></td>
+					</tr>
+					<tr>
+						<th>재고량</th>
+						<td><input type="text" name="quantity" placeholder="재고량" value="0" /></td>
+					</tr>
+					<tr>
 						<th>내용</th>
-						<td><input type="text" name="content" placeholder="상품 내용"/></td>
+						<td><input type="text" name="content" placeholder="상품 내용" value="-" required/></td>
 					</tr>
 					<tr>
 						<th>상품 상태</th>
@@ -73,12 +90,13 @@
 	
 </div>
 
+
 <script>
+
 $("#smallCategory").change(e=>{
 	const value = e.target.value;
 	console.log(value);	
 });
-
 
 
 $("#largeCategory").change((e)=>{	

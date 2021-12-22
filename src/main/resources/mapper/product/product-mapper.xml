@@ -16,6 +16,19 @@
 		#{status}
 	)	
 	
+		<selectKey keyProperty="productCode" resultType="String" order="AFTER">
+			SELECT
+			   A.PRODUCT_CODE
+			FROM (
+			   SELECT
+			      PRODUCT_CODE,
+			      ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) RN
+			   FROM PRODUCT
+			   ORDER BY REG_DATE DESC
+			) A
+			WHERE RN = 1
+			
+		</selectKey>
 	</insert>
 	
 	<insert id="insertProductCategory">
