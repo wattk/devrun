@@ -54,57 +54,67 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 #eventImg {margin:0 auto; margin-bottom:50px;}
 #eventImg img {height:100px; padding:10px; border-radius:18px;}
 </style> -->
+
 <%-- EL에서 접근하기 위해 VAR속성 지정 --%>
 <sec:authentication property="principal" var="member"/>
 
-<main class="section-body">
-	<br /><br />
-	<section class="container">
-		<div class="row">
-			<div class="container" id="sectionTab">
-				<!-- 탭 버튼 -->
-				<ul class="nav nav-tabs" id="tabBtns">
-					<li class="nav-item">
-					   <a class="nav-link active" aria-current="page" href="#">나의 커뮤니티</a>
-					</li>
-					<li class="nav-item">
-					   <a class="nav-link active" aria-current="page" href="#">나의 쇼핑</a>
-					</li>
-					<li class="nav-item">
-					   <a class="nav-link active" aria-current="page" href="#">나의 정보</a>
-					</li>
-					<li class="nav-item">
-					   <a class="nav-link active" aria-current="page" href="">마이페이지</a>
-					</li>
-				</ul>
-				<!-- 탭 페이지 -->
-				<div class="col-12 row" id="tabContainer">
-					<!-- 회원 정보 -->
-			       	<div class="col-3" id="profile">
-			       		<!-- 프로필 이미지 : 프로필 이미지가 null일 경우, 기본 이미지 출력 -->
-			       		<div>
-			       			<c:if test="${member.proPhoto eq null}"><i class="bi bi-person-circle" id="profileImg"></i></c:if>
+<main>
+	<br/><br/>
+	<article class="container" id="tabContent">
+		
+		<%-- tap button --%>
+		<nav id="tabBtns">
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+				   <a class="nav-link" id="mycommunityTab" data-toggle="tab" href="#mycommunity" role="tab" aria-controls="mycommunity" aria-selected="false">나의 커뮤니티</a>
+				</li>
+				<li class="nav-item">
+				   <a class="nav-link" id="myshoppingTab" data-toggle="tab" href="#myshopping" role="tab" aria-controls="myshopping" aria-selected="false">나의 쇼핑</a>
+				</li>
+				<li class="nav-item">
+				   <a class="nav-link" id="myinfoTab" data-toggle="tab" href="#myinfo" role="tab" aria-controls="myinfo" aria-selected="false">나의 정보</a>
+				</li>
+				<li class="nav-item">
+				   <a class="nav-link active" id="mypageTab" data-toggle="tab" href="#mypage" role="tab" aria-controls="mypage" aria-selected="true">마이페이지</a>
+				</li>
+			</ul>
+		</nav>
+		
+		<%-- tap container --%>
+		<section class="col-12 tab-content" id="tabContainer">
+		
+			<%-- my page --%>
+			<div class="tab-pane fade show active col-12" id="mypage">
+				<div class="row">
+				
+					<!-- member profile -->
+					<article class="col-3" id="profile">
+						<!-- profile image : 프로필 이미지가 null일 경우, 기본 이미지 출력 -->
+					    <section>
+				   			<c:if test="${member.proPhoto eq null}"><i class="bi bi-person-circle" id="profileImg"></i></c:if>
 					      	<c:if test="${member.proPhoto ne null}"><img src="${member.proPhoto}" alt="" id="profileImg"/></c:if>
 					       	<p class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo.do';">${member.nickname}님<i class="bi bi-chevron-right"></i></p>
-					       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit"/>
-					    	<img src="https://i.ibb.co/S7TZCYh/coding.png" alt="" id="badge"/>
-					    </div>
-				        <div>
+					       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/infoUpdate.do';"/>
+					    	<img src="https://i.ibb.co/S7TZCYh/coding.png" alt="" id="badge" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/activityBadge.do';"/>
+					    </section>
+					    <!-- profile info -->
+				        <section>
 				        	<p><span>이메일</span><br/><span>${member.email}</span></p>
 					        <p><span>한줄소개</span><br/><span>${member.intro}</span></p>
 					        <button onclick="location.href='${member.url}';">${member.url}</button>
-				        </div>
+				        </section>
 				        <hr/>
-			        	<!-- 로그인 정보/로그아웃 버튼 -->
-			        	<div class="">
+			        	<!-- login info / logout button -->
+			        	<section class="">
 				        	<p><img src="" alt="" />(으)로 로그인</p>
 				        	<button class="col-9">로그아웃</button>
-			        	</div>
-			      	</div>
-		      		<!-- 회원 활동 관련 정보 -->
-			   		<div class="col-9">
-		    			<!-- 출석일수/활동 등급/활동 배지 -->
-		       			<div class="card" id="myGrade">
+			        	</section>
+			      	</article>
+			      	
+		      		<!-- member info -->
+			   		<article class="col-9">
+		    			<!-- member grade info : total attendance / activity grade / activity badge -->
+		       			<section class="card" id="myGrade">
 		        			<table class="text-center">
 			       				<tr>
 			       					<td class="col-4">출석일수</td>
@@ -132,26 +142,27 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 			       					</td>
 			       				</tr>
 			       			</table>
-		       			</div>
-		       			<!-- 쪽지/포인트 -->
-		       			<span class="row cursor" id="myActivity">
+		       			</section>
+			       			
+		       			<!-- member activity info : message / point -->
+		       			<section class="row cursor" id="myActivity">
 			       			<span class="col-6 row" onclick="location.href='#';">
-				       			<span class="bi bi-envelope"> &nbsp; 쪽지</span>
-				       			<span>${totalMessage}건<i class="bi bi-chevron-right"></i></span>
+				       			<span class="bi bi-envelope"> &nbsp; 채팅</span>
+				       			<span>건<i class="bi bi-chevron-right"></i></span>
 			       			</span>
 				       		<span class="col-6 row" onclick="location.href='#';">
 					       		<span class="bi bi-coin"> &nbsp; 포인트</span>
 					       		<span>사용 가능 ${member.point}포인트<i class="bi bi-chevron-right"></i></span>
 				       		</span>
-		       			</span>
-		       			<!-- 이벤트(최근 등록 이벤트 2개) -->
-		       			<span class="row" id="eventImg">
+		       			</section>
+		       			<!-- event : 최근 등록 이벤트 2개 -->
+		       			<section class="row" id="eventBanner">
 		       				<img src="https://i.ibb.co/w63RdmJ/2021121515051506481-11934059-1.jpg" alt="" class="col-6" onclick="location.href='#';"/>
 		       				<img src="https://i.ibb.co/GFmzFXF/2021120917350947828-11922858-1.jpg" alt="" class="col-6" onclick="location.href='#';"/>
-		       			</span>
-		       			<!-- 나의 활동(좋아요/관심 상품) -->
+		       			</section>
+		       			<!-- member activity info : like / wishList -->
 		       			<h5>나의 활동</h5>
-		       			<span class="row cursor" id="myActivity">
+		       			<section class="row cursor" id="myActivity">
 		       				<span class="col-6 row" onclick="location.href='#';">
 		       					<span class="bi bi-heart"> &nbsp; 좋아요</span>
 				       			<i class="bi bi-chevron-right"></i>
@@ -160,20 +171,105 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 					       		<span class="bi bi-bookmark"> &nbsp; 관심 상품</span>
 					       		<i class="bi bi-chevron-right"></i>
 				       		</span>
-		       			</span>
-		       			<!-- 이벤트(최근 등록 이벤트 1개) -->
-		       			<span class="row" id="eventImg">
-		       				<img src="https://i.ibb.co/GFmzFXF/2021120917350947828-11922858-1.jpg" alt="" class="col-12" onclick="location.href='#';"/>
-		       			</span>
-		       		</div>
-	      		</div>
-	       	</div>
-       	</div>
-    </section>
+		       			</section>
+		       			<!-- event : 최근 등록 이벤트 1개 -->
+		    	  		<section class="row" id="eventBanner">
+		      				<img src="https://i.ibb.co/GFmzFXF/2021120917350947828-11922858-1.jpg" alt="" class="col-12" onclick="location.href='#';"/>
+			       		</section>
+			    	</article>
+			    	
+				</div>
+			</div>
+			
+			<%-- my info --%>
+			<div class="tab-pane fade col-12" id="myinfo">
+				<div class="row">
+				
+					<article class="col-10" id="info">
+		       			<h4>나의 정보</h4>
+		       			<hr/>
+		       			<!-- 내 프로필 -->
+		       			<section class="card" id="myProfile">
+		       				<div class="card-header">내 프로필</div>
+		       				<div class="card-body">
+		       					<div class="row">
+			       					<!-- 프로필 이미지 : 프로필 이미지가 null일 경우, 기본 이미지 출력 -->
+			       					<article class="col-3">
+				       					<c:if test="${member.proPhoto eq null}"><i class="bi bi-person-circle" id="profileImg"></i></c:if>
+								      	<c:if test="${member.proPhoto ne null}"><img src="${member.proPhoto}" alt="" id="profileImg"/></c:if>
+								       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/infoUpdate.do';"/>
+			       					</article>
+			       					<!-- 프로필 내용 -->
+			       					<article class="col-9">
+			       						<h5>${member.nickname}</h5>
+				       					<p><span>이메일</span><span>${member.email}</span></p>
+								        <p><span>한줄소개</span><span>${member.intro}</span></p>
+								        <p><span>개인 사이트</span><span>${member.url}</span></p>
+								        <hr/>
+								        <p><span>닉네임</span><span>${member.nickname}</span></p>
+								        <p><span>이름</span><span>${member.name}</span></p>
+								        <p><span>아이디</span><span>${member.id}</span></p>
+								        <p><span>비밀번호</span><span>${member.password}</span></p>
+								        <p><span>생년월일</span><span>${member.birthday}</span></p>
+								        <p><span>전화번호</span><span>${member.phone}</span></p>
+			       					</article>
+		       					</div>
+		       					<button class="col-12">수정하기</button>
+		       				</div>
+		       			</section>
+		       			<br/>
+		       			<section class="row">
+		       				<div class="col-6">
+			       				<!-- 배송지 관리 -->
+			       				<article class="card" id="myAddress">
+			       					<div class="card-header">배송지 관리</div>
+				       				<div class="card-body">
+				       					<p>내가 저장한 배송지를<br/>관리할 수 있습니다.</p>
+				       					<button class="col-4">조회하기</button>
+				       				</div>
+			       				</article>
+		       				</div>
+		       				<div class="col-6">
+			       				<!-- 신고 내역 -->
+			       				<article class="card" id="myReport">
+			       					<div class="card-header">신고 내역</div>
+				       				<div class="card-body">
+				       					<p>내가 신고한 내역을<br/>확인할 수 있습니다.</p>
+				       					<button class="col-4">조회하기</button>
+				       				</div>
+			       				</article>
+		       				</div>
+		       			</section>
+		       		</article>
+				</div>
+			</div>
+				
+			<%-- my shopping --%>
+			<div class="tab-pane fade col-12" id="myshopping">
+				<div class="row">
+				나의 쇼핑
+				</div>
+			</div>
+				
+			<%-- my community --%>
+			<div class="tab-pane fade col-12" id="mycommunity">
+				<div class="row">
+				나의 커뮤니티
+				</div>
+			</div>
+
+       	</section>		   
+        	   
+    </article>
 </main>
 
 <script>
-
+/* $(document).click(function(){
+	const $ative = $(".nav-item a.active");
+	$ative
+		.parents(".nav-item")
+		.css("background-color", "#FFFFFF");
+}); */
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

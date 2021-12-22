@@ -104,7 +104,7 @@
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityColumnList.do">칼럼</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityQnAList.do">Q&A</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityStudy.do">스터디</a>
-              <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityBoard.do">자유게시판</a>
+              <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityFreeboardList.do">자유게시판</a>
             </div>
           </li>
           <li class="nav-item">
@@ -142,7 +142,7 @@
 		      	</div>
 	            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a>
-	              <a class="dropdown-item" href="#">쪽지</a>
+	              <a class="dropdown-item" id="chat">채팅</a>
 	              <a class="dropdown-item" href="#">주문/배송</a>
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/member/cart.do">장바구니</a>
 	              <a class="dropdown-item" href="#">
@@ -164,7 +164,16 @@
   </nav>
   
   <script>
+  	// 채팅 클릭
+	$('#chat').click((e) => {
 
+		// 팝업요청 // url 부분 로그인 회원 받게 수정할 것
+		const url = `${pageContext.request.contextPath}/chat/chatList.do`;
+		const name = 'chatList'; // 팝업창 Window객체의 name.
+		const spec = "width=400px, height=550px";
+		open(url, name, spec);
+
+	});
   </script>
   <!--/ Nav End /-->
   <section style="margin-top:115px;">

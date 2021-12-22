@@ -41,7 +41,16 @@
 				
 	</insert>
 	
-	
+	<!-- 혜진 시작 -->
+	<select id="selectProductListByProductCode" resultType="product">
+		select
+			*
+		from
+			product
+		where
+			product_code like '%'||#{searchCode}||'%'
+	</select>
+	<!-- 혜진 끝 -->
 	
 </mapper>
 

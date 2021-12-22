@@ -11,25 +11,13 @@
 	<jsp:param value="" name="title"/>
 </jsp:include>
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="${pageContext.request.contextPath}/css/community/communityMain/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
 
-    <title>community main</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-    <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
-
-    <link href="${pageContext.request.contextPath}/css/community/communityMain/bootstrap.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
-
-  </head>
-  <body>
-
-    <div class="container-fluid">
+<div class="container-fluid">
 	<!-- 헤더 -->
 	<div class="row">
 		<div class="col-md-12">
@@ -37,23 +25,22 @@
 				<div class="col-md-12">
 					<div class="page-header">
 						<h1>
-							<small>커뮤니티 검색</small>
+							<strong>커뮤니티 검색</strong>
 						</h1>
 					</div>
 				</div>
 			</div>
 
 			<hr>
-			<br>
 
-			<!-- 검색창 -->
-			<div class="row">
+			<!-- 검색창 시작-->
+			<div class="search-container">
 				<div class="col-md-12">
 					<div class="input-group mb-3">
 						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">전체</button>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">Action</a></li>
-							<li><a class="dropdown-item" href="#">Another action</a></li>
+							<li><a class="dropdown-item" href="#">답변완료</a></li>
+							<li><a class="dropdown-item" href="#">미답변</a></li>
 							<li><a class="dropdown-item" href="#">Something else here</a></li>
 							<li><hr class="dropdown-divider"></li>
 							<li><a class="dropdown-item" href="#">Separated link</a></li>
@@ -63,8 +50,8 @@
 					</div>
 				</div>
 			</div>
-
-			<br>
+			<!-- 검색창 끝 -->
+			
 			<hr>
 			<br>
 

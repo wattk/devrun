@@ -1,7 +1,10 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<html lang="en" xmlns:th="http://www.thymeleaf.org"> 
+<!-- 
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+ -->
+ 
 
 <head>
 	<!-- 구글 차트를 이용하기 위한 script	 -->
@@ -19,16 +22,21 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	
-	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
+	<link href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<!-- Bootstrap core JavaScript-->
-    <script src="${pageContext.request.contextPath }/resources/bootstrap/vendor/jquery/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="${pageContext.request.contextPath }/resources/bootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js" integrity="sha512-0QbL0ph8Tc8g5bLhfVzSqxe9GERORsKhIn1IrpxDAgUsbBGz/V7iSav2zzW325XGd1OMLdL4UiqRJj702IeqnQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+	<!--  
+	-->
+
 
     <!-- Custom scripts for all pages-->
-    <script src="${pageContext.request.contextPath }/resources/bootstrap/js/sb-admin-2.min.js"></>
+    <script src="${pageContext.request.contextPath }/resources/bootstrap/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
    <script src="${pageContext.request.contextPath }/resources/bootstrap/vendor/chart.js/Chart.min.js"></script>
@@ -377,8 +385,7 @@
             
             <!-- 이벤트 관리 메뉴 -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEvent"
-                    aria-expanded="true" aria-controls="collapseEvent">
+                <a class="nav-link" href="${pageContext.request.contextPath}/admin/promotionManage.do">
                     <i class="fas fa-receipt"></i>
                     <span>이벤트 관리</span>
                 </a>            

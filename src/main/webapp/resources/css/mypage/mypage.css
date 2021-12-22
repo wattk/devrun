@@ -1,41 +1,71 @@
 @charset "UTF-8";
 
-/* 공통 적용 style */
+/** 공통 적용 style **/
 .bi {font-size:20px;}
 .cursor {cursor:pointer; cursor:hand;}
 button {background-color:#FFFFFF; border:1px solid #F1F1F2; border-radius:20px; padding:5px;}
 button:focus {outline:none;}
 button:hover {background-color:#1A81FF; color:#FFFFFF; border:1px solid #1A81FF; transition:.3s;}
 
+/** main frame **/
+main {height:auto; background:linear-gradient(to bottom, #1A81FF 350px, #FFFFFF 350px);}
 
-/* tabContent frame */
-main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%);}
-#tabBtns {justify-content:flex-end; padding:0 20px;}
-#tabContainer {height:800px; background-color:#FFFFFF; padding:80px 0; margin:0 auto;}
-#tabContainer div.col-3 {padding:0 40px; border-right:1px solid #F1F1F2;}
-#tabContainer div.col-9 {padding:0 40px;}
+/** tabContent frame **/
+#tabBtns .nav-tabs {justify-content:flex-end; padding:0 20px; border:0;}
+#tabBtns a.nav-link:hover {outline:none; border:1px solid #FFFFFF; background-color:#FFFFFF; color:#1A81FF;}
+#tabBtns a.nav-link:focus-visible {outline:none;}
+#tabBtns a.nav-link {width:130px; background-color:#F7F7F7; color:#9E9E9E; border:1px solid #F7F7F7; border-radius:20px 20px 0 0; padding:9px; text-align:center; box-shadow:inset -1px 6px 8px 0 rgba(0, 0, 0, 0.5); position:relative; z-index:9;}
+#tabBtns a.nav-link.active {border:1px solid #FFFFFF; background-color:#FFFFFF; color:#1A81FF; box-shadow:-1px 6px 8px 0 rgba(0, 0, 0, 0.5); position:relative; z-index:99;}
+#tabContainer {height:auto; background-color:#FFFFFF; padding:80px 0; margin:0 auto; position:relative; z-index:999;}
 
+
+
+/** my page **/
+#mypage, #mypage div.row, #mypage article.col-3, #mypage article.col-9 {height:100%;}
+#mypage article.col-3 {padding:0 40px; border-right:1px solid #F1F1F2;}
+#mypage article.col-9 {padding:0 40px;}
 
 /* member profile */
-#tabContainer .col-3 div:not(:nth-of-type(2)) {text-align:center;}
-#profile div #profileImg {font-size:100px; position:relative; color:#1A81FF;}
-#profile div #edit {position:absolute; top:90px; right:90px; width:30px; height:30px;}
-#profile div #badge {position:absolute; top:15px; left:75px; width:40px; height:40px; background-color:#2ECC71; border:5px solid #2ECC71; border-radius:50%; box-shadow:2px 2px 2px hsl(0deg 0% 0% / 0.38);}
-#profile div:nth-of-type(2) p span:first-of-type {color:#1A81FF;}
+#profile section:not(:nth-of-type(2)) {text-align:center;}
+#profile #profileImg {font-size:100px; position:relative; color:#1A81FF;}
+#profile #edit {position:absolute; top:90px; right:90px; width:30px; height:30px;}
+#profile #badge {position:absolute; top:15px; left:75px; width:40px; height:40px; background-color:#2ECC71; border:5px solid #2ECC71; border-radius:50%; box-shadow:2px 2px 2px hsl(0deg 0% 0% / 0.38);}
+#profile section:nth-of-type(2) p span:first-of-type {color:#1A81FF;}
 
-
-/* member activity grade */
+/* member grade info */
 #myGrade {padding:30px 0; margin-bottom:20px; border-radius:10px;}
 #myGrade table tr td:not(:last-of-type) {border-right:1px solid #F1F1F2;}
 #myGrade img {width:40px; height:40px;}
 #myGrade span {display:block; width:80px; margin:0 auto; border:1px solid black; border-radius:20px; background-color:#66ABFF;}
 
-/* member activity */
+/* member activity info */
 #myActivity {margin:0 auto; margin-bottom:20px; padding:20px 0; border-top:1px solid #F1F1F2; border-bottom:1px solid #F1F1F2; justify-content:space-around;}
 #myActivity span.col-6 {justify-content:space-between; align-items:center;}
 #myActivity span span:nth-of-type(2) {color:#1A81FF;}
 #myActivity .bi-chevron-right {color:#A1A1A1; font-size:17px;}
 
 /* event */
-#eventImg {margin:0 auto; margin-bottom:50px;}
-#eventImg img {height:100px; padding:10px; border-radius:18px;}
+#eventBanner {margin:0 auto; margin-bottom:50px;}
+#eventBanner img {height:100px; padding:10px; border-radius:18px;}
+
+
+
+/** my info **/
+#info {margin:0 auto;}
+
+/* member profile */
+#myProfile article.col-3 {text-align:center;}
+#myProfile #profileImg {font-size:100px; position:relative; color:#1A81FF;}
+#myProfile #edit {position:absolute; top:90px; right:90px; width:30px; height:30px;}
+#myProfile article.col-9 p span:first-of-type {color:#1A81FF;}
+
+
+
+/** my shopping **/
+
+
+
+/** my community **/
+
+
+

@@ -1,5 +1,29 @@
 @charset "UTF-8";
 
+
+
+@font-face {
+      font-family: 'SANJUGotgam';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/SANJUGotgam.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'OTWelcomeRA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 /*탭 시작*/
 #menu-tab {
 /*background: white;*/
@@ -49,7 +73,7 @@ color: green;
   margin-left: -1px; 
   position: relative;
   left: 1px; 
-  width: 350px;
+  width: 301px;
   text-align: center;
   /*둥근 모양 제거*/
   /* border-radius: 10px 10px 0px 0px;
@@ -116,15 +140,159 @@ color: green;
 /*탭 끝*/  
 
 /*body 전체길이*/
+/*탭 top준거 나중에 다시 수정*/
 #shopItemDetailOuterDiv{
+	position: relative;
+    top: 200px;	
 	height: 1500px
 	
 }
 /*body 전체길이*/
 
-/*탭 top준거 나중에 다시 수정*/
 #itemDetailMenuTabDiv{
-    position: relative;
-    top: 300px;	
+	margin-top: 90px;
 }
-/*탭 top준거 나중에 다시 수정*/
+
+.reviewDiv{
+  margin-left: 40px;
+}
+.reviewContent{
+ width: 900px; 
+}
+.height600{
+  height: 600px;
+}
+.a-question-div{
+  width: 95%; 
+  margin-left: 40px;
+}
+#recommendedPicDiv {
+  display: flex;
+  justify-content: space-evenly;
+  
+}
+#recommendedPicDiv img{
+  width: 330px;
+  height: 330px;
+}
+#recommendedPicDiv img:hover {
+	cursor: pointer;
+}
+
+#infoForARefund h3,h5{
+  font-family: 'SANJUGotgam'
+  /*상주곶감체*/
+}
+
+#infoForARefund  p, #ThirdInfo tr{
+  font-family: 'OTWelcomeRA';
+}
+#itemDetailBicPicDiv img {
+	width: 500px;
+	height: 500px;
+}
+#itemDetailSmallPicDiv i {
+	font-size: 150px;
+}
+#priceDiv{
+	display: flex;
+    justify-content: space-between;
+}
+#orderBtnDiv{
+	display: flex;
+    justify-content: center;
+	height: 60px;
+}
+#itemDetailInfoDiv{
+	font-size: 18px;
+	font-family: 'SANJUGotgam';
+}
+#priceDiv span{
+	font-size: 22px;
+
+}
+#itemDetailNameDiv{
+    margin-top: 30px;
+    height: 125px;
+}
+#itemDetailNameDiv > p{
+	font-size: 30px;
+}
+#itemDetailInfoDiv {
+	width: 570px;
+	height: 460px;
+}
+#itemDetailDisplayDiv{
+	width: 1200px;
+	margin: auto auto;
+}
+#itemDetailDisplayDiv{
+	display: flex;
+    justify-content: space-between;
+	height: 520px;
+}
+.form-select {
+	height: 40px;
+}
+.reviewPhoto > img{
+	width: 100px;
+	height: 100px;
+}
+.reviewPhoto >img:hover{
+	cursor: pointer;
+}
+.reviewPhoto {
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.reviewProfile >img {
+	width: 80px;
+	height: 80px;
+}
+.reviewLikeBtn i:hover{
+	cursor: pointer;
+}
+.tab-span{
+	font-family: 'NanumSquareRound';
+	font-size: 16px;
+}
+.item-sort-container{
+	font-family: 'NanumSquareRound';
+}
+#jeju{
+	display: flex;
+    justify-content: space-between;
+}
+#jeju >span{
+	color: gray;
+	font-size: 11px;
+
+}
+#jeju  i {
+	font-size: 30px;
+}
+#jeju  i:hover{
+	cursor: pointer;
+}
+#sortBy span:hover{
+	cursor: pointer;
+}
+.forFont{
+	font-family: 'NanumSquareRound';
+}
+
+.forFont2{
+	font-family: 'NanumSquareRound';
+}
+
+.forFont2 > span{
+	font-size: 18px;
+}
+
+.reviewDiv {
+	margin-bottom: 30px;
+}
+.sub{
+	font-size: 20px;
+}

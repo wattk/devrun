@@ -50,7 +50,7 @@
 		</div>
 	</div>
 	<div class="row">
-  	  <a href="#" class="col-md-3 p-5">
+  	  <a href="${pageContext.request.contextPath}/shop/itemDetail.do" class="col-md-3 p-5">
         <div class="card-box-d">
           <div class="card-img-d shop-item-img position-relative">
             <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">

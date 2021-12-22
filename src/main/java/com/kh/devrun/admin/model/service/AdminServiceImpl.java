@@ -5,12 +5,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.kh.devrun.admin.model.dao.AdminDao;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
 import com.kh.devrun.product.ProductCategory;
+import com.kh.devrun.promotion.model.vo.Promotion;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,8 +55,10 @@ public class AdminServiceImpl implements AdminService {
 				
 		return result;
 	}
+
 	
 	
+
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int insertProducCategory(ProductCategory productCategory) {
@@ -62,7 +66,43 @@ public class AdminServiceImpl implements AdminService {
 	}
 	
 	
+
+	/**
+	 * 혜진 시작
+	 */
+	@Override
+	public List<Product> selectProductListByProductCode(String searchCode) {
+		return adminDao.selectProductListByProductCode(searchCode);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, 
+			isolation = Isolation.READ_COMMITTED, 
+			rollbackFor = Exception.class)
+	public int insertPromotion(Map<String, Object> param) {
+		int result = 0;
+		try {
+			Promotion promotion = (Promotion)param.get("promotion");
+			//promotion 테이블 insert
+			result = adminDao.insertPromotion(promotion);
+			
+			List<Map<String, Object>> list = (List<Map<String, Object>>)param.get("list");
+			log.debug("list = {}", list);
+			//promotion-product 테이블 insert
+			result = adminDao.insertProductPromotion(list);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			throw e;
+		}
+		return result;
+	}
+
 	
+
+	
+	/**
+	 * 혜진 끝
+	 */
 	
 	
 }
