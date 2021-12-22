@@ -1,7 +1,5 @@
 @charset "UTF-8";
 
-
-
 @font-face {
       font-family: 'SANJUGotgam';
       src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/SANJUGotgam.woff') format('woff');
@@ -153,7 +151,7 @@ color: green;
 	margin-top: 90px;
 }
 
-.reviewDiv{
+.aReviewDiv{
   margin-left: 40px;
 }
 .reviewContent{
@@ -290,9 +288,35 @@ color: green;
 	font-size: 18px;
 }
 
-.reviewDiv {
+.aReviewDiv {
 	margin-bottom: 30px;
 }
 .sub{
 	font-size: 20px;
+}
+#reviewModal{
+	top: 120px;
+	display: none;
+	z-index: 20;
+}
+#reviewExpansion{
+	width: 400px;
+	height: 400px;
+	z-index: 350;
+	position: relative;
+	top: 40px;
+	left: 329px;
+}
+#closeIcon{
+	width: 40px;
+	position: relative;
+	z-index: 355;
+    left: 729px;
+    bottom: 132px;
+	cursor: pointer;
+}
+#reviewModal{
+	background: rgba(110, 110, 110,0.8);
+	width: 1165px;
+	height: 480px;
 }
