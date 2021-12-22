@@ -15,86 +15,90 @@
 <script src="${pageContext.request.contextPath }/resources/js/summernote/lang/summernote-ko-KR.js"></script>
 
 <link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
-<style>
-.promotion-btn{
-	width : 10%;
-	margin : 0 2% 0 2%;
-}
-</style>
+<script src="${pageContext.request.contextPath }/resources/js/admin/promotionDetail.js"></script>
 <div class="promotion-container">
 	<h3 class="mt-5 ml-5">이벤트 관리</h3>
 	<strong class="ml-5 pl-2">이벤트 상세보기</strong>
 </div>
-<form:form>
+<form:form name="promotionUpdateFrm" action="${pageContext.request.contextPath}/admin/promotionUpdate.do" method="post" enctype="multipart/form-data">
 	<div class="event-list">
 		<hr />
 		<strong class="ml-5 pl-5">이벤트 정보</strong>
-			<table id="promotionDetailTbl" class="admin-tbl table mx-auto mt-3 col-md-10">
-				<tbody>
-				    <tr>
-				    	<th>이벤트 등록일</th>
-				    	<td>
-				    		<input type="date" name="" id="" disabled/>
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<th>이벤트 시작일</th>
-				    	<td>
-				    		<input type="date" name="" id="" disabled/>
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<th>이벤트 이름</th>
-				    	<td>
-				    		<input type="text" name="" id="" disabled/>
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<th>진행 기간</th>
-				    	<td>
-				    		<input type="date" name="" id="" disabled/>
-				    		<span>~</span>
-				    		<input type="date" name="" id="" disabled/>
-				    		<span>총 00일</span>
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<th>조회수</th>
-				    	<td>
-				    		111
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<th>정기 이벤트 유무</th>
-				    	<td>
-				    		<input type="checkbox" name="" id="" disabled/>
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<th>글쓴이</th>
-				    	<td>
-				    		한치
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<th>해당 이벤트 아이템</th>
-				    	<td>
-				    	</td>
-				    </tr>
-				    <tr>
-				    	<th>배너 파일</th>
-				    	<td>
-				    		<input type="file" name="" id="" disabled/>
-				    	</td>
-				    </tr>
-		  	 </tbody>
+		<input type="hidden" name="promotionCode" value="${promotion.promotionCode}" />
+		<table id="promotionDetailTbl" class="admin-tbl table mx-auto mt-3 col-md-10">
+			<tbody>
+			    <tr>
+			    	<th>이벤트 등록일</th>
+			    	<td>
+			    		<input type="date" name="enrollDate" id="" value='<fmt:formatDate value="${promotion.enrollDate}" pattern="yyyy-MM-dd"/>' disabled/>
+			    	</td>
+			    </tr>
+			    <tr>
+			    	<th>이벤트 이름</th>
+			    	<td>
+			    		<input type="text" name="name" id="" class="promotion-input w-50" value="${promotion.name}" disabled/>
+			    	</td>
+			    </tr>
+			    <tr>
+			    	<th>진행 기간</th>
+			    	<td>
+			    		<input type="date" name="startDate" id="startDate" class="promotion-input" value='<fmt:formatDate value="${promotion.startDate}" pattern="yyyy-MM-dd"/>' disabled/>
+			    		<span>~</span>
+			    		<input type="date" name="endDate" id="endDate" class="promotion-input" value='<fmt:formatDate value="${promotion.endDate}" pattern="yyyy-MM-dd"/>' disabled/>
+			    		<span>총 <span id="calculateDate"></span>일</span>
+			    	</td>
+			    </tr>
+			    <tr>
+			    	<th>조회수</th>
+			    	<td>
+			    		${promotion.viewCount}
+			    	</td>
+			    </tr>
+			    <tr>
+			    	<th>정기 이벤트 유무</th>
+			    	<td>
+			    		<input type="checkbox" name="isRegular" id="" class="promotion-input" ${promotion.regular? 'checked':''} disabled/>
+			    	</td>
+			    </tr>
+			    <tr>
+			    	<th>글쓴이</th>
+			    	<td>
+			    		${promotion.nickname}
+			    	</td>
+			    </tr>
+			    <tr>
+			    	<th>해당 이벤트 아이템</th>
+			    	<td>
+			    		<div class="d-flex">
+				    		<input type="text" id="productCodeSearch" class="bg-light border-0 small promotion-input" placeholder="상품번호를 입력하세요." disabled>
+				             <button id="productAddBtn" class="btn btn-primary promotion-input" type="button" disabled>
+				                 <i class="fas fa-plus-square"></i>
+				             </button>
+			    		</div>
+			    		<ul id="productCodeList" class="list-group">
+			    			<c:forEach items="${promotion.productList}" var="product" varStatus="vs">
+			    			<li class="list-group-item">
+								${product.productCode} - ${product.name}<i class="product-x-btn fas fa-times pl-2 text-danger"></i>
+								<input type="hidden" name="productCode" value="${product.productCode }" />
+							</li>
+			    			</c:forEach>
+						</ul>
+			    	</td>
+			    </tr>
+			    <tr>
+			    	<th>배너 파일</th>
+			    	<td>
+			    		<input type="file" name="banner" id="banner" class="promotion-input" disabled/>
+			    	</td>
+			    </tr>
+	  	 	</tbody>
 		</table>
 		<div class="promotion-img col-10 mx-auto">
-			<img src="${pageContext.request.contextPath}/resources/images/1300x170.png" alt="" class="img-thumbnail" />
+			<img src="${pageContext.request.contextPath}/resources/upload/promotion/${promotion.banner}" alt="" class="img-thumbnail" />
 		</div>
 		<div class="col-md-10 mx-auto">
             <label for="contents" class="col-form-label"></label>
-            <textarea id="summernote" name="editordata"></textarea>
+            <textarea id="summernoteDetail" name="editordata">${promotion.sideNote}</textarea>
         </div>
         <div id="promotionDetailBtns" class="d-flex justify-content-center col-10 mx-auto mt-5 mb-5">
         	<button type="button" id="promotionEditBtn" class="promotion-btn btn btn-primary">수정</button>
@@ -104,45 +108,43 @@
 	</div>
 </form:form>
 <script>
-//썸머노트 작동
-$(document).ready(function() {
-	$('#summernote')
-		.summernote({
-		  height: 300,                 // 에디터 높이
-		  minHeight: null,             // 최소 높이
-		  maxHeight: null,             // 최대 높이
-		  focus: false,                  // 에디터 로딩후 포커스를 맞출지 여부
-		  lang: "ko-KR",					// 한글 설정
-		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
-		})
-		.summernote('disable');
-});
-
 //수정 버튼 클릭 시 비활성화 풀기 & 수정 버튼 등록 버튼으로 변경하고 삭제/목록 버튼 대신 취소 버튼 만들기
 $(promotionEditBtn).click((e)=>{
-	const $inputArr = $('#promotionDetailTbl input');
+	const $inputArr = $('#promotionDetailTbl .promotion-input');
 	$inputArr.each((i, item)=>{
 		$(item).prop('disabled', false);
 	});
-	$('#summernote').summernote('enable');
+	$('#summernoteDetail').summernote('enable');
 	
 	$(promotionDetailBtns)
 		.html('')
 		.append(`<button type="button" id="promotionUpdateBtn" class="promotion-btn btn btn-primary">등록</button>
-	        	<button type="button" id="promotionResetBtn" class="promotion-btn btn btn-secondary">취소</button>`);
-	
-	//취소 버튼 클릭 시 디테일창으로
-	$(promotionResetBtn).click((e)=>{
-		location.href = "${pageContext.request.contextPath}/admin/promotionDetail.do";
-	});
+	        	<button type="button" id="promotionResetBtn" class="promotion-btn btn btn-secondary" onclick="location.reload(true);">취소</button>`);
 	
 	//등록 버튼 클릭 시 form 제출
 	$(promotionUpdateBtn).click((e)=>{
-		
+		$(document.promotionUpdateFrm).submit();	
 	});
 });
 
+//이벤트 기간 계산 후 넣기
+$(document).ready((e)=>{
+	const startDate = $("#startDate").val();
+	const endDate = $("#endDate").val();
+	
+	const start = new Date(startDate).getTime();
+	const end = new Date(endDate).getTime();
+	
+	let validMillis = end - start;
+	let validDates = validMillis / (1000*60*60*24);
+	
+	$("#calculateDate").text(validDates);
+});
 
-
+//상품 x 버튼 클릭 시 list 제외
+$(".product-x-btn").click((e)=>{
+	const $li = $(e.target).parent("li");
+	console.log($li);
+});
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>

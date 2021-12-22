@@ -28,9 +28,12 @@ public interface AdminDao {
 	int insertProductPromotion(List<Map<String, Object>> list);
 	
 	List<Promotion> selectAllPromotionList();
+	
+	Promotion selectPromotionByPromotionCode(String promotionCode);
 	/**
 	 * 혜진 끝
 	 */
+
 
 
 
