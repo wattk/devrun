@@ -7,20 +7,20 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-<jsp:include page="/WEB-INF/views/community/common/nav.jsp">
+<jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
 
-<link href="${pageContext.request.contextPath}/resources/css/community/communityMain/bootstrap.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
+<!-- 사이드바 css -->
+<link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<!-- header.jsp와 연결되는 것을 유념하자. -->
 
 <div class="container-fluid">
-	<!-- 헤더 -->
 	<div class="row">
 		<div class="col-md-12">
+		
+			<!-- 헤더 -->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="page-header">
@@ -30,7 +30,8 @@
 					</div>
 				</div>
 			</div>
-
+			<!-- 헤더 끝 -->
+	
 			<hr>
 
 			<!-- 검색창 시작-->
@@ -39,11 +40,9 @@
 					<div class="input-group mb-3">
 						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">전체</button>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">답변완료</a></li>
-							<li><a class="dropdown-item" href="#">미답변</a></li>
-							<li><a class="dropdown-item" href="#">Something else here</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="#">Separated link</a></li>
+							<li><a class="dropdown-item" href="#">제목</a></li>
+							<li><a class="dropdown-item" href="#">아이디</a></li>
+							<li><a class="dropdown-item" href="#">내용</a></li>
 						</ul>
 						<input type="text" class="form-control" aria-label="Text input with dropdown button">
 						<button type="button" class="btn btn-outline-primary">검색</button>
@@ -55,11 +54,12 @@
 			<hr>
 			<br>
 
+			<!-- Dev_news 시작 -->
 			<div class="row">
 				<div class="col-md-12">
-					<h3>
-						Dev_news
-					</h3>
+					<h2>
+						<strong>Dev_news</strong>
+					</h2>
 				</div>
 			</div>
 
@@ -67,7 +67,7 @@
 			<hr>
 			<br>
 
-			<!-- Dev_news 썸네일-->
+			<!-- Dev_news 썸네일 시작-->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="row">
@@ -122,12 +122,13 @@
 					</div>
 				</div>
 			</div>
-
+			<!-- Dev_news 끝-->
+			
 			<br>
 			<hr>
 			<br>
 
-			<!-- 인기 게시물 -->
+			<!-- 인기 게시물 시작 -->
 			<div class="row">
 				<div class="col-md-12">
 					<h3>
@@ -135,6 +136,7 @@
 					</h3>
 				</div>
 			</div>
+			
 
 			<br>
 			<hr>
@@ -346,7 +348,7 @@
 			
 			<br>
 
-			<!-- 페이징 -->
+			<!-- 페이징 시작 -->
 			<div>
 				<nav aria-label="...">
 					<ul class="pagination">
@@ -364,14 +366,14 @@
 					</ul>
 				</nav>
 			</div>
+			<!-- 페이징 끝 -->
 			
 		</div>
 	</div>
 </div>
 
-    <script src="${pageContext.request.contextPath}/js/community/communityMain/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/community/communityMain/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/community/communityMain/js/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/community/communityMain/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/community/communityMain/scripts.js"></script>
   </body>
 </html>
 	

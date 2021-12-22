@@ -69,4 +69,21 @@
 	position: relative;
 }
 
+#bottomButton {
+	text-align: center;
+}
+
+/* 좋아요, 신고하기 버튼 가운데 정렬*/
+#likeButton, #reportButton {
+	text-align: center;
+}
+
+#contentName {
+	font-size: xx-large;
+	font-weight: bolder;
+}
+
+div {
+	border: 1px solid black;
+}
 
