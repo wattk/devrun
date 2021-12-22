@@ -32,6 +32,8 @@ public interface AdminService {
 
 	
 	int insertPromotion(Map<String, Object> param);
+
+	List<Promotion> selectAllPromotionList();
 	
 	/**
 	 * 혜진 끝

@@ -76,6 +76,7 @@
 				    	<th>글쓴이</th>
 				    	<td>
 				    		<input type="text" name="" id="" value='<sec:authentication property="principal.nickname"/>' disabled/>
+				    		<input type="hidden" name="nickname" id="" value='<sec:authentication property="principal.nickname"/>'/>
 				    		<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo"/>'/>
 				    	</td>
 				    </tr>

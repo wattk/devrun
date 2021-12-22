@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.kh.devrun.admin.model.dao.AdminDao;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
 import com.kh.devrun.product.ProductCategory;
+import com.kh.devrun.promotion.model.exception.PromotionException;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 import lombok.extern.slf4j.Slf4j;
@@ -92,9 +94,14 @@ public class AdminServiceImpl implements AdminService {
 			result = adminDao.insertProductPromotion(list);
 		} catch (Exception e) {
 			log.error(e.getMessage());
-			throw e;
+			throw new PromotionException("프로모션 상품 등록 오류", e);
 		}
 		return result;
+	}
+
+	@Override
+	public List<Promotion> selectAllPromotionList() {
+		return adminDao.selectAllPromotionList();
 	}
 
 	

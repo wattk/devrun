@@ -23,12 +23,13 @@ public class Promotion implements Serializable {
 	private String promotionCode;
 	private String name;
 	private Date startDate;
-	private int validDates;
+	private Date endDate;
 	private String sideNote;
 	private boolean isRegular;
 	private String banner;
 	private int viewCount;
 	private int memberNo;
+	private String nickname;
 	private Date enrollDate;
 	
 	private List<Product> productList;
