@@ -10,11 +10,15 @@
 <jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
+<link href="${pageContext.request.contextPath}/resources/css/community/communityMain/style.css" rel="stylesheet">
 
+<<<<<<< HEAD
 <!-- 사이드바 css -->
 <link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
 
 <!-- header.jsp와 연결되는 것을 유념하자. -->
+=======
+>>>>>>> branch 'master' of https://github.com/wattk/devrun.git
 
 <div class="container-fluid">
 	<div class="row">
@@ -36,8 +40,8 @@
 
 			<!-- 검색창 시작-->
 			<div class="search-container">
-				<div class="col-md-12">
-					<div class="input-group mb-3">
+				<div class="col-md-12 mx-auto w-50">
+					<div class="input-group mx-auto ">
 						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">전체</button>
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" href="#">제목</a></li>
@@ -371,10 +375,15 @@
 		</div>
 	</div>
 </div>
+</div>
 
+<<<<<<< HEAD
     <script src="${pageContext.request.contextPath}/resources/js/community/communityMain/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/community/communityMain/scripts.js"></script>
   </body>
 </html>
+=======
+    <script src="${pageContext.request.contextPath}/resources/js/community/communityMain/scripts.js"></script>
+>>>>>>> branch 'master' of https://github.com/wattk/devrun.git
 	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
