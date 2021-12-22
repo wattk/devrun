@@ -50,13 +50,11 @@ public class AdminServiceImpl implements AdminService {
 		}catch(Exception e) {
 			throw e;
 		}
-		
-		
+				
 		return result;
 	}
 	
-
-
+	
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int insertProducCategory(ProductCategory productCategory) {
