@@ -2,7 +2,6 @@ package com.kh.devrun.admin.controller;
 
 import java.beans.PropertyEditor;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,20 +22,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import org.springframework.web.multipart.MultipartFile;
-
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.admin.model.service.AdminService;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.product.Product;
-
 import com.kh.devrun.product.ProductDetail;
-
 import com.kh.devrun.promotion.model.vo.Promotion;
-
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -162,8 +156,19 @@ public class AdminController {
 	
 	//이벤트 상세 페이지 관련 메소드
 	@GetMapping("/promotionDetail.do")
-	public String promotionDetail() {
+	public String promotionDetail(@RequestParam String promotionCode, Model model) {
+		log.debug("promotionCode = {}", promotionCode);
+		Promotion promotion = adminService.selectPromotionByPromotionCode(promotionCode);
+		log.debug("promotion = {}", promotion);
+		model.addAttribute("promotion", promotion);
 		return "/admin/promotion/promotionDetail";
+	}
+	
+	//이벤트 업데이트 메소드
+	@PostMapping("/promotionUpdate.do")
+	public String promotionUpdate(Promotion promotion, MultipartFile upFile, RedirectAttributes redirectAttr) {
+		
+		return "";
 	}
 	
 	
@@ -180,10 +185,11 @@ public class AdminController {
 			@RequestParam String[] productCode, 
 			RedirectAttributes redirectAttr) 
 	{
+		String promotionCode = "";
 		try {
 			log.debug("promotion = {}, productCode = {}", promotion, productCode);
 			//promotion_code 생성
-			String promotionCode = "PROMO_" + DevrunUtils.getRandomNo();
+			promotionCode = "PROMO_" + DevrunUtils.getRandomNo();
 			promotion.setPromotionCode(promotionCode);
 			
 			//application 객체(ServletContext)
@@ -220,7 +226,7 @@ public class AdminController {
 			e.printStackTrace();
 		} 
 		
-		return "/admin/promotion/promotionDetail";
+		return "redirect:/admin/promotion/promotionDetail.do?promotionCode="+promotionCode;
 	}
 	
 	@InitBinder

@@ -32,17 +32,17 @@
 	
 	<select id="selectAllPromotionList" resultMap="promotionCollection">
 		select
-		    pm.*,
-		    pp.product_code,
-		    pp.name product_name,
-		    pp.price,
-		    pp.thumbnail,
-		    pp.status
+		    *
 		from
-		    promotion pm left join product_promotion pd
-		        on pm.promotion_code = pd.promotion_code
-		            left join product pp
-		                on pp.product_code = pd.product_code
+			view_product_promotion
+	</select>
+	<select id="selectPromotionByPromotionCode" resultMap="promotionCollection">
+		select
+		    *
+		from
+			view_product_promotion
+		where
+			promotion_code = #{promotionCode}
 	</select>
 	<resultMap type="promotion" id="promotionCollection">
 		<id column="promotion_code" property="promotionCode"/>

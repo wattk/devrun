@@ -104,6 +104,11 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectAllPromotionList();
 	}
 
+	@Override
+	public Promotion selectPromotionByPromotionCode(String promotionCode) {
+		return adminDao.selectPromotionByPromotionCode(promotionCode);
+	}
+
 	
 
 	
