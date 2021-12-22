@@ -36,6 +36,8 @@ public interface AdminService {
 	List<Promotion> selectAllPromotionList();
 
 	Promotion selectPromotionByPromotionCode(String promotionCode);
+
+	int updatePromotion(Map<String, Object> param);
 	
 	/**
 	 * 혜진 끝
