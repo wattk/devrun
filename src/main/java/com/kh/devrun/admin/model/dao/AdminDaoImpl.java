@@ -55,6 +55,11 @@ public class AdminDaoImpl implements AdminDao {
 	public List<Promotion> selectAllPromotionList() {
 		return session.selectList("promotion.selectAllPromotionList");
 	}
+
+	@Override
+	public Promotion selectPromotionByPromotionCode(String promotionCode) {
+		return session.selectOne("promotion.selectPromotionByPromotionCode", promotionCode);
+	}
 	
 	
 	/**
