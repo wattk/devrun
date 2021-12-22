@@ -55,16 +55,33 @@ public class CommunityController {
 	@PostMapping("/communityColumnEnroll.do")
 	public String communityColumnEnroll(Community community, RedirectAttributes redirectAttributes) {
 		log.debug("{}", "/communityCommunityEnroll.do 요청!");
-		log.debug("{}", community);
+		log.debug("community = {}", community);
+		int startIndex = 0;
+		int endIndex = 0;
+		String content = community.getContent();
+		startIndex = content.indexOf("<img");
 		
-		/*
-		 * try { int result = communityService.insertColumn(community); String msg =
-		 * result > 0 ? "컬럼 등록 성공!" : "컬럼 등록 실패!";
-		 * redirectAttributes.addFlashAttribute("msg", msg); } catch (Exception e) {
-		 * log.error("컬럼 등록 오류", e); throw e; } return
-		 * "redirect:/community/communityColumnList.do";
-		 */
-		return "";
+		if(startIndex != -1) {
+			endIndex = content.substring(startIndex).indexOf("\">");
+			log.debug("startIndex : {} ~ endIndex : {}", startIndex, endIndex+2);
+			
+			String thumbnail = content.substring(startIndex, startIndex + endIndex+2);
+			log.debug("thumbnail = {}", thumbnail);
+			System.out.println(thumbnail);
+			community.setThumbnail(thumbnail);
+		}
+		
+	  try { 
+		  int result = communityService.insertColumn(community); 
+		  String msg = result > 0 ? "컬럼 등록 성공!" : "컬럼 등록 실패!";
+		  redirectAttributes.addFlashAttribute("msg", msg); 
+	  } 
+	  catch (Exception e) {
+	  log.error("컬럼 등록 오류", e); 
+	  throw e; 
+	  } 
+	  return "redirect:/community/communityMain.do";
+		 
 	}
 	
 	// 커뮤니티 - Q&A

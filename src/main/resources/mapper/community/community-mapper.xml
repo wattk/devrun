@@ -7,9 +7,9 @@
   	insert into
   		community
   	values(
-  		seq_community_no,
+  		seq_community_no.nextval,
   		#{memberNo},
-  		page_code = 1,
+  		1,
   		#{title},
   		#{content},
   		default,
@@ -17,7 +17,7 @@
   		default,
   		default,
   		default,
-  		default
+  		#{thumbnail}
   	)
   </insert>
 </mapper>
