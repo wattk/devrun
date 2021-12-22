@@ -95,5 +95,12 @@
 $(promotionEnrollBtn).click((e)=>{
 	$(document.promotionEnrollFrm).submit();	
 });	
+
+//상품 x 버튼 클릭 시 list 제외
+$(".product-x-btn").click((e)=>{
+	const $li = $(e.target).parent("li");
+	console.log($li);
+	$li.detach();
+});
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>

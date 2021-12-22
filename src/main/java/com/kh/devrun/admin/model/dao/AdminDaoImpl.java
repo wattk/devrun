@@ -74,6 +74,15 @@ public class AdminDaoImpl implements AdminDao {
 		return session.selectOne("promotion.selectPromotionByPromotionCode", promotionCode);
 	}
 
+	@Override
+	public int updatePromotion(Promotion promotion) {
+		return session.update("promotion.updatePromotion", promotion);
+	}
+
+	@Override
+	public int deleteProductPromotion(List<Map<String, Object>> deleteProductList) {
+		return session.delete("promotion.deleteProductPromotion", deleteProductList);
+	}
 	
 	
 	/**

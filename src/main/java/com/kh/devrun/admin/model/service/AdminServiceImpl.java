@@ -123,7 +123,29 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectPromotionByPromotionCode(promotionCode);
 	}
 
-	
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, 
+	isolation = Isolation.READ_COMMITTED, 
+	rollbackFor = Exception.class)
+	public int updatePromotion(Map<String, Object> param) {
+		int result = 0;
+		try {
+			Promotion promotion = (Promotion)param.get("promotion");
+			//promotion 테이블 insert
+			result = adminDao.updatePromotion(promotion);
+			
+			List<Map<String, Object>> deleteProductList = (List<Map<String, Object>>)param.get("deleteProductList");
+			if(!deleteProductList.isEmpty()) result = adminDao.deleteProductPromotion(deleteProductList);
+			
+			List<Map<String, Object>> changeProductList = (List<Map<String, Object>>)param.get("changeProductList");
+			//promotion-product 테이블 insert
+			if(!changeProductList.isEmpty()) result = adminDao.insertProductPromotion(changeProductList);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			throw new PromotionException("프로모션 상품 등록 오류", e);
+		}
+		return result;
+	}
 
 	
 	/**
