@@ -146,8 +146,8 @@
   <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
   <div id="preloader"></div>
 
-  <!-- JavaScript Libraries -->
-  <script src="${pageContext.request.contextPath }/resources/js/popper.min.js"></script>
+  <!-- JavaScript Libraries 
+  <script src="${pageContext.request.contextPath }/resources/js/popper.min.js"></script>-->
   <script src="${pageContext.request.contextPath }/resources/js/easing.min.js"></script>
   <script src="${pageContext.request.contextPath }/resources/js/owl.carousel.min.js"></script>
   <script src="${pageContext.request.contextPath }/resources/js/scrollreveal.min.js"></script>
