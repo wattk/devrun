@@ -65,21 +65,19 @@ color: green;
 }
     
 .tab label {
-  background: rgb(237 232 92 / 97%);
-  padding: 37px;
-  border: 2px solid #bd9559;
-  margin-left: -1px; 
-  position: relative;
-  left: 1px; 
-  width: 300px;
-  text-align: center;
+   background: rgba(170, 185, 185, 0.97);
+   padding: 37px;
+   border: 1px solid #ccc;
+   margin-left: -1px;
+   position: relative;
+   left: 1px;
+   width: 300px;
+   text-align: center;
   /*둥근 모양 제거*/
   /* border-radius: 10px 10px 0px 0px;
   box-shadow: 3px -3px 6px rgba(0, 0, 0, 0.71); */
 }
-.tab label:hover{
-	cursor: pointer;
-}
+    
 .tab [type=radio] {
   display: none;   
 }
@@ -93,7 +91,7 @@ color: green;
   right: 0;
   bottom: 0;
   padding: 20px;
-  border: 3px solid #f9ba5c;
+  border: 1px solid #ccc; 
   border-radius: 0px 10px 10px 10px;
   /* box-shadow:6px 6px 10px rgba(0, 0, 0, 0.41); */
   overflow: hidden;
