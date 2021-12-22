@@ -365,6 +365,12 @@ COMMENT ON COLUMN "MEMBER_REVIEW_LIKE"."MEMBER_NO" IS '회원 번호';
 
 -----------종서 작업-----------
 
+
+select * from community;
+alter table community drop column thumnail;
+alter table community add (thumbnail clob);
+commit;
+
 -- 커뮤니티 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_COMMUNITY_NO;
 
@@ -378,7 +384,7 @@ CREATE TABLE "COMMUNITY" (
 	"ENROLL_DATE"	DATE DEFAULT SYSDATE	NOT NULL,
 	"VIEW_COUNT"	NUMBER	DEFAULT 0	NULL,
 	"LIKE_COUNT"	NUMBER	DEFAULT 0	NULL,
-	"THUMNAIL"	VARCHAR2(500)	NULL,
+	"THUMBNAIL"	CLOB	NULL,
 	"ANSWER_YN"	CHAR(1)	DEFAULT 'N' NULL,
 	"HASHTAG"	VARCHAR2(300)	NULL,
     CONSTRAINT PK_COMMUNITY_COMMUNITY_NO PRIMARY KEY (COMMUNITY_NO),
