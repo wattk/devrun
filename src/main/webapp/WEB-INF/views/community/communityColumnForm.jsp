@@ -50,6 +50,7 @@
 	<article>
 		<div class="container" role="main">
 			<h2>칼럼 글쓰기</h2>
+			
 			<hr />
 			
 			<form:form name="form" id="form" role="form" method="POST" action="${pageContext.request.contextPath}/community/communityColumnEnroll.do">

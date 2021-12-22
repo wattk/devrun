@@ -1,5 +1,7 @@
 package com.kh.devrun.community.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +21,10 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int insertColumn(Community community) {
 		return communityDao.insertColumn(community);
+	}
+
+	@Override
+	public List<Community> selectColumnList() {
+		return communityDao.selectColumnList(); // 전달할 값이 없으므로 공란
 	}
 }
