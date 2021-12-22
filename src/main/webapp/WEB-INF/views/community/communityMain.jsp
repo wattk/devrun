@@ -10,12 +10,8 @@
 <jsp:include page="/WEB-INF/views/community/common/nav.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
+<link href="${pageContext.request.contextPath}/resources/css/community/communityMain/style.css" rel="stylesheet">
 
-<link href="${pageContext.request.contextPath}/resources/css/community/communityMain/bootstrap.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 <div class="container-fluid">
 	<!-- 헤더 -->
@@ -35,8 +31,8 @@
 
 			<!-- 검색창 시작-->
 			<div class="search-container">
-				<div class="col-md-12">
-					<div class="input-group mb-3">
+				<div class="col-md-12 mx-auto w-50">
+					<div class="input-group mx-auto ">
 						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">전체</button>
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" href="#">답변완료</a></li>
@@ -368,11 +364,8 @@
 		</div>
 	</div>
 </div>
+</div>
 
-    <script src="${pageContext.request.contextPath}/js/community/communityMain/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/community/communityMain/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/community/communityMain/js/scripts.js"></script>
-  </body>
-</html>
+    <script src="${pageContext.request.contextPath}/resources/js/community/communityMain/scripts.js"></script>
 	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
