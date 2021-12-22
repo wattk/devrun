@@ -10,12 +10,9 @@
 <jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-<!-- 사이드바 css -->
-<link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
 
 <link href="${pageContext.request.contextPath}/resources/css/community/communityColumnList/bootstrap.min.css" rel="stylesheet">
-    
-    
+        
     <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-10">
