@@ -54,15 +54,17 @@ public class CommunityController {
 	
 	@PostMapping("/communityColumnEnroll.do")
 	public String communityColumnEnroll(Community community, RedirectAttributes redirectAttributes) {
-		try {
-			int result = communityService.insertColumn(community);
-			String msg = result > 0 ? "컬럼 등록 성공!" : "컬럼 등록 실패!";
-			redirectAttributes.addFlashAttribute("msg", msg);
-		} catch (Exception e) {
-			log.error("컬럼 등록 오류", e);
-			throw e;
-		}
-		return "redirect:/community/communityColumnList.do";
+		log.debug("{}", "/communityCommunityEnroll.do 요청!");
+		log.debug("{}", community);
+		
+		/*
+		 * try { int result = communityService.insertColumn(community); String msg =
+		 * result > 0 ? "컬럼 등록 성공!" : "컬럼 등록 실패!";
+		 * redirectAttributes.addFlashAttribute("msg", msg); } catch (Exception e) {
+		 * log.error("컬럼 등록 오류", e); throw e; } return
+		 * "redirect:/community/communityColumnList.do";
+		 */
+		return "";
 	}
 	
 	// 커뮤니티 - Q&A
@@ -88,6 +90,7 @@ public class CommunityController {
 	
 	@GetMapping("/communityFreeboardForm.do")
 	public void communityFreeboardForm() {}
+	
 	
 	
 }
