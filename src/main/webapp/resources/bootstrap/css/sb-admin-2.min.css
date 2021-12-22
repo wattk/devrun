@@ -41,15 +41,20 @@
 
 
 /* 상품관리  */
-.productContainer{ margin-left:10%; margin-top:50px;width:95%; height:100%}
+.productContainer{ margin-left:10%; margin-top:25px;width:95%; height:100%}
 .productContainer>h2{font-weight:bold}
 
 /* 상품조회  */
-#productListContainer{margin-top:100px}
-#productListContainer span{font-weight:400; font-size:25px; margin-left:15px}
+#productListContainer{margin-top:50px}
+#productListContainer span{font-weight:400; font-size:20px; margin-left:10px}
 #productList, #title{width:90%}
 #productList tr th:nth-child(6){width:106px}
-th,tr{border:1px solid #80808061;}
+#productList th{border:1px solid #80808061; border-bottom:2px solid #80808061;}
+#productList td,tr{border:1px solid #80808061; text-align: center; }
+.box{width:25px;}
+#thumbnail{width:100px}
+#productList td:nth-child(2){width:100px;height:100px;}
+
 
 /* 상품 등록  */
 #title{display: flex; justify-content: space-between; margin-bottom:15px;}

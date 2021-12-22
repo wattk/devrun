@@ -8,6 +8,7 @@ import com.kh.devrun.product.Product;
 
 import com.kh.devrun.product.ProductCategory;
 import com.kh.devrun.product.ProductDetail;
+import com.kh.devrun.product.ProductExtends;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 
@@ -38,6 +39,11 @@ public interface AdminService {
 
 	Promotion selectPromotionByPromotionCode(String promotionCode);
 
+	List<ProductExtends> selectAllProductList();
+
+	
+	
+	
 	
 	/**
 	 * 혜진 끝

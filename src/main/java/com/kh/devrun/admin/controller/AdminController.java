@@ -30,6 +30,7 @@ import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.product.Product;
 import com.kh.devrun.product.ProductDetail;
+import com.kh.devrun.product.ProductExtends;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,10 +49,15 @@ public class AdminController {
 	// 태영시작
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
+
 	
 	@GetMapping("/productMain.do")
-	public String productManage() {
-				
+	public String productManage(Model model) {
+		List<ProductExtends> list = adminService.selectAllProductList();
+		log.debug("list = {}" ,list);	
+		
+		model.addAttribute("list",list);
+		
 		return "/admin/product/productMain";
 	}
 	
@@ -101,10 +107,10 @@ public class AdminController {
 		log.debug("option2= {}", option2);
 		
 		// 받아온 옵션값 합쳐주기
-		String option = option1+"/"+option2;
+		String option = option1+"-"+option2;
 		
 		// 소분류 코드 + 옵션 + seq.no 으로 상품코드를 만둘어준 뒤 pruduct에 set
-		String product_code = childCategoryCode+"-"+option+"-"; 
+		String product_code = childCategoryCode+"-"+option; 
 		product.setProductCode(product_code);
 		
 		// 상품상세 객체로 묶어 전달
@@ -126,7 +132,7 @@ public class AdminController {
 		product.setThumbnail(productImg);
 		
 		// 업무로직 : db저장 		
-		if(upFile.isEmpty()) {		
+		if(!upFile.isEmpty()) {		
 			try {									
 				// 서버 컴퓨터 저장
 				File dest = new File(saveDirectory, productImg);

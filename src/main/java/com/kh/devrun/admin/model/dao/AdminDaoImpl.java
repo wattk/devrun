@@ -11,6 +11,7 @@ import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
 import com.kh.devrun.product.ProductCategory;
 import com.kh.devrun.product.ProductDetail;
+import com.kh.devrun.product.ProductExtends;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 @Repository
@@ -38,6 +39,13 @@ public class AdminDaoImpl implements AdminDao {
 	public int insertProductDetail(ProductDetail productDetail) {
 		return session.insert("product.insertProductDetail",productDetail);
 	}
+	
+	@Override
+	public List<ProductExtends> selectAllProductList() {
+		return session.selectList("product.selectAllProductList");
+	}
+	
+	
 	
 	/**
 	 * 태영 끝 ----------------------------------------------
@@ -73,6 +81,7 @@ public class AdminDaoImpl implements AdminDao {
 	public Promotion selectPromotionByPromotionCode(String promotionCode) {
 		return session.selectOne("promotion.selectPromotionByPromotionCode", promotionCode);
 	}
+
 
 	
 	
