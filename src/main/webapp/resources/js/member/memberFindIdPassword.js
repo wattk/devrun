@@ -87,7 +87,7 @@ $(memberFindPasswordFrm).submit((e) => {
 	// 띄울 팝업창 너비
 	const popWidth = 400;                                       
 	// 현재창의 높이
-	const winHeight = document.body.clientHeight
+	const winHeight = document.body.clientHeight;
 	// 현재창의 너비
 	const winWidth = document.body.clientWidth;	  
 	// 현재창의 x좌표

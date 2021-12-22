@@ -138,6 +138,7 @@ CREATE TABLE "PRODUCT" (
 	"STATUS"	CHAR(1)	DEFAULT 'Y'	NOT NULL
 );
 
+
 -- 상품 테이블 코멘트 추가
 COMMENT ON COLUMN "PRODUCT"."PRODUCT_CODE" IS '상품코드';
 COMMENT ON COLUMN "PRODUCT"."NAME" IS '상품명';
@@ -364,6 +365,12 @@ COMMENT ON COLUMN "MEMBER_REVIEW_LIKE"."MEMBER_NO" IS '회원 번호';
 
 -----------종서 작업-----------
 
+
+select * from community;
+alter table community drop column thumnail;
+alter table community add (thumbnail clob);
+commit;
+
 -- 커뮤니티 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_COMMUNITY_NO;
 
@@ -377,7 +384,7 @@ CREATE TABLE "COMMUNITY" (
 	"ENROLL_DATE"	DATE DEFAULT SYSDATE	NOT NULL,
 	"VIEW_COUNT"	NUMBER	DEFAULT 0	NULL,
 	"LIKE_COUNT"	NUMBER	DEFAULT 0	NULL,
-	"THUMNAIL"	VARCHAR2(500)	NULL,
+	"THUMBNAIL"	CLOB	NULL,
 	"ANSWER_YN"	CHAR(1)	DEFAULT 'N' NULL,
 	"HASHTAG"	VARCHAR2(300)	NULL,
     CONSTRAINT PK_COMMUNITY_COMMUNITY_NO PRIMARY KEY (COMMUNITY_NO),
@@ -552,6 +559,9 @@ COMMENT ON COLUMN "CHAT_MEMBER"."MEMBER_NO2" IS '상대방 회원 번호';
 COMMENT ON COLUMN "CHAT_MEMBER"."LAST_CHECK" IS '최근 확인 시간';
 COMMENT ON COLUMN "CHAT_MEMBER"."START_DATE" IS '채팅 시작일';
 COMMENT ON COLUMN "CHAT_MEMBER"."END_DATE" IS '채팅 종료일';
+
+-- 채팅 테이블 상태 컬럼 추가
+ALTER TABLE CHAT_MEMBER ADD STATUS CHAR(1) DEFAULT 'Y' NOT NULL;
 
 -- 채팅 로그 시퀀스 생성
 CREATE SEQUENCE SEQ_CHAT_LOG_NO;
@@ -915,6 +925,12 @@ COMMENT ON COLUMN "MESSAGE"."MESSAGE_CONTENT" IS '메세지 내용';
 --쪽지 테이블 SEQ
 CREATE SEQUENCE SEQ_MESSAGE_NO;
 
+--쪽지 테이블 삭제 (채팅, 채팅로그 테이블로 이용)
+DROP TABLE MESSAGE;
+
+--쪽지 시퀀스 삭제
+DROP SEQUENCE SEQ_MESSAGE_NO;
+
 
 --===========================
 --주소 테이블 생성
@@ -1216,10 +1232,34 @@ values('pm','ot','팜레스트');
 
 
 select*from PRODUCT_CHILD_CATEGORY;
+select*from PRODUCT_PARENT_CATEGORY;
+
+select * from product_category;
+
+select * from product;
 
 
 
+-- 상품- 분류
 
+
+-- rank() over()---
+SELECT
+   A.PRODUCT_CODE
+FROM (
+   SELECT
+      PRODUCT_CODE,
+      ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) RN
+   FROM PRODUCT
+   ORDER BY REG_DATE DESC
+) A
+WHERE RN = 1;
+
+select
+    *
+from   
+    product p left join product_category pc 
+        on p.product_code = pc.product_code;
 
 
 
