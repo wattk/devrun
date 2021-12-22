@@ -26,7 +26,21 @@
 
 
 	<!-- body 영역 시작 -->
-		<div id="shopItemDetailOuterDiv">
+			<div id="shopItemDetailOuterDiv">
+			<!--신고 모달 시작-->
+			<!--신고 모달 끝-->
+	
+			<!--리뷰작성모달 시작-->
+			<!--리뷰작성모달 끝-->
+	
+			<!--문의 글 작성 시작-->
+			<!--문의 글 작성 끝-->
+	
+	
+	
+	
+	
+	
 			<div id="itemDetailDisplayDiv" class="row">
 				<div id="itemDetailPicDiv" class="row align-items-center">
 					<div id="itemDetailBicPicDiv">
@@ -76,6 +90,12 @@
 							  <input id="tab-1" checked="checked" name="tab-group-1" type="radio" />
 							  <label for="tab-1"><span class="tab-span">리뷰 </span><span class="tab-span">22</span></label>
 							  <div class="content height600" >
+								<!--리뷰사진확대 모달 시작-->
+										<div id="reviewModal" class="review-modal-div" style="position: absolute;">
+										<img id="closeIcon" src="https://i.ibb.co/rmVYp7Z/x-icon.png" alt="" onclick="expandClose()">
+										<img src="https://i.ibb.co/XLNWsgC/red-square.jpg" alt="" id="reviewExpansion">
+									</div>
+								<!--리뷰사진확대 모달 끝-->
 								<!--상단 갯수 및 선택 옵션 시작-->
 								<div class="item-sort-container d-flex justify-content-between">
 								  <div class="p-4" style="margin-top: 9px;">총 465개</div>
@@ -88,11 +108,12 @@
 								</div>
 								<hr>
 								<!--상단 갯수 및 선택 옵션 끝-->
+								<div></div>
 								<!--리뷰시작-->
-								<div class="reviewDiv forFont">
+								<div class="aReviewDiv forFont">
 								  <div class="shop-review row">
 									<div class="reviewProfile">
-									  <img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png" alt="">
+									  <img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
 									</div> 
 									<div class="reviewContent ml-3">
 									  <i class="fas fa-star"></i>
@@ -108,7 +129,7 @@
 									  </div>  
 									</div>
 									<div class="reviewPhoto">
-									  <img src="https://i.ibb.co/gm7H77f/square.png" alt="">
+									  <img src="https://i.ibb.co/gm7H77f/square.png" alt="" onclick="expandPic()">
 									  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
 										<i class="far fa-heart">3</i>
 									  </div>
@@ -116,7 +137,7 @@
 								  </div>
 								</div>
 								<!--리뷰끝-->
-								<div class="reviewDiv forFont">
+								<div class="aReviewDiv forFont">
 									<div class="shop-review row">
 									  <div class="reviewProfile">
 										<img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png" alt="">
@@ -134,7 +155,7 @@
 										</div>  
 									  </div>
 									  <div class="reviewPhoto">
-										<img src="https://i.ibb.co/gm7H77f/square.png" alt="">
+										<img src="https://i.ibb.co/gm7H77f/square.png" alt="" onclick="expandPic()">
 										<div  class="reviewLikeBtn text-center border border-success rounded mt-1">
 										  <i class="far fa-heart">3</i>
 										</div>
@@ -277,6 +298,11 @@
 
 <!-- shopHeader js  -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
+
+<!-- itemDetail js -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/itemDetail.js" ></script>
+
+
 <!-- footer -->
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 	
