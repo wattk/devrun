@@ -4,70 +4,79 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+
 <jsp:include page="/WEB-INF/views/admin/admin-common/header.jsp">
 	<jsp:param value="상품관리" name="title"/>
 </jsp:include>
 
+<script src="${pageContext.request.contextPath}/resources/js/summernote/summernote-lite.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/summernote/summernote-lite.css">
+
 
 <div id="productInsertContainer" class="productContainer">
-	<h2>상품 등록</h2>
-	<div id=imgInfoContainer>
-		<div id="productImg">
-			-
-		</div>
-		<div id="productInfo" >					
-			<form
-				id="productFrm" 
-				action="${pageContext.request.contextPath}/admin/insertProduct.do"
-				method="POST">
-				
+	<h2>상품 등록</h2><br /><hr /><br />
+	
+	<form
+		enctype="multipart/form-data"
+		id="productFrm" 
+		action="${pageContext.request.contextPath}/admin/insertProduct.do"
+		method="POST">
+		
+		<div id="formContentTop">
+			<h4 class="fw700">상품 이름</h4>
+			<input type="text" id="name" class="br"name="name" placeholder="상품 이름" value="실험책상"required/>
+			<input id="submitBtn" type="submit" value="상품등록" />
+		</div><br />
+		
+
+		<div id="formContentMid">
+			<div id="productImgContainer">
+				<img id ="imgContainer" /><br />
+				<div>
+					<input type="file" name="upFile" id="imgInput" />
+				</div>
+			</div>
+			
+			<div id ="infoContainer">
 				<table id="infoTable">
 					<tr>
-						<th>상품코드</th>
-						<td><input type="text" name="productCode" placeholder="상품 코드" value="test_001" required/></td>
+						<th>상품 가격</th>
+						<th>상품 상태</th>
 					</tr>
 					<tr>
-						<th>상품이름</th>
-						<td><input type="text" name="name" placeholder="상품 이름" value="실험책상"required/></td>
-					</tr>
-					<tr>
-						<th>상품가격</th>
-						<td><input type="text" name="price" placeholder="상품 가격" value="10000" required/></td>
-					</tr>
-					<tr>
-						<th>옵션번호</th>
-						<td><input type="text" name="optionNo" placeholder="옵션 번호" value="0" /></td>
-					</tr>
-					<tr>
-						<th>옵션 내용</th>
-						<td><input type="text" name="optionContent" placeholder="옵션 내용" value="-" /></td>
-					</tr>
+						<td>
+							<input type="text" value="10000" />	
+						</td>
+						<td>
+							<select name ="status" class="form-select form-select-lg mb-2" aria-label=".form-select-lg example">
+								<option>-- 상품 상태 --</option>
+								<option value="Y" selected>공개</option>		
+								<option value="N">비공개</option>		
+							</select>
+						</td>
+					</tr>	
+									
 					<tr>
 						<th>제품 단위</th>
-						<td><input type="text" name="sku" placeholder="재품 단위" value="개" /></td>
-					</tr>
-					<tr>
 						<th>재고량</th>
-						<td><input type="text" name="quantity" placeholder="재고량" value="0" /></td>
 					</tr>
 					<tr>
-						<th>내용</th>
-						<td><input type="text" name="content" placeholder="상품 내용" value="-" required/></td>
-					</tr>
-					<tr>
-						<th>상품 상태</th>
 						<td>
-							<input type="radio" id="public" name="status" value="Y"/>
-							<label for="public">공개</label>
-							<input type="radio" id="private" name="status" value="N" checked />
-							<label for="private">비공개</label> 
+							<input type="text" name="quantity" placeholder="재고량" value= 1 />
 						</td>
-						
-					</tr>
+						<td>
+							<input type="text" name="sku" placeholder="재품 단위" value="개" />
+						</td>
+					</tr>					
 					<tr>
 						<th>상품 카테고리</th>
+					</tr>
+
+					<tr>
 						<td>
-							<select id ="largeCategory" class="form-select form-select-lg mb-2" aria-label=".form-select-lg example">
+							<select id ="largeCategory" class="form-select form-select-lg mb-2" aria-label=".form-select-lg example" required>
 								<option selected>--대분류--</option>
 								<option value="ke">키보드</option>
 								<option value="mo">마우스</option>
@@ -75,23 +84,72 @@
 								<option value="de">책상</option>
 								<option value="ot">기타</option>
 							</select>
-							
-							<select id="smallCategory"  name="childCategoryCode" class="form-select form-select-sm" aria-label=".form-select-sm example">
+						</td>
+						<td>
+							<select id="smallCategory"  name="childCategoryCode" class="form-select form-select-lg mb-2" aria-label=".form-select-sm example" required>
 								<option value="0">소분류</option>
 							</select>
 						</td>
+					</tr>					
+				
+				</table>
+				<hr />			
+				<table id="optionTable">
+					<tr>
+						<td class="option">사이즈</td><td><input name="option1"type="text" value="m" /></td>
+					</tr>
+					<tr>
+						<td class="option">색상</td><td><input name="option2" type="text" value="black" /></td>
+					</tr>
+					<tr>
+						<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="-" /></td>
 					</tr>
 				</table>
-				<input id="submitBtn" type="submit" value="상품등록" />
-			</form>
-					
-		</div>
-	</div>
-	
+				<hr /><br />						
+				<textarea class="form-control" rows="5" name="content" id="summernote"></textarea>
+			<!-- infoContainer 끝 -->
+			</div>
+		<!-- contentMid  끝  -->	
+		</div>		
+	</form>
+			
 </div>
 
 
 <script>
+
+/* 파일 업로드 화면 띄우기  */
+$(imgInput).on("change", (e)=>{
+	let file = e.target.files[0];
+	
+	if(!file.type.match("image.*")){
+		alert("이미지 파일만 업로드 가능합니다.");
+		$(e.target).val('');
+		return;
+	}
+	
+	let reader = new FileReader();
+	reader.onload = function(e){
+		$(imgContainer).attr("src", e.target.result);
+	}
+	reader.readAsDataURL(file);
+});
+
+
+/* 썸머노트 */
+$(document).ready(function() {
+	//여기 아래 부분
+	$('#summernote').summernote({
+		  height: 300,                 // 에디터 높이
+		  minHeight: null,             // 최소 높이
+		  maxHeight: null,             // 최대 높이
+		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+		  lang: "ko-KR",					// 한글 설정
+		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+          
+	});
+});
+
 
 $("#smallCategory").change(e=>{
 	const value = e.target.value;

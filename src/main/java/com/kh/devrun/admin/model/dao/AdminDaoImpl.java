@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
 import com.kh.devrun.product.ProductCategory;
+import com.kh.devrun.product.ProductDetail;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 @Repository
@@ -32,6 +33,17 @@ public class AdminDaoImpl implements AdminDao {
 	public int insertProducCategory(ProductCategory productCategory) {
 		return session.insert("product.insertProductCategory",productCategory);
 	}
+	
+	@Override
+	public int insertProductDetail(ProductDetail productDetail) {
+		return session.insert("product.insertProductDetail",productDetail);
+	}
+	
+	/**
+	 * 태영 끝 ----------------------------------------------
+	 */
+	
+
 
 	/**
 	 * 혜진 시작
@@ -50,6 +62,7 @@ public class AdminDaoImpl implements AdminDao {
 	public int insertProductPromotion(List<Map<String, Object>> list) {
 		return session.insert("promotion.insertProductPromotion", list);
 	}
+
 
 	@Override
 	public List<Promotion> selectAllPromotionList() {

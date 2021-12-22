@@ -6,6 +6,7 @@ import java.util.Map;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
 import com.kh.devrun.product.ProductCategory;
+import com.kh.devrun.product.ProductDetail;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 public interface AdminDao {
@@ -15,7 +16,16 @@ public interface AdminDao {
 	int insertProduct(Product product);
 
 	int insertProducCategory(ProductCategory productCategory);
-
+	
+	int insertProductDetail(ProductDetail productDetail);
+	
+	
+	
+	/**
+	 * 태영 끝-----------------------------------
+	 */
+	
+	
 	/**
 	 * 혜진 시작
 	 * @param searchCode
@@ -37,6 +47,8 @@ public interface AdminDao {
 	/**
 	 * 혜진 끝
 	 */
+
+	
 
 
 
