@@ -7,27 +7,15 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-<jsp:include page="/WEB-INF/views/community/common/nav.jsp">
+<jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 사이드바 css -->
+<link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
 
-    <title>communityColumnList</title>
-
-    <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
-
-    <link href="${pageContext.request.contextPath}/css/community/communityColumnList/bootstrap.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/community/style.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/css/community/communityColumnList/bootstrap.min.css" rel="stylesheet">
     
-  </head>
-  <body>
-
+    
     <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-10">
@@ -184,9 +172,9 @@
 </div>
 
 
-    <script src="${pageContext.request.contextPath}/js/community/communityColumnList/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/community/communityColumnList/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/community/communityColumnList/scripts.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/community/communityColumnList/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/community/communityColumnList/bootstrap.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/community/communityColumnList/scripts.js"></script>
   </body>
 </html>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

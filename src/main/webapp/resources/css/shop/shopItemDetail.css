@@ -65,19 +65,21 @@ color: green;
 }
     
 .tab label {
-  background: rgba(170, 185, 185, 0.97);
-  padding: 40px;
-  border: 1px solid #ccc; 
-  margin-left: -1px; 
-  position: relative;
-  left: 1px; 
-  width: 301px;
-  text-align: center;
+   background: rgba(170, 185, 185, 0.97);
+   padding: 37px;
+   border: 1px solid #ccc;
+   margin-left: -1px;
+   position: relative;
+   left: 1px;
+   width: 300px;
+   text-align: center;
   /*둥근 모양 제거*/
   /* border-radius: 10px 10px 0px 0px;
   box-shadow: 3px -3px 6px rgba(0, 0, 0, 0.71); */
 }
-    
+.tab label:hover{
+	cursor:pointer;
+}    
 .tab [type=radio] {
   display: none;   
 }
@@ -295,28 +297,29 @@ color: green;
 	font-size: 20px;
 }
 #reviewModal{
-	top: 120px;
+    left: 164px;
+    top: 711px;
 	display: none;
 	z-index: 20;
 }
 #reviewExpansion{
-	width: 400px;
-	height: 400px;
+	width: 450px;
+	height: 450px;
 	z-index: 350;
 	position: relative;
-	top: 40px;
+	top: 80px;
 	left: 329px;
 }
 #closeIcon{
-	width: 40px;
-	position: relative;
-	z-index: 355;
-    left: 729px;
-    bottom: 132px;
-	cursor: pointer;
+    width: 45px;
+    position: relative;
+    z-index: 355;
+    left: 774px;
+    bottom: 110px;
+    cursor: pointer;
 }
 #reviewModal{
-	background: rgba(110, 110, 110,0.8);
-	width: 1165px;
-	height: 480px;
+	background: rgba(110, 110, 110,0.9);
+    width: 1194px;
+    height: 600px;
 }

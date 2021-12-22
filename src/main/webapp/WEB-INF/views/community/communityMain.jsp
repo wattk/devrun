@@ -7,16 +7,17 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-<jsp:include page="/WEB-INF/views/community/common/nav.jsp">
+<jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-<link href="${pageContext.request.contextPath}/resources/css/community/communityMain/style.css" rel="stylesheet">
+<!--  <link href="${pageContext.request.contextPath}/resources/css/community/communityMain/style.css" rel="stylesheet"> -->
 
 
 <div class="container-fluid">
-	<!-- 헤더 -->
 	<div class="row">
 		<div class="col-md-12">
+		
+			<!-- 헤더 -->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="page-header">
@@ -26,7 +27,8 @@
 					</div>
 				</div>
 			</div>
-
+			<!-- 헤더 끝 -->
+	
 			<hr>
 
 			<!-- 검색창 시작-->
@@ -35,11 +37,9 @@
 					<div class="input-group mx-auto ">
 						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">전체</button>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">답변완료</a></li>
-							<li><a class="dropdown-item" href="#">미답변</a></li>
-							<li><a class="dropdown-item" href="#">Something else here</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="#">Separated link</a></li>
+							<li><a class="dropdown-item" href="#">제목</a></li>
+							<li><a class="dropdown-item" href="#">아이디</a></li>
+							<li><a class="dropdown-item" href="#">내용</a></li>
 						</ul>
 						<input type="text" class="form-control" aria-label="Text input with dropdown button">
 						<button type="button" class="btn btn-outline-primary">검색</button>
@@ -51,11 +51,12 @@
 			<hr>
 			<br>
 
+			<!-- Dev_news 시작 -->
 			<div class="row">
 				<div class="col-md-12">
-					<h3>
-						Dev_news
-					</h3>
+					<h2>
+						<strong>Dev_news</strong>
+					</h2>
 				</div>
 			</div>
 
@@ -63,7 +64,7 @@
 			<hr>
 			<br>
 
-			<!-- Dev_news 썸네일-->
+			<!-- Dev_news 썸네일 시작-->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="row">
@@ -118,19 +119,21 @@
 					</div>
 				</div>
 			</div>
-
+			<!-- Dev_news 끝-->
+			
 			<br>
 			<hr>
 			<br>
 
-			<!-- 인기 게시물 -->
+			<!-- 인기 게시물 시작 -->
 			<div class="row">
 				<div class="col-md-12">
-					<h3>
-						인기 게시물
-					</h3>
+					<h2>
+						<strong>인기 게시물</strong>
+					</h2>
 				</div>
 			</div>
+			
 
 			<br>
 			<hr>
@@ -342,7 +345,7 @@
 			
 			<br>
 
-			<!-- 페이징 -->
+			<!-- 페이징 시작 -->
 			<div>
 				<nav aria-label="...">
 					<ul class="pagination">
@@ -360,12 +363,13 @@
 					</ul>
 				</nav>
 			</div>
+			<!-- 페이징 끝 -->
 			
 		</div>
 	</div>
 </div>
 </div>
 
-    <script src="${pageContext.request.contextPath}/resources/js/community/communityMain/scripts.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/community/communityMain/scripts.js"></script>
 	
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
