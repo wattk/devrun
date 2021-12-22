@@ -42,12 +42,18 @@ public interface AdminDao {
 	List<Promotion> selectAllPromotionList();
 	
 	Promotion selectPromotionByPromotionCode(String promotionCode);
+	
+	int updatePromotion(Promotion promotion);
+	
+	int deleteProductPromotion(List<Map<String, Object>> deleteProductList);
 	/**
 	 * 혜진 끝
 	 */
 
 
 	
+
+
 
 
 

@@ -39,11 +39,12 @@ public interface AdminService {
 
 	Promotion selectPromotionByPromotionCode(String promotionCode);
 
+
 	List<ProductExtends> selectAllProductList();
 
-	
-	
-	
+
+	int updatePromotion(Map<String, Object> param);
+
 	
 	/**
 	 * 혜진 끝

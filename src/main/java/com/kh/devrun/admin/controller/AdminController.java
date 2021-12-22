@@ -2,6 +2,7 @@ package com.kh.devrun.admin.controller;
 
 import java.beans.PropertyEditor;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -213,12 +215,64 @@ public class AdminController {
 	
 	//이벤트 업데이트 메소드
 	@PostMapping("/promotionUpdate.do")
-	public String promotionUpdate(Promotion promotion, MultipartFile upFile, RedirectAttributes redirectAttr) {
+	public String promotionUpdate(
+			Promotion promotion, 
+			MultipartFile upFile,
+			@RequestParam(required=false) String[] productCode,
+			@RequestParam(required=false) String[] deleteProductCode,
+			@ModelAttribute("promotion") Promotion newPromotion,
+			RedirectAttributes redirectAttr) {
+		log.debug("deleteProductCode={}", deleteProductCode);
+		String promotionCode = promotion.getPromotionCode();
 		
-		return "";
+		try {
+			//application 객체(ServletContext)
+			String saveDirectory = application.getRealPath("/resources/upload/promotion");
+			List<Map<String, Object>> changeProductList = new ArrayList<>();
+			List<Map<String, Object>> deleteProductList = new ArrayList<>();
+			
+			if(!upFile.isEmpty()) {
+				saveBanner(promotion, upFile, promotionCode, saveDirectory);
+			}
+			
+			if(productCode != null) {
+				for(int i = 0; i < productCode.length; i++) {
+					Map<String, Object> map = new HashMap<>();
+					map.put("promotionCode", promotionCode);
+					map.put("productCode", productCode[i]);
+					changeProductList.add(map);
+				}
+			}
+			
+			if(deleteProductCode != null) {
+				for(int i = 0; i < deleteProductCode.length; i++) {
+					Map<String, Object> map = new HashMap<>();
+					map.put("promotionCode", promotionCode);
+					map.put("productCode", deleteProductCode[i]);
+					deleteProductList.add(map);
+				}
+				
+			}
+			log.debug("changeProductList = {}", changeProductList);
+			log.debug("deleteProductList = {}", deleteProductList);
+			
+			//db에 이벤트 등록
+			Map<String, Object> param = new HashMap<>();
+			param.put("promotion", promotion);
+			param.put("changeProductList", changeProductList);
+			param.put("deleteProductList", deleteProductList);
+			int result = adminService.updatePromotion(param);
+			log.debug("result = {}", result);
+			
+			redirectAttr.addFlashAttribute("msg", "이벤트 등록이 완료되었습니다.");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		return "redirect:/admin/promotionDetail.do?promotionCode="+promotionCode;	
 	}
-	
-	
+
 	//이벤트 등록 관련 메소드
 	@GetMapping("/promotionEnroll.do")
 	public String promotionEnroll() {
@@ -243,12 +297,7 @@ public class AdminController {
 			String saveDirectory = application.getRealPath("/resources/upload/promotion");
 			
 			if(!upFile.isEmpty()) {
-				String banner = promotionCode + ".png";
-				promotion.setBanner(banner);
-				
-				// 서버 컴퓨터 저장
-				File dest = new File(saveDirectory, banner);
-				upFile.transferTo(dest);
+				saveBanner(promotion, upFile, promotionCode, saveDirectory);
 			}
 			
 			List<Map<String, Object>> list = new ArrayList<>();
@@ -267,13 +316,13 @@ public class AdminController {
 			int result = adminService.insertPromotion(param);
 			log.debug("result = {}", result);
 			
-			redirectAttr.addAttribute("msg", "이벤트 등록이 완료되었습니다.");
+			redirectAttr.addFlashAttribute("msg", "이벤트 등록이 완료되었습니다.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		
-		return "redirect:/admin/promotion/promotionDetail.do?promotionCode="+promotionCode;
+		return "redirect:/admin/promotionDetail.do?promotionCode="+promotionCode;
 	}
 	
 	@InitBinder
@@ -289,6 +338,16 @@ public class AdminController {
 	public List<Product> promotionAutocomplete(@RequestParam String searchCode) {
 		List<Product> list = adminService.selectProductListByProductCode(searchCode);
 		return list;
+	}
+	
+	private void saveBanner(Promotion promotion, MultipartFile upFile, String promotionCode, String saveDirectory)
+			throws IOException {
+		String banner = promotionCode + ".png";
+		promotion.setBanner(banner);
+		
+		// 서버 컴퓨터 저장
+		File dest = new File(saveDirectory, banner);
+		upFile.transferTo(dest);
 	}
 	/**
 	 * 혜진 끝

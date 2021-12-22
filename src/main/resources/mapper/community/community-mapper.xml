@@ -30,7 +30,7 @@
   	where
   		page_code = 1
   	order by
-  		community_no desc;
+  		community_no desc
   </select>
   
 </mapper>

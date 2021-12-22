@@ -65,4 +65,25 @@
 			<result column="status" property="status"/>
 		</collection>
 	</resultMap>
+	
+	<update id="updatePromotion">
+	update promotion set
+		name = #{name},
+		start_date = #{startDate},
+		end_date = #{endDate},
+		side_note = #{sideNote},
+		is_regular = #{isRegular},
+		banner = #{banner}
+	where
+		promotion_code = #{promotionCode}
+	</update>
+	
+	<delete id="deleteProductPromotion">
+	delete from product_promotion
+	<where>
+		<foreach collection="list" item="item" open="(" close=")" separator="or">
+			product_code = #{item.productCode} and promotion_code = #{item.promotionCode}
+		</foreach>
+	</where>
+	</delete>
 </mapper>

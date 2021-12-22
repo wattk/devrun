@@ -68,7 +68,7 @@
 			    </tr>
 			    <tr>
 			    	<th>해당 이벤트 아이템</th>
-			    	<td>
+			    	<td id="productContainer">
 			    		<div class="d-flex">
 				    		<input type="text" id="productCodeSearch" class="bg-light border-0 small promotion-input" placeholder="상품번호를 입력하세요." disabled>
 				             <button id="productAddBtn" class="btn btn-primary promotion-input" type="button" disabled>
@@ -79,7 +79,7 @@
 			    			<c:forEach items="${promotion.productList}" var="product" varStatus="vs">
 			    			<li class="list-group-item">
 								${product.productCode} - ${product.name}<i class="product-x-btn fas fa-times pl-2 text-danger"></i>
-								<input type="hidden" name="productCode" value="${product.productCode }" />
+								<input type="hidden" name="" value="${product.productCode}" />
 							</li>
 			    			</c:forEach>
 						</ul>
@@ -88,7 +88,8 @@
 			    <tr>
 			    	<th>배너 파일</th>
 			    	<td>
-			    		<input type="file" name="banner" id="banner" class="promotion-input" disabled/>
+			    		<input type="file" name="upFile" id="banner" class="promotion-input" disabled/>
+			    		<input type="hidden" name="banner" value="${promotion.banner }" />
 			    	</td>
 			    </tr>
 	  	 	</tbody>
@@ -98,7 +99,7 @@
 		</div>
 		<div class="col-md-10 mx-auto">
             <label for="contents" class="col-form-label"></label>
-            <textarea id="summernoteDetail" name="editordata">${promotion.sideNote}</textarea>
+            <textarea id="summernoteDetail" name="sideNote">${promotion.sideNote}</textarea>
         </div>
         <div id="promotionDetailBtns" class="d-flex justify-content-center col-10 mx-auto mt-5 mb-5">
         	<button type="button" id="promotionEditBtn" class="promotion-btn btn btn-primary">수정</button>
@@ -121,6 +122,17 @@ $(promotionEditBtn).click((e)=>{
 		.append(`<button type="button" id="promotionUpdateBtn" class="promotion-btn btn btn-primary">등록</button>
 	        	<button type="button" id="promotionResetBtn" class="promotion-btn btn btn-secondary" onclick="location.reload(true);">취소</button>`);
 	
+	//상품 x 버튼 클릭 시 list 제외
+	$(".product-x-btn").click((e)=>{
+		const $li = $(e.target).parent("li");
+		const $product = $(e.target).siblings("input:hidden");
+		console.log($li);
+		console.log($product);
+		$("#productContainer").append($product.attr("name", "deleteProductCode"));
+		$li.detach();
+	});
+	
+	
 	//등록 버튼 클릭 시 form 제출
 	$(promotionUpdateBtn).click((e)=>{
 		$(document.promotionUpdateFrm).submit();	
@@ -141,10 +153,6 @@ $(document).ready((e)=>{
 	$("#calculateDate").text(validDates);
 });
 
-//상품 x 버튼 클릭 시 list 제외
-$(".product-x-btn").click((e)=>{
-	const $li = $(e.target).parent("li");
-	console.log($li);
-});
+
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>
