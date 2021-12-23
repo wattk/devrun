@@ -278,6 +278,12 @@ public class AdminController {
 	public String promotionDelete(@RequestParam String[] promotionCode, RedirectAttributes redirectAttr) {
 		log.debug("promotionCode = {}", promotionCode);
 		try {
+			//서버 파일 삭제
+			String saveDirectory = application.getRealPath("/resources/upload/promotion/");
+			File banner = new File(saveDirectory+promotionCode+".png");
+			
+			if(banner.exists()) banner.delete();
+			
 			int result = adminService.deletePromotion(promotionCode);
 			log.debug("result = {}", result);
 			
