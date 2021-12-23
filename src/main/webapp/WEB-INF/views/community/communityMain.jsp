@@ -10,8 +10,6 @@
 <jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-<!--  <link href="${pageContext.request.contextPath}/resources/css/community/communityMain/style.css" rel="stylesheet"> -->
-
 
 <div class="container-fluid">
 	<div class="row">

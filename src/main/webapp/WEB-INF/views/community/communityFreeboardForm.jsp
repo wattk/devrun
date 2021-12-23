@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="title"/>
@@ -17,7 +19,13 @@
 <!-- include summernote css/js -->
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-		
+<style>
+#like, #report {
+	width: 100px;
+	margin: auto;
+	display: block;
+}
+</style>
 <script>
 	// #btnSave 버튼을 'click'하게 되면 #form을 전송(.submit)
 	$(document).on('click', '#btnSave', function(e){
@@ -25,10 +33,10 @@
 		$("#form").submit();
 	});
 	
-	// #btnList 버튼을 'click'하게 되면 communityColumn 페이지로 이동.
+	// #btnList 버튼을 'click'하게 되면 communityFreboardList 페이지로 이동.
 	$(document).on('click', '#btnList', function(e){
 		e.preventDefault();
-		location.href="${pageContext.request.contextPath}/community/communityColumn.do";
+		location.href="${pageContext.request.contextPath}/community/communityFreeboardList.do";
 	});
 	
 	// summernote 웹 에디터 로딩
@@ -55,55 +63,36 @@
 	
 </script>
 
-<div id="coummunityFreeboardForm-container">
-	<form 
-		name="FreeboardForm"
-		action="${pageContext.request.contextPath}/community/communityFreeboardEnroll.do"
-		method="post"
-		onsubmit="return boardValidate();">
+	<article>
 		<div class="container" role="main">
-			<h2>제목</h2>
+			<h1><strong>글쓰기</strong></h1>
 	
 			<hr>
 	
-	      	<table class="table">
-	        	  <tr>
-	            	<td>작성자</td>
-		            <td>Otto</td>
-		            <td>작성일</td>
-		            <td>12121</td>
-		            <td>조회수</td>
-		            <td>1212</td>
-		            <td>
-	              		<button type="button" class="btn btn-primary" id="like">좋아요</button>
-	            	</td>
-	            	<td>
-	              		<button type="button" class="btn btn-danger" id="report">신고</button>
-	            	</td>
-	              </tr>
-	      	</table>
-	
-			<div class="mb-3">
-				<label for="title">제목</label>
-				<input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
-			</div>
-			<div class="mb-3">
-				<label for="writer">작성자</label>
-				<input type="text" class="form-control" name="reg_id" id="reg_id" placeholder="이름을 입력해 주세요">
-			</div>
-			<div class="mb-3">
-				<label for="content">내용</label>
-				<textarea class="form-control" rows="5" name="editordata" id="summernote"></textarea>
-			</div>
-			<div class="mb-3">
-				<label for="tag">TAG</label>
-				<input type="text" class="form-control" name="tag" id="tag" placeholder="태그를 입력해 주세요">
-			</div>
-			<div >
-				<input type="submit" class="btn btn-sm btn-primary" id="btnsave" value="저장" />
-				<button type="button" class="btn btn-sm btn-primary" id="btnList">목록</button>
+		<form:form name="form" id="form" role="form" method="POST" action="${pageContext.request.contextPath}/community/communityColumnEnroll.do">
+				<div class="mb-3">
+					<label for="title"><strong>제목</strong></label>
+					<input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
+				</div>
+				<div class="mb-3">
+					<label for="writer"><strong>작성자</strong></label>
+					<input type="text" class="form-control" name="reg_id" id="reg_id" placeholder="이름을 입력해 주세요">
+					<input type="hidden" class="form-cotrol" name="memberNo" id="member_no" value='<sec:authentication property="principal.memberNo" />' placeholder="이름을 입력해 주세요">
+				</div>
+				<div class="mb-3">
+					<label for="content"><strong>내용</strong></label>
+					<textarea class="form-control" rows="5" name="content" id="summernote"></textarea>
+				</div>
+				<div class="mb-3">
+					<label for="tag"><strong>해시태그</strong></label>
+					<input type="text" class="form-control" name="tag" id="tag" placeholder="태그를 입력해 주세요">
+				</div>
+		</form:form>
+			<div style="text-align: center;">
+				<button type="submit" class="btn btn-primary btn-lg" id="btnSave">저장</button>
+				<button type="button" class="btn btn-secondary btn-lg" id="btnList">목록</button>
 			</div>
 		</div>
-	</form>
+	</article>		
 </div>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

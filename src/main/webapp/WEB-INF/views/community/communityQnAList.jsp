@@ -10,14 +10,12 @@
 <jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-
-<!-- 사이드바 css -->
 <link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
-
-<link href="${pageContext.request.contextPath}/resources/css/community/communityQnAList/bootstrap.min.css" rel="stylesheet">
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<style>
+.input-group {
+	justify-content: center;
+}
+</style>
 
 <!-- 본문 시작 -->
 <div class="container-fluid">
@@ -28,7 +26,7 @@
 				<div class="col-md-12">
 					<div class="page-header">
 						<h1>
-							Q&A
+							<strong>Q&A</strong>
 						</h1>
 					</div>
 				</div>
@@ -38,38 +36,36 @@
 			<hr />
 					
 			<!-- 검색창 시작-->
-			<div class="search-container">
-				<div class="col-md-12">
-					<div class="input-group mb-3">
-						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">전체</button>
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">제목</a></li>
-							<li><a class="dropdown-item" href="#">아이디</a></li>
-							<li><a class="dropdown-item" href="#">내용</a></li>
-						</ul>
-						<input type="text" class="form-control" aria-label="Text input with dropdown button">
-						<button type="button" class="btn btn-outline-primary">검색</button>
-					</div>
-				</div>
+			<div class="input-group mb-3" id="search">
+			  <div class="input-group-prepend">
+			    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+			    <div class="dropdown-menu">
+			      <a class="dropdown-item" href="#">Action</a>
+			      <a class="dropdown-item" href="#">Another action</a>
+			      <a class="dropdown-item" href="#">Something else here</a>
+			      <div role="separator" class="dropdown-divider"></div>
+			      <a class="dropdown-item" href="#">Separated link</a>
+			    </div>
+			  </div>
+			  <div>
+			  	<input type="text" class="form-control" aria-label="Text input with dropdown button">
+			  </div>
+			  <button type="button" class="btn btn-primary">검색</button>
 			</div>
 			<!-- 검색창 끝 -->
 			
 			<!-- 상단 탭 시작 -->	
-			<ul class="nav nav-tabs" id="myTab" role="tablist">
-			  <li class="nav-item" role="presentation">
-			    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
-			  </li>
-			  <li class="nav-item" role="presentation">
-			    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
-			  </li>
-			  <li class="nav-item" role="presentation">
-			    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
-			  </li>
-			</ul>
-			<div class="tab-content" id="myTabContent">
-			  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
-			  <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-			  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+			<nav>
+			  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
+			    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+			    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+			  </div>
+			</nav>
+			<div class="tab-content" id="nav-tabContent">
+			  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
+			  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+			  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
 			</div>
 			<!-- 상단 탭 끝 -->
 			
@@ -125,11 +121,9 @@
 		</nav>
 	</div>
 	<!-- 페이징 끝 -->
-	
+</div>
 </div>
 
 				
-	<script src="${pageContext.request.contextPath}/resources/js/community/communityQnAList/jquery.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/community/communityQnAList/bootstrap.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/js/community/communityQnAList/scripts.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/community/communityQnAList/scripts.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

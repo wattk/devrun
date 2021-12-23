@@ -49,7 +49,7 @@
 
 	<article>
 		<div class="container" role="main">
-			<h2>칼럼 글쓰기</h2>
+			<h1><strong>칼럼 글쓰기</strong></h1>
 			
 			<hr />
 			
@@ -83,7 +83,6 @@
 			</div>
 		</div>
 	</article>
-	
-</body>
-</html>
+</div>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
