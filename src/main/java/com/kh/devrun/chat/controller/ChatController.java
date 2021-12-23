@@ -21,5 +21,10 @@ public class ChatController {
 	public String chatList() {
 		return "chat/chatListPopup";
 	}
+	
+	@GetMapping("/chatRoom.do")
+	public String chatRoom() {
+		return "chat/chatRoomPopup";
+	}
 
 }

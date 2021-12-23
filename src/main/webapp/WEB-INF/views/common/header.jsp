@@ -12,9 +12,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,13 +65,13 @@
     Author: BootstrapMade.com
     License: https://bootstrapmade.com/license/
   ======================================================= -->
+<c:if test="${not empty msg}">
+<script>
+	alert("${msg}");
+</script>
+</c:if>
 </head>
-<style>
-/* #navLoginContainer{margin-left:40px;} */
-</style>
-
 <body>
-
   <div class="click-closed"></div>
 
   <!--/ Nav Star /-->
@@ -141,7 +138,7 @@
 	   	            <a class="" href="#">[<sec:authentication property="principal.nickname"/>]</a><span class="">님 안녕하세요</span>
 		      	</div>
 	            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a>
+	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage">마이페이지</a>
 	              <a class="dropdown-item" id="chat">채팅</a>
 	              <a class="dropdown-item" href="#">주문/배송</a>
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/member/cart.do">장바구니</a>

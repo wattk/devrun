@@ -436,6 +436,16 @@ $('.plus-modal').on('hidden.bs.modal', function (e) {
 	$(this).find('i').addClass("d-none");
 });
 
+// 채팅방 list 클릭 시 이벤트 발생 - 기능 구현 시 수정할 부분 url 부분 li마다 달라져야 함. 위의 코드 수정할 것
+$('.chat-list li').click((e) => {
+	
+	// 팝업요청 // url 부분 기능 구현 시 수정할 것
+	const url = `${pageContext.request.contextPath}/chat/chatRoom.do`;
+	const name = ''; // 팝업창 Window객체의 name. // 이후에 const name = chatId; 이런식으로 바꿀 것. 수업 코드 참고
+	const spec = "width=400px, height=600px";
+	open(url, name, spec);
+});
+
 </script>
 
 </body>

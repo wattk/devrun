@@ -6,11 +6,11 @@
 	<insert id="insertProduct">
 	insert into product
 	values(
-		#{productCode},
+		#{productCode} || seq_product_no.nextval,
 		#{name},
 		#{price},
 		sysdate,
-		null,
+		#{thumbnail},
 		#{content},
 		#{viewCount},
 		#{status}
@@ -31,6 +31,7 @@
 		</selectKey>
 	</insert>
 	
+	<!-- 상품 분류 테이블 추가 -->
 	<insert id="insertProductCategory">
 		insert into
 			product_category
@@ -38,8 +39,47 @@
 			#{childCategoryCode},
 			#{productCode}
 		)
+	
+	<!-- 상품 상세 테이블 추가 -->			
+	</insert>
+	
+		<insert id="insertProductDetail">
+		insert into
+			product_detail
+		values(
+			seq_product_detail_no.nextval,
+			#{productCode},
+			#{optionNo},
+			#{optionContent},
+			#{sku},
+			#{quantity}
+		)
 				
 	</insert>
+	
+	<!-- 합쳐진 상품 리스트   -->
+	<select id="selectAllProductList" resultType="ProductExtends">
+		select
+		    p.thumbnail,
+		    p.name,
+		    pd.option_no,
+		    pd.quantity,
+		    p.status,
+		    pc.child_category_code,
+		    p.reg_date,
+		    p.view_count
+		    
+		from
+		    product p left join product_category pc
+		        on p.product_code = pc.product_code
+		    left join product_detail pd 
+		        on pc.product_code = pd.product_code
+	</select>
+
+
+	<!--태영 끝-->
+	
+	
 	
 	<!-- 혜진 시작 -->
 	<select id="selectProductListByProductCode" resultType="product">

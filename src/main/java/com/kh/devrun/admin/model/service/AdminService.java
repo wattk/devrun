@@ -7,7 +7,8 @@ import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
 
 import com.kh.devrun.product.ProductCategory;
-
+import com.kh.devrun.product.ProductDetail;
+import com.kh.devrun.product.ProductExtends;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 
@@ -15,30 +16,15 @@ public interface AdminService {
 
 	List<ProductChildCategory> selectChildCategory(Map<String, Object> param);
 
-	int insertProduct(Product product, String childCategoryCode);
-
+	int insertProduct(Product product, String childCategoryCode, ProductDetail productDetail);
 
 	int insertProducCategory(ProductCategory productCategory);
 
-	
-	
-	
-	/**
-	 * 혜진 시작
-	 * @param searchCode
-	 * @return
-	 */
-	List<Product> selectProductListByProductCode(String searchCode);
+	int insertProductDetail(ProductDetail productDetail);
 
+	List<ProductExtends> selectAllProductList();
 	
-	int insertPromotion(Map<String, Object> param);
-
-	List<Promotion> selectAllPromotionList();
-
-	Promotion selectPromotionByPromotionCode(String promotionCode);
 	
-	/**
-	 * 혜진 끝
-	 */
+	
 
 }

@@ -18,10 +18,9 @@
 	<h2>상품 관리</h2>
 	
 	<div id="productListContainer">
-		<div id="title">
+		<div id="title" class="box">
 			<div id="imgText">
-				<i class="fas fa-list fa-2x"></i>
-				<span>상품 리스트</span>
+				<span>선택한 항목 [ 0 ]개 </span>
 			</div>
 			<button 
 				id="insertProductBtn"
@@ -32,6 +31,7 @@
 		<!-- 상품 리스트 테이블 -->
 		<table id="productList">
 			<tr>
+				<th><input type="checkbox"/></th>
 				<th>이미지</th>
 				<th>상품명</th>
 				<th>옵션번호</th>
@@ -41,6 +41,20 @@
 				<th>등록일</th>
 				<th>조회수</th>
 			</tr>
+			<c:forEach items="${list}" var="pro" >
+			<tr>				
+				<td><input type="checkbox"id="select" class="box"/> </td>
+				<td><img id="thumbnail" src="${pageContext.request.contextPath}/resources/upload/product/${pro.thumbnail}"/></td>
+				<td>${pro.name}</td>
+				<td>${pro.optionNo}</td>
+				<td>${pro.quantity}</td>
+				<td>${pro.status}</td>
+				<td>${pro.childCategoryCode}</td>
+				<td><fmt:formatDate value="${pro.regDate}" pattern="YYYY/mm/dd hh:mm"/></td>
+				<td>${pro.viewCount}</td>
+			</tr>
+			</c:forEach>
+			
 		</table>
 		
 	</div>
