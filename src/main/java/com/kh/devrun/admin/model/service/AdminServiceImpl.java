@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.devrun.admin.exception.ProductInsertException;
 import com.kh.devrun.admin.model.dao.AdminDao;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
@@ -34,9 +35,14 @@ public class AdminServiceImpl implements AdminService {
 	// 상품 등록, 상품-분류 추가
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public int insertProduct(Product product, String childCategoryCode, ProductDetail productDetail) {
+	public int insertProduct(Map<String,Object> param) {
 		int result = 0;
-		String productCode="";
+	
+		// param 값 꺼내오기
+		Product product = (Product)param.get("product");
+		String productCode=(String)param.get("productCode");
+		String childCategoryCode = (String)param.get("childCategoryCode");
+		List<ProductDetail> productDetailList = (List<ProductDetail>)param.get("productDetailList");
 		
 		try {
 			// 상품 테이블에 추가
@@ -49,14 +55,18 @@ public class AdminServiceImpl implements AdminService {
 			productCategory.setProductCode(product.getProductCode());
 			result = insertProducCategory(productCategory);
 			
-			// 상품 디테일 테이블에 추가
-			productDetail.setProductCode(product.getProductCode());
-			result = insertProductDetail(productDetail);
-			
-			
-			
+			// 상품 디테일 테이블에 추가(1:N)
+			if(product.getProductDetailList().size() > 0) {
+				for(ProductDetail productDetail : product.getProductDetailList()) {
+					productDetail.setProductCode(product.getProductCode());
+					
+					result = insertProductDetail(productDetail);
+				}
+			}
+
 		}catch(Exception e) {
-			throw e;
+			log.error(e.getMessage());
+			throw new ProductInsertException("상품등록 오류가 발생했습니다",e);
 		}
 				
 		return result;
@@ -68,27 +78,29 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.insertProducCategory(productCategory);
 	}
 	
-
+	@Override
+	public List<ProductExtends> selectAllProductList(int offset, int limit) {
+		return adminDao.selectAllProductList(offset, limit);
+	}
+	
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public int insertProductDetail(ProductDetail productDetail) {
-		return adminDao.insertProductDetail(productDetail);
+		return adminDao.insertProductDetail(productDetail) ;
 	}
 	
+	// 전체 게시물 수 구하기(페이징)
 	@Override
-	public List<ProductExtends> selectAllProductList() {
-		return adminDao.selectAllProductList();
+	public int selectTotalBoardCount() {
+		return adminDao.selectTotalBoardCount();
 	}
-	
-	
-	
 	
 	/**
 	 * 태영 끝 --------------------------------------------	
 	 */	
 
 	
-	
+
 
 	
 	
