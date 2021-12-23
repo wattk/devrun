@@ -30,11 +30,11 @@
 		</foreach>
 	</update>
 	
-	<select id="selectAllPromotionList" resultMap="promotionCollection">
+	<select id="selectAllPromotionList" resultType="promotion">
 		select
 		    *
 		from
-			view_product_promotion
+			promotion
 	</select>
 	<select id="selectPromotionByPromotionCode" resultMap="promotionCollection">
 		select
@@ -95,4 +95,14 @@
 		</foreach>
 	</where>
 	</delete>
+	
+	<select id="selectProductListByPromotionCode" resultType="product">
+		select
+		   p. *
+		from
+		    product_promotion pp left join product p
+		        on pp.product_code = p.product_code
+		where
+			pp.promotion_code = #{promotionCode}
+	</select>
 </mapper>
