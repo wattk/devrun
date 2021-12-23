@@ -116,6 +116,6 @@
                      </nav>
                </div>
                <div id="shopMainEventBtnDiv">
-                   <button type="button" class="btn btn-warning" id= "shopMainEventBtn" style="width: 200px">이벤트보러가기</button>
+                   <button type="button" class="btn btn-warning" id= "shopMainEventBtn" style="width: 200px" onclick="location.href='${pageContext.request.contextPath}/shop/promotion.do'">이벤트보러가기</button>
                </div>
            </div>

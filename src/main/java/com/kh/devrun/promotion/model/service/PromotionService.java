@@ -25,4 +25,10 @@ public interface PromotionService {
 
 	List<Product> selectProductListByPromotionCode(String promotionCode);
 
+
+	List<Promotion> selectCurrentPromotionList();
+
+
+	List<Promotion> selectEndPromotionList();
+
 }

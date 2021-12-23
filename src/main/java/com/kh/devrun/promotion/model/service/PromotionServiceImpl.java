@@ -97,6 +97,14 @@ public class PromotionServiceImpl implements PromotionService {
 		return promotionDao.selectProductListByPromotionCode(promotionCode);
 	}
 
-	
+	@Override
+	public List<Promotion> selectCurrentPromotionList() {
+		return promotionDao.selectCurrentPromotionList();
+	}
+
+	@Override
+	public List<Promotion> selectEndPromotionList() {
+		return promotionDao.selectEndPromotionList();
+	}
 
 }
