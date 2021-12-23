@@ -342,7 +342,7 @@ color: green;
 	font-weight: bold;
 }
 .m-body1 >div{
-	background-color: rgb(209, 209, 209);;
+	background-color: rgb(209, 209, 209);
 	padding: 10px 10px;
 	font-size: 13px;
 	height: 150px;
@@ -374,7 +374,54 @@ color: green;
 .checkboxReport label{
 	height: 3px;
 }
-#exampleModal{
-	background: rgb(148 156 165);
-}
 /*신고모달 css 끝*/
+
+#hr66{
+	height: 3px;
+    width: 40%;
+}
+.customer-Q{
+	margin-top: 50px;
+}
+
+/*문의 작성 모달 css시작*/
+.qm-body1 >p, .m-body2 >p{
+	font-weight: bold;
+}
+.qm-body1 >div{
+	border: 2px solid rgb(192, 168, 61);
+	padding: 10px 10px;
+	font-size: 12px;
+	height: 80px;
+}
+.qm-body1  td{
+	font-size: 18px;
+}
+
+.qm-body1  label{
+	height: 7px;
+}
+#qTitle{
+	width: 418px;
+}
+#qPIc{
+	width: 52px;
+	height: 52px;
+	margin-right: 15px;
+}
+#qPIc + p {
+	font-size: 13px;
+}
+#qSecret{
+	width: 466px;
+	height: 50px;
+	margin: auto auto;
+}
+#qItem{
+	width: 466px;
+	margin: auto auto;
+}
+#exampleModal2, #exampleModal {
+	background: rgb(172 173 133 / 48%);
+}
+/*문의 작성 모달 css 끝*/

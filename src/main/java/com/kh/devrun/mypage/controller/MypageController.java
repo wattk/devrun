@@ -23,7 +23,7 @@ public class MypageController {
 	/**
 	 * 지원 마이페이지 메인 시작
 	 */
-	@GetMapping("/mypage.do")
+	@GetMapping("")
 	public String mypage(Model model, Authentication authentication) {
 		Member member = (Member) authentication.getPrincipal();
 		log.debug("[principal] member = {}", member);
@@ -48,7 +48,7 @@ public class MypageController {
 	 */
 	
 	/**
-	 * 지원 활동 배지 시작
+	 * 지원 나의 정보 > 활동 배지 시작
 	 */
 	@GetMapping("/myinfo/activityBadge.do")
 	public String activityBagde() {
@@ -57,7 +57,46 @@ public class MypageController {
 		
 	}
 	/**
-	 * 지원 활동 배지 끝
+	 * 지원 나의 정보 > 활동 배지 끝
+	 */
+	
+	/**
+	 * 지원 나의 정보 > 프로필 수정 시작
+	 */
+	@GetMapping("/myinfo/profileUpdate.do")
+	public String profileUpdate() {
+
+		return "mypage/profileUpdate";
+		
+	}
+	/**
+	 * 지원 나의 정보 > 프로필 수정 끝
+	 */
+	
+	/**
+	 * 지원 나의 정보 > 배송지 관리 시작
+	 */
+	@GetMapping("/myinfo/shippingAddress.do")
+	public String shippingAddress() {
+
+		return "mypage/shippingAddress";
+		
+	}
+	/**
+	 * 지원 나의 정보 > 배송지 관리 끝
+	 */
+	
+	/**
+	 * 지원 나의 정보 > 신고 내역 시작
+	 */
+	@GetMapping("/myinfo/reportHistory.do")
+	public String reportHistory() {
+
+		return "mypage/reportHistory";
+		
+	}
+	/**
+	 * 지원 나의 정보 > 신고 내역 끝
 	 */
 	
 	/**
