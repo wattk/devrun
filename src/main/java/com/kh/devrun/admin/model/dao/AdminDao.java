@@ -20,14 +20,16 @@ public interface AdminDao {
 	
 	int insertProductDetail(ProductDetail productDetail);
 	
-	List<ProductExtends> selectAllProductList();
+	List<ProductExtends> selectAllProductList(int offset, int limit);
 	
+	int selectTotalBoardCount();
 	
 	/**
 	 * 태영 끝-----------------------------------
 	 */
 	
 	
+
 
 
 

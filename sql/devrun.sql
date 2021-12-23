@@ -1234,14 +1234,50 @@ values('pm','ot','팜레스트');
 
 select*from PRODUCT_CHILD_CATEGORY;
 select*from PRODUCT_PARENT_CATEGORY;
-
 select * from product_category;
+select * from product_detail;
 
 select * from product;
 
+		select
+            pc.child_category_code|| '-' || pd.option_no view_code,
+		    p.thumbnail,
+		    p.name,
+		    pd.option_no,
+		    pd.quantity,
+		    p.status,
+		    pc.child_category_code,
+		    p.reg_date,
+		    p.view_count
+		    
+		from
+		    product p left join product_category pc
+		        on p.product_code = pc.product_code
+		    left join product_detail pd 
+		        on pc.product_code = pd.product_code;
 
+create view product_view as
+select
+            p.product_code,
+		    p.thumbnail,
+		    p.name,
+		    pd.option_no,
+		    pd.quantity,
+		    p.status,
+		    pc.child_category_code,
+		    p.reg_date,
+		    p.view_count
+		    
+		from
+		    product p left join product_category pc
+		        on p.product_code = pc.product_code
+		    left join product_detail pd 
+		        on pc.product_code = pd.product_code;
 
+select * from product_view;
+drop view product_view;
 -- 상품- 분류
+
 
 
 -- rank() over()---
@@ -1262,5 +1298,5 @@ from
     product p left join product_category pc 
         on p.product_code = pc.product_code;
 
-
+select * from promotion;
 

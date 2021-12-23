@@ -16,11 +16,12 @@
 
 <div class="productContainer">
 	<h2>상품 관리</h2>
-	
+ 
 	<div id="productListContainer">
 		<div id="title" class="box">
 			<div id="imgText">
-				<span>선택한 항목 [ 0 ]개 </span>
+				<span>총 ${totalContent}개의 상품 중</span>
+				<span>선택한 항목 [<span id="selectCount">0</span>]개 </span>
 			</div>
 			<button 
 				id="insertProductBtn"
@@ -50,12 +51,14 @@
 				<td>${pro.quantity}</td>
 				<td>${pro.status}</td>
 				<td>${pro.childCategoryCode}</td>
-				<td><fmt:formatDate value="${pro.regDate}" pattern="YYYY/mm/dd hh:mm"/></td>
+				<td><fmt:formatDate value="${pro.regDate}" pattern="yy-MM-dd HH:mm"/></td>
 				<td>${pro.viewCount}</td>
 			</tr>
 			</c:forEach>
 			
 		</table>
+		<br />
+		${pagebar}
 		
 	</div>
 	
@@ -63,7 +66,14 @@
 </div>
 
 <script>
-	
+	/* 게시물 선택 */
+	$(".box").change(e=>{
+		console.log("ㅎㅇ");
+
+		var checkCount = $(".box:checked").length;
+		console.log(checkCount);
+		$(selectCount).html(checkCount);
+	});
 </script>
 
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>
