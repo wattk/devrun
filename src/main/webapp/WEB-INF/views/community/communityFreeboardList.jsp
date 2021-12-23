@@ -10,153 +10,129 @@
 <jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-
-<!-- 사이드바 css -->
 <link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/css/community/communityQnAList/bootstrap.min.css" rel="stylesheet">
+<style>
+.input-group {
+	justify-content: center;
+}
+</style>
+<script>
+function goFreeboardForm(){
+	location.href = "${pageContext.request.contextPath}/community/communityFreeboardForm.do";
+}
+</script>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
+<!-- 본문 시작 -->
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">
+			<!-- 헤더 시작 -->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="page-header">
 						<h1>
-							 Q&A
+							<strong>자유게시판</strong>
 						</h1>
 					</div>
 				</div>
 			</div>
-
-			<hr>
-
-			<!-- 검색창 -->
-			<div class="search-container">
-				<div class="col-md-12" >
-					<div class="input-group mb-3">
-  						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
-  						<ul class="dropdown-menu">
-						    <li><a class="dropdown-item" href="#">제목</a></li>
-						    <li><a class="dropdown-item" href="#">아이디</a></li>
-						    <li><a class="dropdown-item" href="#">내용</a></li>
-						</ul>
-  						<input type="text" class="form-control" aria-label="Text input with dropdown button">
-  						<button type="button" class="btn btn-outline-primary">검색</button>
-					</div>
-					</div>
-				</div>
+			<!-- 헤더 끝 -->
+			
+			<hr />
+					
+			<!-- 검색창 시작-->
+			<div class="input-group mb-3" id="search">
+			  <div class="input-group-prepend">
+			    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+			    <div class="dropdown-menu">
+			      <a class="dropdown-item" href="#">Action</a>
+			      <a class="dropdown-item" href="#">Another action</a>
+			      <a class="dropdown-item" href="#">Something else here</a>
+			      <div role="separator" class="dropdown-divider"></div>
+			      <a class="dropdown-item" href="#">Separated link</a>
+			    </div>
+			  </div>
+			  <div>
+			  	<input type="text" class="form-control" aria-label="Text input with dropdown button">
+			  </div>
+			  <button type="button" class="btn btn-primary">검색</button>
 			</div>
 			<!-- 검색창 끝 -->
-
-			<hr />
 			
-			<div class="row">
-				<div class="col-md-12">
-					<div class="row">
-						<div class="col-md-10">
-							<div class="tabbable" id="tabs-982750">
-								<ul class="nav nav-tabs">
-									<li class="nav-item">
-										<a class="nav-link active show" href="#tab1" data-toggle="tab">최신순</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#tab2" data-toggle="tab">댓글 많은 순</a>
-									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#tab4" data-toggle="tab">좋아요 순</a>
-									</li>
-								</ul>
-								<div class="tab-content">
-									<div class="tab-pane active" id="panel-432083">
-										<p>
-											I'm in Section 1.
-										</p>
-									</div>
-									<div class="tab-pane" id="tab2">
-										<p>
-											Howdy, I'm in Section 2.
-										</p>
-									</div>
-									<div class="tab-pane" id="tab3">
-										<p>
-											Howdy, I'm in Section 3.
-										</p>
-									</div>
-									<div class="tab-pane" id="tab4">
-										<p>
-											Howdy, I'm in Section 4.
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-2">
-							 
-							<button type="button" class="btn btn-primary">
-								Button
-							</button>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-5">
-							제목
-						</div>
-						<div class="col-md-1">
-							답변여부
-						</div>
-						<div class="col-md-1">
-							등록일
-						</div>
-						<div class="col-md-1">
-							작성자
-						</div>
-						<div class="col-md-1">
-							답변 갯수
-						</div>
-						<div class="col-md-2">
-							<button type="button" class="btn btn-primary">
-								답변
-							</button>
-						</div>
-						<div class="col-md-1">
-							하트
-						</div>
-					</div>
-				</div>
+			<!-- 상단 탭 시작 -->	
+			<nav>
+			  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
+			    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+			    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+			  </div>
+			</nav>
+			<div class="tab-content" id="nav-tabContent">
+			  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
+			  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+			  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
 			</div>
-
-				<!-- 페이징 -->
-				<div>
-					<nav aria-label="...">
-						<ul class="pagination">
-							<li class="page-item disabled">
-								<span class="page-link">Previous</span>
-							</li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item active" aria-current="page">
-								<span class="page-link">2</span>
-							</li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item">
-								<a class="page-link" href="#">Next</a>
-							</li>
-						</ul>
-					</nav>
-				</div>
-				
+			<!-- 상단 탭 끝 -->
+			
 		</div>
 	</div>
+	
+	
+	<!-- 리스트 시작 -->
+	<table id="tbl-board" class="table table-striped table-hover">
+		<tr>
+			<th class="text-center">번호</th>
+			<th class="text-center">제목</th>
+			<th class="text-center">작성자</th>
+			<th class="text-center">작성일</th>
+			<th class="text-center">좋아요</th> 
+			<th class="text-center">조회수</th>
+			<th class="text-center">답변개수</th>
+		</tr>
+		
+		<c:forEach items="${list}" var="board">
+			<tr data-no="${board.no}">
+				<td>${board.no}</td>
+				<td>${board.title}</td>
+				<td>${board.memberId}</td>
+				<td><fmt:formatDate value="${board.regDate}" pattern="yy-MM-dd HH:mm"/> </td>
+				<td class="text-center">
+					<c:if test="${board.attachCount gt 0}">
+						<img src="${pageContext.request.contextPath}/resources/images/file.png" alt="" width="16px"/>
+					</c:if>
+				</td>
+				<td>${board.readCount}</td>
+			</tr>
+		</c:forEach>
+	</table> 
+	<!-- 리스트 끝 -->
+	
+	<!-- 글쓰기 버튼 -->
+	<div style="float: right">
+		<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-primary" onclick="goFreeboardForm();"/>
+	</div>
+	
+	<!-- 페이징 시작 -->
+	<div>
+		<nav aria-label="...">
+			<ul class="pagination">
+				<li class="page-item disabled">
+					<span class="page-link">Previous</span>
+				</li>
+				<li class="page-item"><a class="page-link" href="#">1</a></li>
+				<li class="page-item active" aria-current="page">
+					<span class="page-link">2</span>
+				</li>
+				<li class="page-item"><a class="page-link" href="#">3</a></li>
+				<li class="page-item">
+					<a class="page-link" href="#">Next</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<!-- 페이징 끝 -->
+</div>
 </div>
 
-
-    <script src="${pageContext.request.contextPath}/resources/js/community/communityQnAList/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/community/communityQnAList/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/community/communityQnAList/scripts.js"></script>
-  </body>
-</html>
-
+<script src="${pageContext.request.contextPath}/resources/js/community/communityQnAList/scripts.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

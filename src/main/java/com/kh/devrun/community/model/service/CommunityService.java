@@ -10,4 +10,6 @@ public interface CommunityService {
 
 	List<Community> selectColumnList();
 
+	List<Community> columnBestList();
+
 }

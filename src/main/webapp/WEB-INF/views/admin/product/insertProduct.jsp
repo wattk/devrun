@@ -60,12 +60,8 @@
 									
 					<tr>
 						<th>제품 단위</th>
-						<th>재고량</th>
 					</tr>
 					<tr>
-						<td>
-							<input type="text" name="quantity" placeholder="재고량" value= 1 />
-						</td>
 						<td>
 							<input type="text" name="sku" placeholder="재품 단위" value="개" />
 						</td>
@@ -76,8 +72,8 @@
 
 					<tr>
 						<td>
-							<select id ="largeCategory" class="form-select form-select-lg mb-2" aria-label=".form-select-lg example" required>
-								<option selected>--대분류--</option>
+							<select id ="largeCategory" name="parentCategoryCode" class="form-select form-select-lg mb-2" aria-label=".form-select-lg example" required>
+								<option selected value="0">--대분류--</option>
 								<option value="ke">키보드</option>
 								<option value="mo">마우스</option>
 								<option value="ch">의자</option>
@@ -94,16 +90,14 @@
 				
 				</table>
 				<hr />			
-				<table id="optionTable">
+				<table id="optionTable">			
 					<tr>
-						<td class="option">사이즈</td><td><input name="option1"type="text" value="m" /></td>
-					</tr>
-					<tr>
-						<td class="option">색상</td><td><input name="option2" type="text" value="black" /></td>
-					</tr>
-					<tr>
+						<td class="option">색상</td><td><input name="option" type="text" value="black" /></td>
 						<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="-" /></td>
+						<td class="option">재고</td><td><input name="quantity" type="text" value="1" /></td>
+						<td><button id="optionAddBtn" class="btn btn-primary" type="button"><i class="fas fa-plus-square"></i></button></td>
 					</tr>
+					
 				</table>
 				<hr /><br />						
 				<textarea class="form-control" rows="5" name="content" id="summernote"></textarea>
@@ -117,6 +111,31 @@
 
 
 <script>
+/*  옵션 추가 버튼 */
+$(optionAddBtn).click(e=>{
+	var trCnt = $("#optionTable tr").length;
+	if(trCnt < 5){		
+		$(optionTable).append(`<tr>
+				<td class="option">색상</td><td><input name="option" type="text" value="red" /></td>
+				<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="-" /></td>
+				<td class="option">재고</td><td><input name="quantity" type="text" value="1" /></td>
+				<td><button class="btn btn-danger deleteBtn" type="button"><i class="fas fa-minus-square"></i></button></td>
+			</tr>`);
+	}
+	else{
+		alert("최대 5개까지만 가능합니다");
+		return false;
+	}	
+	/*  옵션 삭제 버튼  */
+	$(".deleteBtn").click(e=>{	
+		const $target = $(e.target).parents("tr");
+		console.log($target);
+		$target.remove();
+	});
+});
+
+
+
 
 /* 파일 업로드 화면 띄우기  */
 $(imgInput).on("change", (e)=>{

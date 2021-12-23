@@ -16,15 +16,22 @@ public interface AdminService {
 
 	List<ProductChildCategory> selectChildCategory(Map<String, Object> param);
 
-	int insertProduct(Product product, String childCategoryCode, ProductDetail productDetail);
+	int insertProduct(Map<String,Object> param);
 
 	int insertProducCategory(ProductCategory productCategory);
 
 	int insertProductDetail(ProductDetail productDetail);
 
-	List<ProductExtends> selectAllProductList();
 	
+	List<ProductExtends> selectAllProductList(int offset, int limit);
 	
+	int selectTotalBoardCount();
+	
+	/**
+	 * 태영 끝 ---------------------------------
+	 */
+	
+
 	
 
 }

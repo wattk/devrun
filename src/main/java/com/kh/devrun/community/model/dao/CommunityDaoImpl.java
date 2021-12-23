@@ -23,4 +23,9 @@ public class CommunityDaoImpl implements CommunityDao {
 	public List<Community> selectColumnList() {
 		return session.selectList("community.selectColumnList");
 	}
+
+	@Override
+	public List<Community> columnBestList() {
+		return session.selectList("community.columnBestList");
+	}
 }

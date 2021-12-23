@@ -74,7 +74,21 @@
 		        on p.product_code = pc.product_code
 		    left join product_detail pd 
 		        on pc.product_code = pd.product_code
+		order by
+			p.reg_date desc
 	</select>
+
+	<!-- 상품 게시물 수  -->
+	<select id="selectTotalBoardCount" resultType="_int" >
+		select
+			count(*)
+		from
+			product p left join product_category pc
+		        on p.product_code = pc.product_code
+		    left join product_detail pd 
+		        on pc.product_code = pd.product_code
+	</select>
+
 
 
 	<!--태영 끝-->

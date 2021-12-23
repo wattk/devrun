@@ -10,4 +10,6 @@ public interface CommunityDao {
 
 	List<Community> selectColumnList();
 
+	List<Community> columnBestList();
+
 }
