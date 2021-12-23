@@ -59,6 +59,8 @@
 									<div>
 										<div id="rSelectP" class="text-center">
 											<p id="choosePicP">사진첨부(선택)</p>
+										</div>
+										<div class="text-center">
 											<input type="file" name="" id="reviewPic" onchange='openFile(event)'>
 										</div>
 									</div>
