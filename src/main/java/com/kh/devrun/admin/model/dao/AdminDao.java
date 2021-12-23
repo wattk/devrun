@@ -28,31 +28,6 @@ public interface AdminDao {
 	 */
 	
 	
-	/**
-	 * 혜진 시작
-	 * @param searchCode
-	 * @return
-	 */
-	List<Product> selectProductListByProductCode(String searchCode);
-	
-	int insertPromotion(Promotion promotion);
-	
-	int insertProductPromotion(List<Map<String, Object>> list);
-	
-	List<Promotion> selectAllPromotionList();
-	
-	Promotion selectPromotionByPromotionCode(String promotionCode);
-	
-	int updatePromotion(Promotion promotion);
-	
-	int deleteProductPromotion(List<Map<String, Object>> deleteProductList);
-	
-	int deletePromotion(String[] promotionCode);
-	
-	List<Product> selectProductListByPromotionCode(String promotionCode);
-	/**
-	 * 혜진 끝
-	 */
 
 
 
