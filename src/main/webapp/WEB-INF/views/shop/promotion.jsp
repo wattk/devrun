@@ -44,7 +44,7 @@
 	  	<ul class="list-group list-group-flush">
 	  	<c:forEach items="${currentPromotionList}" var="promotion" varStatus="vs">
 		  <li class="list-group-item">
-		  <a href=`${pageContext.request.contextPath}/shop/promotionDetail.do?promotionCode=${promotion.promotionCode}`>
+		  <a href="${pageContext.request.contextPath}/shop/promotionDetail.do?promotionCode=${promotion.promotionCode}">
 			  	<div class="promotion-title">
 			  		${promotion.name}	
 			  	</div>
@@ -68,7 +68,7 @@
 	  	<ul class="list-group list-group-flush">
 	  	<c:forEach items="${endPromotionList}" var="promotion" varStatus="vs">
 		  <li class="list-group-item">
-		  <a href=`${pageContext.request.contextPath}/shop/promotionDetail.do?promotionCode=${promotion.promotionCode}`>
+		  <a href="${pageContext.request.contextPath}/shop/promotionDetail.do?promotionCode=${promotion.promotionCode}">
 			  	<div class="promotion-title">
 			  		${promotion.name}	
 			  	</div>

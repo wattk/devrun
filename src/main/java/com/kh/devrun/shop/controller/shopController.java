@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
@@ -50,6 +51,18 @@ public class shopController {
 			
 			model.addAttribute("currentPromotionList", currentPromotionList);
 			model.addAttribute("endPromotionList", endPromotionList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@GetMapping("/promotionDetail.do")
+	public void promotionDetail(@RequestParam String promotionCode, Model model) {
+		log.debug("promotionCode = {}", promotionCode);
+		
+		try {
+			Promotion promotion = promotionService.selectPromotionByPromotionCode(promotionCode);
+			model.addAttribute("promotion", promotion);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
