@@ -272,7 +272,29 @@ public class AdminController {
 		
 		return "redirect:/admin/promotionDetail.do?promotionCode="+promotionCode;	
 	}
-
+	
+	//이벤트 삭제 메소드
+	@PostMapping("/promotionDelete.do")
+	public String promotionDelete(@RequestParam String[] promotionCode, RedirectAttributes redirectAttr) {
+		log.debug("promotionCode = {}", promotionCode);
+		try {
+			//서버 파일 삭제
+			String saveDirectory = application.getRealPath("/resources/upload/promotion/");
+			File banner = new File(saveDirectory+promotionCode+".png");
+			
+			if(banner.exists()) banner.delete();
+			
+			int result = adminService.deletePromotion(promotionCode);
+			log.debug("result = {}", result);
+			
+			redirectAttr.addFlashAttribute("msg", "이벤트가 삭제되었습니다.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/admin/promotionManage.do";
+	}
+	
 	//이벤트 등록 관련 메소드
 	@GetMapping("/promotionEnroll.do")
 	public String promotionEnroll() {

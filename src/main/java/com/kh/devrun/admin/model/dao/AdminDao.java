@@ -46,9 +46,12 @@ public interface AdminDao {
 	int updatePromotion(Promotion promotion);
 	
 	int deleteProductPromotion(List<Map<String, Object>> deleteProductList);
+	
+	int deletePromotion(String[] promotionCode);
 	/**
 	 * 혜진 끝
 	 */
+
 
 
 	

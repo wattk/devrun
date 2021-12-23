@@ -86,4 +86,13 @@
 		</foreach>
 	</where>
 	</delete>
+	
+	<delete id="deletePromotion">
+		delete from promotion
+	<where>
+		<foreach collection="array" item="item" open="(" close=")" separator="or">
+			promotion_code = #{item}
+		</foreach>
+	</where>
+	</delete>
 </mapper>
