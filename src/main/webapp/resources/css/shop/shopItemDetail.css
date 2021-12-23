@@ -421,7 +421,27 @@ color: green;
 	width: 466px;
 	margin: auto auto;
 }
-#exampleModal2, #exampleModal {
-	background: rgb(172 173 133 / 48%);
+#exampleModal3, #exampleModal2, #exampleModal {
+	background: rgb(147 144 144 / 74%);
+	padding-right:0px !important;
+}
+.modal-backdrop {
+	background-color: rgba(0,0,0,.0001) !important;
 }
 /*문의 작성 모달 css 끝*/
+/*리뷰 작성 모달 css 시작*/
+#previewPhoto{
+	width: 150px;
+	height: 150px;
+	margin-bottom: 20px;
+}
+#reviewPic{
+	border: 2px solid salmon;
+	padding: 5px 5px;
+}
+#choosePicP{
+	background-color: burlywood; 
+	color: white; 
+	height: 25px;
+}
+/*리뷰 작성 모달 css 끝*/

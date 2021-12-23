@@ -27,9 +27,56 @@
 
 	<!-- body 영역 시작 -->
 		<div id="shopItemDetailOuterDiv">
-			<!--리뷰작성모달 시작-->
-			<!--리뷰작성모달 끝-->
 			<div id="itemDetailDisplayDiv" class="row">
+				<!--리뷰작성모달 시작(부트스트랩)-->
+					<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">리뷰 작성하기</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							</div>
+							<div class="modal-body">
+								<div class="qm-body1">
+									<p>해당상품</p>
+									<div class="row" id="qItem">
+										<img id="qPIc" src="https://i.ibb.co/gm7H77f/square.png" alt="">
+										<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
+										<input type="hidden" name="product_code">
+									</div>
+									<p class="mt-3">상품 별점</p>
+									<select class="form-select col-12" aria-label="Default select example">
+										<option selected> 별점 5점 </option>
+										<option value="4">별점 4점</option>
+										<option value="3">별점 3점</option>
+										<option value="2">별점 2점</option>
+										<option value="1">별점 1점</option>
+									</select>
+								</div>
+								<div class="m-body2 mt-3">
+									<div>
+										<div id="rSelectP" class="text-center">
+											<p id="choosePicP">사진첨부(선택)</p>
+											<input type="file" name="" id="reviewPic" onchange='openFile(event)'>
+										</div>
+									</div>
+									<p class="mt-3">리뷰 작성</p>
+									<div class="checkboxReport">
+										<textarea name="" id="reportText" cols="30" rows="10" required></textarea>
+									</div>
+									<p style="font-size: 12px;">ⓘ 포토리뷰 500P / 글리뷰 100P 적립</p>
+								</div>
+							</div>
+							<div class="modal-footer justify-content-center">
+							<button type="button" class="btn btn-primary col-4">등록하기</button>
+							<button type="button" class="btn btn-secondary col-4" data-dismiss="modal" onclick="deleteReview();">취소하기</button>
+							</div>
+						</div>
+						</div>
+					</div>
+				<!--리뷰작성모달 끝-->
 				<!--문의 글 작성 시작(부트스트랩)-->
 					<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog" role="document">
@@ -48,13 +95,6 @@
 										<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
 										<input type="hidden" name="product_code">
 									</div>
-									<!-- <p class="mt-3">상품 옵션</p>
-									<select class="form-select col-12" aria-label="Default select example">
-										<option selected>선택 안 함</option>
-										<option value="1">One</option>
-										<option value="2">Two</option>
-										<option value="3">Three</option>
-									</select> -->
 								</div>
 								<div class="m-body2 mt-3">
 									<p>문의 사항</p>
@@ -208,7 +248,7 @@
 									<span class="pr-2 pl-2 shop-sort">최신순</span>
 									<span class="pr-2 pl-2 shop-sort">오래된순 </span>
 									<span class="pr-2 pl-2 shop-sort">사진리뷰모아보기</span>
-									<button type="button" class="btn btn-warning">리뷰작성</button>
+									<button type="button" class="btn btn-warning report-btn3" data-toggle="modal" data-target="#exampleModal3">리뷰작성하기</button>	
 								  </div>
 								</div>
 								<hr>
@@ -283,7 +323,7 @@
 										<i class="fas fa-star"></i>
 										<i class="fas fa-star"></i>
 										<br><span>greendory</span> | <span>21.11.06</span> |
-										<button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
+										<button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal3">신고</button>
 										<br><span>상품옵션 : </span> <span>핑크</span>
 										<div class="reviewP mt-3">
 										  너무 좋아요
@@ -311,7 +351,7 @@
 									<span class="pr-2 pl-2 shop-sort">최신순</span>
 									<span class="pr-2 pl-2 shop-sort">오래된순</span>
 									<!--문의 부트스트랩 버튼-->
-									<button type="button" class="btn btn-warning report-btn2" data-toggle="modal" data-target="#exampleModal2">문의글 작성하기</button>							  
+									<button type="button" class="btn btn-warning report-btn2" data-toggle="modal" data-target="#exampleModal2">문의작성하기</button>							  
 								  </div>
 								</div>
 								<hr>
