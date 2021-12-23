@@ -45,6 +45,8 @@ public interface AdminService {
 
 	int updatePromotion(Map<String, Object> param);
 
+	int deletePromotion(String[] promotionCode);
+
 	
 	/**
 	 * 혜진 끝

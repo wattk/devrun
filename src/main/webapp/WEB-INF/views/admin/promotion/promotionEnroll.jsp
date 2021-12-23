@@ -29,7 +29,7 @@
 				    <tr>
 				    	<th>이벤트명</th>
 				    	<td>
-				    		<input type="text" name="name" id="name" class="bg-light border-0 small" />
+				    		<input type="text" name="name" id="" class="bg-light border-0 small w-50" />
 				    	</td>
 				    </tr>
 				    <tr>
@@ -96,11 +96,28 @@ $(promotionEnrollBtn).click((e)=>{
 	$(document.promotionEnrollFrm).submit();	
 });	
 
-//상품 x 버튼 클릭 시 list 제외
-$(".product-x-btn").click((e)=>{
-	const $li = $(e.target).parent("li");
-	console.log($li);
-	$li.detach();
+
+//상품번호 autocomplete
+$("#productCodeSearch").autocomplete({
+	source(request, response){
+		const {term : searchCode} = request;
+		
+		$.ajax({
+			url : `${pageContext.request.contextPath}/admin/promotionAutocomplete`,
+			data : {searchCode},
+			success(data){
+				const temp = $.map(data, ({productCode, name}, i)=>{
+					return {
+						label : productCode + "(" + name + ")",
+						value : productCode + "(" + name + ")"
+					}
+				});
+				console.log(temp);
+				response(temp);
+			},
+			error : console.log
+		});
+	}	
 });
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>

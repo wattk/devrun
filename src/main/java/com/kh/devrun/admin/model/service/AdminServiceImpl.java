@@ -155,7 +155,12 @@ public class AdminServiceImpl implements AdminService {
 		return result;
 	}
 
+	@Override
+	public int deletePromotion(String[] promotionCode) {
+		return adminDao.deletePromotion(promotionCode);
+	}
 
+	
 	
 	/**
 	 * 혜진 끝
