@@ -10,50 +10,10 @@
 </jsp:include>
 <!-- 부트스트랩 아이콘 CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-
+<!-- 한글 폰트 CDN -->
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 <!-- CSS import -->
 <link href="${pageContext.request.contextPath}/resources/css/mypage/mypage.css" rel="stylesheet">
-
-<!-- <style>
-/* 공통 적용 style */
-.bi {font-size:20px;}
-.cursor {cursor:pointer; cursor:hand;}
-button {background-color:#FFFFFF; border:1px solid #F1F1F2; border-radius:20px; padding:5px;}
-button:focus {outline:none;}
-button:hover {background-color:#1A81FF; color:#FFFFFF; border:1px solid #1A81FF; transition:.3s;}
-
-/* tabContent frame */
-main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%);}
-#tabBtns {justify-content:flex-end; padding:0 20px;}
-#tabContainer {height:800px; background-color:#FFFFFF; padding:80px 0; margin:0 auto;}
-#tabContainer div.col-3 {padding:0 40px; border-right:1px solid #F1F1F2;}
-#tabContainer div.col-9 {padding:0 40px;}
-
-
-/* member profile */
-#tabContainer .col-3 div:not(:nth-of-type(2)) {text-align:center;}
-#profile div #profileImg {font-size:100px; position:relative; color:#1A81FF;}
-#profile div #edit {position:absolute; top:90px; right:90px; width:30px; height:30px;}
-#profile div #badge {position:absolute; top:15px; left:75px; width:40px; height:40px; background-color:#2ECC71; border:5px solid #2ECC71; border-radius:50%; box-shadow:2px 2px 2px hsl(0deg 0% 0% / 0.38);}
-#profile div:nth-of-type(2) p span:first-of-type {color:#1A81FF;}
-
-
-/* member activity grade */
-#myGrade {padding:30px 0; margin-bottom:20px; border-radius:10px;}
-#myGrade table tr td:not(:last-of-type) {border-right:1px solid #F1F1F2;}
-#myGrade img {width:40px; height:40px;}
-#myGrade span {display:block; width:80px; margin:0 auto; border:1px solid black; border-radius:20px; background-color:#66ABFF;}
-
-/* member activity */
-#myActivity {margin:0 auto; margin-bottom:20px; padding:20px 0; border-top:1px solid #F1F1F2; border-bottom:1px solid #F1F1F2; justify-content:space-around;}
-#myActivity span.col-6 {justify-content:space-between; align-items:center;}
-#myActivity span span:nth-of-type(2) {color:#1A81FF;}
-#myActivity .bi-chevron-right {color:#A1A1A1; font-size:17px;}
-
-/* event */
-#eventImg {margin:0 auto; margin-bottom:50px;}
-#eventImg img {height:100px; padding:10px; border-radius:18px;}
-</style> -->
 
 <%-- EL에서 접근하기 위해 VAR속성 지정 --%>
 <sec:authentication property="principal" var="member"/>
@@ -66,16 +26,16 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 		<nav id="tabBtns">
 			<ul class="nav nav-tabs">
 				<li class="nav-item">
-				   <a class="nav-link" id="mycommunityTab" data-toggle="tab" href="#mycommunity" role="tab" aria-controls="mycommunity" aria-selected="false">나의 커뮤니티</a>
+				   <a class="nav-link" id="mycommunityTab" href="#mycommunity" role="tab" aria-controls="mycommunity" aria-selected="false">나의 커뮤니티</a>
 				</li>
 				<li class="nav-item">
-				   <a class="nav-link" id="myshoppingTab" data-toggle="tab" href="#myshopping" role="tab" aria-controls="myshopping" aria-selected="false">나의 쇼핑</a>
+				   <a class="nav-link" id="myshoppingTab" href="#myshopping" role="tab" aria-controls="myshopping" aria-selected="false">나의 쇼핑</a>
 				</li>
 				<li class="nav-item">
-				   <a class="nav-link" id="myinfoTab" data-toggle="tab" href="#myinfo" role="tab" aria-controls="myinfo" aria-selected="false">나의 정보</a>
+				   <a class="nav-link" id="myinfoTab" href="#myinfo" role="tab" aria-controls="myinfo" aria-selected="false">나의 정보</a>
 				</li>
 				<li class="nav-item">
-				   <a class="nav-link active" id="mypageTab" data-toggle="tab" href="#mypage" role="tab" aria-controls="mypage" aria-selected="true">마이페이지</a>
+				   <a class="nav-link active" id="mypageTab" href="#mypage" role="tab" aria-controls="mypage" aria-selected="true">마이페이지</a>
 				</li>
 			</ul>
 		</nav>
@@ -86,14 +46,14 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 			<%-- my page --%>
 			<div class="tab-pane fade show active col-12" id="mypage">
 				<div class="row">
-				
+					
 					<!-- member profile -->
 					<article class="col-3" id="profile">
 						<!-- profile image : 프로필 이미지가 null일 경우, 기본 이미지 출력 -->
 					    <section>
 				   			<c:if test="${member.proPhoto eq null}"><i class="bi bi-person-circle" id="profileImg"></i></c:if>
 					      	<c:if test="${member.proPhoto ne null}"><img src="${member.proPhoto}" alt="" id="profileImg"/></c:if>
-					       	<p class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo.do';">${member.nickname}님<i class="bi bi-chevron-right"></i></p>
+					       	<p class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/';">${member.nickname}님<i class="bi bi-chevron-right"></i></p>
 					       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/infoUpdate.do';"/>
 					    	<img src="https://i.ibb.co/S7TZCYh/coding.png" alt="" id="badge" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/activityBadge.do';"/>
 					    </section>
@@ -104,13 +64,13 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 					        <button onclick="location.href='${member.url}';">${member.url}</button>
 				        </section>
 				        <hr/>
-			        	<!-- login info / logout button -->
-			        	<section class="">
+				       	<!-- login info / logout button -->
+				       	<section class="">
 				        	<p><img src="" alt="" />(으)로 로그인</p>
 				        	<button class="col-9">로그아웃</button>
-			        	</section>
-			      	</article>
-			      	
+				       	</section>
+			    	</article>
+				     	
 		      		<!-- member info -->
 			   		<article class="col-9">
 		    			<!-- member grade info : total attendance / activity grade / activity badge -->
@@ -184,9 +144,9 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 			<%-- my info --%>
 			<div class="tab-pane fade col-12" id="myinfo">
 				<div class="row">
-				
+					
 					<article class="col-10" id="info">
-		       			<h4>나의 정보</h4>
+		      			<h4>나의 정보</h4>
 		       			<hr/>
 		       			<!-- 내 프로필 -->
 		       			<section class="card" id="myProfile">
@@ -201,20 +161,23 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 			       					</article>
 			       					<!-- 프로필 내용 -->
 			       					<article class="col-9">
-			       						<h5>${member.nickname}</h5>
-				       					<p><span>이메일</span><span>${member.email}</span></p>
-								        <p><span>한줄소개</span><span>${member.intro}</span></p>
-								        <p><span>개인 사이트</span><span>${member.url}</span></p>
+			       						<table id="profileInfo">
+			       							<caption>${member.nickname}</caption>
+								        	<tr><td>이메일</td><td>${member.email}</td></tr>
+								        	<tr><td>한줄소개</td><td>${member.intro}</td></tr>
+								        	<tr><td>개인 사이트</td><td>${member.url}</td></tr>
+								        </table>
 								        <hr/>
-								        <p><span>닉네임</span><span>${member.nickname}</span></p>
-								        <p><span>이름</span><span>${member.name}</span></p>
-								        <p><span>아이디</span><span>${member.id}</span></p>
-								        <p><span>비밀번호</span><span>${member.password}</span></p>
-								        <p><span>생년월일</span><span>${member.birthday}</span></p>
-								        <p><span>전화번호</span><span>${member.phone}</span></p>
+								        <table id="personalInfo">
+								        	<tr><td>아이디</td><td>${member.id}</td></tr>
+								        	<tr><td>닉네임</td><td>${member.nickname}</td></tr>
+								        	<tr><td>이름</td><td>${member.name}</td></tr>
+								        	<tr><td>생년월일</td><td><fmt:formatDate value="${member.birthday}" pattern="yyyy년 MM월 dd일"/></td></tr>
+								        	<tr><td>전화번호</td><td>${member.phone}</td></tr>
+								        </table>
 			       					</article>
-		       					</div>
-		       					<button class="col-12">수정하기</button>
+		     					</div>
+		       					<button class="col-11" type="button" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';">수정하기</button>
 		       				</div>
 		       			</section>
 		       			<br/>
@@ -225,7 +188,7 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 			       					<div class="card-header">배송지 관리</div>
 				       				<div class="card-body">
 				       					<p>내가 저장한 배송지를<br/>관리할 수 있습니다.</p>
-				       					<button class="col-4">조회하기</button>
+				       					<button class="col-4" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/shippingAddress.do';">조회하기</button>
 				       				</div>
 			       				</article>
 		       				</div>
@@ -235,12 +198,13 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 			       					<div class="card-header">신고 내역</div>
 				       				<div class="card-body">
 				       					<p>내가 신고한 내역을<br/>확인할 수 있습니다.</p>
-				       					<button class="col-4">조회하기</button>
+				       					<button class="col-4" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/reportHistory.do';">조회하기</button>
 				       				</div>
 			       				</article>
 		       				</div>
 		       			</section>
 		       		</article>
+		       		
 				</div>
 			</div>
 				
@@ -250,25 +214,61 @@ main {height:900px; background:linear-gradient(to top, #FFFFFF 70%, #1A81FF 30%)
 				나의 쇼핑
 				</div>
 			</div>
-				
+					
 			<%-- my community --%>
 			<div class="tab-pane fade col-12" id="mycommunity">
 				<div class="row">
 				나의 커뮤니티
 				</div>
 			</div>
-
-       	</section>		   
+		
+		</section>		   
         	   
     </article>
 </main>
 
 <script>
+/* location.hash로 url 활용 */
+$(function(){
+	var hash = window.location.hash;
+	hash && $('#tabBtns ul.nav-tabs a[href="' + hash + '"]').tab('show');
+
+	$('#tabBtns ul.nav-tabs a').click(function (e) {
+		$(this).tab('show');
+	    var scrollmem = $('html').scrollTop();
+	    window.location.hash = this.hash;
+	    $('html').scrollTop(scrollmem);
+	});
+});
+
 /* $(document).click(function(){
 	const $ative = $(".nav-item a.active");
 	$ative
 		.parents(".nav-item")
 		.css("background-color", "#FFFFFF");
+}); */
+
+/* $(){
+	$("#tabContainer").load("myshopping.jsp");
+}); */
+
+/* $(function() {
+	// tab operation
+	$('.nav-item').click(function() {
+		var activeTab = $(this).attr('data-tab');
+		$.ajax({
+			type : 'GET',                 //get방식으로 통신
+			url : activeTab + ".jsp",    //탭의 data-tab속성의 값으로 된 html파일로 통신
+			dataType : "html",            //html형식으로 값 읽기
+			error : function() {          //통신 실패시
+				alert('통신실패!');
+			},
+			success : function(data) {    //통신 성공시 탭 내용담는 div를 읽어들인 값으로 채운다.
+				$('#tabContainer').html(data);
+			}
+		});
+	});
+	$('#mypageTab').click();          
 }); */
 </script>
 
