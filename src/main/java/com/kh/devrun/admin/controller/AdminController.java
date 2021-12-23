@@ -28,15 +28,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kh.devrun.admin.model.service.AdminService;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.common.DevrunUtils;
-import com.kh.devrun.product.Product;
-import com.kh.devrun.product.ProductDetail;
-import com.kh.devrun.product.ProductExtends;
+import com.kh.devrun.product.model.service.ProductService;
+import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductExtends;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
-
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminController {
 	
 	@Autowired
-	AdminService adminService;
+	ProductService productService;
 	
 	@Autowired
 	PromotionService promotionService;
@@ -71,12 +70,12 @@ public class AdminController {
 		int offset = (cPage - 1) * limit;
 		
 		// 게시물 리스트 가져오기
-		List<ProductExtends> list = adminService.selectAllProductList(offset,limit);
+		List<ProductExtends> list = productService.selectAllProductList(offset,limit);
 		log.debug("list = {}" ,list);	
 		model.addAttribute("list",list);
 		
 		// 2. 전체게시물수 totalContent
-		int totalContent = adminService.selectTotalBoardCount();	
+		int totalContent = productService.selectTotalBoardCount();	
 		log.debug("totalContent = {}", totalContent);
 		model.addAttribute("totalContent", totalContent);
 		
@@ -95,7 +94,7 @@ public class AdminController {
 		Map<String, Object> map = new HashMap<>();
 		
 		log.debug("param = {}", param);
-		List<ProductChildCategory> list = adminService.selectChildCategory(param);
+		List<ProductChildCategory> list = productService.selectChildCategory(param);
 		log.debug("list = {}" ,list);
 		
 		map.put("list",list);
@@ -192,7 +191,7 @@ public class AdminController {
 					
 		}
 		
-		int result = adminService.insertProduct(param);
+		int result = productService.insertProduct(param);
 		String msg = result > 0 ? "상품등록을 성공했습니다!":"상품등록에 실패했습니다!!!!!!";  
 		redirectAttr.addFlashAttribute("msg",msg);
 		
@@ -424,8 +423,6 @@ public class AdminController {
 		File dest = new File(saveDirectory, banner);
 		upFile.transferTo(dest);
 	}
-	/**
-	 * 혜진 끝
-	 */
+	
 	
 }

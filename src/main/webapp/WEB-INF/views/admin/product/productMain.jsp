@@ -23,16 +23,24 @@
 				<span>총 ${totalContent}개의 상품 중</span>
 				<span>선택한 항목 [<span id="selectCount">0</span>]개 </span>
 			</div>
+			<div id="btnContainer">
+			<button 
+				id="deleteProductBtn"
+				class="btn btn-danger" 
+				type="button"
+				onclick="location.href='${pageContext.request.contextPath}/admin/deleteProduct.do'"	>상품 삭제</button>
 			<button 
 				id="insertProductBtn"
 				class="btn btn-primary" 
 				type="button"
 				onclick="location.href='${pageContext.request.contextPath}/admin/insertProduct.do'"	>상품등록</button>
+			</div>
+				
 		</div>
 		<!-- 상품 리스트 테이블 -->
 		<table id="productList">
 			<tr>
-				<th><input type="checkbox"/></th>
+				<th><input type="checkbox" id="checkAll"/></th>
 				<th>이미지</th>
 				<th>상품명</th>
 				<th>옵션번호</th>
@@ -66,14 +74,38 @@
 </div>
 
 <script>
-	/* 게시물 선택 */
-	$(".box").change(e=>{
-		console.log("ㅎㅇ");
-
-		var checkCount = $(".box:checked").length;
-		console.log(checkCount);
-		$(selectCount).html(checkCount);
+$(()=>{
+	
+	/* 전체 선택/해제  */
+	$(checkAll).change(e=>{
+		console.log($("#checkAll").prop("checked"));
+		if($("#checkAll").prop("checked")){
+			$(".box").prop("checked",true);		
+		}
+		else{
+			$(".box").prop("checked",false);	
+		}
+		
 	});
+	
+	/* 게시물 선택 */
+	$(".box, #checkAll ").change(e=>{
+		checkCount = $(".box:checked").length;
+		$(selectCount).html(checkCount);
+		
+		console.log($(".box").length-1 , $(".box:checked").length);
+		
+		if( $(".box").length-1 == $(".box:checked").length ){
+			$("#checkAll").prop("checked",true);
+			console.log("전부 체크");
+		}
+		else{
+			$("#checkAll").prop("checked",false);
+		}
+		
+	});
+	
+});
 </script>
 
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>

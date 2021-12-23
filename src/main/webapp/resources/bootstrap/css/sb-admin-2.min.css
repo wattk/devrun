@@ -59,7 +59,7 @@
 
 /* 상품 등록  */
 #title{display: flex; justify-content: space-between; margin-bottom:15px;}
-#title button{background-color:rgb(52, 152, 219); color:white; border: 0; border-radius:8px; height: 40px;}
+#title button{border: 0; border-radius:8px; height: 40px; margin-left:10px}
 #imgInfoContainer{width:100%;display:flex;}
 #productImgContainer{width:550px; height:600px;display:flex;flex-direction:column; justify-content: space-between; margin-right:100px}
 #productInfo{flex-grow: 1;}

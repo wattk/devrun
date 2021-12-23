@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.kh.devrun.product.Product;
+import com.kh.devrun.product.model.vo.Product;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
