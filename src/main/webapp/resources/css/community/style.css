@@ -74,7 +74,7 @@
 }
 
 /* 좋아요, 신고하기 버튼 가운데 정렬*/
-#likeButton, #reportButton {
+#like, #report {
 	text-align: center;
 }
 
@@ -82,4 +82,7 @@
 	font-size: xx-large;
 	font-weight: bolder;
 }
+
+
+
 

@@ -24,5 +24,4 @@
         <li><a href="${pageContext.request.contextPath}/community/communityFreeboardList.do">자유게시판</a></li>
       </ul>
     </div>
-  
-  <!-- </div> -->
+<!-- </div> -->

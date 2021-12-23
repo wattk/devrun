@@ -10,20 +10,11 @@
 <jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-
-<link href="${pageContext.request.contextPath}/resources/css/community/communityColumnList/bootstrap.min.css" rel="stylesheet">
         
-    <div class="container-fluid">
+<div class="container-fluid">
 	<div class="row">
-		<div class="col-md-10">
+		<div class="col-md-12">
 		
-			<div class="row">
-				<div class="col-md-12">
-				</div>
-			</div>
-			
-			<br>
-
 			<!-- 헤더 -->
 			<div class="row">
 				<div class="col-md-12">
@@ -34,7 +25,8 @@
 					</div>
 				</div>
 			</div>
-
+			<!-- 헤더 끝 -->
+			
 			<hr>
 
 			<!-- carousel -->
@@ -167,11 +159,9 @@
 		</div>
 	</div>
 </div>
+</div>
 
 
-    <script src="${pageContext.request.contextPath}/resources/js/community/communityColumnList/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/community/communityColumnList/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/js/community/communityColumnList/scripts.js"></script>
-  </body>
-</html>
+<script src="${pageContext.request.contextPath}/resources/js/community/communityColumnList/scripts.js"></script>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

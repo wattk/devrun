@@ -27,4 +27,9 @@ public class CommunityServiceImpl implements CommunityService {
 	public List<Community> selectColumnList() {
 		return communityDao.selectColumnList(); // 전달할 값이 없으므로 공란
 	}
+
+	@Override
+	public List<Community> columnBestList() {
+		return communityDao.columnBestList();
+	}
 }

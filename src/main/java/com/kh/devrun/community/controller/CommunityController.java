@@ -1,6 +1,8 @@
 package com.kh.devrun.community.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.community.model.service.CommunityService;
@@ -31,7 +34,7 @@ public class CommunityController {
 		return "community/communityMain";
 	}	
 	
-	// 커뮤니티-칼럼
+	// 커뮤니티-칼럼 
 	@GetMapping("/communityColumnList.do")
 	public String communityColumnList() {
 		// 전체 게시물 목록
@@ -39,6 +42,28 @@ public class CommunityController {
 		List<Community> list = communityService.selectColumnList();
 		return "community/communityColumnList";
 	}
+	
+	// 커뮤니티-칼럼-베스트인기글(좋아요순)
+	@GetMapping("/columnBestList.do")
+	public ModelAndView columnBestList() {
+		
+		List<Community> list = communityService.columnBestList();
+		
+		ModelAndView mav = new ModelAndView();
+		//넘길 데이터가 많기 때문에 HashMap에 저장한 후에 ModelAndView로 값을 넣고 페이지를 지정
+		Map<String, Object> map = new HashMap<>(); 
+		// map에 list(게시글 목록)을 list라는 이름의 변수로 자료를 저장함.
+		map.put("list", list);
+		// ModelAndView에 map을 저장
+		mav.addObject("map", map);
+		// 자료를 넘길 뷰의 이름
+		mav.setViewName("community/communityColumnList");
+		// 게시판 페이지로 이동
+		return mav;
+		
+	}
+	
+	
 	
 	// 칼럼 - 상세보기
 	// @RequestParam("가져올 데이터의 이름")[데이터의 타입][가져온 데이터를 담을 변수]
@@ -115,6 +140,7 @@ public class CommunityController {
 		return "community/communityFreeboardList";
 	}
 	
+	// 자유게시판-글쓰기
 	@GetMapping("/communityFreeboardForm.do")
 	public void communityFreeboardForm() {}
 	

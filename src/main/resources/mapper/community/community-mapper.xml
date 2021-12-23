@@ -21,6 +21,7 @@
   		#{thumbnail}
   	)
   </insert>
+  
   <!-- 컬럼 리스트 조회 -->
   <select id="selectColumnList" resultType="community">
   	select
@@ -30,7 +31,16 @@
   	where
   		page_code = 1
   	order by
-  		community_no desc;
+  		community_no desc
   </select>
   
+  <!-- 베스트 컬럼리스트 조회 -->
+  <select id="columnBestList" resultType="community">
+  	select
+  		*
+  	from
+  		community
+  	order by
+  		like_count desc
+  </select>
 </mapper>
