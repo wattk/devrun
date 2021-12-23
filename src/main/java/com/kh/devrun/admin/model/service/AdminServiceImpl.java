@@ -14,6 +14,7 @@ import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
 import com.kh.devrun.product.ProductCategory;
 import com.kh.devrun.product.ProductDetail;
+import com.kh.devrun.product.ProductExtends;
 import com.kh.devrun.promotion.model.exception.PromotionException;
 import com.kh.devrun.promotion.model.vo.Promotion;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +75,12 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.insertProductDetail(productDetail);
 	}
 	
+	@Override
+	public List<ProductExtends> selectAllProductList() {
+		return adminDao.selectAllProductList();
+	}
+	
+	
 	
 	
 	/**
@@ -123,6 +130,7 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.selectPromotionByPromotionCode(promotionCode);
 	}
 
+
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, 
 	isolation = Isolation.READ_COMMITTED, 
@@ -146,6 +154,7 @@ public class AdminServiceImpl implements AdminService {
 		}
 		return result;
 	}
+
 
 	
 	/**

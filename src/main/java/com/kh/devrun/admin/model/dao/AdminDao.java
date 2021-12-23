@@ -7,6 +7,7 @@ import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.Product;
 import com.kh.devrun.product.ProductCategory;
 import com.kh.devrun.product.ProductDetail;
+import com.kh.devrun.product.ProductExtends;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 public interface AdminDao {
@@ -19,6 +20,7 @@ public interface AdminDao {
 	
 	int insertProductDetail(ProductDetail productDetail);
 	
+	List<ProductExtends> selectAllProductList();
 	
 	
 	/**
@@ -47,6 +49,7 @@ public interface AdminDao {
 	/**
 	 * 혜진 끝
 	 */
+
 
 	
 
