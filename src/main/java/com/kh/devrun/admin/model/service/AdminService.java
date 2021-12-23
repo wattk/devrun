@@ -47,6 +47,8 @@ public interface AdminService {
 
 	int deletePromotion(String[] promotionCode);
 
+	List<Product> selectProductListByPromotionCode(String promotionCode);
+
 	
 	/**
 	 * 혜진 끝

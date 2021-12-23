@@ -160,6 +160,11 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.deletePromotion(promotionCode);
 	}
 
+	@Override
+	public List<Product> selectProductListByPromotionCode(String promotionCode) {
+		return adminDao.selectProductListByPromotionCode(promotionCode);
+	}
+
 	
 	
 	/**

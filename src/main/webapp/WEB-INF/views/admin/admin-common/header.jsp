@@ -59,6 +59,11 @@
     <!-- Custom styles for this template-->
     <link href="${pageContext.request.contextPath }/resources/bootstrap/css/sb-admin-2.min.css" rel="stylesheet"/>
 
+<c:if test="${not empty msg}">
+<script>
+	alert("${msg}");
+</script>
+</c:if>
 </head>
 
 <body id="pageTop">
