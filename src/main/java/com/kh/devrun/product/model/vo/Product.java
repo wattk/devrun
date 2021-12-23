@@ -1,4 +1,4 @@
-package com.kh.devrun.product;
+package com.kh.devrun.product.model.vo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

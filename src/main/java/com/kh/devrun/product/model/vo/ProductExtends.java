@@ -1,4 +1,4 @@
-package com.kh.devrun.product;
+package com.kh.devrun.product.model.vo;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
