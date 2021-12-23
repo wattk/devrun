@@ -1,14 +1,16 @@
 @charset "UTF-8";
 
-/** 공통 적용 style **/
-.bi {font-size:20px;}
-.cursor {cursor:pointer; cursor:hand;}
-button {background-color:#FFFFFF; border:1px solid #F1F1F2; border-radius:20px; padding:5px;}
-button:focus {outline:none;}
-button:hover {background-color:#1A81FF; color:#FFFFFF; border:1px solid #1A81FF; transition:.3s;}
 
 /** main frame **/
-main {height:auto; background:linear-gradient(to bottom, #1A81FF 350px, #FFFFFF 350px);}
+main {height:auto; background:linear-gradient(to bottom, #1A81FF 350px, #FFFFFF 350px); font-family:"Gowun Dodum";}
+
+/** 공통 적용 style **/
+main .bi {font-size:20px; vertical-align:middle;}
+main .bi.bi-chevron-right {color:#A1A1A1; font-size:16px; vertical-align:middle;}
+main .cursor {cursor:pointer; cursor:hand;}
+main button {background-color:#FFFFFF; color:#1A81FF; font-size:17px; border:1px solid #1A81FF; padding:12px; border-radius:21px; line-height:15px;}
+main button:focus {outline:none;}
+main button:hover {background-color:#1A81FF; color:#FFFFFF; border:1px solid #1A81FF; transition:.3s;}
 
 /** tabContent frame **/
 #tabBtns .nav-tabs {justify-content:flex-end; padding:0 20px; border:0;}
@@ -28,8 +30,8 @@ main {height:auto; background:linear-gradient(to bottom, #1A81FF 350px, #FFFFFF 
 /* member profile */
 #profile section:not(:nth-of-type(2)) {text-align:center;}
 #profile #profileImg {font-size:100px; position:relative; color:#1A81FF;}
-#profile #edit {position:absolute; top:90px; right:90px; width:30px; height:30px;}
-#profile #badge {position:absolute; top:15px; left:75px; width:40px; height:40px; background-color:#2ECC71; border:5px solid #2ECC71; border-radius:50%; box-shadow:2px 2px 2px hsl(0deg 0% 0% / 0.38);}
+#profile #edit {position:absolute; top:22%; right:31%; width:30px; height:30px;}
+#profile #badge {position:absolute; top:5%; left:29%; width:40px; height:40px; background-color:#2ECC71; border:5px solid #2ECC71; border-radius:50%; box-shadow:2px 2px 2px hsl(0deg 0% 0% / 0.38);}
 #profile section:nth-of-type(2) p span:first-of-type {color:#1A81FF;}
 
 /* member grade info */
@@ -42,7 +44,6 @@ main {height:auto; background:linear-gradient(to bottom, #1A81FF 350px, #FFFFFF 
 #myActivity {margin:0 auto; margin-bottom:20px; padding:20px 0; border-top:1px solid #F1F1F2; border-bottom:1px solid #F1F1F2; justify-content:space-around;}
 #myActivity span.col-6 {justify-content:space-between; align-items:center;}
 #myActivity span span:nth-of-type(2) {color:#1A81FF;}
-#myActivity .bi-chevron-right {color:#A1A1A1; font-size:17px;}
 
 /* event */
 #eventBanner {margin:0 auto; margin-bottom:50px;}
@@ -56,9 +57,12 @@ main {height:auto; background:linear-gradient(to bottom, #1A81FF 350px, #FFFFFF 
 /* member profile */
 #myProfile article.col-3 {text-align:center;}
 #myProfile #profileImg {font-size:100px; position:relative; color:#1A81FF;}
-#myProfile #edit {position:absolute; top:90px; right:90px; width:30px; height:30px;}
-#myProfile article.col-9 p span:first-of-type {color:#1A81FF;}
-
+#myProfile #edit {position:absolute; top:27%; right:27%; width:30px; height:30px;}
+#myProfile table td {padding:5px 0;}
+#myProfile table caption {caption-side:top; font-size:23px; color:#000000; font-weight:bold;}
+#myProfile table#profileInfo td:first-of-type {color:#1A81FF; padding-right:30px;}
+#myProfile table#personalInfo td:first-of-type {color:#7F7F7F; padding-right:50px;}
+#myProfile button {margin:32px 35px 12px 35px;}
 
 
 /** my shopping **/
