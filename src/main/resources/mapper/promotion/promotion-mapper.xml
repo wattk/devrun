@@ -35,7 +35,32 @@
 		    *
 		from
 			promotion
+		order by
+			enroll_date desc
 	</select>
+	
+	<select id="selectCurrentPromotionList" resultType="promotion">
+		select
+			*
+		from
+			promotion
+		where
+			start_date <![CDATA[>= ]]> sysdate and end_date <![CDATA[> ]]> sysdate
+		order by
+			enroll_date desc
+	</select>
+	
+	<select id="selectEndpromotionList" resultType="promotion">
+		select
+		    *
+		from
+		    promotion
+		where
+		    end_date <![CDATA[<]]> sysdate
+		order by
+			enroll_date desc
+	</select>
+	
 	<select id="selectPromotionByPromotionCode" resultMap="promotionCollection">
 		select
 		    *
