@@ -63,4 +63,16 @@ public class PromotionDaoImpl implements PromotionDao {
 		return session.selectList("promotion.selectProductListByPromotionCode", promotionCode);
 	}
 
+	@Override
+	public List<Promotion> selectCurrentPromotionList() {
+		return session.selectList("promotion.selectCurrentPromotionList");
+	}
+
+	@Override
+	public List<Promotion> selectEndPromotionList() {
+		return session.selectList("promotion.selectEndpromotionList");
+	}
+	
+	
+
 }
