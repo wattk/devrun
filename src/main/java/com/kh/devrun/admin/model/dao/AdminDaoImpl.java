@@ -93,6 +93,11 @@ public class AdminDaoImpl implements AdminDao {
 		return session.delete("promotion.deleteProductPromotion", deleteProductList);
 	}
 
+	@Override
+	public int deletePromotion(String[] promotionCode) {
+		return session.delete("promotion.deletePromotion", promotionCode);
+	}
+
 	
 	
 	/**

@@ -13,17 +13,17 @@
 <div class="promotion-container">
 	<h3 class="m-5">이벤트 관리</h3>
 </div>
-<form:form>
+<form:form name="promotionDeleteFrm" action="${pageContext.request.contextPath}/admin/promotionDelete.do" method="post">
 	<div class="promotion-list">
 		<span class="m-5 pl-4">[총 ${fn:length(promotionList)}개]</span>
 		<br />
 		<strong class="ml-5 mr-2 pl-4">선택한 항목을 </strong>
-		<button type="button" class="btn btn-secondary" data-dismiss="modal">삭제</button>
-		<table class="admin-tbl table table-hover mx-auto mt-3 text-center">
+		<button type="button" id="promotionListDeleteBtn" class="btn btn-secondary" data-dismiss="modal">삭제</button>
+		<table class="admin-tbl table table-hover mx-auto mt-3 text-center checkbox-group">
 			<thead>
 			    <tr>
 			      <th scope="col">
-			      	<input type="checkbox" name="eventCheck" id="" class="event-check" />
+			      	<input type="checkbox" name="" id="checkAll" class="" />
 			      </th>
 			      <th scope="col">번호</th>
 			      <th scope="col">이벤트 등록일</th>
@@ -37,11 +37,12 @@
 			    </tr>
 			</thead>
 			<tbody>
-			<c:if test="${promotionList != null}">
+			<c:if test="${not empty promotionList}">
+				
 				<c:forEach items="${promotionList}" var="promotion" varStatus="vs">
 				    <tr>
 				      <td>
-				      	<input type="checkbox" name="eventCheck" id="" class="event-check" />
+				      	<input type="checkbox" name="" class="promotion-is-checked" data-target="${promotion.promotionCode}"/>
 				      </td>
 				      <td>${vs.count}</td>
 				      <td><fmt:formatDate value="${promotion.enrollDate}" pattern="yyyy-MM-dd"/></td>
@@ -59,7 +60,7 @@
 				    </tr>
 			    </c:forEach>
 			 </c:if>
-			 <c:if test="${promotionList == null }">
+			 <c:if test="${empty promotionList}">
 			 	<tr>
 			 		<td colspan="10">이벤트가 존재하지 않습니다.</td>
 			 	</tr>
@@ -67,13 +68,58 @@
 	  	 </tbody>
 	</table>
 	<div class="text-right">
-		<button type="button" class="event-write-btn btn btn-primary">글쓰기</button>
+		<button type="button" class="event-write-btn btn btn-primary">이벤트 등록</button>
 	</div>
 	</div>
 </form:form>
 <script>
 $(".event-write-btn").click((e)=>{
 	location.href = `${pageContext.request.contextPath}/admin/promotionEnroll.do`;
+});
+
+
+//체크박스 전체 선택
+$(".checkbox-group").on("click", "#checkAll", ((e)=>{
+  let checked = $(e.target).is(":checked");
+
+  if(checked){
+  	$(e.target).parents(".checkbox-group").find('input:checkbox').prop("checked", true);
+  } else {
+  	$(e.target).parents(".checkbox-group").find('input:checkbox').prop("checked", false);
+  }
+}));
+
+//체크박스 개별 선택
+$(".promotion-is-checked").on("click", ((e)=>{
+    let isChecked = true;
+    
+    $(".promotion-is-checked").each((i, item)=>{
+        isChecked = isChecked && $(item).is(":checked");
+    });
+    
+    $("#checkAll").prop("checked", isChecked);
+}));
+
+$("#promotionListDeleteBtn").click((e)=>{
+    let isChecked = false;
+    
+    $(".promotion-is-checked").each((i, item)=>{
+        isChecked = isChecked || $(item).is(":checked");
+        let target = $(item).data("target");
+        
+        if($(item).is(":checked")){
+        	$(item).after(`<input type="hidden" name="promotionCode" value="\${target}"/>`);
+        }
+    });
+    
+    if(!isChecked){
+    	alert("선택된 이벤트가 없습니다.");
+    	return;
+    }
+	
+    console.log("클릭");
+    console.log($(document.promotionDeleteFrm));
+    $(document.promotionDeleteFrm).submit();
 });
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>

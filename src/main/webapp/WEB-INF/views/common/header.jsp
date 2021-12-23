@@ -12,9 +12,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,13 +65,13 @@
     Author: BootstrapMade.com
     License: https://bootstrapmade.com/license/
   ======================================================= -->
+<c:if test="${not empty msg}">
+<script>
+	alert("${msg}");
+</script>
+</c:if>
 </head>
-<style>
-/* #navLoginContainer{margin-left:40px;} */
-</style>
-
 <body>
-
   <div class="click-closed"></div>
 
   <!--/ Nav Star /-->

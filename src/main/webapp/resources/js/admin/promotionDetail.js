@@ -69,33 +69,13 @@ $(document).ready(function() {
 		$("#calculateDate").text(validDates);
 	});
 	
-	//상품번호 autocomplete
-	$("#productCodeSearch").autocomplete({
-		source(request, response){
-			const {term : searchCode} = request;
-			
-			$.ajax({
-				url : "${pageContext.request.contextPath}/admin/promotionAutocomplete",
-				data : {searchCode},
-				success(data){
-					const temp = $.map(data, ({productCode, name}, i)=>{
-						return {
-							label : productCode + "/" + name,
-							value : productCode + "/" + name
-						}
-					});
-					console.log(temp);
-					response(temp);
-				},
-				error : console.log
-			});
-		}	
-	});
+	
 	
 	//상품 코드 추가 버튼 클릭 시 코드 추가
 	$("#productAddBtn").click((e)=>{
 		const $codeSearch = $("#productCodeSearch");
-		const code = $codeSearch.val().split("/"); 
+		const value = $codeSearch.val();
+		const code = value.split("("); 
 		const $productList = $("[name = productCode]");
 		let isValid = 0;
 		
@@ -112,10 +92,17 @@ $(document).ready(function() {
 		if(isValid == 1) return;
 		
 		$("#productCodeList").append(`<li class="list-group-item">
-	\${value}<i class="fas fa-times pl-2 product-x-btn text-danger"></i>
-	<input type="hidden" name="productCode" value="\${code[0]}" />
+	${value}<i class="fas fa-times pl-2 product-x-btn text-danger"></i>
+	<input type="hidden" name="productCode" value="${code[0]}" />
 </li>`);
 		$codeSearch.val('');
+		
+		//상품 x 버튼 클릭 시 list 제외
+		$(".product-x-btn").click((e)=>{
+			const $li = $(e.target).parent("li");
+			console.log($li);
+			$li.detach();
+		});	
 	});
 	
 	
