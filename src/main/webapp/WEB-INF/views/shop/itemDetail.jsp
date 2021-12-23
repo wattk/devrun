@@ -29,11 +29,56 @@
 		<div id="shopItemDetailOuterDiv">
 			<!--리뷰작성모달 시작-->
 			<!--리뷰작성모달 끝-->
-	
-			<!--문의 글 작성 시작-->
-			<!--문의 글 작성 끝-->
-
 			<div id="itemDetailDisplayDiv" class="row">
+				<!--문의 글 작성 시작(부트스트랩)-->
+					<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">상품 문의하기</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							</div>
+							<div class="modal-body">
+								<div class="qm-body1">
+									<p>해당상품</p>
+									<div class="row" id="qItem">
+										<img id="qPIc" src="https://i.ibb.co/gm7H77f/square.png" alt="">
+										<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
+										<input type="hidden" name="product_code">
+									</div>
+									<!-- <p class="mt-3">상품 옵션</p>
+									<select class="form-select col-12" aria-label="Default select example">
+										<option selected>선택 안 함</option>
+										<option value="1">One</option>
+										<option value="2">Two</option>
+										<option value="3">Three</option>
+									</select> -->
+								</div>
+								<div class="m-body2 mt-3">
+									<p>문의 사항</p>
+									<div class="checkboxReport">
+										<span>제목 : </span>
+										<input type="text"name="" id="qTitle" required>
+										<textarea name="" id="reportText" cols="30" rows="10" required></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="" id="qSecret">
+								<input type="checkbox" name="postSecret" id="">
+								<label for="postSecret">비밀글 여부</label>
+	
+							</div>
+							<div class="modal-footer justify-content-center">
+							<button type="button" class="btn btn-primary col-4">등록하기</button>
+							<button type="button" class="btn btn-secondary col-4" data-dismiss="modal">취소하기</button>
+							</div>
+						</div>
+						</div>
+					</div>
+				<!--문의 글 작성 시작(부트스트랩)-->
+	
 				<!--신고 모달 시작 (부트스트랩)-->
 					<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog" role="document">
@@ -265,7 +310,8 @@
 								  <div class="p-4" id="sortBy">
 									<span class="pr-2 pl-2 shop-sort">최신순</span>
 									<span class="pr-2 pl-2 shop-sort">오래된순</span>
-									<button type="button" class="btn btn-warning">문의글작성하기</button>
+									<!--문의 부트스트랩 버튼-->
+									<button type="button" class="btn btn-warning report-btn2" data-toggle="modal" data-target="#exampleModal2">문의글 작성하기</button>							  
 								  </div>
 								</div>
 								<hr>
@@ -275,13 +321,15 @@
 								  <div class="a-question-div">
 									<!--문의 한 건 시작-->
 									<div class="customer-Q">
-									  <span class="sub">제목: 배송 언제 오나요?</span> | <span>답변완료</span>
-									  <br>
-									  <span>greendory</span> | <span>2021년 12월 25일 12시30분</span>
-									  <br>
-									  <!--아코디언 시작-->
-									  <p>
-										<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+										<!--아코디언 시작-->
+										<p>
+											<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+											<span class="sub">제목: 배송 언제 오나요?</span> | <span>답변완료</span>
+											<br>
+											<span>greendory</span> | <span>2021년 12월 25일 12시30분</span> <br>
+	
+											<img id ="hr66" src="https://i.ibb.co/pwQZhVY/line.png"> <br>
+	
 										  <i class="fab fa-quora"></i> <span>비밀글입니다.</span>
 										</a>
 									  </p>
@@ -292,6 +340,32 @@
 										<div class="admin-a mt-3">
 										  <i class="fas fa-font"></i> <span>관리자</span> | <span>2021년 12월 25일 12시30분</span>
 										  <P class="card card-body">배송 출고 완료되어 3일 이내 도착예정입니다. </P>
+										</div>
+									  </div>
+									  <!--아코디언 끝-->
+									</div>
+									<!--문의 한 건 끝-->
+									<!--문의 한 건 시작-->
+									<div class="customer-Q">
+										<!--아코디언 시작-->
+										<p>
+											<a class="" data-toggle="collapse" href="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+											<span class="sub">제목: 배송 언제 오나요?</span> | <span>답변대기</span>
+											<br>
+											<span>greendory</span> | <span>2021년 12월 25일 12시30분</span> <br>
+	
+											<img id ="hr66" src="https://i.ibb.co/pwQZhVY/line.png"> <br>
+	
+										  <i class="fab fa-quora"></i> <span>비밀글입니다.</span>
+										</a>
+									  </p>
+									  <div class="collapse" id="collapseExample2">
+										<div class="card card-body">
+										  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+										</div>
+										<div class="admin-a mt-3">
+										  <i class="fas fa-font"></i> <span>관리자</span> | <span>2021년 12월 25일 12시30분</span>
+										  <P class="card card-body">- 답변이 등록 되지 않았습니다.- </P>
 										</div>
 									  </div>
 									  <!--아코디언 끝-->
