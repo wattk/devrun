@@ -423,6 +423,7 @@ color: green;
 }
 #exampleModal3, #exampleModal2, #exampleModal {
 	background: rgb(147 144 144 / 74%);
+	padding-right:0px !important;
 }
 .modal-backdrop {
 	background-color: rgba(0,0,0,.0001) !important;
