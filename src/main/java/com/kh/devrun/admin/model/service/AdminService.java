@@ -21,37 +21,10 @@ public interface AdminService {
 	int insertProducCategory(ProductCategory productCategory);
 
 	int insertProductDetail(ProductDetail productDetail);
-	
-	
-	
-	/**
-	 * 혜진 시작
-	 * @param searchCode
-	 * @return
-	 */
-	List<Product> selectProductListByProductCode(String searchCode);
-
-	
-	int insertPromotion(Map<String, Object> param);
-
-
-	List<Promotion> selectAllPromotionList();
-
-	Promotion selectPromotionByPromotionCode(String promotionCode);
-
 
 	List<ProductExtends> selectAllProductList();
-
-
-	int updatePromotion(Map<String, Object> param);
-
-	int deletePromotion(String[] promotionCode);
-
-	List<Product> selectProductListByPromotionCode(String promotionCode);
-
 	
-	/**
-	 * 혜진 끝
-	 */
+	
+	
 
 }

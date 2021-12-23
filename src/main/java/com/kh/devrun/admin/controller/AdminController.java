@@ -33,6 +33,7 @@ import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.product.Product;
 import com.kh.devrun.product.ProductDetail;
 import com.kh.devrun.product.ProductExtends;
+import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,9 @@ public class AdminController {
 	
 	@Autowired
 	AdminService adminService;
+	
+	@Autowired
+	PromotionService promotionService;
 	
 	@Autowired
 	ServletContext application;
@@ -196,7 +200,7 @@ public class AdminController {
 	//이벤트 메인 페이지 관련 메소드
 	@GetMapping("/promotionManage.do")
 	public String promotionManage(Model model) {
-		List<Promotion> list = adminService.selectAllPromotionList();
+		List<Promotion> list = promotionService.selectAllPromotionList();
 		log.debug("list = {}", list);
 		model.addAttribute("promotionList", list);
 		return "/admin/promotion/promotionManage";
@@ -207,7 +211,7 @@ public class AdminController {
 	@GetMapping("/promotionDetail.do")
 	public String promotionDetail(@RequestParam String promotionCode, Model model) {
 		log.debug("promotionCode = {}", promotionCode);
-		Promotion promotion = adminService.selectPromotionByPromotionCode(promotionCode);
+		Promotion promotion = promotionService.selectPromotionByPromotionCode(promotionCode);
 		log.debug("promotion = {}", promotion);
 		model.addAttribute("promotion", promotion);
 		return "/admin/promotion/promotionDetail";
@@ -261,7 +265,7 @@ public class AdminController {
 			param.put("promotion", promotion);
 			param.put("changeProductList", changeProductList);
 			param.put("deleteProductList", deleteProductList);
-			int result = adminService.updatePromotion(param);
+			int result = promotionService.updatePromotion(param);
 			log.debug("result = {}", result);
 			
 			redirectAttr.addFlashAttribute("msg", "이벤트 등록이 완료되었습니다.");
@@ -284,7 +288,7 @@ public class AdminController {
 			
 			if(banner.exists()) banner.delete();
 			
-			int result = adminService.deletePromotion(promotionCode);
+			int result = promotionService.deletePromotion(promotionCode);
 			log.debug("result = {}", result);
 			
 			redirectAttr.addFlashAttribute("msg", "이벤트가 삭제되었습니다.");
@@ -335,7 +339,7 @@ public class AdminController {
 			Map<String, Object> param = new HashMap<>();
 			param.put("promotion", promotion);
 			param.put("list", list);
-			int result = adminService.insertPromotion(param);
+			int result = promotionService.insertPromotion(param);
 			log.debug("result = {}", result);
 			
 			redirectAttr.addFlashAttribute("msg", "이벤트 등록이 완료되었습니다.");
@@ -358,14 +362,14 @@ public class AdminController {
 	@GetMapping("/promotionAutocomplete")
 	@ResponseBody
 	public List<Product> promotionAutocomplete(@RequestParam String searchCode) {
-		List<Product> list = adminService.selectProductListByProductCode(searchCode);
+		List<Product> list = promotionService.selectProductListByProductCode(searchCode);
 		return list;
 	}
 	
 	@GetMapping("/findProductList")
 	@ResponseBody
 	public List<Product> findProductList(@RequestParam String promotionCode){
-		List<Product> list = adminService.selectProductListByPromotionCode(promotionCode);
+		List<Product> list = promotionService.selectProductListByPromotionCode(promotionCode);
 		return list;
 	}
 	
