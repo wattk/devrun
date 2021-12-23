@@ -235,9 +235,9 @@ $(function(){
 
 	$('#tabBtns ul.nav-tabs a').click(function (e) {
 		$(this).tab('show');
-	    var scrollmem = $('html').scrollTop();
+	    var scrollmem = $('html').scrollTop(); //1) 사용자의 현재 스크롤 위치를 가져와서
 	    window.location.hash = this.hash;
-	    $('html').scrollTop(scrollmem);
+	    $('html').scrollTop(scrollmem); //2) 이동 페이지에 뿌려준다.
 	});
 });
 

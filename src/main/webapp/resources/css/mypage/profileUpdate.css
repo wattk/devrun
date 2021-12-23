@@ -12,6 +12,12 @@ main button {background-color:#FFFFFF; color:#1A81FF; font-size:17px; border:1px
 main button:focus {outline:none;}
 main button:hover {background-color:#1A81FF; color:#FFFFFF; border:1px solid #1A81FF; transition:.3s;}
 
+main textarea {resize:none;}
+main input::file-selector-button {border:0; padding:2px 6px; margin-right:5px; border-radius:0.25rem; background-color:#E9ECEF;}
+main input::file-selector-button:hover {background-color:#1A81FF; color:#FFFFFF; transition:.3s;}
+
+main .modal .modal-dialog {margin-top:100px;}
+
 /** tabContent frame **/
 #tabBtns .nav-tabs {justify-content:flex-end; padding:0 20px; border:0;}
 #tabBtns a.nav-link:hover {outline:none; border:1px solid #FFFFFF; background-color:#FFFFFF; color:#1A81FF;}
@@ -24,17 +30,36 @@ main button:hover {background-color:#1A81FF; color:#FFFFFF; border:1px solid #1A
 
 /** my info **/
 #info {margin:0 auto;}
-
 #breadcrumb a {color:#9E9E9E;}
 #breadcrumb a:hover {color:#1A81FF;}
 
 /* member profile */
+#myProfile form div.row {justify-content:space-evenly;}
 #myProfile article.col-4 {text-align:center;}
-#myProfile #profileImg {font-size:100px; position:relative; color:#1A81FF;}
-#myProfile #edit {position:absolute; top:27%; right:27%; width:30px; height:30px;}
-#myProfile table td {padding:5px 0;}
-#myProfile table td label {margin:0 auto;}
-#myProfile table#profileInfo td:first-of-type {color:#1A81FF; padding-right:60px;}
-#myProfile table#personalInfo td:first-of-type {color:#7F7F7F; padding-right:50px;}
-#myProfile #btns {margin:32px 35px 12px 35px; flex-wrap:nowrap; justify-content:center;}
+
+/* profileImg */
+#myProfile #profileImg {font-size:150px; width:150px; height:150px; position:relative; color:#1A81FF;}
+#myProfile #edit {width:85%; margin:0 auto; padding:5px;}
+
+/* profileInfo */
+#myProfile #profileInfo div {margin:20px 0;}
+#myProfile #profileInfo label {color:#1A81FF;}
+
+/* personalInfo */
+#myProfile #personalInfo td {padding:5px 0;}
+#myProfile #personalInfo td label {margin:0 auto;}
+#myProfile #personalInfo td:first-of-type {color:#7F7F7F; padding-right:50px;}
+
+#myProfile #btns {margin:35px 35px 20px 35px; flex-wrap:nowrap; justify-content:center;}
 #myProfile #btns button {margin:0 15px;}
+
+
+/* withdraw modal */
+#withdrawModal .modal-dialog {width:650px;}
+#withdrawModal .modal-content {border-radius:7px;}
+#withdrawModal .modal-header, .modal-header h5 {align-items:center; background-color:#1A81FF; color:#FFFFFF;}
+#withdrawModal .modal-header i {font-size:25px;}
+#withdrawModal .modal-body {padding:30px;}
+#withdrawModal .modal-body div:not(:last-of-type) {margin-bottom:25px;}
+#withdrawModal .modal-body p {margin-bottom:8px; padding:7px 12px; background-color:rgba(0,0,0,.03);}
+#withdrawModal #title, #withdrawBtn {justify-content:center;}
