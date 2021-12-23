@@ -10,6 +10,25 @@
 	<jsp:param value="" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
+<script src="${pageContext.request.contextPath }/resources/js/admin/promotionManage.js"></script>
+<div class="modal fade" id="promotionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalProductTitle">이벤트 대상 제품</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalProductList">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="promotion-container">
 	<h3 class="m-5">이벤트 관리</h3>
 </div>
@@ -50,7 +69,7 @@
 				      	<a href="${pageContext.request.contextPath}/admin/promotionDetail.do?promotionCode=${promotion.promotionCode}">${promotion.name}</a>
 				      </td>
 				      <td>
-				      	<button type="button" class="btn btn-light" data-toggle="modal" data-target="#boardModal" >확인</button>
+				      	<button type="button" class="product-modal-btn btn btn-light" data-toggle="modal" data-target="#promotionModal" data-code="${promotion.promotionCode}">확인</button>
 				      </td>
 				      <td>${promotion.regular?"정기":"비정기"}</td>
 				      <td><fmt:formatDate value="${promotion.startDate}" pattern="yyyy-MM-dd"/></td>
@@ -78,48 +97,22 @@ $(".event-write-btn").click((e)=>{
 });
 
 
-//체크박스 전체 선택
-$(".checkbox-group").on("click", "#checkAll", ((e)=>{
-  let checked = $(e.target).is(":checked");
-
-  if(checked){
-  	$(e.target).parents(".checkbox-group").find('input:checkbox').prop("checked", true);
-  } else {
-  	$(e.target).parents(".checkbox-group").find('input:checkbox').prop("checked", false);
-  }
-}));
-
-//체크박스 개별 선택
-$(".promotion-is-checked").on("click", ((e)=>{
-    let isChecked = true;
-    
-    $(".promotion-is-checked").each((i, item)=>{
-        isChecked = isChecked && $(item).is(":checked");
-    });
-    
-    $("#checkAll").prop("checked", isChecked);
-}));
-
-$("#promotionListDeleteBtn").click((e)=>{
-    let isChecked = false;
-    
-    $(".promotion-is-checked").each((i, item)=>{
-        isChecked = isChecked || $(item).is(":checked");
-        let target = $(item).data("target");
-        
-        if($(item).is(":checked")){
-        	$(item).after(`<input type="hidden" name="promotionCode" value="\${target}"/>`);
-        }
-    });
-    
-    if(!isChecked){
-    	alert("선택된 이벤트가 없습니다.");
-    	return;
-    }
+$(".product-modal-btn").click((e)=>{
+	const promotionCode = $(e.target).data("code");
 	
-    console.log("클릭");
-    console.log($(document.promotionDeleteFrm));
-    $(document.promotionDeleteFrm).submit();
+	$.ajax({
+		url : `${pageContext.request.contextPath}/admin/findProductList`,
+		data : {promotionCode : promotionCode},
+		method : "GET",
+		success(data){
+			console.log(data);
+			$(data).each((i, product) => {
+				$("#modalProductList").append(`<p>\${product.productCode}(\${product.name})</p>`);
+			});
+		},
+		error : console.log
+		
+	});
 });
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>

@@ -362,6 +362,13 @@ public class AdminController {
 		return list;
 	}
 	
+	@GetMapping("/findProductList")
+	@ResponseBody
+	public List<Product> findProductList(@RequestParam String promotionCode){
+		List<Product> list = adminService.selectProductListByPromotionCode(promotionCode);
+		return list;
+	}
+	
 	private void saveBanner(Promotion promotion, MultipartFile upFile, String promotionCode, String saveDirectory)
 			throws IOException {
 		String banner = promotionCode + ".png";

@@ -98,6 +98,11 @@ public class AdminDaoImpl implements AdminDao {
 		return session.delete("promotion.deletePromotion", promotionCode);
 	}
 
+	@Override
+	public List<Product> selectProductListByPromotionCode(String promotionCode) {
+		return session.selectList("promotion.selectProductListByPromotionCode", promotionCode);
+	}
+
 	
 	
 	/**
