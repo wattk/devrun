@@ -3,6 +3,7 @@ package com.kh.devrun.shop.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -63,11 +64,10 @@ public class shopController {
 	@GetMapping("/promotion.do")
 	public void promotion(Model model) {
 		try {
-			List<Promotion> currentPromotionList = promotionService.selectCurrentPromotionList();
-			List<Promotion> endPromotionList = promotionService.selectEndPromotionList();
+			Map<String, List<Promotion>> map = promotionService.selectDevidedPromotionList();
 			
-			model.addAttribute("currentPromotionList", currentPromotionList);
-			model.addAttribute("endPromotionList", endPromotionList);
+			model.addAttribute("currentPromotionList", map.get("currentPromotionList"));
+			model.addAttribute("endPromotionList", map.get("endPromotionList"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

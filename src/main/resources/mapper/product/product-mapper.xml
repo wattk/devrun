@@ -3,10 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="product">
+
+	<!-- 상품 테이블 추가  -->
 	<insert id="insertProduct">
 	insert into product
 	values(
-		#{productCode} || seq_product_no.nextval,
+		#{productCode} ||'-'||seq_product_no.nextval,
 		#{name},
 		#{price},
 		sysdate,
@@ -57,26 +59,11 @@
 				
 	</insert>
 	
-	<!-- 합쳐진 상품 리스트   -->
-	<select id="selectAllProductList" resultType="ProductExtends">
-		select
-		    p.thumbnail,
-		    p.name,
-		    pd.option_no,
-		    pd.quantity,
-		    p.status,
-		    pc.child_category_code,
-		    p.reg_date,
-		    p.view_count
-		    
-		from
-		    product p left join product_category pc
-		        on p.product_code = pc.product_code
-		    left join product_detail pd 
-		        on pc.product_code = pd.product_code
-		order by
-			p.reg_date desc
+	<!-- 상품 리스트   -->
+	<select id="selectAllProductList" resultType="Product">
+			select * from product order by reg_date desc
 	</select>
+	
 
 	<!-- 상품 게시물 수  -->
 	<select id="selectTotalBoardCount" resultType="_int" >
@@ -90,11 +77,54 @@
 	</select>
 
 
+	<!-- 비동기로 옵션값 가져오기 -->
+	<select  id="findProductOption" resultType="ProductDetail">
+		select
+			*
+		from
+			product_detail
+		where
+			product_code = #{productCode}				
+	</select>
+
+
+	<!-- 상품 삭제 -->
+	<delete id="deleteProduct">
+		delete
+			product
+		where
+			product_code = #{productCode}
+	</delete>
+
+	<!-- 상품상세에서 사용할 정보 가져오기 -->
+	<select id="selectProductOne" resultType="ProductExtends">
+		select
+            p.name,
+		    p.thumbnail,
+		    p.price,
+		    p.status,
+            p.content,
+            substr(p.product_code,1,2) parent_category_code,
+            substr(p.product_code,4,2) child_category_code,
+             (select child_category_title from PRODUCT_CHILD_CATEGORY where  child_category_code = substr(p.product_code,4,2)) child_category_title,
+		    p.reg_date,
+		    p.view_count
+		from
+            product p
+        where        
+            p.product_code = #{productCode}     
+        order by reg_date desc
+	
+	</select>
 
 	<!--태영 끝-->
 	
-	
-	
+
+
+
+
+
+		
 	<!-- 혜진 시작 -->
 	<select id="selectProductListByProductCode" resultType="product">
 		select
