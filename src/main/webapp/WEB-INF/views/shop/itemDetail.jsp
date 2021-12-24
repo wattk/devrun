@@ -26,6 +26,7 @@
 
 
 	<!-- body 영역 시작 -->
+	
 		<div id="shopItemDetailOuterDiv">
 			<div id="itemDetailDisplayDiv" class="row">
 				<!--리뷰작성모달 시작(부트스트랩)-->
@@ -52,6 +53,7 @@
 											<input type="hidden" name="productCode" value="332">
 											<sec:authorize access="isAuthenticated()">
 												<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
+												<input type="hidden" name="id" value='<sec:authentication property="principal.id"/>' />
 											</sec:authorize>
 										</div>
 										<p class="mt-3">상품 별점</p>
@@ -254,7 +256,7 @@
 							  <div class="content height600" >
 								<!--상단 갯수 및 선택 옵션 시작-->
 								<div class="item-sort-container d-flex justify-content-between">
-								  <div class="p-4" style="margin-top: 9px;">총 465개</div>
+								  <div class="p-4" style="margin-top: 9px;">총 ${reviewTotal}개</div>
 								  <div class="p-4" id="sortBy">
 									<span class="pr-2 pl-2 shop-sort">최신순</span>
 									<span class="pr-2 pl-2 shop-sort">오래된순 </span>
@@ -266,88 +268,34 @@
 								<!--상단 갯수 및 선택 옵션 끝-->
 								<div></div>
 								<!--리뷰시작-->
-								<div class="aReviewDiv forFont">
-								  <div class="shop-review row">
-									<div class="reviewProfile">
-									  <img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
-									</div> 
-									<div class="reviewContent ml-3">
-									  <i class="fas fa-star"></i>
-									  <i class="fas fa-star"></i>
-									  <i class="fas fa-star"></i>
-									  <i class="fas fa-star"></i>
-									  <i class="fas fa-star"></i>
-									  <br><span>greendory</span> | <span>21.11.06</span> | 
-									  <!-- Button trigger modal -->
-									  <button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
-									  <br><span>상품옵션 : </span> <span>핑크</span>
-									  <div class="reviewP mt-3">
-										너무 좋아요 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus deserunt perferendis aspernatur dolores aliquid labore laborum id aut beatae nulla, a sequi reiciendis placeat, quia corrupti voluptatum accusantium vel voluptas. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Saepe, a error? Expedita harum accusantium provident praesentium consectetur at autem in dicta facere, dolor rem nesciunt repudiandae saepe. Ducimus, expedita eveniet. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis veniam, id, libero, vel molestiae recusandae sunt quod debitis nam ut laudantium ducimus quas accusantium assumenda eligendi. Eaque, est. Unde, tenetur.
-										Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus quo dignissimos, sed corrupti obcaecati soluta earum veritatis, tempora necessitatibus alias culpa ratione vel officia ex fugiat. Ex vitae laboriosam voluptatem.
-									  </div>  
-									</div>
-									<div class="reviewPhoto">
-									  <img src="https://i.ibb.co/gm7H77f/square.png" alt="" onclick="expandPic()">
-									  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
-										<i class="far fa-heart">3</i>
+								<c:forEach items="${reviewList}" var="l">
+									<div class="aReviewDiv forFont">
+									  <div class="shop-review row">
+										<div class="reviewProfile">
+										  <img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
+										</div> 
+										<div class="reviewContent ml-3">
+										<c:forEach var="i" begin="1" end="${l.rate}">
+										  <i class="fas fa-star"></i>
+										</c:forEach>
+										  <br><span>${l.id}</span> | <span> <fmt:formatDate value="${l.regDate}" pattern="yyyy년MM월dd일 HH:mm:ss"/></span> | 
+										  <!-- Button trigger modal -->
+										  <button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
+										  <br><span>상품옵션 : </span> <span>핑크</span>
+										  <div class="reviewP mt-3">
+										  ${l.content}
+										  </div>  
+										</div>
+										<div class="reviewPhoto">
+										  <img src="${pageContext.request.contextPath}/resources/upload/review/${l.attach.renamedFilename}" alt="" onclick="expandPic(event)">
+										  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
+											<i class="far fa-heart">3</i>
+										  </div>
+										</div>
 									  </div>
 									</div>
-								  </div>
-								</div>
+								</c:forEach>
 								<!--리뷰끝-->
-								<div class="aReviewDiv forFont">
-									<div class="shop-review row">
-									  <div class="reviewProfile">
-										<img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
-									  </div> 
-									  <div class="reviewContent ml-3">
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<br><span>greendory</span> | <span>21.11.06</span> |
-										<button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
-										<br><span>상품옵션 : </span> <span>핑크</span>
-										<div class="reviewP mt-3">
-										  너무 좋아요 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus deserunt perferendis aspernatur dolores aliquid labore laborum id aut beatae nulla, a sequi reiciendis placeat, quia corrupti voluptatum accusantium vel voluptas. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Saepe, a error? Expedita harum accusantium provident praesentium consectetur at autem in dicta facere, dolor rem nesciunt repudiandae saepe. Ducimus, expedita eveniet. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis veniam, id, libero, vel molestiae recusandae sunt quod debitis nam ut laudantium ducimus quas accusantium assumenda eligendi. Eaque, est. Unde, tenetur.
-										  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus quo dignissimos, sed corrupti obcaecati soluta earum veritatis, tempora necessitatibus alias culpa ratione vel officia ex fugiat. Ex vitae laboriosam voluptatem.
-										</div>  
-									  </div>
-									  <div class="reviewPhoto">
-										<img src="https://i.ibb.co/gm7H77f/square.png" alt="" onclick="expandPic()">
-										<div  class="reviewLikeBtn text-center border border-success rounded mt-1">
-										  <i class="far fa-heart">3</i>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								<div class="aReviewDiv forFont">
-									<div class="shop-review row">
-									  <div class="reviewProfile">
-										<img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png" alt="">
-									  </div> 
-									  <div class="reviewContent ml-3">
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<br><span>greendory</span> | <span>21.11.06</span> |
-										<button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal3">신고</button>
-										<br><span>상품옵션 : </span> <span>핑크</span>
-										<div class="reviewP mt-3">
-										  너무 좋아요
-										</div>  
-									  </div>
-									  <div class="reviewPhoto">
-										<img src="https://i.ibb.co/gm7H77f/square.png" alt="" onclick="expandPic()">
-										<div  class="reviewLikeBtn text-center border border-success rounded mt-1">
-										  <i class="far fa-heart">3</i>
-										</div>
-									  </div>
-									</div>
-								  </div>
 							  </div>
 							</div>
 							<!--2번째 탭---->

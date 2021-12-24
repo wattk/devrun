@@ -60,7 +60,52 @@ public class ShopController {
 	public void shopCategory() {}
 
 	@GetMapping("/itemDetail.do")
-	public void itemDetail() {}
+	public void itemDetail(Model model) {
+		
+		List<Review> reviewList = shopService.selectAllReview();
+		int reviewTotal = shopService.countAllList();
+		log.debug("총 리뷰 갯수{}", reviewTotal);
+		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("reviewTotal", reviewTotal);
+		
+		
+		
+	}
+	
+	
+	
+	@PostMapping("/review.do")
+	public String review (Review review, MultipartFile upFile, RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
+		log.debug("{}", review);
+	
+		log.debug("아이디 못 받아? {} ", review.getId());
+		String saveDirectory = application.getRealPath("/resources/upload/review");
+		
+		if(!upFile.isEmpty() && upFile.getSize()!= 0) {
+			String originalFilename = upFile.getOriginalFilename();
+			String renamedFilename = DevrunUtils.getRenamedFilename(originalFilename);
+		
+			//1.서버 컴퓨터에 저장
+			File dest = new File(saveDirectory, renamedFilename);//여기에다가 파일 저장해주세요임.
+			upFile.transferTo(dest);
+			
+			// 2.DB에 attachment 레코드 등록
+			Attachment attach = new Attachment();
+			attach.setOriginalFilename(originalFilename);
+			attach.setRenamedFilename(renamedFilename);
+			review.setAttach(attach);
+		}
+		
+		//업무로직
+		int result = shopService.insertReview(review);
+		String msg = (result>0)?"리뷰 등록 성공" : "리뷰 등록 실패";
+		redirectAttr.addFlashAttribute("msg", msg);
+		
+		return "redirect:/shop/itemDetail.do";
+		
+		
+	}
+	
 	
 	/**
 	 * 혜진 작업 시작 
@@ -93,40 +138,6 @@ public class ShopController {
 	 * @throws IOException 
 	 * @throws IllegalStateException 
 	 */
-	
-	
-	
-	@PostMapping("/review.do")
-	public String review (Review review, MultipartFile upFile, RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
-		log.debug("{}", review);
-	
-		
-		String saveDirectory = application.getRealPath("/resources/upload/review");
-		
-		if(!upFile.isEmpty() && upFile.getSize()!= 0) {
-			String originalFilename = upFile.getOriginalFilename();
-			String renamedFilename = DevrunUtils.getRenamedFilename(originalFilename);
-		
-			//1.서버 컴퓨터에 저장
-			File dest = new File(saveDirectory, renamedFilename);//여기에다가 파일 저장해주세요임.
-			upFile.transferTo(dest);
-			
-			// 2.DB에 attachment 레코드 등록
-			Attachment attach = new Attachment();
-			attach.setOriginalFilename(originalFilename);
-			attach.setRenamedFilename(renamedFilename);
-			review.setAttach(attach);
-		}
-		
-		//업무로직
-		int result = shopService.insertReview(review);
-		log.debug("첨부파일 및 리뷰 등록 성공인가? : {}", result);
-		String msg = (result>0)?"리뷰 등록 성공" : "리뷰 등록 실패";
-		redirectAttr.addFlashAttribute("msg", msg);
-		
-		return "redirect:/shop/itemDetail.do";
-		
-		
-	}
 
 }
+

@@ -1,10 +1,14 @@
 /**리뷰사진확대모달 시작*/
-function expandPic(target) {
+function expandPic(event) {
+ var path = event.target.src;
+
 
 	
 const $reviewModal = $("#reviewModal");
 if($reviewModal.css("display","none")) {
 	$reviewModal.show();
+	$('#reviewExpansion').attr("src",path);
+
 }
 }
 

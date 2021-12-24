@@ -8,7 +8,8 @@
 			review
 		values(
 			seq_review_no.nextval,
-			${memberNo},
+			#{memberNo},
+			#{id},
 			'ch-ec-실험책상-23',
 			#{content},
 			default,
@@ -33,4 +34,34 @@
 			default
 		)	
 	</insert>
+	
+	<select id="selectAllReview" resultMap="review">
+		select 
+		    *
+		from
+		    review r join review_attachment a
+		    on r.review_no = a.review_no
+		order by r.reg_date desc    
+	</select>
+	<resultMap type="review" id="review">
+		<id column ="review_no" property ="reviewNo"/>
+		<result column ="member_no" property="memberNo"/>
+		<result column ="id" property="id"/>
+		<result column ="product_code" property="productCode"/>
+		<result column ="content" property="content"/>
+		<result column ="like_count" property="likeCount"/>
+		<result column ="reg_date" property="regDate"/>
+		<collection property="attach" ofType="Attachment">
+			<id column="review_attach_no" property="reviewAttachNo"/>
+			<result column ="review_no" property="reviewNo"/>
+			<result column="ORIGINAL_FILENAME" property="originalFilename"/>
+			<result column="RENAMED_FILENAME" property="renamedFilename"/>
+			<result column ="reg_date" property="regDate"/>			
+		</collection>
+	</resultMap>
+	
+	<select id="countAllList" resultType="int">
+		select count(*)
+		from review
+	</select>
 </mapper>
