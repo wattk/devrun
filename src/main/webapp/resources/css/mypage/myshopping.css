@@ -75,3 +75,30 @@ px
 .question-item{
 	height : 3rem;
 }
+
+.point-title{
+	height : 4rem;
+	border-radius: 1.25rem;
+}
+.point-btn{
+	border-radius: 1.25rem;
+	height : 2rem;
+	padding : 0;
+	width : 30%;
+}
+.point-badge{
+	border : 1px solid rgba(0,0,0,.125);
+	color : #9E9E9E;
+	border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height : 50px;
+}
+.point-check-val{
+	border-right : 	1px solid rgba(0,0,0,.125);
+}
+.point-month-group{
+	border-top : 1px solid rgba(0,0,0,.125);
+	border-bottom : 1px solid rgba(0,0,0,.125);
+}
