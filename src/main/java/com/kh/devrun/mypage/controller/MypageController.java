@@ -109,4 +109,44 @@ public class MypageController {
 	/**
 	 * 혜진 교환/환불/취소 끝
 	 */
+	/**
+	 * 혜진 주문 내역 시작
+	 */
+	
+	@GetMapping("/orderList.do")
+	public void orderList() {}
+	
+	/**
+	 * 혜진 주문 내역 끝
+	 */
+	/**
+	 * 혜진 나의 리뷰 시작
+	 */
+	
+	@GetMapping("/myReview.do")
+	public void myReview() {}
+	
+	/**
+	 * 혜진 나의 리뷰 끝
+	 */
+	/**
+	 * 혜진 나의 문의 시작
+	 */
+	
+	@GetMapping("/myQuestion.do")
+	public void myQuestion() {}
+	
+	/**
+	 * 혜진 나의 문의 끝
+	 */
+	/**
+	 * 혜진 나의 포인트 조회 시작
+	 */
+	
+	@GetMapping("/myPoint.do")
+	public void myPoint() {}
+	
+	/**
+	 * 혜진 나의 포인트 조회 끝
+	 */
 }
