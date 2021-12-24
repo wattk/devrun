@@ -23,7 +23,7 @@ public class MypageController {
 	/**
 	 * 지원 마이페이지 메인 시작
 	 */
-	@GetMapping("")
+	@GetMapping("/mypage.do")
 	public String mypage(Model model, Authentication authentication) {
 		Member member = (Member) authentication.getPrincipal();
 		log.debug("[principal] member = {}", member);

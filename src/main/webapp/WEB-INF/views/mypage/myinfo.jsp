@@ -6,7 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <jsp:include page="/WEB-INF/views/mypage/common/header.jsp">
-	<jsp:param value="마이페이지" name="title"/>
+	<jsp:param value="나의 정보" name="title"/>
 </jsp:include>
 
 <!-- CSS import -->
