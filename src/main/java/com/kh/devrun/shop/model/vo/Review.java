@@ -1,4 +1,4 @@
-package com.kh.devrun.shop.model;
+package com.kh.devrun.shop.model.vo;
 
 import java.io.Serializable;
 import java.util.Date;

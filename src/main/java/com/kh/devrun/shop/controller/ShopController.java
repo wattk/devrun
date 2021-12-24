@@ -19,17 +19,22 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
-import com.kh.devrun.shop.model.Review;
+import com.kh.devrun.shop.model.service.ShopService;
+import com.kh.devrun.shop.model.vo.Attachment;
+import com.kh.devrun.shop.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
 @RequestMapping("/shop")
-public class shopController {
+public class ShopController {
 	
 	@Autowired
 	private PromotionService promotionService;
+	
+	@Autowired
+	private ShopService shopService;
 	
 	@Autowired
 	ServletContext application;
@@ -37,9 +42,7 @@ public class shopController {
 	
 //--------------------주입-------------------------------------	
 	
-	
-	
-	
+
 	@GetMapping("/shopMain.do")
 	public String shopMain() {
 		
@@ -109,7 +112,16 @@ public class shopController {
 			File dest = new File(saveDirectory, renamedFilename);//여기에다가 파일 저장해주세요임.
 			upFile.transferTo(dest);
 			
+			// 2.DB에 attachment 레코드 등록
+			Attachment attach = new Attachment();
+			attach.setOriginalFilename(originalFilename);
+			attach.setRenamedFilename(renamedFilename);
+			review.setAttach(attach);
 		}
+		
+		//업무로직
+		int result = shopService.insertReview(review);
+		log.debug("첨부파일 및 리뷰 등록 성공인가? : {}", result);
 		
 		
 	}
