@@ -1,4 +1,4 @@
-package com.kh.devrun.shop.model;
+package com.kh.devrun.shop.model.vo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,8 +19,8 @@ public class Attachment implements Serializable {
 	
 	private int ReviewAttachmentNo;
 	private int reviewNo;
-	private String originalFilenname;
-	private String renamenFilename;
+	private String originalFilename;
+	private String renamedFilename;
 	private Date regDate;
 	
 

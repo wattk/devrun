@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop">
+	<insert id="insertReview">
+		insert into 
+			review
+		values(
+			seq_review_no.nextval,
+			46,
+			'ch-ec-실험책상-23',
+			#{content},
+			default,
+			default,
+			#{rate}
+		)
+		<selectKey keyProperty="reviewNo" resultType="_int" order="AFTER">
+			select
+				seq_review_no.currval
+			from
+				dual
+		</selectKey>
+	</insert>
+	<insert id="insertAttach">
+		insert into
+			REVIEW_ATTACHMENT
+		values(
+			SEQ_REVIEW_ATTACHMENT_NO.nextval,
+			#{reviewNo},
+			#{originalFilename},
+			#{renamedFilename},
+			default
+		)	
+	</insert>
+</mapper>
