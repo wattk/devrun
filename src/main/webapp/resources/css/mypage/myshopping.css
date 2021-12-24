@@ -1,0 +1,32 @@
+@charset "UTF-8";
+.small-font-size{
+	font-size : x-small;
+}
+#myOrderLog{
+	flex-direction : row;
+	height : 2.5rem;
+}
+#myShipment{
+	height : 5rem;
+}
+#myActivity{
+	    margin: 0 auto;
+    margin-bottom: 20px;
+    padding: 20px 0;
+    border-top: 1px solid #F1F1F2;
+    border-bottom: 1px
+px
+ solid #F1F1F2;
+    justify-content: space-around;
+}
+.shopping-nav-item{
+	display : flex;
+	justify-content : space-between;
+}
+.order-title{
+	border-bottom : 1px solid rgba(0,0,0,.125);
+}
+.cart-icon{
+	font-size : 20px;
+}
+#tabBtns #myshoppingTab{border:1px solid #FFFFFF; background-color:#FFFFFF; color:#1A81FF; box-shadow:-1px 6px 8px 0 rgba(0, 0, 0, 0.5); position:relative; z-index:99;}

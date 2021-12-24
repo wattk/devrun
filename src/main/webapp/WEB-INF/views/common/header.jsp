@@ -143,7 +143,7 @@
 	            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage">마이페이지</a>
 	              <a class="dropdown-item" id="chat">채팅</a>
-	              <a class="dropdown-item" href="#">주문/배송</a>
+	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/orderList.do">주문/배송</a>
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/member/cart.do">장바구니</a>
 	              <a class="dropdown-item" href="#">
 	              	<form:form

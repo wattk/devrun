@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+/* my info tab */
+#tabBtns #myinfoTab {border:1px solid #FFFFFF; background-color:#FFFFFF; color:#1A81FF; box-shadow:-1px 6px 8px 0 rgba(0, 0, 0, 0.5); position:relative; z-index:99;}
+
+
+
+/** my info **/
+#info {margin:0 auto;}
+#breadcrumb a {color:#9E9E9E;}
+#breadcrumb a:hover {color:#1A81FF;}
