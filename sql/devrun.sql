@@ -366,6 +366,45 @@ COMMENT ON COLUMN "MEMBER_REVIEW_LIKE"."REVIEW_NO" IS '리뷰 번호';
 COMMENT ON COLUMN "MEMBER_REVIEW_LIKE"."MEMBER_NO" IS '회원 번호';
 
 -----------종서 작업-----------
+-- 전체 게시물 수 
+select count(*) from community;
+
+
+
+-- community sample insert
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판2', '자유게시판2', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판3', '자유게시판3', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판4', '자유게시판4', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판5', '자유게시판5', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판6', '자유게시판6', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판7', '자유게시판7', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판8', '자유게시판8', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판9', '자유게시판9', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판10', '자유게시판10', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판11', '자유게시판11', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판12', '자유게시판12', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판13', '자유게시판13', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판14', '자유게시판14', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판15', '자유게시판15', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판16', '자유게시판16', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판17', '자유게시판17', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판18', '자유게시판18', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판19', '자유게시판19', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판20', '자유게시판20', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판21', '자유게시판21', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판22', '자유게시판22', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판23', '자유게시판23', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판24', '자유게시판24', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판25', '자유게시판25', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판26', '자유게시판26', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판27', '자유게시판27', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판28', '자유게시판28', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판29', '자유게시판29', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판30', '자유게시판30', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판31', '자유게시판31', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판32', '자유게시판32', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판33', '자유게시판33', sysdate, default, default, 'N', default, default); 
+commit;
 
 
 select * from community;
