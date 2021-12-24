@@ -8,7 +8,7 @@
 			review
 		values(
 			seq_review_no.nextval,
-			46,
+			${memberNo},
 			'ch-ec-실험책상-23',
 			#{content},
 			default,
