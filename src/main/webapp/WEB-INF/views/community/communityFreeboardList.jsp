@@ -11,19 +11,30 @@
 	<jsp:param value="" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
+<!-- 폰트어썸 CDN -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
 <style>
 .input-group {
 	justify-content: center;
 }
-td {
+td, th {
 	text-align: center;
 }
 </style>
 <script>
+// 글쓰기 폼으로 이동
 function goFreeboardForm(){
 	location.href = "${pageContext.request.contextPath}/community/communityFreeboardForm.do";
 }
+
+// 게시글 상세보기로 이동
+/**
+ * event boubling 기반 핸들링
+ */
 </script>
+
+
+
 
 <!-- 본문 시작 -->
 <div class="container-fluid">
@@ -62,6 +73,7 @@ function goFreeboardForm(){
 			
 			<!-- 상단 탭 시작 -->	
 			<nav>
+			  <p>총 ${totalContent}개의 게시물이 있습니다.</p>
 			  <div class="nav nav-tabs" id="nav-tab" role="tablist">
 			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">최신순</a>
 			    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">댓글 많은 순</a>
@@ -82,22 +94,24 @@ function goFreeboardForm(){
 	<!-- 리스트 시작 -->
 	<table id="tbl-board" class="table table-striped table-hover">
 		<tr>
-			<th class="text-center">번호</th>
-			<th class="text-center">제목</th>
-			<th class="text-center">작성자</th>
-			<th class="text-center">작성일</th>
-			<th class="text-center">좋아요</th> 
-			<th class="text-center">조회수</th>
-			<th class="text-center">답변개수</th>
+			<th class="col-1">번호</th>
+			<th class="col-3">제목</th>
+			<th class="col-1">작성자</th>
+			<th class="col-1">작성일</th>
+			<th class="col-1">좋아요</th> 
+			<th class="col-1">조회수</th>
+			<th class="col-1">답변개수</th>
 		</tr>
 		
+		<!-- 반복접근할 요소 : items="${list} -->
+		<!-- 꺼내면 cmmunityEntity니까 communityEntity라는 이름으로 사용 -->
 		<c:forEach items="${list}" var="communityEntity">
 			<tr data-no="${communityEntity.communityNo}">
 				<td>${communityEntity.communityNo}</td>
 				<td>${communityEntity.title}</td>
 				<td>${communityEntity.nickname}</td>
 				<td><fmt:formatDate value="${communityEntity.enrollDate}" pattern="yy-MM-dd HH:mm"/> </td>
-				<td>${communityEntity.likeCount}</td>
+				<td><i class="fas fa-heart"></i> ${communityEntity.likeCount}</td>
 				<td>${community.viewCount}</td>
 				<td>만들어야함</td>
 			</tr>
@@ -112,21 +126,7 @@ function goFreeboardForm(){
 	
 	<!-- 페이징 시작 -->
 	<div>
-		<nav aria-label="...">
-			<ul class="pagination">
-				<li class="page-item disabled">
-					<span class="page-link">Previous</span>
-				</li>
-				<li class="page-item"><a class="page-link" href="#">1</a></li>
-				<li class="page-item active" aria-current="page">
-					<span class="page-link">2</span>
-				</li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item">
-					<a class="page-link" href="#">Next</a>
-				</li>
-			</ul>
-		</nav>
+		${pagebar}
 	</div>
 	<!-- 페이징 끝 -->
 </div>
