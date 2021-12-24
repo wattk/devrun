@@ -14,6 +14,28 @@
 </script>
 </c:if>
 
+<!-- 모달 -->
+<div class="modal fade" id="promotionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalProductTitle">옵션</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+	      <div class="modal-body" id="modalOptionList">
+	      <table>
+	      	<tr><th>옵션</th><th>재고</th></tr>
+	      </table>	
+	      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="modalCloseBtn">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="productContainer">
 	<h2>상품 관리</h2>
  
@@ -24,11 +46,17 @@
 				<span>선택한 항목 [<span id="selectCount">0</span>]개 </span>
 			</div>
 			<div id="btnContainer">
-			<button 
-				id="deleteProductBtn"
-				class="btn btn-danger" 
-				type="button"
-				onclick="location.href='${pageContext.request.contextPath}/admin/deleteProduct.do'"	>상품 삭제</button>
+			<!-- 상품 삭제시 전송할 form -->
+			<form
+				id="productDelteFrm"
+				name="productDelteFrm"
+				action="${pageContext.request.contextPath}/admin/deleteProduct.do"
+				method="POST">
+				<button 
+					id="deleteProductBtn"
+					class="btn btn-danger" 
+					>상품 삭제</button>
+			</form>
 			<button 
 				id="insertProductBtn"
 				class="btn btn-primary" 
@@ -42,11 +70,10 @@
 			<tr>
 				<th><input type="checkbox" id="checkAll"/></th>
 				<th>이미지</th>
+				<th>상품코드</th>
 				<th>상품명</th>
-				<th>옵션번호</th>
-				<th>재고</th>
+				<th>옵션</th>
 				<th>상태</th>
-				<th>카테고리 코드</th>
 				<th>등록일</th>
 				<th>조회수</th>
 			</tr>
@@ -54,11 +81,13 @@
 			<tr>				
 				<td><input type="checkbox"id="select" class="box"/> </td>
 				<td><img id="thumbnail" src="${pageContext.request.contextPath}/resources/upload/product/${pro.thumbnail}"/></td>
+				<td><a href="${pageContext.request.contextPath}/admin/productDetail.do?productCode=${pro.productCode}">${pro.productCode}</a></td>
 				<td>${pro.name}</td>
-				<td>${pro.optionNo}</td>
-				<td>${pro.quantity}</td>
+				<td>
+					<button type="button" class="option-modal-btn btn btn-light"
+					 data-toggle="modal" data-target="#promotionModal" data-code="${pro.productCode}">확인</button>
+				</td>
 				<td>${pro.status}</td>
-				<td>${pro.childCategoryCode}</td>
 				<td><fmt:formatDate value="${pro.regDate}" pattern="yy-MM-dd HH:mm"/></td>
 				<td>${pro.viewCount}</td>
 			</tr>
@@ -75,6 +104,43 @@
 
 <script>
 $(()=>{
+	let checkedProduct;
+
+		
+		
+	$(modalCloseBtn).click(e=>{
+		$("#modalOptionList table").html(`<tr><th>옵션</th><th>재고량</th></tr>`);
+	});
+	
+	/* 모달 관련 */
+	$(".option-modal-btn").click((e)=>{
+		const productCode = $(e.target).data("code");
+		console.log(productCode);
+		$.ajax({
+			 url : `${pageContext.request.contextPath}/admin/findProductOption`,
+			data : {productCode : productCode},
+			method : "GET",
+			success(data){
+				console.log(data);
+				$(data).each((i, productDetail) => {
+					$("#modalOptionList table").append(`<tr></tr><tr><td>\${productDetail.optionNo}</td><td>\${productDetail.quantity}</td></tr>`);
+				});						
+			},
+			error : console.log		
+		});
+	});	
+	
+	
+	
+	/*  호버 이벤트 */
+	$("#productList tr").hover(
+		e=>{
+			$(e.target).parent("tr").css("background","#0d6efd36");
+		},
+		e=>{
+			$(e.target).parent("tr").css("background","white");
+		}
+	)
 	
 	/* 전체 선택/해제  */
 	$(checkAll).change(e=>{
@@ -101,7 +167,17 @@ $(()=>{
 		}
 		else{
 			$("#checkAll").prop("checked",false);
-		}
+		}	
+		
+		// 상품 삭제 : check되어 있는 tr의 product_code값을 가져온뒤 input hidden 값으로 form태그안에 넣어준다 .
+		checkedProduct = $(".box:checked").parents("tr").children().eq(2).text();
+		console.log(checkedProduct);
+		$("#productDelteFrm").append(`<input type="hidden" name="productCodes" value="\${checkedProduct}" />`)
+		
+		
+		
+				
+		
 		
 	});
 	

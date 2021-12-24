@@ -106,7 +106,7 @@ $(".product-modal-btn").click((e)=>{
 		method : "GET",
 		success(data){
 			console.log(data);
-			$(data).each((i, product) => {
+			$(data).each((i, product) => {			
 				$("#modalProductList").append(`<p>\${product.productCode}(\${product.name})</p>`);
 			});
 		},
