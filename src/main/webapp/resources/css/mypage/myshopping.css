@@ -30,3 +30,35 @@ px
 	font-size : 20px;
 }
 #tabBtns #myshoppingTab{border:1px solid #FFFFFF; background-color:#FFFFFF; color:#1A81FF; box-shadow:-1px 6px 8px 0 rgba(0, 0, 0, 0.5); position:relative; z-index:99;}
+.search-badge{
+	border : 1px solid rgba(0,0,0,.125);
+	border-radius : 1.5rem;
+	height : 1.5rem;
+	width : 4rem;
+}
+.order-btn{
+	border-radius : 0;
+	width : 6rem;
+	height : 1.5rem;
+	margin : 3px 0 3px 0;
+	padding : 0;
+}
+.order-btn.order-detail-btn{
+	width : 30%;
+	height : 2rem;
+}
+.question-btn{
+	color : #007bff;
+	font-weight : 700;
+}
+.order-tab-title{
+	font-weight : 700;
+	margin-bottom : 2rem;	
+}
+
+.order-detail-header{
+	border-bottom : 1px solid rgba(0,0,0,.125);
+}
+#orderPaymentTbl th, #orderPaymentTbl td{
+	padding : 10px;
+}
