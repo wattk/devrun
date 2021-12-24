@@ -1,30 +1,7 @@
 @charset "UTF-8";
 
-
-/** main frame **/
-main {height:auto; background:linear-gradient(to bottom, #1A81FF 350px, #FFFFFF 350px); font-family:"Gowun Dodum";}
-
-/** 공통 적용 style **/
-main .bi {font-size:20px; vertical-align:middle;}
-main .bi.bi-chevron-right {color:#A1A1A1; font-size:16px; vertical-align:middle;}
-main .cursor {cursor:pointer; cursor:hand;}
-main button {background-color:#FFFFFF; color:#1A81FF; font-size:17px; border:1px solid #1A81FF; padding:12px; border-radius:21px; line-height:15px;}
-main button:focus {outline:none;}
-main button:hover {background-color:#1A81FF; color:#FFFFFF; border:1px solid #1A81FF; transition:.3s;}
-
-main textarea {resize:none;}
-main input::file-selector-button {border:0; padding:2px 6px; margin-right:5px; border-radius:0.25rem; background-color:#E9ECEF;}
-main input::file-selector-button:hover {background-color:#1A81FF; color:#FFFFFF; transition:.3s;}
-
-main .modal .modal-dialog {margin-top:100px;}
-
-/** tabContent frame **/
-#tabBtns .nav-tabs {justify-content:flex-end; padding:0 20px; border:0;}
-#tabBtns a.nav-link:hover {outline:none; border:1px solid #FFFFFF; background-color:#FFFFFF; color:#1A81FF;}
-#tabBtns a.nav-link:focus-visible {outline:none;}
-#tabBtns a.nav-link {width:130px; background-color:#F7F7F7; color:#9E9E9E; border:1px solid #F7F7F7; border-radius:20px 20px 0 0; padding:9px; text-align:center; position:relative; z-index:9;}
-#tabBtns a.nav-link.active {border:1px solid #FFFFFF; background-color:#FFFFFF; color:#1A81FF; box-shadow:-1px 6px 8px 0 rgba(0, 0, 0, 0.5); position:relative; z-index:99;}
-#tabContainer {height:auto; background-color:#FFFFFF; padding:80px 0; margin:0 auto; position:relative; z-index:999;}
+/* my info tab */
+#tabBtns #myinfoTab {border:1px solid #FFFFFF; background-color:#FFFFFF; color:#1A81FF; box-shadow:-1px 6px 8px 0 rgba(0, 0, 0, 0.5); position:relative; z-index:99;}
 
 
 
@@ -32,6 +9,8 @@ main .modal .modal-dialog {margin-top:100px;}
 #info {margin:0 auto;}
 #breadcrumb a {color:#9E9E9E;}
 #breadcrumb a:hover {color:#1A81FF;}
+
+
 
 /* member profile */
 #myProfile form div.row {justify-content:space-evenly;}

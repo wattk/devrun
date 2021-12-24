@@ -48,6 +48,28 @@ public class MypageController {
 	 */
 	
 	/**
+	 * 지원 나의 정보 메인 시작
+	 */
+	@GetMapping("/myinfo.do")
+	public String myinfo() {
+		return "mypage/myinfo";
+	}
+	/**
+	 * 지원 나의 정보 메인 끝
+	 */
+	
+	/**
+	 * 지원 나의 커뮤니티 메인 시작
+	 */
+	@GetMapping("/mycommunity.do")
+	public String mycommunity() {
+		return "mypage/mycommunity";
+	}
+	/**
+	 * 지원 나의 커뮤니티 메인 끝
+	 */
+	
+	/**
 	 * 지원 나의 정보 > 활동 배지 시작
 	 */
 	@GetMapping("/myinfo/activityBadge.do")
@@ -99,6 +121,16 @@ public class MypageController {
 	 * 지원 나의 정보 > 신고 내역 끝
 	 */
 	
+	/**
+	 * 혜진 나의 쇼핑 시작
+	 */
+	
+	@GetMapping("/myshopping.do")
+	public void myshopping() {}
+	
+	/**
+	 * 혜진 나의 쇼핑 끝
+	 */
 	/**
 	 * 혜진 교환/환불/취소 시작
 	 */

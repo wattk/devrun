@@ -5,49 +5,21 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="마이페이지" name="title"/>
+<jsp:include page="/WEB-INF/views/mypage/common/header.jsp">
+	<jsp:param value="프로필 수정" name="title"/>
 </jsp:include>
-<!-- 부트스트랩 아이콘 CDN -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-<!-- 한글 폰트 CDN -->
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
+
 <!-- CSS import -->
 <link href="${pageContext.request.contextPath}/resources/css/mypage/profileUpdate.css" rel="stylesheet">
 
 <%-- EL에서 접근하기 위해 VAR속성 지정 --%>
 <sec:authentication property="principal" var="member"/>
 
-<main>
-	<br/><br/>
-	<article class="container" id="tabContent">
-		
-		<%-- tap button --%>
-		<nav id="tabBtns">
-			<ul class="nav nav-tabs">
-				<li class="nav-item">
-				   <a class="nav-link" id="mycommunityTab" href="${pageContext.request.contextPath}/mypage#mycommunity" role="tab" aria-controls="mycommunity" aria-selected="false">나의 커뮤니티</a>
-				</li>
-				<li class="nav-item">
-				   <a class="nav-link" id="myshoppingTab" href="${pageContext.request.contextPath}/mypage#myshopping" role="tab" aria-controls="myshopping" aria-selected="false">나의 쇼핑</a>
-				</li>
-				<li class="nav-item">
-				   <a class="nav-link active" id="myinfoTab" href="${pageContext.request.contextPath}/mypage#myinfo" role="tab" aria-controls="myinfo" aria-selected="false">나의 정보</a>
-				</li>
-				<li class="nav-item">
-				   <a class="nav-link" id="mypageTab" href="${pageContext.request.contextPath}/mypage#mypage" role="tab" aria-controls="mypage" aria-selected="true">마이페이지</a>
-				</li>
-			</ul>
-		</nav>
-		
-		<%-- tap container --%>
-		<section class="col-12 tab-content" id="tabContainer">
-		
 		<div class="col-12" id="profileUpdate">
 			<div class="row">
 			
 				<article class="col-10" id="info">
-		      		<h4 id="breadcrumb"><a href="${pageContext.request.contextPath}/mypage#myinfo">나의 정보</a> <i class="bi bi-chevron-right"></i> <span>프로필 수정</span></h4>
+		      		<h4 id="breadcrumb"><a href="${pageContext.request.contextPath}/mypage/myinfo.do">나의 정보</a> <i class="bi bi-chevron-right"></i> <span>프로필 수정</span></h4>
 		       		<hr/>
 		       		<%-- my profile --%>
 		       		<section class="card" id="myProfile">
@@ -168,7 +140,8 @@
 		    	</div>
 		  	</div>
 		</div>		
-		
+
     </article>
 </main>
 
+<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
