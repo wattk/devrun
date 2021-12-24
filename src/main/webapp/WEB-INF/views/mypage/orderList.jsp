@@ -154,27 +154,5 @@
         	   
     </article>
 </main>
-<style>
-.small-font-size{
-	font-size : x-small;
-}
-#myOrderLog{
-	flex-direction : row;
-	height : 2.5rem;
-}
-#myShipment{
-	height : 5rem;
-}
-.shopping-nav-item{
-	display : flex;
-	justify-content : space-between;
-}
-.order-title{
-	border-bottom : 1px solid rgba(0,0,0,.125);
-}
-.cart-icon{
-	font-size : 20px;
-}
-</style>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
