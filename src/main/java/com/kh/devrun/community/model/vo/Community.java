@@ -26,8 +26,8 @@ public class Community implements Serializable {
 	private Date enrollDate;
 	private int viewCount;
 	private int likeCount;
-	private String thumbnail;
 	private String answerYn;
 	private String hashtag;
+	private String thumbnail;
 
 }
