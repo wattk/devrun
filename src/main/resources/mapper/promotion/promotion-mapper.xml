@@ -84,7 +84,6 @@
 		<collection property="productList" ofType="product">
 			<id column="product_code" property="productCode"/>
 			<result column="product_name" property="name"/>
-			<result column="product_name" property="name"/>
 			<result column="price" property="price"/>
 			<result column="thumbnail" property="thumbnail"/>
 			<result column="status" property="status"/>

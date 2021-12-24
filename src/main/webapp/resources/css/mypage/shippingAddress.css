@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+/* my info tab */
+#tabBtns #myinfoTab {border:1px solid #FFFFFF; background-color:#FFFFFF; color:#1A81FF; box-shadow:-1px 6px 8px 0 rgba(0, 0, 0, 0.5); position:relative; z-index:99;}
+
+
+
+/** my info **/
+#info {margin:0 auto;}
+#breadcrumb a {color:#9E9E9E;}
+#breadcrumb a:hover {color:#1A81FF;}
+
+/* addressList */
+#addressList {margin-bottom:20px;}
+
+/* addressDetail */
+#adressDetail .row {margin:0 auto;}
+#adressDetail label {margin:0 auto;}
+#adressDetail td {padding:5px 0;}
+#adressDetail td:first-of-type {color:#7F7F7F; padding-right:50px;}
+
+#adressDetail #btns {margin:35px 35px 20px 35px; flex-wrap:nowrap; justify-content:center;}
+#adressDetail #btns button {margin:0 15px;}

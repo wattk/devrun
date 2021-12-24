@@ -1,7 +1,6 @@
 package com.kh.devrun.promotion.model.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -98,13 +97,17 @@ public class PromotionServiceImpl implements PromotionService {
 	}
 
 	@Override
-	public List<Promotion> selectCurrentPromotionList() {
-		return promotionDao.selectCurrentPromotionList();
+	public Map<String, List<Promotion>> selectDevidedPromotionList() {
+		List<Promotion> currentPromotionList = promotionDao.selectCurrentPromotionList();
+		List<Promotion> endPromotionList = promotionDao.selectEndPromotionList();
+		
+		Map<String, List<Promotion>> map = new HashMap<>();
+		
+		map.put("currentPromotionList", currentPromotionList);
+		map.put("endPromotionList", endPromotionList);
+		
+		return map;
 	}
 
-	@Override
-	public List<Promotion> selectEndPromotionList() {
-		return promotionDao.selectEndPromotionList();
-	}
-
+	
 }

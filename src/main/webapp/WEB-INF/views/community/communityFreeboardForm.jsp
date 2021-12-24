@@ -16,9 +16,11 @@
 <!-- 사이드바 css -->
 <link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
 
+
 <!-- include summernote css/js -->
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" integrity="sha512-ZbehZMIlGA8CTIOtdE+M81uj3mrcgyrh6ZFeG33A4FHECakGrOsTPlPQ8ijjLkxgImrdmSVUHn1j+ApjodYZow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js" integrity="sha512-lVkQNgKabKsM1DA/qbhJRFQU8TuwkLF2vSN3iU/c7+iayKs08Y8GXqfFxxTZr1IcpMovXnf2N/ZZoMgmZep1YQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="${pageContext.request.contextPath }/resources/js/summernote/lang/summernote-ko-KR.js"></script>
 <style>
 #like, #report {
 	width: 100px;
@@ -29,8 +31,10 @@
 <script>
 	// #btnSave 버튼을 'click'하게 되면 #form을 전송(.submit)
 	$(document).on('click', '#btnSave', function(e){
+		console.log("클릭 이벤트 발생!");
 		e.preventDefault();
-		$("#form").submit();
+		//FreeboardForm : form name값
+		$(document.FreeboardForm).submit();
 	});
 	
 	// #btnList 버튼을 'click'하게 되면 communityFreboardList 페이지로 이동.
@@ -49,18 +53,7 @@
 			lang: "ko-KR", // 한글 설정
 			placeholder: "내용을 입력해 주세요"  // placeholder 설정
 		});
-	});
-	
-	/* textarea에도 required속성을 적용가능하지만, 공백이 입력된 경우 대비 유효성검사를 실시함. */
-	function boardValidate(){
-		var $content = $("[name=content]");
-		if(/^(.|\n)+$/.test($content.val()) == false){
-			alert("내용을 입력하세요");
-			return false;
-		}
-		return true;
-	}
-	
+	});	
 </script>
 
 	<article>
@@ -69,14 +62,17 @@
 	
 			<hr>
 	
-		<form:form name="form" id="form" role="form" method="POST" action="${pageContext.request.contextPath}/community/communityColumnEnroll.do">
+		<form:form 
+			name="FreeboardForm" 
+			action="${pageContext.request.contextPath}/community/communityFreeboardEnroll.do"
+			method="POST" >
 				<div class="mb-3">
 					<label for="title"><strong>제목</strong></label>
 					<input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
 				</div>
 				<div class="mb-3">
 					<label for="writer"><strong>작성자</strong></label>
-					<input type="text" class="form-control" name="reg_id" id="reg_id" placeholder="이름을 입력해 주세요">
+					<input type="text" class="form-control" name="nickname" id="nickname" value='<sec:authentication property="principal.nickname" />'  placeholder="이름을 입력해 주세요">
 					<input type="hidden" class="form-cotrol" name="memberNo" id="member_no" value='<sec:authentication property="principal.memberNo" />' placeholder="이름을 입력해 주세요">
 				</div>
 				<div class="mb-3">
@@ -85,14 +81,15 @@
 				</div>
 				<div class="mb-3">
 					<label for="tag"><strong>해시태그</strong></label>
-					<input type="text" class="form-control" name="tag" id="tag" placeholder="태그를 입력해 주세요">
+					<input type="text" class="form-control" name="hashtag" id="hashtag" placeholder="태그를 입력해 주세요">
 				</div>
 		</form:form>
-			<div style="text-align: center;">
-				<button type="submit" class="btn btn-primary btn-lg" id="btnSave">저장</button>
+			<div style="text-align: center">
+				<button type="button" class="btn btn-primary btn-lg" id="btnSave">저장</button>
 				<button type="button" class="btn btn-secondary btn-lg" id="btnList">목록</button>
 			</div>
 		</div>
 	</article>		
 </div>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

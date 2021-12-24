@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.devrun.community.model.dao.CommunityDao;
 import com.kh.devrun.community.model.vo.Community;
+import com.kh.devrun.community.model.vo.CommunityEntity;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,5 +32,15 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public List<Community> columnBestList() {
 		return communityDao.columnBestList();
+	}
+
+	@Override
+	public int insertFreeboard(Community community) {
+		return communityDao.insertFreeboard(community);
+	}
+
+	@Override
+	public List<CommunityEntity> selectFreeboardList() {
+		return communityDao.selectFreeboardList();
 	}
 }
