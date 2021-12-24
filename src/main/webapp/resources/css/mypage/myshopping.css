@@ -59,6 +59,16 @@ px
 .order-detail-header{
 	border-bottom : 1px solid rgba(0,0,0,.125);
 }
+.review-detail-header{
+	border-bottom : 1px solid rgba(0,0,0,.125);
+	height : 4rem;
+}
 #orderPaymentTbl th, #orderPaymentTbl td{
 	padding : 10px;
+}
+.review-img{
+	width : 3rem;
+}
+.review-star{
+	font-size : .7rem;
 }
