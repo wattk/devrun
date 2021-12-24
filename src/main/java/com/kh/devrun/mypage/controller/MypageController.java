@@ -152,6 +152,16 @@ public class MypageController {
 	 * 혜진 주문 내역 끝
 	 */
 	/**
+	 * 혜진 주문 상세 시작
+	 */
+	
+	@GetMapping("/orderDetail.do")
+	public void orderDetail() {}
+	
+	/**
+	 * 혜진 주문 상세 끝
+	 */
+	/**
 	 * 혜진 나의 리뷰 시작
 	 */
 	
