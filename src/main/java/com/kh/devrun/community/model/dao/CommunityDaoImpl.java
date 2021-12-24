@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.devrun.community.model.vo.Community;
+import com.kh.devrun.community.model.vo.CommunityEntity;
 
 @Repository
 public class CommunityDaoImpl implements CommunityDao {
@@ -28,4 +29,16 @@ public class CommunityDaoImpl implements CommunityDao {
 	public List<Community> columnBestList() {
 		return session.selectList("community.columnBestList");
 	}
+
+	@Override
+	public int insertFreeboard(Community community) {
+		return session.insert("community.insertFreeboard", community);
+	}
+
+	@Override
+	public List<CommunityEntity> selectFreeboardList() {
+		return session.selectList("community.selectFreeboardList");
+	}
+
+	
 }

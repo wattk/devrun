@@ -15,6 +15,9 @@
 .input-group {
 	justify-content: center;
 }
+td {
+	text-align: center;
+}
 </style>
 <script>
 function goFreeboardForm(){
@@ -43,13 +46,11 @@ function goFreeboardForm(){
 			<!-- 검색창 시작-->
 			<div class="input-group mb-3" id="search">
 			  <div class="input-group-prepend">
-			    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</button>
+			    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">전체</button>
 			    <div class="dropdown-menu">
-			      <a class="dropdown-item" href="#">Action</a>
-			      <a class="dropdown-item" href="#">Another action</a>
-			      <a class="dropdown-item" href="#">Something else here</a>
-			      <div role="separator" class="dropdown-divider"></div>
-			      <a class="dropdown-item" href="#">Separated link</a>
+			      <a class="dropdown-item" href="#">제목</a>
+			      <a class="dropdown-item" href="#">작성자</a>
+			      <a class="dropdown-item" href="#">내용</a>
 			    </div>
 			  </div>
 			  <div>
@@ -62,9 +63,9 @@ function goFreeboardForm(){
 			<!-- 상단 탭 시작 -->	
 			<nav>
 			  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
-			    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
-			    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">최신순</a>
+			    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">댓글 많은 순</a>
+			    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">좋아요 순</a>
 			  </div>
 			</nav>
 			<div class="tab-content" id="nav-tabContent">
@@ -90,21 +91,18 @@ function goFreeboardForm(){
 			<th class="text-center">답변개수</th>
 		</tr>
 		
-		<c:forEach items="${list}" var="board">
-			<tr data-no="${board.no}">
-				<td>${board.no}</td>
-				<td>${board.title}</td>
-				<td>${board.memberId}</td>
-				<td><fmt:formatDate value="${board.regDate}" pattern="yy-MM-dd HH:mm"/> </td>
-				<td class="text-center">
-					<c:if test="${board.attachCount gt 0}">
-						<img src="${pageContext.request.contextPath}/resources/images/file.png" alt="" width="16px"/>
-					</c:if>
-				</td>
-				<td>${board.readCount}</td>
+		<c:forEach items="${list}" var="communityEntity">
+			<tr data-no="${communityEntity.communityNo}">
+				<td>${communityEntity.communityNo}</td>
+				<td>${communityEntity.title}</td>
+				<td>${communityEntity.nickname}</td>
+				<td><fmt:formatDate value="${communityEntity.enrollDate}" pattern="yy-MM-dd HH:mm"/> </td>
+				<td>${communityEntity.likeCount}</td>
+				<td>${community.viewCount}</td>
+				<td>만들어야함</td>
 			</tr>
 		</c:forEach>
-	</table> 
+	</table>  
 	<!-- 리스트 끝 -->
 	
 	<!-- 글쓰기 버튼 -->

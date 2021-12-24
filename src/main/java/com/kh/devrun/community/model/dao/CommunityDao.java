@@ -3,6 +3,7 @@ package com.kh.devrun.community.model.dao;
 import java.util.List;
 
 import com.kh.devrun.community.model.vo.Community;
+import com.kh.devrun.community.model.vo.CommunityEntity;
 
 public interface CommunityDao {
 
@@ -11,5 +12,9 @@ public interface CommunityDao {
 	List<Community> selectColumnList();
 
 	List<Community> columnBestList();
+
+	int insertFreeboard(Community community);
+
+	List<CommunityEntity> selectFreeboardList();
 
 }
