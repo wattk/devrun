@@ -59,7 +59,7 @@ px
 .order-detail-header{
 	border-bottom : 1px solid rgba(0,0,0,.125);
 }
-.review-detail-header{
+.review-detail-header, .question-header{
 	border-bottom : 1px solid rgba(0,0,0,.125);
 	height : 4rem;
 }
@@ -71,4 +71,7 @@ px
 }
 .review-star{
 	font-size : .7rem;
+}
+.question-item{
+	height : 3rem;
 }
