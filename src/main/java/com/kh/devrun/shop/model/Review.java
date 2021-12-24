@@ -28,6 +28,6 @@ public class Review implements Serializable {
 	private Date regDate;
 	private int rate;
 	
-	
+	private Attachment attach;
 
 }
