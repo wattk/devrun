@@ -1,4 +1,4 @@
-package com.kh.devrun.shop.model;
+package com.kh.devrun.shop.model.vo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,15 +13,21 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true)
-public class ReviewAttachment implements Serializable {
-	
+public class Review implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 	
-	private int ReviewAttachmentNo;
 	private int reviewNo;
-	private String originalFilenname;
-	private String renamenFilename;
+	@NonNull
+	private int memberNo;
+	@NonNull
+	private String productCode;
+	@NonNull
+	private String content;
+	private int likeCount;
 	private Date regDate;
+	private int rate;
 	
+	private Attachment attach;
 
 }

@@ -29,55 +29,64 @@
 		<div id="shopItemDetailOuterDiv">
 			<div id="itemDetailDisplayDiv" class="row">
 				<!--리뷰작성모달 시작(부트스트랩)-->
-					<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog" role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">리뷰 작성하기</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							</div>
-							<div class="modal-body">
-								<div class="qm-body1">
-									<p>해당상품</p>
-									<div class="row" id="qItem">
-										<img id="qPIc" src="https://i.ibb.co/gm7H77f/square.png" alt="">
-										<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
-										<input type="hidden" name="product_code">
-									</div>
-									<p class="mt-3">상품 별점</p>
-									<select class="form-select col-12" aria-label="Default select example">
-										<option selected> 별점 5점 </option>
-										<option value="4">별점 4점</option>
-										<option value="3">별점 3점</option>
-										<option value="2">별점 2점</option>
-										<option value="1">별점 1점</option>
-									</select>
+					<form:form
+					name="reviewFrm"
+					method="POST"
+					action="${pageContext.request.contextPath}/shop/review.do"
+					enctype="multipart/form-data">
+						<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">리뷰 작성하기</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
 								</div>
-								<div class="m-body2 mt-3">
-									<div>
-										<div id="rSelectP" class="text-center">
-											<p id="choosePicP">사진첨부(선택)</p>
+								<div class="modal-body">
+									<div class="qm-body1">
+										<p>해당상품</p>
+										<div class="row" id="qItem">
+											<img id="qPIc" src="https://i.ibb.co/gm7H77f/square.png" alt="">
+											<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
+											<input type="hidden" name="productCode" value="332">
+											<sec:authorize access="isAuthenticated()">
+												<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
+											</sec:authorize>
 										</div>
-										<div class="text-center">
-											<input type="file" name="" id="reviewPic" onchange='openFile(event)'>
+										<p class="mt-3">상품 별점</p>
+										<select name="rate" class="form-select col-12" aria-label="Default select example">
+											<option value="5" selected> 별점 5점 </option>
+											<option value="4">별점 4점</option>
+											<option value="3">별점 3점</option>
+											<option value="2">별점 2점</option>
+											<option value="1">별점 1점</option>
+										</select>
+									</div>
+									<div class="m-body2 mt-3">
+										<div>
+											<div id="rSelectP" class="text-center">
+												<p id="choosePicP">사진첨부(선택)</p>
+											</div>
+											<div class="text-center">
+												<input type="file" name="upFile" id="reviewPic" onchange='openFile(event)'>
+											</div>
 										</div>
+										<p class="mt-3">리뷰 작성</p>
+										<div class="checkboxReport">
+											<textarea name="content" id="reportText" cols="30" rows="10" required></textarea>
+										</div>
+										<p style="font-size: 12px;">ⓘ 포토리뷰 500P / 글리뷰 100P 적립</p>
 									</div>
-									<p class="mt-3">리뷰 작성</p>
-									<div class="checkboxReport">
-										<textarea name="" id="reportText" cols="30" rows="10" required></textarea>
-									</div>
-									<p style="font-size: 12px;">ⓘ 포토리뷰 500P / 글리뷰 100P 적립</p>
+								</div>
+								<div class="modal-footer justify-content-center">
+								<button type="submit" class="btn btn-primary col-4">등록하기</button>
+								<button type="button" class="btn btn-secondary col-4" data-dismiss="modal" onclick="deleteReview();">취소하기</button>
 								</div>
 							</div>
-							<div class="modal-footer justify-content-center">
-							<button type="button" class="btn btn-primary col-4">등록하기</button>
-							<button type="button" class="btn btn-secondary col-4" data-dismiss="modal" onclick="deleteReview();">취소하기</button>
 							</div>
 						</div>
-						</div>
-					</div>
+					</form:form>
 				<!--리뷰작성모달 끝-->
 				<!--문의 글 작성 시작(부트스트랩)-->
 					<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

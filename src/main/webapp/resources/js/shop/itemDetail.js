@@ -18,10 +18,14 @@ $reviewModal.hide();
 
 
  var openFile = function(event) { 
+	
 	const $picR = $('#choosePicP');
 	const picA = '<img id="previewPhoto" src="">';
+	$('#choosePicP').next().detach();
+	
 	$picR.after(picA);
 
+  
 	var input = event.target; var reader = new FileReader(); 
 	 
  	reader.onload = function(){ 
@@ -30,7 +34,13 @@ $reviewModal.hide();
  		output.src = dataURL; 
  		}; 
  		
- 	reader.readAsDataURL(input.files[0]); 
+ 	if(input.files[0] != null) {
+ 	reader.readAsDataURL(input.files[0]); 	
+	} else{
+	$('#choosePicP').next().detach();
+	}
+
+  
  	};
 
 

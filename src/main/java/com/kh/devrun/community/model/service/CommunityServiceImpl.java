@@ -40,7 +40,12 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public List<CommunityEntity> selectFreeboardList() {
-		return communityDao.selectFreeboardList();
+	public List<CommunityEntity> selectFreeboardList(int offset, int limit) {
+		return communityDao.selectFreeboardList(offset, limit);
+	}
+
+	@Override
+	public int selectFreeboardTotalCount() {
+		return communityDao.selectFreeboardTotalCount();
 	}
 }
