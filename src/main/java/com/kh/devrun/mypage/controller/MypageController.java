@@ -48,6 +48,28 @@ public class MypageController {
 	 */
 	
 	/**
+	 * 지원 나의 정보 메인 시작
+	 */
+	@GetMapping("/myinfo.do")
+	public String myinfo() {
+		return "mypage/myinfo";
+	}
+	/**
+	 * 지원 나의 정보 메인 끝
+	 */
+	
+	/**
+	 * 지원 나의 커뮤니티 메인 시작
+	 */
+	@GetMapping("/mycommunity.do")
+	public String mycommunity() {
+		return "mypage/mycommunity";
+	}
+	/**
+	 * 지원 나의 커뮤니티 메인 끝
+	 */
+	
+	/**
 	 * 지원 나의 정보 > 활동 배지 시작
 	 */
 	@GetMapping("/myinfo/activityBadge.do")
