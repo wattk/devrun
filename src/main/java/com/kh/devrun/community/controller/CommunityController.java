@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.devrun.community.common.CommunityUtils;
 import com.kh.devrun.community.model.service.CommunityService;
 import com.kh.devrun.community.model.vo.Community;
 import com.kh.devrun.community.model.vo.CommunityEntity;
@@ -136,11 +139,38 @@ public class CommunityController {
 	}
 	
 	// 자유게시판-리스트
+	// @RequestParam int cPage : 현재 페이지 변수를 하나 받아온다.
+	// communityFreeboardList의 인자값으로 @RequestParam() 어노테이션을 넣어서 값을 받아온다.
+	// @RequestParam("가져올 데이터의 이름")[데이터 타입][가져온 데이터를 담을 변수]
+	/**
+	 * @RequestParam은 필수인자(기본속성 : required = true) 이므로 cPage가 없으면 바로 오류가 난다.
+	 * 따라서 기본값을 정해준다. --> (defaultValue = "1")
+	 * cPage가 없다면 알아서 문자열을 정수형으로 반환해서 넘겨준다. 
+	 */
 	@GetMapping("/communityFreeboardList.do")
-	public String communityFreeboardList(Model model) {
-		List<CommunityEntity> list = communityService.selectFreeboardList();
-		log.debug("communityFreeboardList = {}, list");
+	public String communityFreeboardList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+		log.debug("cPage = {}", cPage);
+		
+		int limit = 10; // 한 페이지당 10으로 고정
+		int offset = (cPage - 1) * limit;
+		
+		// 1. 전체 게시물 목록(nickname 추가)
+		List<CommunityEntity> list = communityService.selectFreeboardList(offset, limit);
+		log.debug("selectFreeboardList = {}, list");
+		// jsp에 전달할 수 있도록 model에 담아준다.
 		model.addAttribute("list", list);
+		
+		// 2. 전체 게시물 수 totalContent
+		int totalContent = communityService.selectFreeboardTotalCount();
+		log.debug("selectFreeboardTotalCount = {}, list");
+		model.addAttribute("totalContent", totalContent);
+		
+		// 3. pagebar
+		String url = request.getRequestURI(); // /devrun/community/communityFreeboardList.do
+		String pagebar = CommunityUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
+		
 		return "community/communityFreeboardList";
 	}
 	

@@ -15,6 +15,8 @@ public interface CommunityDao {
 
 	int insertFreeboard(Community community);
 
-	List<CommunityEntity> selectFreeboardList();
+	List<CommunityEntity> selectFreeboardList(int offset, int limit);
+
+	int selectFreeboardTotalCount();
 
 }

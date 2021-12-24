@@ -2,6 +2,7 @@ package com.kh.devrun.community.model.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,8 +37,15 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public List<CommunityEntity> selectFreeboardList() {
-		return session.selectList("community.selectFreeboardList");
+	public List<CommunityEntity> selectFreeboardList(int offset, int limit) {
+		// mybatis가 제공하는 RowBounds 객체를 하나 제공한다. -- 페이징 처리를 위해서
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectFreeboardList", null, rowBounds);
+	}
+
+	@Override
+	public int selectFreeboardTotalCount() {
+		return session.selectOne("community.selectFreeboardCount");
 	}
 
 	
