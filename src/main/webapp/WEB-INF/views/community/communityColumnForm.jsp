@@ -28,10 +28,10 @@
 		$("#form").submit();
 	});
 	
-	// #btnList 버튼을 'click'하게 되면 communityColumn 페이지로 이동.
+	// #btnList 버튼을 'click'하게 되면 communityColumnList 페이지로 이동.
 	$(document).on('click', '#btnList', function(e){
 		e.preventDefault();
-		location.href="${pageContext.request.contextPath}/community/communityColumn.do";
+		location.href="${pageContext.request.contextPath}/community/communityColumnList.do";
 	});
 	
 	// summernote 웹 에디터 로딩
