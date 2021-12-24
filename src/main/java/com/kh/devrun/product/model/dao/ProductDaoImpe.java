@@ -46,9 +46,8 @@ public class ProductDaoImpe implements ProductDao{
 		return session.insert("product.insertProductDetail",productDetail);
 	}
 	
-	// Product 목록 가져오기
 	@Override
-	public List<ProductExtends> selectAllProductList(int offset, int limit) {
+	public List<Product> selectAllProductList(int offset, int limit) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("product.selectAllProductList",null,rowBounds);
 	}
@@ -58,5 +57,26 @@ public class ProductDaoImpe implements ProductDao{
 	public int selectTotalBoardCount() {
 		return session.selectOne("product.selectTotalBoardCount");
 	}
+
+	// 옵션 리스트 조회(비동기)
+	@Override
+	public List<ProductDetail> findProductOption(String productCode) {
+		return session.selectList("product.findProductOption", productCode);
+	}
+	
+	// 상품 삭제
+	@Override
+	public int deleteProduct(String productCode) {
+		return session.delete("product.deleteProduct",productCode);
+	}
+
+	// 상품정보 하나 가져오기
+	@Override
+	public ProductExtends selectProductOne(String productCode) {
+		return session.selectOne("product.selectProductOne",productCode);
+	}
 	
 }
+
+
+

@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -53,7 +55,6 @@ public class AdminController {
 	@Autowired
 	ServletContext application;
 	
-	// 태영시작
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
 
@@ -70,7 +71,8 @@ public class AdminController {
 		int offset = (cPage - 1) * limit;
 		
 		// 게시물 리스트 가져오기
-		List<ProductExtends> list = productService.selectAllProductList(offset,limit);
+//		List<ProductExtends> list = productService.selectAllProductList(offset,limit);
+		List<Product> list = productService.selectAllProductList(offset,limit);
 		log.debug("list = {}" ,list);	
 		model.addAttribute("list",list);
 		
@@ -132,11 +134,11 @@ public class AdminController {
 		log.debug("option = {}", option);
 		log.debug("optionContent = {}", optionContent);
 		log.debug("quantity = {}", quantity);
-	
-		String categoryCode = parentCategoryCode + childCategoryCode;
 		
-		// 소분류 코드 + 옵션 + seq.no 으로 상품코드를 만둘어준 뒤 pruduct에 set
-		String productCode = parentCategoryCode+"-"+childCategoryCode;
+		//String categoryCode =  parentCategoryCode+"-"+childCategoryCode;
+		
+		// 대분류코드 + 소분류코드 + name 으로 상품코드를 만둘어준 뒤 pruduct에 set
+		String productCode = parentCategoryCode+"-"+childCategoryCode+"-"+product.getName();
 		product.setProductCode(productCode);
 		
 		// 상품상세 객체로 묶어 전달		
@@ -199,8 +201,55 @@ public class AdminController {
 		return "redirect:/admin/productMain.do";
 	}
 	
+	// 상품 삭제
+	@PostMapping("/deleteProduct.do")
+	public String deleteProduct(@RequestParam String productCodes, RedirectAttributes redirectAttr) {
+		log.debug("productCode = {}",productCodes);
+		String[] productCode = productCodes.split(",");
+		
+		for(int i = 0; i < productCode.length; i++) {
+			log.debug("productCode"+i+productCode[i]);
+			int result = productService.deleteProduct(productCode[i]);
+		}
+		
+		redirectAttr.addFlashAttribute("msg","선택하신 상품을 삭제했습니다");	
+		return "redirect:/admin/productMain.do";
+	}
 	
 	
+	@GetMapping("/findProductOption")
+	public ResponseEntity<?> optionList(
+			@RequestParam(required = false) String productCode
+			){
+		
+		List<ProductDetail> productDetailList;
+		try {
+			productDetailList = productService.findProductOption(productCode);
+			log.debug("productDetailList = {}",productDetailList);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+					
+		return ResponseEntity.ok(productDetailList);
+	}
+	
+	// 상품 상세 페이지 이동
+	@GetMapping("/productDetail.do")
+	public String productDetail(@RequestParam String productCode, Model model) {
+		
+		// 상품정보 가져오기
+		ProductExtends productExtends = productService.selectProductOne(productCode);
+	
+
+		log.debug("ProductExtends ={}",productExtends);
+		
+		model.addAttribute("productInfo",productExtends);
+		return "/admin/product/productDetail";
+	}
+	
+	
+
 	
 	
 	

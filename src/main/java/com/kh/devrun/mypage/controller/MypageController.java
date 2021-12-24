@@ -23,7 +23,7 @@ public class MypageController {
 	/**
 	 * 지원 마이페이지 메인 시작
 	 */
-	@GetMapping("")
+	@GetMapping("/mypage.do")
 	public String mypage(Model model, Authentication authentication) {
 		Member member = (Member) authentication.getPrincipal();
 		log.debug("[principal] member = {}", member);
@@ -45,6 +45,28 @@ public class MypageController {
 	}
 	/**
 	 * 지원 마이페이지 메인 끝
+	 */
+	
+	/**
+	 * 지원 나의 정보 메인 시작
+	 */
+	@GetMapping("/myinfo.do")
+	public String myinfo() {
+		return "mypage/myinfo";
+	}
+	/**
+	 * 지원 나의 정보 메인 끝
+	 */
+	
+	/**
+	 * 지원 나의 커뮤니티 메인 시작
+	 */
+	@GetMapping("/mycommunity.do")
+	public String mycommunity() {
+		return "mypage/mycommunity";
+	}
+	/**
+	 * 지원 나의 커뮤니티 메인 끝
 	 */
 	
 	/**
@@ -100,6 +122,16 @@ public class MypageController {
 	 */
 	
 	/**
+	 * 혜진 나의 쇼핑 시작
+	 */
+	
+	@GetMapping("/myshopping.do")
+	public void myshopping() {}
+	
+	/**
+	 * 혜진 나의 쇼핑 끝
+	 */
+	/**
 	 * 혜진 교환/환불/취소 시작
 	 */
 	
@@ -108,5 +140,45 @@ public class MypageController {
 	
 	/**
 	 * 혜진 교환/환불/취소 끝
+	 */
+	/**
+	 * 혜진 주문 내역 시작
+	 */
+	
+	@GetMapping("/orderList.do")
+	public void orderList() {}
+	
+	/**
+	 * 혜진 주문 내역 끝
+	 */
+	/**
+	 * 혜진 나의 리뷰 시작
+	 */
+	
+	@GetMapping("/myReview.do")
+	public void myReview() {}
+	
+	/**
+	 * 혜진 나의 리뷰 끝
+	 */
+	/**
+	 * 혜진 나의 문의 시작
+	 */
+	
+	@GetMapping("/myQuestion.do")
+	public void myQuestion() {}
+	
+	/**
+	 * 혜진 나의 문의 끝
+	 */
+	/**
+	 * 혜진 나의 포인트 조회 시작
+	 */
+	
+	@GetMapping("/myPoint.do")
+	public void myPoint() {}
+	
+	/**
+	 * 혜진 나의 포인트 조회 끝
 	 */
 }

@@ -769,6 +769,7 @@ CREATE TABLE "PRODUCT_CATEGORY" (
     CONSTRAINT FK_PRODUCT_CATEGORY_PRODUCT_CODE FOREIGN KEY(PRODUCT_CODE) REFERENCES PRODUCT(PRODUCT_CODE)
 );
 
+
 -- 상품-분류 테이블 코멘트 생성
 COMMENT ON COLUMN "PRODUCT_CATEGORY"."CHILD_CATEGORY_CODE" IS '소분류 코드';
 COMMENT ON COLUMN "PRODUCT_CATEGORY"."PRODUCT_CODE" IS '상품코드';
@@ -1273,48 +1274,28 @@ values('pm','ot','팜레스트');
 
 select*from PRODUCT_CHILD_CATEGORY;
 select*from PRODUCT_PARENT_CATEGORY;
+
 select * from product_category;
 select * from product_detail;
 
-select * from product;
+select * from product order by reg_date desc;
 
 		select
-            pc.child_category_code|| '-' || pd.option_no view_code,
+            p.name,
 		    p.thumbnail,
-		    p.name,
-		    pd.option_no,
-		    pd.quantity,
+		    p.price,
 		    p.status,
-		    pc.child_category_code,
+            (select child_category_title from PRODUCT_CHILD_CATEGORY)child_category_title,
+            p.content,
+            substr(p.product_code,1,2) parent_category_code,
+            substr(p.product_code,4,2) child_category_code,
 		    p.reg_date,
 		    p.view_count
-		    
 		from
-		    product p left join product_category pc
-		        on p.product_code = pc.product_code
-		    left join product_detail pd 
-		        on pc.product_code = pd.product_code;
-
-create view product_view as
-select
-            p.product_code,
-		    p.thumbnail,
-		    p.name,
-		    pd.option_no,
-		    pd.quantity,
-		    p.status,
-		    pc.child_category_code,
-		    p.reg_date,
-		    p.view_count
-		    
-		from
-		    product p left join product_category pc
-		        on p.product_code = pc.product_code
-		    left join product_detail pd 
-		        on pc.product_code = pd.product_code;
-
-select * from product_view;
-drop view product_view;
+            product p
+        order by reg_date desc;
+        
+(select child_category_title from PRODUCT_CHILD_CATEGORY where child_category_code = 'gm');
 -- 상품- 분류
 
 
@@ -1337,5 +1318,13 @@ from
     product p left join product_category pc 
         on p.product_code = pc.product_code;
 
-select * from promotion;
+
+
+
+
+
+
+
+
+
 

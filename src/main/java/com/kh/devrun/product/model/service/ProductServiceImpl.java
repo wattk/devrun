@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.devrun.admin.exception.ProductDeleteException;
 import com.kh.devrun.admin.exception.ProductInsertException;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.model.dao.ProductDao;
@@ -77,9 +78,10 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public List<ProductExtends> selectAllProductList(int offset, int limit) {
+	public List<Product> selectAllProductList(int offset, int limit) {
 		return productDao.selectAllProductList(offset, limit);
 	}
+
 	
 	@Transactional(rollbackFor = Exception.class)
 	@Override
@@ -92,5 +94,35 @@ public class ProductServiceImpl implements ProductService {
 	public int selectTotalBoardCount() {
 		return productDao.selectTotalBoardCount();
 	}
+
+	@Override
+	public List<ProductDetail> findProductOption(String productCode) {
+		return productDao.findProductOption(productCode);
+	}
+
+	// 상품삭제
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int deleteProduct(String productCode) {
+		int result = 0;
+		try {
+			result = productDao.deleteProduct(productCode);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			throw new ProductDeleteException("상품 삭제가 실패했습니다",e);
+		}	
+		return result;
+	}
+
+	
+	// 상품정보 하나가져오기
+	@Override
+	public ProductExtends selectProductOne(String productCode) {
+		return productDao.selectProductOne(productCode);
+	}
 	
 }
+
+
+
+

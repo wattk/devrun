@@ -56,6 +56,10 @@
 #productList td:nth-child(2){width:70px;height:70px;}
 #productList td{text-align:center;}
 #productList th{text-align:center;}
+#productList button{border: 0px; background-color:#b7b9cc29; width:60px;border-radius: 10px; height: 37px;}
+#modalOptionList table{width:100%; text-align:center;border-collapse: separate; border-spacing: 10px;}
+#btnContainer form{display:inline}
+
 
 /* 상품 등록  */
 #title{display: flex; justify-content: space-between; margin-bottom:15px;}
@@ -66,7 +70,7 @@
 #productImgContainer img{width:100%; height:100% }
 #name{width:90%; height: 55px; font-size: 17px; font-weight: 600;}
 #imgInput{width:100%}
-
+#modalOptionList div{display: flex;justify-content: space-around;}
 
 .bold{font-weight:bold}
 .fw600{font-weight:600}
@@ -97,9 +101,6 @@
 /* 옵션 테이블  */
 #optionTable{width:100%; height:130px;border-collapse: separate; border-spacing: 0 16px;}
 #optionTable input{width :80%; text-align:center;
-
-
-
 
 
 

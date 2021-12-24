@@ -18,7 +18,15 @@ public interface ProductDao {
 	
 	int insertProductDetail(ProductDetail productDetail);
 	
-	List<ProductExtends> selectAllProductList(int offset, int limit);
+	List<Product>selectAllProductList(int offset, int limit);
 	
 	int selectTotalBoardCount();
+
+	List<ProductDetail> findProductOption(String productCode);
+	
+	// 상품삭제
+	int deleteProduct(String productCode);
+
+	// 상품정보 하나 가져오기
+	ProductExtends selectProductOne(String productCode);
 }
