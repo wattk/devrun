@@ -13,7 +13,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(callSuper = true)
-public class ReviewAttachment implements Serializable {
+public class Attachment implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
