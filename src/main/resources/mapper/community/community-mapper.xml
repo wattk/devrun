@@ -43,4 +43,35 @@
   	order by
   		like_count desc
   </select>
+  
+  <!-- 자유게시판 글쓰기 -->
+    <insert id="insertFreeboard">
+  	insert into
+  		community
+  	values(
+  		seq_community_no.nextval,
+  		#{memberNo},
+  		4,
+  		#{title},
+  		#{content},
+  		default,
+  		default,
+  		default,
+  		default,
+  		#{hashtag},
+  		#{thumbnail}
+  	)
+  </insert>
+  
+    <!-- 자유게시판 리스트 조회 -->
+  <select id="selectFreeboardList" resultType="communityEntity">
+	select
+	    c.*,
+	    (select nickname from member where member_no = c.member_no) nickname
+	from
+	    community c
+	order by
+	    community_no desc
+  </select>
+  
 </mapper>

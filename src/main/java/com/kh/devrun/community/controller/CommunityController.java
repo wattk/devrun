@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.community.model.service.CommunityService;
 import com.kh.devrun.community.model.vo.Community;
+import com.kh.devrun.community.model.vo.CommunityEntity;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -76,13 +77,14 @@ public class CommunityController {
 		
 	}
 	
-	// 커뮤니티-칼럼-글쓰기
+	// 칼럼-글쓰기
 	@GetMapping("/communityColumnForm.do")
 	public void communityColumnForm(){}
 	
+	// 칼럼-글등록
 	@PostMapping("/communityColumnEnroll.do")
 	public String communityColumnEnroll(Community community, RedirectAttributes redirectAttributes) {
-		log.debug("{}", "/communityCommunityEnroll.do 요청!");
+		log.debug("{}", "/communityColumnEnroll.do 요청!");
 		log.debug("community = {}", community);
 		// jmg 데이터를 잘라오기 위한 Index 선언
 		int startIndex = 0;
@@ -115,7 +117,7 @@ public class CommunityController {
 	  log.error("컬럼 등록 오류", e); 
 	  throw e; 
 	  } 
-	  return "redirect:/community/communityMain.do";
+	  return "redirect:/community/communityColumnList.do";
 		 
 	}
 	
@@ -133,16 +135,57 @@ public class CommunityController {
 		return "community/communityStudy";
 	}
 	
-	// 커뮤니티-자유게시판
+	// 자유게시판-리스트
 	@GetMapping("/communityFreeboardList.do")
-	public String communityFreeboard() {
-		
+	public String communityFreeboardList(Model model) {
+		List<CommunityEntity> list = communityService.selectFreeboardList();
+		log.debug("communityFreeboardList = {}, list");
+		model.addAttribute("list", list);
 		return "community/communityFreeboardList";
 	}
 	
 	// 자유게시판-글쓰기
 	@GetMapping("/communityFreeboardForm.do")
 	public void communityFreeboardForm() {}
+	
+	// 자유게시판-글등록
+	@PostMapping("/communityFreeboardEnroll.do")
+	public String communityFreeboardEnroll(Community community, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "/communityFreeboardEnroll.do 요청!");
+		log.debug("community = {}", community);
+		// jmg 데이터를 잘라오기 위한 Index 선언
+		int startIndex = 0;
+		int endIndex = 0;
+		String content = community.getContent();
+		// "startindex는 "<img" 전 부터를 의미한다.
+		startIndex = content.indexOf("<img");
+		
+		// 문자열은 -1이 나올 수 없다.
+		if(startIndex != -1) {
+			// endIndex는 ">" 전까지이다. \ : escaping
+			endIndex = content.substring(startIndex).indexOf("\">");
+			// ">"까지 포함해서 읽어와야 하므로 endIndex+2로 설정한다.
+			log.debug("startIndex : {} ~ endIndex : {}", startIndex, endIndex+2);
+			
+			// thumbnail에 img 데이터를 담는다.
+			String thumbnail = content.substring(startIndex, startIndex + endIndex+2);
+			log.debug("thumbnail = {}", thumbnail);
+			System.out.println(thumbnail);
+			// community에 tumbnail을 보낸다.
+			community.setThumbnail(thumbnail);
+		}
+		
+		  try { 
+			  int result = communityService.insertFreeboard(community); 
+			  String msg = result > 0 ? "게시글 등록 성공!" : "게시글 등록 실패!";
+			  redirectAttributes.addFlashAttribute("msg", msg); 
+		  } 
+		  catch (Exception e) {
+			  log.error("게시글 등록 오류", e); 
+		  throw e; 
+		  } 
+		  return "redirect:/community/communityFreeboardList.do";
+	}
 	
 	
 	
