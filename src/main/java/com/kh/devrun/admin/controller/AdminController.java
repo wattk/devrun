@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -27,12 +28,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kh.devrun.admin.model.service.AdminService;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.common.DevrunUtils;
-import com.kh.devrun.product.Product;
-import com.kh.devrun.product.ProductDetail;
-import com.kh.devrun.product.ProductExtends;
+import com.kh.devrun.product.model.service.ProductService;
+import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductExtends;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
@@ -44,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminController {
 	
 	@Autowired
-	AdminService adminService;
+	ProductService productService;
 	
 	@Autowired
 	PromotionService promotionService;
@@ -58,11 +59,31 @@ public class AdminController {
 
 	
 	@GetMapping("/productMain.do")
-	public String productManage(Model model) {
-		List<ProductExtends> list = adminService.selectAllProductList();
-		log.debug("list = {}" ,list);	
+	public String productManage(
+			Model model,
+			@RequestParam(defaultValue = "1") int cPage,
+			HttpServletRequest request
+			) {
 		
+		// 1.페이징 처리 : 페이지 설정
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		// 게시물 리스트 가져오기
+		List<ProductExtends> list = productService.selectAllProductList(offset,limit);
+		log.debug("list = {}" ,list);	
 		model.addAttribute("list",list);
+		
+		// 2. 전체게시물수 totalContent
+		int totalContent = productService.selectTotalBoardCount();	
+		log.debug("totalContent = {}", totalContent);
+		model.addAttribute("totalContent", totalContent);
+		
+		// 3. pagebar
+		String url = request.getRequestURI(); // /spring/board/boardList.do
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
 		
 		return "/admin/product/productMain";
 	}
@@ -73,7 +94,7 @@ public class AdminController {
 		Map<String, Object> map = new HashMap<>();
 		
 		log.debug("param = {}", param);
-		List<ProductChildCategory> list = adminService.selectChildCategory(param);
+		List<ProductChildCategory> list = productService.selectChildCategory(param);
 		log.debug("list = {}" ,list);
 		
 		map.put("list",list);
@@ -93,51 +114,71 @@ public class AdminController {
 	@PostMapping("/insertProduct.do")
 	public String insertProduct(
 			Product product,
+			@RequestParam String parentCategoryCode,
 			@RequestParam String childCategoryCode,
-			@RequestParam String optionContent,
+			@RequestParam String[]optionContent,
 			@RequestParam String sku,
-			@RequestParam int quantity,
-			@RequestParam String option1,
-			@RequestParam String option2,
+			@RequestParam int[]quantity,
+			@RequestParam String[]option,
 			MultipartFile upFile,
 			
 			RedirectAttributes redirectAttr) {
 		// 사용자 입력값
 		log.debug("product = {}", product);
 		log.debug("childCategoryCode = {}", childCategoryCode);
+		log.debug("parentCategoryCode = {}", parentCategoryCode);
 			
-		log.debug("optionContent = {}", optionContent);
 		log.debug("sku = {}", sku);
+		log.debug("option = {}", option);
+		log.debug("optionContent = {}", optionContent);
 		log.debug("quantity = {}", quantity);
-		log.debug("option1 = {}", option1);
-		log.debug("option2= {}", option2);
-		
-		// 받아온 옵션값 합쳐주기
-		String option = option1+"-"+option2;
+	
+		String categoryCode = parentCategoryCode + childCategoryCode;
 		
 		// 소분류 코드 + 옵션 + seq.no 으로 상품코드를 만둘어준 뒤 pruduct에 set
-		String product_code = childCategoryCode+"-"+option; 
-		product.setProductCode(product_code);
+		String productCode = parentCategoryCode+"-"+childCategoryCode;
+		product.setProductCode(productCode);
 		
-		// 상품상세 객체로 묶어 전달
-		ProductDetail productDetail = new ProductDetail();
-		productDetail.setOptionNo(option);
-		productDetail.setOptionContent(optionContent);
-		productDetail.setSku(sku);
-		productDetail.setQuantity(quantity);
+		// 상품상세 객체로 묶어 전달		
+		List<ProductDetail> productDetailList = new ArrayList<>();
+		
+		for(int i = 0; i < option.length; i++) {
+			ProductDetail productDetail = new ProductDetail();
+			
+			productDetail.setOptionNo(option[i]);
+			productDetail.setOptionContent(optionContent[i]);
+			productDetail.setSku(sku);
+			productDetail.setQuantity(quantity[i]);
+			
+			productDetailList.add(productDetail);
+		}
+		
+		// prodcut 객체에 저장
+		product.setProductDetailList(productDetailList);
+		
+		// Map<String,Object>param에 담아서 전달
+		Map<String,Object>param = new HashMap<>();
+		param.put("productCode", productCode);
+		param.put("childCategoryCode", childCategoryCode);
+		param.put("productDetailList", productDetailList);
+		param.put("product", product);
+		
+		log.debug("param = {}",param);
+		
+		
 		
 		log.debug("upFile = {}",upFile);
 		String productImg = product.getProductCode() +".png";
 		log.debug("productImg = {}",productImg);
 		
-		// 파일저장 : 절대경로
+//		파일저장 : 절대경로
 		String saveDirectory  = application.getRealPath("/resources/upload/product");
 		log.debug("saveDirectory = {}",saveDirectory);
 		
-		//prduct thumbnail값 세팅
+//		prduct thumbnail값 세팅
 		product.setThumbnail(productImg);
 		
-		// 업무로직 : db저장 		
+//		 업무로직 : db저장 		
 		if(!upFile.isEmpty()) {		
 			try {									
 				// 서버 컴퓨터 저장
@@ -150,7 +191,7 @@ public class AdminController {
 					
 		}
 		
-		int result = adminService.insertProduct(product,childCategoryCode,productDetail);
+		int result = productService.insertProduct(param);
 		String msg = result > 0 ? "상품등록을 성공했습니다!":"상품등록에 실패했습니다!!!!!!";  
 		redirectAttr.addFlashAttribute("msg",msg);
 		
@@ -382,8 +423,6 @@ public class AdminController {
 		File dest = new File(saveDirectory, banner);
 		upFile.transferTo(dest);
 	}
-	/**
-	 * 혜진 끝
-	 */
+	
 	
 }

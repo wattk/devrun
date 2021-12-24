@@ -3,8 +3,8 @@ package com.kh.devrun.promotion.model.service;
 import java.util.List;
 import java.util.Map;
 
-import com.kh.devrun.product.Product;
-import com.kh.devrun.product.ProductExtends;
+import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductExtends;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 public interface PromotionService {
@@ -24,5 +24,11 @@ public interface PromotionService {
 	int deletePromotion(String[] promotionCode);
 
 	List<Product> selectProductListByPromotionCode(String promotionCode);
+
+
+	List<Promotion> selectCurrentPromotionList();
+
+
+	List<Promotion> selectEndPromotionList();
 
 }

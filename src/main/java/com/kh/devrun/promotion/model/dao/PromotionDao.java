@@ -3,7 +3,7 @@ package com.kh.devrun.promotion.model.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.kh.devrun.product.Product;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 public interface PromotionDao {
@@ -25,4 +25,8 @@ public interface PromotionDao {
 	int deletePromotion(String[] promotionCode);
 	
 	List<Product> selectProductListByPromotionCode(String promotionCode);
+
+	List<Promotion> selectCurrentPromotionList();
+
+	List<Promotion> selectEndPromotionList();
 }

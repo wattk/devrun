@@ -7,7 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.devrun.product.Product;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 @Repository
@@ -62,5 +62,17 @@ public class PromotionDaoImpl implements PromotionDao {
 	public List<Product> selectProductListByPromotionCode(String promotionCode) {
 		return session.selectList("promotion.selectProductListByPromotionCode", promotionCode);
 	}
+
+	@Override
+	public List<Promotion> selectCurrentPromotionList() {
+		return session.selectList("promotion.selectCurrentPromotionList");
+	}
+
+	@Override
+	public List<Promotion> selectEndPromotionList() {
+		return session.selectList("promotion.selectEndpromotionList");
+	}
+	
+	
 
 }

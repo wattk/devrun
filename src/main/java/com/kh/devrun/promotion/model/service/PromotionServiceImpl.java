@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kh.devrun.product.Product;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.promotion.model.dao.PromotionDao;
 import com.kh.devrun.promotion.model.exception.PromotionException;
 import com.kh.devrun.promotion.model.vo.Promotion;
@@ -97,6 +97,14 @@ public class PromotionServiceImpl implements PromotionService {
 		return promotionDao.selectProductListByPromotionCode(promotionCode);
 	}
 
-	
+	@Override
+	public List<Promotion> selectCurrentPromotionList() {
+		return promotionDao.selectCurrentPromotionList();
+	}
+
+	@Override
+	public List<Promotion> selectEndPromotionList() {
+		return promotionDao.selectEndPromotionList();
+	}
 
 }
