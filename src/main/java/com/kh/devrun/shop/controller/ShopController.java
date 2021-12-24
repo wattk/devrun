@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.promotion.model.service.PromotionService;
@@ -96,18 +97,16 @@ public class ShopController {
 	
 	
 	@PostMapping("/review.do")
-	public void review (Review review, MultipartFile upFile) throws IllegalStateException, IOException {
+	public String review (Review review, MultipartFile upFile, RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
 		log.debug("{}", review);
-		log.debug("{}", upFile);
+	
 		
 		String saveDirectory = application.getRealPath("/resources/upload/review");
-		log.debug("saveDirectory = {}", saveDirectory);
 		
 		if(!upFile.isEmpty() && upFile.getSize()!= 0) {
 			String originalFilename = upFile.getOriginalFilename();
 			String renamedFilename = DevrunUtils.getRenamedFilename(originalFilename);
-			log.debug("원래이름 : {} / 리네임 : {} ", originalFilename, renamedFilename);
-			
+		
 			//1.서버 컴퓨터에 저장
 			File dest = new File(saveDirectory, renamedFilename);//여기에다가 파일 저장해주세요임.
 			upFile.transferTo(dest);
@@ -122,6 +121,10 @@ public class ShopController {
 		//업무로직
 		int result = shopService.insertReview(review);
 		log.debug("첨부파일 및 리뷰 등록 성공인가? : {}", result);
+		String msg = (result>0)?"리뷰 등록 성공" : "리뷰 등록 실패";
+		redirectAttr.addFlashAttribute("msg", msg);
+		
+		return "redirect:/shop/itemDetail.do";
 		
 		
 	}

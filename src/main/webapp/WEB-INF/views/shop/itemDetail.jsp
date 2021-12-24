@@ -50,6 +50,7 @@
 											<img id="qPIc" src="https://i.ibb.co/gm7H77f/square.png" alt="">
 											<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
 											<input type="hidden" name="productCode" value="332">
+											<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
 										</div>
 										<p class="mt-3">상품 별점</p>
 										<select name="rate" class="form-select col-12" aria-label="Default select example">
