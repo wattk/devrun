@@ -179,16 +179,15 @@
 		      <!-- modal body -->
 		      <div class="modal-body">
 		      	<!-- 닉네임 검색 -->
-				<form class="form-inline my-lg-0">
-					<input class="form-control w-75" type="search" placeholder="닉네임 검색" aria-label="Search">
+				<form class="form-inline my-lg-0" id="searchNicknameFrm">
+					<input class="form-control w-75" type="search" name="searchNickname" id="searchNickname" placeholder="닉네임 검색" aria-label="Search">
 					<button class="btn btn-outline-primary my-2 my-sm-0 w-25" type="submit">검색</button>
 				</form>
 				<!-- 닉네임 검색 끝 -->
 				
 				<!-- 닉네임 검색 결과 -->
-				
-				<ul class="list-group">
-				  <li class="list-group-item position-relative">
+				<ul id="nicknameSearchResultList" class="list-group">
+				  <%-- <li class="list-group-item position-relative">
 				  	<!-- 회원 프로필 사진 -->
 					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 					<!-- 회원 닉네임 -->
@@ -249,7 +248,7 @@
 					<strong class="nickname ml-2">길동이</strong>
 					<!-- 선택 시 display 상태 변화 -->
 					<i class="fas fa-check-circle position-absolute d-none"></i>
-				  </li>
+				  </li> --%>
 				</ul>
 				
 				<!-- 닉네임 검색 결과 끝 -->
@@ -407,6 +406,55 @@
 	</div>
 
 <script>
+// 채팅방 생성을 위한 멤버 선택 - 닉네임 검색 폼
+$(searchNicknameFrm).submit((e) => {
+	e.preventDefault(); // 폼제출방지
+	//console.log(e.target);
+
+	const searchNickname = $("[name=searchNickname]", e.target).val();
+	
+	// 빈문자열 검색할 경우
+	if(searchNickname == '') {
+		// 검색 결과 존재할 경우 대비 - 이후 빈 문자열 검색하면 검색 결과 제거
+		$("#nicknameSearchResultList").children().remove();
+		return;
+	}
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/chat/searchNickname.do`,
+		data : {
+			searchNickname : searchNickname
+		},
+		method : "GET", // GET방식 생략 가능
+		success(data) { // 이 안에 들어가는 data는 변수명이다. 다른 이름으로 사용해도 된다. 위의 data : 에서 사용한 부분과 헷갈리지 말자
+			//console.log(data);
+		
+			// 자식 노드 제거 - 검색 클릭 시 추가되는 것 방지
+			$("#nicknameSearchResultList").children().remove();
+			
+			if(Object.keys(data).length == 0) {
+				// data 존재하지 않는 경우 '검색결과가 없습니다.' 출력
+				$("#nicknameSearchResultList").append(`<p class="text-center my-5">검색결과가 없습니다.</p>`);
+			} else {
+				// 닉네임 검색 결과 뿌리기
+				$(data).each((i, member) => {
+					console.log(member);
+	
+					$("#nicknameSearchResultList").append(`<li class="list-group-item position-relative">
+<!-- 회원 프로필 사진 -->
+<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+<!-- 회원 닉네임 -->
+<strong class="nickname ml-2">\${member.nickname}</strong>
+<!-- 선택 시 display 상태 변화 -->
+<i class="fas fa-check-circle position-absolute d-none"></i>
+</li>`);
+				});
+			}
+		},
+		error : console.log
+	});
+});
+
 
 // 채팅방 만들기 Modal 내용 부분만 스크롤 기능 하기
 $(document).ready(function () {
@@ -418,9 +466,11 @@ $(document).ready(function () {
     $('head').append('<style type="text/css">.minus-modal .modal-body {max-height: ' + ($('body').height() * 0.9) + 'px;overflow-y: auto;}.modal-open .modal{overflow-y: hidden !important;}</style>');
 });
 
-// 채팅방 만들기 Modal 부분
-// 멤버 선택 li 클릭 시 이벤트 발생 - 우측에 체크 아이콘 d-none 해제, 다른 요소들 d-none 상태
-$(".plus-modal li").click((e) => {
+//채팅방 만들기 Modal 부분
+//멤버 선택 li 클릭 시 이벤트 발생 - 우측에 체크 아이콘 d-none 해제, 다른 요소들 d-none 상태
+$(document).on('click', '.plus-modal li', function(e) {
+	console.log("호출됩니까?");
+
 	const $li = $(e.target);
 	$li.children('i').removeClass("d-none");
 	
@@ -434,6 +484,9 @@ $('.plus-modal').on('hidden.bs.modal', function (e) {
 	$(this).find('form')[0].reset()
 	// 멤버 선택 여부 아이콘 체크할 경우 대비 d-none 클래스 추가
 	$(this).find('i').addClass("d-none");
+	
+	// 닉네임 검색 결과 남아있을 시 대비 자식 노드 제거
+	$("#nicknameSearchResultList").children().remove();
 });
 
 // 채팅방 list 클릭 시 이벤트 발생 - 기능 구현 시 수정할 부분 url 부분 li마다 달라져야 함. 위의 코드 수정할 것
