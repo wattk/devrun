@@ -201,7 +201,7 @@
 					</div>
 				<!--신고 모달 끝 (부트스트랩)-->
 				<!--리뷰사진확대 모달 시작-->
-				<div id="reviewModal" class="review-modal-div" style="position: absolute;">
+				<div id="reviewModal" class="review-modal-div ml-12" onclick="expandClose()">
 					<img id="closeIcon" src="https://i.ibb.co/rmVYp7Z/x-icon.png" alt="" onclick="expandClose()">
 					<img src="https://i.ibb.co/XLNWsgC/red-square.jpg" alt="" id="reviewExpansion">
 				</div>
@@ -261,40 +261,47 @@
 									<span class="pr-2 pl-2 shop-sort">최신순</span>
 									<span class="pr-2 pl-2 shop-sort">오래된순 </span>
 									<span class="pr-2 pl-2 shop-sort">사진리뷰모아보기</span>
-									<button type="button" class="btn btn-warning report-btn3" data-toggle="modal" data-target="#exampleModal3">리뷰작성하기</button>	
+									<sec:authorize access="hasAnyRole('M1','M2')">
+										<button type="button" class="btn btn-warning report-btn3" data-toggle="modal" data-target="#exampleModal3">리뷰작성하기</button>	
+									</sec:authorize>
 								  </div>
 								</div>
 								<hr>
 								<!--상단 갯수 및 선택 옵션 끝-->
 								<div></div>
 								<!--리뷰시작-->
-								<c:forEach items="${reviewList}" var="l">
-									<div class="aReviewDiv forFont">
-									  <div class="shop-review row">
-										<div class="reviewProfile">
-										  <img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
-										</div> 
-										<div class="reviewContent ml-3">
-										<c:forEach var="i" begin="1" end="${l.rate}">
-										  <i class="fas fa-star"></i>
-										</c:forEach>
-										  <br><span>${l.id}</span> | <span> <fmt:formatDate value="${l.regDate}" pattern="yyyy년MM월dd일 HH:mm:ss"/></span> | 
-										  <!-- Button trigger modal -->
-										  <button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
-										  <br><span>상품옵션 : </span> <span>핑크</span>
-										  <div class="reviewP mt-3">
-										  ${l.content}
-										  </div>  
-										</div>
-										<div class="reviewPhoto">
-										  <img src="${pageContext.request.contextPath}/resources/upload/review/${l.attach.renamedFilename}" alt="" onclick="expandPic(event)">
-										  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
-											<i class="far fa-heart">3</i>
+								<c:if test="${reviewList != null}">
+									<c:forEach items="${reviewList}" var="l">
+										<div class="aReviewDiv forFont">
+										  <div class="shop-review row">
+											<div class="reviewProfile">
+											  <img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
+											</div> 
+											<div class="reviewContent ml-3">
+											<c:forEach var="i" begin="1" end="${l.rate}">
+											  <i class="fas fa-star"></i>
+											</c:forEach>
+											  <br><span>${l.id}</span> | <span> <fmt:formatDate value="${l.regDate}" pattern="yyyy년MM월dd일 HH:mm:ss"/></span> | 
+											  <!-- Button trigger modal -->
+											  <button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
+											  <br><span>상품옵션 : </span> <span>핑크</span>
+											  <div class="reviewP mt-3">
+											  ${l.content}
+											  </div>  
+											</div>
+											<div class="reviewPhoto">
+											  <img src="${pageContext.request.contextPath}/resources/upload/review/${l.attach.renamedFilename}" alt="" onclick="expandPic(event)">
+											  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
+												<i class="far fa-heart">3</i>
+											  </div>
+											</div>
 										  </div>
 										</div>
-									  </div>
-									</div>
-								</c:forEach>
+									</c:forEach>
+								</c:if>
+								<c:if test="${empty  reviewList}">
+									<span id="reviewNone">등록된 리뷰가 없습니다.</span>
+								</c:if>
 								<!--리뷰끝-->
 							  </div>
 							</div>

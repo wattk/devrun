@@ -299,7 +299,6 @@ color: green;
 	font-size: 20px;
 }
 #reviewModal{
-    left: 164px;
     top: 711px;
 	display: none;
 	z-index: 20;
@@ -321,9 +320,14 @@ color: green;
     cursor: pointer;
 }
 #reviewModal{
+	position: absolute;
 	background: rgba(110, 110, 110,0.9);
-    width: 1194px;
+    width: 1199.3px;
     height: 600px;
+    border-radius: 10px;  
+}
+#reviewModal:hover{
+	cursor:pointer;
 }
 /*신고모달 css시작*/
 .report-btn{
@@ -447,3 +451,9 @@ color: green;
 	height: 25px;
 }
 /*리뷰 작성 모달 css 끝*/
+
+#reviewNone{
+	font-family: 'NanumSquareRound';
+	font-style: italic;
+	margin-left: 10px;
+}
