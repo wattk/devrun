@@ -12,12 +12,11 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(callSuper = true)
 public class Attachment implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private int ReviewAttachmentNo;
+	private int reviewAttachNo;
 	private int reviewNo;
 	private String originalFilename;
 	private String renamedFilename;

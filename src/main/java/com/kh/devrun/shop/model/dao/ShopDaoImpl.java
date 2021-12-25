@@ -1,5 +1,7 @@
 package com.kh.devrun.shop.model.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,6 +26,16 @@ public class ShopDaoImpl implements ShopDao{
 	@Override
 	public int insertAttach(Attachment attach) {
 		return session.insert("shop.insertAttach",attach);
+	}
+
+	@Override
+	public List<Review> selectAllReview() {
+		return session.selectList("shop.selectAllReview");
+	}
+
+	@Override
+	public int countAllList() {
+		return session.selectOne("shop.countAllList");
 	}
 
 }
