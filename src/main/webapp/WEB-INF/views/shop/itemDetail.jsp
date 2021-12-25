@@ -57,7 +57,7 @@
 											</sec:authorize>
 										</div>
 										<p class="mt-3">상품 별점</p>
-										<select name="rate" class="form-select col-12" aria-label="Default select example">
+										<select id="rateSelect" name="rate" class="form-select col-12" aria-label="Default select example">
 											<option value="5" selected> 별점 5점 </option>
 											<option value="4">별점 4점</option>
 											<option value="3">별점 3점</option>
@@ -76,7 +76,8 @@
 										</div>
 										<p class="mt-3">리뷰 작성</p>
 										<div class="checkboxReport">
-											<textarea name="content" id="reportText" cols="30" rows="10" required></textarea>
+											<textarea name="content" id="reportText" cols="30" rows="10" maxlength='900' required></textarea>
+											<span id="textLength">0/900</span>
 										</div>
 										<p style="font-size: 12px;">ⓘ 포토리뷰 500P / 글리뷰 100P 적립</p>
 									</div>
@@ -224,7 +225,6 @@
 							<span>제주도/도서산간 지역 4,000원 추가</span>
 							<i class="far fa-heart"></i>
 						</div>
-						
 						<hr>
 						<select class="form-select col-12" aria-label="Default select example">
 							<option selected>옵션선택</option>
@@ -252,7 +252,7 @@
 							<!--1번째 탭---->
 							<div class="tab">
 							  <input id="tab-1" checked="checked" name="tab-group-1" type="radio" />
-							  <label for="tab-1"><span class="tab-span">리뷰 </span><span class="tab-span">22</span></label>
+							  <label for="tab-1"><span class="tab-span">리뷰 </span></label>
 							  <div class="content height600" >
 								<!--상단 갯수 및 선택 옵션 시작-->
 								<div class="item-sort-container d-flex justify-content-between">
@@ -289,14 +289,16 @@
 											  ${l.content}
 											  </div>  
 											</div>
+											<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 시작 -->
 											<c:if test="${l.attach.reviewAttachNo != 0}">
-												<div class="reviewPhoto mt-2">
+												<div class="reviewPhoto">
 												  <img src="${pageContext.request.contextPath}/resources/upload/review/${l.attach.renamedFilename}" alt="" onclick="expandPic(event)">
 												  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
 													<i class="far fa-heart">3</i>
 												  </div>
 												</div>
 											</c:if>
+											<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->
 										  </div>
 										</div>
 									</c:forEach>
@@ -380,7 +382,6 @@
 									</div>
 									<!--문의 한 건 끝-->
 								  </div>
-					
 								</div>
 								<!--문의끝-->
 							  </div>

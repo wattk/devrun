@@ -54,5 +54,17 @@ $reviewModal.hide();
 function deleteReview() {
 	$('#reviewPic').val("");
 	$('#choosePicP').next().detach();
+	$('#reportText').val('');
+	$('#textLength').text('0/900');
+	$('#rateSelect').prop('selectedIndex',0);
 }
 /*상품리뷰 취소시 다 날리게 끝*/
+
+/*리뷰 글자수 세기 시작 */
+$('#reportText').keydown((e) =>{
+	
+	var textL = document.getElementById('reportText').value.length;
+	$('#textLength').text(textL+'/900');
+	
+});
+/*리뷰 글자수 세기 시작 */

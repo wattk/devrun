@@ -365,6 +365,13 @@ color: green;
 }
 .checkboxReport{
 	background-color: rgb(255, 255, 255);
+	position: inherit;
+}
+#textLength{
+    position: absolute;
+    bottom: 59px;
+    left: 410px;
+    color: white;
 }
 .checkboxReport >form{
 	margin: auto;
