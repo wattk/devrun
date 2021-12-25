@@ -275,7 +275,7 @@
 										<div class="aReviewDiv forFont">
 										  <div class="shop-review row">
 											<div class="reviewProfile">
-											  <img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
+											  <img class="rounded-circle mt-3" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
 											</div> 
 											<div class="reviewContent ml-3">
 											<c:forEach var="i" begin="1" end="${l.rate}">
@@ -289,12 +289,14 @@
 											  ${l.content}
 											  </div>  
 											</div>
-											<div class="reviewPhoto">
-											  <img src="${pageContext.request.contextPath}/resources/upload/review/${l.attach.renamedFilename}" alt="" onclick="expandPic(event)">
-											  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
-												<i class="far fa-heart">3</i>
-											  </div>
-											</div>
+											<c:if test="${l.attach.reviewAttachNo != 0}">
+												<div class="reviewPhoto mt-2">
+												  <img src="${pageContext.request.contextPath}/resources/upload/review/${l.attach.renamedFilename}" alt="" onclick="expandPic(event)">
+												  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
+													<i class="far fa-heart">3</i>
+												  </div>
+												</div>
+											</c:if>
 										  </div>
 										</div>
 									</c:forEach>

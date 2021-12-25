@@ -64,7 +64,7 @@ public class ShopController {
 		
 		List<Review> reviewList = shopService.selectAllReview();
 		int reviewTotal = shopService.countAllList();
-		log.debug("총 리뷰 갯수{}", reviewTotal);
+		log.debug("리뷰 리스트 조회! : {}", reviewList);
 		model.addAttribute("reviewList", reviewList);
 		model.addAttribute("reviewTotal", reviewTotal);
 		

@@ -39,7 +39,7 @@
 		select 
 		    *
 		from
-		    review r join review_attachment a
+		    review r left join review_attachment a
 		    on r.review_no = a.review_no
 		order by r.reg_date desc    
 	</select>

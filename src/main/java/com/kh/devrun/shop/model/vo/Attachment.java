@@ -16,7 +16,7 @@ public class Attachment implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private int ReviewAttachNo;
+	private int reviewAttachNo;
 	private int reviewNo;
 	private String originalFilename;
 	private String renamedFilename;
