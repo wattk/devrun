@@ -301,6 +301,9 @@ color: green;
     top: 711px;
 	display: none;
 	z-index: 20;
+	background: rgba(110, 110, 110,0.9);
+    width: 1194px;
+    height: 600px;
 }
 #reviewExpansion{
 	width: 450px;
@@ -317,11 +320,6 @@ color: green;
     left: 774px;
     bottom: 110px;
     cursor: pointer;
-}
-#reviewModal{
-	background: rgba(110, 110, 110,0.9);
-    width: 1194px;
-    height: 600px;
 }
 /*신고모달 css시작*/
 .report-btn{
