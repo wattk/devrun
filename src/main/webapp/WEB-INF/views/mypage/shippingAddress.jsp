@@ -21,13 +21,16 @@
 				<article class="col-10" id="info">
 		      		<h4 id="breadcrumb"><a href="${pageContext.request.contextPath}/mypage/myinfo.do">나의 정보</a> <i class="bi bi-chevron-right"></i> <span>배송지 관리</span></h4>
 		       		<hr/>
-		       		<%-- shipping address --%>
+		       		
+		       		<%-- shipping address list --%>
 		       		<section class="card" id="addressList">
 		       			<div class="card-body">
 		       				<div class="row">
 				       			<!-- 수신자명, 주소, 우편번호, 연락처 -->
 				       			<article class="col-12">
-				     				<%-- <c:forEach items="${addressList} var="adressList">
+				     				<%--
+				     				주소가 있으면
+				     				<c:forEach items="${addressList} var="adressList">
 				     					<tr>
 				     						<th>수신자명</th>
 				     						<th>주소</th>
@@ -35,50 +38,61 @@
 				     						<th>연락처</th>
 				     					</tr>
 				     					<tr>
-				     						<th>${address.}</th>
-				     						<th>${address.}</th>
-				     						<th>${address.}</th>
-				     						<th>${address.}</th>
+				     						<td>${address.}</td>
+				     						<td>${address.}</td>
+				     						<td>${address.}</td>
+				     						<td>${address.}</td>
 				     					</tr>
-				     				</c:forEach> --%>
+				     				</c:forEach>
+				     				주소가 없으면
+				     				<tr><td colspan="4">주소가 없습니다.</td></tr>
+				     				--%>
 		       					</article>
 			       			</div>
 	       				</div>
 	       			</section>
 	       			
-	       			<h5>배송지정보 추가 / 수정 / 삭제</h5>
-	       			<section class="card" id="adressDetail">
-		       			<div class="card-body">
-		       				<div class="row">
-		       					<!-- 배송지정보 폼 -->
-		       					<form name="addressFrm" action="" method="POST">
-			       					<table>
-			       						<tr>
-			       							<td><label for="addessee">수신자명</label></td>
-			       							<td><input type="text" class="form-control" id="addessee" name="addessee"/></td>
-			       						</tr>
-			       						<tr>
-			       							<td><label for="postalCode">우편번호</label></td>
-			       							<td><input type="text" class="form-control" id="postalCode" name="postalCode"/></td>
-			       						</tr>
-			       						<tr>
-			       							<td><label for="address1">주소</label></td>
-			       							<td><input type="text" class="form-control" id="address1" name="address1"/></td>
-			       						</tr>
-			       						<tr>
-			       							<td><label for="address2">상세주소</label></td>
-			       							<td><input type="text" class="form-control" id="address2" name="address2"/></td>
-			       						</tr>
-			       						<tr>
-			       							<td><label for="phone">연락처</label></td>
-			       							<td><input type="tel" class="form-control" id="phone" name="phone"/></td>
-			       						</tr>
-			       					</table>
-		       					</form>
-		       				</div>
-	       				</div>
+	       			<%-- shipping address detail --%>
+	       			<section id="adressDetail">
+	       				<h5>배송지정보 추가 / 수정 / 삭제</h5>
+		       			<!-- 배송지정보 폼 -->
+		       			<form name="addressFrm" action="" method="POST">
+			       			<table class="table">
+			       				<tr>
+			       					<th><label for="addessee">수신자명</label></th>
+			       					<td><input type="text" class="form-control col-4" id="addessee" name="addessee"/></td>
+			       				</tr>
+			       				<tr>
+			       					<th><label for="postalCode">우편번호</label></th>
+			       					<td class="input-group">
+			       						<input type="text" class="form-control col-3" id="postalCode" name="postalCode"/>
+			       						<div class="input-group-append">
+											<button>우편번호 검색</button>
+										</div>
+			       					</td>
+			       				</tr>
+			       				<tr>
+			       					<th><label for="address1">주소</label></th>
+			       					<td><input type="text" class="form-control col-10" id="address1" name="address1"/></td>
+			       				</tr>
+			       				<tr>
+			       					<th><label for="address2">상세주소</label></th>
+			       					<td><input type="text" class="form-control col-10" id="address2" name="address2"/></td>
+			       				</tr>
+			       				<tr>
+			       					<th><label for="phone">연락처</label></th>
+			       					<td><input type="tel" class="form-control col-4" id="phone" name="phone"/></td>
+			       				</tr>
+			       			</table>
+			       			<%-- buttons : address enroll / update / delete --%>
+		    				<section id="btns" class="col-11 row">
+		    					<button class="col-4" type="submit" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/addressEnroll.do';">추가</button>
+		    					<button class="col-4" type="submit" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/addressUpdate.do';">수정</button>
+		    					<button class="col-4" type="submit" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/addressDelete.do';">삭제</button>
+		    				</section>
+		       			</form>
 	       			</section>
-	       			<section></section>
+	       			
 	       		</article>
 
 			</div>
