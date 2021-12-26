@@ -6,3 +6,18 @@
 
 
 /** my community **/
+#mycommunityTab {padding:0;}
+#mycommunityTab .bi::before {vertical-align:unset;}
+#mycommunityTab .nav-tabs {border:0;}
+#mycommunityTab .nav-item {margin:0 auto; text-align:center; padding:0;}
+#mycommunityTab .nav-link {border:0; color:#9E9E9E; padding:15px 0; border-bottom:5px solid #F7F7F7;}
+#mycommunityTab .nav-link.active {color:#000000; border-color:#000000;}
+
+#communityList {margin:0 auto;}
+#communityList table td {border:0; border-bottom:1px solid #DEE2E6; padding:25px 5px;}
+#communityList table td:nth-of-type(2) {text-align:right; color:#9E9E9E;}
+#communityList table td div:first-of-type {color:#9E9E9E; font-size:14px; padding-bottom:10px;}
+#communityList table td #postTitle {font-weight:bold;}
+#communityList table td .bi {font-size:14px;}
+#likeList .bi.bi-heart-fill {color:#1A81FF;}
+

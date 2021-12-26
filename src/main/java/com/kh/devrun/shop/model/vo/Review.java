@@ -21,6 +21,8 @@ public class Review implements Serializable {
 	@NonNull
 	private int memberNo;
 	@NonNull
+	private String id;
+	@NonNull
 	private String productCode;
 	@NonNull
 	private String content;
