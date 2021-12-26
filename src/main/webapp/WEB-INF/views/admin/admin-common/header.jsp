@@ -277,7 +277,10 @@
        	<!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">	        
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">      
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${pageContext.request.contextPath}/">      
+                <div class="sidebar-brand-text mx-3">dev_run</div>
+            </a>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${pageContext.request.contextPath}/admin/adminMain.do">      
                 <div class="sidebar-brand-text mx-3">관리자</div>
             </a>
 

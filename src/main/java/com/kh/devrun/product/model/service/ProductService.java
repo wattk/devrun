@@ -31,5 +31,16 @@ public interface ProductService {
 	
 	// 상품 정보 하나 가져오기
 	ProductExtends selectProductOne(String productCode);
+
+	// 상품 디테일 정보 가져오기
+	List<ProductDetail> selectProductDetail(String productCode);
+
+	// 상품 정보 업데이트
+	int updateProduct(Product product);
+
+	// nextval 번호까지 붙은 thumbnail 값 가져오기 (최근 등록된)
+	String selectRealProductImg();
+
+	
 	
 }
