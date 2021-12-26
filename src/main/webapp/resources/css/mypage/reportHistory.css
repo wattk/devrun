@@ -9,3 +9,21 @@
 #info {margin:0 auto;}
 #breadcrumb a {color:#9E9E9E;}
 #breadcrumb a:hover {color:#1A81FF;}
+#reportInfo {text-align:end; margin-bottom:25px;}
+
+
+
+/* report history */
+#reportList table {margin-bottom:50px;}
+#reportList tr:not(:last-of-type) {border-bottom:1px solid rgba(0,0,0,.125);}
+#reportList td {padding:12px; border:1px solid rgba(0,0,0,.125);}
+#reportList td:not(:nth-of-type(2)) {text-align:center; vertical-align:middle;}
+#reportType, #reportCategory {padding:2px 5px; font-size:13px;}
+#reportType {background-color:#1A81FF; color:#FFFFFF;}
+#reportCategory {background-color:#FDE99A; color:#E74C3C;}
+#reportCategory i {font-size:14px;}
+#reportList td div {margin-bottom:4px;}
+
+.popover {font-family:"Gowun Dodum";}
+.popover-header, .popover-body {font-size:15px; background-color:#FFFFFF;}
+.popover-header, .popover-body span {color:#1A81FF;}

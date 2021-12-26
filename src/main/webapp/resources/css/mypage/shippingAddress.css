@@ -10,14 +10,19 @@
 #breadcrumb a {color:#9E9E9E;}
 #breadcrumb a:hover {color:#1A81FF;}
 
-/* addressList */
-#addressList {margin-bottom:20px;}
+/* address list */
+#addressList {margin-bottom:50px;}
 
-/* addressDetail */
-#adressDetail .row {margin:0 auto;}
-#adressDetail label {margin:0 auto;}
-#adressDetail td {padding:5px 0;}
-#adressDetail td:first-of-type {color:#7F7F7F; padding-right:50px;}
+/* address detail */
+#adressDetail h5 {color:#1A81FF; padding:5px;}
+
+#adressDetail table {border:1px solid rgba(0,0,0,.125);}
+#adressDetail tr:not(:last-of-type) {border-bottom:1px solid rgba(0,0,0,.125);}
+#adressDetail td, th {padding:10px; border:0;}
+#adressDetail th {color:#7F7F7F; text-align:center; vertical-align:middle;}
+#adressDetail label {margin:0 auto; color:#000000;}
+#adressDetail input {border-radius:4px;}
+#adressDetail td button {margin-left:10px; border-radius:4px; font-size:16px;}
 
 #adressDetail #btns {margin:35px 35px 20px 35px; flex-wrap:nowrap; justify-content:center;}
-#adressDetail #btns button {margin:0 15px;}
+#adressDetail #btns button {margin:0 25px;}

@@ -15,32 +15,44 @@
 <%-- EL에서 접근하기 위해 VAR속성 지정 --%>
 <sec:authentication property="principal" var="member"/>
 
-					<div class="row">
-						<!-- 회원 정보 -->
-			       		<div class="col-3">
-			       			<!-- 프로필 이미지 : 프로필 이미지가 null일 경우, 기본 이미지 출력 -->
-			       			<div id="profileImg">
-			       				<c:if test="${member.proPhoto eq null}"><i class="bi bi-person-circle"></i></c:if>
-					       		<c:if test="${member.proPhoto ne null}"><img src="${member.proPhoto}" alt=""/></c:if>
-					       		<i class="bi bi-pencil-square"></i>
-					        </div>
-					        <div>
-					        	<div onclick="location.href='#';">${member.nickname}님<i class="bi bi-chevron-right"></i></div>
-					        	<p>이메일<br/>${member.email}</p>
-						        <p>한줄소개<br/>${member.intro}</p>
-						        <button onclick="location.href='${member.url}';">${member.url}</button>
-					        </div>
-				        	<!-- 로그인 정보/로그아웃 버튼 -->
-				        	<div class="">
-					        	<img src="" alt="" />
-					        	<p>(으)로 로그인</p>
-					        	<button class="btn">로그아웃</button>
-				        	</div>
-			       		</div>
-			       		<!-- 회원 활동 관련 정보 -->
-			       		<div class="col-10">
-			       			
-			       		</div>
-		       		</div>
-
+			<%-- my page --%>
+			<div class="col-12" id="mypage">
+				<div class="row">
+					
+					<!-- member profile -->
+					<article class="col-3" id="profile">
+						<!-- profile image : 프로필 이미지가 null일 경우, 기본 이미지 출력 -->
+					    <section>
+				   			<c:if test="${member.proPhoto eq null}"><i class="bi bi-person-circle" id="profileImg"></i></c:if>
+					      	<c:if test="${member.proPhoto ne null}"><img src="${member.proPhoto}" alt="" id="profileImg"/></c:if>
+					       	<p class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo.do';">${member.nickname}님<i class="bi bi-chevron-right"></i></p>
+					       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';"/>
+					    	<img src="https://i.ibb.co/S7TZCYh/coding.png" alt="" id="badge" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/activityBadge.do';"/>
+					    </section>
+					    <!-- profile info -->
+				        <section>
+				        	<p><span>이메일</span><br/><span>${member.email}</span></p>
+					        <p><span>한줄소개</span><br/><span>${member.intro}</span></p>
+					        <button onclick="location.href='${member.url}';">${member.url}</button>
+				        </section>
+				        <hr/>
+				       	<!-- login info / logout button -->
+				       	<section>
+				        	<p><img src="" alt="" />(으)로 로그인</p>
+				        	<button class="col-9">로그아웃</button>
+				       	</section>
+			    	</article>
+				     	
+		      		<!-- activity badge -->
+			   		<article class="col-9" id="info">
+		      		<h4 id="breadcrumb"><a href="${pageContext.request.contextPath}/mypage/myinfo.do">나의 정보</a> <i class="bi bi-chevron-right"></i> <span>활동 배지</span></h4>
+			    		<!-- badge list -->
+			    		<c:forEach var="i" begin="1" end="10" step="1">
+			    			
+			    		</c:forEach>
+			    	</article>
+			    	
+				</div>
+			</div>
+			
 <jsp:include page="/WEB-INF/views/mypage/common/footer.jsp"></jsp:include>

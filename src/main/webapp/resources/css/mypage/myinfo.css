@@ -11,7 +11,7 @@
 /* member profile */
 #myProfile article.col-3 {text-align:center;}
 #myProfile #profileImg {font-size:100px; position:relative; color:#1A81FF;}
-#myProfile #edit {position:absolute; top:27%; right:27%; width:30px; height:30px;}
+#myProfile #edit {position:absolute; top:24%; right:27%; width:30px; height:30px;}
 #myProfile table td {padding:5px 0;}
 #myProfile table caption {caption-side:top; font-size:23px; color:#000000; font-weight:bold;}
 #myProfile table#profileInfo td:first-of-type {color:#1A81FF; padding-right:30px;}
