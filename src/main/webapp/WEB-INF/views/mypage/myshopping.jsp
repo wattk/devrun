@@ -85,7 +85,9 @@
 			       			
 		       			<section class="cursor card justify-content-between mt-3 mb-5 align-items-center" id="myOrderLog">
 			       			<span class="ml-5">취소/교환/환불</span>
-			       			<span class="mr-5">총 <span></span>건</span>
+			       			<a href="${pageContext.request.contextPath}/mypage/claimList.do">
+			       				<span class="mr-5">총 <span></span>건</span>
+			       			</a>
 		       			</section>
 		       			
 		       			<h5>나의 활동</h5>
@@ -107,12 +109,14 @@
 		       			
 		       			<div class="d-flex justify-content-between mt-5">
 			       			<h5>주문 내역</h5>
-			       			<span class="small-font-size">더보기&nbsp;<i class="bi bi-chevron-right small-font-size"></i></span>
+			       			<a href="${pageContext.request.contextPath}/mypage/orderList.do">
+			       				<span class="small-font-size">더보기&nbsp;<i class="bi bi-chevron-right small-font-size"></i></span>
+			       			</a>
 		       			</div>
        					<hr />
 		       			<section class="" id="myOrder">
 	       					<sup class="d-box mb-2 ml-2">2021.12.24</sup>
-		       				<div class="order-box card p-3">
+		       				<div class="order-box card p-3 cursor" onclick="location.href = '${pageContext.request.contextPath}/mypage/orderDetail.do'">
 		       					<div class="order-title d-flex justify-content-between">
 			       					<h5>ㅇㅇ키보드 외 1건</h5><i class="fas fa-chevron-right"></i>
 		       					</div>

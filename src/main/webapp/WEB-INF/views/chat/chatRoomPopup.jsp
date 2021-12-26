@@ -19,6 +19,11 @@
 <%-- <link href="${pageContext.request.contextPath }/resources/css/font-awesome/css/font-awesome.min.css" rel="stylesheet"> --%>
 <script src="https://kit.fontawesome.com/f1def33959.js" crossorigin="anonymous"></script>
 
+<!-- sock.js 추가 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js" integrity="sha512-ayb5R/nKQ3fgNrQdYynCti/n+GD0ybAhd3ACExcYvOR2J1o3HebiAe/P0oZDx5qwB+xkxuKG6Nc0AFTsPT/JDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- stomp.js 추가 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <style>
 .chat-room-body {
 	overflow-y: hidden;
@@ -766,6 +771,8 @@
     
 
 <script>
+
+
 
 // 더보기 아이콘 클릭 이벤트 발생
 $('.more-icon').on('click', function(){

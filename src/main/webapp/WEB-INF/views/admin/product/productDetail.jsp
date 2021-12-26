@@ -14,28 +14,40 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/summernote/summernote-lite.css">
 
-
 <div id="productInsertContainer" class="productContainer">
-	<h2>상품 등록</h2><br /><hr /><br />
+	<h2>상품 정보</h2><br /><hr /><br />
 	
 	<form
 		enctype="multipart/form-data"
 		id="productFrm" 
-		action="${pageContext.request.contextPath}/admin/insertProduct.do"
+		action="${pageContext.request.contextPath}/admin/updateProduct.do"
 		method="POST">
+		
+		<input type="hidden" name="productCode" value="${productCode}" />
 		
 		<div id="formContentTop">
 			<h4 class="fw700">상품 이름</h4>
 			<input type="text" id="name" class="br"name="name" placeholder="상품 이름" value="${productInfo.name}"required/>
-			<input id="submitBtn" type="submit" value="상품등록" />
+			<input id="submitBtn" type="submit" value="상품 수정" />
 		</div><br />
 		
-
 		<div id="formContentMid">
 			<div id="productImgContainer">
-				<img id ="imgContainer" /><br />
+				<div id ="imgContainer">
+					<c:choose>
+						<c:when test="${null eq productInfo.thumbnail}">
+							<img id ="img" src="${pageContext.request.contextPath}/resources/upload/product/sample.png"/><br />
+						</c:when>
+						<c:when test="${null ne productInfo.thumbnail}">
+							<img id ="img" src="${pageContext.request.contextPath}/resources/upload/product/${productInfo.thumbnail}"/><br />
+						</c:when>					
+					</c:choose>
+					
+				</div>		
+			
 				<div>
-					<input type="file" name="upFile" id="imgInput" />
+				<span id="fileName">${productInfo.thumbnail}</span>
+					<input type="file" name="upFile" id="imgInput" />				
 				</div>
 			</div>
 			
@@ -47,7 +59,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="text" value="10000" />	
+							<input type="text" name="price"  value="10000" />	
 						</td>
 						<td>
 								
@@ -64,7 +76,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="text" name="sku" placeholder="재품 단위" value="개" />
+							<input type="text" name="sku" placeholder="재품 단위" value="-" />
 						</td>
 					</tr>					
 					<tr>
@@ -90,21 +102,24 @@
 							class="form-select form-select-lg mb-2" aria-label=".form-select-sm example"
 							onFocus="this.initialSelect = this.selectedIndex;"
 							onChange="this.selectedIndex = this.initialSelect">
-								<option value="${productInfo.parentCategoryCode}">${productInfo.childCategoryTitle }</option>			
+								<option value="${productInfo.parentCategoryCode}">${productInfo.childCategoryTitle} </option>			
 							</select>
 						</td>
 					</tr>					
 				
 				</table>
 				<hr />			
-				<table id="optionTable">			
+				<table id="optionTable">
+					<tr><th>옵션 추가</th><td><button class="btn btn-primary option-add-btn" type="button"><i class="fas fa-plus-square"></i></button></td></tr>
+					<c:forEach items="${productDetail }" var="pd">
 					<tr>
-						<td class="option">색상</td><td><input name="option" type="text" value="black" /></td>
-						<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="-" /></td>
-						<td class="option">재고</td><td><input name="quantity" type="text" value="1" /></td>
-						<td><button id="optionAddBtn" class="btn btn-primary" type="button"><i class="fas fa-plus-square"></i></button></td>
+						<td class="option">색상</td><td><input name="option" type="text" value="${pd.optionNo}" /></td>
+						<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="${pd.optionContent}" /></td>
+						<td class="option">재고</td><td><input name="quantity" type="number" value="${pd.quantity}" /></td>
+						<!-- <td><button class="btn btn-primary option-add-btn" type="button"><i class="fas fa-plus-square"></i></button></td> -->
+						<td><button class="btn btn-danger delete-btn" type="button"><i class="fas fa-minus-square"></i></button></td>
 					</tr>
-					
+					</c:forEach>								
 				</table>
 				<hr /><br />						
 				<textarea class="form-control" rows="5" name="content" id="summernote">${productInfo.content}</textarea>
@@ -112,34 +127,56 @@
 			</div>
 		<!-- contentMid  끝  -->	
 		</div>		
-	</form>
-			
+	</form>			
 </div>
 
-
 <script>
+	// 모든 함수에서 사용 할 option 갯수
+	let trCnt;
 /*  옵션 추가 버튼 */
-$(optionAddBtn).click(e=>{
-	var trCnt = $("#optionTable tr").length;
-	if(trCnt < 5){		
+$(".option-add-btn").click(e=>{
+	trCnt = $("#optionTable tr").length;
+	console.log(trCnt);
+	if(trCnt < 6){		
 		$(optionTable).append(`<tr>
 				<td class="option">색상</td><td><input name="option" type="text" value="red" /></td>
 				<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="-" /></td>
 				<td class="option">재고</td><td><input name="quantity" type="text" value="1" /></td>
-				<td><button class="btn btn-danger deleteBtn" type="button"><i class="fas fa-minus-square"></i></button></td>
+				<td><button class="btn btn-danger delete-btn" type="button"><i class="fas fa-minus-square"></i></button></td>
 			</tr>`);
 	}
+
 	else{
 		alert("최대 5개까지만 가능합니다");
-		return false;
 	}	
-	/*  옵션 삭제 버튼  */
-	$(".deleteBtn").click(e=>{	
+	
+	/* 동적으로 추가된 옵션 삭제 버튼  */
+	$(".delete-btn").click(e=>{	
 		const $target = $(e.target).parents("tr");
-		console.log($target);
-		$target.remove();
+		trCnt = $("#optionTable tr").length;
+		console.log(trCnt);
+		
+		if(trCnt > 2){
+			console.log($target);
+			$target.remove();			
+		}
+		
 	});
 });
+	/*  페이지 내의 정적옵션 삭제 버튼  */
+	$(".delete-btn").click(e=>{
+		const $target = $(e.target).parents("tr");
+		trCnt = $("#optionTable tr").length;
+		console.log(trCnt);
+		
+		if(trCnt > 2){
+			console.log($target);
+			$target.remove();			
+		}else{
+			alert("최소 한개의 옵션은 존재해야만 합니다.");
+			return false;
+		}		
+	});
 
 
 

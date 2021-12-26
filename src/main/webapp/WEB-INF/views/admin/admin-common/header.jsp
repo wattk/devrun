@@ -1,22 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>	
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 
 <!DOCTYPE html>
 <html lang="en">
-<!-- 
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
- -->
- 
-
 <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
 	<!-- 구글 차트를 이용하기 위한 script	 -->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    
-	<%@ page language="java" contentType="text/html; charset=UTF-8"
-	    pageEncoding="UTF-8"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-	<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-	<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>	
-	<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-	<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 	
 	<!-- bootstrap 사용  -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -42,11 +42,7 @@
    <script src="${pageContext.request.contextPath }/resources/bootstrap/vendor/chart.js/Chart.min.js"></script>
 	
 	
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+
 
     <title>관리자</title>
 
@@ -277,7 +273,10 @@
        	<!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">	        
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">      
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${pageContext.request.contextPath}/">      
+                <div class="sidebar-brand-text mx-3">dev_run</div>
+            </a>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${pageContext.request.contextPath}/admin/adminMain.do">      
                 <div class="sidebar-brand-text mx-3">관리자</div>
             </a>
 
@@ -337,8 +336,8 @@
                 <div id="collapseCustomer" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="utilities-color.html">회원 등급 관리</a>
-                        <a class="collapse-item" href="utilities-border.html">회원 문의 내역</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/memberManage/memberLevel.do">회원 등급 관리</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/memberManage/memberInquiry.do">회원 등급 관리</a>     
                     </div>
                 </div>
             </li>
