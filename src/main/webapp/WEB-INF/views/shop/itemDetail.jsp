@@ -76,7 +76,7 @@
 										</div>
 										<p class="mt-3">리뷰 작성</p>
 										<div class="checkboxReport">
-											<textarea name="content" id="reportText" cols="30" rows="10" maxlength='900' required></textarea>
+											<textarea style="-ms-overflow-style: none;" name="content" id="reportText" cols="30" rows="10" maxlength='900' required></textarea>
 											<span id="textLength">0/900</span>
 										</div>
 										<p style="font-size: 12px;">ⓘ 포토리뷰 500P / 글리뷰 100P 적립</p>
@@ -115,7 +115,7 @@
 									<div class="checkboxReport">
 										<span>제목 : </span>
 										<input type="text"name="" id="qTitle" required>
-										<textarea name="" id="reportText" cols="30" rows="10" required></textarea>
+										<textarea  name="" id="reportText" cols="30" rows="10" required></textarea>
 									</div>
 								</div>
 							</div>
@@ -295,6 +295,13 @@
 												  <img src="${pageContext.request.contextPath}/resources/upload/review/${l.attach.renamedFilename}" alt="" onclick="expandPic(event)">
 												  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
 													<i class="far fa-heart">3</i>
+												  </div>
+												</div>
+											</c:if>
+											<c:if test="${l.attach.reviewAttachNo < 1}">
+												<div class="reviewPhoto">
+												  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
+													<i style="width:100px" class="far fa-heart">3</i>
 												  </div>
 												</div>
 											</c:if>
