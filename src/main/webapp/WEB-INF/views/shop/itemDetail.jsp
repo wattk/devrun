@@ -298,6 +298,13 @@
 												  </div>
 												</div>
 											</c:if>
+											<c:if test="${l.attach.reviewAttachNo < 1}">
+												<div class="reviewPhoto">
+												  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
+													<i style="width:100px" class="far fa-heart">3</i>
+												  </div>
+												</div>
+											</c:if>
 											<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->
 										  </div>
 										</div>
