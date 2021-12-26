@@ -1,4 +1,4 @@
-package com.kh.devrun.shop.model;
+package com.kh.devrun.shop.model.vo;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,6 +20,8 @@ public class Review implements Serializable {
 	private int reviewNo;
 	@NonNull
 	private int memberNo;
+	@NonNull
+	private String id;
 	@NonNull
 	private String productCode;
 	@NonNull

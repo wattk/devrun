@@ -5,66 +5,18 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
+<jsp:include page="/WEB-INF/views/mypage/common/header.jsp">
 	<jsp:param value="마이페이지" name="title"/>
 </jsp:include>
-<!-- 부트스트랩 아이콘 CDN -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-<!-- 한글 폰트 CDN -->
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
-<!-- CSS import -->
-<link href="${pageContext.request.contextPath}/resources/css/mypage/mypage.css" rel="stylesheet">
+
+<link href="${pageContext.request.contextPath}/resources/css/mypage/myshopping.css" rel="stylesheet">
 
 <%-- EL에서 접근하기 위해 VAR속성 지정 --%>
 <sec:authentication property="principal" var="member"/>
-<style>
-.search-badge{
-	border : 1px solid rgba(0,0,0,.125);
-	border-radius : 1.5rem;
-	height : 1.5rem;
-	width : 4rem;
-}
-.order-btn{
-	border-radius : 0;
-	width : 6rem;
-	height : 1.5rem;
-	margin : 3px 0 3px 0;
-	padding : 0;
-}
-.question-btn{
-	color : #007bff;
-	font-weight : 700;
-}
-</style>
-<main>
-	<br/><br/>
-	<article class="container" id="tabContent">
-		
-		<%-- tap button --%>
-		<nav id="tabBtns">
-			<ul class="nav nav-tabs">
-				<li class="nav-item">
-				   <a class="nav-link" id="mycommunityTab" href="#mycommunity" role="tab" aria-controls="mycommunity" aria-selected="false">나의 커뮤니티</a>
-				</li>
-				<li class="nav-item">
-				   <a class="nav-link" id="myshoppingTab" href="#myshopping" role="tab" aria-controls="myshopping" aria-selected="false">나의 쇼핑</a>
-				</li>
-				<li class="nav-item">
-				   <a class="nav-link" id="myinfoTab" href="#myinfo" role="tab" aria-controls="myinfo" aria-selected="false">나의 정보</a>
-				</li>
-				<li class="nav-item">
-				   <a class="nav-link active" id="mypageTab" href="#mypage" role="tab" aria-controls="mypage" aria-selected="true">마이페이지</a>
-				</li>
-			</ul>
-		</nav>
-		
-		<%-- tap container --%>
-		<section class="col-12 tab-content " id="tabContainer">
 			<%-- my shopping --%>
-			<div class="tab-pane fade show active col-15" id="myOrderList">
+			<div class="tab-pane fade show active col-15" id="myOrderDetail">
 		   		<article class="col-9 mx-auto">
-	       			
-	       			<h5>주문 내역</h5>
+	       			<h4 class="order-tab-title">주문 내역</h4>
 	       			<div class="search-box mt-3">
 			          <form class="form-inline" name="orderSearchFrm" action="${pageContext.request.contextPath}/mypage/orderSearch.do" method="GET">
 					    <div class="input-group w-50 mb-2">
@@ -150,9 +102,5 @@
 	       			</section>
 		    	</article>
 			</div>
-		</section>		   
-        	   
-    </article>
-</main>
 
-<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/mypage/common/footer.jsp"></jsp:include>

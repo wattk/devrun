@@ -1,10 +1,14 @@
 /**리뷰사진확대모달 시작*/
-function expandPic(target) {
+function expandPic(event) {
+ var path = event.target.src;
+
 
 	
 const $reviewModal = $("#reviewModal");
 if($reviewModal.css("display","none")) {
 	$reviewModal.show();
+	$('#reviewExpansion').attr("src",path);
+
 }
 }
 
@@ -18,10 +22,14 @@ $reviewModal.hide();
 
 
  var openFile = function(event) { 
+	
 	const $picR = $('#choosePicP');
 	const picA = '<img id="previewPhoto" src="">';
+	$('#choosePicP').next().detach();
+	
 	$picR.after(picA);
 
+  
 	var input = event.target; var reader = new FileReader(); 
 	 
  	reader.onload = function(){ 
@@ -30,7 +38,13 @@ $reviewModal.hide();
  		output.src = dataURL; 
  		}; 
  		
- 	reader.readAsDataURL(input.files[0]); 
+ 	if(input.files[0] != null) {
+ 	reader.readAsDataURL(input.files[0]); 	
+	} else{
+	$('#choosePicP').next().detach();
+	}
+
+  
  	};
 
 
@@ -40,5 +54,17 @@ $reviewModal.hide();
 function deleteReview() {
 	$('#reviewPic').val("");
 	$('#choosePicP').next().detach();
+	$('#reportText').val('');
+	$('#textLength').text('0/900');
+	$('#rateSelect').prop('selectedIndex',0);
 }
 /*상품리뷰 취소시 다 날리게 끝*/
+
+/*리뷰 글자수 세기 시작 */
+$('#reportText').keydown((e) =>{
+	
+	var textL = document.getElementById('reportText').value.length;
+	$('#textLength').text(textL+'/900');
+	
+});
+/*리뷰 글자수 세기 시작 */

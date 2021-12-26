@@ -26,6 +26,7 @@
 
 
 	<!-- body 영역 시작 -->
+	
 		<div id="shopItemDetailOuterDiv">
 			<div id="itemDetailDisplayDiv" class="row">
 				<!--리뷰작성모달 시작(부트스트랩)-->
@@ -50,9 +51,13 @@
 											<img id="qPIc" src="https://i.ibb.co/gm7H77f/square.png" alt="">
 											<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
 											<input type="hidden" name="productCode" value="332">
+											<sec:authorize access="isAuthenticated()">
+												<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
+												<input type="hidden" name="id" value='<sec:authentication property="principal.id"/>' />
+											</sec:authorize>
 										</div>
 										<p class="mt-3">상품 별점</p>
-										<select name="rate" class="form-select col-12" aria-label="Default select example">
+										<select id="rateSelect" name="rate" class="form-select col-12" aria-label="Default select example">
 											<option value="5" selected> 별점 5점 </option>
 											<option value="4">별점 4점</option>
 											<option value="3">별점 3점</option>
@@ -71,7 +76,8 @@
 										</div>
 										<p class="mt-3">리뷰 작성</p>
 										<div class="checkboxReport">
-											<textarea name="content" id="reportText" cols="30" rows="10" required></textarea>
+											<textarea name="content" id="reportText" cols="30" rows="10" maxlength='900' required></textarea>
+											<span id="textLength">0/900</span>
 										</div>
 										<p style="font-size: 12px;">ⓘ 포토리뷰 500P / 글리뷰 100P 적립</p>
 									</div>
@@ -196,7 +202,7 @@
 					</div>
 				<!--신고 모달 끝 (부트스트랩)-->
 				<!--리뷰사진확대 모달 시작-->
-				<div id="reviewModal" class="review-modal-div" style="position: absolute;">
+				<div id="reviewModal" class="review-modal-div ml-12" onclick="expandClose()">
 					<img id="closeIcon" src="https://i.ibb.co/rmVYp7Z/x-icon.png" alt="" onclick="expandClose()">
 					<img src="https://i.ibb.co/XLNWsgC/red-square.jpg" alt="" id="reviewExpansion">
 				</div>
@@ -219,7 +225,6 @@
 							<span>제주도/도서산간 지역 4,000원 추가</span>
 							<i class="far fa-heart"></i>
 						</div>
-						
 						<hr>
 						<select class="form-select col-12" aria-label="Default select example">
 							<option selected>옵션선택</option>
@@ -247,104 +252,61 @@
 							<!--1번째 탭---->
 							<div class="tab">
 							  <input id="tab-1" checked="checked" name="tab-group-1" type="radio" />
-							  <label for="tab-1"><span class="tab-span">리뷰 </span><span class="tab-span">22</span></label>
+							  <label for="tab-1"><span class="tab-span">리뷰 </span></label>
 							  <div class="content height600" >
 								<!--상단 갯수 및 선택 옵션 시작-->
 								<div class="item-sort-container d-flex justify-content-between">
-								  <div class="p-4" style="margin-top: 9px;">총 465개</div>
+								  <div class="p-4" style="margin-top: 9px;">총 ${reviewTotal}개</div>
 								  <div class="p-4" id="sortBy">
 									<span class="pr-2 pl-2 shop-sort">최신순</span>
 									<span class="pr-2 pl-2 shop-sort">오래된순 </span>
 									<span class="pr-2 pl-2 shop-sort">사진리뷰모아보기</span>
-									<button type="button" class="btn btn-warning report-btn3" data-toggle="modal" data-target="#exampleModal3">리뷰작성하기</button>	
+									<sec:authorize access="hasAnyRole('M1','M2')">
+										<button type="button" class="btn btn-warning report-btn3" data-toggle="modal" data-target="#exampleModal3">리뷰작성하기</button>	
+									</sec:authorize>
 								  </div>
 								</div>
 								<hr>
 								<!--상단 갯수 및 선택 옵션 끝-->
 								<div></div>
 								<!--리뷰시작-->
-								<div class="aReviewDiv forFont">
-								  <div class="shop-review row">
-									<div class="reviewProfile">
-									  <img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
-									</div> 
-									<div class="reviewContent ml-3">
-									  <i class="fas fa-star"></i>
-									  <i class="fas fa-star"></i>
-									  <i class="fas fa-star"></i>
-									  <i class="fas fa-star"></i>
-									  <i class="fas fa-star"></i>
-									  <br><span>greendory</span> | <span>21.11.06</span> | 
-									  <!-- Button trigger modal -->
-									  <button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
-									  <br><span>상품옵션 : </span> <span>핑크</span>
-									  <div class="reviewP mt-3">
-										너무 좋아요 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus deserunt perferendis aspernatur dolores aliquid labore laborum id aut beatae nulla, a sequi reiciendis placeat, quia corrupti voluptatum accusantium vel voluptas. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Saepe, a error? Expedita harum accusantium provident praesentium consectetur at autem in dicta facere, dolor rem nesciunt repudiandae saepe. Ducimus, expedita eveniet. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis veniam, id, libero, vel molestiae recusandae sunt quod debitis nam ut laudantium ducimus quas accusantium assumenda eligendi. Eaque, est. Unde, tenetur.
-										Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus quo dignissimos, sed corrupti obcaecati soluta earum veritatis, tempora necessitatibus alias culpa ratione vel officia ex fugiat. Ex vitae laboriosam voluptatem.
-									  </div>  
-									</div>
-									<div class="reviewPhoto">
-									  <img src="https://i.ibb.co/gm7H77f/square.png" alt="" onclick="expandPic()">
-									  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
-										<i class="far fa-heart">3</i>
-									  </div>
-									</div>
-								  </div>
-								</div>
+								<c:if test="${reviewList != null}">
+									<c:forEach items="${reviewList}" var="l">
+										<div class="aReviewDiv forFont">
+										  <div class="shop-review row">
+											<div class="reviewProfile">
+											  <img class="rounded-circle mt-3" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
+											</div> 
+											<div class="reviewContent ml-3">
+											<c:forEach var="i" begin="1" end="${l.rate}">
+											  <i class="fas fa-star"></i>
+											</c:forEach>
+											  <br><span>${l.id}</span> | <span> <fmt:formatDate value="${l.regDate}" pattern="yyyy년MM월dd일 HH:mm:ss"/></span> | 
+											  <!-- Button trigger modal -->
+											  <button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
+											  <br><span>상품옵션 : </span> <span>핑크</span>
+											  <div class="reviewP mt-3">
+											  ${l.content}
+											  </div>  
+											</div>
+											<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 시작 -->
+											<c:if test="${l.attach.reviewAttachNo != 0}">
+												<div class="reviewPhoto">
+												  <img src="${pageContext.request.contextPath}/resources/upload/review/${l.attach.renamedFilename}" alt="" onclick="expandPic(event)">
+												  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
+													<i class="far fa-heart">3</i>
+												  </div>
+												</div>
+											</c:if>
+											<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->
+										  </div>
+										</div>
+									</c:forEach>
+								</c:if>
+								<c:if test="${empty  reviewList}">
+									<span id="reviewNone">등록된 리뷰가 없습니다.</span>
+								</c:if>
 								<!--리뷰끝-->
-								<div class="aReviewDiv forFont">
-									<div class="shop-review row">
-									  <div class="reviewProfile">
-										<img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
-									  </div> 
-									  <div class="reviewContent ml-3">
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<br><span>greendory</span> | <span>21.11.06</span> |
-										<button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
-										<br><span>상품옵션 : </span> <span>핑크</span>
-										<div class="reviewP mt-3">
-										  너무 좋아요 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus deserunt perferendis aspernatur dolores aliquid labore laborum id aut beatae nulla, a sequi reiciendis placeat, quia corrupti voluptatum accusantium vel voluptas. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Saepe, a error? Expedita harum accusantium provident praesentium consectetur at autem in dicta facere, dolor rem nesciunt repudiandae saepe. Ducimus, expedita eveniet. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Perspiciatis veniam, id, libero, vel molestiae recusandae sunt quod debitis nam ut laudantium ducimus quas accusantium assumenda eligendi. Eaque, est. Unde, tenetur.
-										  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus quo dignissimos, sed corrupti obcaecati soluta earum veritatis, tempora necessitatibus alias culpa ratione vel officia ex fugiat. Ex vitae laboriosam voluptatem.
-										</div>  
-									  </div>
-									  <div class="reviewPhoto">
-										<img src="https://i.ibb.co/gm7H77f/square.png" alt="" onclick="expandPic()">
-										<div  class="reviewLikeBtn text-center border border-success rounded mt-1">
-										  <i class="far fa-heart">3</i>
-										</div>
-									  </div>
-									</div>
-								  </div>
-								<div class="aReviewDiv forFont">
-									<div class="shop-review row">
-									  <div class="reviewProfile">
-										<img class="rounded-circle mt-1" src="https://i.ibb.co/L6xBDk1/profile.png" alt="">
-									  </div> 
-									  <div class="reviewContent ml-3">
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<i class="fas fa-star"></i>
-										<br><span>greendory</span> | <span>21.11.06</span> |
-										<button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal3">신고</button>
-										<br><span>상품옵션 : </span> <span>핑크</span>
-										<div class="reviewP mt-3">
-										  너무 좋아요
-										</div>  
-									  </div>
-									  <div class="reviewPhoto">
-										<img src="https://i.ibb.co/gm7H77f/square.png" alt="" onclick="expandPic()">
-										<div  class="reviewLikeBtn text-center border border-success rounded mt-1">
-										  <i class="far fa-heart">3</i>
-										</div>
-									  </div>
-									</div>
-								  </div>
 							  </div>
 							</div>
 							<!--2번째 탭---->
@@ -420,7 +382,6 @@
 									</div>
 									<!--문의 한 건 끝-->
 								  </div>
-					
 								</div>
 								<!--문의끝-->
 							  </div>

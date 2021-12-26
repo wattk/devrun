@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="shop">
+	<insert id="insertReview">
+		insert into 
+			review
+		values(
+			seq_review_no.nextval,
+			#{memberNo},
+			#{id},
+			'ch-ec-실험책상-23',
+			#{content},
+			default,
+			default,
+			#{rate}
+		)
+		<selectKey keyProperty="reviewNo" resultType="_int" order="AFTER">
+			select
+				seq_review_no.currval
+			from
+				dual
+		</selectKey>
+	</insert>
+	<insert id="insertAttach">
+		insert into
+			REVIEW_ATTACHMENT
+		values(
+			SEQ_REVIEW_ATTACHMENT_NO.nextval,
+			#{reviewNo},
+			#{originalFilename},
+			#{renamedFilename},
+			default
+		)	
+	</insert>
+	
+	<select id="selectAllReview" resultMap="review">
+		select 
+		    *
+		from
+		    review r left join review_attachment a
+		    on r.review_no = a.review_no
+		order by r.reg_date desc    
+	</select>
+	<resultMap type="review" id="review">
+		<id column ="review_no" property ="reviewNo"/>
+		<result column ="member_no" property="memberNo"/>
+		<result column ="id" property="id"/>
+		<result column ="product_code" property="productCode"/>
+		<result column ="content" property="content"/>
+		<result column ="like_count" property="likeCount"/>
+		<result column ="reg_date" property="regDate"/>
+		<collection property="attach" ofType="Attachment">
+			<id column="review_attach_no" property="reviewAttachNo"/>
+			<result column ="review_no" property="reviewNo"/>
+			<result column="ORIGINAL_FILENAME" property="originalFilename"/>
+			<result column="RENAMED_FILENAME" property="renamedFilename"/>
+			<result column ="reg_date" property="regDate"/>			
+		</collection>
+	</resultMap>
+	
+	<select id="countAllList" resultType="int">
+		select count(*)
+		from review
+	</select>
+</mapper>
