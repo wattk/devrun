@@ -132,6 +132,16 @@ public class MypageController {
 	 * 혜진 나의 쇼핑 끝
 	 */
 	/**
+	 * 혜진 교환/환불/취소 리스트 시작
+	 */
+	
+	@GetMapping("/claimList.do")
+	public void claimList() {}
+	
+	/**
+	 * 혜진 교환/환불/취소 리스트 끝
+	 */
+	/**
 	 * 혜진 교환/환불/취소 시작
 	 */
 	

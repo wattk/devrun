@@ -304,6 +304,9 @@ color: green;
     top: 711px;
 	display: none;
 	z-index: 20;
+	background: rgba(110, 110, 110,0.9);
+    width: 1194px;
+    height: 600px;
 }
 #reviewExpansion{
 	width: 450px;
