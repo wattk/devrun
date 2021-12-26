@@ -12,7 +12,7 @@
 		#{name},
 		#{price},
 		sysdate,
-		null,
+		#{productCode} ||'-'||seq_product_no.nextval ||'.png',
 		#{content},
 		#{viewCount},
 		#{status}
@@ -76,7 +76,14 @@
 	
 	<!-- 상품 리스트   -->
 	<select id="selectAllProductList" resultType="Product">
-			select * from product order by reg_date desc
+			select
+				product_code,
+                thumbnail,
+                name,
+                status,
+                reg_date,
+                view_count 
+			from product order by reg_date desc
 	</select>
 	
 
@@ -120,8 +127,8 @@
 		    p.status,
             p.content,
             substr(p.product_code,1,2) parent_category_code,
-            substr(p.product_code,4,2) child_category_code,
-             (select child_category_title from PRODUCT_CHILD_CATEGORY where  child_category_code = substr(p.product_code,4,2)) child_category_title,
+            substr(p.product_code,4,3) child_category_code,
+             (select child_category_title from PRODUCT_CHILD_CATEGORY where  child_category_code = substr(p.product_code,4,3)) child_category_title,
 		    p.reg_date,
 		    p.view_count
 		from
