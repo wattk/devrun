@@ -336,8 +336,8 @@
                 <div id="collapseCustomer" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="utilities-color.html">회원 등급 관리</a>
-                        <a class="collapse-item" href="utilities-border.html">회원 문의 내역</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/memberManage/memberLevel.do">회원 등급 관리</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/memberManage/memberInquiry.do">회원 등급 관리</a>     
                     </div>
                 </div>
             </li>

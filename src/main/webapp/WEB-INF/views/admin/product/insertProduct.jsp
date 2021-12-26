@@ -204,25 +204,25 @@ $("#largeCategory").change((e)=>{
 });
 
 	
-
-
-
-(()=>{
+/* 상품 등록 유효성 검사  */
+function checkFrm(){
 	
-	/* 상품 등록 유효성 검사  */
-	function checkFrm(){
-		if($("#summernote").value == ""){
-			alert("내용을 입력하세요");
-			return false;
-		}
-		if($("#smallCategory option").value == 0){
-			alert("소분류를 선택하세요");
-			return false;
-		}
+	if($("#imgInput").val() == "") {
+		alert("상품 이미지를 선택해주세요");
+	    $("#imgInput").trigger("click");
+	    return false;
 	}
-
-});
-
+	
+	if($("#summernote").value == ""){
+		alert("내용을 입력하세요");
+		return false;
+	}
+	
+	if($("#smallCategory option").val() == 0){
+		alert("상품 분류를 선택해주세요.");
+		return false;
+	}
+}
 
 
 </script>

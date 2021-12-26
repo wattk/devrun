@@ -12,7 +12,7 @@
 		#{name},
 		#{price},
 		sysdate,
-		#{thumbnail} ||'-' ||seq_product_no.nextval ||'.png'  ,
+		#{productCode} ||'-'||seq_product_no.nextval ||'.png',
 		#{content},
 		#{viewCount},
 		#{status}
@@ -127,8 +127,8 @@
 		    p.status,
             p.content,
             substr(p.product_code,1,2) parent_category_code,
-            substr(p.product_code,4,2) child_category_code,
-             (select child_category_title from PRODUCT_CHILD_CATEGORY where  child_category_code = substr(p.product_code,4,2)) child_category_title,
+            substr(p.product_code,4,3) child_category_code,
+             (select child_category_title from PRODUCT_CHILD_CATEGORY where  child_category_code = substr(p.product_code,4,3)) child_category_title,
 		    p.reg_date,
 		    p.view_count
 		from

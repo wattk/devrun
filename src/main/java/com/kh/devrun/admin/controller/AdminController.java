@@ -174,11 +174,7 @@ public class AdminController {
 		log.debug("upFile = {}",upFile);
 		String productImg = product.getProductCode();
 		log.debug("productImg = {}",productImg);
-		
-
-		
-//		prduct thumbnail값 세팅
-		product.setThumbnail(productImg);
+				
 			
 		// 상품 등록
 		int result = productService.insertProduct(param);
@@ -190,17 +186,24 @@ public class AdminController {
 		String saveDirectory  = application.getRealPath("/resources/upload/product");
 		log.debug("saveDirectory = {}",saveDirectory);
 		
-//		 업무로직 : db저장 		
+//		 업무로직 : thumbnail값 세팅 && 서버 pc저장 		
 		if(!upFile.isEmpty()) {		
-			try {									
+			try {					
+				// prduct thumbnail값 세팅
+				product.setThumbnail(productImg);	
+				
 				// 서버 컴퓨터 저장
 				File dest = new File(saveDirectory, realProductImg);
 				upFile.transferTo(dest);			
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-					
+					 
 		}
+		else {
+			
+		}
+		
 		
 		String msg = result > 0 ? "상품등록을 성공했습니다!":"상품등록에 실패했습니다!!!!!!";  
 		redirectAttr.addFlashAttribute("msg",msg);
@@ -219,11 +222,19 @@ public class AdminController {
 		for(int i = 0; i < productCode.length; i++) {
 			log.debug("productCode"+i+productCode[i]);
 			result = productService.deleteProduct(productCode[i]);
+			
+			// 서버의 이미지 삭제
+			String saveDirectory  = application.getRealPath("/resources/upload/product/")+productCodes+".png"; 
+			log.debug("saveDirectory = {}",saveDirectory);
+			
+			File file = new File(saveDirectory);
+			boolean fileDelete = file.delete();
+			log.debug("fileDelete = {}", fileDelete);
+			
+			
 		}
 		
-		// 서버의 이미지 삭제
-		String saveDirectory  = application.getRealPath("/resources/upload/product"); 
-//		File _delFile = new File(saveDirectory,)
+
 		
 		redirectAttr.addFlashAttribute("msg","선택하신 상품을 삭제했습니다");	
 		return "redirect:/admin/productMain.do";
@@ -260,8 +271,7 @@ public class AdminController {
 
 		log.debug("ProductExtends ={}",productExtends);
 		log.debug("productDetail ={}",productDetail);
-		
-		
+				
 		model.addAttribute("productCode",productCode);
 		model.addAttribute("productInfo",productExtends);
 		model.addAttribute("productDetail",productDetail);
@@ -308,12 +318,12 @@ public class AdminController {
 		// prodcut 객체에 저장
 		product.setProductDetailList(productDetailList);
 		
+		
 		log.debug("product = {}",product); 
 		
 		// 1.상품 정보 수정
-//		result = productService.updateProduct(product);
-		upFile.getOriginalFilename();
-		log.debug("파일 이름 = {}",upFile.getOriginalFilename());
+
+
 		
 		
 		
@@ -325,12 +335,50 @@ public class AdminController {
 		
 		// 3.첨부파일 수정
 		
+		// 서버의 기존이미지 삭제
+		String fileDirectory = application.getRealPath("/resources/upload/product/")+productCode+".png";
+		String saveDirectory = application.getRealPath("/resources/upload/product");
+		log.debug("saveDirectory = {}",saveDirectory);
+		
+		File delFile = new File(fileDirectory);
+		boolean fileDelete = delFile.delete();
+		log.debug("fileDelete = {}", fileDelete);
+		
+		// 바뀐 이미지 파일 서버에 저장
+		String newProductImg = productCode+"-1.png";
+		if(!upFile.isEmpty()) {		
+			try {								
+				// 서버 컴퓨터 저장
+				File dest = new File(saveDirectory, newProductImg);
+				upFile.transferTo(dest);			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+					 
+		}
+		
+		// 바뀐 이미지 파일 명 set한 뒤 update
+		product.setThumbnail(newProductImg);
+		result = productService.updateProduct(product);
+		
+		
 		String msg = "상품 수정 성공 !!";
 		redirectAttr.addFlashAttribute("msg",msg);
 		return "redirect:/admin/productMain.do";
 	}
 	
 	
+	
+	// 회원 등급 관리
+	@GetMapping("/memberManage/memberLevel.do")
+	public void memberLevel() {	
+	};
+	
+	// 회원 문의 내역
+	@GetMapping("/memberManage/memberInquiry.do")
+	public void memberInquiry() {
+		
+	};
 
 	
 	
