@@ -12,25 +12,26 @@
 		#{name},
 		#{price},
 		sysdate,
-		#{thumbnail},
+		#{thumbnail} ||'-' ||seq_product_no.nextval ||'.png'  ,
 		#{content},
 		#{viewCount},
 		#{status}
 	)	
 	
-		<selectKey keyProperty="productCode" resultType="String" order="AFTER">
-			SELECT
-			   A.PRODUCT_CODE
-			FROM (
-			   SELECT
-			      PRODUCT_CODE,
-			      ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) RN
-			   FROM PRODUCT
-			   ORDER BY REG_DATE DESC
-			) A
-			WHERE RN = 1
-			
-		</selectKey>
+	<selectKey keyProperty="productCode" resultType="String" order="AFTER">
+		SELECT
+		   A.PRODUCT_CODE
+		FROM (
+		   SELECT
+		      PRODUCT_CODE,
+		      ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) RN
+		   FROM PRODUCT
+		   ORDER BY REG_DATE DESC
+		) A
+		WHERE RN = 1
+		
+	</selectKey>
+	
 	</insert>
 	
 	<!-- 상품 분류 테이블 추가 -->
@@ -58,6 +59,20 @@
 		)
 				
 	</insert>
+	<!-- nextval 번호까지 붙은 thumbnail 값 가져오기 (최근 등록된) -->
+	<select id="selectRealProductImg" resultType="String">
+		SELECT
+		   A.PRODUCT_CODE
+		FROM (
+		   SELECT
+		      PRODUCT_CODE,
+		      ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) RN
+		   FROM PRODUCT
+		   ORDER BY REG_DATE DESC
+		) A
+    	WHERE RN = 1			
+	</select>
+	
 	
 	<!-- 상품 리스트   -->
 	<select id="selectAllProductList" resultType="Product">
@@ -116,6 +131,36 @@
         order by reg_date desc
 	
 	</select>
+	
+	<!-- 상품 디테일정보 가져오기 -->
+	<select id="selectProductDetail" resultType="ProductDetail">
+		select
+			*
+		from
+			product_detail
+		where
+			product_code = #{productCode}
+				
+	</select>
+	
+	<!-- 상품 정보 업데이트  -->
+	<update id="updateProduct">
+		update
+			product
+		set
+			name = #{name},
+			price = #{price},
+			thumbnail = #{thumbnail},
+			content = #{content},
+			status = #{status}
+		where
+			product_code = #{productCode}
+	</update>
+
+
+
+
+
 
 	<!--태영 끝-->
 	

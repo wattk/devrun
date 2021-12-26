@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.devrun.admin.exception.ProductDeleteException;
 import com.kh.devrun.admin.exception.ProductInsertException;
+import com.kh.devrun.admin.exception.ProductUpdateException;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.model.dao.ProductDao;
 import com.kh.devrun.product.model.vo.Product;
@@ -120,6 +121,37 @@ public class ProductServiceImpl implements ProductService {
 	public ProductExtends selectProductOne(String productCode) {
 		return productDao.selectProductOne(productCode);
 	}
+
+	// 상품 디테일 정보 가져오기
+	@Override
+	public List<ProductDetail> selectProductDetail(String productCode) {
+		return productDao.selectProductDetail(productCode);
+	}
+
+	
+	// 상품 정보 업데이트
+	@Transactional(rollbackFor = Exception.class)
+	@Override
+	public int updateProduct(Product product) {
+		int result = 0;
+		
+		try {
+			result = productDao.updateProduct(product);
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			throw new ProductUpdateException("상품 수정 오류",e);
+		}
+		
+		return result;
+	}
+	
+	// nextval 번호까지 붙은 thumbnail 값 가져오기 (최근 등록된)
+	@Override
+	public String selectRealProductImg() {
+		return productDao.selectRealProductImg();
+	}
+	
+	
 	
 }
 

@@ -1279,6 +1279,7 @@ from
     product p left join product_category pc 
         on p.product_code = pc.product_code;
 
+select * from member;
 
 
 
