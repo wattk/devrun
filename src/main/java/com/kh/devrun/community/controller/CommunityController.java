@@ -217,6 +217,19 @@ public class CommunityController {
 		  return "redirect:/community/communityFreeboardList.do";
 	}
 	
+	// 자유게시판-상세보기
+	// @RequestParam("가져올 데이터의 이름")[데이터 타입][가져온 데이터를 담을 변수]
+	// 그리고 Model 객체를 이용해서, 뷰로 값을 넘겨준다.
+	@GetMapping("/communityFreeboardDetail.do")
+	public void communityFreeboardDetail(@RequestParam int communityNo, Model model) {
+		log.debug("communityNo = {}", communityNo);
+		
+		// 업무로직
+		CommunityEntity communityEntity = communityService.selectOneFreeBoard(communityNo);
+		log.debug(" communityEntity = {}", communityEntity);
+		model.addAttribute("communityEntity", communityEntity);
+	}
+	
 	
 	
 }
