@@ -1,5 +1,7 @@
 package com.kh.devrun.shop.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -41,6 +43,16 @@ public class ShopServiceImpl implements ShopService {
 			throw e; 
 		}
 		return result;
+	}
+
+	@Override
+	public List<Review> selectAllReview() {
+		return shopDao.selectAllReview();
+	}
+
+	@Override
+	public int countAllList() {
+		return shopDao.countAllList();
 	}
 
 }
