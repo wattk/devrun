@@ -180,5 +180,29 @@ public class DevrunUtils {
 		
 		return sb.toString();
 	}
+	
+	/**
+	 * chat_dfslk23lskd341d
+	 * @return
+	 */
+	public static String getRandomChatId() {
+		Random rnd = new Random();
+		StringBuffer sb = new StringBuffer();
+		sb.append("chat_");
+		for(int i = 0; i < 15; i++) {
+			if(rnd.nextBoolean()) {
+				// 영문자 : 대문자 65~90, 소문자 97~122
+				boolean isUpperCase = rnd.nextBoolean();
+				char ch = (char)((isUpperCase ? 65 : 97) + rnd.nextInt(26));
+				sb.append(ch);
+			}
+			else {
+				// 숫자
+				sb.append(rnd.nextInt(10)); // 0 ~ 9 사이의 숫자 생성되어 추가된다.
+			}
+		}
+		
+		return sb.toString();
+	}
 
 }
