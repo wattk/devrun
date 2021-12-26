@@ -3,6 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
+
+<%-- EL에서 접근하기 위해 var속성 지정 --%>
+<sec:authentication property="principal" var="loginMember"/>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -113,6 +119,7 @@
 /* 사이드바 회원 프로필 사진*/
 .sidebar_menu .member-profile {
 	width: 42px;
+	height: 42px;
 	border: 1px solid #f1f3f5;
 	border-radius: 50%;
 }
@@ -142,6 +149,7 @@
 .chat-data-wrap .member-profile {
     position: absolute;
 	width: 42px;
+	height: 42px;
 	border: 1px solid #f1f3f5;
 	border-radius: 50%;
 	cursor: pointer;
@@ -285,6 +293,7 @@
 
 .report-block-modal .member-profile {
 	width: 42px;
+	height: 42px;
 	border: 1px solid #f1f3f5;
 	border-radius: 50%;
 }
@@ -422,7 +431,7 @@
 							<!-- 상대방 메세지 -->
 							<div class="receive-msg-wrap">
 								<!-- 회원 프로필 사진 -->
-								<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
+								<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
 								
 								
 								<div class="talk-info position-relative">
@@ -485,7 +494,7 @@
 							<!-- 상대방 메세지 -->
 							<div class="receive-msg-wrap">
 								<!-- 회원 프로필 사진 -->
-								<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
+								<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
 								
 								
 								<div class="talk-info position-relative">
@@ -573,13 +582,13 @@
 					<ul class="pl-0">
 						<li>
 							<!-- 회원 프로필 사진 -->
-							<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+							<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 							<!-- 회원 닉네임 -->
 							<strong>길동이1</strong>
 						</li>
 						<li>
 							<!-- 회원 프로필 사진 -->
-							<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+							<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 							<!-- 회원 닉네임 -->
 							<strong>길동이2</strong>
 						</li>
@@ -611,7 +620,7 @@
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	        <!-- 회원 프로필 사진 -->
-			<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+			<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 			<!-- 닉네임 -->
 			<strong>길동이</strong>
 			<!-- 아이디 -->
@@ -772,7 +781,90 @@
 
 <script>
 
+// /chat/chat_mk0L0UJ93P50409 구독
+// 1. Stomp Client객체 생성(websocket)
+const ws = new SockJS(`http://\${location.host}${pageContext.request.contextPath}/stomp`);
+const stompClient = Stomp.over(ws);
 
+// 2. 연결 요청
+stompClient.connect({}, (frame) => {
+	console.log("Stomp Client Connect : ", frame);
+	
+	// 3.구독요청
+	stompClient.subscribe("/chat/${chatId}", (message) => {
+		console.log("message : ", message);
+		const obj = JSON.parse(message.body);
+		console.log(obj);
+		const {memberNo, msg, logTime} = obj;
+
+		// 타임스탬프 날짜 변환
+		const date = new Date(logTime);
+		const year = date.getFullYear().toString().slice(-2); //년도 뒤에 두자리
+		const month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리 (01, 02 ... 12)
+		const day = ("0" + date.getDate()).slice(-2); //일 2자리 (01, 02 ... 31)
+		const hour = ("0" + date.getHours()).slice(-2); //시 2자리 (00, 01 ... 23)
+		const minute = ("0" + date.getMinutes()).slice(-2); //분 2자리 (00, 01 ... 59)
+		//const second = ("0" + date.getSeconds()).slice(-2); //초 2자리 (00, 01 ... 59)
+		const returnDate = year + "." + month + "." + day + " " + hour + ":" + minute;
+		//console.log(returnDate);
+		
+		$(chatData).append(`<li class="list-group-item">
+<!-- 본인 메세지 -->
+<div class="send-msg-wrap">
+<div class="talk-info position-relative">	
+<!-- 본인 메세지 내용 -->
+<div class="send-msg">
+<p class="msg-p">\${msg}</p>
+</div>
+<div class="etc">
+<!-- 읽음 표시 -->
+<span class="read-check d-block">읽음</span>
+<span class="msg-time">\${returnDate}</span>
+</div>
+<!-- 본인 메세지 내용 끝-->
+</div>
+</div>
+<!-- 본인 메세지 끝 -->
+</li>`);
+		// 채팅 입력된 후 최근 내용 확인을 위해 스크롤 하단으로 이동 시키기
+		$('.chat-data-wrap').scrollTop($('.chat-data-wrap')[0].scrollHeight);
+	});
+	
+});
+
+// 채팅 Send 클릭 시 이벤트 발생
+$(sendBtn).click((e) => {
+	const obj = {
+		chatId : "${chatId}",
+		memberNo : "${loginMember.memberNo}",
+		msg : $(message).val(),
+		logTime : Date.now(),
+		type: "MESSAGE"
+	};
+	console.log(obj);
+	stompClient.send("/app/chat/${chatId}", {}, JSON.stringify(obj));
+	$(message).val(''); // #message 초기화
+});
+
+// 메시지 입력 시 엔터 치면 click 핸들러 호출
+$(message).keyup((e) => {
+	// 엔터치면 전송하게 해주세요.
+	if(e.keyCode == 13){
+		$(sendBtn).trigger('click'); // click 핸들러 호출!
+	}
+});
+
+//타임스탬프 값을 년월일로 변환
+/* function Unix_timestamp(t){
+    const date = new Date(t*1000);
+    const year = date.getFullYear();
+    const month = "0" + (date.getMonth()+1);
+    const day = "0" + date.getDate();
+    const hour = "0" + date.getHours();
+    const minute = "0" + date.getMinutes();
+    //const second = "0" + date.getSeconds();
+    return year + "-" + month.substr(-2) + "-" + day.substr(-2) + " " + hour.substr(-2) + ":" + minute.substr(-2);
+} */
 
 // 더보기 아이콘 클릭 이벤트 발생
 $('.more-icon').on('click', function(){
