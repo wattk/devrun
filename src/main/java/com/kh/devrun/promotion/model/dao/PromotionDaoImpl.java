@@ -72,6 +72,16 @@ public class PromotionDaoImpl implements PromotionDao {
 	public List<Promotion> selectEndPromotionList() {
 		return session.selectList("promotion.selectEndpromotionList");
 	}
+
+	@Override
+	public List<Map<String, String>> selectProductPromotionByPromotionCode(String promotionCode) {
+		return session.selectList("promotion.selectProductPromotionByPromotionCode", promotionCode);
+	}
+
+	@Override
+	public List<Product> selectProductPromotionListByChildCategoryCode(Map<String, Object> param) {
+		return session.selectList("promotion.selectProductPromotionListByChildCategoryCode", param);
+	}
 	
 	
 

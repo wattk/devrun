@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.promotion.model.dao.PromotionDao;
 import com.kh.devrun.promotion.model.exception.PromotionException;
+import com.kh.devrun.promotion.model.vo.ProductPromotion;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 import lombok.extern.slf4j.Slf4j;
@@ -109,5 +110,16 @@ public class PromotionServiceImpl implements PromotionService {
 		return map;
 	}
 
+	@Override
+	public List<Map<String, String>> selectProductPromotionByPromotionCode(String promotionCode) {
+		return promotionDao.selectProductPromotionByPromotionCode(promotionCode);
+	}
+
+	@Override
+	public List<Product> selectProductPromotionListByChildCategoryCode(Map<String, Object> param) {
+		return promotionDao.selectProductPromotionListByChildCategoryCode(param);
+	}
+
+	
 	
 }

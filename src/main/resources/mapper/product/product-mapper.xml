@@ -76,7 +76,14 @@
 	
 	<!-- 상품 리스트   -->
 	<select id="selectAllProductList" resultType="Product">
-			select * from product order by reg_date desc
+			select
+				product_code,
+				thumbnail,
+				name,
+				status,
+				reg_date,
+				view_count 
+			from product order by reg_date desc
 	</select>
 	
 

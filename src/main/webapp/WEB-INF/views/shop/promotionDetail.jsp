@@ -31,6 +31,13 @@
 	border : 1px solid rgba(0,0,0,.125);
 	height : 5rem;
 }
+.category-badge{
+	cursor : pointer;
+}
+.category-badge:hover{
+	color: #fff;
+    background-color: #007bff;
+}
 </style>
 
 <div class="promotion-container">
@@ -53,13 +60,9 @@
 			<strong>전체보기</strong>
 		</div>
 		<div class="category-details col-8">
-			<span class="category-badge badge badge-primary">유선 마우스</span>
-			<span class="category-badge badge badge-secondary">무선 마우스</span>
-			<span class="category-badge badge badge-secondary">버티컬 마우스</span>
-			<span class="category-badge badge badge-secondary">충전식 마우스</span>
-			<span class="category-badge badge badge-secondary">블루투스 마우스</span>
-			<span class="category-badge badge badge-secondary">레이저 마우스</span>
-			<span class="category-badge badge badge-secondary">인체공학 마우스</span>
+			<c:forEach items="${productCategory}" var="product" varStatus="vs">
+				<span class="category-badge badge badge-secondary" data-target="${product['CHILD_CATEGORY_CODE']}">${product['CHILD_CATEGORY_TITLE']}</span>
+			</c:forEach>
 		</div>
 	</div>
 	<div class="item-sort-container d-flex 	justify-content-between">
@@ -73,59 +76,22 @@
 			<span class="pr-2 pl-2 shop-sort">높은 가격순</span>
 		</div>
 	</div>
-	<div class="row">
-  	  <a href="${pageContext.request.contextPath}/shop/itemDetail.do" class="col-md-3 p-5">
-        <div class="card-box-d">
-          <div class="card-img-d shop-item-img position-relative">
-            <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
-            <i class="shop-like-icon fas fa-heart position-absolute"></i>
-            <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
-          </div>
-          <div>
-          	<p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
-          	<strong>5,490원</strong>
-          </div>
-        </div>
-      </a>
-  	  <a href="#" class="col-md-3 p-5">
-       <div class="card-box-d">
-         <div class="card-img-d shop-item-img position-relative">
-           <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
-           <i class="shop-like-icon fas fa-heart position-absolute"></i>
-           <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
-         </div>
-         <div>
-         	<p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
-         	<strong>5,490원</strong>
-         </div>
-       </div>
-      </a>
-  	  <a href="#" class="col-md-3 p-5">
-       <div class="card-box-d">
-         <div class="card-img-d shop-item-img position-relative">
-           <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
-           <i class="shop-like-icon fas fa-heart position-absolute"></i>
-           <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
-         </div>
-         <div>
-         	<p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
-         	<strong>5,490원</strong>
-         </div>
-       </div>
-      </a>
-  	  <a href="#" class="col-md-3 p-5">
-        <div class="card-box-d">
-          <div class="card-img-d shop-item-img position-relative">
-            <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
-            <i class="shop-like-icon fas fa-heart position-absolute"></i>
-            <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
-          </div>
-          <div>
-          	<p class="m-0">ROCCAT KONE PURE ULTRA 게이밍 마우스 블랙</p>
-          	<strong>5,490원</strong>
-          </div>
-        </div>
-      </a>
+	<div id="productPromotionContainer" class="row">
+		<c:forEach items="${promotion.productList}" var="product" varStatus="vs">
+	  	  <a href="${pageContext.request.contextPath}/shop/itemDetail.do?productCode=${product.productCode}" class="col-md-3 p-5">
+	        <div class="card-box-d">
+	          <div class="card-img-d shop-item-img position-relative">
+	            <img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="img-d img-fluid">
+	            <i class="shop-like-icon fas fa-heart position-absolute"></i>
+	            <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+	          </div>
+	          <div>
+	          	<p class="m-0">${product.name}</p>
+	          	<strong><fmt:formatNumber type="currency">${product.price}</fmt:formatNumber></strong>
+	          </div>
+	        </div>
+	      </a>
+	    </c:forEach>
     </div>
     <nav aria-label="..." class="mx-auto text-center">
     <div class="banner mx-auto text-center mb-3">
@@ -151,4 +117,59 @@
 	  </ul>
 	</nav>
 </div>
+<script>
+$(".category-badge").click((e)=>{
+	//클릭한 배지가 선택되어 있던 배지인지 아닌지 체크
+	if($(e.target).is(".badge-secondary")){
+		$(e.target)
+			.removeClass("badge-secondary")
+			.addClass("badge-primary");
+	}
+	else if($(e.target).is(".badge-primary")){
+		$(e.target)
+			.removeClass("badge-primary")
+			.addClass("badge-secondary");
+		
+	}
+	
+	//primary클래스를 가진 소분류 카테고리를 모아 카테고리 코드를 모은 배열 생성
+	const $sort = $(".badge-primary");
+	const data = [];
+	
+	$sort.each((i, item)=>{
+		data.push($(item).data("target"));
+	});
+	
+	console.log(data);
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/shop/sortSearch.do",
+		data : {childCategoryCode : data,
+				promotionCode : "${promotion.promotionCode}"},
+		method : "GET",
+		success(data){
+			console.log(data);
+			let str;
+			$(data).each((i, item)=>{
+				str += `<a href="${pageContext.request.contextPath}/shop/itemDetail.do?productCode=\${item.productCode}" class="col-md-3 p-5">
+			        <div class="card-box-d">
+			          <div class="card-img-d shop-item-img position-relative">
+			            <img src="${pageContext.request.contextPath}/resources/upload/product/\${item.thumbnail}" alt="" class="img-d img-fluid">
+			            <i class="shop-like-icon fas fa-heart position-absolute"></i>
+			            <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+			          </div>
+			          <div>
+			          	<p class="m-0">\${item.name}</p>
+			          	<strong>\${item.price}</strong>
+			          </div>
+			        </div>
+			      </a>`;
+			});
+			$("#productPromotionContainer").html(str);
+		},
+		error : console.log
+	});
+	
+});
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

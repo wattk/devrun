@@ -2,6 +2,7 @@ package com.kh.devrun.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.common.DevrunUtils;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
 import com.kh.devrun.shop.model.service.ShopService;
@@ -128,10 +131,27 @@ public class ShopController {
 		
 		try {
 			Promotion promotion = promotionService.selectPromotionByPromotionCode(promotionCode);
+			List<Map<String, String>> productCategory = promotionService.selectProductPromotionByPromotionCode(promotionCode);
 			model.addAttribute("promotion", promotion);
+			model.addAttribute("productCategory", productCategory);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@GetMapping("/sortSearch.do")
+	@ResponseBody
+	public List<Product> sortSearch(@RequestParam(value="childCategoryCode[]") List<String> childCategoryCode, @RequestParam(value = "promotionCode") String promotionCode) {
+		log.debug("{}",promotionCode);
+		Map<String, Object> param = new HashMap<>();
+		param.put("childCategoryCode", childCategoryCode);
+		param.put("promotionCode", promotionCode);
+		log.debug("{}",param);
+		
+		List<Product> productList = promotionService.selectProductPromotionListByChildCategoryCode(param);
+		log.debug("list = {}", productList);
+		
+		return productList;
 	}
 	/**
 	 * 혜진 작업 끝
