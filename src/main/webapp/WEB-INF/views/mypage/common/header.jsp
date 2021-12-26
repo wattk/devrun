@@ -30,7 +30,7 @@
 				   <a href="${pageContext.request.contextPath}/mypage/myinfo.do" class="nav-link" id="myinfoTab">나의 정보</a>
 				</li>
 				<li class="nav-item">
-				   <a href="${pageContext.request.contextPath}/mypage" class="nav-link" id="mypageTab">마이페이지</a>
+				   <a href="${pageContext.request.contextPath}/mypage/mypage.do" class="nav-link" id="mypageTab">마이페이지</a>
 				</li>
 			</ul>
 		</nav>
