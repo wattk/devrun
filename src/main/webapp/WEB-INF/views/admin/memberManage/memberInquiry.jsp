@@ -36,7 +36,7 @@
   </div>
 </div>
 
-<div class="product-container">
+<div class="productContainer">
 	<h2>상품 관리</h2>
  
 	<div id="productListContainer">

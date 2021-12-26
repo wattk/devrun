@@ -138,7 +138,7 @@ public class AdminController {
 		
 		
 		// 대분류코드 + 소분류코드 + name 으로 상품코드를 만둘어준 뒤 pruduct에 set
-		String productCode = parentCategoryCode+"-"+childCategoryCode+"-";
+		String productCode = parentCategoryCode+"-"+childCategoryCode;
 		product.setProductCode(productCode);
 		
 		// 상품상세 객체로 묶어 전달		
@@ -171,11 +171,7 @@ public class AdminController {
 		log.debug("upFile = {}",upFile);
 		String productImg = product.getProductCode();
 		log.debug("productImg = {}",productImg);
-		
-
-		
-//		prduct thumbnail값 세팅
-		product.setThumbnail(productImg);
+				
 			
 		// 상품 등록
 		int result = productService.insertProduct(param);
@@ -187,9 +183,12 @@ public class AdminController {
 		String saveDirectory  = application.getRealPath("/resources/upload/product");
 		log.debug("saveDirectory = {}",saveDirectory);
 		
-//		 업무로직 : db저장 		
+//		 업무로직 : thumbnail값 세팅 && 서버 pc저장 		
 		if(!upFile.isEmpty()) {		
-			try {									
+			try {					
+				// prduct thumbnail값 세팅
+				product.setThumbnail(productImg);	
+				
 				// 서버 컴퓨터 저장
 				File dest = new File(saveDirectory, realProductImg);
 				upFile.transferTo(dest);			
@@ -198,6 +197,10 @@ public class AdminController {
 			}
 					
 		}
+		else {
+			
+		}
+		
 		
 		String msg = result > 0 ? "상품등록을 성공했습니다!":"상품등록에 실패했습니다!!!!!!";  
 		redirectAttr.addFlashAttribute("msg",msg);
@@ -220,7 +223,7 @@ public class AdminController {
 		
 		// 서버의 이미지 삭제
 		String saveDirectory  = application.getRealPath("/resources/upload/product"); 
-//		File _delFile = new File(saveDirectory,)
+
 		
 		redirectAttr.addFlashAttribute("msg","선택하신 상품을 삭제했습니다");	
 		return "redirect:/admin/productMain.do";
@@ -257,8 +260,7 @@ public class AdminController {
 
 		log.debug("ProductExtends ={}",productExtends);
 		log.debug("productDetail ={}",productDetail);
-		
-		
+				
 		model.addAttribute("productCode",productCode);
 		model.addAttribute("productInfo",productExtends);
 		model.addAttribute("productDetail",productDetail);
@@ -328,6 +330,17 @@ public class AdminController {
 	}
 	
 	
+	
+	// 회원 등급 관리
+	@GetMapping("/memberManage/memberLevel.do")
+	public void memberLevel() {	
+	};
+	
+	// 회원 문의 내역
+	@GetMapping("/memberManage/memberInquiry.do")
+	public void memberInquiry() {
+		
+	};
 
 	
 	

@@ -31,10 +31,20 @@
 			<input id="submitBtn" type="submit" value="상품 수정" />
 		</div><br />
 		
-
 		<div id="formContentMid">
 			<div id="productImgContainer">
-				<img id ="imgContainer" src="${pageContext.request.contextPath}/resources/upload/product/${productInfo.thumbnail}"/><br />
+				<div id ="imgContainer">
+					<c:choose>
+						<c:when test="${null eq productInfo.thumbnail}">
+							<img id ="img" src="${pageContext.request.contextPath}/resources/upload/product/sample.png"/><br />
+						</c:when>
+						<c:when test="${null ne productInfo.thumbnail}">
+							<img id ="img" src="${pageContext.request.contextPath}/resources/upload/product/${productInfo.thumbnail}"/><br />
+						</c:when>					
+					</c:choose>
+					
+				</div>		
+			
 				<div>
 				<span id="fileName">${productInfo.thumbnail}</span>
 					<input type="file" name="upFile" id="imgInput" />				
@@ -165,9 +175,7 @@ $(".option-add-btn").click(e=>{
 		}else{
 			alert("최소 한개의 옵션은 존재해야만 합니다.");
 			return false;
-		}
-		
-
+		}		
 	});
 
 

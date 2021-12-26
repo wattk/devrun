@@ -12,7 +12,7 @@
 		#{name},
 		#{price},
 		sysdate,
-		#{thumbnail} ||'-' ||seq_product_no.nextval ||'.png'  ,
+		null,
 		#{content},
 		#{viewCount},
 		#{status}
