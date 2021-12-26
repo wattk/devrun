@@ -20,9 +20,11 @@
 	
 	<form
 		enctype="multipart/form-data"
-		id="productFrm" 
+		id ="productFrm"	
+		method="POST" 
 		action="${pageContext.request.contextPath}/admin/insertProduct.do"
-		method="POST">
+		onsubmit="return checkFrm();"
+		>
 		
 		<div id="formContentTop">
 			<h4 class="fw700">상품 이름</h4>
@@ -47,7 +49,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="text" value="10000" />	
+							<input type="text" name="price" value="10000" />	
 						</td>
 						<td>
 							<select name ="status" class="form-select form-select-lg mb-2" aria-label=".form-select-lg example">
@@ -93,14 +95,14 @@
 				<table id="optionTable">			
 					<tr>
 						<td class="option">색상</td><td><input name="option" type="text" value="black" /></td>
-						<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="-" /></td>
+						<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="-"  /></td>
 						<td class="option">재고</td><td><input name="quantity" type="text" value="1" /></td>
-						<td><button id="optionAddBtn" class="btn btn-primary" type="button"><i class="fas fa-plus-square"></i></button></td>
+						<td><button class="btn btn-primary option-add-btn" type="button"><i class="fas fa-plus-square"></i></button></td>
 					</tr>
 					
 				</table>
 				<hr /><br />						
-				<textarea class="form-control" rows="5" name="content" id="summernote"></textarea>
+				<textarea class="form-control" rows="5" name="content" id="summernote" ></textarea>
 			<!-- infoContainer 끝 -->
 			</div>
 		<!-- contentMid  끝  -->	
@@ -111,15 +113,16 @@
 
 
 <script>
+
 /*  옵션 추가 버튼 */
-$(optionAddBtn).click(e=>{
+$(".option-add-btn").click(e=>{
 	var trCnt = $("#optionTable tr").length;
 	if(trCnt < 5){		
 		$(optionTable).append(`<tr>
 				<td class="option">색상</td><td><input name="option" type="text" value="red" /></td>
 				<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="-" /></td>
 				<td class="option">재고</td><td><input name="quantity" type="text" value="1" /></td>
-				<td><button class="btn btn-danger deleteBtn" type="button"><i class="fas fa-minus-square"></i></button></td>
+				<td><button class="btn btn-danger delete-btn" type="button"><i class="fas fa-minus-square"></i></button></td>
 			</tr>`);
 	}
 	else{
@@ -127,7 +130,7 @@ $(optionAddBtn).click(e=>{
 		return false;
 	}	
 	/*  옵션 삭제 버튼  */
-	$(".deleteBtn").click(e=>{	
+	$(".delete-btn").click(e=>{	
 		const $target = $(e.target).parents("tr");
 		console.log($target);
 		$target.remove();
@@ -199,6 +202,29 @@ $("#largeCategory").change((e)=>{
 	$("#smallCategory").html("");
 	
 });
+
+	
+
+
+
+(()=>{
+	
+	/* 상품 등록 유효성 검사  */
+	function checkFrm(){
+		if($("#summernote").value == ""){
+			alert("내용을 입력하세요");
+			return false;
+		}
+		if($("#smallCategory option").value == 0){
+			alert("소분류를 선택하세요");
+			return false;
+		}
+	}
+
+});
+
+
+
 </script>
 
 

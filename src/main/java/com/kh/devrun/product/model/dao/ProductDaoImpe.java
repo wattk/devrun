@@ -75,6 +75,23 @@ public class ProductDaoImpe implements ProductDao{
 	public ProductExtends selectProductOne(String productCode) {
 		return session.selectOne("product.selectProductOne",productCode);
 	}
+
+	// 상품 디테일 정보 가져오기
+	@Override
+	public List<ProductDetail> selectProductDetail(String productCode) {
+		return session.selectList("product.selectProductDetail",productCode);
+	}
+	// 상품 정보 업데이트	
+	@Override
+	public int updateProduct(Product product) {
+		return session.update("product.updateProduct", product);
+	}
+	
+	// nextval 번호까지 붙은 thumbnail 값 가져오기 (최근 등록된)
+	@Override
+	public String selectRealProductImg() {
+		return session.selectOne("product.selectRealProductImg");
+	}
 	
 }
 

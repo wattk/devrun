@@ -40,6 +40,7 @@ import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @Slf4j
@@ -135,10 +136,9 @@ public class AdminController {
 		log.debug("optionContent = {}", optionContent);
 		log.debug("quantity = {}", quantity);
 		
-		//String categoryCode =  parentCategoryCode+"-"+childCategoryCode;
 		
 		// 대분류코드 + 소분류코드 + name 으로 상품코드를 만둘어준 뒤 pruduct에 set
-		String productCode = parentCategoryCode+"-"+childCategoryCode+"-"+product.getName();
+		String productCode = parentCategoryCode+"-"+childCategoryCode+"-";
 		product.setProductCode(productCode);
 		
 		// 상품상세 객체로 묶어 전달		
@@ -166,34 +166,39 @@ public class AdminController {
 		param.put("product", product);
 		
 		log.debug("param = {}",param);
-		
-		
+				
 		
 		log.debug("upFile = {}",upFile);
-		String productImg = product.getProductCode() +".png";
+		String productImg = product.getProductCode();
 		log.debug("productImg = {}",productImg);
 		
-//		파일저장 : 절대경로
-		String saveDirectory  = application.getRealPath("/resources/upload/product");
-		log.debug("saveDirectory = {}",saveDirectory);
+
 		
 //		prduct thumbnail값 세팅
 		product.setThumbnail(productImg);
+			
+		// 상품 등록
+		int result = productService.insertProduct(param);
+				
+		// nextval 번호까지 붙은 thumbnail 값 가져오기 (최근 등록된)
+		String realProductImg = productService.selectRealProductImg()+".png";
+				
+//		파일저장 : 절대경로
+		String saveDirectory  = application.getRealPath("/resources/upload/product");
+		log.debug("saveDirectory = {}",saveDirectory);
 		
 //		 업무로직 : db저장 		
 		if(!upFile.isEmpty()) {		
 			try {									
 				// 서버 컴퓨터 저장
-				File dest = new File(saveDirectory, productImg);
-				upFile.transferTo(dest);
-				
+				File dest = new File(saveDirectory, realProductImg);
+				upFile.transferTo(dest);			
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 					
 		}
 		
-		int result = productService.insertProduct(param);
 		String msg = result > 0 ? "상품등록을 성공했습니다!":"상품등록에 실패했습니다!!!!!!";  
 		redirectAttr.addFlashAttribute("msg",msg);
 		
@@ -206,15 +211,21 @@ public class AdminController {
 	public String deleteProduct(@RequestParam String productCodes, RedirectAttributes redirectAttr) {
 		log.debug("productCode = {}",productCodes);
 		String[] productCode = productCodes.split(",");
+		int result = 0;
 		
 		for(int i = 0; i < productCode.length; i++) {
 			log.debug("productCode"+i+productCode[i]);
-			int result = productService.deleteProduct(productCode[i]);
+			result = productService.deleteProduct(productCode[i]);
 		}
+		
+		// 서버의 이미지 삭제
+		String saveDirectory  = application.getRealPath("/resources/upload/product"); 
+//		File _delFile = new File(saveDirectory,)
 		
 		redirectAttr.addFlashAttribute("msg","선택하신 상품을 삭제했습니다");	
 		return "redirect:/admin/productMain.do";
 	}
+	
 	
 	
 	@GetMapping("/findProductOption")
@@ -240,12 +251,80 @@ public class AdminController {
 		
 		// 상품정보 가져오기
 		ProductExtends productExtends = productService.selectProductOne(productCode);
-	
+		
+		// 상품 Detail 정보 가져오기
+		List<ProductDetail> productDetail = productService.selectProductDetail(productCode);
 
 		log.debug("ProductExtends ={}",productExtends);
+		log.debug("productDetail ={}",productDetail);
 		
+		
+		model.addAttribute("productCode",productCode);
 		model.addAttribute("productInfo",productExtends);
+		model.addAttribute("productDetail",productDetail);
 		return "/admin/product/productDetail";
+	}
+	
+	// 상품 && 상품 옵션 수정
+	@PostMapping("/updateProduct.do")
+	public String productUpdate(
+			Product product,		
+			@RequestParam String productCode, // 상품 리스트에서 넘어온 productCode
+			@RequestParam String parentCategoryCode,
+			@RequestParam String childCategoryCode,
+			@RequestParam String[]optionContent,
+			@RequestParam String sku,
+			@RequestParam int[]quantity,
+			@RequestParam String[]option,
+			MultipartFile upFile,
+			RedirectAttributes redirectAttr
+			) {
+		int result = 0;
+		
+		// 0. 값 세팅
+		
+		// 상품 List에 뿌려준 productCode를 상품detail 페이지로 넘긴 뒤 update 페이지까지 넘겨줌
+		product.setProductCode(productCode);
+		// thumbnail set
+		product.setThumbnail(productCode +".png");
+		
+		// 상품상세 객체로 묶어 전달		
+		List<ProductDetail> productDetailList = new ArrayList<>();
+		
+		for(int i = 0; i < option.length; i++) {
+			ProductDetail productDetail = new ProductDetail();
+			
+			productDetail.setOptionNo(option[i]);
+			productDetail.setOptionContent(optionContent[i]);
+			productDetail.setSku(sku);
+			productDetail.setQuantity(quantity[i]);
+			
+			productDetailList.add(productDetail);
+		}
+		
+		// prodcut 객체에 저장
+		product.setProductDetailList(productDetailList);
+		
+		log.debug("product = {}",product); 
+		
+		// 1.상품 정보 수정
+//		result = productService.updateProduct(product);
+		upFile.getOriginalFilename();
+		log.debug("파일 이름 = {}",upFile.getOriginalFilename());
+		
+		
+		
+		
+		// 2.상품 옵션 수정
+		
+			
+		
+		
+		// 3.첨부파일 수정
+		
+		String msg = "상품 수정 성공 !!";
+		redirectAttr.addFlashAttribute("msg",msg);
+		return "redirect:/admin/productMain.do";
 	}
 	
 	
