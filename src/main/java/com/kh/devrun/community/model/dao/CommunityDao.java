@@ -19,4 +19,7 @@ public interface CommunityDao {
 
 	int selectFreeboardTotalCount();
 
+	CommunityEntity selectOneFreeBoard(int communityNo);
+
+
 }
