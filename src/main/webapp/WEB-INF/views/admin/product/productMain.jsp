@@ -8,12 +8,6 @@
 	<jsp:param value="상품관리" name="title"/>
 </jsp:include>
 
-<c:if test="${not empty msg}">
-<script>
-	alert("${msg}");
-</script>
-</c:if>
-
 <!-- 모달 -->
 <div class="modal fade" id="promotionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">

@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
@@ -138,7 +139,7 @@ public class AdminController {
 		
 		
 		// 대분류코드 + 소분류코드 + name 으로 상품코드를 만둘어준 뒤 pruduct에 set
-		String productCode = parentCategoryCode+"-"+childCategoryCode+"-";
+		String productCode = parentCategoryCode+"-"+childCategoryCode;
 		product.setProductCode(productCode);
 		
 		// 상품상세 객체로 묶어 전달		
@@ -148,7 +149,9 @@ public class AdminController {
 			ProductDetail productDetail = new ProductDetail();
 			
 			productDetail.setOptionNo(option[i]);
-			productDetail.setOptionContent(optionContent[i]);
+			if(!ArrayUtils.isEmpty(optionContent)) {
+				productDetail.setOptionContent(optionContent[i]);
+			}
 			productDetail.setSku(sku);
 			productDetail.setQuantity(quantity[i]);
 			
