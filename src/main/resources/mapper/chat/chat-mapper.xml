@@ -9,6 +9,26 @@
 	from
 		member
 	where
-		LOWER(nickname) like '%'||#{searchNickname}||'%'
+		LOWER(nickname) like LOWER('%'||#{searchNickname}||'%') and nickname != #{nickname}
   </select>
+  
+  <select id="findChatMemberByMemberNo" resultType="chatMember">
+  	select
+  		*
+  	from
+  		chat_member
+  	where
+  		member_no = #{memberNo} and member_no2 = #{receiverNo}
+  </select>
+  
+  <insert id="insertChatMember">
+  	insert into
+  		chat_member(chat_id, member_no, member_no2)
+  	values(
+  		#{chatId},
+  		#{memberNo},
+  		#{memberNo2}
+  	)
+  </insert>
+
 </mapper>

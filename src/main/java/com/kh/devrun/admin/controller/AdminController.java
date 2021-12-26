@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
@@ -148,7 +149,9 @@ public class AdminController {
 			ProductDetail productDetail = new ProductDetail();
 			
 			productDetail.setOptionNo(option[i]);
-			productDetail.setOptionContent(optionContent[i]);
+			if(!ArrayUtils.isEmpty(optionContent)) {
+				productDetail.setOptionContent(optionContent[i]);
+			}
 			productDetail.setSku(sku);
 			productDetail.setQuantity(quantity[i]);
 			

@@ -22,6 +22,8 @@
 }
 
 
+
+
 /*탭 시작*/
 #menu-tab {
 /*background: white;*/
@@ -302,6 +304,9 @@ color: green;
     top: 711px;
 	display: none;
 	z-index: 20;
+	background: rgba(110, 110, 110,0.9);
+    width: 1194px;
+    height: 600px;
 }
 #reviewExpansion{
 	width: 450px;
@@ -443,6 +448,8 @@ color: green;
 }
 /*문의 작성 모달 css 끝*/
 /*리뷰 작성 모달 css 시작*/
+::-webkit-scrollbar { display: none; }
+
 #previewPhoto{
 	width: 150px;
 	height: 150px;

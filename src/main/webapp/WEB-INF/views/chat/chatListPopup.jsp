@@ -19,6 +19,11 @@
 <%-- <link href="${pageContext.request.contextPath }/resources/css/font-awesome/css/font-awesome.min.css" rel="stylesheet"> --%>
 <script src="https://kit.fontawesome.com/f1def33959.js" crossorigin="anonymous"></script>
 
+<!-- sock.js 추가 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.2/sockjs.min.js" integrity="sha512-ayb5R/nKQ3fgNrQdYynCti/n+GD0ybAhd3ACExcYvOR2J1o3HebiAe/P0oZDx5qwB+xkxuKG6Nc0AFTsPT/JDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- stomp.js 추가 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <style>
 .chat-header {
 	width: 100%;
@@ -259,7 +264,7 @@
 		      <!-- modal footer -->
 		      <div class="modal-footer">
 		        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button> -->
-		        <button type="button" class="btn btn-primary">초대</button>
+		        <button type="submit" id="inviteBtn" class="btn btn-primary">초대</button>
 		      </div>
 		      <!-- modal footer 끝 -->
 		      
@@ -440,7 +445,7 @@ $(searchNicknameFrm).submit((e) => {
 				$(data).each((i, member) => {
 					console.log(member);
 	
-					$("#nicknameSearchResultList").append(`<li class="list-group-item position-relative">
+					$("#nicknameSearchResultList").append(`<li class="list-group-item position-relative" data-receiver-no="\${member.memberNo}">
 <!-- 회원 프로필 사진 -->
 <img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 <!-- 회원 닉네임 -->
@@ -456,6 +461,41 @@ $(searchNicknameFrm).submit((e) => {
 });
 
 
+// 초대버튼 클릭 후 이벤트 발생
+$(document).on('click', '#inviteBtn', function(e) {
+	e.preventDefault(); // 폼제출방지
+	
+	// invite-target 클래스명을 가진 i의 부모 li태그 찾기
+	const $li = $('.invite-target').parent();
+	//console.log($li);
+	
+	const receiverNo = $li.data("receiverNo");
+	//console.log(receiverNo);
+	
+	// 비동기 - chat_member 테이블 생성 후 팝업 띄우기(받아온 데이터 중 필요한 것 넘기기)
+	$.ajax({
+		url : `${pageContext.request.contextPath}/chat/chat.do`,
+		data : {
+			receiverNo : receiverNo
+		},
+		method : "POST", // GET방식 생략 가능
+		success(chatId) { // 이 안에 들어가는 data는 변수명이다. 다른 이름으로 사용해도 된다. 위의 data : 에서 사용한 부분과 헷갈리지 말자
+			//console.log(chatId);
+
+			// 팝업요청 // url 부분 기능 구현 시 수정할 것
+			const url = `${pageContext.request.contextPath}/chat/chatRoom.do/\${chatId}`;
+			const name = chatId; // 팝업창 Window객체의 name
+			const spec = "width=400px, height=600px";
+			open(url, name, spec);
+
+
+		},
+		error : console.log
+	});
+
+});
+
+
 // 채팅방 만들기 Modal 내용 부분만 스크롤 기능 하기
 $(document).ready(function () {
     $('head').append('<style type="text/css">.plus-modal .modal-body {max-height: ' + ($('body').height() * 0.9) + 'px;overflow-y: auto;}.modal-open .modal{overflow-y: hidden !important;}</style>');
@@ -468,14 +508,15 @@ $(document).ready(function () {
 
 //채팅방 만들기 Modal 부분
 //멤버 선택 li 클릭 시 이벤트 발생 - 우측에 체크 아이콘 d-none 해제, 다른 요소들 d-none 상태
+//선택된 회원 찾기 위해 invite-target 클래스 추가 - 초대 부분 이용하기 위함
 $(document).on('click', '.plus-modal li', function(e) {
-	console.log("호출됩니까?");
 
 	const $li = $(e.target);
-	$li.children('i').removeClass("d-none");
+	$li.children('i').removeClass("d-none").addClass("invite-target");
 	
 	// siblings() 함수는 자신을 제외한 형제 엘리멘트를 찾는다. 형제 엘리먼트의 class를 추가하거나 삭제할 때 많이 사용한다.
-	$li.siblings().children('i').addClass("d-none");
+	$li.siblings().children('i').addClass("d-none").removeClass("invite-target");
+	
 });
 
 // 모달 닫을 시 입력값 초기화
