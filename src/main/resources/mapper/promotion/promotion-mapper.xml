@@ -45,7 +45,7 @@
 		from
 			promotion
 		where
-			start_date <![CDATA[>= ]]> sysdate and end_date <![CDATA[> ]]> sysdate
+			start_date <![CDATA[<= ]]> sysdate and end_date <![CDATA[> ]]> sysdate
 		order by
 			enroll_date desc
 	</select>
@@ -128,5 +128,35 @@
 		        on pp.product_code = p.product_code
 		where
 			pp.promotion_code = #{promotionCode}
+	</select>
+	
+	<select id="selectProductPromotionByPromotionCode" resultType="map">
+		select
+		    distinct (select child_category_title from product_child_category cc where pc.child_category_code = cc.child_category_code) child_category_title,
+		    child_category_code
+		from
+		    product_category pc
+		where
+		    pc.product_code in (select product_code from product_promotion where promotion_code = #{promotionCode})
+	</select>
+	<select id="selectProductPromotionListByChildCategoryCode" resultType="product">
+		select
+		    p.product_code,
+		    p.thumbnail,
+		    p.name,
+		    p.status,
+		    p.reg_date,
+		    p.view_count,
+		    p.price
+		from
+		    product p left join product_category pc
+		        on p.product_code = pc.product_code
+		where
+		    p.product_code  in (select product_code from product_promotion where promotion_code = #{promotionCode})
+		    and
+		    pc.child_category_code in
+		<foreach collection="childCategoryCode" open="(" item="code" separator="," close=")">
+			#{code}
+		</foreach>
 	</select>
 </mapper>
