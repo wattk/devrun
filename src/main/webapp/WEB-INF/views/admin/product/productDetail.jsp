@@ -21,7 +21,9 @@
 		enctype="multipart/form-data"
 		id="productFrm" 
 		action="${pageContext.request.contextPath}/admin/updateProduct.do"
+		onsubmit="return checkFrm"
 		method="POST">
+		
 		
 		<input type="hidden" name="productCode" value="${productCode}" />
 		
@@ -32,21 +34,10 @@
 		</div><br />
 		
 		<div id="formContentMid">
-			<div id="productImgContainer">
-				<div id ="imgContainer">
-					<c:choose>
-						<c:when test="${null eq productInfo.thumbnail}">
-							<img id ="img" src="${pageContext.request.contextPath}/resources/upload/product/sample.png"/><br />
-						</c:when>
-						<c:when test="${null ne productInfo.thumbnail}">
-							<img id ="img" src="${pageContext.request.contextPath}/resources/upload/product/${productInfo.thumbnail}"/><br />
-						</c:when>					
-					</c:choose>
-					
-				</div>		
-			
+			<div id="productImgContainer">	
+				<img id ="imgContainer" src="${pageContext.request.contextPath}/resources/upload/product/${productInfo.thumbnail}"/><br />	
 				<div>
-				<span id="fileName">${productInfo.thumbnail}</span>
+					<span id="fileName">${productInfo.thumbnail}</span>
 					<input type="file" name="upFile" id="imgInput" />				
 				</div>
 			</div>
@@ -131,6 +122,7 @@
 </div>
 
 <script>
+
 	// 모든 함수에서 사용 할 option 갯수
 	let trCnt;
 /*  옵션 추가 버튼 */
@@ -196,6 +188,9 @@ $(imgInput).on("change", (e)=>{
 		$(imgContainer).attr("src", e.target.result);
 	}
 	reader.readAsDataURL(file);
+	
+	/* 이미지 변경시 파일선택 위에 덮어 쓴 span 태그를 감춤  */
+	$("#fileName").hide();
 });
 
 
@@ -243,6 +238,29 @@ $("#largeCategory").change((e)=>{
 	$("#smallCategory").html("");
 	
 });
+
+/* 상품 등록 유효성 검사  */
+function checkFrm(){
+	
+	if($("#imgInput").val() == "") {
+		alert("상품 이미지를 선택해주세요");
+	    $("#imgInput").trigger("click");
+	    return false;
+	}
+	
+	if($("#summernote").value == ""){
+		alert("내용을 입력하세요");
+		return false;
+	}
+	
+	if($("#smallCategory option").val() == 0){
+		alert("상품 분류를 선택해주세요.");
+		return false;
+	}
+}
+
+
+
 </script>
 
 
