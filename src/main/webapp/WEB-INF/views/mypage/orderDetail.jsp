@@ -78,7 +78,7 @@
 <!--리뷰작성모달 끝-->
 <article class="col-9 mx-auto">
 	<div class="order-detail-header d-flex justify-content-between">
-		<a href="">
+		<a href="${pageContext.request.contextPath}/mypage/orderList.do">
 			<h4 class="order-tab-title">
 				<i class="shop-icon fas fa-chevron-left pr-2"></i>
 				주문 번호 <span></span>
