@@ -55,6 +55,7 @@
 /* 회원 프로필 사진*/
 .chat-list .member-profile {
 	width: 48px;
+	height: 48px;
 	border: 1px solid #f1f3f5;
 	border-radius: 50%;
 }
@@ -105,6 +106,7 @@
 
 .plus-modal .member-profile {
 	width: 48px;
+	height: 48px;
 	border: 1px solid #f1f3f5;
 	border-radius: 50%;
 }
@@ -194,7 +196,7 @@
 				<ul id="nicknameSearchResultList" class="list-group">
 				  <%-- <li class="list-group-item position-relative">
 				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 					<!-- 회원 닉네임 -->
 					<strong class="nickname ml-2">길동이</strong>
 					<!-- 선택 시 display 상태 변화 -->
@@ -203,7 +205,7 @@
 				  
 				  <li class="list-group-item position-relative">
 				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 					<!-- 회원 닉네임 -->
 					<strong class="nickname ml-2">길동이</strong>
 					<!-- 선택 시 display 상태 변화 -->
@@ -212,7 +214,7 @@
 				  
 				  <li class="list-group-item position-relative">
 				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 					<!-- 회원 닉네임 -->
 					<strong class="nickname ml-2">길동이</strong>
 					<!-- 선택 시 display 상태 변화 -->
@@ -221,7 +223,7 @@
 				  
 				  <li class="list-group-item position-relative">
 				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 					<!-- 회원 닉네임 -->
 					<strong class="nickname ml-2">길동이</strong>
 					<!-- 선택 시 display 상태 변화 -->
@@ -230,7 +232,7 @@
 				  
 				  <li class="list-group-item position-relative">
 				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 					<!-- 회원 닉네임 -->
 					<strong class="nickname ml-2">길동이</strong>
 					<!-- 선택 시 display 상태 변화 -->
@@ -239,7 +241,7 @@
 				  
 				  <li class="list-group-item position-relative">
 				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 					<!-- 회원 닉네임 -->
 					<strong class="nickname ml-2">길동이</strong>
 					<!-- 선택 시 display 상태 변화 -->
@@ -248,7 +250,7 @@
 				  
 				  <li class="list-group-item position-relative">
 				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 					<!-- 회원 닉네임 -->
 					<strong class="nickname ml-2">길동이</strong>
 					<!-- 선택 시 display 상태 변화 -->
@@ -330,7 +332,7 @@
 			
 				<li class="list-group-item position-relative">
 					<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
 					
 					<div class="msg-content">
 					
@@ -355,7 +357,7 @@
 				
 				<li class="list-group-item position-relative">
 					<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
 					
 					<div class="msg-content">
 					
@@ -380,7 +382,7 @@
 				
 				<li class="list-group-item position-relative">
 					<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
 					
 					<div class="msg-content">
 					
@@ -443,16 +445,24 @@ $(searchNicknameFrm).submit((e) => {
 			} else {
 				// 닉네임 검색 결과 뿌리기
 				$(data).each((i, member) => {
-					console.log(member);
-	
+					//console.log(member);
+					//console.log(member.proPhoto);
+					
+					// 프로필 사진 분기 처리
+					const photo = (!member.proPhoto) ? 
+							'${pageContext.request.contextPath}/resources/images/common/blank-profile.png' : 
+							'${pageContext.request.contextPath}/resources/upload/profilePhoto/' + member.proPhoto;
+					//console.log('photo값은?', photo);
+
 					$("#nicknameSearchResultList").append(`<li class="list-group-item position-relative" data-receiver-no="\${member.memberNo}">
 <!-- 회원 프로필 사진 -->
-<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+<img src="\${photo}" alt="회원 프로필 사진" class="member-profile"/>
 <!-- 회원 닉네임 -->
 <strong class="nickname ml-2">\${member.nickname}</strong>
 <!-- 선택 시 display 상태 변화 -->
 <i class="fas fa-check-circle position-absolute d-none"></i>
 </li>`);
+
 				});
 			}
 		},
@@ -470,7 +480,13 @@ $(document).on('click', '#inviteBtn', function(e) {
 	//console.log($li);
 	
 	const receiverNo = $li.data("receiverNo");
-	//console.log(receiverNo);
+	console.log(receiverNo);
+	
+	// 회원 선택하지 않고 초대 시 알림창 띄우고 return
+	if(!receiverNo) {
+		alert('초대할 멤버를 선택해주세요');
+		return;
+	}
 	
 	// 비동기 - chat_member 테이블 생성 후 팝업 띄우기(받아온 데이터 중 필요한 것 넘기기)
 	$.ajax({
@@ -487,8 +503,11 @@ $(document).on('click', '#inviteBtn', function(e) {
 			const name = chatId; // 팝업창 Window객체의 name
 			const spec = "width=400px, height=600px";
 			open(url, name, spec);
-
-
+			
+			// modal해제 - 멤버 선택 이후 초대 시 기존 모달 처리
+			$(plusModalCenter)
+				.modal('hide')
+				.find('form')[0].reset(); // [0] 실제 js dom객체를 반환
 		},
 		error : console.log
 	});
