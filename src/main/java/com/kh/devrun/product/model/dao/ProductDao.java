@@ -31,11 +31,23 @@ public interface ProductDao {
 	ProductExtends selectProductOne(String productCode);
 
 	// 상품 디테일 정보 가져오기
-	List<ProductDetail> selectProductDetail(String productCode);
+	List<ProductDetail> selectProductDetail(String productCode); 
 
 	// 상품 정보 업데이트
 	int updateProduct(Product product);
 	
 	// nextval 번호까지 붙은 thumbnail 값 가져오기 (최근 등록된)
 	String selectRealProductImg();
+
+	// productOption 업데이트
+	int updateOption(ProductDetail productDetail, Map<String, Object> param);
+
+	// productOption 삭제
+	int deleteOption(int deleteDetailNo);
+
+	// productOption 추가
+	int insertOption(ProductDetail productDetail);
+	
+	
+	
 }

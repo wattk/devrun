@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/summernote/summernote-lite.css">
 
 <div id="productInsertContainer" class="productContainer">
-	<h2>상품 정보</h2><br /><hr /><br />
+	<h2>상품 정보</h2><br />
 	
 	<form
 		enctype="multipart/form-data"
@@ -23,9 +23,10 @@
 		action="${pageContext.request.contextPath}/admin/updateProduct.do"
 		onsubmit="return checkFrm"
 		method="POST">
-		
-		
+		<hr /><br />
+	
 		<input type="hidden" name="productCode" value="${productCode}" />
+		
 		
 		<div id="formContentTop">
 			<h4 class="fw700">상품 이름</h4>
@@ -99,19 +100,22 @@
 					</tr>					
 				
 				</table>
-				<hr />			
+				<hr />
+				<div id="deleteOptionContainer"></div>
 				<table id="optionTable">
 					<tr><th>옵션 추가</th><td><button class="btn btn-primary option-add-btn" type="button"><i class="fas fa-plus-square"></i></button></td></tr>
 					<c:forEach items="${productDetail }" var="pd">
 					<tr>
-						<td class="option">색상</td><td><input name="option" type="text" value="${pd.optionNo}" /></td>
-						<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="${pd.optionContent}" /></td>
-						<td class="option">재고</td><td><input name="quantity" type="number" value="${pd.quantity}" /></td>
+						<td class="option">DN</td><td><input class="detailNo" name="detailNo" type="text" value="${pd.detailNo}" /></td>
+						<td class="option">색상</td><td><input class="option" name="option" type="text" value="${pd.optionNo}" /></td>
+						<td class="option">옵션내용</td><td><input class="optionContent"name="optionContent" type="text" value="${pd.optionContent}" /></td>
+						<td class="option">재고</td><td><input class="quantity" name="quantity" type="number" value="${pd.quantity}" /></td>
 						<!-- <td><button class="btn btn-primary option-add-btn" type="button"><i class="fas fa-plus-square"></i></button></td> -->
 						<td><button class="btn btn-danger delete-btn" type="button"><i class="fas fa-minus-square"></i></button></td>
 					</tr>
 					</c:forEach>								
 				</table>
+					
 				<hr /><br />						
 				<textarea class="form-control" rows="5" name="content" id="summernote">${productInfo.content}</textarea>
 			<!-- infoContainer 끝 -->
@@ -129,18 +133,29 @@
 $(".option-add-btn").click(e=>{
 	trCnt = $("#optionTable tr").length;
 	console.log(trCnt);
+
+	
 	if(trCnt < 6){		
 		$(optionTable).append(`<tr>
-				<td class="option">색상</td><td><input name="option" type="text" value="red" /></td>
-				<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="-" /></td>
-				<td class="option">재고</td><td><input name="quantity" type="text" value="1" /></td>
+				<td class="option">DN</td><td> <input class="detailNo" name="insertDetailNo" type="text" value="" /> </td>
+				<td class="option">색상</td><td><input class="option" name="insertOption" type="text" value="red" /></td>
+				<td class="option">옵션내용</td><td><input class="optionContent" name="insertOptionContent" type="text" value="-" /></td>
+				<td class="option">재고</td><td><input class="quantity" name="insertQuantity" type="text" value="1" /></td>
 				<td><button class="btn btn-danger delete-btn" type="button"><i class="fas fa-minus-square"></i></button></td>
 			</tr>`);
 	}
 
 	else{
 		alert("최대 5개까지만 가능합니다");
-	}	
+	}
+	
+	/* 동적으로 detailNo값 넣어주기  */
+	$insertProductDetail = $(".insert-option").parents("tr");
+	console.log($insertProductDetail);
+ 	$lastDetailNo = $("#optionTable").find(".detailNo").eq($("#optionTable").find(".detailNo").length-2).val();
+	console.log(Number($lastDetailNo)+1);
+	$("#optionTable").find(".detailNo").eq($("#optionTable").find(".detailNo").length-1).val(Number($lastDetailNo)+1);
+	
 	
 	/* 동적으로 추가된 옵션 삭제 버튼  */
 	$(".delete-btn").click(e=>{	
@@ -160,10 +175,16 @@ $(".option-add-btn").click(e=>{
 		const $target = $(e.target).parents("tr");
 		trCnt = $("#optionTable tr").length;
 		console.log(trCnt);
+		$deleteOptionContainer = $("#deleteOptionContainer");
+		
+		const $detailNo =  $(e.target).parents("tr").children("td").children("input[name=detailNo]");
+		console.log($detailNo);
 		
 		if(trCnt > 2){
-			console.log($target);
-			$target.remove();			
+			/* console.log($target); */
+		$deleteOptionContainer.append($detailNo.attr("name", "deleteDetailNo"));
+			
+		$target.remove();
 		}else{
 			alert("최소 한개의 옵션은 존재해야만 합니다.");
 			return false;

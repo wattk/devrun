@@ -28,6 +28,7 @@ public class Product implements Serializable {
 	private String content;
 	private int viewCount;
 	private char status;
+	private int orderCount; 
 	
 	private List<ProductDetail> productDetailList;
 	
