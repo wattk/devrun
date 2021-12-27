@@ -37,4 +37,7 @@ public interface PromotionService {
 
 	List<Map<String, Object>> selectProductNameAndCodeByPromotionCode(String promotionCode);
 
+
+	int updateViewCount(String promotionCode);
+
 }

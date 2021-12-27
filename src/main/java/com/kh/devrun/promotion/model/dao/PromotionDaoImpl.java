@@ -87,6 +87,11 @@ public class PromotionDaoImpl implements PromotionDao {
 	public List<Map<String, Object>> selectProductNameAndCodeByPromotionCode(String promotionCode) {
 		return session.selectList("promotion.selectProductNameAndCodeByPromotionCode", promotionCode);
 	}
+
+	@Override
+	public int updateViewCount(String promotionCode) {
+		return session.update("promotion.updateViewCount", promotionCode);
+	}
 	
 	
 
