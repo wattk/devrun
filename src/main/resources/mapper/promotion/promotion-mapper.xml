@@ -45,7 +45,7 @@
 		from
 			promotion
 		where
-			start_date <![CDATA[>= ]]> sysdate and end_date <![CDATA[> ]]> sysdate
+			start_date <![CDATA[<= ]]> sysdate and end_date <![CDATA[> ]]> sysdate
 		order by
 			enroll_date desc
 	</select>
@@ -122,11 +122,64 @@
 	
 	<select id="selectProductListByPromotionCode" resultType="product">
 		select
-		   p. *
+		    p.product_code,
+		    p.thumbnail,
+		    p.name,
+		    p.status,
+		    p.reg_date,
+		    p.view_count,
+		    p.price
 		from
-		    product_promotion pp left join product p
-		        on pp.product_code = p.product_code
+		    product p left join product_category pc
+		        on p.product_code = pc.product_code
+		<where>
+		    p.product_code  in (select product_code from product_promotion where promotion_code = #{promotionCode})
+		    <if test="childCategoryCode != null">
+		     and pc.child_category_code in
+				<foreach collection="childCategoryCode" open="(" item="code" separator="," close=")">
+					#{code}
+				</foreach>
+		    </if>
+		</where>
+	    <if test="keyword != null">
+	    	<choose>
+	    		<when test="keyword eq recommend">
+	    			order by view_count desc
+	    		</when>
+	    		<when test="keyword eq 'new'">
+	    			order by reg_date desc
+	    		</when>
+ 	    		<when test="keyword eq sell">
+	    			order by order_count desc
+	    		</when>
+	    		<when test="keyword eq 'row'">
+	    			order by p.price
+	    		</when>
+	    		<when test="keyword eq 'high'">
+	    			order by p.price desc
+	    		</when>
+	    	</choose>
+	    </if>
+	</select>
+	
+	<select id="selectProductPromotionByPromotionCode" resultType="map">
+		select
+		    distinct (select child_category_title from product_child_category cc where pc.child_category_code = cc.child_category_code) child_category_title,
+		    child_category_code
+		from
+		    product_category pc
 		where
-			pp.promotion_code = #{promotionCode}
+		    pc.product_code in (select product_code from product_promotion where promotion_code = #{promotionCode})
+	</select>
+	
+	<select id="selectProductNameAndCodeByPromotionCode" resultType="map">
+		select
+		    product_code,
+		    name
+		from
+		    product
+		where
+		    product_code in (select product_code from product_promotion where promotion_code = #{promotionCode})
+			
 	</select>
 </mapper>

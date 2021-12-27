@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.promotion.model.vo.ProductPromotion;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 public interface PromotionService {
@@ -22,8 +23,18 @@ public interface PromotionService {
 
 	int deletePromotion(String[] promotionCode);
 
-	List<Product> selectProductListByPromotionCode(String promotionCode);
+	List<Product> selectProductListByPromotionCode(Map<String, Object> param);
+	
 
 	Map<String, List<Promotion>> selectDevidedPromotionList();
+
+
+	List<Map<String, String>> selectProductPromotionByPromotionCode(String promotionCode);
+
+
+	List<Product> selectProductPromotionListByChildCategoryCode(Map<String, Object> param);
+
+
+	List<Map<String, Object>> selectProductNameAndCodeByPromotionCode(String promotionCode);
 
 }

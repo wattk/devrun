@@ -40,6 +40,10 @@ public class ChatController {
 
 	@GetMapping("/chatRoom.do/{chatId}")
 	public String chatRoom(@PathVariable String chatId, Model model) {
+		
+		model.addAttribute("chatId", chatId); // 이부분 없어도 chatId jsp에서 사용 가능함.
+		
+		
 		return "chat/chatRoomPopup";
 	}
 	

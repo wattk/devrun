@@ -28,6 +28,7 @@ i:hover{
 }
 .shop-sort:not(:last-of-type) {
 	border-right : 1px solid rgba(0,0,0,.125);
+	cursor : pointer;
 }
 
 /* 상품 대/소분류 페이지 */

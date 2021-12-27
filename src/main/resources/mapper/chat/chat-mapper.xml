@@ -30,5 +30,17 @@
   		#{memberNo2}
   	)
   </insert>
+  
+  <insert id="insertChatLog">
+  	insert into
+  		chat_log(no, chat_id, member_no, msg, log_time)
+  	values(
+  		seq_chat_log_no.nextval,
+  		#{chatId},
+  		#{memberNo},
+  		#{msg},
+  		#{logTime}
+  	)
+  </insert>
 
 </mapper>
