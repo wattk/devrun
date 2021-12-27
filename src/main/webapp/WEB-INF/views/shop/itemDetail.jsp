@@ -27,6 +27,8 @@
 
 	<!-- body 영역 시작 -->
 	
+<sec:authentication property="principal" var="member"/>	
+	
 		<div id="shopItemDetailOuterDiv">
 			<div id="itemDetailDisplayDiv" class="row">
 				<!--리뷰작성모달 시작(부트스트랩)-->
@@ -306,6 +308,10 @@
 												</div>
 											</c:if>
 											<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->
+											<!-- 삭제버튼 시작 -->
+											<c:if test="${l.id eq member.id}">
+												<button type="button" class="btn btn-danger reviewDelBtn">삭제</button>
+											</c:if>
 										  </div>
 										</div>
 									</c:forEach>
