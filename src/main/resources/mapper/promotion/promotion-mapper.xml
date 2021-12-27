@@ -122,12 +122,18 @@
 	
 	<select id="selectProductListByPromotionCode" resultType="product">
 		select
-		   p. *
+		    p.product_code,
+		    p.thumbnail,
+		    p.name,
+		    p.status,
+		    p.reg_date,
+		    p.view_count,
+		    p.price
 		from
-		    product_promotion pp left join product p
-		        on pp.product_code = p.product_code
+		    product p left join product_category pc
+		        on p.product_code = pc.product_code
 		where
-			pp.promotion_code = #{promotionCode}
+		    p.product_code  in (select product_code from product_promotion where promotion_code = #{promotionCode})
 	</select>
 	
 	<select id="selectProductPromotionByPromotionCode" resultType="map">
