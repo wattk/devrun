@@ -491,7 +491,7 @@ public class AdminController {
 	@GetMapping("/promotionDetail.do")
 	public String promotionDetail(@RequestParam String promotionCode, Model model) {
 		log.debug("promotionCode = {}", promotionCode);
-		Promotion promotion = promotionService.selectPromotionByPromotionCode(promotionCode);
+		Promotion promotion = promotionService.selectPromotionWithProductByPromotionCode(promotionCode);
 		log.debug("promotion = {}", promotion);
 		model.addAttribute("promotion", promotion);
 		return "/admin/promotion/promotionDetail";
@@ -648,8 +648,8 @@ public class AdminController {
 	
 	@GetMapping("/findProductList")
 	@ResponseBody
-	public List<Product> findProductList(@RequestParam String promotionCode){
-		List<Product> list = promotionService.selectProductListByPromotionCode(promotionCode);
+	public List<Map<String, Object>> findProductList(@RequestParam String promotionCode){
+		List<Map<String, Object>> list = promotionService.selectProductNameAndCodeByPromotionCode(promotionCode);
 		return list;
 	}
 	

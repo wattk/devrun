@@ -2,22 +2,30 @@ package com.kh.devrun.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.common.DevrunUtils;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
 import com.kh.devrun.shop.model.service.ShopService;
@@ -122,17 +130,123 @@ public class ShopController {
 		}
 	}
 	
-	@GetMapping("/promotionDetail.do")
-	public void promotionDetail(@RequestParam String promotionCode, Model model) {
-		log.debug("promotionCode = {}", promotionCode);
+	@GetMapping("/promotionDetail/{promotionCode}")
+	public String promotionDetail(
+				@RequestParam(defaultValue = "1") int cPage,
+				@PathVariable String promotionCode, 
+				HttpServletRequest request,
+				HttpServletResponse response,
+				Model model) 
+	{
+		int limit = 12;
+		int offset = (cPage - 1)*limit;
 		
 		try {
+			boolean hasRead = DevrunUtils.hasRead(request, response, promotionCode, "promotion");
+			
+			if(!hasRead) {
+				int result = promotionService.updateViewCount(promotionCode);
+			}
+			
+			
 			Promotion promotion = promotionService.selectPromotionByPromotionCode(promotionCode);
+			List<Map<String, String>> productCategory = promotionService.selectProductPromotionByPromotionCode(promotionCode);
+			
+			Map<String, Object> param = new HashMap<>();
+			param.put("promotionCode", promotionCode);
+			
+			//1. 전체 상품 목록
+			List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
 			model.addAttribute("promotion", promotion);
+			model.addAttribute("productCategory", productCategory);
+			model.addAttribute("productList", productList);
+			log.debug("promotion = {}, productCategory = {}", promotion, productCategory);
+			
+			//2. 전체 게시물 수 totalContent
+			int totalContent = promotionService.selectProductTotalCount(param);
+			model.addAttribute("totalContent", totalContent);
+			
+			//3. pagebar
+			String url = request.getRequestURI(); // /spring/board/boardList.do
+			String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+			log.debug("pagebar = {}", pagebar);
+			model.addAttribute("pagebar", pagebar);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return "/shop/promotionDetail";
 	}
+	
+//	@GetMapping("/childCategorySearch.do")
+//	@ResponseBody
+//	public List<Product> childCategorySearch(
+//				@RequestParam(value="childCategoryCode[]", required = false) List<String> childCategoryCode, 
+//				@RequestParam(value="keyword", required = false) String keyword, 
+//				@RequestParam(value = "promotionCode") String promotionCode) 
+//	{
+//		log.debug("{}",keyword);
+//		Map<String, Object> param = new HashMap<>();
+//		param.put("promotionCode", promotionCode);
+//		param.put("childCategoryCode", childCategoryCode);
+//		param.put("keyword", keyword);
+//		log.debug("{}",param);
+//		
+//		List<Product> productList = new ArrayList<>();
+//		
+//		productList = promotionService.selectProductListByPromotionCode(param);
+//		log.debug("list = {}", productList);
+//		
+//		return productList;
+//	}
+	@GetMapping("/childCategorySearch.do")
+	@ResponseBody
+	public Map<String, Object> childCategorySearch(
+			@RequestParam(defaultValue = "1") int cPage,
+			@RequestParam(value="childCategoryCode[]", required = false) List<String> childCategoryCode, 
+			@RequestParam(value="keyword", required = false) String keyword, 
+			@RequestParam(value = "promotionCode") String promotionCode,
+			HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		Map<String, Object> resultMap = new HashMap<>();
+
+		int limit = 12;
+		int offset = (cPage - 1)*limit;
+		
+		boolean hasRead = DevrunUtils.hasRead(request, response, promotionCode, "promotion");
+		
+		if(!hasRead) {
+			int result = promotionService.updateViewCount(promotionCode);
+		}
+		log.debug("{}",keyword);
+		Map<String, Object> param = new HashMap<>();
+		param.put("promotionCode", promotionCode);
+		param.put("childCategoryCode", childCategoryCode);
+		param.put("keyword", keyword);
+		log.debug("{}",param);
+		
+		//1. 전체 상품 목록
+		String url = request.getContextPath(); 
+		
+		List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
+		String productStr = DevrunUtils.getProductList(productList, url);
+		
+		//2. 전체 게시물 수 totalContent
+		url = request.getRequestURI(); 
+		int totalContent = promotionService.selectProductTotalCount(param);
+		
+		//3. pagebar
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		
+		resultMap.put("productStr", productStr);
+		resultMap.put("totalContent", totalContent);
+		resultMap.put("pagebar", pagebar);
+		
+		return resultMap;
+	}
+	
 	/**
 	 * 혜진 작업 끝
 	 * @throws IOException 

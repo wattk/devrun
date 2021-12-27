@@ -48,5 +48,12 @@ public class CommunityDaoImpl implements CommunityDao {
 		return session.selectOne("community.selectFreeboardCount");
 	}
 
+	@Override
+	public CommunityEntity selectOneFreeBoard(int communityNo) {
+		return session.selectOne("community.selectOneFreeBoard", communityNo);
+	}
+
+	
+
 	
 }

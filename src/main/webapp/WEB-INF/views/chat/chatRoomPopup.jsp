@@ -3,6 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
+
+<%-- EL에서 접근하기 위해 var속성 지정 --%>
+<sec:authentication property="principal" var="loginMember"/>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -113,6 +119,7 @@
 /* 사이드바 회원 프로필 사진*/
 .sidebar_menu .member-profile {
 	width: 42px;
+	height: 42px;
 	border: 1px solid #f1f3f5;
 	border-radius: 50%;
 }
@@ -142,6 +149,7 @@
 .chat-data-wrap .member-profile {
     position: absolute;
 	width: 42px;
+	height: 42px;
 	border: 1px solid #f1f3f5;
 	border-radius: 50%;
 	cursor: pointer;
@@ -210,7 +218,7 @@
 	margin: 10px 12px 9px;
 }
 
-/* 상대방 메세지 영역의 talk_info */
+/* 상대방 메시지 영역의 talk_info */
 .receive-msg-wrap {
     position: relative;
     float: left;
@@ -237,7 +245,7 @@
 	position: absolute;
     left: 100%;
     bottom: 0;
-    min-width: 83px;
+    min-width: 105px;
 }
 
 .send-msg-wrap .etc {
@@ -285,6 +293,7 @@
 
 .report-block-modal .member-profile {
 	width: 42px;
+	height: 42px;
 	border: 1px solid #f1f3f5;
 	border-radius: 50%;
 }
@@ -401,7 +410,7 @@
 			<div class="chat-header position-relative text-center">
 				
 				<!-- 채팅 상대방 닉네임 -->
-				<h2 class="d-inline-block">길동이</h2>
+				<h2 class="d-inline-block">${receiver.nickname}</h2>
 				
 				<div class="header-icon d-inline-block position-absolute">
 	
@@ -413,147 +422,92 @@
 			</div>
 			<!-- 채팅 헤더 끝 -->
 			
-			<!-- 메세지 대화 내역 & 메세지 보내기 영역 wrap -->
+			<!-- 메시지 대화 내역 & 메시지 보내기 영역 wrap -->
 			<div class="msg-input-data-wrap d-flex">
-				<!-- 메세지 대화 내역 -->
+				<!-- 메시지 대화 내역 -->
 				<div class="chat-data-wrap">
 					<ul class="list-group list-group-flush" id="chatData">
-						<li class="list-group-item">
-							<!-- 상대방 메세지 -->
-							<div class="receive-msg-wrap">
-								<!-- 회원 프로필 사진 -->
-								<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
-								
-								
-								<div class="talk-info position-relative">
-									
-									<!-- 회원 닉네임 -->
-									<strong class="nickname d-inline-block">길동이1</strong>
-									<!-- 상대방 메세지 내용 -->
-									<div class="receive-msg">
-										<p class="msg-p">안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?</p>
-									</div>
-									<div class="etc">
-										<!-- 메시지 신고하기 - 클릭 시 옆으로 드롭다운 만들기 -->
-										<i class="fas fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-										
-										<div class="dropdown-menu report-dropdown-menu">
-											<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal">메시지 신고하기</a>
-										</div>
-										
-										<span class="msg-time">오후 1:04</span>
-										
-									</div>
-									<!-- 상대방 메세지 내용 끝-->
-	
-								</div>
-								
-								
-							</div>
-							<!-- 상대방 메세지 끝 -->
-						</li>
 						
+						<%-- 대화 내역 리스트 출력 시작 --%>
+						<c:forEach items="${list}" var="chatLog">
 						
-						<li class="list-group-item">
-							<!-- 본인 메세지 -->
-							<div class="send-msg-wrap">
-			
-								<div class="talk-info position-relative">
-									
-									<!-- 본인 메세지 내용 -->
-									<div class="send-msg">
-										<p class="msg-p">안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?</p>
-									</div>
-									<div class="etc">
-										<!-- 읽음 표시 -->
-										<span class="read-check d-block">읽음</span>
-										<span class="msg-time">오후 1:04</span>
-									</div>
-									<!-- 본인 메세지 내용 끝-->
-	
-								</div>
-								
-								
-							</div>
-							<!-- 본인 메세지 끝 -->
-						</li>
-						
-						
-						
-						
-						<li class="list-group-item">
-							<!-- 상대방 메세지 -->
-							<div class="receive-msg-wrap">
-								<!-- 회원 프로필 사진 -->
-								<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
-								
-								
-								<div class="talk-info position-relative">
-									
-									<!-- 회원 닉네임 -->
-									<strong class="nickname d-inline-block">길동이1</strong>
-									<!-- 상대방 메세지 내용 -->
-									<div class="receive-msg">
-										<p class="msg-p">안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?</p>
-									</div>
-									<div class="etc">
-										<!-- 메시지 신고하기 - 클릭 시 옆으로 드롭다운 만들기 -->
-										<i class="fas fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-										
-										<div class="dropdown-menu report-dropdown-menu">
-											<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal">메시지 신고하기</a>
-										</div>
-										
-										<span class="msg-time">오후 1:04</span>
-										
-									</div>
-									<!-- 상대방 메세지 내용 끝-->
-	
-								</div>
-								
-								
-							</div>
-							<!-- 상대방 메세지 끝 -->
-						</li>
-						
-						
-						<li class="list-group-item">
-							<!-- 본인 메세지 -->
-							<div class="send-msg-wrap">
-			
-								<div class="talk-info position-relative">
-									
-									<!-- 본인 메세지 내용 -->
-									<div class="send-msg">
-										<p class="msg-p">안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?</p>
-									</div>
-									<div class="etc">
-										<!-- 읽음 표시 -->
-										<span class="read-check d-block">읽음</span>
-										<span class="msg-time">오후 1:04</span>
-									</div>
-									<!-- 본인 메세지 내용 끝-->
-	
-								</div>
-								
-								
-							</div>
-							<!-- 본인 메세지 끝 -->
-						</li>
+							<li class="list-group-item">
 							
+								<%-- 본인 메시지인 경우 --%>
+								<c:if test="${chatLog.memberNo eq loginMember.memberNo}">
+									<!-- 본인 메시지 -->
+									<div class="send-msg-wrap">
+										<div class="talk-info position-relative">
+											<!-- 본인 메시지 내용 -->
+											<div class="send-msg">
+												<p class="msg-p">${chatLog.msg}</p>
+											</div>
+											<div class="etc">
+												<!-- 읽음 표시 -->
+												<span class="read-check d-block">읽음</span>
+												<span class="msg-time">${chatLog.logTime}</span>
+											</div>
+											<!-- 본인 메시지 내용 끝-->
+										</div>
+									</div>
+									<!-- 본인 메시지 끝 -->
+								</c:if>
+								
+								<%-- 상대방 메시지인 경우 --%>
+								<c:if test="${chatLog.memberNo ne loginMember.memberNo}">
+									<!-- 상대방 메시지 -->
+									<div class="receive-msg-wrap">
+										<!-- 회원 프로필 사진 -->
+										<%-- 프로필 사진 없는 경우 --%>
+										<c:if test="${chatLog.member.proPhoto eq null}">
+											<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
+										</c:if>
+										<%-- 프로필 사진 있는 경우 --%>
+								      	<c:if test="${chatLog.member.proPhoto ne null}">
+								      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${chatLog.member.proPhoto}" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>	
+								      	</c:if>
+
+										<div class="talk-info position-relative">
+											<!-- 회원 닉네임 -->
+											<strong class="nickname d-inline-block">${chatLog.member.nickname}</strong>
+											<!-- 상대방 메시지 내용 -->
+											<div class="receive-msg">
+												<p class="msg-p">${chatLog.msg}</p>
+											</div>
+											<div class="etc">
+												<!-- 메시지 신고하기 - 클릭 시 옆으로 드롭다운 만들기 -->
+												<i class="fas fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+												
+												<div class="dropdown-menu report-dropdown-menu">
+													<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal">메시지 신고하기</a>
+												</div>
+												
+												<span class="msg-time">${chatLog.logTime}</span>
+												
+											</div>
+											<!-- 상대방 메시지 내용 끝-->
+										</div>	
+									</div>
+									<!-- 상대방 메시지 끝 -->
+								</c:if>
+								
+							</li>
+							
+						</c:forEach>
+						<%-- 대화 내역 리스트 출력 끝 --%>	
 							
 					</ul>
 				</div>
-				<!-- 메세지 대화 내역 끝 -->
+				<!-- 메시지 대화 내역 끝 -->
 			
-				<!-- 메세지 보내기 -->
+				<!-- 메시지 보내기 -->
 				<div class="input-group msg-input-group">
 				  <input type="text" id="message" class="form-control" placeholder="메시지를 입력하세요.">
 				  <div class="input-group-append" style="padding: 0px;">
 				    <button id="sendBtn" class="btn btn-outline-secondary" type="button">Send</button>
 				  </div>
 				</div>
-				<!-- 메세지 보내기 끝 -->
+				<!-- 메시지 보내기 끝 -->
 	
 			</div>
 			
@@ -573,15 +527,29 @@
 					<ul class="pl-0">
 						<li>
 							<!-- 회원 프로필 사진 -->
-							<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+							<%-- 프로필 사진 없는 경우 --%>
+							<c:if test="${loginMember.proPhoto eq null}">
+								<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
+							</c:if>
+							<%-- 프로필 사진 있는 경우 --%>
+					      	<c:if test="${loginMember.proPhoto ne null}">
+					      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${loginMember.proPhoto}" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>	
+					      	</c:if>
 							<!-- 회원 닉네임 -->
-							<strong>길동이1</strong>
+							<strong>${loginMember.nickname}</strong>
 						</li>
 						<li>
 							<!-- 회원 프로필 사진 -->
-							<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+							<%-- 프로필 사진 없는 경우 --%>
+							<c:if test="${receiver.proPhoto eq null}">
+								<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
+							</c:if>
+							<%-- 프로필 사진 있는 경우 --%>
+					      	<c:if test="${receiver.proPhoto ne null}">
+					      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${receiver.proPhoto}" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>	
+					      	</c:if>
 							<!-- 회원 닉네임 -->
-							<strong>길동이2</strong>
+							<strong>${receiver.nickname}</strong>
 						</li>
 					</ul>
 					
@@ -611,11 +579,21 @@
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	        <!-- 회원 프로필 사진 -->
-			<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+			<%-- 프로필 사진 없는 경우 --%>
+			<c:if test="${receiver.proPhoto eq null}">
+				<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
+			</c:if>
+			<%-- 프로필 사진 있는 경우 --%>
+	      	<c:if test="${receiver.proPhoto ne null}">
+	      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${receiver.proPhoto}" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>	
+	      	</c:if>
 			<!-- 닉네임 -->
-			<strong>길동이</strong>
+			<strong>${receiver.nickname}</strong>
 			<!-- 아이디 -->
-			<span>(hong**)</span>
+			<span>
+      			<!-- 아이디의 앞 4자리까지 보여 주고 5자리부터 id의 길이만큼 *를 찍어줌 -->
+      			(${fn:substring(receiver.id,0,4) }<c:forEach begin="5" end="${fn:length(receiver.id)}" step="1">*</c:forEach>)
+      		</span>
 			<div class="text-center d-flex report-block-btn mt-4 my-3">
 				<button type="button" class="btn btn-secondary d-block member-report-btn mb-3" data-toggle="modal" data-target="#memberReportModal">회원 신고하기</button>
 				<button type="button" class="btn btn-secondary d-block block-btn">차단하고 나가기</button>
@@ -766,13 +744,131 @@
         </div>
 		<!--회원 신고 모달 끝 (부트스트랩)-->
     </div>
-    
-    
-    
 
 <script>
 
+// /chat/chat_mk0L0UJ93P50409 구독
+// 1. Stomp Client객체 생성(websocket)
+const ws = new SockJS(`http://\${location.host}${pageContext.request.contextPath}/stomp`);
+const stompClient = Stomp.over(ws);
 
+// 2. 연결 요청
+stompClient.connect({}, (frame) => {
+	console.log("Stomp Client Connect : ", frame);
+	
+	// 3.구독요청
+	stompClient.subscribe("/chat/${chatId}", (message) => {
+		console.log("message : ", message);
+		const obj = JSON.parse(message.body);
+		console.log("obj = ", obj);
+		const {memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime} = obj;
+
+		// 타임스탬프 날짜 변환
+		const date = new Date(logTime);
+		const year = date.getFullYear().toString().slice(-2); //년도 뒤에 두자리
+		const month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리 (01, 02 ... 12)
+		const day = ("0" + date.getDate()).slice(-2); //일 2자리 (01, 02 ... 31)
+		const hour = ("0" + date.getHours()).slice(-2); //시 2자리 (00, 01 ... 23)
+		const minute = ("0" + date.getMinutes()).slice(-2); //분 2자리 (00, 01 ... 59)
+		//const second = ("0" + date.getSeconds()).slice(-2); //초 2자리 (00, 01 ... 59)
+		const returnDate = year + "." + month + "." + day + " " + hour + ":" + minute;
+		//console.log(returnDate);
+		
+		// 프로필 사진 분기 처리
+		const photo = (!proPhoto) ? 
+				'${pageContext.request.contextPath}/resources/images/common/blank-profile.png' : 
+				'${pageContext.request.contextPath}/resources/upload/profilePhoto/' + proPhoto;
+
+		/* loginMember의 memberNo의 따른 수신자 발신자 분기 처리 */
+		//console.log("memberNo = ", memberNo);
+		//console.log("loginMember의 memberNo = ", ${loginMember.memberNo});
+		if(memberNo == ${loginMember.memberNo}) {
+			//console.log("발신한 사용자군요!");
+			$(chatData).append(`<li class="list-group-item">
+<!-- 본인 메시지 -->
+<div class="send-msg-wrap">
+<div class="talk-info position-relative">	
+<!-- 본인 메시지 내용 -->
+<div class="send-msg">
+<p class="msg-p">\${msg}</p>
+</div>
+<div class="etc">
+<!-- 읽음 표시 -->
+<span class="read-check d-block">읽음</span>
+<span class="msg-time">\${returnDate}</span>
+</div>
+<!-- 본인 메시지 내용 끝-->
+</div>
+</div>
+<!-- 본인 메시지 끝 -->
+</li>`);
+		} else {
+			//console.log("수신한 사용자군요!");
+			$(chatData).append(`<li class="list-group-item">		
+<!-- 상대방 메시지 -->
+<div class="receive-msg-wrap">
+<!-- 회원 프로필 사진 -->
+<img src="\${photo}" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
+
+<div class="talk-info position-relative">
+<!-- 회원 닉네임 -->
+<strong class="nickname d-inline-block">\${nickname}</strong>
+<!-- 상대방 메시지 내용 -->
+<div class="receive-msg">
+<p class="msg-p">\${msg}</p>
+</div>
+<div class="etc">
+<!-- 메시지 신고하기 - 클릭 시 옆으로 드롭다운 만들기 -->
+<i class="fas fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+<div class="dropdown-menu report-dropdown-menu">
+<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal">메시지 신고하기</a>
+</div>
+<span class="msg-time">\${returnDate}</span>
+</div>
+<!-- 상대방 메시지 내용 끝-->
+</div>	
+</div>
+<!-- 상대방 메시지 끝 -->
+</li>`);	
+			
+		}
+		/* loginMember의 memberNo의 따른 수신자 발신자 분기 처리 끝 */
+		
+		// 채팅 입력된 후 최근 내용 확인을 위해 스크롤 하단으로 이동 시키기
+		$('.chat-data-wrap').scrollTop($('.chat-data-wrap')[0].scrollHeight);
+	});
+	
+});
+
+// 채팅 Send 클릭 시 이벤트 발생
+$(sendBtn).click((e) => {
+	
+	const member = {
+		nickname : "${loginMember.nickname}",
+		id : "${loginMember.id}",
+		proPhoto : "${loginMember.proPhoto}"
+	};
+	
+	const obj = {
+		chatId : "${chatId}",
+		memberNo : "${loginMember.memberNo}",
+		member : member,
+		msg : $(message).val(),
+		logTime : Date.now(),
+		type: "MESSAGE"
+	};
+	console.log(obj);
+	stompClient.send("/app/chat/${chatId}", {}, JSON.stringify(obj));
+	$(message).val(''); // #message 초기화
+});
+
+// 메시지 입력 시 엔터 치면 click 핸들러 호출
+$(message).keyup((e) => {
+	// 엔터치면 전송하게 해주세요.
+	if(e.keyCode == 13){
+		$(sendBtn).trigger('click'); // click 핸들러 호출!
+	}
+});
 
 // 더보기 아이콘 클릭 이벤트 발생
 $('.more-icon').on('click', function(){

@@ -48,4 +48,11 @@ public class CommunityServiceImpl implements CommunityService {
 	public int selectFreeboardTotalCount() {
 		return communityDao.selectFreeboardTotalCount();
 	}
+
+	@Override
+	public CommunityEntity selectOneFreeBoard(int communityNo) {
+		return communityDao.selectOneFreeBoard(communityNo);
+	}
+
+	
 }

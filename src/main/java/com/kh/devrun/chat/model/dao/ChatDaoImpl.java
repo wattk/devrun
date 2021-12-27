@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.devrun.chat.model.vo.ChatLog;
 import com.kh.devrun.chat.model.vo.ChatMember;
 import com.kh.devrun.member.model.vo.Member;
 
@@ -29,5 +30,25 @@ public class ChatDaoImpl implements ChatDao {
 	@Override
 	public int insertChatMember(ChatMember chatMember) {
 		return session.insert("chat.insertChatMember", chatMember);
+	}
+
+	@Override
+	public int insertChatLog(ChatLog chatLog) {
+		return session.insert("chat.insertChatLog", chatLog);
+	}
+
+	@Override
+	public List<ChatLog> findChatLogByChatId(String chatId) {
+		return session.selectList("chat.findChatLogByChatId", chatId);
+	}
+
+	@Override
+	public List<ChatLog> findChatLog(int memberNo) {
+		return session.selectList("chat.findChatLog", memberNo);
+	}
+
+	@Override
+	public Member selectOneReceiver(Map<String, Object> param) {
+		return session.selectOne("chat.selectOneReceiver", param);
 	}
 }

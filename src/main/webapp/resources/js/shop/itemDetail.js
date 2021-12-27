@@ -68,3 +68,11 @@ $('#reportText').keydown((e) =>{
 	
 });
 /*리뷰 글자수 세기 시작 */
+
+/*리뷰삭제 */
+$('.reviewDelBtn').click((e) => {
+	console.log("js작동하나요?");
+	var $value =e.target.value;
+	console.log($value);
+	
+});

@@ -5,18 +5,9 @@
 	border-top : 1px solid rgba(0,0,0,.125);
 	border-bottom : 1px solid rgba(0,0,0,.125);
 }
-.shop-like-icon{
-	bottom : 3%;
-	left : 5%;
-	font-size : 30px;
-}
-.shop-cart-icon{
-	bottom : 3%;
-	right : 5%;
-	font-size : 30px;
-}
-i:hover{
+.shop-like-icon:hover{
 	color : #66ABFF;
+	cursor : pointer;
 }
 .list-group-item{
 	border: 0;
@@ -29,6 +20,9 @@ i:hover{
 .shop-sort:not(:last-of-type) {
 	border-right : 1px solid rgba(0,0,0,.125);
 }
+.shop-sort{
+	cursor : pointer;
+}
 
 /* 상품 대/소분류 페이지 */
 .category-container{
@@ -38,9 +32,29 @@ i:hover{
 .category-badge{
 	font-size : 15px;
 	font-weight : 400;
+	cursor : pointer;
+}
+.category-badge:hover{
+	color: #fff;
+    background-color: #007bff;
 }
 .banner{
 	width : 1300px;
 	height : 170px;
 	background-color: lime;
+}
+
+/* 이벤트 상품 상세 페이지 */
+.promotion-container{
+	padding-top: 200px;
+	margin : 0 10% 0 10%;
+	top : 300px;
+}
+.promotion-title{
+	font-size: xx-large;
+    font-weight: 700;
+}
+.product-name{
+	display : table-cell;
+	vertical-align : middle;
 }

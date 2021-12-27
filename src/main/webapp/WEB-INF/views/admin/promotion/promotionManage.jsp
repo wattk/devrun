@@ -107,7 +107,7 @@ $(".product-modal-btn").click((e)=>{
 		success(data){
 			console.log(data);
 			$(data).each((i, product) => {			
-				$("#modalProductList").append(`<p>\${product.productCode}(\${product.name})</p>`);
+				$("#modalProductList").append(`<p>\${product['PRODUCT_CODE']}(\${product['NAME']})</p>`);
 			});
 		},
 		error : console.log

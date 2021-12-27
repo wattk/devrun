@@ -19,5 +19,9 @@ public interface CommunityService {
 
 	int selectFreeboardTotalCount();
 
+	CommunityEntity selectOneFreeBoard(int communityNo);
 
+
+
+	
 }

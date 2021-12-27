@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.devrun.chat.model.dao.ChatDao;
+import com.kh.devrun.chat.model.vo.ChatLog;
 import com.kh.devrun.chat.model.vo.ChatMember;
 import com.kh.devrun.member.model.vo.Member;
 
@@ -35,5 +36,25 @@ public class ChatServiceImpl implements ChatService {
 			result = chatDao.insertChatMember(chatMember);
 		}
 		return result;
+	}
+
+	@Override
+	public int insertChatLog(ChatLog chatLog) {
+		return chatDao.insertChatLog(chatLog);
+	}
+
+	@Override
+	public List<ChatLog> findChatLogByChatId(String chatId) {
+		return chatDao.findChatLogByChatId(chatId);
+	}
+
+	@Override
+	public List<ChatLog> findChatLog(int memberNo) {
+		return chatDao.findChatLog(memberNo);
+	}
+
+	@Override
+	public Member selectOneReceiver(Map<String, Object> param) {
+		return chatDao.selectOneReceiver(param);
 	}
 }

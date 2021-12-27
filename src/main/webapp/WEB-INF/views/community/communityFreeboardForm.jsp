@@ -33,8 +33,8 @@
 	$(document).on('click', '#btnSave', function(e){
 		console.log("클릭 이벤트 발생!");
 		e.preventDefault();
-		//FreeboardForm : form name값
-		$(document.FreeboardForm).submit();
+		//freeBoardForm : form name값
+		$(document.freeBoardForm).submit();
 	});
 	
 	// #btnList 버튼을 'click'하게 되면 communityFreboardList 페이지로 이동.
@@ -53,7 +53,28 @@
 			lang: "ko-KR", // 한글 설정
 			placeholder: "내용을 입력해 주세요"  // placeholder 설정
 		});
-	});	
+	});
+
+	// 내용 유효성 검사
+	function freeBoardValidate(){
+		var $content = $("[name=content]");
+		var $title = $("[name=title]");
+		// 슬래시(/) "사이"에는 매칭시킬 "패턴"을 써준다.
+		// 슬래시(/) "다음"에는 옵션을 설정하는 "플래그"를 써준다.
+		// ^문자열 : 특정 문자열로 시작(괄호 없음 주의!)
+		// . : 모든 문자열
+		// | : OR
+		// \n : 줄바꿈
+		if(/^(.|\n)+$/.test($title.val()) == false){
+			alert("제목을 입력하세요");
+			return false;
+		} 
+		else if (/^(.|\n)+$/.test($content.val()) == false){
+			alert("내용을 입력하세요");
+			return false;
+		}
+		return true;
+	}
 </script>
 
 	<article>
@@ -63,9 +84,10 @@
 			<hr>
 	
 		<form:form 
-			name="FreeboardForm" 
+			name="freeBoardForm" 
 			action="${pageContext.request.contextPath}/community/communityFreeboardEnroll.do"
-			method="POST" >
+			method="POST" 
+			onsubmit="return freeBoardValidate();">
 				<div class="mb-3">
 					<label for="title"><strong>제목</strong></label>
 					<input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">

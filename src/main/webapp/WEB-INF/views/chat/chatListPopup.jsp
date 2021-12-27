@@ -55,6 +55,7 @@
 /* 회원 프로필 사진*/
 .chat-list .member-profile {
 	width: 48px;
+	height: 48px;
 	border: 1px solid #f1f3f5;
 	border-radius: 50%;
 }
@@ -105,6 +106,7 @@
 
 .plus-modal .member-profile {
 	width: 48px;
+	height: 48px;
 	border: 1px solid #f1f3f5;
 	border-radius: 50%;
 }
@@ -192,70 +194,8 @@
 				
 				<!-- 닉네임 검색 결과 -->
 				<ul id="nicknameSearchResultList" class="list-group">
-				  <%-- <li class="list-group-item position-relative">
-				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
-					<!-- 회원 닉네임 -->
-					<strong class="nickname ml-2">길동이</strong>
-					<!-- 선택 시 display 상태 변화 -->
-					<i class="fas fa-check-circle position-absolute d-none"></i>
-				  </li>
-				  
-				  <li class="list-group-item position-relative">
-				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
-					<!-- 회원 닉네임 -->
-					<strong class="nickname ml-2">길동이</strong>
-					<!-- 선택 시 display 상태 변화 -->
-					<i class="fas fa-check-circle position-absolute d-none"></i>
-				  </li>
-				  
-				  <li class="list-group-item position-relative">
-				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
-					<!-- 회원 닉네임 -->
-					<strong class="nickname ml-2">길동이</strong>
-					<!-- 선택 시 display 상태 변화 -->
-					<i class="fas fa-check-circle position-absolute d-none"></i>
-				  </li>
-				  
-				  <li class="list-group-item position-relative">
-				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
-					<!-- 회원 닉네임 -->
-					<strong class="nickname ml-2">길동이</strong>
-					<!-- 선택 시 display 상태 변화 -->
-					<i class="fas fa-check-circle position-absolute d-none"></i>
-				  </li>
-				  
-				  <li class="list-group-item position-relative">
-				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
-					<!-- 회원 닉네임 -->
-					<strong class="nickname ml-2">길동이</strong>
-					<!-- 선택 시 display 상태 변화 -->
-					<i class="fas fa-check-circle position-absolute d-none"></i>
-				  </li>
-				  
-				  <li class="list-group-item position-relative">
-				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
-					<!-- 회원 닉네임 -->
-					<strong class="nickname ml-2">길동이</strong>
-					<!-- 선택 시 display 상태 변화 -->
-					<i class="fas fa-check-circle position-absolute d-none"></i>
-				  </li>
-				  
-				  <li class="list-group-item position-relative">
-				  	<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
-					<!-- 회원 닉네임 -->
-					<strong class="nickname ml-2">길동이</strong>
-					<!-- 선택 시 display 상태 변화 -->
-					<i class="fas fa-check-circle position-absolute d-none"></i>
-				  </li> --%>
+
 				</ul>
-				
 				<!-- 닉네임 검색 결과 끝 -->
 				
 		      </div>
@@ -328,9 +268,42 @@
 		
 			<ul class="list-group">
 			
-				<li class="list-group-item position-relative">
+				<c:forEach items="${list}" var="chatLog">
+					
+					<li class="list-group-item position-relative" data-chat-id="${chatLog.chatId}">
+						<!-- 회원 프로필 사진 --> <%-- 상대방 프로필 사진이 나와야 함 --%>
+						<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
+						
+						<div class="msg-content">
+						
+							<!-- 회원 닉네임 --> <%-- 상대방 닉네임이 나와야 함 --%>
+							<strong class="nickname">길동이</strong>
+							<!-- 최근 메세지 -->
+							<p class="recent-msg mb-0">${chatLog.msg}</p>
+							
+						
+						</div>
+						
+						<div class="time-unread-count d-inline-block position-absolute text-right">
+						
+							<!-- 날짜(오늘일 경우 - 오전 9:00 또는 15:00 / 올해일 경우 - 12월 22일 / 올해가 아닐 경우 - 2020.10.14)-->
+							<jsp:useBean id="dateValue" class="java.util.Date"/>
+							<jsp:setProperty name="dateValue" property="time" value="${chatLog.logTime}"/>
+							<p class="mb-0 chat-time"><fmt:formatDate value="${dateValue}" pattern="yyyy/MM/dd HH:mm"/></p>
+							<!-- 안읽음 메세지 --> <%-- 임의의 값 넣음 수정할 것 --%>
+							<span class="badge badge-pill badge-danger unread-count">2</span>
+							
+						</div>
+	
+					</li>
+				
+				</c:forEach>
+			
+			
+			
+				<%-- <li class="list-group-item position-relative">
 					<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
 					
 					<div class="msg-content">
 					
@@ -355,7 +328,7 @@
 				
 				<li class="list-group-item position-relative">
 					<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
 					
 					<div class="msg-content">
 					
@@ -380,7 +353,7 @@
 				
 				<li class="list-group-item position-relative">
 					<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
+					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
 					
 					<div class="msg-content">
 					
@@ -401,7 +374,7 @@
 						
 					</div>
 
-				</li>
+				</li> --%>
 
 			</ul>
 		
@@ -443,16 +416,24 @@ $(searchNicknameFrm).submit((e) => {
 			} else {
 				// 닉네임 검색 결과 뿌리기
 				$(data).each((i, member) => {
-					console.log(member);
-	
+					//console.log(member);
+					//console.log(member.proPhoto);
+					
+					// 프로필 사진 분기 처리
+					const photo = (!member.proPhoto) ? 
+							'${pageContext.request.contextPath}/resources/images/common/blank-profile.png' : 
+							'${pageContext.request.contextPath}/resources/upload/profilePhoto/' + member.proPhoto;
+					//console.log('photo값은?', photo);
+
 					$("#nicknameSearchResultList").append(`<li class="list-group-item position-relative" data-receiver-no="\${member.memberNo}">
 <!-- 회원 프로필 사진 -->
-<img src="${pageContext.request.contextPath}/resources/images/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
+<img src="\${photo}" alt="회원 프로필 사진" class="member-profile"/>
 <!-- 회원 닉네임 -->
 <strong class="nickname ml-2">\${member.nickname}</strong>
 <!-- 선택 시 display 상태 변화 -->
 <i class="fas fa-check-circle position-absolute d-none"></i>
 </li>`);
+
 				});
 			}
 		},
@@ -472,6 +453,12 @@ $(document).on('click', '#inviteBtn', function(e) {
 	const receiverNo = $li.data("receiverNo");
 	//console.log(receiverNo);
 	
+	// 회원 선택하지 않고 초대 시 알림창 띄우고 return
+	if(!receiverNo) {
+		alert('초대할 멤버를 선택해주세요');
+		return;
+	}
+	
 	// 비동기 - chat_member 테이블 생성 후 팝업 띄우기(받아온 데이터 중 필요한 것 넘기기)
 	$.ajax({
 		url : `${pageContext.request.contextPath}/chat/chat.do`,
@@ -488,7 +475,10 @@ $(document).on('click', '#inviteBtn', function(e) {
 			const spec = "width=400px, height=600px";
 			open(url, name, spec);
 
-
+			// modal해제 - 멤버 선택 이후 초대 시 기존 모달 처리
+			$(plusModalCenter)
+				.modal('hide')
+				.find('form')[0].reset(); // [0] 실제 js dom객체를 반환
 		},
 		error : console.log
 	});
@@ -532,9 +522,13 @@ $('.plus-modal').on('hidden.bs.modal', function (e) {
 
 // 채팅방 list 클릭 시 이벤트 발생 - 기능 구현 시 수정할 부분 url 부분 li마다 달라져야 함. 위의 코드 수정할 것
 $('.chat-list li').click((e) => {
+	const $li = $(e.target).parents("li");
+	//console.log($li);
+	const chatId = $li.data("chatId"); // getter camelcasing으로 참조하기
+	//console.log(chatId);
 	
 	// 팝업요청 // url 부분 기능 구현 시 수정할 것
-	const url = `${pageContext.request.contextPath}/chat/chatRoom.do`;
+	const url = `${pageContext.request.contextPath}/chat/chatRoom.do/\${chatId}`;
 	const name = ''; // 팝업창 Window객체의 name. // 이후에 const name = chatId; 이런식으로 바꿀 것. 수업 코드 참고
 	const spec = "width=400px, height=600px";
 	open(url, name, spec);

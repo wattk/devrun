@@ -80,11 +80,11 @@
 	<select id="selectAllProductList" resultType="Product">
 			select
 				product_code,
-                thumbnail,
-                name,
-                status,
-                reg_date,
-                view_count 
+				thumbnail,
+				name,
+				status,
+				reg_date,
+				view_count 
 			from product order by reg_date desc
 	</select>
 	

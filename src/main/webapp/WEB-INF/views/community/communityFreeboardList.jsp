@@ -21,6 +21,7 @@ td, th {
 	text-align: center;
 }
 </style>
+
 <script>
 // 글쓰기 폼으로 이동
 function goFreeboardForm(){
@@ -30,10 +31,20 @@ function goFreeboardForm(){
 // 게시글 상세보기로 이동
 /**
  * event boubling 기반 핸들링
+ * tr 에서 핸들링 > td에서 발생 및 전파
  */
+$(() => {
+	$("tr[data-no]").click((e) => {
+		//console.log(e.target);
+		//console.log($(e.target).data("no"));
+		// tr 태그를 찾는 작업 --> 이벤트 타겟의 부모중의 tr태그를 찾아주세요.
+		const $tr = $(e.target).parents("tr");
+		const communityNo = $tr.data("no");
+		location.href = `${pageContext.request.contextPath}/community/communityFreeboardDetail.do?communityNo=\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
+	});
+});
+
 </script>
-
-
 
 
 <!-- 본문 시작 -->

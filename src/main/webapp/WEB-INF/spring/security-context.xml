@@ -29,6 +29,7 @@
 		<intercept-url pattern="/admin/**" access="hasRole('AM')"/>
 		<intercept-url pattern="/shop/**" access="permitAll"/>
 		<intercept-url pattern="/customerCenter/**" access="permitAll"/>
+		<intercept-url pattern="/community/**" access="permitAll"/>
 		
 		<!-- 접근권한 없을시 이동할 커스텀 페이지 -->
 		<access-denied-handler error-page="/error/accessDenied.do"/>

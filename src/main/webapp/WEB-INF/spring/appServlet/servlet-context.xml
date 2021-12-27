@@ -31,7 +31,11 @@
 			<mapping path="/**"/>
 			<beans:bean class=""/>
 		</interceptor>
+		<interceptor>
+			<mapping path="community/communityFreeboardForm.do"/>
+		</interceptor>			
 	</interceptors> -->
+	
 	
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- multipart 요청당 최대 파일 크기 : 50MB(50*1024*1024)-->
