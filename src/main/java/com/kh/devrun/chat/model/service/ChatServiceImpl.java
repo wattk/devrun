@@ -42,4 +42,19 @@ public class ChatServiceImpl implements ChatService {
 	public int insertChatLog(ChatLog chatLog) {
 		return chatDao.insertChatLog(chatLog);
 	}
+
+	@Override
+	public List<ChatLog> findChatLogByChatId(String chatId) {
+		return chatDao.findChatLogByChatId(chatId);
+	}
+
+	@Override
+	public List<ChatLog> findChatLog(int memberNo) {
+		return chatDao.findChatLog(memberNo);
+	}
+
+	@Override
+	public Member selectOneReceiver(Map<String, Object> param) {
+		return chatDao.selectOneReceiver(param);
+	}
 }

@@ -42,5 +42,61 @@
   		#{logTime}
   	)
   </insert>
+  
+  <select id="findChatLogByChatId" resultMap="chatLogAssociation">
+  	select
+	    cl.*,
+	    m.member_no member_no1,
+	    m.id,
+	    m.nickname,
+	    m.pro_photo
+	from
+	    chat_log cl left join member m
+	        on cl.member_no = m.member_no
+	where
+	    chat_id = #{chatId}
+	order by
+	    log_time asc
+  </select>
+  <resultMap type="chatLog" id="chatLogAssociation">
+  	<!-- 지금 상황에서 이부분은 생략할 수 없음. 뻔한 내용도 여기서는 다 써줘야 한다.-->
+	<id column="no" property="no"/>
+	<result column="chat_id" property="chatId"/>
+	<result column="member_no" property="memberNo"/>
+	<result column="msg" property="msg"/>
+	<result column="log_time" property="logTime"/>
+	<association property="member" javaType="member">
+		<id column="member_no1" property="memberNo"/>
+		<result column="id" property="id"/>
+		<result column="nickname" property="nickname"/>
+		<result column="pro_photo" property="proPhoto"/>
+	</association>
+  </resultMap>
+  
+  <select id="findChatLog" resultType="chatLog">
+  	select
+	    *
+	from (
+	    select
+	        CL.*,
+	        row_number() over(partition by chat_id order by no desc) rnum
+	    from
+	        chat_log CL) CL
+	where
+	    rnum = 1 and
+	    chat_id in (select chat_id from chat_member where member_no = #{memberNo})
+	order by
+	    log_time desc
+  </select>
+  
+  <select id="selectOneReceiver" resultType="member">
+  	select
+	    m.*
+	from
+	    member m left join chat_member cm
+	        on m.member_no = cm.member_no
+	where
+	    cm.member_no2 = #{memberNo} and cm.chat_id = #{chatId}
+  </select>
 
 </mapper>
