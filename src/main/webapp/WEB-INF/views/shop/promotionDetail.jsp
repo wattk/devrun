@@ -40,6 +40,8 @@
 }
 .shop-sort:not(:last-of-type) {
 	border-right : 1px solid rgba(0,0,0,.125);
+}
+.shop-sort{
 	cursor : pointer;
 }
 </style>
@@ -75,7 +77,6 @@
 			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="sell">판매량순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="promotion">혜택순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="row">낮은 가격순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="high">높은 가격순</span>
 		</div>
@@ -194,11 +195,5 @@ $(".category-badge, .shop-sort").click((e)=>{
 	
 });
 
-//정렬 클릭 시 해당 기준에 따른 정렬
-/* $(".shop-sort").click((e)=>{
-	const target = $(e.target).data("target");
-	
-	location.href=`${pageContext.request.contextPath}/shop/sortSearch.do?promotionCode=${promotion.promotionCode}&keyword=\${target}`;
-}); */
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

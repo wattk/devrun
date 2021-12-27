@@ -143,18 +143,15 @@
 		</where>
 	    <if test="keyword != null">
 	    	<choose>
-	    		<!-- <when test="keyword eq recommend">
-	    			order by 
-	    		</when> -->
+	    		<when test="keyword eq recommend">
+	    			order by view_count desc
+	    		</when>
 	    		<when test="keyword eq 'new'">
 	    			order by reg_date desc
 	    		</when>
-<!-- 	    		<when test="keyword eq sell">
-	    			order by 
+ 	    		<when test="keyword eq sell">
+	    			order by order_count desc
 	    		</when>
-	    		<when test="keyword eq promotion">
-	    			order by 
-	    		</when> -->
 	    		<when test="keyword eq 'row'">
 	    			order by p.price
 	    		</when>
