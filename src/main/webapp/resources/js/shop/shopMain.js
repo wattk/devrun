@@ -60,7 +60,6 @@
    
    /*실시간 순위 시작*/
    $(function() {
-	console.log("js작동하나요?")
        var count = $('#rank-list li').length;
        var height = $('#rank-list li').height();
    
