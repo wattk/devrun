@@ -12,11 +12,11 @@
 <!-- 오늘 본 상품 -->
 <!-- shopHeader 관련 임포트 -->
 <jsp:include page="/WEB-INF/views/shop/shopHeader.jsp"/>
-<link href="${pageContext.request.contextPath}/resources/css/shop/shopMain.css" rel="stylesheet">
+
 
 <!-- shopSideBox 관련 임포트 -->
 <jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
+
 <style>
 .promotion-container{
 	padding-top: 200px;
@@ -37,6 +37,10 @@
 .category-badge:hover{
 	color: #fff;
     background-color: #007bff;
+}
+.shop-sort:not(:last-of-type) {
+	border-right : 1px solid rgba(0,0,0,.125);
+	cursor : pointer;
 }
 </style>
 
@@ -68,12 +72,12 @@
 	<div class="item-sort-container d-flex 	justify-content-between">
 		<div class="p-4">총 <span id="productSize">${promotion.productList.size()}</span>개</div>
 		<div class="p-4" id="">
-			<span class="pr-2 pl-2 shop-sort">추천순</span>
-			<span class="pr-2 pl-2 shop-sort">신상품순</span>
-			<span class="pr-2 pl-2 shop-sort">판매량순</span>
-			<span class="pr-2 pl-2 shop-sort">혜택순</span>
-			<span class="pr-2 pl-2 shop-sort">낮은 가격순</span>
-			<span class="pr-2 pl-2 shop-sort">높은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="sell">판매량순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="promotion">혜택순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="row">낮은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="high">높은 가격순</span>
 		</div>
 	</div>
 	<div id="productPromotionContainer" class="row">
@@ -118,7 +122,8 @@
 	</nav>
 </div>
 <script>
-$(".category-badge").click((e)=>{
+//이벤트 상품 소분류 코드별 정렬
+$(".category-badge, .shop-sort").click((e)=>{
 	//클릭한 배지가 선택되어 있던 배지인지 아닌지 체크
 	if($(e.target).is(".badge-secondary")){
 		$(e.target)
@@ -132,20 +137,29 @@ $(".category-badge").click((e)=>{
 		
 	}
 	
+	console.log($(e.target));
+	let sort;
+	if($(e.target).is(".shop-sort")){
+		sort = $(e.target).data("target");
+	};
+	
+	console.log(sort);
+	
 	//primary클래스를 가진 소분류 카테고리를 모아 카테고리 코드를 모은 배열 생성
-	const $sort = $(".badge-primary");
+	const $badges = $(".badge-primary");
 	const data = [];
 	
-	$sort.each((i, item)=>{
+	$badges.each((i, item)=>{
 		data.push($(item).data("target"));
 	});
 	
 	console.log(data);
 	
 	$.ajax({
-		url : "${pageContext.request.contextPath}/shop/sortSearch.do",
+		url : "${pageContext.request.contextPath}/shop/childCategorySearch.do",
 		data : {childCategoryCode : data,
-				promotionCode : "${promotion.promotionCode}"},
+				promotionCode : "${promotion.promotionCode}",
+				keyword : sort},
 		method : "GET",
 		success(data){
 			//상품 초기화
@@ -179,5 +193,12 @@ $(".category-badge").click((e)=>{
 	});
 	
 });
+
+//정렬 클릭 시 해당 기준에 따른 정렬
+/* $(".shop-sort").click((e)=>{
+	const target = $(e.target).data("target");
+	
+	location.href=`${pageContext.request.contextPath}/shop/sortSearch.do?promotionCode=${promotion.promotionCode}&keyword=\${target}`;
+}); */
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

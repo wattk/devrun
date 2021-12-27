@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<!-- js 임포트 -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script>
+
+<!-- css 임포트 -->
+<link href="${pageContext.request.contextPath}/resources/css/shop/shopMain.css" rel="stylesheet">
+
                <!--쇼핑몰 헤더부분-->
            <div class = "row col-12 space-evenly" id="shopHeaderBarDiv" style="background-color: #f8f9fa">
                <div class = "col-md-1" id="sideMenuBtnDiv">           
