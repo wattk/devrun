@@ -90,10 +90,12 @@
   
   <!-- 자유게시판 상세보기 -->
   <select id="selectOneFreeBoard" resultType="communityEntity">
-  	select
-  		*
-  	from
-  		community
+	select
+	    c.*,
+	    (select nickname from member where member_no = c.member_no) nickname,
+	    (select authority from authorities where member_no = c.member_no) authority
+	from
+	    community c
   	where
   		community_no = #{community_no}
   </select>
