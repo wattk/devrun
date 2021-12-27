@@ -66,7 +66,7 @@
 		</div>
 	</div>
 	<div class="item-sort-container d-flex 	justify-content-between">
-		<div class="p-4">총 ${promotion.productList.size()}개</div>
+		<div class="p-4">총 <span id="productSize">${promotion.productList.size()}</span>개</div>
 		<div class="p-4" id="">
 			<span class="pr-2 pl-2 shop-sort">추천순</span>
 			<span class="pr-2 pl-2 shop-sort">신상품순</span>
@@ -148,10 +148,18 @@ $(".category-badge").click((e)=>{
 				promotionCode : "${promotion.promotionCode}"},
 		method : "GET",
 		success(data){
-			console.log(data);
-			let str;
+			//상품 초기화
+			$("#productPromotionContainer").html('');
+			
+			const productSize = data.length;
+			$("#productSize").text(productSize);
+			
 			$(data).each((i, item)=>{
-				str += `<a href="${pageContext.request.contextPath}/shop/itemDetail.do?productCode=\${item.productCode}" class="col-md-3 p-5">
+				//가격에 원화 표기 및 콤마 추가하기
+				const itemPrice = item.price;
+				const price = itemPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+				
+				let str = `<a href="${pageContext.request.contextPath}/shop/itemDetail.do?productCode=\${item.productCode}" class="col-md-3 p-5">
 			        <div class="card-box-d">
 			          <div class="card-img-d shop-item-img position-relative">
 			            <img src="${pageContext.request.contextPath}/resources/upload/product/\${item.thumbnail}" alt="" class="img-d img-fluid">
@@ -160,12 +168,12 @@ $(".category-badge").click((e)=>{
 			          </div>
 			          <div>
 			          	<p class="m-0">\${item.name}</p>
-			          	<strong>\${item.price}</strong>
+			          	<strong>&#8361;\${price}</strong>
 			          </div>
 			        </div>
 			      </a>`;
+				$("#productPromotionContainer").append(str);
 			});
-			$("#productPromotionContainer").html(str);
 		},
 		error : console.log
 	});

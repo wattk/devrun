@@ -2,6 +2,7 @@ package com.kh.devrun.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,14 +142,24 @@ public class ShopController {
 	
 	@GetMapping("/sortSearch.do")
 	@ResponseBody
-	public List<Product> sortSearch(@RequestParam(value="childCategoryCode[]") List<String> childCategoryCode, @RequestParam(value = "promotionCode") String promotionCode) {
+	public List<Product> sortSearch(
+				@RequestParam(value="childCategoryCode[]", required = false) List<String> childCategoryCode, 
+				@RequestParam(value = "promotionCode") String promotionCode) 
+	{
 		log.debug("{}",promotionCode);
 		Map<String, Object> param = new HashMap<>();
 		param.put("childCategoryCode", childCategoryCode);
 		param.put("promotionCode", promotionCode);
 		log.debug("{}",param);
 		
-		List<Product> productList = promotionService.selectProductPromotionListByChildCategoryCode(param);
+		List<Product> productList = new ArrayList<>();
+		
+		if(childCategoryCode == null) {
+			productList = promotionService.selectProductListByPromotionCode(promotionCode);
+		}
+		else {
+			productList = promotionService.selectProductPromotionListByChildCategoryCode(param);
+		}
 		log.debug("list = {}", productList);
 		
 		return productList;
