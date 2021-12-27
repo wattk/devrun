@@ -144,48 +144,45 @@ public class ShopController {
 	
 	@GetMapping("/promotionDetail/{promotionCode}")
 	public String promotionDetail(
+				@RequestParam(defaultValue = "1") int cPage,
 				@PathVariable String promotionCode, 
 				HttpServletRequest request,
 				HttpServletResponse response,
 				Model model) 
 	{
-		log.debug("promotionCode = {}", promotionCode);
+		int limit = 12;
+		int offset = (cPage - 1)*limit;
 		
 		try {
-			Cookie[] cookies = request.getCookies();
-			boolean hasRead = false;
-			String boardValue = "";
-			
-			if(cookies != null) {
-				for(Cookie c : cookies) {
-					String name = c.getName();
-					String value = c.getValue();
-					
-					if("promotion".equals(name)) {
-						boardValue = value;
-						
-						if(value.contains("|"+promotionCode+"|")) {
-							hasRead = true;
-						}
-						break;
-					}
-				}
-			}
+			boolean hasRead = DevrunUtils.hasRead(request, response, promotionCode, "promotion");
 			
 			if(!hasRead) {
-				Cookie cookie = new Cookie("promotion", boardValue + "|" + promotionCode + "|");
-				cookie.setMaxAge(365 * 24 * 60 * 60);
-				cookie.setPath(request.getContextPath()+"/shop/promotionDetail");//해당 경로 요청 시에만 쿠키 전송
-				response.addCookie(cookie);
 				int result = promotionService.updateViewCount(promotionCode);
 			}
 			
 			
 			Promotion promotion = promotionService.selectPromotionByPromotionCode(promotionCode);
 			List<Map<String, String>> productCategory = promotionService.selectProductPromotionByPromotionCode(promotionCode);
+			
+			Map<String, Object> param = new HashMap<>();
+			param.put("promotionCode", promotionCode);
+			
+			//1. 전체 상품 목록
+			List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
 			model.addAttribute("promotion", promotion);
 			model.addAttribute("productCategory", productCategory);
+			model.addAttribute("productList", productList);
 			log.debug("promotion = {}, productCategory = {}", promotion, productCategory);
+			
+			//2. 전체 게시물 수 totalContent
+			int totalContent = promotionService.selectProductTotalCount(param);
+			model.addAttribute("totalContent", totalContent);
+			
+			//3. pagebar
+			String url = request.getRequestURI(); // /spring/board/boardList.do
+			String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+			log.debug("pagebar = {}", pagebar);
+			model.addAttribute("pagebar", pagebar);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -193,13 +190,47 @@ public class ShopController {
 		return "/shop/promotionDetail";
 	}
 	
+//	@GetMapping("/childCategorySearch.do")
+//	@ResponseBody
+//	public List<Product> childCategorySearch(
+//				@RequestParam(value="childCategoryCode[]", required = false) List<String> childCategoryCode, 
+//				@RequestParam(value="keyword", required = false) String keyword, 
+//				@RequestParam(value = "promotionCode") String promotionCode) 
+//	{
+//		log.debug("{}",keyword);
+//		Map<String, Object> param = new HashMap<>();
+//		param.put("promotionCode", promotionCode);
+//		param.put("childCategoryCode", childCategoryCode);
+//		param.put("keyword", keyword);
+//		log.debug("{}",param);
+//		
+//		List<Product> productList = new ArrayList<>();
+//		
+//		productList = promotionService.selectProductListByPromotionCode(param);
+//		log.debug("list = {}", productList);
+//		
+//		return productList;
+//	}
 	@GetMapping("/childCategorySearch.do")
 	@ResponseBody
-	public List<Product> childCategorySearch(
-				@RequestParam(value="childCategoryCode[]", required = false) List<String> childCategoryCode, 
-				@RequestParam(value="keyword", required = false) String keyword, 
-				@RequestParam(value = "promotionCode") String promotionCode) 
+	public Map<String, Object> childCategorySearch(
+			@RequestParam(defaultValue = "1") int cPage,
+			@RequestParam(value="childCategoryCode[]", required = false) List<String> childCategoryCode, 
+			@RequestParam(value="keyword", required = false) String keyword, 
+			@RequestParam(value = "promotionCode") String promotionCode,
+			HttpServletRequest request,
+			HttpServletResponse response)
 	{
+		Map<String, Object> resultMap = new HashMap<>();
+
+		int limit = 12;
+		int offset = (cPage - 1)*limit;
+		
+		boolean hasRead = DevrunUtils.hasRead(request, response, promotionCode, "promotion");
+		
+		if(!hasRead) {
+			int result = promotionService.updateViewCount(promotionCode);
+		}
 		log.debug("{}",keyword);
 		Map<String, Object> param = new HashMap<>();
 		param.put("promotionCode", promotionCode);
@@ -207,12 +238,25 @@ public class ShopController {
 		param.put("keyword", keyword);
 		log.debug("{}",param);
 		
-		List<Product> productList = new ArrayList<>();
+		//1. 전체 상품 목록
+		String url = request.getContextPath(); 
 		
-		productList = promotionService.selectProductListByPromotionCode(param);
-		log.debug("list = {}", productList);
+		List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
+		String productStr = DevrunUtils.getProductList(productList, url);
 		
-		return productList;
+		//2. 전체 게시물 수 totalContent
+		url = request.getRequestURI(); 
+		int totalContent = promotionService.selectProductTotalCount(param);
+		
+		//3. pagebar
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		
+		resultMap.put("productStr", productStr);
+		resultMap.put("totalContent", totalContent);
+		resultMap.put("pagebar", pagebar);
+		
+		return resultMap;
 	}
 	
 	/**
