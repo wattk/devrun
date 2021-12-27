@@ -310,7 +310,7 @@
 											<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->
 											<!-- 삭제버튼 시작 -->
 											<c:if test="${l.id eq member.id}">
-												<button type="button" class="btn btn-danger reviewDelBtn">삭제</button>
+												<button type="button" class="btn btn-danger reviewDelBtn" value="${l.reviewNo}">삭제</button>
 											</c:if>
 										  </div>
 										</div>
@@ -479,6 +479,16 @@
 				<!-- 탭 끝  -->
 			</div>
 		</div>
+		
+<script>
+/*리뷰삭제 */
+$('.reviewDelBtn').click((e) => {
+	var reviewNo =e.target.value;	
+	console.log(`삭제할 리뷰 아이디 : \${reviewNo}`);
+	location.href=`${pageContext.request.contextPath}/shop/reviewDelete.do?reviewNo=\${reviewNo}`;
+	
+});
+</script>		
 	<!-- body 영역 끝 -->	
 			
 
