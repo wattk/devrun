@@ -37,7 +37,7 @@ public class ChatMessageController {
 		log.debug("chatLog = {}", chatLog);
 		
 		int result = chatService.insertChatLog(chatLog);
-
+		
 		return chatLog;
 	}
 	

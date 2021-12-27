@@ -17,4 +17,10 @@ public interface ChatDao {
 
 	int insertChatLog(ChatLog chatLog);
 
+	List<ChatLog> findChatLogByChatId(String chatId);
+
+	List<ChatLog> findChatLog(int memberNo);
+
+	Member selectOneReceiver(Map<String, Object> param);
+
 }
