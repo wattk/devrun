@@ -58,8 +58,8 @@ public class PromotionServiceImpl implements PromotionService {
 	}
 
 	@Override
-	public Promotion selectPromotionByPromotionCode(String promotionCode) {
-		return promotionDao.selectPromotionByPromotionCode(promotionCode);
+	public Promotion selectPromotionWithProductByPromotionCode(String promotionCode) {
+		return promotionDao.selectPromotionWithProductByPromotionCode(promotionCode);
 	}
 
 
@@ -128,6 +128,21 @@ public class PromotionServiceImpl implements PromotionService {
 	@Override
 	public int updateViewCount(String promotionCode) {
 		return promotionDao.updateViewCount(promotionCode);
+	}
+
+	@Override
+	public Promotion selectPromotionByPromotionCode(String promotionCode) {
+		return promotionDao.selectPromotionByPromotionCode(promotionCode);
+	}
+
+	@Override
+	public List<Product> selectProductListByPromotionCode(Map<String, Object> param, int offset, int limit) {
+		return promotionDao.selectProductListByPromotionCode(param, offset, limit);
+	}
+
+	@Override
+	public int selectProductTotalCount(Map<String, Object> param) {
+		return promotionDao.selectProductTotalCount(param);
 	}
 
 	
