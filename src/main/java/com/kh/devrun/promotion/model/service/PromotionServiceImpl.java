@@ -125,6 +125,11 @@ public class PromotionServiceImpl implements PromotionService {
 		return promotionDao.selectProductNameAndCodeByPromotionCode(promotionCode);
 	}
 
+	@Override
+	public int updateViewCount(String promotionCode) {
+		return promotionDao.updateViewCount(promotionCode);
+	}
+
 	
 	
 }

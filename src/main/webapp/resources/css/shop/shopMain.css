@@ -340,11 +340,6 @@
    /*혜진상품시작*/
    .shop-like-icon{
        bottom : 3%;
-       left : 5%;
-       font-size : 30px;
-   }
-   .shop-cart-icon{
-       bottom : 3%;
        right : 5%;
        font-size : 30px;
    }

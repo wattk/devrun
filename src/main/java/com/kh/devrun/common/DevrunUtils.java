@@ -5,6 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class DevrunUtils {
 
 	/**
@@ -44,38 +48,6 @@ public class DevrunUtils {
 		
 		int pageNo = pageStart;
 		
-		/*
-		<nav aria-label="Page navigation example">
-		  <ul class="pagination justify-content-center">
-			
-			<li class="page-item disabled">
-		      <a class="page-link" href="#" aria-label="Previous" tabindex="-1">
-		        <span aria-hidden="true">&laquo;</span>
-		        <span class="sr-only">Previous</span>
-		      </a>
-		    </li>
-		    
-			<li class="page-item active"><a class="page-link" href="#">1<span class="sr-only">(current)</span></a></li>
-			<li class="page-item"><a class="page-link" href="javascript:paging(2)">2</a></li>
-			<li class="page-item"><a class="page-link" href="javascript:paging(3)">3</a></li>
-			<li class="page-item"><a class="page-link" href="javascript:paging(4)">4</a></li>
-			<li class="page-item"><a class="page-link" href="javascript:paging(5)">5</a></li>
-			
-			<li class="page-item">
-		      <a class="page-link" href="javascript:paging(6)" aria-label="Next">
-		        <span aria-hidden="true">&raquo;</span>
-		        <span class="sr-only">Next</span>
-		      </a>
-		    </li>
-		  </ul>
-		</nav>
-		<script>
-		const paging = (cPage) => {
-			location.href = '/spring/board/boardList.do?cPage=' + cPage;
-		}
-		</script>
-		
-		 */
 		
 		pagebar.append("<nav aria-label=\"Page navigation example\">\n"
 				+ "		  <ul class=\"pagination justify-content-center\">\n");
@@ -204,5 +176,42 @@ public class DevrunUtils {
 		
 		return sb.toString();
 	}
+	
+	/**
+	 * 게시글 읽음 여부 확인
+	 */
+	public static boolean hasRead(HttpServletRequest request, HttpServletResponse response, String code, String param) {
+		
+		Cookie[] cookies = request.getCookies();
+		boolean hasRead = false;
+		String boardValue = "";
+		
+		if(cookies != null) {
+			for(Cookie c : cookies) {
+				String name = c.getName();
+				String value = c.getValue();
+				
+				if(param.equals(name)) {
+					boardValue = value;
+					
+					if(value.contains("|"+code+"|")) {
+						hasRead = true;
+					}
+					break;
+				}
+			}
+		}
+		
+		if(!hasRead) {
+			Cookie cookie = new Cookie(param, boardValue + "|" + code + "|");//그냥 숫자만 쓰면 혼동이 올 수 있으므로 no에 대한 padding문자 추가
+			cookie.setMaxAge(365 * 24 * 60 * 60);
+			if("promotion".equals(param))
+				cookie.setPath(request.getContextPath()+"/shop/promotionDetail.do");//해당 경로 요청 시에만 쿠키 전송
+			response.addCookie(cookie);
+		}
+		
+		return hasRead;
+	}
+	
 
 }

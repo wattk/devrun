@@ -182,4 +182,13 @@
 		    product_code in (select product_code from product_promotion where promotion_code = #{promotionCode})
 			
 	</select>
+	
+	<update id="updateViewCount">
+		update
+			promotion
+		set
+			view_count = view_count + 1
+		where
+			promotion_code = #{promotionCode}
+	</update>
 </mapper>
