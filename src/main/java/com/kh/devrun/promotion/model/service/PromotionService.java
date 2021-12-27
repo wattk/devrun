@@ -23,7 +23,8 @@ public interface PromotionService {
 
 	int deletePromotion(String[] promotionCode);
 
-	List<Product> selectProductListByPromotionCode(String promotionCode);
+	List<Product> selectProductListByPromotionCode(Map<String, Object> param);
+	
 
 	Map<String, List<Promotion>> selectDevidedPromotionList();
 
@@ -32,5 +33,8 @@ public interface PromotionService {
 
 
 	List<Product> selectProductPromotionListByChildCategoryCode(Map<String, Object> param);
+
+
+	List<Map<String, Object>> selectProductNameAndCodeByPromotionCode(String promotionCode);
 
 }

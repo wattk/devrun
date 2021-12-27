@@ -140,29 +140,48 @@ public class ShopController {
 		}
 	}
 	
-	@GetMapping("/sortSearch.do")
+	@GetMapping("/childCategorySearch.do")
 	@ResponseBody
-	public List<Product> sortSearch(
+	public List<Product> childCategorySearch(
 				@RequestParam(value="childCategoryCode[]", required = false) List<String> childCategoryCode, 
+				@RequestParam(value="keyword", required = false) String keyword, 
 				@RequestParam(value = "promotionCode") String promotionCode) 
 	{
-		log.debug("{}",promotionCode);
+		log.debug("{}",keyword);
 		Map<String, Object> param = new HashMap<>();
-		param.put("childCategoryCode", childCategoryCode);
 		param.put("promotionCode", promotionCode);
+		param.put("childCategoryCode", childCategoryCode);
+		param.put("keyword", keyword);
 		log.debug("{}",param);
 		
 		List<Product> productList = new ArrayList<>();
 		
-		if(childCategoryCode == null) {
-			productList = promotionService.selectProductListByPromotionCode(promotionCode);
-		}
-		else {
-			productList = promotionService.selectProductPromotionListByChildCategoryCode(param);
-		}
+		productList = promotionService.selectProductListByPromotionCode(param);
 		log.debug("list = {}", productList);
 		
 		return productList;
+	}
+	
+	@GetMapping("/sortSearch.do")
+	public String sortSearch(@RequestParam String promotionCode, @RequestParam String keyword) {
+		log.debug("promotionCode = {}, keyword = {}", promotionCode, keyword);
+		
+		switch(keyword) {
+		case "recommend" : 
+			break;
+		case "new" : 
+			break;
+		case "sell" : 
+			break;
+		case "promotion" : 
+			break;
+		case "row" : 
+			break;
+		case "high" : 
+			break;
+		}
+		
+		return "";
 	}
 	/**
 	 * 혜진 작업 끝

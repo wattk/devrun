@@ -25,7 +25,7 @@ public interface PromotionDao {
 	
 	int deletePromotion(String[] promotionCode);
 	
-	List<Product> selectProductListByPromotionCode(String promotionCode);
+	List<Product> selectProductListByPromotionCode(Map<String, Object> param);
 
 	List<Promotion> selectCurrentPromotionList();
 
@@ -34,4 +34,6 @@ public interface PromotionDao {
 	List<Map<String, String>> selectProductPromotionByPromotionCode(String promotionCode);
 
 	List<Product> selectProductPromotionListByChildCategoryCode(Map<String, Object> param);
+
+	List<Map<String, Object>> selectProductNameAndCodeByPromotionCode(String promotionCode);
 }

@@ -93,8 +93,8 @@ public class PromotionServiceImpl implements PromotionService {
 	}
 
 	@Override
-	public List<Product> selectProductListByPromotionCode(String promotionCode) {
-		return promotionDao.selectProductListByPromotionCode(promotionCode);
+	public List<Product> selectProductListByPromotionCode(Map<String, Object> param) {
+		return promotionDao.selectProductListByPromotionCode(param);
 	}
 
 	@Override
@@ -118,6 +118,11 @@ public class PromotionServiceImpl implements PromotionService {
 	@Override
 	public List<Product> selectProductPromotionListByChildCategoryCode(Map<String, Object> param) {
 		return promotionDao.selectProductPromotionListByChildCategoryCode(param);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectProductNameAndCodeByPromotionCode(String promotionCode) {
+		return promotionDao.selectProductNameAndCodeByPromotionCode(promotionCode);
 	}
 
 	

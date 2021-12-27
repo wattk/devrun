@@ -132,8 +132,34 @@
 		from
 		    product p left join product_category pc
 		        on p.product_code = pc.product_code
-		where
+		<where>
 		    p.product_code  in (select product_code from product_promotion where promotion_code = #{promotionCode})
+		    <if test="childCategoryCode != null">
+		     and pc.child_category_code in
+				<foreach collection="childCategoryCode" open="(" item="code" separator="," close=")">
+					#{code}
+				</foreach>
+		    </if>
+		</where>
+	    <if test="keyword != null">
+	    	<choose>
+	    		<when test="keyword eq recommend">
+	    			order by view_count desc
+	    		</when>
+	    		<when test="keyword eq 'new'">
+	    			order by reg_date desc
+	    		</when>
+ 	    		<when test="keyword eq sell">
+	    			order by order_count desc
+	    		</when>
+	    		<when test="keyword eq 'row'">
+	    			order by p.price
+	    		</when>
+	    		<when test="keyword eq 'high'">
+	    			order by p.price desc
+	    		</when>
+	    	</choose>
+	    </if>
 	</select>
 	
 	<select id="selectProductPromotionByPromotionCode" resultType="map">
@@ -145,24 +171,15 @@
 		where
 		    pc.product_code in (select product_code from product_promotion where promotion_code = #{promotionCode})
 	</select>
-	<select id="selectProductPromotionListByChildCategoryCode" resultType="product">
+	
+	<select id="selectProductNameAndCodeByPromotionCode" resultType="map">
 		select
-		    p.product_code,
-		    p.thumbnail,
-		    p.name,
-		    p.status,
-		    p.reg_date,
-		    p.view_count,
-		    p.price
+		    product_code,
+		    name
 		from
-		    product p left join product_category pc
-		        on p.product_code = pc.product_code
+		    product
 		where
-		    p.product_code  in (select product_code from product_promotion where promotion_code = #{promotionCode})
-		    and
-		    pc.child_category_code in
-		<foreach collection="childCategoryCode" open="(" item="code" separator="," close=")">
-			#{code}
-		</foreach>
+		    product_code in (select product_code from product_promotion where promotion_code = #{promotionCode})
+			
 	</select>
 </mapper>

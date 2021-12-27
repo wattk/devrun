@@ -59,8 +59,8 @@ public class PromotionDaoImpl implements PromotionDao {
 	}
 
 	@Override
-	public List<Product> selectProductListByPromotionCode(String promotionCode) {
-		return session.selectList("promotion.selectProductListByPromotionCode", promotionCode);
+	public List<Product> selectProductListByPromotionCode(Map<String, Object> param) {
+		return session.selectList("promotion.selectProductListByPromotionCode", param);
 	}
 
 	@Override
@@ -81,6 +81,11 @@ public class PromotionDaoImpl implements PromotionDao {
 	@Override
 	public List<Product> selectProductPromotionListByChildCategoryCode(Map<String, Object> param) {
 		return session.selectList("promotion.selectProductPromotionListByChildCategoryCode", param);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectProductNameAndCodeByPromotionCode(String promotionCode) {
+		return session.selectList("promotion.selectProductNameAndCodeByPromotionCode", promotionCode);
 	}
 	
 	

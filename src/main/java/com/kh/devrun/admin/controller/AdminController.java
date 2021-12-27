@@ -588,8 +588,8 @@ public class AdminController {
 	
 	@GetMapping("/findProductList")
 	@ResponseBody
-	public List<Product> findProductList(@RequestParam String promotionCode){
-		List<Product> list = promotionService.selectProductListByPromotionCode(promotionCode);
+	public List<Map<String, Object>> findProductList(@RequestParam String promotionCode){
+		List<Map<String, Object>> list = promotionService.selectProductNameAndCodeByPromotionCode(promotionCode);
 		return list;
 	}
 	
