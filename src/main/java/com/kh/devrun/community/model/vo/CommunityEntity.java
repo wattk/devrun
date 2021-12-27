@@ -27,12 +27,14 @@ public class CommunityEntity extends Community {
 	 */
 	private static final long serialVersionUID = 1L;
 		private String nickname;
+		private String authority;
 		public CommunityEntity(int communityNo, int memberNo, int pageCode, String title, String content,
 				Date enrollDate, int viewCount, int likeCount, String thumbnail, String answerYn, String hashtag,
-				String nickname) {
+				String nickname, String authority) {
 			super(communityNo, memberNo, pageCode, title, content, enrollDate, viewCount, likeCount, thumbnail,
 					answerYn, hashtag);
 			this.nickname = nickname;
+			this.authority = authority;
 		}
 		
 	
