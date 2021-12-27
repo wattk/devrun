@@ -17,7 +17,7 @@ public interface PromotionService {
 
 	List<Promotion> selectAllPromotionList();
 
-	Promotion selectPromotionByPromotionCode(String promotionCode);
+	Promotion selectPromotionWithProductByPromotionCode(String promotionCode);
 
 	int updatePromotion(Map<String, Object> param);
 
@@ -39,5 +39,14 @@ public interface PromotionService {
 
 
 	int updateViewCount(String promotionCode);
+
+
+	Promotion selectPromotionByPromotionCode(String promotionCode);
+
+
+	List<Product> selectProductListByPromotionCode(Map<String, Object> param, int offset, int limit);
+
+
+	int selectProductTotalCount(Map<String, Object> param);
 
 }

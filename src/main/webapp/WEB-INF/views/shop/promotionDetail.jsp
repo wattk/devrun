@@ -46,7 +46,7 @@
 		</div>
 	</div>
 	<div class="item-sort-container d-flex 	justify-content-between">
-		<div class="p-4">총 <span id="productSize">${promotion.productList.size()}</span>개</div>
+		<div class="p-4">총 <span id="productSize">${totalContent}</span>개</div>
 		<div class="p-4" id="">
 			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
@@ -56,7 +56,7 @@
 		</div>
 	</div>
 	<div id="productPromotionContainer" class="row">
-		<c:forEach items="${promotion.productList}" var="product" varStatus="vs">
+		<c:forEach items="${productList}" var="product" varStatus="vs">
 	        <div class="card-box-d col-md-3 p-5">
 	          <div class="card-img-d shop-item-img position-relative">
 	            <img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="img-d img-fluid">
@@ -71,27 +71,7 @@
 	        </div>
 	    </c:forEach>
     </div>
-    <nav aria-label="..." class="mx-auto text-center">
-	  <ul class="pagination justify-content-center">
-	    <li class="page-item">
-	      <a class="page-link" href="#" aria-label="Previous">
-	        <span aria-hidden="true">&laquo;</span>
-	        <span class="sr-only">Previous</span>
-	      </a>
-	    </li>
-	    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-	    <li class="page-item ">
-	      <a class="page-link" href="#">2</a>
-	    </li>
-	    <li class="page-item"><a class="page-link" href="#">3</a></li>
-		<li class="page-item">
-	      <a class="page-link" href="#" aria-label="Next">
-	        <span aria-hidden="true">&raquo;</span>
-	        <span class="sr-only">Next</span>
-	      </a>
-	    </li>
-	  </ul>
-	</nav>
+    ${pagebar}
 </div>
 <script>
 //이벤트 상품 소분류 코드별 정렬
@@ -130,7 +110,13 @@ $(".category-badge, .shop-sort").click((e)=>{
 				keyword : sort},
 		method : "GET",
 		success(data){
-			//상품 초기화
+			console.log(data);
+			$("#productPromotionContainer").html(data["productStr"]);
+			$("#productSize").text(data["totalContent"]);
+			$(".pagebar").detach();
+			$("#productPromotionContainer").after(data["pagebar"]);
+			
+			/* //상품 초기화
 			$("#productPromotionContainer").html('');
 			
 			const productSize = data.length;
@@ -154,7 +140,7 @@ $(".category-badge, .shop-sort").click((e)=>{
 			          </a>
 			        </div>`;
 				$("#productPromotionContainer").append(str);
-			});
+			}); */
 		},
 		error : console.log
 	});

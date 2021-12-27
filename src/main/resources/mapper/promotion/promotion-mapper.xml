@@ -61,7 +61,7 @@
 			enroll_date desc
 	</select>
 	
-	<select id="selectPromotionByPromotionCode" resultMap="promotionCollection">
+	<select id="selectPromotionWithProductByPromotionCode" resultMap="promotionCollection">
 		select
 		    *
 		from
@@ -89,6 +89,15 @@
 			<result column="status" property="status"/>
 		</collection>
 	</resultMap>
+	
+	<select id="selectPromotionByPromotionCode" resultType="promotion">
+		select
+			*
+		from
+			promotion
+		where
+			promotion_code = #{promotionCode}
+	</select>
 	
 	<update id="updatePromotion">
 	update promotion set
@@ -191,4 +200,21 @@
 		where
 			promotion_code = #{promotionCode}
 	</update>
+	
+	<select id="selectProductTotalCount" resultType="_int">
+		select
+		    count(*)
+		from
+		    product p left join product_category pc
+		        on p.product_code = pc.product_code
+		<where>
+		    p.product_code  in (select product_code from product_promotion where promotion_code = #{promotionCode})
+		    <if test="childCategoryCode != null">
+		     and pc.child_category_code in
+				<foreach collection="childCategoryCode" open="(" item="code" separator="," close=")">
+					#{code}
+				</foreach>
+		    </if>
+		</where>
+	</select>
 </mapper>

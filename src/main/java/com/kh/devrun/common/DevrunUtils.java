@@ -3,11 +3,14 @@ package com.kh.devrun.common;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.kh.devrun.product.model.vo.Product;
 
 public class DevrunUtils {
 
@@ -49,7 +52,7 @@ public class DevrunUtils {
 		int pageNo = pageStart;
 		
 		
-		pagebar.append("<nav aria-label=\"Page navigation example\">\n"
+		pagebar.append("<nav class=\"pagebar\" aria-label=\"Page navigation example\">\n"
 				+ "		  <ul class=\"pagination justify-content-center\">\n");
 		
 		// 1.이전
@@ -175,6 +178,31 @@ public class DevrunUtils {
 		}
 		
 		return sb.toString();
+	}
+	
+	public static String getProductList(List<Product> productList, String url) {
+		DecimalFormat fmt = new DecimalFormat("###,###");
+		StringBuilder sb = new StringBuilder();
+		
+		
+		for(Product product : productList) {
+			sb.append("<div class=\"card-box-d col-md-3 p-5\">\n"
+					+ "<div class=\"card-img-d shop-item-img position-relative\">\r\n"
+					+ "<img src=\""+url+"/resources/upload/product/"+product.getThumbnail()+"\" alt=\"\" class=\"img-d img-fluid\">\r\n"
+					+ "<i class=\"shop-like-icon fas fa-heart position-absolute\"></i>\r\n"
+					+ "</div>\r\n"
+					+ "<a href=\""+url+"/shop/itemDetail.do?productCode="+product.getProductCode()+"\">\r\n"
+					+ "<div>\r\n"
+					+ "<p class=\"m-0\">"+product.getName()+"</p>\r\n"
+					+ "<strong>&#8361;"+fmt.format(product.getPrice())+"</strong>\r\n"
+					+ "</div>\r\n"
+					+ "</a>"
+					+ "</div>");
+		}
+		
+		
+		return sb.toString();
+		
 	}
 	
 	/**
