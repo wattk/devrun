@@ -34,4 +34,6 @@ public interface PromotionDao {
 	List<Map<String, String>> selectProductPromotionByPromotionCode(String promotionCode);
 
 	List<Product> selectProductPromotionListByChildCategoryCode(Map<String, Object> param);
+
+	List<Map<String, Object>> selectProductNameAndCodeByPromotionCode(String promotionCode);
 }

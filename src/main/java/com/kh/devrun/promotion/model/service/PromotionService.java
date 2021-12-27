@@ -34,4 +34,7 @@ public interface PromotionService {
 
 	List<Product> selectProductPromotionListByChildCategoryCode(Map<String, Object> param);
 
+
+	List<Map<String, Object>> selectProductNameAndCodeByPromotionCode(String promotionCode);
+
 }

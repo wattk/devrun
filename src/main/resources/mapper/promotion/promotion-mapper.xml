@@ -174,4 +174,15 @@
 		where
 		    pc.product_code in (select product_code from product_promotion where promotion_code = #{promotionCode})
 	</select>
+	
+	<select id="selectProductNameAndCodeByPromotionCode" resultType="map">
+		select
+		    product_code,
+		    name
+		from
+		    product
+		where
+		    product_code in (select product_code from product_promotion where promotion_code = #{promotionCode})
+			
+	</select>
 </mapper>

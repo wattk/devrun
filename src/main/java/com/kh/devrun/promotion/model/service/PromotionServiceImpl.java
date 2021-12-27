@@ -120,6 +120,11 @@ public class PromotionServiceImpl implements PromotionService {
 		return promotionDao.selectProductPromotionListByChildCategoryCode(param);
 	}
 
+	@Override
+	public List<Map<String, Object>> selectProductNameAndCodeByPromotionCode(String promotionCode) {
+		return promotionDao.selectProductNameAndCodeByPromotionCode(promotionCode);
+	}
+
 	
 	
 }
