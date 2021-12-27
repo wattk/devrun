@@ -203,27 +203,6 @@ public class ShopController {
 		return productList;
 	}
 	
-	@GetMapping("/sortSearch.do")
-	public String sortSearch(@RequestParam String promotionCode, @RequestParam String keyword) {
-		log.debug("promotionCode = {}, keyword = {}", promotionCode, keyword);
-		
-		switch(keyword) {
-		case "recommend" : 
-			break;
-		case "new" : 
-			break;
-		case "sell" : 
-			break;
-		case "promotion" : 
-			break;
-		case "row" : 
-			break;
-		case "high" : 
-			break;
-		}
-		
-		return "";
-	}
 	/**
 	 * 혜진 작업 끝
 	 * @throws IOException 
