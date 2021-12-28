@@ -1,3 +1,4 @@
+
 -- 회원 테이블 생성
 CREATE TABLE "MEMBER" (
 	"MEMBER_NO"	NUMBER		NOT NULL,
@@ -1283,6 +1284,7 @@ update
 -- 상품- 분류
 
 
+
 -- rank() over()---
 SELECT
    A.PRODUCT_CODE
@@ -1302,7 +1304,9 @@ from
         on p.product_code = pc.product_code;
 
 select * from member;
+
 select * from authorities;
+
 
 insert into authorities
 values(
@@ -1316,12 +1320,14 @@ select
     m.id,
     m.name,
     m.enroll_date,
-        a.authority
+    a.authority
 from
     member m join authorities a on
     m.member_no = a.member_no
 where
-    m.member_no = 45;
+    authority in('ROLE_AM','ROLE_M1');
+
+
 
 
 select * from view_product_parent_category;
@@ -1358,7 +1364,7 @@ from(
 
 select * from view_product_all_info;
 
--- 김다현 상품 - 상품 관련 모든 테이블 연결  (content 있는 버전)
+-- 김다현 상품 - 상품 관련 모든 테이블 연결 (content 있는 버전)
 create view view_product_all_info
 as select
     ccc.*,

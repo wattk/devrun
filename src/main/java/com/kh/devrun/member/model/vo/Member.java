@@ -10,6 +10,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +25,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Component
+@JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd")
 public class Member implements Serializable, UserDetails {
 
 	/**
@@ -38,6 +42,7 @@ public class Member implements Serializable, UserDetails {
 	private String email;
 	private String phone;
 	private int point;
+	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern="yyyy-MM-dd")
 	private Date enrollDate;
 	private String proPhoto;
 	private String blackYn;
@@ -45,6 +50,7 @@ public class Member implements Serializable, UserDetails {
 	private int warningCount;
 	private String url;
 	private String intro;
+	private String authority;
 	
 	
 	private List<SimpleGrantedAuthority> authorities;

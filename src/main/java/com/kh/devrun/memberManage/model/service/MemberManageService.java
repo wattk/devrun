@@ -9,4 +9,6 @@ public interface MemberManageService {
 
 	List<Member> searchMemberList(Map<String, Object> param);
 
+	List<Member> selectAllMember();
+
 }

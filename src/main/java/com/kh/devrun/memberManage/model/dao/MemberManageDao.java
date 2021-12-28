@@ -9,4 +9,9 @@ public interface MemberManageDao {
 
 	List<Member> searchMemberList(Map<String, Object> param);
 
+	List<Member> selectAllMember();
+
+	// 권한으로 검색할 시 분기처리
+	List<Member> seachMemberListByAuthority(Map<String, Object> param);
+
 }

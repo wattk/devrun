@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.devrun.member.model.dao.MemberDao;
 import com.kh.devrun.member.model.vo.Member;
-import com.kh.devrun.security.dao.SecurityDao;
+import com.kh.devrun.security.model.dao.SecurityDao;
 
 @Service
 public class MemberServiceImpl implements MemberService {

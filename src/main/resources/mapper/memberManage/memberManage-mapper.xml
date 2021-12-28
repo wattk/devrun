@@ -4,6 +4,18 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="memberManage">
 
+<select id="selectAllMember" resultType="Member">
+	select
+	    m.member_no,
+	    m.id,
+	    m.name,
+	    m.enroll_date,
+	    authority
+	from
+	    member m join authorities a on
+	    m.member_no = a.member_no
+</select>
+
 
 <select id="searchMemberList" resultType="Member">
 	select
@@ -16,8 +28,26 @@
 	    member m join authorities a on
 	    m.member_no = a.member_no
 	where
-		${searchType} = #{searchKeyword}
+		${searchType} like '%'|| #{searchKeyword} ||'%'		
+</select>
+
+<select id="seachMemberListByAuthority" resultType="Member">
+		select
+	    m.member_no,
+	    m.id,
+	    m.name,
+	    m.enroll_date,
+	    authority
+	from
+	    member m join authorities a on
+	    m.member_no = a.member_no
+	where
+		authority in
+		<foreach collection="searchKeyword" item="item" open="(" separator="," close=")" >
+			#{item}
+		</foreach>
 		
+
 </select>
 
 
