@@ -16,5 +16,8 @@ public interface MemberDao {
 
 	int updateMemberPassword(Member member);
 
+	int updateMemberProfile(Member member);
 
+	Member selectOneMemberById(String id);
+	
 }

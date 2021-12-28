@@ -30,7 +30,7 @@
                     <aside class="accordion">
                       <h1>모니터</h1>
                       <div>
-                        <h2><a href="${pageContext.request.contextPath}/shop/shopCategory.do">전체보기</a></h2>
+                        <h2><a value="mn" href="${pageContext.request.contextPath}/shop/CategoryItemAll?parentCate=mn">전체보기</a></h2>
                         <a href="">표준모니터</a>
                         <a href="">휴대용모니터</a>
                         <a href="">게이밍모니터</a>

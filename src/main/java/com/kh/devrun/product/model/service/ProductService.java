@@ -36,10 +36,16 @@ public interface ProductService {
 	List<ProductDetail> selectProductDetail(String productCode);
 
 	// 상품 정보 업데이트
-	int updateProduct(Product product);
+	int updateProduct(Map<String, Object> param);
 
 	// nextval 번호까지 붙은 thumbnail 값 가져오기 (최근 등록된)
 	String selectRealProductImg();
+
+	// 상품 옵션 업데이트
+	int updateOption(ProductDetail productDetail, Map<String, Object> param);
+
+
+
 
 	
 	

@@ -78,7 +78,7 @@
 				    		<ul id="productCodeList" class="list-group">
 				    			<c:forEach items="${promotion.productList}" var="product" varStatus="vs">
 				    			<li class="list-group-item">
-									${product.productCode} - ${product.name}<i class="product-x-btn fas fa-times pl-2 text-danger"></i>
+									${product.productCode} (${product.name})<i class="product-x-btn fas fa-times pl-2 text-danger"></i>
 									<input type="hidden" name="" value="${product.productCode}" />
 								</li>
 				    			</c:forEach>

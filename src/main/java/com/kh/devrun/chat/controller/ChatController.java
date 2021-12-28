@@ -33,21 +33,55 @@ public class ChatController {
 	@Autowired
 	private ChatService chatService;
 	
+	/**
+	 * 채팅 접속 - 채팅 리스트 팝업 return
+	 */
 	@GetMapping("/chatList.do")
-	public String chatList() {
+	public String chatList(Authentication authentication, Model model) { // model은 MVC의 M이 아니다. View단의 데이터를 전달하기 위한 스프링만의 객체이다. 
+		
+		// 본인의 채팅 리스트를 불러오기 위한 loginMember 호출
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
+		
+		List<ChatLog> list = chatService.findChatLog(memberNo);
+		log.debug("list = {}", list);
+		
+		model.addAttribute("list", list);
+		
 		return "chat/chatListPopup";
+		
 	}
 
+	/**
+	 * 채팅방 접속 - 채팅방 팝업 return
+	 */
 	@GetMapping("/chatRoom.do/{chatId}")
-	public String chatRoom(@PathVariable String chatId, Model model) {
+	public String chatRoom(Authentication authentication, @PathVariable String chatId, Model model) {
 		
 		model.addAttribute("chatId", chatId); // 이부분 없어도 chatId jsp에서 사용 가능함.
 		
+		// 채팅로그 조회
+		List<ChatLog> list = chatService.findChatLogByChatId(chatId);
+		//log.debug("list = {}", list);
+		model.addAttribute("list", list);
 		
+		// 상대 회원의 정보 조회(신고 모달 등 이용하기 위함) - chatId와 로그인한 회원 번호 넘기기
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
+		param.put("chatId", chatId);
+
+		Member receiver = chatService.selectOneReceiver(param);
+		//log.debug("receiver = {}", receiver);
+		model.addAttribute("receiver", receiver);
+
 		return "chat/chatRoomPopup";
 	}
 	
 	/**
+	 * 비동기
 	 * 회원 닉네임 검색 - 채팅방 생성을 위한 전단계
 	 */
 	@ResponseBody
@@ -70,6 +104,10 @@ public class ChatController {
 		return list;
 	}
 	
+	/**
+	 * 비동기
+	 * 채팅 초대 - 레코드 조회 후 분기 chatId 결과 return
+	 */
 	@ResponseBody
 	@PostMapping("/chat.do")
 	public String chat(Authentication authentication, Model model, @RequestParam(required = false) int receiverNo) {

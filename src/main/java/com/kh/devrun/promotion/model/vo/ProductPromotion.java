@@ -25,9 +25,10 @@ public class ProductPromotion extends Product implements Serializable{
 	private String childCategoryTitle;
 	
 	public ProductPromotion(String productCode, String name, int price, Date regDate, String thumbnail, String content,
-			int viewCount, char status, List<ProductDetail> productDetailList) {
-		super(productCode, name, price, regDate, thumbnail, content, viewCount, status, productDetailList);
-		// TODO Auto-generated constructor stub
+			int viewCount, char status, int orderCount, List<ProductDetail> productDetailList) {
+		super(productCode, name, price, regDate, thumbnail, content, viewCount, status, orderCount, productDetailList);
 	}
+	
+	
 
 }

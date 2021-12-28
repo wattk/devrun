@@ -13,7 +13,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/mypage/profileUpdate.css" rel="stylesheet">
 
 <%-- EL에서 접근하기 위해 VAR속성 지정 --%>
-<sec:authentication property="principal" var="member"/>
+<%-- <sec:authentication property="principal" var="member"/> --%>
 
 		<div class="col-12" id="profileUpdate">
 			<div class="row">
@@ -25,13 +25,14 @@
 		       		<section class="card" id="myProfile">
 		       			<div class="card-header">내 프로필</div>
 		       			<div class="card-body">
-		       				<form name="profileUpdateFrm" action="${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do" method="POST">
+		       				<form name="profileUpdateFrm" action="${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do" method="POST" enctype="multipart/form-data">
 			       				<div class="row">
 			       					<%-- profile image : 프로필 이미지가 null일 경우, 기본 이미지 출력 --%>
 				       				<article class="col-4">
-				     					<c:if test="${member.proPhoto eq null}"><i class="bi bi-person-circle" id="profileImg"></i></c:if>
-								      	<c:if test="${member.proPhoto ne null}"><img src="${member.proPhoto}" alt="" id="profileImg"/></c:if>
-								       	<input type="file" class="form-control" id="edit" name="proPhoto">
+				     					<c:if test="${member.proPhoto eq null}"><img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="" id="profileImg"/></c:if>
+								      	<c:if test="${member.proPhoto ne null}"><img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png" alt="" id="profileImg"/></c:if>
+								       	<input type="file" class="form-control" id="upFile" name="upFile" accept="image/jpeg, image/jpg, image/png">
+								       	<i class="bi bi-x-circle-fill" id="deleteBtn"></i>
 			       					</article>
 			       					<%-- profile info --%>
 			       					<article class="col-7">
@@ -59,11 +60,11 @@
 								        	</tr>
 								        	<tr>
 								        		<td><label for="password">기존 비밀번호</label></td>
-								        		<td><input type="password" class="form-control" id="password" name="password" required></td>
+								        		<td><input type="password" class="form-control" id="password" required></td>
 								        	</tr>
 								        	<tr>
 								        		<td><label for="newPassword">새 비밀번호</label></td>
-								        		<td><input type="password" class="form-control" id="newPassword" required></td>
+								        		<td><input type="password" class="form-control" id="newPassword" name="password" required></td>
 								        	</tr>
 								        	<tr>
 								        		<td><label for="nickname">닉네임</label></td>
@@ -75,7 +76,7 @@
 								        	</tr>
 								        	<tr>
 								        		<td><label for="birthday">생년월일</label></td>
-								        		<td><input type="date" class="form-control" id="birthday" name="birthday" value="<fmt:formatDate value="${member.birthday}" pattern="yyyy-MM-dd"/>" maxlength="11" required></td>
+								        		<td><input type="date" class="form-control" id="birthday" name="birthday" value="<fmt:formatDate value="${member.birthday}" pattern="yyyy-MM-dd"/>" required></td>
 								        	</tr>
 								        	<tr>
 								        		<td><label for="phone">전화번호</label></td>
@@ -87,7 +88,7 @@
 		    					<%-- buttons : withdraw / update --%>
 		    					<section id="btns" class="col-11 row">
 		    						<button class="col-6" type="button" data-toggle="modal" data-target="#withdrawModal">탈퇴하기</button>
-		    						<button class="col-6" type="submit" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';">수정하기</button>
+		    						<button type="button" id="profileUpdateBtn" class="col-6">수정하기</button>
 		    					</section>
 	    					</form>
 	       				</div>
@@ -134,7 +135,7 @@
 						  	</label>
 						</div>
 		      			<div id="withdrawBtn" class="row">
-		      				<button type="submit" class="col-4" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/withdrawal.do';">회원탈퇴</button>
+		      				<button type="button" id="memberWithdrawBtn" class="col-4">회원탈퇴</button>
 		      			</div>
 		      		</section>
 		    	</div>
@@ -143,5 +144,48 @@
 
     </article>
 </main>
+
+<script>
+/* 프로필 미리보기 */
+function readImage(input) {
+    //input 태그에 파일이 있는 경우
+    if(input.files && input.files[0]) {
+    	//파일을 읽기 위한 FileReader 객체 생성
+        const reader = new FileReader();
+        //파일 읽어들이기를 성공해 이미지가 로드된 경우 호출되는 이벤트 핸들러
+        reader.onload = e => {
+        	//읽어들인 파일내용을 이미지 태그의 src속성에 지정
+        	$("#profileImg").attr("src", e.target.result);
+        }
+        //reader가 파일내용을 읽어 dataURL형식의 문자열로 저장
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+//input file에 change 이벤트 부여
+//파일 양식으로 이미지를 선택(값이 변경)했을 때 처리하는 코드
+$("#upFile").change(e => {
+    readImage(e.target);
+});
+
+/* 프로필 사진 우측하단 X버튼 클릭 시 코드 */
+$("#deleteBtn").click(e => {
+	//기본 이미지로 미리보기 변경
+	$("#profileImg").attr("src", "${pageContext.request.contextPath}/resources/images/common/blank-profile.png");
+	//선택 파일 비우기
+    $("#upFile").val("");
+});
+
+/* 유효성검사 */
+ 
+
+$(profileUpdateBtn).click((e)=>{
+	$profileImg = $("#profileImg").attr("src");
+	if($profileImg == "${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png") {
+		$("#upFile").append(`<input type="hidden" name="proPhoto" value="${member.proPhoto}"/>`);
+	}
+	$(document.profileUpdateFrm).submit();
+});
+
+</script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

@@ -36,4 +36,19 @@ public class ChatDaoImpl implements ChatDao {
 	public int insertChatLog(ChatLog chatLog) {
 		return session.insert("chat.insertChatLog", chatLog);
 	}
+
+	@Override
+	public List<ChatLog> findChatLogByChatId(String chatId) {
+		return session.selectList("chat.findChatLogByChatId", chatId);
+	}
+
+	@Override
+	public List<ChatLog> findChatLog(int memberNo) {
+		return session.selectList("chat.findChatLog", memberNo);
+	}
+
+	@Override
+	public Member selectOneReceiver(Map<String, Object> param) {
+		return session.selectOne("chat.selectOneReceiver", param);
+	}
 }

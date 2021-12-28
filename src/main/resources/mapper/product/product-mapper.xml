@@ -15,7 +15,9 @@
 		#{productCode} ||'-'||seq_product_no.nextval ||'.png',
 		#{content},
 		#{viewCount},
-		#{status}
+		#{status},
+		default
+		
 	)	
 	
 	<selectKey keyProperty="productCode" resultType="String" order="AFTER">
@@ -163,10 +165,41 @@
 		where
 			product_code = #{productCode}
 	</update>
-
-
-
-
+	
+	<update id="updateOption">
+		update
+			product_detail
+		set 	
+			option_no = #{optionNo},
+			option_content = #{optionContent},
+			sku = #{sku},
+			quantity = #{quantity}
+		where
+			product_code = #{productCode} and
+			detail_no = #{detailNo}
+					
+	</update>
+	
+	<!-- 옵션 삭제  -->
+	<delete id="deleteOption">
+		delete
+			product_detail
+		where
+			detail_no = #{detailNo}
+	</delete>
+	<!-- 옵션 추가 -->
+	<insert id="insertOption">
+		insert into
+			product_detail
+		values(
+			#{detailNo},
+			#{productCode},
+			#{optionNo},
+			#{optionContent},
+			null,
+			#{quantity}
+		)
+	</insert>
 
 
 	<!--태영 끝-->

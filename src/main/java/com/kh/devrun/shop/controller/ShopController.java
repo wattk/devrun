@@ -8,11 +8,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -43,8 +47,6 @@ public class ShopController {
 	
 	@Autowired
 	ServletContext application;
-	
-	
 //--------------------주입-------------------------------------	
 	
 
@@ -55,6 +57,24 @@ public class ShopController {
 		
 	}
 	
+	//상품 전체보기 클릭 시 
+	@GetMapping("/CategoryItemAll")
+	public void CategoryItemAll(@RequestParam String parentCate) {
+		
+		List<Product>itemList = shopService.CategoryItemAll();
+		
+	}
+	
+	
+	//사진 리뷰만 모아보기 기능
+	@ResponseBody
+	@GetMapping("picReviewOnly")
+	public List<Review> picReviewOnly() {
+		
+		List<Review> picReviewList = shopService.picReviewOnly();
+		
+		return picReviewList;
+	}
 	
 	
 	@GetMapping("/shopSearch.do")
@@ -74,6 +94,18 @@ public class ShopController {
 		
 		
 		
+	}
+	
+	@GetMapping("/reviewDelete.do")
+	public String reviewDelete(@RequestParam int reviewNo, RedirectAttributes redirectAttr) {
+		log.debug("삭제할 리뷰의 아이디 : {}", reviewNo);
+		
+		int result = shopService.reviewDelete(reviewNo);
+		
+		String msg = (result>0)?"리뷰 삭제 성공" : "리뷰 등록 삭제";
+		redirectAttr.addFlashAttribute("msg", msg);
+		
+		return "redirect:/shop/itemDetail.do";
 	}
 	
 	
@@ -126,27 +158,74 @@ public class ShopController {
 		}
 	}
 	
-	@GetMapping("/promotionDetail.do")
-	public void promotionDetail(@RequestParam String promotionCode, Model model) {
-		log.debug("promotionCode = {}", promotionCode);
+	@GetMapping("/promotionDetail/{promotionCode}")
+	public String promotionDetail(
+				@RequestParam(defaultValue = "1") int cPage,
+				@PathVariable String promotionCode, 
+				HttpServletRequest request,
+				HttpServletResponse response,
+				Model model) 
+	{
+		int limit = 12;
+		int offset = (cPage - 1)*limit;
 		
 		try {
+			boolean hasRead = DevrunUtils.hasRead(request, response, promotionCode, "promotion");
+			
+			if(!hasRead) {
+				int result = promotionService.updateViewCount(promotionCode);
+			}
+			
+			
 			Promotion promotion = promotionService.selectPromotionByPromotionCode(promotionCode);
 			List<Map<String, String>> productCategory = promotionService.selectProductPromotionByPromotionCode(promotionCode);
+			
+			Map<String, Object> param = new HashMap<>();
+			param.put("promotionCode", promotionCode);
+			
+			//1. 전체 상품 목록
+			List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
 			model.addAttribute("promotion", promotion);
 			model.addAttribute("productCategory", productCategory);
+			model.addAttribute("productList", productList);
+			log.debug("promotion = {}, productCategory = {}", promotion, productCategory);
+			
+			//2. 전체 게시물 수 totalContent
+			int totalContent = promotionService.selectProductTotalCount(param);
+			model.addAttribute("totalContent", totalContent);
+			
+			//3. pagebar
+			String url = request.getRequestURI(); // /spring/board/boardList.do
+			String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+			log.debug("pagebar = {}", pagebar);
+			model.addAttribute("pagebar", pagebar);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return "/shop/promotionDetail";
 	}
 	
 	@GetMapping("/childCategorySearch.do")
 	@ResponseBody
-	public List<Product> childCategorySearch(
-				@RequestParam(value="childCategoryCode[]", required = false) List<String> childCategoryCode, 
-				@RequestParam(value="keyword", required = false) String keyword, 
-				@RequestParam(value = "promotionCode") String promotionCode) 
+	public Map<String, Object> childCategorySearch(
+			@RequestParam(defaultValue = "1") int cPage,
+			@RequestParam(value="childCategoryCode[]", required = false) List<String> childCategoryCode, 
+			@RequestParam(value="keyword", required = false) String keyword, 
+			@RequestParam(value = "promotionCode") String promotionCode,
+			HttpServletRequest request,
+			HttpServletResponse response)
 	{
+		Map<String, Object> resultMap = new HashMap<>();
+
+		int limit = 12;
+		int offset = (cPage - 1)*limit;
+		
+		boolean hasRead = DevrunUtils.hasRead(request, response, promotionCode, "promotion");
+		
+		if(!hasRead) {
+			int result = promotionService.updateViewCount(promotionCode);
+		}
 		log.debug("{}",keyword);
 		Map<String, Object> param = new HashMap<>();
 		param.put("promotionCode", promotionCode);
@@ -154,35 +233,27 @@ public class ShopController {
 		param.put("keyword", keyword);
 		log.debug("{}",param);
 		
-		List<Product> productList = new ArrayList<>();
+		//1. 전체 상품 목록
+		String url = request.getContextPath(); 
 		
-		productList = promotionService.selectProductListByPromotionCode(param);
-		log.debug("list = {}", productList);
+		List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
+		String productStr = DevrunUtils.getProductList(productList, url);
 		
-		return productList;
+		//2. 전체 게시물 수 totalContent
+		url = request.getRequestURI(); 
+		int totalContent = promotionService.selectProductTotalCount(param);
+		
+		//3. pagebar
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		
+		resultMap.put("productStr", productStr);
+		resultMap.put("totalContent", totalContent);
+		resultMap.put("pagebar", pagebar);
+		
+		return resultMap;
 	}
 	
-	@GetMapping("/sortSearch.do")
-	public String sortSearch(@RequestParam String promotionCode, @RequestParam String keyword) {
-		log.debug("promotionCode = {}, keyword = {}", promotionCode, keyword);
-		
-		switch(keyword) {
-		case "recommend" : 
-			break;
-		case "new" : 
-			break;
-		case "sell" : 
-			break;
-		case "promotion" : 
-			break;
-		case "row" : 
-			break;
-		case "high" : 
-			break;
-		}
-		
-		return "";
-	}
 	/**
 	 * 혜진 작업 끝
 	 * @throws IOException 

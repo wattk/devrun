@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Review;
 
@@ -36,6 +37,22 @@ public class ShopDaoImpl implements ShopDao{
 	@Override
 	public int countAllList() {
 		return session.selectOne("shop.countAllList");
+	}
+
+
+	@Override
+	public int reviewDelete(int reviewNo) {
+		return session.delete("shop.reviewDelete",reviewNo);
+	}
+
+	@Override
+	public List<Review> picReviewOnly() {
+		return session.selectList("shop.picReviewOnly");
+	}
+
+	@Override
+	public List<Product> CategoryItemAll() {
+		return session.selectList("shop.CategoryItemAll");
 	}
 
 }

@@ -92,6 +92,24 @@ public class ProductDaoImpe implements ProductDao{
 	public String selectRealProductImg() {
 		return session.selectOne("product.selectRealProductImg");
 	}
+
+	// 상품 옵션 업데이트
+	@Override
+	public int updateOption(ProductDetail productDetail,Map<String, Object> param) {
+		return session.update("product.updateOption",productDetail);
+	}
+
+	// 상품 옵션 삭제
+	@Override
+	public int deleteOption(int deleteDetailNo) {
+		return session.delete("product.deleteOption",deleteDetailNo);
+	}
+	
+	// 상품 옵션 추가
+	@Override
+	public int insertOption(ProductDetail productDetail) {
+		return session.insert("product.insertOption",productDetail);
+	}
 	
 }
 

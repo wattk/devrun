@@ -10,7 +10,7 @@
 			seq_review_no.nextval,
 			#{memberNo},
 			#{id},
-			'ch-ec-실험책상-23',
+			'ch-6ch-109',
 			#{content},
 			default,
 			default,
@@ -63,5 +63,21 @@
 	<select id="countAllList" resultType="int">
 		select count(*)
 		from review
+	</select>
+	<delete id="reviewDelete">
+		delete from review where review_no = #{reviewNo}
+	</delete>
+	
+	<select id="picReviewOnly" resultMap="review">
+		select 
+		    *
+		from
+		    review r left join review_attachment a
+		    on r.review_no = a.review_no
+		where review_attach_no is not null    
+		order by r.reg_date desc  	
+	</select>
+	<select id="CategoryItemAll" resultType="product">
+	
 	</select>
 </mapper>

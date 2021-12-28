@@ -86,4 +86,28 @@ public class MemberServiceImpl implements MemberService {
 	/**
 	 * 지영 서비스 끝
 	 */
+	
+	/**
+	 * 지원 서비스 시작
+	 */
+	
+	/**
+	 * 프로필 수정(회원정보 수정)
+	 */
+	@Override
+	public int updateMemberProfile(Member member) {
+		return memberDao.updateMemberProfile(member);
+	}
+	
+	/**
+	 * 회원 한명 조회
+	 */
+	@Override
+	public Member selectOneMemberById(String id) {
+		return memberDao.selectOneMemberById(id);
+	}
+	
+	/**
+	 * 지원 서비스 끝
+	 */
 }

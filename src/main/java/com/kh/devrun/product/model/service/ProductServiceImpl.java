@@ -1,7 +1,6 @@
 package com.kh.devrun.product.model.service;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -107,7 +106,8 @@ public class ProductServiceImpl implements ProductService {
 	public int deleteProduct(String productCode) {
 		int result = 0;
 		try {
-			result = productDao.deleteProduct(productCode);
+			result = productDao.deleteProduct(productCode);	
+			
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			throw new ProductDeleteException("상품 삭제가 실패했습니다",e);
@@ -132,11 +132,38 @@ public class ProductServiceImpl implements ProductService {
 	// 상품 정보 업데이트
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public int updateProduct(Product product) {
+	
+	public int updateProduct(Map<String, Object> param) {
 		int result = 0;
+		Product product = (Product)param.get("product");
+		List<ProductDetail>insertProductDetailList = (List<ProductDetail>)param.get("insertProductDetailList");
 		
 		try {
 			result = productDao.updateProduct(product);
+			// 상품 디테일 테이블에 추가(1:N)
+			if(product.getProductDetailList().size() > 0) {
+				for(ProductDetail productDetail : product.getProductDetailList()) {
+					productDetail.setProductCode(product.getProductCode());
+					
+					result = updateOption(productDetail,param);
+				}
+			}
+			// 옵션 삭제 번호가 있을 시 옵션 삭제
+			int[] deleteDetailNo = (int[])param.get("deleteDetailNo");
+			if(deleteDetailNo != null) {
+				for(int i = 0; i < deleteDetailNo.length; i ++) {
+					result = productDao.deleteOption(deleteDetailNo[i]);
+				}
+			}
+			// 옵션 추가 번호가 있을 시 옵션 추가
+			if(insertProductDetailList.size() > 0) {
+				for(ProductDetail productDetail:insertProductDetailList) {
+					result = productDao.insertOption(productDetail);
+				}
+			}
+			
+			
+							
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			throw new ProductUpdateException("상품 수정 오류",e);
@@ -150,6 +177,15 @@ public class ProductServiceImpl implements ProductService {
 	public String selectRealProductImg() {
 		return productDao.selectRealProductImg();
 	}
+
+	// 상품 detail 업데이트
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public int updateOption(ProductDetail productDetail,Map<String, Object> param) {
+		return productDao.updateOption(productDetail,param);
+	}
+
+	
 	
 	
 	

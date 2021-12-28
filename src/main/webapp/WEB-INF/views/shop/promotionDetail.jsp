@@ -17,34 +17,8 @@
 <!-- shopSideBox 관련 임포트 -->
 <jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
 
-<style>
-.promotion-container{
-	padding-top: 200px;
-	margin : 0 10% 0 10%;
-	top : 300px;
-}
-.promotion-title{
-	font-size: xx-large;
-    font-weight: 700;
-}
-.category-container{
-	border : 1px solid rgba(0,0,0,.125);
-	height : 5rem;
-}
-.category-badge{
-	cursor : pointer;
-}
-.category-badge:hover{
-	color: #fff;
-    background-color: #007bff;
-}
-.shop-sort:not(:last-of-type) {
-	border-right : 1px solid rgba(0,0,0,.125);
-}
-.shop-sort{
-	cursor : pointer;
-}
-</style>
+<link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
+
 
 <div class="promotion-container">
   	<div class="promotion-title m-4">
@@ -72,7 +46,7 @@
 		</div>
 	</div>
 	<div class="item-sort-container d-flex 	justify-content-between">
-		<div class="p-4">총 <span id="productSize">${promotion.productList.size()}</span>개</div>
+		<div class="p-4">총 <span id="productSize">${totalContent}</span>개</div>
 		<div class="p-4" id="">
 			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
@@ -82,45 +56,22 @@
 		</div>
 	</div>
 	<div id="productPromotionContainer" class="row">
-		<c:forEach items="${promotion.productList}" var="product" varStatus="vs">
-	  	  <a href="${pageContext.request.contextPath}/shop/itemDetail.do?productCode=${product.productCode}" class="col-md-3 p-5">
-	        <div class="card-box-d">
+		<c:forEach items="${productList}" var="product" varStatus="vs">
+	        <div class="card-box-d col-md-3 p-5">
 	          <div class="card-img-d shop-item-img position-relative">
 	            <img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="img-d img-fluid">
 	            <i class="shop-like-icon fas fa-heart position-absolute"></i>
-	            <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
 	          </div>
-	          <div>
-	          	<p class="m-0">${product.name}</p>
-	          	<strong><fmt:formatNumber type="currency">${product.price}</fmt:formatNumber></strong>
-	          </div>
+		  	  <a href="${pageContext.request.contextPath}/shop/itemDetail.do?productCode=${product.productCode}">
+		          <div>
+		          	<p class="product-name m-0">${product.name}</p>
+		          	<strong><fmt:formatNumber type="currency">${product.price}</fmt:formatNumber></strong>
+		          </div>
+		      </a>
 	        </div>
-	      </a>
 	    </c:forEach>
     </div>
-    <nav aria-label="..." class="mx-auto text-center">
-    <div class="banner mx-auto text-center mb-3">
-    </div>
-	  <ul class="pagination justify-content-center">
-	    <li class="page-item">
-	      <a class="page-link" href="#" aria-label="Previous">
-	        <span aria-hidden="true">&laquo;</span>
-	        <span class="sr-only">Previous</span>
-	      </a>
-	    </li>
-	    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-	    <li class="page-item ">
-	      <a class="page-link" href="#">2</a>
-	    </li>
-	    <li class="page-item"><a class="page-link" href="#">3</a></li>
-		<li class="page-item">
-	      <a class="page-link" href="#" aria-label="Next">
-	        <span aria-hidden="true">&raquo;</span>
-	        <span class="sr-only">Next</span>
-	      </a>
-	    </li>
-	  </ul>
-	</nav>
+    ${pagebar}
 </div>
 <script>
 //이벤트 상품 소분류 코드별 정렬
@@ -138,13 +89,10 @@ $(".category-badge, .shop-sort").click((e)=>{
 		
 	}
 	
-	console.log($(e.target));
 	let sort;
 	if($(e.target).is(".shop-sort")){
 		sort = $(e.target).data("target");
 	};
-	
-	console.log(sort);
 	
 	//primary클래스를 가진 소분류 카테고리를 모아 카테고리 코드를 모은 배열 생성
 	const $badges = $(".badge-primary");
@@ -154,7 +102,6 @@ $(".category-badge, .shop-sort").click((e)=>{
 		data.push($(item).data("target"));
 	});
 	
-	console.log(data);
 	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/shop/childCategorySearch.do",
@@ -163,7 +110,13 @@ $(".category-badge, .shop-sort").click((e)=>{
 				keyword : sort},
 		method : "GET",
 		success(data){
-			//상품 초기화
+			console.log(data);
+			$("#productPromotionContainer").html(data["productStr"]);
+			$("#productSize").text(data["totalContent"]);
+			$(".pagebar").detach();
+			$("#productPromotionContainer").after(data["pagebar"]);
+			
+			/* //상품 초기화
 			$("#productPromotionContainer").html('');
 			
 			const productSize = data.length;
@@ -174,26 +127,29 @@ $(".category-badge, .shop-sort").click((e)=>{
 				const itemPrice = item.price;
 				const price = itemPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 				
-				let str = `<a href="${pageContext.request.contextPath}/shop/itemDetail.do?productCode=\${item.productCode}" class="col-md-3 p-5">
-			        <div class="card-box-d">
+				let str = `<div class="card-box-d col-md-3 p-5">
 			          <div class="card-img-d shop-item-img position-relative">
 			            <img src="${pageContext.request.contextPath}/resources/upload/product/\${item.thumbnail}" alt="" class="img-d img-fluid">
 			            <i class="shop-like-icon fas fa-heart position-absolute"></i>
-			            <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
 			          </div>
-			          <div>
-			          	<p class="m-0">\${item.name}</p>
-			          	<strong>&#8361;\${price}</strong>
-			          </div>
-			        </div>
-			      </a>`;
+			          <a href="${pageContext.request.contextPath}/shop/itemDetail.do?productCode=\${item.productCode}">
+				          <div>
+				          	<p class="m-0">\${item.name}</p>
+				          	<strong>&#8361;\${price}</strong>
+				          </div>
+			          </a>
+			        </div>`;
 				$("#productPromotionContainer").append(str);
-			});
+			}); */
 		},
 		error : console.log
 	});
 	
 });
 
+//상품 찜 리스트에 추가
+$(".shop-like-icon").click((e)=>{
+	
+});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
