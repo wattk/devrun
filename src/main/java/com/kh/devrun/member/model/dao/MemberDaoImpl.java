@@ -1,6 +1,9 @@
 package com.kh.devrun.member.model.dao;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.mail.Address;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +33,18 @@ public class MemberDaoImpl implements MemberDao {
 		return session.insert("member.insertMember", member);
 	}
 	
+	
+	@Override
+	public List<Address> selectAddressListByMemberNo(int memberNo) {
+		return session.selectList("address.selectAddressListByMemberNo", memberNo);
+	}
+	
 	/**
 	 * 혜진 dao 끝
 	 */
 	
+
+
 	/**
 	 * 지영 dao 시작
 	 */
