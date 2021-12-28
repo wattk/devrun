@@ -20,6 +20,6 @@ public interface ShopDao {
 
 	List<Review> picReviewOnly();
 
-	List<Product> CategoryItemAll();
+	List<Product> CategoryItemAll(String parentCate);
 
 }

@@ -72,8 +72,8 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public List<Product> CategoryItemAll() {
-		return shopDao.CategoryItemAll();
+	public List<Product> CategoryItemAll(String parentCate) {
+		return shopDao.CategoryItemAll(parentCate);
 	}
-
+	
 }

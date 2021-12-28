@@ -1329,5 +1329,33 @@ where
 
 
 
+-- 김다현 상품 - 부모 카테고리 연결 테이블
 
+create or replace view view_product_parent_category
+as select
+    ccc.*,
+    ppc.parent_category_title
+from(
+    select
+        cc.*,
+        pcc.child_category_title,
+        pcc.parent_category_code
+    from(
+        select 
+            p.product_code,
+            p.name,
+            p.price,
+            p.reg_date,
+            p.thumbnail,
+            p.view_count,
+            p.status,
+            p.order_count,
+            c.child_category_code
+        from 
+            product p join product_category c
+            on p.product_code = c.product_code)cc 
+                join product_child_category pcc
+                on cc.child_category_code = pcc.child_category_code)ccc 
+                    join product_parent_category ppc
+                        on ccc.parent_category_code = ppc.parent_category_code ;
 

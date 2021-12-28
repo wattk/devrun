@@ -14,11 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class ShopDaoImpl implements ShopDao{
-	
+public class ShopDaoImpl implements ShopDao {
+
 	@Autowired
 	private SqlSession session;
-	
+
 	@Override
 	public int insertReview(Review review) {
 		return session.insert("shop.insertReview", review);
@@ -26,7 +26,7 @@ public class ShopDaoImpl implements ShopDao{
 
 	@Override
 	public int insertAttach(Attachment attach) {
-		return session.insert("shop.insertAttach",attach);
+		return session.insert("shop.insertAttach", attach);
 	}
 
 	@Override
@@ -39,10 +39,9 @@ public class ShopDaoImpl implements ShopDao{
 		return session.selectOne("shop.countAllList");
 	}
 
-
 	@Override
 	public int reviewDelete(int reviewNo) {
-		return session.delete("shop.reviewDelete",reviewNo);
+		return session.delete("shop.reviewDelete", reviewNo);
 	}
 
 	@Override
@@ -51,8 +50,8 @@ public class ShopDaoImpl implements ShopDao{
 	}
 
 	@Override
-	public List<Product> CategoryItemAll() {
-		return session.selectList("shop.CategoryItemAll");
+	public List<Product> CategoryItemAll(String parentCate) {
+		return session.selectList("shop.CategoryItemAll", parentCate);
 	}
 
 }

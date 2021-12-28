@@ -17,6 +17,6 @@ public interface ShopService {
 
 	List<Review> picReviewOnly();
 
-	List<Product> CategoryItemAll();
+	List<Product> CategoryItemAll(String parentCate);
 
 }
