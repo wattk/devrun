@@ -1,6 +1,7 @@
 package com.kh.devrun.shop.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,13 +31,13 @@ public class ShopDaoImpl implements ShopDao {
 	}
 
 	@Override
-	public List<Review> selectAllReview() {
-		return session.selectList("shop.selectAllReview");
+	public List<Review> selectAllReview(String productCode) {
+		return session.selectList("shop.selectAllReview", productCode);
 	}
 
 	@Override
-	public int countAllList() {
-		return session.selectOne("shop.countAllList");
+	public int countAllList(String productCode) {
+		return session.selectOne("shop.countAllList",productCode);
 	}
 
 	@Override
@@ -53,5 +54,6 @@ public class ShopDaoImpl implements ShopDao {
 	public List<Product> CategoryItemAll(String parentCate) {
 		return session.selectList("shop.CategoryItemAll", parentCate);
 	}
+
 
 }

@@ -9,9 +9,9 @@ public interface ShopService {
 
 	int insertReview(Review review);
 
-	List<Review> selectAllReview();
+	List<Review> selectAllReview(String productCode);
 
-	int countAllList();
+	int countAllList(String productCode);
 
 	int reviewDelete(int reviewNo);
 
