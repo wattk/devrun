@@ -152,13 +152,13 @@
 		</where>
 	    <if test="keyword != null">
 	    	<choose>
-	    		<when test="keyword eq recommend">
+	    		<when test="keyword eq 'recommend'">
 	    			order by view_count desc
 	    		</when>
 	    		<when test="keyword eq 'new'">
 	    			order by reg_date desc
 	    		</when>
- 	    		<when test="keyword eq sell">
+ 	    		<when test="keyword eq 'sell'">
 	    			order by order_count desc
 	    		</when>
 	    		<when test="keyword eq 'row'">

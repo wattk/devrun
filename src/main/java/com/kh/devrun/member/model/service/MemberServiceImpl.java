@@ -1,6 +1,9 @@
 package com.kh.devrun.member.model.service;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.mail.Address;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +52,10 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	@Override
+	public List<Address> selectAddressListByMemberNo(int memberNo) {
+		return memberDao.selectAddressListByMemberNo(memberNo);
+	}
 	
 	/**
 	 * 혜진 서비스 끝
@@ -59,6 +66,7 @@ public class MemberServiceImpl implements MemberService {
 	 * 지영 서비스 시작
 	 */
 	
+
 	/**
 	 * 아이디 찾기
 	 */

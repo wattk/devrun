@@ -1,6 +1,9 @@
 package com.kh.devrun.member.model.dao;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.mail.Address;
 
 import com.kh.devrun.member.model.vo.Member;
 
@@ -19,5 +22,7 @@ public interface MemberDao {
 	int updateMemberProfile(Member member);
 
 	Member selectOneMemberById(String id);
+
+	List<Address> selectAddressListByMemberNo(int memberNo);
 	
 }
