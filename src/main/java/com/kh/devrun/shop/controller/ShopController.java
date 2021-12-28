@@ -54,10 +54,7 @@ public class ShopController {
 	
 
 	@GetMapping("/shopMain.do")
-	public String shopMain() {
-		
-		return "shop/shopMain";
-		
+	public void shopMain() {
 	}
 	
 	//상품 사이드 메뉴 바에서 전체보기 클릭 시 
@@ -69,7 +66,6 @@ public class ShopController {
 		model.addAttribute("itemList", itemList);
 		
 		return "shop/shopCategory";
-		
 	}
 	
 	
@@ -79,19 +75,26 @@ public class ShopController {
 	public List<Review> picReviewOnly() {
 		
 		List<Review> picReviewList = shopService.picReviewOnly();
-		
 		return picReviewList;
 	}
 	
 	
+	// 상세페이지를 위한 상품 하나 받아오기!
 	@GetMapping("/itemDetail/{productCode}")
-	public String selectOneItem(@PathVariable String productCode, Model model) {		
+	public String selectOneItem(@PathVariable String productCode, Model model) {
+		//상품 조회
 		ProductEx product = productService.selectOneItem(productCode);
 		log.debug("product 받아왔나요? : {}",product);
-		
 		model.addAttribute("product", product);
-		return "shop/itemDetail";
 		
+		//해당 상품 리뷰들 조회
+		List<Review> reviewList = shopService.selectAllReview();
+		int reviewTotal = shopService.countAllList();
+		log.debug("리뷰 리스트 조회! : {}", reviewList);
+		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("reviewTotal", reviewTotal);
+		
+		return "shop/itemDetail";
 	}
 
 	
@@ -100,19 +103,19 @@ public class ShopController {
 	public void shopSearch() {}
 	
 
-	@GetMapping("/itemDetail.do")
-	public void itemDetail(Model model) {
-		
-		List<Review> reviewList = shopService.selectAllReview();
-		int reviewTotal = shopService.countAllList();
-		log.debug("리뷰 리스트 조회! : {}", reviewList);
-		model.addAttribute("reviewList", reviewList);
-		model.addAttribute("reviewTotal", reviewTotal);
-		
-		
-		
-	}
+	/* 나중에 삭제할 것
+	 * @GetMapping("/itemDetail.do") public void itemDetail(Model model) {
+	 * 
+	 * List<Review> reviewList = shopService.selectAllReview(); int reviewTotal =
+	 * shopService.countAllList(); log.debug("리뷰 리스트 조회! : {}", reviewList);
+	 * model.addAttribute("reviewList", reviewList);
+	 * model.addAttribute("reviewTotal", reviewTotal);
+	 * 
+	 * }
+	 */
 	
+	
+	//리뷰 삭제하기
 	@GetMapping("/reviewDelete.do")
 	public String reviewDelete(@RequestParam int reviewNo, RedirectAttributes redirectAttr) {
 		log.debug("삭제할 리뷰의 아이디 : {}", reviewNo);
@@ -126,7 +129,7 @@ public class ShopController {
 	}
 	
 	
-	
+	// 리뷰 등록하기
 	@PostMapping("/review.do")
 	public String review (Review review, MultipartFile upFile, RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
 		log.debug("{}", review);
@@ -154,8 +157,6 @@ public class ShopController {
 		redirectAttr.addFlashAttribute("msg", msg);
 		
 		return "redirect:/shop/itemDetail.do";
-		
-		
 	}
 	
 	
