@@ -78,6 +78,10 @@
 		order by r.reg_date desc  	
 	</select>
 	<select id="CategoryItemAll" resultType="product">
-	
+		select 
+			* 
+		from view_product_parent_category 
+		where status ='Y' and 
+		parent_category_code = #{parentCate}
 	</select>
 </mapper>
