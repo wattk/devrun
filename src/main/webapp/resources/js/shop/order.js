@@ -2,10 +2,11 @@
  * 주문 페이지
  */
  
-window.onload = function(){
+$(document).ready(()=>{
 //버튼 클릭 시 주문 아코디언 헤더의 상세 내용 숨기거나 드러내기
 $(".order-btn").click((e)=>{
 	const target = $(e.target).data("target");
+	console.log(target);
 	
 	if(target == '#collapseThree'){
 		$("#orderOne").show();
@@ -23,7 +24,7 @@ $(".order-btn").click((e)=>{
 	}
 		
 });
-}
+});
 
 /**
  * 교환/환불/취소 페이지

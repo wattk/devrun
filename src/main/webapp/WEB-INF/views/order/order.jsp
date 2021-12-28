@@ -9,11 +9,14 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="order" name="title"/>
 </jsp:include>
+<!-- 주소 검색 관련 카카오 api -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <!--  iamport 관련 임포트 스크립트 -->
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 
 <link href="${pageContext.request.contextPath }/resources/css/shop/order.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath }/resources/js/shop/order.js"></script>
+<sec:authentication property="principal" var="member"/>
 <div class="row p-5 d-flex justify-content-around order-container">
   <div class="col-7">
   	<div class="accordion" id="orderAccordion">
@@ -28,9 +31,9 @@
 	      <div id="orderOne" class="order-list pl-5 pr-5">
 	      	<p><strong>택배 배송 : 출고 예정일 3~5일 이내에 배송되며, 2박스 이상으로 분리 배송될 수 있습니다.</strong></p>
 		      	<strong>배송지 : </strong>
-	      	<p>대한민국 어쩌구</p>
+	      	<p class="addInput"></p>
 	      	<strong>출고 예정일 : </strong>
-	      	<p>2021.12.09 09:00 - 21:00</p>
+	      	<p id="releaseDate">2021.12.09 09:00 - 21:00</p>
 	      </div>
 	    </div>
 	
@@ -38,9 +41,9 @@
 	      <div class="card-body pl-5">
 	      	배송지 : 
 	      	<div class="input-group mb-3 w-75">
-			  <input type="number" class="form-control" placeholder="주소" aria-describedby="basic-addon2">
+			  <input type="text" id="" class="addInput form-control" placeholder="주소" aria-describedby="addInputBtn" value="${addressList[0].address1}">
 			  <div class="input-group-append w-10">
-			    <span class="input-group-text " id="basic-addon2">수정</span>
+			    <span class="input-group-text " id="addInputBtn">수정</span>
 			  </div>
 			</div>
 			<strong>배송 옵션</strong>
@@ -66,9 +69,9 @@
 	        </button>
 	      </h5>
 	      <div id="orderTwo" class="order-list pl-5 pr-5">
-		  	<p>이름 : 길동</p>
-		   	<p>이메일 : honggd@gmail.com</p>
-		   	<p>전화번호 : 01012341234</p>
+		  	<p>이름 : ${member.name }</p>
+		   	<p>이메일 : ${member.email }</p>
+		   	<p>전화번호 : ${member.phone }</p>
 		   	<p>상세주소 : 어쩌구동</p>
 	      </div>
 	    </div>
@@ -104,7 +107,7 @@
 		  	  type="button" 
 		  	  id="orderPaymentBtn" 
 		  	  class="btn btn-primary w-100 h-50 mt-2" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-		  	  ￦12,800원 결제하기 <i class="fas fa-chevron-circle-right"></i>
+		  	  <fmt:formatNumber type="currency">${product.price}</fmt:formatNumber> 원 결제하기 <i class="fas fa-chevron-circle-right"></i>
 		    </button>
 	      </div>
 	    </div>
@@ -114,8 +117,7 @@
   <div class="col-4 m-3 pl-3 pt-5 d-flex flex-column justify-content-start">
   	<strong>주문 정보</strong>
   	<div class="row d-flex justify-content-start">
-  		<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-25 p-2">
-  		<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-25 p-2">
+  		<img src="${pageContext.request.contextPath }/resources/upload/product/${product.thumbnail}" alt="" class="img-b w-25 p-2">
   	</div>
     <hr class="w-100"/>
 	<table class="table order-tbl">
@@ -125,19 +127,50 @@
 	  	</tr>
 	    <tr>
 	      <td>주문 금액(배송비 제외)</td>
-	      <td class="text-right">￦17,800</td>
+	      <td class="text-right"><fmt:formatNumber type="currency">${product.price}</fmt:formatNumber></td>
 	    </tr>
 	    <tr>
 	      <td>전체 배송비</td>
-	      <td class="text-right">￦3,000</td>
+	      <td class="text-right">
+	      	<c:choose>
+	      		<c:when test="${product.price >= 50000}">
+	      			&#8361;0
+	      		</c:when>
+	      		<c:otherwise>
+	      			&#8361;3,000
+	      		</c:otherwise>
+	      	</c:choose>
+		  </td>
 	    </tr>
 	    <tr>
 	      <td>주문 금액(부가세 제외)</td>
-	      <td class="text-right">￦18,909</td>
+	      <td class="text-right">
+	      	<fmt:formatNumber type="currency">
+		      	<c:choose>
+		      		<c:when test="${product.price >= 50000}">
+		      			${product.price*0.9}
+		      		</c:when>
+		      		<c:otherwise>
+		      			${(product.price+3000)*0.9}
+		      		</c:otherwise>
+		      	</c:choose>
+	      	</fmt:formatNumber>
+	      </td>
 	    </tr>
 	    <tr>
 	      <td>부가세(10%)</td>
-	      <td class="text-right">￦1,891</td>
+	      <td class="text-right">
+	      	<fmt:formatNumber type="currency">
+	      		<c:choose>
+		      		<c:when test="${product.price >= 50000}">
+		      			${product.price*0.1}
+		      		</c:when>
+		      		<c:otherwise>
+		      			${(product.price+3000)*0.1}
+		      		</c:otherwise>
+		      	</c:choose>
+	      	</fmt:formatNumber>
+	      </td>
 	    </tr>
 	  </tbody>
 	</table>
@@ -148,14 +181,25 @@
 	      <th>
 			총 주문 금액
 	      </th>
-	      <td class="text-right">￦17,800</td>
+	      <td class="text-right">
+	      	<fmt:formatNumber type="currency">
+	      		<c:choose>
+		      		<c:when test="${product.price >= 50000}">
+		      			${product.price}
+		      		</c:when>
+		      		<c:otherwise>
+		      			${product.price+3000}
+		      		</c:otherwise>
+		      	</c:choose>
+	      	</fmt:formatNumber>
+		  </td>
 	    </tr>
 	    <tr>
 	      <th class="col-4">
 			보유 포인트
 	      </th>
 	      <td class="col-5">
-	      	<input type="text" name="" id="" value="3,000" class="form-control w-100" disabled/>
+	      	<input type="text" name="" id="" value="${member.point}" class="form-control w-100" disabled/>
 		  </td>
 	    </tr>
 	    <tr>
@@ -176,6 +220,18 @@
   </div>
 </div>
 <script>
+//주소 검색창 띄우기
+$("#addInputBtn").click((e)=>{
+	new daum.Postcode({
+        oncomplete(data){ //선택시 입력값 세팅
+            $(".addInput").val(data.address);
+        }
+    }).open();
+});
+
+
+
+//결제창 띄우기
 function iamport(){
 		//가맹점 식별코드
 		IMP.init('imp45870945');
@@ -213,6 +269,17 @@ function iamport(){
 $("#orderPaymentBtn").click((e)=>{
 	console.log("결제 이벤트 발생");
 	iamport();
+});
+
+$(document).ready((e)=>{
+	let today = new Date();
+	const year = today.getFullYear(); 
+	const month = today.getMonth() + 1; 
+	const date = today.getDate();
+	today = (year-2000) + "-" + month + "-" + (date+1);
+	
+	console.log(today, typeof today);
+	$("#releaseDate").text(today + " 09:00 ~ 21:00");
 });
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
