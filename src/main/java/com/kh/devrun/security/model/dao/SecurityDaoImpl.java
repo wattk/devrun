@@ -1,4 +1,4 @@
-package com.kh.devrun.security.dao;
+package com.kh.devrun.security.model.dao;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
