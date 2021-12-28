@@ -272,12 +272,19 @@
 					
 					<li class="list-group-item position-relative" data-chat-id="${chatLog.chatId}">
 						<!-- 회원 프로필 사진 --> <%-- 상대방 프로필 사진이 나와야 함 --%>
-						<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
+						<%-- 프로필 사진 없는 경우 --%>
+						<c:if test="${chatLog.member.proPhoto eq null}">
+							<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
+						</c:if>
+						<%-- 프로필 사진 있는 경우 --%>
+				      	<c:if test="${chatLog.member.proPhoto ne null}">
+				      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${chatLog.member.proPhoto}" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>	
+				      	</c:if>
 						
 						<div class="msg-content">
 						
 							<!-- 회원 닉네임 --> <%-- 상대방 닉네임이 나와야 함 --%>
-							<strong class="nickname">길동이</strong>
+							<strong class="nickname">${chatLog.member.nickname}</strong>
 							<!-- 최근 메세지 -->
 							<p class="recent-msg mb-0">${chatLog.msg}</p>
 							
@@ -529,7 +536,7 @@ $('.chat-list li').click((e) => {
 	
 	// 팝업요청 // url 부분 기능 구현 시 수정할 것
 	const url = `${pageContext.request.contextPath}/chat/chatRoom.do/\${chatId}`;
-	const name = ''; // 팝업창 Window객체의 name. // 이후에 const name = chatId; 이런식으로 바꿀 것. 수업 코드 참고
+	const name = chatId; // 팝업창 Window객체의 name. // 이후에 const name = chatId; 이런식으로 바꿀 것. 수업 코드 참고
 	const spec = "width=400px, height=600px";
 	open(url, name, spec);
 });
