@@ -15,7 +15,7 @@ import com.kh.devrun.product.model.vo.Product;
 public class DevrunUtils {
 
 	/**
-	 * 
+	 * 페이징바 메소드
 	 *  
 	 * @param cPage
 	 * @param numPerPage
@@ -180,6 +180,13 @@ public class DevrunUtils {
 		return sb.toString();
 	}
 	
+	
+	/**
+	 * 상품 정렬 후 다시 띄우기 
+	 * @param productList
+	 * @param url
+	 * @return
+	 */
 	public static String getProductList(List<Product> productList, String url) {
 		DecimalFormat fmt = new DecimalFormat("###,###");
 		StringBuilder sb = new StringBuilder();
