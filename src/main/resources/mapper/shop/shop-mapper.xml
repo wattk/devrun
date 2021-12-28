@@ -64,4 +64,7 @@
 		select count(*)
 		from review
 	</select>
+	<delete id="reviewDelete">
+		delete from review where review_no = #{reviewNo}
+	</delete>
 </mapper>

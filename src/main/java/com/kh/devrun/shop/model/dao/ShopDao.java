@@ -15,4 +15,6 @@ public interface ShopDao {
 
 	int countAllList();
 
+	int reviewDelete(int reviewNo);
+
 }

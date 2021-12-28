@@ -12,4 +12,6 @@ public interface ShopService {
 
 	int countAllList();
 
+	int reviewDelete(int reviewNo);
+
 }

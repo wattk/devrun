@@ -38,4 +38,10 @@ public class ShopDaoImpl implements ShopDao{
 		return session.selectOne("shop.countAllList");
 	}
 
+
+	@Override
+	public int reviewDelete(int reviewNo) {
+		return session.delete("shop.reviewDelete",reviewNo);
+	}
+
 }

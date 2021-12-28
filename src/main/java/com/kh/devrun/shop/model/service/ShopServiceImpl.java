@@ -55,4 +55,13 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.countAllList();
 	}
 
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,
+	isolation = Isolation.READ_COMMITTED,
+	rollbackFor= Exception.class)
+	public int reviewDelete(int reviewNo) {
+		return shopDao.reviewDelete(reviewNo);
+	}
+
 }
