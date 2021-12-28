@@ -88,11 +88,12 @@ public class ShopController {
 		model.addAttribute("product", product);
 		
 		//해당 상품 리뷰들 조회
-		List<Review> reviewList = shopService.selectAllReview();
-		int reviewTotal = shopService.countAllList();
-		log.debug("리뷰 리스트 조회! : {}", reviewList);
-		model.addAttribute("reviewList", reviewList);
-		model.addAttribute("reviewTotal", reviewTotal);
+		/*
+		 * List<Review> reviewList = shopService.selectAllReview(); int reviewTotal =
+		 * shopService.countAllList(); log.debug("리뷰 리스트 조회! : {}", reviewList);
+		 * model.addAttribute("reviewList", reviewList);
+		 * model.addAttribute("reviewTotal", reviewTotal);
+		 */
 		
 		return "shop/itemDetail";
 	}
@@ -103,16 +104,13 @@ public class ShopController {
 	public void shopSearch() {}
 	
 
-	/* 나중에 삭제할 것
-	 * @GetMapping("/itemDetail.do") public void itemDetail(Model model) {
-	 * 
-	 * List<Review> reviewList = shopService.selectAllReview(); int reviewTotal =
-	 * shopService.countAllList(); log.debug("리뷰 리스트 조회! : {}", reviewList);
-	 * model.addAttribute("reviewList", reviewList);
-	 * model.addAttribute("reviewTotal", reviewTotal);
-	 * 
-	 * }
-	 */
+	  @GetMapping("/itemDetail.do") public void itemDetail(Model model) {
+	  
+	  List<Review> reviewList = shopService.selectAllReview(); int reviewTotal =
+	  shopService.countAllList(); log.debug("리뷰 리스트 조회! : {}", reviewList);
+	  model.addAttribute("reviewList", reviewList);
+	  model.addAttribute("reviewTotal", reviewTotal);
+	  }
 	
 	
 	//리뷰 삭제하기

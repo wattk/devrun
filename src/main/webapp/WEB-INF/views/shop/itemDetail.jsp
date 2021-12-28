@@ -240,7 +240,8 @@
 						</div>
 						<div id="orderBtnDiv" class="text-center row">
 							<button type="button" class="btn btn-primary col-6">장바구니</button>
-							<button type="button" class="btn btn-secondary col-6">바로구매</button>
+							<button type="button" id="orderBtn" class="btn btn-secondary col-6">바로구매</button>
+							
 						</div>
 					</div>
 					<div id="itemDetailOrderDiv">
@@ -520,7 +521,7 @@ window.onload = function () {
 	
 	
 	$.ajax({
-		url: "${pageContext.request.contextPath}/shop/itemOptions/${product.productCode}";,
+		url: "${pageContext.request.contextPath}/shop/itemOptions/${product.productCode}",
 		success(data){
 			
 		},
@@ -530,6 +531,12 @@ window.onload = function () {
 }
  
 /*옵션 태그 불러오기 비동기 처리 끝*/
+
+//바로구매 버튼 클릭 이벤트 혜진 시작
+$("#orderBtn").click((e)=>{
+	location.href = "${pageContext.request.contextPath}/order/order/${product.productCode}";
+});
+//바로구매 버튼 클릭 이벤트 혜진 끝
 </script>		
 	<!-- body 영역 끝 -->	
 			
