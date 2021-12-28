@@ -518,9 +518,13 @@ function picReviewOnly(){
 
 window.onload = function () {
 	
+	
 	$.ajax({
-		url: `${pageContext.request.contextPath}/shop/itemOptions/\${}`;,
-		success(data);
+		url: "${pageContext.request.contextPath}/shop/itemOptions/${product.productCode}";,
+		success(data){
+			
+		},
+		error : console.log
 		
 	});
 }
