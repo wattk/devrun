@@ -4,6 +4,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+
+
+
 <jsp:include page="/WEB-INF/views/admin/admin-common/header.jsp">
 	<jsp:param value="회원 등급 관리" name="title"/>
 </jsp:include>
@@ -14,8 +17,9 @@
 </script>
 </c:if>
 
+
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button id="authorityBtn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Launch demo modal
 </button>
 
@@ -28,10 +32,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ...
+        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" id="cancelBtn"class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
@@ -119,7 +123,7 @@
 					<td>${member.memberNo }</td>
 					<td>${member.id }</td>
 					<td>${member.name }</td>
-					<td> <fmt:formatDate value="${member.enrollDate }" pattern="yyyy/MM/dd"/>  </td>
+					<td> <fmt:formatDate value="${member.enrollDate }" pattern="yyyy-MM-dd"/>  </td>
 					<td>
 						<select class="select-authority">
 				            <option value="ROLE_AM" ${member.authority =="ROLE_AM" ? "selected" : "" }>관리자</option>		
@@ -131,34 +135,33 @@
 			</c:forEach>	
 			</tbody>
 		</table>
-	</div>
-				
+	</div>	
+					
  
 	<br />
+
 	${pagebar}
 	
 </div>
-
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button>	
+	
 
 <script>
+
 	
-	$(exampleModal)
-		.modal()
-		.on("")
-	
-	
-	
-	/* 권한 변경시 띄울 모달 이벤트 */
-/* 	$(document).on("change",".select-authority",()=>{
-		console.log("select값 변경");
-				
+ 	//권한 변경시 띄울 모달 이벤트 
+ 	$(document).on("change",".select-authority",(e)=>{
+	 	console.log("select값 변경");
+		$(authorityBtn).trigger("click");				
+	});
+
+ 	
+ 	//취소 선택시 이전 값으로 돌리기 
+	$(document).on("click","#cancelBtn",(e)=>{	
+		$(searchBymemberAll).trigger("click");
+	});
 		
-	}); */
-		
-	
+
+ 	
 	/*  호버 이벤트 */
 	$("#productList tr").hover(
 		e=>{
@@ -190,6 +193,7 @@
 				var chk = $(this).val();
 				authority.push(chk);	
 			});
+			
 			// 배열값으로 넘기지 못해 변환 후 keyword에 저장
 			authority.toString();
 			$searchKeyword = authority.toString();
