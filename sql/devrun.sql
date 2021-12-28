@@ -137,12 +137,9 @@ CREATE TABLE "PRODUCT" (
 	"STATUS"	CHAR(1)	DEFAULT 'Y'	NOT NULL
 );
 
-<<<<<<< HEAD
-select * from member;
-=======
 --상품 테이블 판매수 컬럼 추가
 ALTER TABLE PRODUCT ADD (ORDER_COUNT NUMBER DEFAULT 0);
->>>>>>> branch 'master' of https://github.com/wattk/devrun.git
+
 
 -- 상품 테이블 코멘트 추가
 COMMENT ON COLUMN "PRODUCT"."PRODUCT_CODE" IS '상품코드';
@@ -1327,11 +1324,10 @@ where
     m.member_no = 45;
 
 
+select * from view_product_parent_category;
 
-
--- 김다현 상품 - 부모 카테고리 연결 테이블
-
-create or replace view view_product_parent_category
+-- 김다현 상품 - 상품 관련 모든 테이블 연결 (content 없는 버전)
+create view view_product_parent_category
 as select
     ccc.*,
     ppc.parent_category_title
@@ -1357,5 +1353,29 @@ from(
                 join product_child_category pcc
                 on cc.child_category_code = pcc.child_category_code)ccc 
                     join product_parent_category ppc
-                        on ccc.parent_category_code = ppc.parent_category_code ;
+                        on ccc.parent_category_code = ppc.parent_category_code;
 
+
+select * from view_product_all_info;
+
+-- 김다현 상품 - 상품 관련 모든 테이블 연결  (content 있는 버전)
+create view view_product_all_info
+as select
+    ccc.*,
+    ppc.parent_category_title
+from(
+    select
+        cc.*,
+        pcc.child_category_title,
+        pcc.parent_category_code
+    from(
+        select 
+            p.*,
+            c.child_category_code
+        from 
+            product p join product_category c
+            on p.product_code = c.product_code)cc 
+                join product_child_category pcc
+                on cc.child_category_code = pcc.child_category_code)ccc 
+                    join product_parent_category ppc
+                        on ccc.parent_category_code = ppc.parent_category_code;

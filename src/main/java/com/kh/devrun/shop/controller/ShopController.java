@@ -2,13 +2,11 @@ package com.kh.devrun.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.common.DevrunUtils;
+import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
@@ -46,6 +45,9 @@ public class ShopController {
 	private ShopService shopService;
 	
 	@Autowired
+	private ProductService productService;
+	
+	@Autowired
 	ServletContext application;
 //--------------------주입-------------------------------------	
 	
@@ -57,7 +59,7 @@ public class ShopController {
 		
 	}
 	
-	//상품 전체보기 클릭 시 
+	//상품 사이드 메뉴 바에서 전체보기 클릭 시 
 	@GetMapping("/CategoryItemAll")
 	public String CategoryItemAll(@RequestParam String parentCate, Model model) {
 		
@@ -81,11 +83,20 @@ public class ShopController {
 	}
 	
 	
+	@GetMapping("/itemDetail/{productCode}")
+	public void itemDetail(@PathVariable String productCode) {
+		log.debug("productCode 받았나요?{}",productCode);
+		
+		Product product = productService.selectOneItem(productCode);
+		
+		
+	}
+
+	
+	
 	@GetMapping("/shopSearch.do")
 	public void shopSearch() {}
 	
-	@GetMapping("/shopCategory.do")
-	public void shopCategory() {}
 
 	@GetMapping("/itemDetail.do")
 	public void itemDetail(Model model) {
@@ -118,7 +129,6 @@ public class ShopController {
 	public String review (Review review, MultipartFile upFile, RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
 		log.debug("{}", review);
 	
-		log.debug("아이디 못 받아? {} ", review.getId());
 		String saveDirectory = application.getRealPath("/resources/upload/review");
 		
 		if(!upFile.isEmpty() && upFile.getSize()!= 0) {

@@ -53,7 +53,7 @@
 		<!-- 아이템 나열 시작 -->
 		<c:if test = "${itemList != null}">
 			<c:forEach items="${itemList}" var="l">
-		  	  <a href="${pageContext.request.contextPath}/shop/itemDetail.do" class="col-md-3 p-5">
+		  	  <a href="${pageContext.request.contextPath}/shop/itemDetail/${l.productCode}" class="col-md-3 p-5">
 		        <div class="card-box-d">
 		          <div class="card-img-d shop-item-img position-relative">
 		            <img src="${pageContext.request.contextPath }/resources/upload/product/${l.thumbnail}" alt="" class="img-d img-fluid">

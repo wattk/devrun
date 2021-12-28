@@ -110,6 +110,12 @@ public class ProductDaoImpe implements ProductDao{
 	public int insertOption(ProductDetail productDetail) {
 		return session.insert("product.insertOption",productDetail);
 	}
+
+	//다현 - 상세 페이지 뿌리기 위한 item 받아오기
+	@Override
+	public Product selectOneItem(String productCode) {
+		return session.selectOne("product.selectOneItem",productCode);
+	}
 	
 }
 

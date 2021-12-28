@@ -48,6 +48,9 @@ public interface ProductDao {
 	// productOption 추가
 	int insertOption(ProductDetail productDetail);
 	
+	//다현 - 상세 페이지 뿌리기 위한 item 받아오기
+	Product selectOneItem(String productCode);
+	
 	
 	
 }
