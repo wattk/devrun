@@ -114,7 +114,7 @@
 
 
 /* ------ 회원 등급 관리  ---------*/
-
+#authorityBtn{display:none}
 #memberLevelContainer{margin-left: 10%; margin-top: 5%; width:88%; height:100%;}
 #searchContainer{height:10%; margin-top:50px; margin-bottom:20px;}
 #searchContainer select{width:138px; display: inline-block; margin: 0px 30px 0px 5px; height: 70%;}
