@@ -27,7 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.common.mail.MailUtils;
 import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
-import com.kh.devrun.security.service.SecurityService;
+import com.kh.devrun.security.model.service.SecurityService;
 
 import lombok.extern.slf4j.Slf4j;
 

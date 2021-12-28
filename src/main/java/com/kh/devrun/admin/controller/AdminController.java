@@ -391,10 +391,19 @@ public class AdminController {
 	}
 	
 	
+	/**
+	 * -------------------------------- 회원
+	 * 
+	 */
+	
 	
 	// 회원 등급 관리
 	@GetMapping("/memberManage/memberLevel.do")
-	public void memberLevel() {	
+	public void memberLevel(Model model) {
+		
+		List<Member>memberList = memberManageService.selectAllMember();
+		
+		model.addAttribute("memberList",memberList);
 	};
 	
 	// 회원 문의 내역
@@ -402,7 +411,9 @@ public class AdminController {
 	public void memberInquiry() {
 		
 	};
-
+		
+	
+	
 	@ResponseBody
 	@GetMapping("/memberManage/searchMember.do")
 	public Map<String,Object>searchMember(
@@ -415,10 +426,13 @@ public class AdminController {
 		log.debug("searchKeyword = {}",searchKeyword);
 		Map<String,Object>param = new HashMap<>();
 		
+		if(searchKeyword.contains(",")) {
+			log.debug(searchKeyword);
+		}
+		
 		param.put("searchType", "m."+searchType);
 		param.put("searchKeyword", searchKeyword);
-		
-		
+			
 		List<Member>memberList = memberManageService.searchMemberList(param);
 		
 		
@@ -427,20 +441,7 @@ public class AdminController {
 		return map;
 	}
 	
-//	@ResponseBody
-//	@GetMapping("/selectCategory")
-//	public Map<String, Object>selectCategory(@RequestParam Map<String, Object> param){
-//		Map<String, Object> map = new HashMap<>();
-//		
-//		log.debug("param = {}", param);
-//		List<ProductChildCategory> list = productService.selectChildCategory(param);
-//		log.debug("list = {}" ,list);
-//		
-//		map.put("list",list);
-//		map.put("date", new Date());
-//		
-//		return map;
-//	}
+	
 	
 	
 	
