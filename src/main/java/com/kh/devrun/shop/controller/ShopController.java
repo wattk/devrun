@@ -2,13 +2,11 @@ package com.kh.devrun.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,7 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.common.DevrunUtils;
+import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
 import com.kh.devrun.shop.model.service.ShopService;
@@ -46,47 +47,98 @@ public class ShopController {
 	private ShopService shopService;
 	
 	@Autowired
+	private ProductService productService;
+	
+	@Autowired
 	ServletContext application;
-	
-	
 //--------------------주입-------------------------------------	
 	
 
 	@GetMapping("/shopMain.do")
-	public String shopMain() {
-		
-		return "shop/shopMain";
-		
+	public void shopMain() {
 	}
 	
+	//상품 사이드 메뉴 바에서 전체보기 클릭 시 
+	@GetMapping("/CategoryItemAll")
+	public String CategoryItemAll(@RequestParam String parentCate, Model model) {
+		
+		List<Product>itemList = shopService.CategoryItemAll(parentCate);
+		log.debug("{}",itemList);
+		model.addAttribute("itemList", itemList);
+		
+		return "shop/shopCategory";
+	}
+	
+	
+	
+	//사진 리뷰만 모아보기 기능
+	@ResponseBody
+	@GetMapping("picReviewOnly")
+	public List<Review> picReviewOnly() {
+		
+		List<Review> picReviewList = shopService.picReviewOnly();
+		return picReviewList;
+	}
+	
+	
+	// 상세페이지를 위한 상품 하나 받아오기!
+	@GetMapping("/itemDetail/{productCode}")
+	public String selectOneItem(@PathVariable String productCode, Model model) {
+		//상품 조회
+		ProductEx product = productService.selectOneItem(productCode);
+		log.debug("product 받아왔나요? : {}",product);
+		model.addAttribute("product", product);
+		
+		// 옵션도 조회
+		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
+		model.addAttribute("pDetail", pDetail);
+		
+		
+		//해당 상품 리뷰들 조회
+		/*
+		 * List<Review> reviewList = shopService.selectAllReview(); int reviewTotal =
+		 * shopService.countAllList(); log.debug("리뷰 리스트 조회! : {}", reviewList);
+		 * model.addAttribute("reviewList", reviewList);
+		 * model.addAttribute("reviewTotal", reviewTotal);
+		 */
+		
+		return "shop/itemDetail";
+	}
+
 	
 	
 	@GetMapping("/shopSearch.do")
 	public void shopSearch() {}
 	
-	@GetMapping("/shopCategory.do")
-	public void shopCategory() {}
 
-	@GetMapping("/itemDetail.do")
-	public void itemDetail(Model model) {
+	  @GetMapping("/itemDetail.do") public void itemDetail(Model model) {
+	  
+	  List<Review> reviewList = shopService.selectAllReview(); int reviewTotal =
+	  shopService.countAllList(); log.debug("리뷰 리스트 조회! : {}", reviewList);
+	  model.addAttribute("reviewList", reviewList);
+	  model.addAttribute("reviewTotal", reviewTotal);
+	  }
+	
+	
+	//리뷰 삭제하기
+	@GetMapping("/reviewDelete.do")
+	public String reviewDelete(@RequestParam int reviewNo, RedirectAttributes redirectAttr) {
+		log.debug("삭제할 리뷰의 아이디 : {}", reviewNo);
 		
-		List<Review> reviewList = shopService.selectAllReview();
-		int reviewTotal = shopService.countAllList();
-		log.debug("리뷰 리스트 조회! : {}", reviewList);
-		model.addAttribute("reviewList", reviewList);
-		model.addAttribute("reviewTotal", reviewTotal);
+		int result = shopService.reviewDelete(reviewNo);
 		
+		String msg = (result>0)?"리뷰 삭제 성공" : "리뷰 등록 삭제";
+		redirectAttr.addFlashAttribute("msg", msg);
 		
-		
+		return "redirect:/shop/itemDetail.do";
 	}
 	
 	
-	
+	// 리뷰 등록하기
 	@PostMapping("/review.do")
 	public String review (Review review, MultipartFile upFile, RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
 		log.debug("{}", review);
 	
-		log.debug("아이디 못 받아? {} ", review.getId());
 		String saveDirectory = application.getRealPath("/resources/upload/review");
 		
 		if(!upFile.isEmpty() && upFile.getSize()!= 0) {
@@ -110,8 +162,6 @@ public class ShopController {
 		redirectAttr.addFlashAttribute("msg", msg);
 		
 		return "redirect:/shop/itemDetail.do";
-		
-		
 	}
 	
 	
@@ -178,27 +228,6 @@ public class ShopController {
 		return "/shop/promotionDetail";
 	}
 	
-//	@GetMapping("/childCategorySearch.do")
-//	@ResponseBody
-//	public List<Product> childCategorySearch(
-//				@RequestParam(value="childCategoryCode[]", required = false) List<String> childCategoryCode, 
-//				@RequestParam(value="keyword", required = false) String keyword, 
-//				@RequestParam(value = "promotionCode") String promotionCode) 
-//	{
-//		log.debug("{}",keyword);
-//		Map<String, Object> param = new HashMap<>();
-//		param.put("promotionCode", promotionCode);
-//		param.put("childCategoryCode", childCategoryCode);
-//		param.put("keyword", keyword);
-//		log.debug("{}",param);
-//		
-//		List<Product> productList = new ArrayList<>();
-//		
-//		productList = promotionService.selectProductListByPromotionCode(param);
-//		log.debug("list = {}", productList);
-//		
-//		return productList;
-//	}
 	@GetMapping("/childCategorySearch.do")
 	@ResponseBody
 	public Map<String, Object> childCategorySearch(

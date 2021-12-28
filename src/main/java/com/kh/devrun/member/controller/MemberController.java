@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -27,7 +25,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.common.mail.MailUtils;
 import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
+
 import com.kh.devrun.security.model.service.SecurityService;
+
+import com.kh.devrun.product.model.service.ProductService;
+import com.kh.devrun.product.model.vo.Product;
+
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,6 +46,9 @@ public class MemberController{
 	
 	@Autowired
 	private SecurityService securityService;
+	
+	@Autowired
+	private ProductService productService;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -106,8 +113,7 @@ public class MemberController{
 	@GetMapping("/cart.do")
 	public void cart() {}
 	
-	@GetMapping("/order.do")
-	public void order() {}
+
 	
 	@GetMapping("/wishlist.do")
 	public void wishlist() {}

@@ -62,7 +62,7 @@
 	            <img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="img-d img-fluid">
 	            <i class="shop-like-icon fas fa-heart position-absolute"></i>
 	          </div>
-		  	  <a href="${pageContext.request.contextPath}/shop/itemDetail.do?productCode=${product.productCode}">
+		  	  <a href="${pageContext.request.contextPath}/shop/itemDetail/${product.productCode}">
 		          <div>
 		          	<p class="product-name m-0">${product.name}</p>
 		          	<strong><fmt:formatNumber type="currency">${product.price}</fmt:formatNumber></strong>
@@ -116,31 +116,6 @@ $(".category-badge, .shop-sort").click((e)=>{
 			$(".pagebar").detach();
 			$("#productPromotionContainer").after(data["pagebar"]);
 			
-			/* //상품 초기화
-			$("#productPromotionContainer").html('');
-			
-			const productSize = data.length;
-			$("#productSize").text(productSize);
-			
-			$(data).each((i, item)=>{
-				//가격에 원화 표기 및 콤마 추가하기
-				const itemPrice = item.price;
-				const price = itemPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-				
-				let str = `<div class="card-box-d col-md-3 p-5">
-			          <div class="card-img-d shop-item-img position-relative">
-			            <img src="${pageContext.request.contextPath}/resources/upload/product/\${item.thumbnail}" alt="" class="img-d img-fluid">
-			            <i class="shop-like-icon fas fa-heart position-absolute"></i>
-			          </div>
-			          <a href="${pageContext.request.contextPath}/shop/itemDetail.do?productCode=\${item.productCode}">
-				          <div>
-				          	<p class="m-0">\${item.name}</p>
-				          	<strong>&#8361;\${price}</strong>
-				          </div>
-			          </a>
-			        </div>`;
-				$("#productPromotionContainer").append(str);
-			}); */
 		},
 		error : console.log
 	});

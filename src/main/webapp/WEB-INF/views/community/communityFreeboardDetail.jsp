@@ -9,7 +9,6 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
-<link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
 <jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
 	<jsp:param value="" name="title"/>
 </jsp:include>
@@ -31,11 +30,28 @@
 		// 읽기 전용화 --> 비활성화 --> disable
 		$('#summernote').summernote('disable');
 	});
-		
+	
+	// #btnSave 버튼을 'click'하게 되면 #form을 전송(.submit)
+	$(document).on('click', '#btnComment', function(e){
+		console.log("클릭 이벤트 발생!");
+		e.preventDefault();
+		//freeBoardForm : form name값
+		$(document.freeBoardCommentForm).submit();
+	});
+			
 </script>
 <style>
 	#likeButton, #reportButton {
 		width: 90px;
+	}
+	.card-body li:hover {
+	background: lightgray;
+	}
+	.card-body button#commentBtn {
+		display:none;
+	}
+	.card-body li:hover button#commentBtn {
+		display: inline;
 	}
 </style>
 
@@ -117,6 +133,51 @@
 			</div>
 		</div>
 	</div>
+	
+	<hr />
+	
+	<!-- 댓글 -->
+	<div class="card mb-2">
+		<div class="card-header bg-light">
+		        <i class="fa fa-comment fa"></i> 댓글
+		</div>
+		<div class="card-body">
+			<c:if test="${null ne freeboardCommentList  && not empty freeboardCommentList}">
+				<c:forEach items="${freeboardCommentList}" var="communityCommentEntity">
+					<c:choose>
+						<c:when test="${communityCommentEntity.commentLevel eq 1}">
+							<ul class="list-group list-group-flush" id="level1">
+						    <li class="list-group-item" id="commentList">
+							<div class="form-inline mb-2">
+								<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i>&nbsp;&nbsp;<strong>${communityCommentEntity.nickname}</strong></label>
+								&nbsp;&nbsp;<fmt:formatDate value="${communityCommentEntity.regDate}" pattern="yyyy-MM-dd HH:mm"/>
+							</div>
+							<textarea class="form-control" id="exampleFormControlTextarea1" rows="1" readonly="readonly">${communityCommentEntity.content}</textarea>
+							<button type="button" class="btn btn-dark mt-3 float-right" id="commentBtn" onClick="javascript:addReply();">등록</button>
+						    </li>
+						</ul>
+						</c:when>
+						<c:otherwise>
+							<ul class="list-group list-group-flush" id="level2">
+							    <li class="list-group-item" id=level2Reply style="padding-left: 100px;">
+								<div class="form-inline mb-2">
+									<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i>&nbsp;&nbsp;<strong>${communityCommentEntity.nickname}</strong></label>
+									&nbsp;&nbsp;<fmt:formatDate value="${communityCommentEntity.regDate}" pattern="yyyy-MM-dd HH:mm"/>
+								</div>
+								<textarea class="form-control" id="exampleFormControlTextarea1" rows="1" readonly="readonly">${communityCommentEntity.content}</textarea>
+							    </li>
+							</ul>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</c:if>
+		</div>
+	</div>	
+			
+			
+			
+
+
 </div>
 </div>
 

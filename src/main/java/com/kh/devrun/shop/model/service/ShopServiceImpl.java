@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.shop.model.dao.ShopDao;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Review;
@@ -55,4 +56,24 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.countAllList();
 	}
 
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,
+	isolation = Isolation.READ_COMMITTED,
+	rollbackFor= Exception.class)
+	public int reviewDelete(int reviewNo) {
+		return shopDao.reviewDelete(reviewNo);
+	}
+
+	@Override
+	public List<Review> picReviewOnly() {
+		
+		return shopDao.picReviewOnly();
+	}
+
+	@Override
+	public List<Product> CategoryItemAll(String parentCate) {
+		return shopDao.CategoryItemAll(parentCate);
+	}
+	
 }

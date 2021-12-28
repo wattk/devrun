@@ -88,6 +88,9 @@ public class PromotionServiceImpl implements PromotionService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, 
+	isolation = Isolation.READ_COMMITTED, 
+	rollbackFor = Exception.class)
 	public int deletePromotion(String[] promotionCode) {
 		return promotionDao.deletePromotion(promotionCode);
 	}
@@ -126,6 +129,9 @@ public class PromotionServiceImpl implements PromotionService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, 
+	isolation = Isolation.READ_COMMITTED, 
+	rollbackFor = Exception.class)
 	public int updateViewCount(String promotionCode) {
 		return promotionDao.updateViewCount(promotionCode);
 	}

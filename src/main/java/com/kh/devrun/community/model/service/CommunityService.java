@@ -3,6 +3,8 @@ package com.kh.devrun.community.model.service;
 import java.util.List;
 
 import com.kh.devrun.community.model.vo.Community;
+import com.kh.devrun.community.model.vo.CommunityComment;
+import com.kh.devrun.community.model.vo.CommunityCommentEntity;
 import com.kh.devrun.community.model.vo.CommunityEntity;
 
 public interface CommunityService {
@@ -20,6 +22,10 @@ public interface CommunityService {
 	int selectFreeboardTotalCount();
 
 	CommunityEntity selectOneFreeBoard(int communityNo);
+
+	List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo);
+
+
 
 
 

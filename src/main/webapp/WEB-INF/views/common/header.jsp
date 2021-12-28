@@ -136,7 +136,7 @@
 		      </sec:authorize>
 		      
 		      <!-- 로그인 되어있을 때 -->
-		      <sec:authorize access="isAuthenticated()">
+		      <sec:authorize access="hasAnyRole('M1','M2')">
 		      	<div class="pt-2" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	   	            <a class="" href="#">[<sec:authentication property="principal.nickname"/>]</a><span class="">님 안녕하세요</span>
 		      	</div>
@@ -145,6 +145,26 @@
 	              <a class="dropdown-item" id="chat">채팅</a>
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/orderList.do">주문/배송</a>
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/member/cart.do">장바구니</a>
+	              <a class="dropdown-item" href="#">
+	              	<form:form
+				    	id="navLogoutFrm"
+				    	method="POST"
+				    	action="${pageContext.request.contextPath}/member/memberLogout.do">
+				    	<button
+				    		class="btn btn-primary log-con"
+				    		type="submit">로그아웃</button>
+				    </form:form>
+	              </a>
+	            </div>
+			 </sec:authorize>
+		      <sec:authorize access="hasRole('AM')">
+		      	<div class="pt-2" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	   	            <a class="" href="#">[<sec:authentication property="principal.nickname"/>]</a><span class="">님 안녕하세요</span>
+		      	</div>
+	            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a>
+	              <a class="dropdown-item" id="chat">채팅</a>
+	              <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/adminMain.do">관리페이지</a>
 	              <a class="dropdown-item" href="#">
 	              	<form:form
 				    	id="navLogoutFrm"
