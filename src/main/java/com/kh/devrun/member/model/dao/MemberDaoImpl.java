@@ -58,4 +58,22 @@ public class MemberDaoImpl implements MemberDao {
 	/**
 	 * 지영 dao 끝
 	 */
+	
+	/**
+	 * 지원 dao 시작
+	 */
+	
+	@Override
+	public int updateMemberProfile(Member member) {
+		return session.update("member.updateMemberProfile", member);
+	}
+
+	@Override
+	public Member selectOneMemberById(String id) {
+		return session.selectOne("member.selectOneMemberById", id);
+	}
+	
+	/**
+	 * 지원 dao 끝
+	 */
 }
