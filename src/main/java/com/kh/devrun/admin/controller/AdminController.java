@@ -122,12 +122,12 @@ public class AdminController {
 	@PostMapping("/insertProduct.do")
 	public String insertProduct(
 			Product product,
-			@RequestParam String parentCategoryCode,
-			@RequestParam String childCategoryCode,
-			@RequestParam String[]optionContent,
-			@RequestParam String sku,
-			@RequestParam int[]quantity,
-			@RequestParam String[]option,
+			@RequestParam(value = "parentCategoryCode") String parentCategoryCode,
+			@RequestParam(value = "childCategoryCode")  String childCategoryCode,
+			@RequestParam(value = "optionContent")  String[]optionContent,
+			@RequestParam(value = "sku")  String sku,
+			@RequestParam(value = "quantity")  int[]quantity,
+			@RequestParam(value = "option")  String[]option,
 			MultipartFile upFile,
 			
 			RedirectAttributes redirectAttr) {
