@@ -20,7 +20,6 @@ CREATE TABLE "MEMBER" (
 
 
 
-
 -- 회원 번호 시퀀스 생성
 create sequence seq_member_no;
 
@@ -132,14 +131,18 @@ CREATE TABLE "PRODUCT" (
 	"NAME"	VARCHAR2(100)		NOT NULL,
 	"PRICE"	NUMBER		NOT NULL,
 	"REG_DATE"	DATE		NOT NULL,
-	"THUMBNAIL"	VARCHAR2(100)		NULL,
+	"THUMBNAIL"	VARCHAR2(100)		NOT NULL,
 	"CONTENT"	CLOB		NOT NULL,
 	"VIEW_COUNT"	NUMBER	DEFAULT 0	NULL,
 	"STATUS"	CHAR(1)	DEFAULT 'Y'	NOT NULL
 );
 
+<<<<<<< HEAD
+select * from member;
+=======
 --상품 테이블 판매수 컬럼 추가
 ALTER TABLE PRODUCT ADD (ORDER_COUNT NUMBER DEFAULT 0);
+>>>>>>> branch 'master' of https://github.com/wattk/devrun.git
 
 -- 상품 테이블 코멘트 추가
 COMMENT ON COLUMN "PRODUCT"."PRODUCT_CODE" IS '상품코드';
@@ -1274,9 +1277,11 @@ select*from PRODUCT_PARENT_CATEGORY;
 
 select * from product_category;
 
-select * from product;
+select * from product order by reg_date desc;
 
+select * from product_detail;
 
+update
 
 -- 상품- 분류
 
@@ -1300,4 +1305,29 @@ from
         on p.product_code = pc.product_code;
 
 select * from member;
+select * from authorities;
+
+insert into authorities
+values(
+    'ROLE_AM',
+    48
+);
+
+
+select
+    m.member_no,
+    m.id,
+    m.name,
+    m.enroll_date,
+        a.authority
+from
+    member m join authorities a on
+    m.member_no = a.member_no
+where
+    m.member_no = 45;
+
+
+
+
+
 

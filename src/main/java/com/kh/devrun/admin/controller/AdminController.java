@@ -33,6 +33,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.common.DevrunUtils;
+import com.kh.devrun.member.model.vo.Member;
+import com.kh.devrun.memberManage.model.service.MemberManageService;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
@@ -41,7 +43,6 @@ import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 import lombok.extern.slf4j.Slf4j;
-import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @Slf4j
@@ -56,6 +57,9 @@ public class AdminController {
 	
 	@Autowired
 	ServletContext application;
+	
+	@Autowired
+	MemberManageService memberManageService;
 	
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
@@ -138,7 +142,7 @@ public class AdminController {
 		log.debug("quantity = {}", quantity);
 		
 		
-		// 대분류코드 + 소분류코드 + name 으로 상품코드를 만둘어준 뒤 pruduct에 set
+		// 대분류코드 + 소분류코드로 상품코드를 만둘어준 뒤 pruduct에 set
 		String productCode = parentCategoryCode+"-"+childCategoryCode;
 		product.setProductCode(productCode);
 		
@@ -203,8 +207,7 @@ public class AdminController {
 		else {
 			
 		}
-		
-		
+			
 		String msg = result > 0 ? "상품등록을 성공했습니다!":"상품등록에 실패했습니다!!!!!!";  
 		redirectAttr.addFlashAttribute("msg",msg);
 		
@@ -281,20 +284,49 @@ public class AdminController {
 	// 상품 && 상품 옵션 수정
 	@PostMapping("/updateProduct.do")
 	public String productUpdate(
-			Product product,		
+			Product product,
+			
 			@RequestParam String productCode, // 상품 리스트에서 넘어온 productCode
 			@RequestParam String parentCategoryCode,
-			@RequestParam String childCategoryCode,
+			@RequestParam String childCategoryCode,			
+			@RequestParam int[]detailNo,
+			@RequestParam (required=false)int[]deleteDetailNo, // 삭제할 detailNo
+			@RequestParam (required=false)int[]insertDetailNo, // 추가할 detailNo
+			@RequestParam (required=false)String[]insertOption, // 추가할 option
+			@RequestParam (required=false)String[]insertOptionContent, // 추가할 optionContent
+			@RequestParam (required=false)int[]insertQuantity, // 추가할 quantity			
 			@RequestParam String[]optionContent,
-			@RequestParam String sku,
-			@RequestParam int[]quantity,
 			@RequestParam String[]option,
+			@RequestParam int[]quantity,
+			@RequestParam String sku,
 			MultipartFile upFile,
 			RedirectAttributes redirectAttr
 			) {
 		int result = 0;
 		
-		// 0. 값 세팅
+		Map<String,Object>param = new HashMap<>();
+		List<ProductDetail>insertProductDetailList = new ArrayList<>();
+		
+		if(insertOption != null) {			
+			for(int i = 0; i < insertDetailNo.length; i++) {
+				ProductDetail insertProductDetail = new ProductDetail();
+				insertProductDetail.setProductCode(productCode);
+				insertProductDetail.setDetailNo(insertDetailNo[i]);
+				insertProductDetail.setOptionNo(insertOption[i]);
+				insertProductDetail.setOptionContent(insertOptionContent[i]);
+				insertProductDetail.setQuantity(insertQuantity[i]) ;
+							
+				insertProductDetailList.add(insertProductDetail);
+			}
+		}
+		
+		
+		log.debug("deleteDetailNo = {}",deleteDetailNo);
+		log.debug("insertProductDetailList = {}",insertProductDetailList);
+		
+		param.put("deleteDetailNo", deleteDetailNo);
+		param.put("insertProductDetailList", insertProductDetailList);
+		
 		
 		// 상품 List에 뿌려준 productCode를 상품detail 페이지로 넘긴 뒤 update 페이지까지 넘겨줌
 		product.setProductCode(productCode);
@@ -306,7 +338,8 @@ public class AdminController {
 		
 		for(int i = 0; i < option.length; i++) {
 			ProductDetail productDetail = new ProductDetail();
-			
+						
+			productDetail.setDetailNo(detailNo[i]) ;
 			productDetail.setOptionNo(option[i]);
 			productDetail.setOptionContent(optionContent[i]);
 			productDetail.setSku(sku);
@@ -317,23 +350,9 @@ public class AdminController {
 		
 		// prodcut 객체에 저장
 		product.setProductDetailList(productDetailList);
-		
-		
+				
 		log.debug("product = {}",product); 
-		
-		// 1.상품 정보 수정
-
-
-		
-		
-		
-		
-		// 2.상품 옵션 수정
-		
-			
-		
-		
-		// 3.첨부파일 수정
+					
 		
 		// 서버의 기존이미지 삭제
 		String fileDirectory = application.getRealPath("/resources/upload/product/")+productCode+".png";
@@ -356,10 +375,14 @@ public class AdminController {
 			}
 					 
 		}
-		
+			
 		// 바뀐 이미지 파일 명 set한 뒤 update
+		// 상품 정보 수정(첨부파일도 같이 수정)
 		product.setThumbnail(newProductImg);
-		result = productService.updateProduct(product);
+		
+		param.put("product", product);
+		
+		result = productService.updateProduct(param);
 		
 		
 		String msg = "상품 수정 성공 !!";
@@ -380,7 +403,44 @@ public class AdminController {
 		
 	};
 
+	@ResponseBody
+	@GetMapping("/memberManage/searchMember.do")
+	public Map<String,Object>searchMember(
+			@RequestParam String searchType,
+			@RequestParam String searchKeyword
+			){
+		Map<String,Object>map = new HashMap<>();
+		
+		log.debug("searchType = {}",searchType);
+		log.debug("searchKeyword = {}",searchKeyword);
+		Map<String,Object>param = new HashMap<>();
+		
+		param.put("searchType", "m."+searchType);
+		param.put("searchKeyword", searchKeyword);
+		
+		
+		List<Member>memberList = memberManageService.searchMemberList(param);
+		
+		
+		map.put("memberList",memberList);
+		map.put("date",new Date());
+		return map;
+	}
 	
+//	@ResponseBody
+//	@GetMapping("/selectCategory")
+//	public Map<String, Object>selectCategory(@RequestParam Map<String, Object> param){
+//		Map<String, Object> map = new HashMap<>();
+//		
+//		log.debug("param = {}", param);
+//		List<ProductChildCategory> list = productService.selectChildCategory(param);
+//		log.debug("list = {}" ,list);
+//		
+//		map.put("list",list);
+//		map.put("date", new Date());
+//		
+//		return map;
+//	}
 	
 	
 	
