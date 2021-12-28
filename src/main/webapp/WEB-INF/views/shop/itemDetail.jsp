@@ -209,18 +209,19 @@
 					<img src="https://i.ibb.co/XLNWsgC/red-square.jpg" alt="" id="reviewExpansion">
 				</div>
 				<!--리뷰사진확대 모달 끝-->
+				<!-- 상품 페이지 시작 -->
 				<div id="itemDetailPicDiv" class="row align-items-center">
 					<div id="itemDetailBicPicDiv">
-						<img src="https://i.ibb.co/gm7H77f/square.png" alt="">
+						<img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="">
 					</div>
 				</div>
 				<div id="itemDetailInfoDiv">
 					<div id="itemDetailNameDiv">
-						<p>[국내공식정품] G304 WIRELESS 무선 게이밍 마우스</p>
+						<p>${product.name}</p>
 					</div>
 					<div id="itemDetailOptionDiv">
-						<span>59,590</span>원
-						<br><span>혜택 : </span><span style="color:pink;">180p </span>적립
+						<span><fmt:formatNumber value="${product.price}" pattern="#,###,###"/></span> 원
+						<br><span>혜택 : </span><span style="color:pink;"><fmt:formatNumber value="${product.price / 200}" pattern="#,###,### P"/> </span>적립
 						<br><span>배송 : </span><span>무료배송</span>
 						<br>
 						<div id="jeju">
@@ -235,7 +236,7 @@
 							<option value="3">Three</option>
 						</select>
 						<div id="priceDiv" class="mt-3 mb-3">
-							<span>주문금액</span><span>40,000</span>
+							<span>주문금액</span><span><fmt:formatNumber value="${product.price}" pattern="#,###,### 원"/></span>
 						</div>
 						<div id="orderBtnDiv" class="text-center row">
 							<button type="button" class="btn btn-primary col-6">장바구니</button>
@@ -262,7 +263,7 @@
 								  <div class="p-4" id="sortBy">
 									<span class="pr-2 pl-2 shop-sort">최신순</span>
 									<span class="pr-2 pl-2 shop-sort">오래된순 </span>
-									<span class="pr-2 pl-2 shop-sort">사진리뷰모아보기</span>
+									<span class="pr-2 pl-2 shop-sort" onclick="picReviewOnly()">사진리뷰모아보기</span>
 									<sec:authorize access="hasAnyRole('M1','M2')">
 										<button type="button" class="btn btn-warning report-btn3" data-toggle="modal" data-target="#exampleModal3">리뷰작성하기</button>	
 									</sec:authorize>
@@ -485,9 +486,46 @@
 $('.reviewDelBtn').click((e) => {
 	var reviewNo =e.target.value;	
 	console.log(`삭제할 리뷰 아이디 : \${reviewNo}`);
-	location.href=`${pageContext.request.contextPath}/shop/reviewDelete.do?reviewNo=\${reviewNo}`;
+	
+	if(confirm("리뷰를 삭제하시겠습니까?")){
+		location.href=`${pageContext.request.contextPath}/shop/reviewDelete.do?reviewNo=\${reviewNo}`;	
+	}else{
+		 return;
+	}
+	
 	
 });
+
+/*사진리뷰만 보기 정렬 시작 */
+function picReviewOnly(){
+	
+	$.ajax({
+		
+		url: "${pageContext.request.contextPath}/shop/picReviewOnly",
+		method: "GET",
+		success(data){
+			console.log(data);
+			
+		},
+		error: console.log
+	});
+	
+	 
+}
+/*사진리뷰만 보기 정렬 끝 */
+
+/*옵션 태그 불러오기 비동기 처리*/
+
+window.onload = function () {
+	
+	$.ajax({
+		url: `${pageContext.request.contextPath}/shop/itemOptions/\${}`;,
+		success(data);
+		
+	});
+}
+ 
+/*옵션 태그 불러오기 비동기 처리 끝*/
 </script>		
 	<!-- body 영역 끝 -->	
 			

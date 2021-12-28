@@ -2,13 +2,11 @@ package com.kh.devrun.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.common.DevrunUtils;
+import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
 import com.kh.devrun.shop.model.service.ShopService;
@@ -46,9 +46,10 @@ public class ShopController {
 	private ShopService shopService;
 	
 	@Autowired
+	private ProductService productService;
+	
+	@Autowired
 	ServletContext application;
-	
-	
 //--------------------주입-------------------------------------	
 	
 
@@ -59,13 +60,45 @@ public class ShopController {
 		
 	}
 	
+	//상품 사이드 메뉴 바에서 전체보기 클릭 시 
+	@GetMapping("/CategoryItemAll")
+	public String CategoryItemAll(@RequestParam String parentCate, Model model) {
+		
+		List<Product>itemList = shopService.CategoryItemAll(parentCate);
+		log.debug("{}",itemList);
+		model.addAttribute("itemList", itemList);
+		
+		return "shop/shopCategory";
+		
+	}
+	
+	
+	//사진 리뷰만 모아보기 기능
+	@ResponseBody
+	@GetMapping("picReviewOnly")
+	public List<Review> picReviewOnly() {
+		
+		List<Review> picReviewList = shopService.picReviewOnly();
+		
+		return picReviewList;
+	}
+	
+	
+	@GetMapping("/itemDetail/{productCode}")
+	public String selectOneItem(@PathVariable String productCode, Model model) {		
+		ProductEx product = productService.selectOneItem(productCode);
+		log.debug("product 받아왔나요? : {}",product);
+		
+		model.addAttribute("product", product);
+		return "shop/itemDetail";
+		
+	}
+
 	
 	
 	@GetMapping("/shopSearch.do")
 	public void shopSearch() {}
 	
-	@GetMapping("/shopCategory.do")
-	public void shopCategory() {}
 
 	@GetMapping("/itemDetail.do")
 	public void itemDetail(Model model) {
@@ -98,7 +131,6 @@ public class ShopController {
 	public String review (Review review, MultipartFile upFile, RedirectAttributes redirectAttr) throws IllegalStateException, IOException {
 		log.debug("{}", review);
 	
-		log.debug("아이디 못 받아? {} ", review.getId());
 		String saveDirectory = application.getRealPath("/resources/upload/review");
 		
 		if(!upFile.isEmpty() && upFile.getSize()!= 0) {

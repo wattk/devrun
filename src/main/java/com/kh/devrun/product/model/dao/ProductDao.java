@@ -7,6 +7,7 @@ import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductCategory;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.product.model.vo.ProductExtends;
 
 public interface ProductDao {
@@ -47,6 +48,9 @@ public interface ProductDao {
 
 	// productOption 추가
 	int insertOption(ProductDetail productDetail);
+	
+	//다현 - 상세 페이지 뿌리기 위한 item 받아오기
+	ProductEx selectOneItem(String productCode);
 	
 	
 	

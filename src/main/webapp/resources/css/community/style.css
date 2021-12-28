@@ -83,6 +83,15 @@
 	font-weight: bolder;
 }
 
+/* 대댓글 */
+#level2Reply {
+	padding-left: 100px;
+}
 
+/* 댓글 */
+
+#commentList li:hover button.commentBtn {
+	display: inline;
+}
 
 

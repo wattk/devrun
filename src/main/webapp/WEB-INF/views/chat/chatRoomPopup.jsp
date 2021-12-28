@@ -529,11 +529,11 @@
 							<!-- 회원 프로필 사진 -->
 							<%-- 프로필 사진 없는 경우 --%>
 							<c:if test="${loginMember.proPhoto eq null}">
-								<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
+								<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 							</c:if>
 							<%-- 프로필 사진 있는 경우 --%>
 					      	<c:if test="${loginMember.proPhoto ne null}">
-					      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${loginMember.proPhoto}" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>	
+					      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${loginMember.proPhoto}" alt="회원 프로필 사진" class="member-profile"/>	
 					      	</c:if>
 							<!-- 회원 닉네임 -->
 							<strong>${loginMember.nickname}</strong>
@@ -542,11 +542,11 @@
 							<!-- 회원 프로필 사진 -->
 							<%-- 프로필 사진 없는 경우 --%>
 							<c:if test="${receiver.proPhoto eq null}">
-								<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
+								<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 							</c:if>
 							<%-- 프로필 사진 있는 경우 --%>
 					      	<c:if test="${receiver.proPhoto ne null}">
-					      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${receiver.proPhoto}" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>	
+					      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${receiver.proPhoto}" alt="회원 프로필 사진" class="member-profile"/>	
 					      	</c:if>
 							<!-- 회원 닉네임 -->
 							<strong>${receiver.nickname}</strong>
@@ -581,11 +581,11 @@
 	        <!-- 회원 프로필 사진 -->
 			<%-- 프로필 사진 없는 경우 --%>
 			<c:if test="${receiver.proPhoto eq null}">
-				<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
+				<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile"/>
 			</c:if>
 			<%-- 프로필 사진 있는 경우 --%>
 	      	<c:if test="${receiver.proPhoto ne null}">
-	      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${receiver.proPhoto}" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>	
+	      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${receiver.proPhoto}" alt="회원 프로필 사진" class="member-profile"/>	
 	      	</c:if>
 			<!-- 닉네임 -->
 			<strong>${receiver.nickname}</strong>

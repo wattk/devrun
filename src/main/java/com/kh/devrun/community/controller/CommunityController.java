@@ -19,6 +19,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.community.common.CommunityUtils;
 import com.kh.devrun.community.model.service.CommunityService;
 import com.kh.devrun.community.model.vo.Community;
+import com.kh.devrun.community.model.vo.CommunityComment;
+import com.kh.devrun.community.model.vo.CommunityCommentEntity;
 import com.kh.devrun.community.model.vo.CommunityEntity;
 
 import lombok.extern.slf4j.Slf4j;
@@ -226,8 +228,25 @@ public class CommunityController {
 		
 		// 업무로직
 		CommunityEntity communityEntity = communityService.selectOneFreeBoard(communityNo);
-		log.debug(" communityEntity = {}", communityEntity);
+		log.debug("communityEntity = {}", communityEntity);
 		model.addAttribute("communityEntity", communityEntity);
+		
+		// 댓글
+		List<CommunityCommentEntity> freeboardCommentList = communityService.selectFreeboardCommentList(communityNo);
+		log.debug("freeboardCommentList = {}", freeboardCommentList);
+		model.addAttribute("freeboardCommentList", freeboardCommentList);
+	}
+	
+	// 자유게시판-댓글작성
+	@PostMapping("/communityFreeboardCommentEnroll.do")
+	public String insertComment(@RequestParam int memberNo, @RequestParam String content) throws Exception {
+		CommunityComment communityComment = new CommunityComment();
+		communityComment.setContent(content);
+		communityComment.setMemberNo(memberNo);
+		
+		
+		
+		return "redirect:/community/communityFreeboardList.do";
 	}
 	
 	

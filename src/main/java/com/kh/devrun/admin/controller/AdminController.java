@@ -341,7 +341,9 @@ public class AdminController {
 						
 			productDetail.setDetailNo(detailNo[i]) ;
 			productDetail.setOptionNo(option[i]);
-			productDetail.setOptionContent(optionContent[i]);
+			if(!ArrayUtils.isEmpty(optionContent)) {
+				productDetail.setOptionContent(optionContent[i]);
+			}
 			productDetail.setSku(sku);
 			productDetail.setQuantity(quantity[i]);
 			

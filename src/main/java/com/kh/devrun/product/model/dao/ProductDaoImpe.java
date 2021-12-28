@@ -12,6 +12,7 @@ import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductCategory;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.product.model.vo.ProductExtends;
 
 import lombok.extern.slf4j.Slf4j;
@@ -109,6 +110,12 @@ public class ProductDaoImpe implements ProductDao{
 	@Override
 	public int insertOption(ProductDetail productDetail) {
 		return session.insert("product.insertOption",productDetail);
+	}
+
+	//다현 - 상세 페이지 뿌리기 위한 item 받아오기
+	@Override
+	public ProductEx selectOneItem(String productCode) {
+		return session.selectOne("product.selectOneItem",productCode);
 	}
 	
 }

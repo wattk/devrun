@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.devrun.community.model.vo.Community;
+import com.kh.devrun.community.model.vo.CommunityComment;
+import com.kh.devrun.community.model.vo.CommunityCommentEntity;
 import com.kh.devrun.community.model.vo.CommunityEntity;
 
 @Repository
@@ -52,6 +54,12 @@ public class CommunityDaoImpl implements CommunityDao {
 	public CommunityEntity selectOneFreeBoard(int communityNo) {
 		return session.selectOne("community.selectOneFreeBoard", communityNo);
 	}
+
+	@Override
+	public List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo) {
+		return session.selectList("community.selectFreeboardCommentList", communityNo);
+	}
+
 
 	
 
