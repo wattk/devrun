@@ -68,7 +68,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="text" name="sku" placeholder="재품 단위" value="-" />
+							<input type="text" name="sku" placeholder="재품 단위" value="" required/>
 						</td>
 					</tr>					
 					<tr>
