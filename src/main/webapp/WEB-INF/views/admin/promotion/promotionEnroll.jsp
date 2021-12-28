@@ -91,6 +91,52 @@
 	</div>
 </form:form>
 <script>
+$(document).ready(function() {
+	
+	//이벤트 등록 썸머노트
+	$('#summernoteEnroll')
+		.summernote({
+		  height: 300,                 // 에디터 높이
+		  minHeight: null,             // 최소 높이
+		  maxHeight: null,             // 최대 높이
+		  focus: false,                  // 에디터 로딩후 포커스를 맞출지 여부
+		  lang: "ko-KR",					// 한글 설정
+		  placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
+		  callbacks:{
+			onImageUpload : function(files){
+				uploadSummernoteImageFile(files[0], this);
+			},
+			onPaste : ((e)=>{
+				let clipboardData = e.originalEvent.clipboardData;
+				if(clipboardData && clipboardData.items && clipboardData.items.length){
+					let item = clipboardData.items[0];
+					if(item.kind === 'file' && item.type.indexof('image/') != -1){
+						e.preventDefault();
+					}
+				}
+			})
+		}
+	});
+	
+	function uploadSummernoteImageFile(file, editor){
+		const data = new FormData();
+		data.append("file", file);
+		$.ajax({
+			data : data,
+			type : "POST",
+			url : "${pageContext.request.contextPath}/uploadSummernoteImageFile",
+			contentType : false,
+			processData : false,
+			success(data){
+				console.log(data);
+				$('#summernoteEnroll').summernote('insertImage', "${pageContext.request.contextPath}/resources/upload/promotion/"+data["filename"]);
+			},
+			error : console.log
+			
+		});
+	}
+});
+
 //등록 버튼 클릭 시 form 제출
 $(promotionEnrollBtn).click((e)=>{
 	$(document.promotionEnrollFrm).submit();	

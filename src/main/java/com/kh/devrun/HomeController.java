@@ -1,33 +1,50 @@
 package com.kh.devrun;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.devrun.common.DevrunUtils;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Handles requests for the application home page.
  */
 @Controller
+@Slf4j
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	private IamportClient api;
+	
+	@Autowired
+	private ServletContext application;
 	
 	
 	
@@ -63,5 +80,33 @@ public class HomeController {
 	@RequestMapping(value="/verifyIamport/{imp_uid}")
 	public IamportResponse<Payment> paymentByImpUid(Model model, Locale locale, HttpSession session, @PathVariable(value="imp_uid")String imp_uid) throws IamportResponseException, IOException{
 		return api.paymentByImpUid(imp_uid); 
+	}
+	
+	@PostMapping(value="/uploadSummernoteImageFile", produces = "application/json")
+	@ResponseBody
+	public Map<String, Object> uploadSummernoteImageFile(@RequestParam("file") MultipartFile upFile) {
+		log.debug("file = {}", upFile);
+		Map<String, Object> map = new HashMap<>();
+		
+		String saveDirectory = application.getRealPath("/resources/upload/promotion");
+		String originalFilename = upFile.getOriginalFilename();
+		String renamedFilename = DevrunUtils.getRenamedFilename(originalFilename);
+		
+		File dest = new File(saveDirectory, renamedFilename);
+		
+		try {
+			InputStream fileStream = upFile.getInputStream();
+			FileUtils.copyInputStreamToFile(fileStream, dest);
+			map.put("url", saveDirectory);
+			map.put("filename", renamedFilename);
+			map.put("responseCode", "success");
+		} catch (IOException e) {
+			FileUtils.deleteQuietly(dest);
+			map.put("responseCode", "error");
+			e.printStackTrace();
+		}
+		
+		return map;
+		
 	}
 }

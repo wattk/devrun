@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductExtends implements Serializable {
+public class ProductExtends implements Serializable{
 
 	/**
 	 * 

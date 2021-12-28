@@ -5,7 +5,7 @@
  //썸머노트 작동
 $(document).ready(function() {
 	
-	//이벤트 등록 썸머노트
+	/*//이벤트 등록 썸머노트
 	$('#summernoteEnroll')
 		.summernote({
 		  height: 300,                 // 에디터 높이
@@ -13,8 +13,39 @@ $(document).ready(function() {
 		  maxHeight: null,             // 최대 높이
 		  focus: false,                  // 에디터 로딩후 포커스를 맞출지 여부
 		  lang: "ko-KR",					// 한글 설정
-		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+		  placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
+		  callbacks:{
+			onImageUpload : ((files)=>{
+				uploadSummernoteImageFile(files[0], files.target);
+			}),
+			onPaste : ((e)=>{
+				let clipboardData = e.originalEvent.clipboardData;
+				if(clipboardData && clipboardData.items && clipboardData.items.length){
+					let item = clipboardData.items[0];
+					if(item.kind === 'file' && item.type.indexof('image/') != -1){
+						e.preventDefault();
+					}
+				}
+			})
+		}
 	});
+	
+	const uploadSummernoteImageFile = (file, editor) =>{
+		const data = new FormData();
+		data.append("file", file);
+		$.ajax({
+			data : data,
+			type : "POST",
+			url : "${pageContext.request.contextPath}/uploadSummernoteImageFile",
+			contentType : false,
+			processData : false,
+			success(data){
+				$(editor).summernote('insertImage', data.url);
+			},
+			error : console.log
+			
+		});
+	}*/
 	
 	//이벤트 수정 썸머노트
 	$('#summernoteDetail')
