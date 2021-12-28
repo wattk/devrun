@@ -231,9 +231,9 @@
 						<hr>
 						<select class="form-select col-12" aria-label="Default select example">
 							<option selected>옵션선택</option>
-							<option value="1">One</option>
-							<option value="2">Two</option>
-							<option value="3">Three</option>
+							<c:forEach items="${pDetail}" var ="pd">
+								<option value="${pd.detailNo}">${pd.optionNo} <c:if test="${pd.optionContent != null}"> , ${pd.optionContent}</c:if></option>
+							</c:forEach>
 						</select>
 						<div id="priceDiv" class="mt-3 mb-3">
 							<span>주문금액</span><span><fmt:formatNumber value="${product.price}" pattern="#,###,### 원"/></span>
@@ -515,22 +515,6 @@ function picReviewOnly(){
 }
 /*사진리뷰만 보기 정렬 끝 */
 
-/*옵션 태그 불러오기 비동기 처리*/
-
-window.onload = function () {
-	
-	
-	$.ajax({
-		url: "${pageContext.request.contextPath}/shop/itemOptions/${product.productCode}",
-		success(data){
-			
-		},
-		error : console.log
-		
-	});
-}
- 
-/*옵션 태그 불러오기 비동기 처리 끝*/
 
 //바로구매 버튼 클릭 이벤트 혜진 시작
 $("#orderBtn").click((e)=>{

@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
@@ -69,6 +70,7 @@ public class ShopController {
 	}
 	
 	
+	
 	//사진 리뷰만 모아보기 기능
 	@ResponseBody
 	@GetMapping("picReviewOnly")
@@ -86,6 +88,11 @@ public class ShopController {
 		ProductEx product = productService.selectOneItem(productCode);
 		log.debug("product 받아왔나요? : {}",product);
 		model.addAttribute("product", product);
+		
+		// 옵션도 조회
+		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
+		model.addAttribute("pDetail", pDetail);
+		
 		
 		//해당 상품 리뷰들 조회
 		/*
