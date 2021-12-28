@@ -35,7 +35,7 @@
 					<form:form
 					name="reviewFrm"
 					method="POST"
-					action="${pageContext.request.contextPath}/shop/review.do"
+					action="${pageContext.request.contextPath}/shop/insertReview"
 					enctype="multipart/form-data">
 						<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog" role="document">
@@ -50,12 +50,12 @@
 									<div class="qm-body1">
 										<p>해당상품</p>
 										<div class="row" id="qItem">
-											<img id="qPIc" src="https://i.ibb.co/gm7H77f/square.png" alt="">
-											<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
-											<input type="hidden" name="productCode" value="332">
+											<img id="qPIc" src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="">
+											<p>${product.name}</p>
 											<sec:authorize access="isAuthenticated()">
 												<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
 												<input type="hidden" name="id" value='<sec:authentication property="principal.id"/>' />
+												<input type="hidden" name="productCode" value='${product.productCode}' />
 											</sec:authorize>
 										</div>
 										<p class="mt-3">상품 별점</p>

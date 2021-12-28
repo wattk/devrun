@@ -426,6 +426,7 @@ color: green;
 	width: 52px;
 	height: 52px;
 	margin-right: 15px;
+	border: 2px solid #cde56b;
 }
 #qPIc + p {
 	font-size: 13px;

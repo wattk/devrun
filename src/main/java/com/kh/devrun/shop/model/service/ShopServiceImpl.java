@@ -1,6 +1,8 @@
 package com.kh.devrun.shop.model.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +34,9 @@ public class ShopServiceImpl implements ShopService {
 		try {
 			//1. review insert
 			result = shopDao.insertReview(review);
-			
+
 			Attachment attach = review.getAttach();
+			log.debug("attach 없나? : {}", attach);
 			if(attach != null) {
 				attach.setReviewNo(review.getReviewNo());
 				result = shopDao.insertAttach(attach);
@@ -47,13 +50,13 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public List<Review> selectAllReview() {
-		return shopDao.selectAllReview();
+	public List<Review> selectAllReview(String productCode) {
+		return shopDao.selectAllReview(productCode);
 	}
 
 	@Override
-	public int countAllList() {
-		return shopDao.countAllList();
+	public int countAllList(String productCode) {
+		return shopDao.countAllList(productCode);
 	}
 
 
@@ -75,5 +78,6 @@ public class ShopServiceImpl implements ShopService {
 	public List<Product> CategoryItemAll(String parentCate) {
 		return shopDao.CategoryItemAll(parentCate);
 	}
+
 	
 }

@@ -1358,7 +1358,7 @@ from(
 
 select * from view_product_all_info;
 
--- 김다현 상품 - 상품 관련 모든 테이블 연결  (content 있는 버전)
+-- 김다현 상품 - 상품 관련 모든 테이블 연결 (content 있는 버전)
 create view view_product_all_info
 as select
     ccc.*,
