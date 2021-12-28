@@ -25,4 +25,6 @@ public interface MemberService {
 
 	List<Address> selectAddressListByMemberNo(int memberNo);
 	
+	Member selectOneMemberByCheckKeyword(Map<String, Object> param);
+	
 }

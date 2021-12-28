@@ -4,6 +4,8 @@ import java.beans.PropertyEditor;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -127,69 +131,102 @@ public class MypageController {
 		
 	}
 	
+	/**
+	 * 이메일 & 닉네임 중복 체크
+	 * select * from member where ${checkKeyword} = #{value} and id != #{id}
+	 */
+	@ResponseBody
+	@GetMapping("/myinfo/checkUpdateDuplicate")
+	public Map<String, Object> checkIdDuplicate(@RequestParam Map<String, Object> param, Authentication authentication){
+		log.debug("param = {}", param);
+		Map<String, Object> map = new HashMap<>();
+		Member principal = (Member) authentication.getPrincipal();
+		param.put("id", principal.getId());
+		Member member = memberService.selectOneMemberByCheckKeyword(param);
+		log.debug("member = {}", member);
+		map.put("available", member == null);
+		
+		return map;
+	}
+	
 	@PostMapping("/myinfo/profileUpdate.do")
 	public String profileUpdate(
 			Member member,
 			MultipartFile upFile,
-			RedirectAttributes redirectAttr) throws Exception {
+			RedirectAttributes redirectAttr,
+			Authentication authentication) throws Exception {
 			
 			String memberId = member.getId();
 			String pro_Photo = member.getProPhoto();
-			
-			try {
-				/*
-				 * 첨부파일 등록
-				 * - 기존 첨부파일이 있다면 삭제후 새 첨부파일 등록
-				 * - 기존 첨부파일이 없다면 새 첨부파일 등록
-				 */
-				
-				//파일 저장 : 절대경로 /resources/upload/profilePhoto
-				//application객체(ServletContext)
-				String saveDirectory = application.getRealPath("/resources/upload/profilePhoto");
-				log.debug("saveDirectory = {}", saveDirectory);
-				
-				//proPh null이라면
-				if(pro_Photo == null) {
-					File proPhoto = new File(saveDirectory + "/" + memberId + ".png");
-					log.debug("proPhoto = {}", proPhoto);
-					if(proPhoto.exists()) proPhoto.delete();
-				}
-				
-				if(!upFile.isEmpty() && upFile.getSize() != 0) { //파일이 업로드 되었는지 확인
+			String password = member.getPassword();
+			log.debug("password = {}", password);
+			Member principal = (Member) authentication.getPrincipal();
+			/**
+			 * 비밀번호 확인
+			 * - BCryptPasswordEncoder의 matches()함수로 사용자가 입력한 비밀번호와 DB의 암호화된 비밀번호 값을 비교
+			 * - 입력값이 일치하면 프로필 수정 진행
+			 * - 입력값이 불일치하면 알림창 띄운 후 return
+			 */
+			if(passwordEncoder.matches(password, principal.getPassword())) {
+				try {
+					/**
+					 * 첨부파일 등록
+					 * - 기존 첨부파일이 있다면 삭제후 새 첨부파일 등록
+					 * - 기존 첨부파일이 없다면 새 첨부파일 등록
+					 */
 					
-					log.debug("upFile = {}", upFile);
-					log.debug("upFile.name = {}", upFile.getOriginalFilename());
-					log.debug("upFile.size = {}", upFile.getSize());
+					//파일 저장 : 절대경로 /resources/upload/profilePhoto
+					//application객체(ServletContext)
+					String saveDirectory = application.getRealPath("/resources/upload/profilePhoto");
+					log.debug("saveDirectory = {}", saveDirectory);
 					
-					if(member.getProPhoto() != null) { //이미 프로필 사진이 있을 경우
+					//proPhoto가 null이라면
+					if(pro_Photo == null) {
 						File proPhoto = new File(saveDirectory + "/" + memberId + ".png");
+						log.debug("proPhoto = {}", proPhoto);
 						if(proPhoto.exists()) proPhoto.delete();
 					}
 					
-					String proPhoto = memberId + ".png";
-					member.setProPhoto(proPhoto);
+					if(!upFile.isEmpty() && upFile.getSize() != 0) { //파일이 업로드 되었는지 확인
 						
-					//1.서버컴퓨터에 저장
-					File dest = new File(saveDirectory, proPhoto);
-					log.debug("dest = {}", dest);
-					upFile.transferTo(dest);
+						log.debug("upFile = {}", upFile);
+						log.debug("upFile.name = {}", upFile.getOriginalFilename());
+						log.debug("upFile.size = {}", upFile.getSize());
+						
+						if(member.getProPhoto() != null) { //이미 프로필 사진이 있을 경우
+							File proPhoto = new File(saveDirectory + "/" + memberId + ".png");
+							if(proPhoto.exists()) proPhoto.delete();
+						}
+						
+						String proPhoto = memberId + ".png";
+						member.setProPhoto(proPhoto);
+							
+						//1.서버컴퓨터에 저장
+						File dest = new File(saveDirectory, proPhoto);
+						log.debug("dest = {}", dest);
+						upFile.transferTo(dest);
+						
+					}
 					
+					String rawPassword = member.getPassword();
+					String encryptedPassword = passwordEncoder.encode(rawPassword);
+					member.setPassword(encryptedPassword);
+					
+					int result = memberService.updateMemberProfile(member);
+					String msg = result > 0 ? "프로필 수정이 완료되었습니다." : "프로필 수정에 실패하였습니다.";
+					redirectAttr.addFlashAttribute("msg", msg);
+				
+				} catch (Exception e) {
+					log.error("프로필 수정 오류", e);
+					throw e;
 				}
-				
-				String rawPassword = member.getPassword();
-				String encryptedPassword = passwordEncoder.encode(rawPassword);
-				member.setPassword(encryptedPassword);
-				
-				int result = memberService.updateMemberProfile(member);
-				String msg = result > 0 ? "프로필 수정이 완료되었습니다." : "프로필 수정에 실패하였습니다.";
-				redirectAttr.addFlashAttribute("msg", msg);
+				return "redirect:/mypage/myinfo.do";
 			
-			} catch (Exception e) {
-				log.error("프로필 수정 오류", e);
-				throw e;
+			} else {
+				redirectAttr.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
+				return "redirect:/mypage/myinfo/profileUpdate.do";
 			}
-		
-		return "redirect:/mypage/myinfo.do";
+			
 	}
 			
 	@InitBinder
@@ -198,7 +235,7 @@ public class MypageController {
 		// 형식객체, 빈값허용여부("" -> null)
 		PropertyEditor editor = new CustomDateEditor(sdf, true);
 		binder.registerCustomEditor(Date.class, editor);
-	}		
+	}
 			
 	/**
 	 * 지원 나의 정보 > 프로필 수정 끝
@@ -241,7 +278,6 @@ public class MypageController {
 	/**
 	 * 지원 끝
 	 */
-	
 	
 	/**
 	 * 혜진 나의 쇼핑 시작

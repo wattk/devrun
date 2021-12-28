@@ -108,11 +108,19 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	/**
-	 * 회원 한명 조회
+	 * 회원 한명 조회(by id)
 	 */
 	@Override
 	public Member selectOneMemberById(String id) {
 		return memberDao.selectOneMemberById(id);
+	}
+
+	/**
+	 * 회원 한명 조회(by checkKeyword)
+	 */
+	@Override
+	public Member selectOneMemberByCheckKeyword(Map<String, Object> param) {
+		return memberDao.selectOneMemberByCheckKeyword(param);
 	}
 	
 	/**

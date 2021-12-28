@@ -18,76 +18,114 @@
 		<div class="col-12" id="profileUpdate">
 			<div class="row">
 			
-				<article class="col-10" id="info">
+				<article id="info" class="col-10">
 		      		<h4 id="breadcrumb"><a href="${pageContext.request.contextPath}/mypage/myinfo.do">나의 정보</a> <i class="bi bi-chevron-right"></i> <span>프로필 수정</span></h4>
 		       		<hr/>
 		       		<%-- my profile --%>
-		       		<section class="card" id="myProfile">
+		       		<section id="myProfile" class="card">
 		       			<div class="card-header">내 프로필</div>
 		       			<div class="card-body">
 		       				<form name="profileUpdateFrm" action="${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do" method="POST" enctype="multipart/form-data">
 			       				<div class="row">
 			       					<%-- profile image : 프로필 이미지가 null일 경우, 기본 이미지 출력 --%>
 				       				<article class="col-4">
-				     					<c:if test="${member.proPhoto eq null}"><img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="" id="profileImg"/></c:if>
-								      	<c:if test="${member.proPhoto ne null}"><img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png" alt="" id="profileImg"/></c:if>
-								       	<input type="file" class="form-control" id="upFile" name="upFile" accept="image/jpeg, image/jpg, image/png">
-								       	<i class="bi bi-x-circle-fill" id="deleteBtn"></i>
+				     					<c:if test="${member.proPhoto eq null}"><img id="profileImg" src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt=""/></c:if>
+								      	<c:if test="${member.proPhoto ne null}"><img id="profileImg" src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png" alt=""/></c:if>
+								       	<input type="file" name="upFile" id="upFile" class="form-control" accept="image/jpeg, image/jpg, image/png">
+								       	<i id="deleteBtn" class="bi bi-x-circle-fill"></i>
 			       					</article>
 			       					<%-- profile info --%>
 			       					<article class="col-7">
-			       						<%-- profile info --%>
 			       						<section id="profileInfo">
-				       						<div>
-				       							<label for="email">이메일</label>
-				       							<input type="email" class="form-control" id="email" name="email" value="${member.email}">
+				       						<div class>
+				       							<label for="email">이메일<sup class="text-danger">*</sup></label>
+				       							<input type="email" name="email" id="email" class="form-control duplicate-check" value="${member.email}">
+				       							<div class="guide-box">
+													<span class="guide email-guide ok">사용 가능한 이메일입니다.</span>
+													<span class="guide email-guide error text-danger">사용할 수 없는 이메일입니다.</span>
+													<span class="guide email-guide duplicate text-danger">중복된 이메일입니다.</span>
+													<input type="hidden" id="emailValid" value="1" />
+												</div>
 				       						</div>
 				       						<div>
 				       							<label for="url">개인 사이트</label>
-				       							<input type="text" class="form-control" id="url" name="url" value="${member.url}">
+				       							<input type="text" name="url" id="url" class="form-control" value="${member.url}">
 				       						</div>
 				       						<div>
 				       							<label for="intro">한줄소개</label>
-				       							<textarea class="form-control" id="intro" name="intro">${member.intro}</textarea>
+				       							<textarea name="intro" id="intro" class="form-control">${member.intro}</textarea>
 				       						</div>
 			       						</section>
-								        <hr/>
-								        <%-- personal info --%>
+			       					</article>
+			       				</div>
+			       				<hr/>
+			       				<div class="row">
+			       					<%-- personal info --%>
+			       					<article class="col-6">
 								        <table id="personalInfo">
 								        	<tr>
-								        		<td><label for="id">아이디</label></td>
-								        		<td><input type="text" class="form-control" id="id" name="id" value="${member.id}" readonly required></td>
+								        		<td class="col-4"><label for="id">아이디</label></td>
+								        		<td class="col-8"><input type="text" name="id" id="id" class="form-control" value="${member.id}" readonly></td>
 								        	</tr>
 								        	<tr>
-								        		<td><label for="password">기존 비밀번호</label></td>
-								        		<td><input type="password" class="form-control" id="password" required></td>
+								        		<td><label for="password">비밀번호<sup class="text-danger">*</sup></label></td>
+								        		<td>
+								        			<input type="password" name="password" id="password" class="form-control" required>
+								        			<div class="guide-box">
+								        				<span class="guide password-guide error text-danger">비밀번호를 입력해 주세요.</span>
+													</div>
+								        		</td>
 								        	</tr>
-								        	<tr>
+								        	<!-- <tr>
 								        		<td><label for="newPassword">새 비밀번호</label></td>
-								        		<td><input type="password" class="form-control" id="newPassword" name="password" required></td>
+								        		<td>
+								        			<input type="password"  id="newPassword" class="form-control"></td>
+								        	</tr> -->
+								        	<tr>
+								        		<td><label for="nickname">닉네임<sup class="text-danger">*</sup></label></td>
+								        		<td>
+								        			<input type="text" name="nickname" id="nickname" class="form-control duplicate-check" value="${member.nickname}" required>
+								        			<div class="guide-box">
+														<span class="guide nickname-guide ok">사용 가능한 닉네임입니다.</span>
+														<span class="guide nickname-guide error text-danger">사용할 수 없는 닉네임입니다.</span>
+														<span class="guide nickname-guide duplicate text-danger">중복된 닉네임입니다.</span>
+														<input type="hidden" id="nicknameValid"  value="1" />
+													</div>
+								        		</td>
 								        	</tr>
 								        	<tr>
-								        		<td><label for="nickname">닉네임</label></td>
-								        		<td><input type="text" class="form-control" id="nickname" name="nickname" value="${member.nickname}" required></td>
+								        		<td><label for="name">이름<sup class="text-danger">*</sup></label></td>
+								        		<td>
+								        			<input type="text" name="name" id="name" class="form-control" value="${member.name}" required>
+								        			<div class="guide-box">
+														<span class="guide name-guide error text-danger">이름을 입력해 주세요.</span>
+													</div>
+								        		</td>
 								        	</tr>
 								        	<tr>
-								        		<td><label for="name">이름</label></td>
-								        		<td><input type="text" class="form-control" id="name" name="name" value="${member.name}" required></td>
+								        		<td><label for="birthday">생년월일<sup class="text-danger">*</sup></label></td>
+								        		<td>
+								        			<input type="date" name="birthday" id="birthday" class="form-control" value="<fmt:formatDate value="${member.birthday}" pattern="yyyy-MM-dd"/>" required>
+								        			<div class="guide-box">
+														<span class="guide birthday-guide error text-danger">생일을 입력해 주세요.</span>
+													</div>
+								        		</td>
 								        	</tr>
 								        	<tr>
-								        		<td><label for="birthday">생년월일</label></td>
-								        		<td><input type="date" class="form-control" id="birthday" name="birthday" value="<fmt:formatDate value="${member.birthday}" pattern="yyyy-MM-dd"/>" required></td>
-								        	</tr>
-								        	<tr>
-								        		<td><label for="phone">전화번호</label></td>
-								        		<td><input type="tel" class="form-control" id="phone" name="phone" value="${member.phone}" maxlength="11" required></td>
+								        		<td><label for="phone">연락처<sup class="text-danger">*</sup></label></td>
+								        		<td>
+								        			<input type="tel" name="phone" id="phone" class="form-control" value="${member.phone}" maxlength="11" required>
+								        			<div class="guide-box">
+														<span class="guide phone-guide error text-danger">연락처를 입력해 주세요.</span>
+													</div>
+								        		</td>
 								        	</tr>
 								        </table>
 			       					</article>
 		    					</div>
 		    					<%-- buttons : withdraw / update --%>
 		    					<section id="btns" class="col-11 row">
-		    						<button class="col-6" type="button" data-toggle="modal" data-target="#withdrawModal">탈퇴하기</button>
+		    						<button type="button" class="col-6" data-toggle="modal" data-target="#withdrawModal">탈퇴하기</button>
 		    						<button type="button" id="profileUpdateBtn" class="col-6">수정하기</button>
 		    					</section>
 	    					</form>
@@ -105,8 +143,8 @@
 			<div class="modal-dialog modal-lg">
 		    	<div class="modal-content">
 		      		<section class="modal-header">
-		      			<div class="row col-12" id="title">
-		      				<h5 class="modal-title" id="staticBackdropLabel">회원탈퇴</h5>
+		      			<div id="title" class="row col-12">
+		      				<h5 id="staticBackdropLabel" class="modal-title">회원탈퇴</h5>
 		      			</div>
 		        		<i class="bi bi-x" data-dismiss="modal"></i>
 		      		</section>
@@ -129,7 +167,7 @@
 							</select>
 		      			</div>
 		      			<div class="form-check">
-							<input class="form-check-input" type="checkbox" value="" id="agreementCheckbox" required>
+							<input type="checkbox" id="agreementCheckbox" class="form-check-input" value="" required>
 						  	<label class="form-check-label" for="agreementCheckbox">
 						    	해당 내용을 모두 확인하였으며, 회원탈퇴에 동의합니다.
 						  	</label>
@@ -149,7 +187,7 @@
 /* 프로필 미리보기 */
 function readImage(input) {
     //input 태그에 파일이 있는 경우
-    if(input.files && input.files[0]) {
+    if(input.files && input.files[0]){
     	//파일을 읽기 위한 FileReader 객체 생성
         const reader = new FileReader();
         //파일 읽어들이기를 성공해 이미지가 로드된 경우 호출되는 이벤트 핸들러
@@ -163,26 +201,127 @@ function readImage(input) {
 }
 //input file에 change 이벤트 부여
 //파일 양식으로 이미지를 선택(값이 변경)했을 때 처리하는 코드
-$("#upFile").change(e => {
+$("#upFile").change((e) => {
     readImage(e.target);
 });
 
-/* 프로필 사진 우측하단 X버튼 클릭 시 코드 */
-$("#deleteBtn").click(e => {
-	//기본 이미지로 미리보기 변경
+/* 프로필 X 버튼 클릭 시 */
+$("#deleteBtn").click((e) => {
+	//미리보기를 기본 이미지로 변경
 	$("#profileImg").attr("src", "${pageContext.request.contextPath}/resources/images/common/blank-profile.png");
-	//선택 파일 비우기
+	//선택 파일 제거
     $("#upFile").val("");
 });
 
-/* 유효성검사 */
- 
+/* 회원가입 참고 : 닉네임, 이메일 유효성 검사 & 중복 검사 */
+$(".duplicate-check").keyup((e) => {
+	const $target = $(e.target);
+	const val = $target.prop("id");
+	
+	//입력값이 공란이면 안내문 숨기기
+	if($target.val() == ''){
+		$(".guide").hide();
+		return;
+	}
+	
+	const $error = $(`.\${val}-guide.error`);
+	const $ok = $(`.\${val}-guide.ok`);
+	const $duplicate = $(`.\${val}-guide.duplicate`);
+	const $valid = $(`#\${val}Valid`);
+	const data = {
+			value : $target.val(),
+			checkKeyword : val
+	};
+	const jsonData = JSON.stringify(data);
+	
+	//val값에 따른 유효성 검사
+	if(val == "nickname"){
+		if(!/^[가-힣]{2,}$/.test($target.val())){
+			$(".guide").hide();
+			$error.show();
+			$valid.val(0);
+			return;
+		}
+	}
+	else if(val == "email"){
+		if(!(/^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/).test($target.val())){
+			$(".guide").hide();
+			$error.show();
+			$valid.val(0);
+			return;
+		};
+	}
 
+	//비동기 중복 검사
+	$.ajax({
+		url : `${pageContext.request.contextPath}/mypage/myinfo/checkUpdateDuplicate`,
+		data : data,
+		contentType : "application/json ; charset=utf-8",
+		method : "GET",
+		success(data){
+			const {available} = data;
+			if(available){
+				$ok.show();
+				$error.hide();
+				$duplicate.hide();
+				$valid.val(1);
+			}
+			else{
+				$duplicate.show();
+				$error.hide();
+				$ok.hide();
+				$valid.val(0);
+			}
+		},
+		error : console.log
+	});
+	
+});
+
+/* 수정 버튼 클릭 시 프로필 수정 */
 $(profileUpdateBtn).click((e)=>{
-	$profileImg = $("#profileImg").attr("src");
-	if($profileImg == "${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png") {
+	
+	/* 회원가입 참고 : 폼 유효성 검사 & 빈값 검사 */
+	const emailValid = $("#emailValid").val();
+	const nicknameValid = $("#nicknameValid").val();
+	
+	if(emailValid != 1){
+		$(".guide.email-guide.error").show();
+		$(email).focus(); 
+		return;
+	}
+	if(nicknameValid != 1){
+		$(".guide.nickname-guide.error").show();
+		$(nickname).focus(); 
+		return;
+	}
+	
+	const $password = $("#password");
+	if(!/^.{1,}$/.test($password.val())){
+		$(".guide.password-guide.error").show();
+		$password.focus(); 
+		return;
+	}
+	const $memberName = $("#name");
+	if(!/^[가-힣]{2,}$/.test($memberName.val())){
+		$(".guide.name-guide.error").show();
+		$memberName.focus();
+		return;
+	}
+	const $phone = $("#phone");
+	$phone.val($phone.val().replace(/[^0-9]/g, "")); //숫자아닌 문자(복수개)제거하기
+	if(!/^010[0-9]{8}$/.test($phone.val())){
+		$(".guide.phone-guide.error").show();
+		$phone.focus();
+		return;
+	}
+	
+	const profileImgSrc = $("#profileImg").attr("src");
+	const profileImgPath = "${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png";
+	if(profileImgSrc == profileImgPath) {
 		$("#upFile").append(`<input type="hidden" name="proPhoto" value="${member.proPhoto}"/>`);
 	}
+	
 	$(document.profileUpdateFrm).submit();
 });
 
