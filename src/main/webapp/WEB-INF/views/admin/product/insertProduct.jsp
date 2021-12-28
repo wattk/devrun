@@ -77,6 +77,7 @@
 							<select id ="largeCategory" name="parentCategoryCode" class="form-select form-select-lg mb-2" aria-label=".form-select-lg example" required>
 								<option selected value="0">--대분류--</option>
 								<option value="ke">키보드</option>
+								<option value="mn">모니터</option>
 								<option value="mo">마우스</option>
 								<option value="ch">의자</option>
 								<option value="de">책상</option>
@@ -95,7 +96,7 @@
 				<table id="optionTable">			
 					<tr>
 						<td class="option">색상</td><td><input name="option" type="text" value="black" /></td>
-						<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="-"  /></td>
+						<td class="option">옵션내용</td><td><input name="optionContent" type="text" value=""/></td>
 						<td class="option">재고</td><td><input name="quantity" type="text" value="1" /></td>
 						<td><button class="btn btn-primary option-add-btn" type="button"><i class="fas fa-plus-square"></i></button></td>
 					</tr>
