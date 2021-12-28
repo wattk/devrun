@@ -116,7 +116,7 @@ public class ShopController {
 
 	// 리뷰 삭제하기
 	@GetMapping("/reviewDelete.do")
-	public String reviewDelete(@RequestParam int reviewNo, RedirectAttributes redirectAttr) {
+	public String reviewDelete(@RequestParam int reviewNo, RedirectAttributes redirectAttr, HttpServletRequest request) {
 		log.debug("삭제할 리뷰의 아이디 : {}", reviewNo);
 
 		int result = shopService.reviewDelete(reviewNo);
@@ -124,7 +124,8 @@ public class ShopController {
 		String msg = (result > 0) ? "리뷰 삭제 성공" : "리뷰 등록 삭제";
 		redirectAttr.addFlashAttribute("msg", msg);
 
-		return "redirect:/shop/itemDetail.do";
+		String referer = request.getHeader("Referer");
+		return "redirect:"+referer;
 	}
 
 	// 리뷰 등록하기
