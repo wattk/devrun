@@ -44,6 +44,9 @@ public interface ProductService {
 	// 상품 옵션 업데이트
 	int updateOption(ProductDetail productDetail, Map<String, Object> param);
 
+	//다현 - 상세 페이지 뿌리기 위한 item 받아오기
+	Product selectOneItem(String productCode);
+
 
 
 

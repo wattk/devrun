@@ -187,6 +187,14 @@ public class ProductServiceImpl implements ProductService {
 
 	
 	
+	//다현 - 상세 페이지 뿌리기 위한 item 받아오기
+	@Override
+	public Product selectOneItem(String productCode) {
+		return productDao.selectOneItem(productCode);
+	}
+
+	
+	
 	
 	
 }
