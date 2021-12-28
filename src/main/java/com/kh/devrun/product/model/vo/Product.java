@@ -31,6 +31,10 @@ public class Product implements Serializable {
 	private int orderCount; 
 	
 	private List<ProductDetail> productDetailList;
+
+
+	
+	
 	
 
 }
