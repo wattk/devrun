@@ -73,7 +73,7 @@
 	</association>
   </resultMap>
   
-  <select id="findChatLog" resultType="chatLog">
+  <!-- <select id="findChatLog" resultType="chatLog">
   	select
 	    *
 	from (
@@ -87,7 +87,32 @@
 	    chat_id in (select chat_id from chat_member where member_no = #{memberNo})
 	order by
 	    log_time desc
+  </select> -->
+  
+  <select id="findChatLog" resultMap="chatLogAssociation">
+  	select
+	    CL.*,
+	    M.member_no member_no1,
+		M.id,
+		M.nickname,
+		M.pro_photo
+	from (
+	    select
+	        CL.*,
+	        row_number() over(partition by chat_id order by no desc) rnum
+	    from
+	        chat_log CL) CL left join chat_member CM
+	            on CL.chat_id = CM.chat_id
+	            left join member M
+	            on CM.member_no = M.member_no
+	where
+	    rnum = 1 and
+	    CL.chat_id in (select chat_id from chat_member where member_no = #{memberNo}) and
+	    CM.member_no != #{memberNo}
+	order by
+	    log_time desc
   </select>
+  
   
   <select id="selectOneReceiver" resultType="member">
   	select

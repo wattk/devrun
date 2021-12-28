@@ -95,7 +95,7 @@
 				<div class="mb-3">
 					<label for="writer"><strong>작성자</strong></label>
 					<input type="text" class="form-control" name="nickname" id="nickname" value='<sec:authentication property="principal.nickname" />'  placeholder="이름을 입력해 주세요">
-					<input type="hidden" class="form-cotrol" name="memberNo" id="member_no" value='<sec:authentication property="principal.memberNo" />' placeholder="이름을 입력해 주세요">
+					<input type="hidden" class="form-cotrol" name="memberNo" id="member_no" value='<sec:authentication property="principal.memberNo" />'>
 				</div>
 				<div class="mb-3">
 					<label for="content"><strong>내용</strong></label>

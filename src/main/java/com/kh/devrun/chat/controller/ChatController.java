@@ -49,6 +49,7 @@ public class ChatController {
 		model.addAttribute("list", list);
 		
 		return "chat/chatListPopup";
+		
 	}
 
 	/**

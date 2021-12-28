@@ -100,4 +100,21 @@
   		community_no = #{community_no}
   </select>
   
+  <!-- 자유게시판 댓글 -->
+  <select id="selectFreeboardCommentList" resultType="communityCommentEntity">
+  	select
+	    c.*,
+	    (select nickname from member where member_no = c.member_no) nickname
+	from
+	    community_comment c
+	where
+	    community_no = #{communityNo}
+	start with
+	    comment_level = 1
+	connect by
+	    prior comment_no = comment_ref_no
+	order siblings by
+	    reg_date asc
+  </select>
+  
 </mapper>

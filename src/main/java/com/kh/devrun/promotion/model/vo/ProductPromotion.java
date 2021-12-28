@@ -27,6 +27,6 @@ public class ProductPromotion extends Product implements Serializable{
 			int viewCount, char status, int orderCount, List<ProductDetail> productDetailList) {
 		super(productCode, name, price, regDate, thumbnail, content, viewCount, status, orderCount, productDetailList);
 	}
-	
+
 
 }
