@@ -47,8 +47,6 @@ public class ShopController {
 	
 	@Autowired
 	ServletContext application;
-	
-	
 //--------------------주입-------------------------------------	
 	
 
@@ -59,6 +57,24 @@ public class ShopController {
 		
 	}
 	
+	//상품 전체보기 클릭 시 
+	@GetMapping("/CategoryItemAll")
+	public void CategoryItemAll(@RequestParam String parentCate) {
+		
+		List<Product>itemList = shopService.CategoryItemAll();
+		
+	}
+	
+	
+	//사진 리뷰만 모아보기 기능
+	@ResponseBody
+	@GetMapping("picReviewOnly")
+	public List<Review> picReviewOnly() {
+		
+		List<Review> picReviewList = shopService.picReviewOnly();
+		
+		return picReviewList;
+	}
 	
 	
 	@GetMapping("/shopSearch.do")
