@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
 import com.kh.devrun.shop.model.service.ShopService;
@@ -84,11 +85,12 @@ public class ShopController {
 	
 	
 	@GetMapping("/itemDetail/{productCode}")
-	public void itemDetail(@PathVariable String productCode) {
-		log.debug("productCode 받았나요?{}",productCode);
+	public String selectOneItem(@PathVariable String productCode, Model model) {		
+		ProductEx product = productService.selectOneItem(productCode);
+		log.debug("product 받아왔나요? : {}",product);
 		
-		Product product = productService.selectOneItem(productCode);
-		
+		model.addAttribute("product", product);
+		return "shop/itemDetail";
 		
 	}
 

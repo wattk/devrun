@@ -16,6 +16,7 @@ import com.kh.devrun.product.model.dao.ProductDao;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductCategory;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.product.model.vo.ProductExtends;
 
 import lombok.extern.slf4j.Slf4j;
@@ -189,7 +190,7 @@ public class ProductServiceImpl implements ProductService {
 	
 	//다현 - 상세 페이지 뿌리기 위한 item 받아오기
 	@Override
-	public Product selectOneItem(String productCode) {
+	public ProductEx selectOneItem(String productCode) {
 		return productDao.selectOneItem(productCode);
 	}
 
