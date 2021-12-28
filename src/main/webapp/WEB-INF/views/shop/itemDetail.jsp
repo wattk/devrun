@@ -262,7 +262,7 @@
 								  <div class="p-4" id="sortBy">
 									<span class="pr-2 pl-2 shop-sort">최신순</span>
 									<span class="pr-2 pl-2 shop-sort">오래된순 </span>
-									<span class="pr-2 pl-2 shop-sort">사진리뷰모아보기</span>
+									<span class="pr-2 pl-2 shop-sort" onclick="picReviewOnly()">사진리뷰모아보기</span>
 									<sec:authorize access="hasAnyRole('M1','M2')">
 										<button type="button" class="btn btn-warning report-btn3" data-toggle="modal" data-target="#exampleModal3">리뷰작성하기</button>	
 									</sec:authorize>
@@ -485,9 +485,34 @@
 $('.reviewDelBtn').click((e) => {
 	var reviewNo =e.target.value;	
 	console.log(`삭제할 리뷰 아이디 : \${reviewNo}`);
-	location.href=`${pageContext.request.contextPath}/shop/reviewDelete.do?reviewNo=\${reviewNo}`;
+	
+	if(confirm("리뷰를 삭제하시겠습니까?")){
+		location.href=`${pageContext.request.contextPath}/shop/reviewDelete.do?reviewNo=\${reviewNo}`;	
+	}else{
+		 return;
+	}
+	
 	
 });
+
+/*사진리뷰만 보기 정렬 시작 */
+function picReviewOnly(){
+	
+	$.ajax({
+		
+		url: "${pageContext.request.contextPath}/shop/picReviewOnly",
+		method: "GET",
+		success(data){
+			console.log(data);
+			
+		},
+		error: console.log
+	});
+	
+	 
+}
+
+/*사진리뷰만 보기 정렬 끝 */
 </script>		
 	<!-- body 영역 끝 -->	
 			
