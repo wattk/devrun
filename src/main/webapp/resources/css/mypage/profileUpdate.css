@@ -17,8 +17,9 @@
 #myProfile article.col-4 {text-align:center;}
 
 /* profileImg */
-#myProfile #profileImg {font-size:150px; width:150px; height:150px; position:relative; color:#1A81FF;}
-#myProfile #edit {width:85%; margin:0 auto; padding:5px;}
+#myProfile #profileImg {width:150px; height:150px; margin:15px; border-radius:50%; position:relative;}
+#myProfile #upFile {width:85%; margin:0 auto; padding:5px;}
+#myProfile #deleteBtn {position:absolute; top:19%; right:25%; font-size:30px; color:#1A81FF;}
 
 /* profileInfo */
 #myProfile #profileInfo div {margin:20px 0;}

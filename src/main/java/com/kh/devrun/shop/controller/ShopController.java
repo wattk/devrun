@@ -206,27 +206,6 @@ public class ShopController {
 		return "/shop/promotionDetail";
 	}
 	
-//	@GetMapping("/childCategorySearch.do")
-//	@ResponseBody
-//	public List<Product> childCategorySearch(
-//				@RequestParam(value="childCategoryCode[]", required = false) List<String> childCategoryCode, 
-//				@RequestParam(value="keyword", required = false) String keyword, 
-//				@RequestParam(value = "promotionCode") String promotionCode) 
-//	{
-//		log.debug("{}",keyword);
-//		Map<String, Object> param = new HashMap<>();
-//		param.put("promotionCode", promotionCode);
-//		param.put("childCategoryCode", childCategoryCode);
-//		param.put("keyword", keyword);
-//		log.debug("{}",param);
-//		
-//		List<Product> productList = new ArrayList<>();
-//		
-//		productList = promotionService.selectProductListByPromotionCode(param);
-//		log.debug("list = {}", productList);
-//		
-//		return productList;
-//	}
 	@GetMapping("/childCategorySearch.do")
 	@ResponseBody
 	public Map<String, Object> childCategorySearch(
