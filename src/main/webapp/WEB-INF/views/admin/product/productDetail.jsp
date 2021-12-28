@@ -51,7 +51,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="text" name="price" value="<fmt:formatNumber value="${productInfo.price}"pattern="#,###"/>" />	
+							<input type="text" name="price" value="<fmt:formatNumber value="${productInfo.price}" pattern="#,###"/>"/>	
 						</td>
 						<td>
 								
@@ -68,7 +68,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="text" name="sku" placeholder="재품 단위" value="" required/>
+							<input type="text" name="sku" placeholder="재품 단위" value="개" required/>
 						</td>
 					</tr>					
 					<tr>
@@ -84,6 +84,7 @@
 								<option selected value="0">--대분류--</option>
 								<option value="ke" ${productInfo.parentCategoryCode == "ke" ? "selected" : ""} >키보드</option>
 								<option value="mo" ${productInfo.parentCategoryCode == "mo" ? "selected" : ""}>마우스</option>
+								<option value="mn" ${productInfo.parentCategoryCode == "mn" ? "selected" : ""}>모니터</option>
 								<option value="ch" ${productInfo.parentCategoryCode == "ch" ? "selected" : ""}>의자</option>
 								<option value="de" ${productInfo.parentCategoryCode == "de" ? "selected" : ""}>책상</option>
 								<option value="ot" ${productInfo.parentCategoryCode == "ot" ? "selected" : ""}>기타</option>
@@ -132,14 +133,14 @@
 /*  옵션 추가 버튼 */
 $(".option-add-btn").click(e=>{
 	trCnt = $("#optionTable tr").length;
-	console.log(trCnt);
 
+	console.log(trCnt);
 	
 	if(trCnt < 6){		
 		$(optionTable).append(`<tr>
 				<td class="option">DN</td><td> <input class="detailNo" name="insertDetailNo" type="text" value="" /> </td>
 				<td class="option">색상</td><td><input class="option" name="insertOption" type="text" value="red" /></td>
-				<td class="option">옵션내용</td><td><input class="optionContent" name="insertOptionContent" type="text" value="-" /></td>
+				<td class="option">옵션내용</td><td><input class="optionContent" name="insertOptionContent" type="text" value="" /></td>
 				<td class="option">재고</td><td><input class="quantity" name="insertQuantity" type="text" value="1" /></td>
 				<td><button class="btn btn-danger delete-btn" type="button"><i class="fas fa-minus-square"></i></button></td>
 			</tr>`);
