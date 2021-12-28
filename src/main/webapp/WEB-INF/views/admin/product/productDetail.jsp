@@ -133,8 +133,8 @@
 /*  옵션 추가 버튼 */
 $(".option-add-btn").click(e=>{
 	trCnt = $("#optionTable tr").length;
-	console.log(trCnt);
 
+	console.log(trCnt);
 	
 	if(trCnt < 6){		
 		$(optionTable).append(`<tr>
