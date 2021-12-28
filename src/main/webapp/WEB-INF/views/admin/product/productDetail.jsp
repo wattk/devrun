@@ -51,7 +51,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="text" name="price"  value="${productInfo.price}" />	
+							<input type="text" name="price" value="<fmt:formatNumber value="${productInfo.price}"pattern="#,###"/>" />	
 						</td>
 						<td>
 								
