@@ -32,30 +32,25 @@
 	});
 	
 	
-	// #btnComment 버튼을 'click'하게 되면 #form을 전송(.submit)
-	$(document).on('click', '#btnComment', function(e){
-		console.log("클릭 이벤트 발생!");
-		e.preventDefault();
-		//freeBoardForm : form name값
-		$(document.freeboardCommentForm).submit();
-	});
-	
 	// 댓글 유효성 검사
 	function freeboardCommentValidate(){
-		var $content = $("[name=content]");
+		//console.log("도착했나요오");
+		var $content = $('#comment');
+		//console.log($content, typeof $content);
 		// 슬래시(/) "사이"에는 매칭시킬 "패턴"을 써준다.
 		// 슬래시(/) "다음"에는 옵션을 설정하는 "플래그"를 써준다.
 		// ^문자열 : 특정 문자열로 시작(괄호 없음 주의!)
 		// . : 모든 문자열
 		// | : OR
 		// \n : 줄바꿈
-		if (/^(.|\n)+$/.test($content.val()) == false){
+		if(/^(.|\n)+$/.test($content.val()) == false){
 			alert("내용을 입력하세요");
 			return false;
 		}
-		return true;
+		$(document.freeboardCommentForm).submit();
 	}
 	
+
 	
 			
 </script>
@@ -174,9 +169,9 @@
 					name="freeboardCommentForm"
 					action="${pageContext.request.contextPath}/community/communityFreeboardCommentEnroll.do"
 					method="POST"
-					onsubmit="return freeboardCommentValidate();">
+					>
 					<textarea class="form-control" name="content" id="comment" rows="2"></textarea>
-					<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment">등록</button>
+					<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment" onclick="freeboardCommentValidate()">등록</button>
 					
 					<input type="hidden" name="commentLevel" value="1" />
 					<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
@@ -209,7 +204,20 @@
 							<textarea class="form-control" id="exampleFormControlTextarea1" rows="1" readonly="readonly">${communityCommentEntity.content}</textarea>
 							<!-- 회원일때만 답글 버튼이 나타나도록 처리 -->
 							<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
-								<button type="button" class="btn btn-dark mt-3 float-right" id="commentBtn" >답글</button>
+								<div class="row float-right">
+								<button type="button" class="btn btn-dark mt-3 float-right btnReComment" value="${communityCommentEntity.commentNo}">답글</button>&nbsp;
+								<!-- 회원일 경우 -->
+								<sec:authorize access="hasAnyRole('M1', 'M2')">
+									<!-- 회원이고 글쓴이 본인일 경우 -->
+									<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
+										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+									</c:if>
+								</sec:authorize>
+								<!-- 관리자일 경우 -->
+								<sec:authorize access="hasRole('AM')">
+									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+								</sec:authorize>
+								</div>
 							</sec:authorize>
 						    </li>
 						</ul>
@@ -222,6 +230,17 @@
 									&nbsp;&nbsp;<fmt:formatDate value="${communityCommentEntity.regDate}" pattern="yyyy-MM-dd HH:mm"/>
 								</div>
 								<textarea class="form-control" id="exampleFormControlTextarea1" rows="1" readonly="readonly">${communityCommentEntity.content}</textarea>
+								<!-- 회원일 경우 -->
+								<sec:authorize access="hasAnyRole('M1', 'M2')">
+									<!-- 회원이고 글쓴이 본인일 경우 -->
+									<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
+										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+									</c:if>
+								</sec:authorize>
+								<!-- 관리자일 경우 -->
+								<sec:authorize access="hasRole('AM')">
+									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+								</sec:authorize>
 							    </li>
 							</ul>
 						</c:otherwise>
@@ -235,5 +254,85 @@
 </div>
 </div>
 
+<script>
+// 답글(대댓글) 클릭 시 댓글 번호 참조 
+$(".btnReComment").click((e) => {
+	console.log("클릭 이벤트 발생!");
+	//console.log($(e.target).val());
+	const commentRefNo = $(e.target).val();
+	const div = `
+		<div class="card-body" style="padding-left: 100px">
+			<ul class="list-group list-group-flush">
+			    <li class="list-group-item">
+				<div class="form-inline mb-2">
+					<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
+				</div>
+				<form:form
+					name="freeboardReCommentForm"
+					action="${pageContext.request.contextPath}/community/communityFreeboardCommentEnroll.do"
+					method="POST">
+					<textarea class="form-control" name="content" id="reComment" rows="1"></textarea>
+					<button type="button" class="btn btn-dark mt-3 float-right" onclick="freeboardReCommentValidate()">등록</button>
+					
+					<input type="hidden" name="commentLevel" value="2"/>
+					<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
+					<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
+					<input type="hidden" name="commentRefNo" value= "\${commentRefNo}" />
+					 
+				</form:form>
+			    </li>
+			</ul>
+		</div>`;
+		
+	console.log(div);
+	
+	// e.target 의 부모의 부모 div (등록 전체 div를 지칭)
+	const $divOfBtn = $(e.target).parent();
+	// jQuery 객체 $divOfBtn 이 div 다음으로 들어가게끔 조치
+	$divOfBtn.after(div);
+	// 현재 버튼의 handler 제거
+	$(e.target).off('click');
+	
+});
+
+// 댓글 유효성 검사
+function freeboardReCommentValidate(){
+	console.log("도착했나요오");
+	var $reComment = $('#reComment');
+	//console.log($content, typeof $content);
+	// 슬래시(/) "사이"에는 매칭시킬 "패턴"을 써준다.
+	// 슬래시(/) "다음"에는 옵션을 설정하는 "플래그"를 써준다.
+	// ^문자열 : 특정 문자열로 시작(괄호 없음 주의!)
+	// . : 모든 문자열
+	// | : OR
+	// \n : 줄바꿈
+	if(/^(.|\n)+$/.test($reComment.val()) == false){
+		alert("내용을 입력하세요");
+		return false;
+	}
+	$(document.freeboardReCommentForm).submit();
+}
+
+// 댓글 삭제
+$('.btnCommentDelete').click((e) => {
+	//console.log("도착했나요?");
+	//console.log(e.target);
+	var commentNo = $(e.target).val();	
+	//console.log(`삭제할 댓글 번호 : \${commentNo}`);
+	//communityNo은 communityEntity로 받아왔기때문에 이점을 유의한다.
+	//console.log(${communityEntity.communityNo})
+	
+	// 사용자 입력값을 복수개로 가져와 넘길 수 있다.
+	if(confirm("정말로 삭제하시겠습니까?")){
+		location.href=`${pageContext.request.contextPath}/community/commentDelete.do?commentNo=\${commentNo}&communityNo=${communityEntity.communityNo}`;	
+	}else{
+		 return;
+	}  
+	
+});
+
+
+
+</script>
 <script src="${pageContext.request.contextPath}/resources/js/community/communityColumnDetail/scripts.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

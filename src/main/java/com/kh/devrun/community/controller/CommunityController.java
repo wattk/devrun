@@ -252,6 +252,17 @@ public class CommunityController {
 		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + communityComment.getCommunityNo();
 	}
 	
+	// 자유게시판-댓글삭제
+	@GetMapping("/commentDelete.do")
+	public String commentDelete(@RequestParam(value="commentNo") int commentNo, @RequestParam(value="communityNo") int communityNo, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "/commentDelete.do 요청!");
+		log.debug("commentNo = {}", commentNo);
+		log.debug("{}", communityNo);
+		
+		int result = communityService.commentDelete(commentNo);
+		
+		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + communityNo; 
+	}
 	
 	
 }

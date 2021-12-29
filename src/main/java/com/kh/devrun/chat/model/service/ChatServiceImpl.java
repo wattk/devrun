@@ -57,4 +57,9 @@ public class ChatServiceImpl implements ChatService {
 	public Member selectOneReceiver(Map<String, Object> param) {
 		return chatDao.selectOneReceiver(param);
 	}
+
+	@Override
+	public int updateLastCheck(Map<String, Object> fromMessage) {
+		return chatDao.updateLastCheck(fromMessage);
+	}
 }
