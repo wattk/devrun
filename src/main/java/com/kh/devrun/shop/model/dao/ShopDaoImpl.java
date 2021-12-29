@@ -58,7 +58,6 @@ public class ShopDaoImpl implements ShopDao {
 
 	@Override
 	public Attachment selectOneAttach(int reviewNo) {
-		log.debug("여기 잘 도착? : {}",reviewNo);
 		return session.selectOne("shop.selectOneAttach", reviewNo);
 	}
 
