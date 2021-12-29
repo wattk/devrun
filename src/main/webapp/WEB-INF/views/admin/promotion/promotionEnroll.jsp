@@ -91,6 +91,7 @@
 	</div>
 </form:form>
 <script>
+let imgs = "";
 $(document).ready(function() {
 	
 	//이벤트 등록 썸머노트
@@ -129,16 +130,42 @@ $(document).ready(function() {
 			processData : false,
 			success(data){
 				console.log(data);
+				//imgs 변수 안에 /filename 추가. /는 구분자
+				imgs += "/" + data["filename"];
 				$('#summernoteEnroll').summernote('insertImage', "${pageContext.request.contextPath}/resources/upload/promotion/"+data["filename"]);
 			},
 			error : console.log
 			
 		});
 	}
+	
 });
+
+//페이지 벗어날 때 썸머노트 안의 이미지 파일을 서버 상에서 삭제
+$(document).ready(function () { 
+	//페이지 이동 전에 beforeunload함수 실행
+    $(window).bind('beforeunload',  
+      	function (e) {  
+    	//비동기 요청을 통해 서버에 저장된 이미지 파일 삭제
+    	$.ajax({
+    		url : "${pageContext.request.contextPath}/deleteSummernoteImageFile",
+    		data : {imgs : imgs},
+    		method : "POST",
+    		success(data){
+    		console.log(data);
+    		},
+    		error : console.log
+    	});
+    	//크롬은 문자열을 리턴해야만 페이지를 나가겠냐는 confirm창이 뜬다.
+    	return "";
+	});
+});
+
+	
 
 //등록 버튼 클릭 시 form 제출
 $(promotionEnrollBtn).click((e)=>{
+    $(window).unbind('beforeunload');
 	$(document.promotionEnrollFrm).submit();	
 });	
 
@@ -165,5 +192,9 @@ $("#productCodeSearch").autocomplete({
 		});
 	}	
 });
+
+
+  
+
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>
