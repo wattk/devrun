@@ -97,7 +97,7 @@
 		M.id,
 		M.nickname,
 		M.pro_photo,
-        (select count(*) from chat_log where chat_id = CL.chat_id and log_time > (select last_check from chat_member where chat_id = CL.chat_id and member_no = #{memberNo})) unread_count
+        (select count(*) from chat_log where chat_id = CL.chat_id and member_no != #{memberNo} and log_time > (select last_check from chat_member where chat_id = CL.chat_id and member_no = #{memberNo})) unread_count
 	from (
 	    select
 	        CL.*,
