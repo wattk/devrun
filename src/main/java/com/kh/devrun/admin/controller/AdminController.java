@@ -3,7 +3,6 @@ package com.kh.devrun.admin.controller;
 import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.IOException;
-import java.lang.ProcessBuilder.Redirect;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +41,8 @@ import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductExtends;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
+import com.kh.devrun.questionProduct.model.service.QuestionProductService;
+import com.kh.devrun.questionProduct.model.vo.QuestionProduct;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -61,6 +62,9 @@ public class AdminController {
 	
 	@Autowired
 	MemberManageService memberManageService;
+	
+	@Autowired
+	QuestionProductService questionProductService;
 	
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
@@ -436,11 +440,18 @@ public class AdminController {
 		model.addAttribute("memberList",memberList);
 	};
 	
+	
 	// 회원 문의 내역
-	@GetMapping("/memberManage/memberInquiry.do")
-	public void memberInquiry() {
+	@GetMapping("/memberManage/questionProduct.do")
+	public void memberInquiry(Model model) {
+		List<QuestionProduct> list = questionProductService.selectAllQuestionList();
 		
+		model.addAttribute("questionList",list);
 	};
+	
+	
+	
+	
 		
 	
 	
