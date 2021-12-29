@@ -3,6 +3,7 @@ package com.kh.devrun.shop.model.service;
 import java.util.List;
 
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Review;
 
 public interface ShopService {
@@ -18,5 +19,8 @@ public interface ShopService {
 	List<Review> picReviewOnly();
 
 	List<Product> CategoryItemAll(String parentCate);
+
+	Attachment selectOneAttach(int reviewNo);
+
 
 }

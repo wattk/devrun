@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.shop.model.service.ShopServiceImpl;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Review;
 
@@ -55,5 +56,10 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectList("shop.CategoryItemAll", parentCate);
 	}
 
+	@Override
+	public Attachment selectOneAttach(int reviewNo) {
+		log.debug("여기 잘 도착? : {}",reviewNo);
+		return session.selectOne("shop.selectOneAttach", reviewNo);
+	}
 
 }
