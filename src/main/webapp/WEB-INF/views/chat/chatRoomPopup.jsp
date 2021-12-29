@@ -843,6 +843,8 @@ stompClient.connect({}, (frame) => {
 // 채팅 Send 클릭 시 이벤트 발생
 $(sendBtn).click((e) => {
 	
+	if(!$(message).val()) return; // 유효성 검사
+	
 	const member = {
 		nickname : "${loginMember.nickname}",
 		id : "${loginMember.id}",
