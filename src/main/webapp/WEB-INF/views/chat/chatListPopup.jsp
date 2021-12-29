@@ -43,6 +43,14 @@
 	width: 5%;
 }
 
+.chat-header .plus-icon {
+	cursor: pointer;
+}
+
+.chat-header .block-icon {
+	cursor: pointer;
+}
+
 .header-icon {
 	right: 20px;
 }
@@ -155,11 +163,11 @@
 			
 				<!-- 1:1 채팅방 만들기 아이콘 -->
 				<!-- i trigger modal -->
-				<i class="fas fa-plus fa-lg" data-toggle="modal" data-target="#plusModalCenter"></i>
+				<i class="fas fa-plus fa-lg plus-icon" data-toggle="modal" data-target="#plusModalCenter"></i>
 				
 				<!-- 차단 멤버 관리 아이콘 -->
 				<!-- i trigger modal -->
-				<i class="fas fa-user-minus fa-lg ml-2" data-toggle="modal" data-target="#minusModalCenter"></i>
+				<i class="fas fa-user-minus fa-lg ml-2 block-icon" data-toggle="modal" data-target="#minusModalCenter"></i>
 				
 				<!-- 설정 아이콘(차단 멤버 관리외에 더 필요할 시 드롭다운으로 만들기) -->
 				<!-- <i class="fas fa-cog fa-lg ml-2"></i> -->
@@ -266,7 +274,7 @@
 		<!-- 채팅방 리스트 -->
 		<div class="chat-list">
 		
-			<ul class="list-group">
+			<ul id="chatList" class="list-group">
 			
 				<c:forEach items="${list}" var="chatLog">
 					
@@ -286,7 +294,7 @@
 							<!-- 회원 닉네임 --> <%-- 상대방 닉네임이 나와야 함 --%>
 							<strong class="nickname">${chatLog.member.nickname}</strong>
 							<!-- 최근 메세지 -->
-							<p class="recent-msg mb-0">${chatLog.msg}</p>
+							<p class="recent-msg mb-0 msg">${chatLog.msg}</p>
 							
 						
 						</div>
@@ -305,83 +313,6 @@
 					</li>
 				
 				</c:forEach>
-			
-			
-			
-				<%-- <li class="list-group-item position-relative">
-					<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
-					
-					<div class="msg-content">
-					
-						<!-- 회원 닉네임 -->
-						<strong class="nickname">길동이</strong>
-						<!-- 최근 메세지 -->
-						<p class="recent-msg mb-0">안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?</p>
-						
-					
-					</div>
-					
-					<div class="time-unread-count d-inline-block position-absolute text-right">
-					
-						<!-- 날짜(오늘일 경우 - 오전 9:00 또는 15:00 / 올해일 경우 - 12월 22일 / 올해가 아닐 경우 - 2020.10.14)-->
-						<p class="mb-0 chat-time">오전 9:00</p>
-						<!-- 안읽음 메세지 -->
-						<span class="badge badge-pill badge-danger unread-count">2</span>
-						
-					</div>
-
-				</li>
-				
-				<li class="list-group-item position-relative">
-					<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
-					
-					<div class="msg-content">
-					
-						<!-- 회원 닉네임 -->
-						<strong class="nickname">길동이</strong>
-						<!-- 최근 메세지 -->
-						<p class="recent-msg mb-0">안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?</p>
-						
-					
-					</div>
-					
-					<div class="time-unread-count d-inline-block position-absolute text-right">
-					
-						<!-- 날짜(오늘일 경우 - 오전 9:00 또는 15:00 / 올해일 경우 - 12월 22일 / 올해가 아닐 경우 - 2020.10.14)-->
-						<p class="mb-0 chat-time">오전 9:00</p>
-						<!-- 안읽음 메세지 -->
-						<span class="badge badge-pill badge-danger unread-count">2</span>
-						
-					</div>
-
-				</li>
-				
-				<li class="list-group-item position-relative">
-					<!-- 회원 프로필 사진 -->
-					<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile position-absolute text-left"/>
-					
-					<div class="msg-content">
-					
-						<!-- 회원 닉네임 -->
-						<strong class="nickname">길동이</strong>
-						<!-- 최근 메세지 -->
-						<p class="recent-msg mb-0">안녕하세요?안녕하세요?안녕하세요?안녕하세요?안녕하세요?</p>
-						
-					
-					</div>
-					
-					<div class="time-unread-count d-inline-block position-absolute text-right">
-					
-						<!-- 날짜(오늘일 경우 - 오전 9:00 또는 15:00 / 올해일 경우 - 12월 22일 / 올해가 아닐 경우 - 2020.10.14)-->
-						<p class="mb-0 chat-time">오전 9:00</p>
-						<!-- 안읽음 메세지 -->
-						<span class="badge badge-pill badge-danger unread-count">2</span>
-						
-					</div>
-
-				</li> --%>
 
 			</ul>
 		
@@ -391,6 +322,57 @@
 	</div>
 
 <script>
+
+// message받은것 중 logTime(유닉스 시간)을 yyyy/MM/dd HH:mm 형태로 return
+function dateFormat(date) {
+	let month = date.getMonth() + 1;
+	let day = date.getDate();
+	let hour = date.getHours();
+	let minute = date.getMinutes();
+	//let second = date.getSeconds();
+
+	month = month >= 10 ? month : '0' + month;
+	day = day >= 10 ? day : '0' + day;
+	hour = hour >= 10 ? hour : '0' + hour;
+	minute = minute >= 10 ? minute : '0' + minute;
+	//second = second >= 10 ? second : '0' + second;
+
+	return date.getFullYear() + '/' + month + '/' + day + ' ' + hour + ':' + minute;
+}
+
+//websocket 연결(SockJS)
+const ws = new SockJS(`http://\${location.host}${pageContext.request.contextPath}/stomp`);
+
+// StompClient객체 생성
+const stompClient = Stomp.over(ws);
+
+// connect
+stompClient.connect({}, (frame) => {
+	console.log("Stomp Client Connect : ", frame);
+	
+	// 구독신청 및 핸들러 등록 // 반드시 커넥트 이후에 실행되도록 콜백함수 안에 작성한다.
+	stompClient.subscribe("/chat/chatList", (message) => {
+		console.log("message : ", message);
+		const obj = JSON.parse(message.body);
+		//console.log("obj = ", obj);
+		const {chatId, memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime} = obj;
+
+		const $li = $(`li[data-chat-id='\${chatId}']`);
+		//console.log("$li = ", $li);
+		const $msgP = $li.find(".msg");
+		//console.log("$msgP = ", $msgP);
+		$msgP.text(msg); // p.msg 갱신
+
+		const date = new Date(logTime);
+		//console.log(dateFormat(date));
+		const $chatTimeP = $li.find(".chat-time");
+		$chatTimeP.text(dateFormat(date));
+		
+		$li.prependTo($("#chatList")); // 첫번째 자식요소로 추가(이동) // 기존 요소에 적용하면 이동이 된다.
+
+	});	
+});
+
 // 채팅방 생성을 위한 멤버 선택 - 닉네임 검색 폼
 $(searchNicknameFrm).submit((e) => {
 	e.preventDefault(); // 폼제출방지

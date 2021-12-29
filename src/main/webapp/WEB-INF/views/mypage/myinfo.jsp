@@ -16,14 +16,14 @@
 <%-- <sec:authentication property="principal" var="member"/> --%>
 
 			<%-- my info --%>
-			<div class="col-12" id="myinfo">
+			<div id="myinfo" class="col-12">
 				<div class="row">
 					
-					<article class="col-10" id="info">
+					<article id="info" class="col-10">
 		      			<h4>나의 정보</h4>
 		       			<hr/>
 		       			<!-- 내 프로필 -->
-		       			<section class="card" id="myProfile">
+		       			<section id="myProfile" class="card">
 		       				<div class="card-header">내 프로필</div>
 		       				<div class="card-body">
 		       					<div class="row">
@@ -31,7 +31,7 @@
 			       					<article class="col-3">
 				       					<c:if test="${member.proPhoto eq null}"><img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="" id="profileImg"/></c:if>
 								      	<c:if test="${member.proPhoto ne null}"><img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png" alt="" id="profileImg"/></c:if>
-								       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';"/>
+								       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';"/>
 			       					</article>
 			       					<!-- 프로필 내용 -->
 			       					<article class="col-9">
@@ -51,28 +51,28 @@
 								        </table>
 			       					</article>
 		     					</div>
-		       					<button class="col-11" type="button" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';">수정하기</button>
+		       					<button type="button" class="col-11 cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';">수정하기</button>
 		       				</div>
 		       			</section>
 		       			<br/>
 		       			<section class="row">
 		       				<div class="col-6">
 			       				<!-- 배송지 관리 -->
-			       				<article class="card" id="myAddress">
+			       				<article id="myAddress" class="card">
 			       					<div class="card-header">배송지 관리</div>
 				       				<div class="card-body">
 				       					<p>내가 저장한 배송지를<br/>관리할 수 있습니다.</p>
-				       					<button class="col-4" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/shippingAddress.do';">조회하기</button>
+				       					<button class="col-4 cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/shippingAddress.do';">조회하기</button>
 				       				</div>
 			       				</article>
 		       				</div>
 		       				<div class="col-6">
 			       				<!-- 신고 내역 -->
-			       				<article class="card" id="myReport">
+			       				<article id="myReport" class="card">
 			       					<div class="card-header">신고 내역</div>
 				       				<div class="card-body">
 				       					<p>내가 신고한 내역을<br/>확인할 수 있습니다.</p>
-				       					<button class="col-4" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/reportHistory.do';">조회하기</button>
+				       					<button class="col-4 cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/reportHistory.do';">조회하기</button>
 				       				</div>
 			       				</article>
 		       				</div>

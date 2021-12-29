@@ -79,6 +79,7 @@ public class MypageController {
 //		log.debug("member = {}", member);
 //		model.addAttribute("member", member);
 		mypageMember(model, authentication);
+		
 		return "mypage/mypage";
 	}
 	/**
@@ -91,6 +92,7 @@ public class MypageController {
 	@GetMapping("/myinfo.do")
 	public String myinfo(Model model, Authentication authentication) {
 		mypageMember(model, authentication);
+		
 		return "mypage/myinfo";
 	}
 	/**
@@ -102,6 +104,7 @@ public class MypageController {
 	 */
 	@GetMapping("/mycommunity.do")
 	public String mycommunity() {
+		
 		return "mypage/mycommunity";
 	}
 	/**
@@ -112,10 +115,10 @@ public class MypageController {
 	 * 지원 나의 정보 > 활동 배지 시작
 	 */
 	@GetMapping("/myinfo/activityBadge.do")
-	public String activityBagde() {
-
-		return "mypage/activityBadge";
+	public String activityBagde(Model model, Authentication authentication) {
+		mypageMember(model, authentication);
 		
+		return "mypage/activityBadge";
 	}
 	/**
 	 * 지원 나의 정보 > 활동 배지 끝
@@ -127,8 +130,8 @@ public class MypageController {
 	@GetMapping("/myinfo/profileUpdate.do")
 	public String profileUpdate(Model model, Authentication authentication) {
 		mypageMember(model, authentication);
-		return "mypage/profileUpdate";
 		
+		return "mypage/profileUpdate";
 	}
 	
 	/**
