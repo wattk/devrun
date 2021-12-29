@@ -77,9 +77,9 @@ public class ShopController {
 	// 사진 리뷰만 모아보기 기능
 	@ResponseBody
 	@GetMapping("picReviewOnly")
-	public List<Review> picReviewOnly() {
+	public List<Review> picReviewOnly(@RequestParam String productCode) {
 
-		List<Review> picReviewList = shopService.picReviewOnly();
+		List<Review> picReviewList = shopService.picReviewOnly(productCode);
 		return picReviewList;
 	}
 

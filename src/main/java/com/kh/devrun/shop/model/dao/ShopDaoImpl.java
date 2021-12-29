@@ -38,7 +38,7 @@ public class ShopDaoImpl implements ShopDao {
 
 	@Override
 	public int countAllList(String productCode) {
-		return session.selectOne("shop.countAllList",productCode);
+		return session.selectOne("shop.countAllList", productCode);
 	}
 
 	@Override
@@ -47,8 +47,8 @@ public class ShopDaoImpl implements ShopDao {
 	}
 
 	@Override
-	public List<Review> picReviewOnly() {
-		return session.selectList("shop.picReviewOnly");
+	public List<Review> picReviewOnly(String productCode) {
+		return session.selectList("shop.picReviewOnly", productCode);
 	}
 
 	@Override

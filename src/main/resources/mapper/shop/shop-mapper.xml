@@ -52,6 +52,7 @@
 		<result column ="product_code" property="productCode"/>
 		<result column ="content" property="content"/>
 		<result column ="like_count" property="likeCount"/>
+		<result column ="rate" property="rate"/>
 		<result column ="reg_date" property="regDate"/>
 		<collection property="attach" ofType="Attachment">
 			<id column="review_attach_no" property="reviewAttachNo"/>
@@ -78,9 +79,12 @@
 		    *
 		from
 		    review r left join review_attachment a
-		    on r.review_no = a.review_no
-		where review_attach_no is not null    
-		order by r.reg_date desc  	
+		    	on r.review_no = a.review_no
+		where 
+			review_attach_no is not null  and
+			product_code = #{productCode} 
+		order by 
+			r.reg_date desc  	
 	</select>
 	<select id="CategoryItemAll" resultType="product">
 		select 

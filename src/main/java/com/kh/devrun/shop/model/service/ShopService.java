@@ -16,11 +16,10 @@ public interface ShopService {
 
 	int reviewDelete(int reviewNo);
 
-	List<Review> picReviewOnly();
+	List<Review> picReviewOnly(String productCode);
 
 	List<Product> CategoryItemAll(String parentCate);
 
 	Attachment selectOneAttach(int reviewNo);
-
 
 }
