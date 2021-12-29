@@ -41,8 +41,6 @@
     <!-- Page level plugins -->
    <script src="${pageContext.request.contextPath }/resources/bootstrap/vendor/chart.js/Chart.min.js"></script>
 	
-	
-
 
     <title>관리자</title>
 
@@ -337,7 +335,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="${pageContext.request.contextPath}/admin/memberManage/memberLevel.do">회원 등급 관리</a>
-                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/memberManage/memberInquiry.do">회원 문의 내역</a>     
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/memberManage/questionProduct.do">상품 문의 내역</a>     
                     </div>
                 </div>
             </li>
