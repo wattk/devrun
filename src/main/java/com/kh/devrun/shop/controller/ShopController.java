@@ -122,13 +122,11 @@ public class ShopController {
 		
 		//서버에서 파일 삭제 위한 review 객체 가져오기
 		Attachment attach = shopService.selectOneAttach(reviewNo);
-		log.debug("attach가 있나요? : {}", attach);
+
 		if(attach != null) {
 			String reanmedFilename = attach.getRenamedFilename();
 			String path = application.getRealPath("/resources/upload/review/"+reanmedFilename);
-//					getContextPath()+"/resources/upload/review/"+reanmedFilename;
-			log.debug("path 확인 : {}", path);
-			
+			//서버에서 파일 삭제
 			File file = new File(path);
 			if(file.exists() == true){
 				log.debug("{} 해당 파일 서버에서 삭제합니다.", path);
@@ -139,10 +137,10 @@ public class ShopController {
 		int result = shopService.reviewDelete(reviewNo);
 		
 
-		/*
-		 * String msg = (result > 0) ? "리뷰 삭제 성공" : "리뷰 등록 삭제";
-		 * redirectAttr.addFlashAttribute("msg", msg);
-		 */
+		
+		String msg = (result > 0) ? "리뷰 삭제 성공" : "리뷰 삭제 실패";
+		redirectAttr.addFlashAttribute("msg", msg);
+		 
 		String referer = request.getHeader("Referer");
 		return "redirect:"+referer;
 	}
@@ -171,8 +169,8 @@ public class ShopController {
 
 		// 업무로직
 		int result = shopService.insertReview(review);
-		String msg = (result > 0) ? "리뷰 등록 성공" : "리뷰 등록 실패";
-		redirectAttr.addFlashAttribute("msg", msg);
+//		String msg = (result > 0) ? "리뷰 등록 성공" : "리뷰 등록 실패";
+//		redirectAttr.addFlashAttribute("msg", msg);
 
 		String referer = request.getHeader("Referer");
 		return "redirect:"+referer;
