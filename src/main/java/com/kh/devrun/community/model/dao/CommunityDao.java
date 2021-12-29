@@ -27,6 +27,8 @@ public interface CommunityDao {
 
 	int insertFreeboardComment(CommunityComment communityComment);
 
+	int commentDelete(int commentNo);
+
 
 
 }

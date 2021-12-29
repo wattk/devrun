@@ -114,7 +114,7 @@
 	connect by
 	    prior comment_no = comment_ref_no
 	order siblings by
-	    reg_date asc
+	    reg_date desc
   </select>
   
   <!-- 댓글 입력 -->
@@ -127,7 +127,7 @@
 			<when test="commentRefNo eq 0">
 				null,
 			</when>
-			<when test="commentRefNo ne 0">
+			<when test="commentRefNo != 0">
 				#{commentRefNo},
 			</when>
   		</choose>
@@ -137,5 +137,13 @@
   		default
   	)
   </insert>
+  
+  <!-- 댓글 삭제 -->
+  <delete id="commentDelete">
+  	delete from 
+    	community_comment 
+	where
+    	comment_no = #{commentNo}
+  </delete>
   
 </mapper>

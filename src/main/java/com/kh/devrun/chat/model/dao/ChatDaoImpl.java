@@ -51,4 +51,9 @@ public class ChatDaoImpl implements ChatDao {
 	public Member selectOneReceiver(Map<String, Object> param) {
 		return session.selectOne("chat.selectOneReceiver", param);
 	}
+
+	@Override
+	public int updateLastCheck(Map<String, Object> fromMessage) {
+		return session.update("chat.updateLastCheck", fromMessage);
+	}
 }

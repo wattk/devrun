@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.common.DevrunUtils;
+import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
@@ -77,10 +80,27 @@ public class ShopController {
 	// 사진 리뷰만 모아보기 기능
 	@ResponseBody
 	@GetMapping("picReviewOnly")
-	public List<Review> picReviewOnly(@RequestParam String productCode) {
+	public Map<String, Object> picReviewOnly(@RequestParam String productCode, Authentication authentication,
+			HttpServletRequest request) {
+		String reviewSb = null;
+		Member member = (Member) authentication.getPrincipal();
+		log.debug("member{}", member);
+
+		String proPhotoName = member.getProPhoto();
+		String proPhotoPath = request.getContextPath() + "/resources/upload/profilePhoto/" + proPhotoName;
+		log.debug("프로필 사진 경로 {}", proPhotoPath);
+		
+		String url = request.getContextPath();
 
 		List<Review> picReviewList = shopService.picReviewOnly(productCode);
-		return picReviewList;
+		if (picReviewList != null) {
+			reviewSb = DevrunUtils.getReview(picReviewList, member,proPhotoPath,url);
+		}
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("reviewSb", reviewSb);
+		
+		return map;
 	}
 
 	// 상세페이지를 위한 상품 하나 받아오기!
