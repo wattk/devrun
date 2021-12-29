@@ -23,4 +23,7 @@ public interface ShopDao {
 
 	List<Product> CategoryItemAll(String parentCate);
 
+	Attachment selectOneAttach(int reviewNo);
+
+
 }

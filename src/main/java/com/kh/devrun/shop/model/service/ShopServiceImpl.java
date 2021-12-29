@@ -79,5 +79,11 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.CategoryItemAll(parentCate);
 	}
 
+	@Override
+	public Attachment selectOneAttach(int reviewNo) {
+		return shopDao.selectOneAttach(reviewNo);
+	}
+
+
 	
 }
