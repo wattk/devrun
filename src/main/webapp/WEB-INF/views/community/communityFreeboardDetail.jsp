@@ -204,7 +204,20 @@
 							<textarea class="form-control" id="exampleFormControlTextarea1" rows="1" readonly="readonly">${communityCommentEntity.content}</textarea>
 							<!-- 회원일때만 답글 버튼이 나타나도록 처리 -->
 							<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
-								<button type="button" class="btn btn-dark mt-3 float-right btnReComment" value="${communityCommentEntity.commentNo}">답글</button>
+								<div class="row float-right">
+								<button type="button" class="btn btn-dark mt-3 float-right btnReComment" value="${communityCommentEntity.commentNo}">답글</button>&nbsp;
+								<!-- 회원일 경우 -->
+								<sec:authorize access="hasAnyRole('M1', 'M2')">
+									<!-- 회원이고 글쓴이 본인일 경우 -->
+									<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
+										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+									</c:if>
+								</sec:authorize>
+								<!-- 관리자일 경우 -->
+								<sec:authorize access="hasRole('AM')">
+									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+								</sec:authorize>
+								</div>
 							</sec:authorize>
 						    </li>
 						</ul>
@@ -217,6 +230,17 @@
 									&nbsp;&nbsp;<fmt:formatDate value="${communityCommentEntity.regDate}" pattern="yyyy-MM-dd HH:mm"/>
 								</div>
 								<textarea class="form-control" id="exampleFormControlTextarea1" rows="1" readonly="readonly">${communityCommentEntity.content}</textarea>
+								<!-- 회원일 경우 -->
+								<sec:authorize access="hasAnyRole('M1', 'M2')">
+									<!-- 회원이고 글쓴이 본인일 경우 -->
+									<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
+										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+									</c:if>
+								</sec:authorize>
+								<!-- 관리자일 경우 -->
+								<sec:authorize access="hasRole('AM')">
+									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+								</sec:authorize>
 							    </li>
 							</ul>
 						</c:otherwise>
@@ -250,7 +274,7 @@ $(".btnReComment").click((e) => {
 					<textarea class="form-control" name="content" id="reComment" rows="1"></textarea>
 					<button type="button" class="btn btn-dark mt-3 float-right" onclick="freeboardReCommentValidate()">등록</button>
 					
-					<input type="hidden" name="commentLevel" value="2" />
+					<input type="hidden" name="commentLevel" value="2"/>
 					<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
 					<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
 					<input type="hidden" name="commentRefNo" value= "\${commentRefNo}" />
@@ -288,6 +312,24 @@ function freeboardReCommentValidate(){
 	}
 	$(document.freeboardReCommentForm).submit();
 }
+
+// 댓글 삭제
+$('.btnCommentDelete').click((e) => {
+	//console.log("도착했나요?");
+	//console.log(e.target);
+	var commentNo = $(e.target).val();	
+	//console.log(`삭제할 댓글 번호 : \${commentNo}`);
+	//communityNo은 communityEntity로 받아왔기때문에 이점을 유의한다.
+	//console.log(${communityEntity.communityNo})
+	
+	// 사용자 입력값을 복수개로 가져와 넘길 수 있다.
+	if(confirm("정말로 삭제하시겠습니까?")){
+		location.href=`${pageContext.request.contextPath}/community/commentDelete.do?commentNo=\${commentNo}&communityNo=${communityEntity.communityNo}`;	
+	}else{
+		 return;
+	}  
+	
+});
 
 
 
