@@ -3,6 +3,7 @@ package com.kh.devrun.admin.controller;
 import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -380,11 +381,6 @@ public class AdminController {
 			}
 					 
 		}
-		else {
-			log.debug("첨부파일 없음~~~~~~~~~");
-			// 수정시 첨부파일이 없다면 기존 파일명으로 업로드
-			newProductImg = productCode+".png";
-		}
 			
 		// 바뀐 이미지 파일 명 set한 뒤 update
 		// 상품 정보 수정(첨부파일도 같이 수정)
@@ -409,9 +405,33 @@ public class AdminController {
 	
 	// 회원 등급 관리
 	@GetMapping("/memberManage/memberLevel.do")
-	public void memberLevel(Model model) {
+	public void memberLevel(	
+			Model model,
+			@RequestParam(defaultValue = "1") int cPage,
+			HttpServletRequest request
+			) {
+		// 1.페이징 처리 : 페이지 설정
+		int limit = 11;
+		int offset = (cPage - 1) * limit;
 		
-		List<Member>memberList = memberManageService.selectAllMember();
+		// 게시물 리스트 가져오기
+		List<Member>memberList = memberManageService.selectAllMember(offset,limit);
+
+		log.debug("list = {}" ,memberList);	
+		model.addAttribute("list",memberList);
+		
+		// 2. 전체게시물수 totalContent
+		int totalMemberCount =  memberManageService.selectTotalMemberCount();
+		log.debug("totalContent = {}", totalMemberCount);
+		model.addAttribute("totalContent", totalMemberCount);
+		
+		// 3. pagebar
+		String url = request.getRequestURI(); 
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalMemberCount, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
+		
+			
 		
 		model.addAttribute("memberList",memberList);
 	};
@@ -428,9 +448,15 @@ public class AdminController {
 	@GetMapping("/memberManage/searchMember.do")
 	public Map<String,Object>searchMember(
 			@RequestParam String searchType,
-			@RequestParam String searchKeyword
+			@RequestParam String searchKeyword,
+			@RequestParam(defaultValue = "1") int cPage,
+			HttpServletRequest request
 			){
+		
 		Map<String,Object>map = new HashMap<>();
+		
+		int limit = 11;
+		int offset = (cPage - 1) * limit;
 		
 		log.debug("searchType = {}",searchType);
 		log.debug("searchKeyword = {}",searchKeyword);
@@ -439,6 +465,9 @@ public class AdminController {
 		if(searchKeyword.contains(",")) {
 			log.debug(searchKeyword);
 		}
+		
+		param.put("limit",limit);
+		param.put("offset",offset);
 		
 		param.put("searchType", "m."+searchType);
 		param.put("searchKeyword", searchKeyword);
@@ -451,10 +480,27 @@ public class AdminController {
 		return map;
 	}
 	
+	// 회원 권한 업데이트
+	@PostMapping("/memberManage/updateAuthority.do")
+	public String updateAuthority(
+			@RequestParam int memberNo,
+			@RequestParam String authority,
+			RedirectAttributes redirectAttr
+			) {
+		Map<String,Object> param = new HashMap<>();
+		param.put("memberNo",memberNo);
+		param.put("authority",authority);
+		
+		int result = memberManageService.updateAuthority(param);
+		String msg = "권한 업데이트 완료!";
+		
+		redirectAttr.addFlashAttribute("msg",msg);
+		return "redirect:/admin/memberManage/memberLevel.do";
+	}
 	
 	
 	
-	
+
 	//--------------------태영 끝-----------------------------
 
 	

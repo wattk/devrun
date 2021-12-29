@@ -66,6 +66,11 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.insertFreeboardComment(communityComment);
 	}
 
+	@Override
+	public int commentDelete(int commentNo) {
+		return communityDao.commentDelete(commentNo);
+	}
+
 
 
 	

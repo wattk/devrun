@@ -5,17 +5,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 
-
-
 <jsp:include page="/WEB-INF/views/admin/admin-common/header.jsp">
 	<jsp:param value="회원 등급 관리" name="title"/>
 </jsp:include>
-
-<c:if test="${not empty msg}">
-<script>
-	alert("${msg}");
-</script>
-</c:if>
 
 
 <!-- Button trigger modal -->
@@ -28,15 +20,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title fw600" id="exampleModalLabel">확인</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        
+      	<h5 class="fw600"> <span id="preVal"></span> -> <span id="afterVal"></span>으로 권한을 바꾸시겠습니까?</h5>
       </div>
       <div class="modal-footer">
-        <button type="button" id="cancelBtn"class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" id="successBtn" class="btn btn-primary">권한 변경</button>
+        <button type="button" id="cancelBtn"class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
       </div>
     </div>
   </div>
@@ -52,6 +44,7 @@
 	            <option value="MemberNo">회원 번호</option>		
 	            <option value="MemberId">회원 아이디</option>
 	            <option value="MemberName">회원 이름</option>
+	            <option value="MemberNickName">회원 별명</option>
 	            <option value="MemberRole">회원 권한</option>
 	        </select>
 	 	</div>
@@ -87,6 +80,14 @@
 	            </form>	
 	        </div>
 	        
+	        <div id="searchMemberNickName" class="search-type other">
+	            <form action="<%=request.getContextPath()%>/admin/memberFinder">
+	                <input type="hidden" name="searchType" value="nickname"/>
+	                <input type="text" name="searchKeyword" size="25" placeholder="검색할 별명을 입력하세요." value=""/>
+	                <button type="submit" class="btn-blue search-btn">검색</button>			
+	            </form>	
+	        </div>
+	        
 	        <div id="searchMemberRole" class="search-type other">
 	            <form action="<%=request.getContextPath()%>/admin/memberFinder">
 	            	<input type="hidden" name="searchType" value="authority"/>
@@ -113,6 +114,7 @@
 					<th>회원 번호</th>
 					<th>회원 아이디</th>
 					<th>회원 이름</th>
+					<th>회원 별명</th>
 					<th>가입입</th>
 					<th>권한</th>
 				</tr>	
@@ -123,6 +125,7 @@
 					<td>${member.memberNo }</td>
 					<td>${member.id }</td>
 					<td>${member.name }</td>
+					<td>${member.nickname }</td>
 					<td> <fmt:formatDate value="${member.enrollDate }" pattern="yyyy-MM-dd"/>  </td>
 					<td>
 						<select class="select-authority">
@@ -143,21 +146,71 @@
 	${pagebar}
 	
 </div>
-	
+<form 
+	action="${pageContext.request.contextPath}/admin/memberManage/updateAuthority.do" 
+	name="memberRoleUpdateFrm"
+	method="post">
+	<input type="hidden" name="memberNo" />
+	<input type="hidden" name="authority" />
+</form>	
 
 <script>
+	$(successBtn).click(e=>{
+		console.log( $(document.memberRoleUpdateFrm).find("[name=memberNo]").val()   );
+		console.log( $(document.memberRoleUpdateFrm).find("[name=authority]").val()   );
+		
+		$(memberRoleUpdateFrm).submit();
+		
+	});
 
+	var preVal;
+	var afterVal;
+	
+	// select 클릭시 선택값 저장
+	$(".select-authority").one("click",function(e){
+		preVal = e.target.value;
+		console.log("변경 이전 값 = ",preVal);
+	});
+	
 	
  	//권한 변경시 띄울 모달 이벤트 
  	$(document).on("change",".select-authority",(e)=>{
+ 			
 	 	console.log("select값 변경");
-		$(authorityBtn).trigger("click");				
+		$(authorityBtn).trigger("click");
+		afterVal = e.target.value;
+		
+		var targetMemberNo = $(e.target).parents("tr").children().first().html();
+		console.log("타겟 memberNo =", targetMemberNo);
+		
+		console.log("변경전 값 = ",preVal);
+		console.log("변경후 값 = ",afterVal);
+		
+		// 모달 확인창에 html 추가
+		EncoPreVal = preVal == "ROLE_AM" ? "관리자" : (preVal == "ROLE_M1" ? "지식인" : "일반회원");
+		EncoAfterVal = afterVal == "ROLE_AM" ? "관리자" : (afterVal == "ROLE_M1" ? "지식인" : "일반회원");
+		
+			
+		$("#preVal").html("["+EncoPreVal+"]");		
+		$("#afterVal").html("["+EncoAfterVal+"]");
+		
+		// 히든폼에 값 채우기
+		var $frm = $(document.memberRoleUpdateFrm);
+		
+		$frm.find("[name = memberNo]").val(targetMemberNo);
+		$frm.find("[name = authority]").val(afterVal);
+		
+		
 	});
-
- 	
- 	//취소 선택시 이전 값으로 돌리기 
+	
+ 	//취소 선택시 이전 값으로 돌리기  && preVal afterVal 값 초기화
 	$(document).on("click","#cancelBtn",(e)=>{	
 		$(searchBymemberAll).trigger("click");
+		
+	
+		console.log("변경전 값 = ",preVal);
+		console.log("변경후 값 = ",afterVal);
+		
 	});
 		
 
@@ -226,6 +279,7 @@
 					<td>\${memberList[i].memberNo}</td>
 					<td>\${memberList[i].id}</td>
 					<td>\${memberList[i].name}</td>
+					<td>\${memberList[i].nickname}</td>
 					<td>\${memberList[i].enrollDate}</td>
 					<td>
 						<select class="select-authority">

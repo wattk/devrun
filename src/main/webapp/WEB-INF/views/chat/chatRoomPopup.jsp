@@ -838,6 +838,18 @@ stompClient.connect({}, (frame) => {
 		$('.chat-data-wrap').scrollTop($('.chat-data-wrap')[0].scrollHeight);
 	});
 	
+	// 팝업생성, stompClient가 연결되면 chat_member.last_check컬럼을 update한다.
+	// 위치주의 : connect된 이후 호출되어야한다.
+	lastCheck();
+});
+
+/**
+ * 팝업창이 활성화(focus)되면 chat_member.last_check컬럼을 update한다.
+ */
+// 다른곳 갔다가 팝업 페이지로 포커스를 다시 할 때에도 chat_member.last_check컬럼을 update되어야 한다.
+$(window).focus((e) => {
+	console.log("WINDOW FOCUS");
+	lastCheck();
 });
 
 // 채팅 Send 클릭 시 이벤트 발생
@@ -871,6 +883,21 @@ $(message).keyup((e) => {
 		$(sendBtn).trigger('click'); // click 핸들러 호출!
 	}
 });
+
+/**
+ * 채팅방 마지막 확인시각을 메시지로 발행 -> db chat_member.last_check update
+ */
+const lastCheck = () => {
+	let data = {
+			chatId : "${chatId}",
+			memberNo : "${loginMember.memberNo}",
+			lastCheck : Date.now(),
+			type : "LAST_CHECK"
+	};
+	
+	stompClient.send("/app/lastCheck", {},JSON.stringify(data));
+		
+};
 
 // 더보기 아이콘 클릭 이벤트 발생
 $('.more-icon').on('click', function(){

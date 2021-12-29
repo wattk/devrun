@@ -9,6 +9,12 @@ public interface MemberManageService {
 
 	List<Member> searchMemberList(Map<String, Object> param);
 
-	List<Member> selectAllMember();
+	List<Member> selectAllMember(int offset, int limit);
+
+	// 전체 회원수
+	int selectTotalMemberCount();
+
+	// 멤버 권한 수정
+	int updateAuthority(Map<String, Object> param);
 
 }
