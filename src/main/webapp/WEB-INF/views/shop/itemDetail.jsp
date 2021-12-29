@@ -262,7 +262,7 @@
 								<div class="item-sort-container d-flex justify-content-between">
 								  <div class="p-4" style="margin-top: 9px;">총 ${reviewTotal}개</div>
 								  <div class="p-4" id="sortBy">
-									<span class="pr-2 pl-2 shop-sort">최신순</span>
+									<span class="pr-2 pl-2 shop-sort newReview" >최신순</span>
 									<span class="pr-2 pl-2 shop-sort">오래된순 </span>
 									<span class="pr-2 pl-2 shop-sort" onclick="picReviewOnly()">사진리뷰모아보기</span>
 									<sec:authorize access="hasAnyRole('M1','M2')">
@@ -467,11 +467,9 @@ function picReviewOnly(){
 		},
 		method: "GET",
 		success(data){		
-			console.log(data);
-			console.dir(data);
-			
+			$div.children().detach();
 			const s = data["reviewSb"];
-			$div.after(s);
+			$div.append(s);
 			
 			
 		},
@@ -481,6 +479,60 @@ function picReviewOnly(){
 	 
 }
 /*사진리뷰만 보기 정렬 끝 */
+
+
+
+/*onload시 비동기 리뷰 조회 시작 */
+   window.onload = function reviewAll(){
+	var $productCode = $(productCodeV).val(); 
+	var $div = $('#reviewBefore');
+	
+	$.ajax({
+		
+		url: "${pageContext.request.contextPath}/shop/review",
+		data: {
+			productCode : $productCode	
+		},
+		method: "GET",
+		success(data){		
+			$div.children().detach();
+			const s = data["reviewSb"];
+			$div.append(s);
+		},
+		error : function(xhr, status, err){
+            console.log(xhr, status, err);
+        }
+	});
+	
+}  
+
+$(document).on('click', '.newReview', function(e) {
+	var $productCode = $(productCodeV).val(); 
+	var $div = $('#reviewBefore');
+	
+	$.ajax({
+		
+		url: "${pageContext.request.contextPath}/shop/review",
+		data: {
+			productCode : $productCode	
+		},
+		method: "GET",
+		success(data){		
+			$div.children().detach();
+			const s = data["reviewSb"];
+			$div.append(s);
+		},
+		error : function(xhr, status, err){
+            console.log(xhr, status, err);
+        }
+	});
+
+
+});
+
+
+/*onload시 비동기 리뷰 조회 시작 */
+
 
 
 //바로구매 버튼 클릭 이벤트 혜진 시작

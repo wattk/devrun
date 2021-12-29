@@ -89,17 +89,45 @@ public class ShopController {
 		String proPhotoName = member.getProPhoto();
 		String proPhotoPath = request.getContextPath() + "/resources/upload/profilePhoto/" + proPhotoName;
 		log.debug("프로필 사진 경로 {}", proPhotoPath);
-		
+
 		String url = request.getContextPath();
 
 		List<Review> picReviewList = shopService.picReviewOnly(productCode);
 		if (picReviewList != null) {
-			reviewSb = DevrunUtils.getReview(picReviewList, member,proPhotoPath,url);
+			reviewSb = DevrunUtils.getReview(picReviewList, member, proPhotoPath, url);
 		}
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("reviewSb", reviewSb);
-		
+
+		return map;
+	}
+
+	// 리뷰 전체조회
+	@ResponseBody
+	@GetMapping("/review")
+	public Map<String, Object> review(@RequestParam String productCode, Authentication authentication,
+			HttpServletRequest request) {
+
+		String reviewSb = null;
+		Member member = (Member) authentication.getPrincipal();
+
+		String proPhotoName = member.getProPhoto();
+		String proPhotoPath = request.getContextPath() + "/resources/upload/profilePhoto/" + proPhotoName;
+
+		String url = request.getContextPath();
+		int reviewTotal = shopService.countAllList(productCode);
+		List<Review> reviewList = shopService.selectAllReview(productCode);
+
+		if (reviewList != null) {
+			reviewSb = DevrunUtils.getReview(reviewList, member, proPhotoPath, url);
+		}
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("reviewTotal ", reviewTotal);
+		map.put("reviewSb", reviewSb);
+
+		log.debug("map : {}", map);
 		return map;
 	}
 
@@ -114,13 +142,6 @@ public class ShopController {
 		// 옵션도 조회
 		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
 		model.addAttribute("pDetail", pDetail);
-
-		// 해당 상품 리뷰들 조회
-		List<Review> reviewList = shopService.selectAllReview(productCode);
-		int reviewTotal = shopService.countAllList(productCode);
-		log.debug("리뷰 리스트 조회! : {}", reviewList);
-		model.addAttribute("reviewList", reviewList);
-		model.addAttribute("reviewTotal", reviewTotal);
 
 		return "shop/itemDetail";
 	}
