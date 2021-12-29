@@ -12,10 +12,11 @@
 
 /* member profile */
 #profile section:not(:nth-of-type(2)) {text-align:center;}
-#profile #profileImg {font-size:100px; position:relative; color:#1A81FF;}
-#profile #edit {position:absolute; top:20%; right:32%; width:30px; height:30px;}
-#profile #badge {position:absolute; top:2%; left:28%; width:40px; height:40px; background-color:#2ECC71; border:5px solid #2ECC71; border-radius:50%; box-shadow:2px 2px 2px hsl(0deg 0% 0% / 0.38);}
+#profile #profileImg {width:100px; height:100px; margin:15px; border-radius:50%; position:relative;}
+#profile #edit {position:absolute; top:19%; right:31%; width:30px; height:30px;}
+#profile #badge {position:absolute; top:1%; left:28%; width:40px; height:40px; background-color:#2ECC71; border:5px solid #2ECC71; border-radius:50%; box-shadow:2px 2px 2px hsl(0deg 0% 0% / 0.38);}
 #profile section:nth-of-type(2) p span:first-of-type {color:#1A81FF;}
+#profile #url {padding:2px 10px 5px 10px;}
 
 /** my info **/
 #info {margin:0 auto;}

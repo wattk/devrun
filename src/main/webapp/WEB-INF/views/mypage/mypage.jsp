@@ -26,8 +26,8 @@
 				   			<c:if test="${member.proPhoto eq null}"><img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="" id="profileImg"/></c:if>
 							<c:if test="${member.proPhoto ne null}"><img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png" alt="" id="profileImg"/></c:if>
 					       	<p class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo.do';">${member.nickname}님<i class="bi bi-chevron-right"></i></p>
-					       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';"/>
-					    	<img src="https://i.ibb.co/S7TZCYh/coding.png" alt="" id="badge" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/activityBadge.do';"/>
+					       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';"/>
+					    	<img src="https://i.ibb.co/S7TZCYh/coding.png" alt="" id="badge" class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/activityBadge.do';"/>
 					    </section>
 					    <!-- profile info -->
 				        <section>
@@ -38,8 +38,12 @@
 				        <hr/>
 				       	<!-- login info / logout button -->
 				       	<section>
-				        	<p><img src="" alt="" />(으)로 로그인</p>
-				        	<button class="col-9">로그아웃</button>
+				       		<form:form
+					    		method="POST"
+					    		action="${pageContext.request.contextPath}/member/memberLogout.do">
+					        	<p><img src="" alt="" />(으)로 로그인</p>
+					        	<button type="submit" class="col-9 cursor">로그아웃</button>
+				        	</form:form>
 				       	</section>
 			    	</article>
 				     	
