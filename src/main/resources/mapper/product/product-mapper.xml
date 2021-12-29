@@ -232,6 +232,26 @@
 			product_code = #{productCode}
 	</select>
 	<!--다현 - 상세 페이지 뿌리기 위한 item 받아오기 끝-->
+	
+	<!-- 혜진 mapper 시작 -->
+	<select id="selectOneProductByDetailNo" resultMap="productCollection">
+		select
+		    *
+		from
+		    product p left join product_detail d
+		        on p.product_code = d.product_code
+		where
+		    d.detail_no = #{detailNo}
+	</select>
+	<resultMap type="product" id="productCollection">
+		<id column="product_code" property="productCode"/>
+		<result column="name" property="name"/>
+		<association property="productDetail">
+			<id column="" property=""/>
+			<result column="" property=""/>
+		</association>
+	</resultMap>
+	<!-- 혜진 mapper 끝 -->
 </mapper>
 
 

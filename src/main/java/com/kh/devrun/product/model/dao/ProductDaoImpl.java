@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class ProductDaoImpe implements ProductDao{
+public class ProductDaoImpl implements ProductDao{
 
 	@Autowired
 	SqlSession session;
@@ -117,6 +117,18 @@ public class ProductDaoImpe implements ProductDao{
 	public ProductEx selectOneItem(String productCode) {
 		return session.selectOne("product.selectOneItem",productCode);
 	}
+
+	/**
+	 * 혜진 상품 + 상품 상세(옵션) 조회
+	 * @param detailNo
+	 * @return
+	 */
+	@Override
+	public Product selectOneProductByDetailNo(int detailNo) {
+		return session.selectOne("product.selectOneProductByDetailNo", detailNo);
+	}
+	/* 혜진 끝*/
+	
 	
 }
 

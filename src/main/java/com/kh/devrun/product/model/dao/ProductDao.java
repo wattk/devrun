@@ -51,6 +51,14 @@ public interface ProductDao {
 	
 	//다현 - 상세 페이지 뿌리기 위한 item 받아오기
 	ProductEx selectOneItem(String productCode);
+
+	/**
+	 * 혜진 상품 + 상품 상세(옵션) 조회
+	 * @param detailNo
+	 * @return
+	 */
+	Product selectOneProductByDetailNo(int detailNo);
+	/* 혜진 끝*/
 	
 	
 	
