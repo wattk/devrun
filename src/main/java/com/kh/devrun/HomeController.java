@@ -82,7 +82,7 @@ public class HomeController {
 		return api.paymentByImpUid(imp_uid); 
 	}
 	
-	@PostMapping(value="/uploadSummernoteImageFile", produces = "application/json")
+	@PostMapping(value="/uploadSummernoteImageFile")
 	@ResponseBody
 	public Map<String, Object> uploadSummernoteImageFile(@RequestParam("file") MultipartFile upFile) {
 		log.debug("file = {}", upFile);
@@ -108,5 +108,21 @@ public class HomeController {
 		
 		return map;
 		
+	}
+	
+	@PostMapping(value="/deleteSummernoteImageFile")
+	@ResponseBody
+	public void deleteSummernoteImageFile(@RequestParam("imgs") String imgs) {
+		log.debug("imgs = {}", imgs);
+		String saveDirectory = application.getRealPath("/resources/upload/promotion");
+		//csv형식으로 받은 이미지 업로드 파일 이름들 분리해서 String배열에 담기
+		String[] filenames = imgs.split("/");
+		
+		//특정 이름을 가진 파일이 디렉토리에 있을 경우 파일 삭제
+		for(String filename : filenames) {
+			File file = new File(saveDirectory + "/" + filename);
+			
+			if(file.exists()) file.delete();
+		}
 	}
 }

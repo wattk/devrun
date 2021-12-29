@@ -25,7 +25,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" />
 
 <c:if test="${param.error != null}">
+<script>
 alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+</script>
 </c:if>
 
 
