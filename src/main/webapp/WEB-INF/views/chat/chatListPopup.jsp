@@ -3,6 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
+
+<%-- EL에서 접근하기 위해 var속성 지정 --%>
+<sec:authentication property="principal" var="loginMember"/>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -306,7 +312,7 @@
 							<jsp:setProperty name="dateValue" property="time" value="${chatLog.logTime}"/>
 							<p class="mb-0 chat-time"><fmt:formatDate value="${dateValue}" pattern="yyyy/MM/dd HH:mm"/></p>
 							<!-- 안읽음 메세지 --> <%-- 임의의 값 넣음 수정할 것 --%>
-							<span class="badge badge-pill badge-danger unread-count">2</span>
+							<span class="badge badge-pill badge-danger unread-count ${chatLog.unreadCount eq 0 ? 'd-none' : ''}">${chatLog.unreadCount}</span>
 							
 						</div>
 	
@@ -353,22 +359,44 @@ stompClient.connect({}, (frame) => {
 	// 구독신청 및 핸들러 등록 // 반드시 커넥트 이후에 실행되도록 콜백함수 안에 작성한다.
 	stompClient.subscribe("/chat/chatList", (message) => {
 		console.log("message : ", message);
+		
+		// type속성으로 MESSAGE(chatLog), LAST_CHECK을 구분한다.
 		const obj = JSON.parse(message.body);
-		//console.log("obj = ", obj);
-		const {chatId, memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime} = obj;
-
+		console.log("obj = ", obj);
+/* 		const {chatId, memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, type} = obj; */
+		const {chatId, type} = obj;
+		
 		const $li = $(`li[data-chat-id='\${chatId}']`);
 		//console.log("$li = ", $li);
-		const $msgP = $li.find(".msg");
-		//console.log("$msgP = ", $msgP);
-		$msgP.text(msg); // p.msg 갱신
-
-		const date = new Date(logTime);
-		//console.log(dateFormat(date));
-		const $chatTimeP = $li.find(".chat-time");
-		$chatTimeP.text(dateFormat(date));
+		const $unreadCountSpan = $li.find("span.unread-count");
 		
-		$li.prependTo($("#chatList")); // 첫번째 자식요소로 추가(이동) // 기존 요소에 적용하면 이동이 된다.
+		// 실제 메세지가 온 경우와 LAST_CHECK 분기처리한다.
+		switch(type){
+		case "LAST_CHECK" : 
+			$unreadCountSpan.text(0).addClass("d-none");
+			break;
+		case "MESSAGE" : 
+			const {chatId, memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, type} = obj;
+			const $msgP = $li.find(".msg");
+			//console.log("$msgP = ", $msgP);
+			$msgP.text(msg); // p.msg 갱신
+			const date = new Date(logTime);
+			//console.log(dateFormat(date));
+			const $chatTimeP = $li.find(".chat-time");
+			$chatTimeP.text(dateFormat(date));
+	
+			// 1. 본인메시지 : 처리없음
+			// 2. 상대방메시지 : 안읽음메시지 +1
+			if(memberNo != ${loginMember.memberNo}){
+				const unreadCountVal = Number($unreadCountSpan.text()) + 1;
+				$unreadCountSpan.text(unreadCountVal).removeClass("d-none");
+			}
+
+			$li.prependTo($("#chatList")); // 첫번째 자식요소로 추가(이동) // 기존 요소에 적용하면 이동이 된다.
+			
+			break;
+		}
+		
 
 	});	
 });

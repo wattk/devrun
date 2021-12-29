@@ -23,4 +23,6 @@ public interface ChatDao {
 
 	Member selectOneReceiver(Map<String, Object> param);
 
+	int updateLastCheck(Map<String, Object> fromMessage);
+
 }

@@ -89,13 +89,15 @@
 	    log_time desc
   </select> -->
   
-  <select id="findChatLog" resultMap="chatLogAssociation">
+  <!-- chatLogAssociation1 테스트 작업 - 구현다하고 chatLogAssociation과 동일하게 작동한다면 합칠 것 -->
+  <select id="findChatLog" resultMap="chatLogAssociation1">
   	select
 	    CL.*,
 	    M.member_no member_no1,
 		M.id,
 		M.nickname,
-		M.pro_photo
+		M.pro_photo,
+        (select count(*) from chat_log where chat_id = CL.chat_id and log_time > (select last_check from chat_member where chat_id = CL.chat_id and member_no = #{memberNo})) unread_count
 	from (
 	    select
 	        CL.*,
@@ -113,6 +115,22 @@
 	    log_time desc
   </select>
   
+  <resultMap type="chatLog" id="chatLogAssociation1">
+  	<!-- 지금 상황에서 이부분은 생략할 수 없음. 뻔한 내용도 여기서는 다 써줘야 한다.-->
+	<id column="no" property="no"/>
+	<result column="chat_id" property="chatId"/>
+	<result column="member_no" property="memberNo"/>
+	<result column="msg" property="msg"/>
+	<result column="log_time" property="logTime"/>
+	<result column="unread_count" property="unreadCount"/>
+	<association property="member" javaType="member">
+		<id column="member_no1" property="memberNo"/>
+		<result column="id" property="id"/>
+		<result column="nickname" property="nickname"/>
+		<result column="pro_photo" property="proPhoto"/>
+	</association>
+  </resultMap>
+  
   
   <select id="selectOneReceiver" resultType="member">
   	select
@@ -123,5 +141,16 @@
 	where
 	    cm.member_no2 = #{memberNo} and cm.chat_id = #{chatId}
   </select>
+  
+  <update id="updateLastCheck">
+  	update
+  		chat_member
+  	set
+  		last_check = #{lastCheck}
+  	where
+  		chat_id = #{chatId}
+  	  and
+  	  	member_no = #{memberNo}
+  </update>
 
 </mapper>
