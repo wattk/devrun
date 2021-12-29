@@ -89,6 +89,12 @@ public class MemberDaoImpl implements MemberDao {
 	public Member selectOneMemberByCheckKeyword(Map<String, Object> param) {
 		return session.selectOne("member.selectOneMemberByCheckKeyword", param);
 	}
+
+
+	@Override
+	public int memberWithdrawal(String id) {
+		return session.delete("member.memberWithdrawal", id);
+	}
 	
 	/**
 	 * 지원 dao 끝

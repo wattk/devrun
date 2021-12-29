@@ -147,10 +147,9 @@ COMMENT ON COLUMN "DELETE_MEMBER"."QUIT_DATE" IS '탈퇴일';
 
 -- 삭제된 권한 테이블 생성
 CREATE TABLE "DELETE_AUTHORITIES" (
-	"MEMBER_NO"	NUMBER		NOT NULL,
-	"AUTHORITY"	CHAR(2)		NOT NULL
+	"AUTHORITY"	VARCHAR2(30)		NOT NULL,
+	"MEMBER_NO"	NUMBER		NOT NULL
 );
-
 
 -- 삭제된 권한 테이블 코멘트 추가
 COMMENT ON COLUMN "DELETE_AUTHORITIES"."MEMBER_NO" IS '회원번호';
@@ -1202,6 +1201,10 @@ drop table authorities;
 COMMENT ON COLUMN "AUTHORITIES"."AUTHORITY" IS '회원 M1, M2, 관리자 AM';
 COMMENT ON COLUMN "AUTHORITIES"."MEMBER_NO" IS '회원번호';
 
+--FK 제약조건 delete on cascade 추가
+ALTER TABLE AUTHORITIES DROP CONSTRAINT FK_AUTHORITIES_MEMBER_NO;
+ALTER TABLE AUTHORITIES ADD CONSTRAINT FK_AUTHORITIES_MEMBER_NO FOREIGN KEY (MEMBER_NO) REFERENCES MEMBER(MEMBER_NO) ON DELETE CASCADE;
+
 --권한 테이블 delete 트리거 추가
 create trigger trg_delete_authorities
 		after
@@ -1212,8 +1215,8 @@ begin
 				delete_authorities
 		values
 				(
-					:old.member_no,
-					:old.authority
+					:old.authority,
+					:old.member_no
 				);
 end;
 

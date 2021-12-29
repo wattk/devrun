@@ -122,6 +122,11 @@ public class MemberServiceImpl implements MemberService {
 	public Member selectOneMemberByCheckKeyword(Map<String, Object> param) {
 		return memberDao.selectOneMemberByCheckKeyword(param);
 	}
+
+	@Override
+	public int memberWithdrawal(String id) {
+		return memberDao.memberWithdrawal(id);
+	}
 	
 	/**
 	 * 지원 서비스 끝

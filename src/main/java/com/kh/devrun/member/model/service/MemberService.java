@@ -27,4 +27,6 @@ public interface MemberService {
 	
 	Member selectOneMemberByCheckKeyword(Map<String, Object> param);
 	
+	int memberWithdrawal(String id);
+	
 }
