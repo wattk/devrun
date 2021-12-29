@@ -51,6 +51,7 @@ public class ShopController {
 
 	@Autowired
 	ServletContext application;
+	
 //--------------------주입-------------------------------------	
 
 	@GetMapping("/shopMain.do")
@@ -118,12 +119,30 @@ public class ShopController {
 	@GetMapping("/reviewDelete.do")
 	public String reviewDelete(@RequestParam int reviewNo, RedirectAttributes redirectAttr, HttpServletRequest request) {
 		log.debug("삭제할 리뷰의 아이디 : {}", reviewNo);
-
+		
+		//서버에서 파일 삭제 위한 review 객체 가져오기
+		Attachment attach = shopService.selectOneAttach(reviewNo);
+		log.debug("attach가 있나요? : {}", attach);
+		if(attach != null) {
+			String reanmedFilename = attach.getRenamedFilename();
+			String path = application.getRealPath("/resources/upload/review/"+reanmedFilename);
+//					getContextPath()+"/resources/upload/review/"+reanmedFilename;
+			log.debug("path 확인 : {}", path);
+			
+			File file = new File(path);
+			if(file.exists() == true){
+				log.debug("{} 해당 파일 서버에서 삭제합니다.", path);
+				file.delete();
+			}
+		}
+		
 		int result = shopService.reviewDelete(reviewNo);
+		
 
-		String msg = (result > 0) ? "리뷰 삭제 성공" : "리뷰 등록 삭제";
-		redirectAttr.addFlashAttribute("msg", msg);
-
+		/*
+		 * String msg = (result > 0) ? "리뷰 삭제 성공" : "리뷰 등록 삭제";
+		 * redirectAttr.addFlashAttribute("msg", msg);
+		 */
 		String referer = request.getHeader("Referer");
 		return "redirect:"+referer;
 	}

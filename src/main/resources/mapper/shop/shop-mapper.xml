@@ -88,5 +88,13 @@
 		from view_product_parent_category 
 		where status ='Y' and 
 		parent_category_code = #{parentCate}
+	</select>	
+	<select id="selectOneAttach" resultType="attachment">
+		select 
+			*
+		from
+			review_attachment
+		where 
+			review_no =#{reviewNo}
 	</select>
 </mapper>
