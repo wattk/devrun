@@ -36,9 +36,9 @@ import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.memberManage.model.service.MemberManageService;
 import com.kh.devrun.product.model.service.ProductService;
-import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductDetail;
-import com.kh.devrun.product.model.vo.ProductExtends;
+import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
 import com.kh.devrun.questionProduct.model.service.QuestionProductService;
@@ -83,7 +83,7 @@ public class AdminController {
 		
 		// 게시물 리스트 가져오기
 //		List<ProductExtends> list = productService.selectAllProductList(offset,limit);
-		List<Product> list = productService.selectAllProductList(offset,limit);
+		List<ProductEntity> list = productService.selectAllProductList(offset,limit);
 		log.debug("list = {}" ,list);	
 		model.addAttribute("list",list);
 		
@@ -126,7 +126,7 @@ public class AdminController {
 	// 상품 등록 && 상품-카테고리 등록
 	@PostMapping("/insertProduct.do")
 	public String insertProduct(
-			Product product,
+			ProductEntity product,
 			@RequestParam(value = "parentCategoryCode") String parentCategoryCode,
 			@RequestParam(value = "childCategoryCode")  String childCategoryCode,
 			@RequestParam(value = "optionContent")  String[]optionContent,
@@ -166,9 +166,6 @@ public class AdminController {
 			
 			productDetailList.add(productDetail);
 		}
-		
-		// prodcut 객체에 저장
-		product.setProductDetailList(productDetailList);
 		
 		// Map<String,Object>param에 담아서 전달
 		Map<String,Object>param = new HashMap<>();
@@ -257,7 +254,7 @@ public class AdminController {
 		
 		List<ProductDetail> productDetailList;
 		try {
-			productDetailList = productService.findProductOption(productCode);
+			productDetailList = productService.selectProductDetail(productCode);
 			log.debug("productDetailList = {}",productDetailList);
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -272,16 +269,16 @@ public class AdminController {
 	public String productDetail(@RequestParam String productCode, Model model) {
 		
 		// 상품정보 가져오기
-		ProductExtends productExtends = productService.selectProductOne(productCode);
+		ProductEx productEx = productService.selectProductOne(productCode);
 		
 		// 상품 Detail 정보 가져오기
 		List<ProductDetail> productDetail = productService.selectProductDetail(productCode);
 
-		log.debug("ProductExtends ={}",productExtends);
+		log.debug("ProductEx ={}",productEx);
 		log.debug("productDetail ={}",productDetail);
 				
 		model.addAttribute("productCode",productCode);
-		model.addAttribute("productInfo",productExtends);
+		model.addAttribute("productInfo",productEx);
 		model.addAttribute("productDetail",productDetail);
 		return "/admin/product/productDetail";
 	}
@@ -289,7 +286,7 @@ public class AdminController {
 	// 상품 && 상품 옵션 수정
 	@PostMapping("/updateProduct.do")
 	public String productUpdate(
-			Product product,
+			ProductEntity product,
 			
 			@RequestParam String productCode, // 상품 리스트에서 넘어온 productCode
 			@RequestParam String parentCategoryCode,
@@ -355,8 +352,8 @@ public class AdminController {
 			productDetailList.add(productDetail);
 		}
 		
-		// prodcut 객체에 저장
-		product.setProductDetailList(productDetailList);
+		// prodcut Map에 저장
+		param.put("productDetailList", productDetailList);
 				
 		log.debug("product = {}",product); 
 					
@@ -380,15 +377,16 @@ public class AdminController {
 				newProductImg = productCode+"-1.png";
 				File dest = new File(saveDirectory, newProductImg);
 				upFile.transferTo(dest);			
+				
+				// 바뀐 이미지 파일 명 set한 뒤 update
+				// 상품 정보 수정(첨부파일도 같이 수정)
+				product.setThumbnail(newProductImg);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 					 
 		}
 			
-		// 바뀐 이미지 파일 명 set한 뒤 update
-		// 상품 정보 수정(첨부파일도 같이 수정)
-		product.setThumbnail(newProductImg);
 		
 		param.put("product", product);
 		
@@ -709,8 +707,8 @@ public class AdminController {
 	
 	@GetMapping("/promotionAutocomplete")
 	@ResponseBody
-	public List<Product> promotionAutocomplete(@RequestParam String searchCode) {
-		List<Product> list = promotionService.selectProductListByProductCode(searchCode);
+	public List<ProductEntity> promotionAutocomplete(@RequestParam String searchCode) {
+		List<ProductEntity> list = promotionService.selectProductListByProductCode(searchCode);
 		return list;
 	}
 	

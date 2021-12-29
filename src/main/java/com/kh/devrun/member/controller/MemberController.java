@@ -29,7 +29,7 @@ import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.security.model.service.SecurityService;
 
 import com.kh.devrun.product.model.service.ProductService;
-import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEntity;
 
 
 

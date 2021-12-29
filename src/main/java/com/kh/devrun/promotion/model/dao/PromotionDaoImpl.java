@@ -8,7 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 @Repository
@@ -18,7 +18,7 @@ public class PromotionDaoImpl implements PromotionDao {
 	private SqlSession session;
 	
 	@Override
-	public List<Product> selectProductListByProductCode(String searchCode) {
+	public List<ProductEntity> selectProductListByProductCode(String searchCode) {
 		return session.selectList("product.selectProductListByProductCode", searchCode);
 	}
 
@@ -60,7 +60,7 @@ public class PromotionDaoImpl implements PromotionDao {
 	}
 
 	@Override
-	public List<Product> selectProductListByPromotionCode(Map<String, Object> param) {
+	public List<ProductEntity> selectProductListByPromotionCode(Map<String, Object> param) {
 		return session.selectList("promotion.selectProductListByPromotionCode", param);
 	}
 
@@ -80,7 +80,7 @@ public class PromotionDaoImpl implements PromotionDao {
 	}
 
 	@Override
-	public List<Product> selectProductPromotionListByChildCategoryCode(Map<String, Object> param) {
+	public List<ProductEntity> selectProductPromotionListByChildCategoryCode(Map<String, Object> param) {
 		return session.selectList("promotion.selectProductPromotionListByChildCategoryCode", param);
 	}
 
@@ -100,7 +100,7 @@ public class PromotionDaoImpl implements PromotionDao {
 	}
 
 	@Override
-	public List<Product> selectProductListByPromotionCode(Map<String, Object> param, int offset, int limit) {
+	public List<ProductEntity> selectProductListByPromotionCode(Map<String, Object> param, int offset, int limit) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("promotion.selectProductListByPromotionCode", param, rowBounds);
 	}

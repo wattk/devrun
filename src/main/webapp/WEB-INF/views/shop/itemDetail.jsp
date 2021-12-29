@@ -229,7 +229,7 @@
 							<i class="far fa-heart"></i>
 						</div>
 						<hr>
-						<select class="form-select col-12" aria-label="Default select example">
+						<select id="detailNo" class="form-select col-12" aria-label="Default select example">
 							<option selected>옵션선택</option>
 							<c:forEach items="${pDetail}" var ="pd">
 								<option value="${pd.detailNo}">${pd.optionNo} <c:if test="${pd.optionContent != null}"> , ${pd.optionContent}</c:if></option>
@@ -485,7 +485,9 @@ function picReviewOnly(){
 
 //바로구매 버튼 클릭 이벤트 혜진 시작
 $("#orderBtn").click((e)=>{
-	location.href = "${pageContext.request.contextPath}/order/order/${product.productCode}";
+	const detailNo = $("#detailNo").val();
+	console.log(detailNo);
+	location.href = `${pageContext.request.contextPath}/order/order/\${detailNo}`;
 });
 //바로구매 버튼 클릭 이벤트 혜진 끝
 </script>		
