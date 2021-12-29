@@ -1,5 +1,7 @@
 package com.kh.devrun.chat.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -39,6 +41,16 @@ public class ChatMessageController {
 		int result = chatService.insertChatLog(chatLog);
 		
 		return chatLog;
+	}
+	
+	@MessageMapping("/lastCheck")
+	@SendTo("/chat/chatList")
+	public Map<String, Object> lastCheck(Map<String, Object> lastCheck){
+		log.debug("lastCheck = {}", lastCheck);
+		// db chat_member.last_check update
+		int result = chatService.updateLastCheck(lastCheck);
+		
+		return lastCheck;
 	}
 	
 }
