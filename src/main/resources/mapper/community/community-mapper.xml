@@ -138,4 +138,12 @@
   	)
   </insert>
   
+  <!-- 댓글 삭제 -->
+  <delete id="commentDelete">
+  	delete from 
+    	community_comment 
+	where
+    	comment_no = #{commentNo}
+  </delete>
+  
 </mapper>

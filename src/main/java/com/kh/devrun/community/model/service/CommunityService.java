@@ -27,6 +27,8 @@ public interface CommunityService {
 
 	int insertFreeboardCommentEnroll(CommunityComment communityComment);
 
+	int commentDelete(int commentNo);
+
 
 
 
