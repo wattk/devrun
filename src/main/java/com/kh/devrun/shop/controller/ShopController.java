@@ -51,19 +51,24 @@ public class ShopController {
 
 	@Autowired
 	ServletContext application;
-	
+
 //--------------------주입-------------------------------------	
 
+	// 헤더에서 Shop 눌렀을 시
 	@GetMapping("/shopMain.do")
 	public void shopMain() {
 	}
 
-	// 상품 사이드 메뉴 바에서 전체보기 클릭 시
+	// 검색 페이지로 이동
+	@GetMapping("/shopSearch.do")
+	public void shopSearch() {
+	}
+
+	// 상품 사이드 메뉴에서 전체보기 클릭 시
 	@GetMapping("/CategoryItemAll")
 	public String CategoryItemAll(@RequestParam String parentCate, Model model) {
 
 		List<Product> itemList = shopService.CategoryItemAll(parentCate);
-		log.debug("{}", itemList);
 		model.addAttribute("itemList", itemList);
 
 		return "shop/shopCategory";
@@ -91,63 +96,43 @@ public class ShopController {
 		model.addAttribute("pDetail", pDetail);
 
 		// 해당 상품 리뷰들 조회
-		 List<Review> reviewList = shopService.selectAllReview(productCode); 
-		 int reviewTotal = shopService.countAllList(productCode); 
-		 log.debug("리뷰 리스트 조회! : {}", reviewList);
-		 model.addAttribute("reviewList", reviewList);
-		 model.addAttribute("reviewTotal", reviewTotal);
-		
+		List<Review> reviewList = shopService.selectAllReview(productCode);
+		int reviewTotal = shopService.countAllList(productCode);
+		log.debug("리뷰 리스트 조회! : {}", reviewList);
+		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("reviewTotal", reviewTotal);
 
 		return "shop/itemDetail";
 	}
 
-	@GetMapping("/shopSearch.do")
-	public void shopSearch() {
-	}
-
-	/*
-	 * @GetMapping("/itemDetail.do") public void itemDetail(Model model) {
-	 * 
-	 * List<Review> reviewList = shopService.selectAllReview(); 
-	 * int reviewTotal =
-	 * shopService.countAllList(); log.debug("리뷰 리스트 조회! : {}", reviewList);
-	 * model.addAttribute("reviewList", reviewList);
-	 * model.addAttribute("reviewTotal", reviewTotal); }
-	 */
-
 	// 리뷰 삭제하기
 	@GetMapping("/reviewDelete.do")
-	public String reviewDelete(@RequestParam int reviewNo, RedirectAttributes redirectAttr, HttpServletRequest request) {
-		log.debug("삭제할 리뷰의 아이디 : {}", reviewNo);
-		
-		//서버에서 파일 삭제 위한 review 객체 가져오기
+	public String reviewDelete(@RequestParam int reviewNo, HttpServletRequest request) {
+
+		// 서버에서 파일 삭제 위한 review 객체 가져오기
 		Attachment attach = shopService.selectOneAttach(reviewNo);
 
-		if(attach != null) {
+		if (attach != null) {
 			String reanmedFilename = attach.getRenamedFilename();
-			String path = application.getRealPath("/resources/upload/review/"+reanmedFilename);
-			//서버에서 파일 삭제
+			String path = application.getRealPath("/resources/upload/review/" + reanmedFilename);
+			// 서버에서 파일 삭제
 			File file = new File(path);
-			if(file.exists() == true){
+			if (file.exists() == true) {
 				log.debug("{} 해당 파일 서버에서 삭제합니다.", path);
 				file.delete();
 			}
 		}
-		
-		int result = shopService.reviewDelete(reviewNo);
-		
 
-		
-		String msg = (result > 0) ? "리뷰 삭제 성공" : "리뷰 삭제 실패";
-		redirectAttr.addFlashAttribute("msg", msg);
-		 
+		int result = shopService.reviewDelete(reviewNo);
+
 		String referer = request.getHeader("Referer");
-		return "redirect:"+referer;
+		return "redirect:" + referer;
 	}
 
 	// 리뷰 등록하기
 	@PostMapping("/insertReview")
-	public String review(Review review, MultipartFile upFile, RedirectAttributes redirectAttr, HttpServletRequest request ) throws IllegalStateException, IOException {
+	public String review(Review review, MultipartFile upFile, RedirectAttributes redirectAttr,
+			HttpServletRequest request) throws IllegalStateException, IOException {
 		log.debug("리뷰를 봅시다. : {}", review);
 
 		String saveDirectory = application.getRealPath("/resources/upload/review");
@@ -173,7 +158,7 @@ public class ShopController {
 //		redirectAttr.addFlashAttribute("msg", msg);
 
 		String referer = request.getHeader("Referer");
-		return "redirect:"+referer;
+		return "redirect:" + referer;
 	}
 
 	/**
