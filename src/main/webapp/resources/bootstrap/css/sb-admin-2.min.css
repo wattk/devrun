@@ -127,9 +127,11 @@
 #searchKeywordContainer label{margin: 0px 5px 8px 5px}
 
 /* 표 */ 
-#productList tr th:nth-child(3){width:18%}
-#productList tr th:nth-child(2){width:24%}
 #productList tr th:nth-child(1){width:12%}
+#productList tr th:nth-child(2){width:16%}
+#productList tr th:nth-child(3){width:15%}
+#productList tr th:nth-child(4){width:15%}
+#productList tr th:nth-child(5){width:18%}
 .select-authority{    width: 120px;height: 40px;border-radius: 9px;} 
 
 

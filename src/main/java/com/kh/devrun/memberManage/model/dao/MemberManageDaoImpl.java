@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,10 +25,14 @@ public class MemberManageDaoImpl implements MemberManageDao {
 		return session.selectList("memberManage.searchMemberList",param);
 	}
 
+	// 전체 회원 리스트
 	@Override
-	public List<Member> selectAllMember() {
-		return session.selectList("memberManage.selectAllMember");
+	public List<Member> selectAllMember(int offset,int limit) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("memberManage.selectAllMember",null,rowBounds);
 	}
+	// 전체 회원 수
+	
 
 	// 권한으로 검색
 	@Override
@@ -43,6 +48,18 @@ public class MemberManageDaoImpl implements MemberManageDao {
 		log.debug("param = {}",param);  
 		
 		return session.selectList("memberManage.seachMemberListByAuthority",param);
+	}
+
+	// 전체 회원 수 검색
+	@Override
+	public int selectTotalMemberCount() {
+		return session.selectOne("memberManage.selectTotalMemberCount");
+	}
+
+	// 멤버 권한 수정
+	@Override
+	public int updateAuthority(Map<String, Object> param) {		
+		return session.update("memberManage.updateAuthority",param);
 	}
 	
 }
