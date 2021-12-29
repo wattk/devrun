@@ -25,6 +25,8 @@ public interface CommunityDao {
 
 	List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo);
 
+	int insertFreeboardComment(CommunityComment communityComment);
+
 
 
 }
