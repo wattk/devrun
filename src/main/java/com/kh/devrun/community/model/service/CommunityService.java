@@ -25,6 +25,8 @@ public interface CommunityService {
 
 	List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo);
 
+	int insertFreeboardCommentEnroll(CommunityComment communityComment);
+
 
 
 
