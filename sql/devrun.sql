@@ -1,3 +1,4 @@
+
 -- 회원 테이블 생성
 CREATE TABLE "MEMBER" (
 	"MEMBER_NO"	NUMBER		NOT NULL,
@@ -72,6 +73,36 @@ ALTER TABLE "MEMBER" ADD CONSTRAINT "PK_MEMBER_MEMBER_NO" PRIMARY KEY (
 ALTER TABLE "MEMBER" ADD CONSTRAINT "CK_MEMBER_BLACK_YN" CHECK(BLACK_YN IN ('Y', 'N'));
 ALTER TABLE "MEMBER" ADD CONSTRAINT "CK_MEMBER_SMS_YN" CHECK(SMS_YN IN ('Y', 'N'));
 
+--회원 테이블 delete 트리거 추가
+create trigger trg_delete_member
+		after
+		delete on member
+		for each row
+begin
+		insert into
+				delete_member
+		values
+				(
+					:old.member_no,
+					:old.id,
+					:old.name,
+					:old.nickname,
+					:old.password,
+					:old.birthday,
+					:old.email,
+					:old.phone,
+					:old.point,
+					:old.enroll_date,
+					:old.pro_photo,
+					:old.black_yn,
+					:old.sms_yn,
+					:old.warning_count,
+					:old.url,
+					:old.intro,
+					sysdate
+				);
+end;
+
 -----------지영 작업-----------
 
 -- 삭제된 회원 테이블 생성
@@ -137,12 +168,9 @@ CREATE TABLE "PRODUCT" (
 	"STATUS"	CHAR(1)	DEFAULT 'Y'	NOT NULL
 );
 
-<<<<<<< HEAD
-select * from member;
-=======
 --상품 테이블 판매수 컬럼 추가
 ALTER TABLE PRODUCT ADD (ORDER_COUNT NUMBER DEFAULT 0);
->>>>>>> branch 'master' of https://github.com/wattk/devrun.git
+
 
 -- 상품 테이블 코멘트 추가
 COMMENT ON COLUMN "PRODUCT"."PRODUCT_CODE" IS '상품코드';
@@ -197,10 +225,10 @@ CREATE TABLE "QUESTION_PRODUCT" (
 	"PRIVATE_YN"	char(1)	DEFAULT 'N'	NOT NULL,
 	"LEVEL"	NUMBER	DEFAULT 1	NULL,
     CONSTRAINT PK_QUESTION_PRODUCT_QUESTION_NO PRIMARY KEY(QUESTION_NO),
-    constraint fk_QUESTION_PRODUCT_QUESTION_REF_NO foreign key(QUESTION_REF_NO) 
+    constraint fk_QUESTION_PRODUCT_QUESTION_REF_NO foreign key(QUESTION_REF_NO)
                                      references QUESTION_PRODUCT(QUESTION_NO) on delete cascade,
     constraint fk_QUESTION_PRODUCT_MEMBER_NO foreign key(MEMBER_NO) references member(MEMBER_NO),
-    constraint fk_QUESTION_PRODUCT_PRODUCT_CODE foreign key(PRODUCT_CODE) 
+    constraint fk_QUESTION_PRODUCT_PRODUCT_CODE foreign key(PRODUCT_CODE)
                                           references PRODUCT(PRODUCT_CODE) on delete cascade,
     CONSTRAINT CK_QUESTION_PRODUCT_PRIVATE_YN CHECK(PRIVATE_YN IN ('Y', 'N'))
 );
@@ -286,7 +314,7 @@ COMMENT ON COLUMN "REVIEW"."RATE" IS '별점';
 select * from review;
 
 -- 리뷰 첨부파일 테이블 생성
--- ◆외래키 제약 조건 디폴트 상태 - 삭제 테이블 옮겨져야 되서 디폴트로 놓음. 
+-- ◆외래키 제약 조건 디폴트 상태 - 삭제 테이블 옮겨져야 되서 디폴트로 놓음.
 CREATE TABLE "REVIEW_ATTACHMENT" (
 	"REVIEW_ATTACH_NO"	NUMBER		NOT NULL,
 	"REVIEW_NO"	NUMBER		NOT NULL,
@@ -367,44 +395,44 @@ COMMENT ON COLUMN "MEMBER_REVIEW_LIKE"."REVIEW_NO" IS '리뷰 번호';
 COMMENT ON COLUMN "MEMBER_REVIEW_LIKE"."MEMBER_NO" IS '회원 번호';
 
 -----------종서 작업-----------
--- 전체 게시물 수 
+-- 전체 게시물 수
 select count(*) from community;
 
 
 
 -- community sample insert
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판2', '자유게시판2', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판3', '자유게시판3', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판4', '자유게시판4', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판5', '자유게시판5', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판6', '자유게시판6', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판7', '자유게시판7', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판8', '자유게시판8', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판9', '자유게시판9', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판10', '자유게시판10', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판11', '자유게시판11', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판12', '자유게시판12', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판13', '자유게시판13', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판14', '자유게시판14', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판15', '자유게시판15', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판16', '자유게시판16', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판17', '자유게시판17', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판18', '자유게시판18', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판19', '자유게시판19', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판20', '자유게시판20', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판21', '자유게시판21', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판22', '자유게시판22', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판23', '자유게시판23', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판24', '자유게시판24', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판25', '자유게시판25', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판26', '자유게시판26', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판27', '자유게시판27', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판28', '자유게시판28', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판29', '자유게시판29', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판30', '자유게시판30', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판31', '자유게시판31', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판32', '자유게시판32', sysdate, default, default, 'N', default, default); 
-INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판33', '자유게시판33', sysdate, default, default, 'N', default, default); 
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판2', '자유게시판2', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판3', '자유게시판3', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판4', '자유게시판4', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판5', '자유게시판5', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판6', '자유게시판6', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판7', '자유게시판7', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판8', '자유게시판8', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판9', '자유게시판9', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판10', '자유게시판10', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판11', '자유게시판11', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판12', '자유게시판12', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판13', '자유게시판13', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판14', '자유게시판14', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판15', '자유게시판15', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판16', '자유게시판16', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판17', '자유게시판17', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판18', '자유게시판18', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판19', '자유게시판19', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판20', '자유게시판20', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판21', '자유게시판21', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판22', '자유게시판22', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판23', '자유게시판23', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판24', '자유게시판24', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판25', '자유게시판25', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판26', '자유게시판26', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판27', '자유게시판27', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판28', '자유게시판28', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판29', '자유게시판29', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판30', '자유게시판30', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판31', '자유게시판31', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판32', '자유게시판32', sysdate, default, default, 'N', default, default);
+INSERT INTO community(community_no, member_no, page_code, title, content, enroll_date, view_count, like_count, answer_yn, hashtag, thumbnail) VALUES(seq_community_no.nextval, 31, 4, '자유게시판33', '자유게시판33', sysdate, default, default, 'N', default, default);
 commit;
 
 
@@ -845,7 +873,7 @@ CREATE TABLE "QUANTITY_LOG" (
 -- 재고 로그 테이블 코멘트 추가
 COMMENT ON COLUMN "QUANTITY_LOG"."OUANTITY_LOG_NO" IS '로그 번호';
 COMMENT ON COLUMN "QUANTITY_LOG"."DETAIL_NO" IS '제품 상세 번호';
-                           
+
 
 -----------지원, 태영 작업-----------
 
@@ -1174,6 +1202,21 @@ drop table authorities;
 COMMENT ON COLUMN "AUTHORITIES"."AUTHORITY" IS '회원 M1, M2, 관리자 AM';
 COMMENT ON COLUMN "AUTHORITIES"."MEMBER_NO" IS '회원번호';
 
+--권한 테이블 delete 트리거 추가
+create trigger trg_delete_authorities
+		after
+		delete on authorities
+		for each row
+begin
+		insert into
+				delete_authorities
+		values
+				(
+					:old.member_no,
+					:old.authority
+				);
+end;
+
 
 --===========================
 --옵션 카테고리 테이블 생성
@@ -1286,6 +1329,7 @@ update
 -- 상품- 분류
 
 
+
 -- rank() over()---
 SELECT
    A.PRODUCT_CODE
@@ -1300,12 +1344,14 @@ WHERE RN = 1;
 
 select
     *
-from   
-    product p left join product_category pc 
+from
+    product p left join product_category pc
         on p.product_code = pc.product_code;
 
 select * from member;
+
 select * from authorities;
+
 
 insert into authorities
 values(
@@ -1319,15 +1365,68 @@ select
     m.id,
     m.name,
     m.enroll_date,
-        a.authority
+    a.authority
 from
     member m join authorities a on
     m.member_no = a.member_no
 where
-    m.member_no = 45;
+    authority in('ROLE_AM','ROLE_M1');
 
 
 
 
+select * from view_product_parent_category;
+
+-- 김다현 상품 - 상품 관련 모든 테이블 연결 (content 없는 버전)
+create view view_product_parent_category
+as select
+    ccc.*,
+    ppc.parent_category_title
+from(
+    select
+        cc.*,
+        pcc.child_category_title,
+        pcc.parent_category_code
+    from(
+        select
+            p.product_code,
+            p.name,
+            p.price,
+            p.reg_date,
+            p.thumbnail,
+            p.view_count,
+            p.status,
+            p.order_count,
+            c.child_category_code
+        from
+            product p join product_category c
+            on p.product_code = c.product_code)cc
+                join product_child_category pcc
+                on cc.child_category_code = pcc.child_category_code)ccc
+                    join product_parent_category ppc
+                        on ccc.parent_category_code = ppc.parent_category_code;
 
 
+select * from view_product_all_info;
+
+-- 김다현 상품 - 상품 관련 모든 테이블 연결 (content 있는 버전)
+create view view_product_all_info
+as select
+    ccc.*,
+    ppc.parent_category_title
+from(
+    select
+        cc.*,
+        pcc.child_category_title,
+        pcc.parent_category_code
+    from(
+        select
+            p.*,
+            c.child_category_code
+        from
+            product p join product_category c
+            on p.product_code = c.product_code)cc
+                join product_child_category pcc
+                on cc.child_category_code = pcc.child_category_code)ccc
+                    join product_parent_category ppc
+                        on ccc.parent_category_code = ppc.parent_category_code;

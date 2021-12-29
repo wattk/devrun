@@ -12,6 +12,9 @@
 
 
 
+.guide{display:none; font-size:smaller;}
+.guide-box{height:0px; width:230px;}
+
 /* member profile */
 #myProfile form div.row {justify-content:space-evenly;}
 #myProfile article.col-4 {text-align:center;}
@@ -19,18 +22,22 @@
 /* profileImg */
 #myProfile #profileImg {width:150px; height:150px; margin:15px; border-radius:50%; position:relative;}
 #myProfile #upFile {width:85%; margin:0 auto; padding:5px;}
-#myProfile #deleteBtn {position:absolute; top:19%; right:25%; font-size:30px; color:#1A81FF;}
+#myProfile #deleteBtn {position:absolute; top:37%; right:24%; font-size:30px; color:#1A81FF;}
+#myProfile #deleteBtn:hover {color:#DC3545; transition:.3s;}
 
 /* profileInfo */
-#myProfile #profileInfo div {margin:20px 0;}
+#myProfile #profileInfo div:not(.guide-box) {margin:30px 0;}
 #myProfile #profileInfo label {color:#1A81FF;}
 
-/* personalInfo */
-#myProfile #personalInfo td {padding:5px 0;}
-#myProfile #personalInfo td label {margin:0 auto;}
-#myProfile #personalInfo td:first-of-type {color:#7F7F7F; padding-right:50px;}
+#myProfile hr {margin:20px 0;}
 
-#myProfile #btns {margin:35px 35px 20px 35px; flex-wrap:nowrap; justify-content:center;}
+/* personalInfo */
+#myProfile table#personalInfo {margin:0 auto; border-collapse:separate; border-spacing:0 30px;}
+#myProfile #personalInfo td {padding:0;}
+#myProfile #personalInfo td label {margin:0 auto;}
+#myProfile #personalInfo td:first-of-type {color:#7F7F7F;}
+
+#myProfile #btns {margin:20px 35px; flex-wrap:nowrap; justify-content:center;}
 #myProfile #btns button {margin:0 15px;}
 
 

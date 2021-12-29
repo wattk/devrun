@@ -10,7 +10,7 @@
 			seq_review_no.nextval,
 			#{memberNo},
 			#{id},
-			'ch-6ch-109',
+			#{productCode},
 			#{content},
 			default,
 			default,
@@ -23,6 +23,7 @@
 				dual
 		</selectKey>
 	</insert>
+	
 	<insert id="insertAttach">
 		insert into
 			REVIEW_ATTACHMENT
@@ -40,7 +41,8 @@
 		    *
 		from
 		    review r left join review_attachment a
-		    on r.review_no = a.review_no
+		    	on r.review_no = a.review_no
+		where product_code = #{productCode}    	
 		order by r.reg_date desc    
 	</select>
 	<resultMap type="review" id="review">
@@ -50,6 +52,7 @@
 		<result column ="product_code" property="productCode"/>
 		<result column ="content" property="content"/>
 		<result column ="like_count" property="likeCount"/>
+		<result column ="rate" property="rate"/>
 		<result column ="reg_date" property="regDate"/>
 		<collection property="attach" ofType="Attachment">
 			<id column="review_attach_no" property="reviewAttachNo"/>
@@ -61,8 +64,11 @@
 	</resultMap>
 	
 	<select id="countAllList" resultType="int">
-		select count(*)
-		from review
+		select 
+			count(*)
+		from 
+			review
+		where product_code = #{countAllList}
 	</select>
 	<delete id="reviewDelete">
 		delete from review where review_no = #{reviewNo}
@@ -73,11 +79,26 @@
 		    *
 		from
 		    review r left join review_attachment a
-		    on r.review_no = a.review_no
-		where review_attach_no is not null    
-		order by r.reg_date desc  	
+		    	on r.review_no = a.review_no
+		where 
+			review_attach_no is not null  and
+			product_code = #{productCode} 
+		order by 
+			r.reg_date desc  	
 	</select>
 	<select id="CategoryItemAll" resultType="product">
-	
+		select 
+			* 
+		from view_product_parent_category 
+		where status ='Y' and 
+		parent_category_code = #{parentCate}
+	</select>	
+	<select id="selectOneAttach" resultType="attachment">
+		select 
+			*
+		from
+			review_attachment
+		where 
+			review_no =#{reviewNo}
 	</select>
 </mapper>

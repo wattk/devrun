@@ -468,9 +468,9 @@
    .carousel-item {
    	height: 618px;
    }
-   .shop-item-img + div p{
+/*    .shop-item-img + div p{
    	height: 73px;
-   }
+   } */
    .hamburger:hover{
    cursor: pointer;
    }

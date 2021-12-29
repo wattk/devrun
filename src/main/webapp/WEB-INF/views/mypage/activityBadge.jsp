@@ -13,7 +13,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/mypage/activityBadge.css" rel="stylesheet">
 
 <%-- EL에서 접근하기 위해 VAR속성 지정 --%>
-<sec:authentication property="principal" var="member"/>
+<%-- <sec:authentication property="principal" var="member"/> --%>
 
 			<%-- my page --%>
 			<div class="col-12" id="mypage">
@@ -23,23 +23,27 @@
 					<article class="col-3" id="profile">
 						<!-- profile image : 프로필 이미지가 null일 경우, 기본 이미지 출력 -->
 					    <section>
-				   			<c:if test="${member.proPhoto eq null}"><i class="bi bi-person-circle" id="profileImg"></i></c:if>
-					      	<c:if test="${member.proPhoto ne null}"><img src="${member.proPhoto}" alt="" id="profileImg"/></c:if>
+				   			<c:if test="${member.proPhoto eq null}"><img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="" id="profileImg"/></c:if>
+							<c:if test="${member.proPhoto ne null}"><img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png" alt="" id="profileImg"/></c:if>
 					       	<p class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo.do';">${member.nickname}님<i class="bi bi-chevron-right"></i></p>
-					       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';"/>
-					    	<img src="https://i.ibb.co/S7TZCYh/coding.png" alt="" id="badge" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/activityBadge.do';"/>
+					       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';"/>
+					    	<img src="https://i.ibb.co/S7TZCYh/coding.png" alt="" id="badge" class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/activityBadge.do';"/>
 					    </section>
 					    <!-- profile info -->
 				        <section>
 				        	<p><span>이메일</span><br/><span>${member.email}</span></p>
 					        <p><span>한줄소개</span><br/><span>${member.intro}</span></p>
-					        <button onclick="location.href='${member.url}';">${member.url}</button>
+					        <button id="url" onclick="location.href='${member.url}';">${member.url}</button>
 				        </section>
 				        <hr/>
 				       	<!-- login info / logout button -->
 				       	<section>
-				        	<p><img src="" alt="" />(으)로 로그인</p>
-				        	<button class="col-9">로그아웃</button>
+				       		<form:form
+					    		method="POST"
+					    		action="${pageContext.request.contextPath}/member/memberLogout.do">
+					        	<p><img src="" alt="" />(으)로 로그인</p>
+					        	<button type="submit" class="col-9 cursor">로그아웃</button>
+				        	</form:form>
 				       	</section>
 			    	</article>
 				     	

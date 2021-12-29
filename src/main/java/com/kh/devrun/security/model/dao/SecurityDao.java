@@ -1,4 +1,4 @@
-package com.kh.devrun.security.dao;
+package com.kh.devrun.security.model.dao;
 
 import org.springframework.security.core.userdetails.UserDetails;
 

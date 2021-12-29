@@ -3,6 +3,7 @@ package com.kh.devrun.admin.controller;
 import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -122,12 +123,12 @@ public class AdminController {
 	@PostMapping("/insertProduct.do")
 	public String insertProduct(
 			Product product,
-			@RequestParam String parentCategoryCode,
-			@RequestParam String childCategoryCode,
-			@RequestParam String[]optionContent,
-			@RequestParam String sku,
-			@RequestParam int[]quantity,
-			@RequestParam String[]option,
+			@RequestParam(value = "parentCategoryCode") String parentCategoryCode,
+			@RequestParam(value = "childCategoryCode")  String childCategoryCode,
+			@RequestParam(value = "optionContent")  String[]optionContent,
+			@RequestParam(value = "sku")  String sku,
+			@RequestParam(value = "quantity")  int[]quantity,
+			@RequestParam(value = "option")  String[]option,
 			MultipartFile upFile,
 			
 			RedirectAttributes redirectAttr) {
@@ -356,20 +357,23 @@ public class AdminController {
 		log.debug("product = {}",product); 
 					
 		
-		// 서버의 기존이미지 삭제
 		String fileDirectory = application.getRealPath("/resources/upload/product/")+productCode+".png";
 		String saveDirectory = application.getRealPath("/resources/upload/product");
 		log.debug("saveDirectory = {}",saveDirectory);
 		
-		File delFile = new File(fileDirectory);
-		boolean fileDelete = delFile.delete();
-		log.debug("fileDelete = {}", fileDelete);
-		
 		// 바뀐 이미지 파일 서버에 저장
-		String newProductImg = productCode+"-1.png";
+		String newProductImg="";
 		if(!upFile.isEmpty()) {		
-			try {								
+			try {		
+				// 서버의 기존이미지 삭제
+				File delFile = new File(fileDirectory);
+				boolean fileDelete = delFile.delete();
+				log.debug("fileDelete = {}", fileDelete);
+
+				
 				// 서버 컴퓨터 저장
+				log.debug("첨부파일 있음~~~~~~~");
+				newProductImg = productCode+"-1.png";
 				File dest = new File(saveDirectory, newProductImg);
 				upFile.transferTo(dest);			
 			} catch (Exception e) {
@@ -393,10 +397,43 @@ public class AdminController {
 	}
 	
 	
+	/**
+	 * -------------------------------- 회원
+	 * 
+	 */
+	
 	
 	// 회원 등급 관리
 	@GetMapping("/memberManage/memberLevel.do")
-	public void memberLevel() {	
+	public void memberLevel(	
+			Model model,
+			@RequestParam(defaultValue = "1") int cPage,
+			HttpServletRequest request
+			) {
+		// 1.페이징 처리 : 페이지 설정
+		int limit = 11;
+		int offset = (cPage - 1) * limit;
+		
+		// 게시물 리스트 가져오기
+		List<Member>memberList = memberManageService.selectAllMember(offset,limit);
+
+		log.debug("list = {}" ,memberList);	
+		model.addAttribute("list",memberList);
+		
+		// 2. 전체게시물수 totalContent
+		int totalMemberCount =  memberManageService.selectTotalMemberCount();
+		log.debug("totalContent = {}", totalMemberCount);
+		model.addAttribute("totalContent", totalMemberCount);
+		
+		// 3. pagebar
+		String url = request.getRequestURI(); 
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalMemberCount, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
+		
+			
+		
+		model.addAttribute("memberList",memberList);
 	};
 	
 	// 회원 문의 내역
@@ -404,23 +441,37 @@ public class AdminController {
 	public void memberInquiry() {
 		
 	};
-
+		
+	
+	
 	@ResponseBody
 	@GetMapping("/memberManage/searchMember.do")
 	public Map<String,Object>searchMember(
 			@RequestParam String searchType,
-			@RequestParam String searchKeyword
+			@RequestParam String searchKeyword,
+			@RequestParam(defaultValue = "1") int cPage,
+			HttpServletRequest request
 			){
+		
 		Map<String,Object>map = new HashMap<>();
+		
+		int limit = 11;
+		int offset = (cPage - 1) * limit;
 		
 		log.debug("searchType = {}",searchType);
 		log.debug("searchKeyword = {}",searchKeyword);
 		Map<String,Object>param = new HashMap<>();
 		
+		if(searchKeyword.contains(",")) {
+			log.debug(searchKeyword);
+		}
+		
+		param.put("limit",limit);
+		param.put("offset",offset);
+		
 		param.put("searchType", "m."+searchType);
 		param.put("searchKeyword", searchKeyword);
-		
-		
+			
 		List<Member>memberList = memberManageService.searchMemberList(param);
 		
 		
@@ -429,23 +480,27 @@ public class AdminController {
 		return map;
 	}
 	
-//	@ResponseBody
-//	@GetMapping("/selectCategory")
-//	public Map<String, Object>selectCategory(@RequestParam Map<String, Object> param){
-//		Map<String, Object> map = new HashMap<>();
-//		
-//		log.debug("param = {}", param);
-//		List<ProductChildCategory> list = productService.selectChildCategory(param);
-//		log.debug("list = {}" ,list);
-//		
-//		map.put("list",list);
-//		map.put("date", new Date());
-//		
-//		return map;
-//	}
+	// 회원 권한 업데이트
+	@PostMapping("/memberManage/updateAuthority.do")
+	public String updateAuthority(
+			@RequestParam int memberNo,
+			@RequestParam String authority,
+			RedirectAttributes redirectAttr
+			) {
+		Map<String,Object> param = new HashMap<>();
+		param.put("memberNo",memberNo);
+		param.put("authority",authority);
+		
+		int result = memberManageService.updateAuthority(param);
+		String msg = "권한 업데이트 완료!";
+		
+		redirectAttr.addFlashAttribute("msg",msg);
+		return "redirect:/admin/memberManage/memberLevel.do";
+	}
 	
 	
 	
+
 	//--------------------태영 끝-----------------------------
 
 	

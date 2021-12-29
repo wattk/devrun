@@ -1,6 +1,9 @@
 package com.kh.devrun.member.model.service;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.mail.Address;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.devrun.member.model.dao.MemberDao;
 import com.kh.devrun.member.model.vo.Member;
-import com.kh.devrun.security.dao.SecurityDao;
+import com.kh.devrun.security.model.dao.SecurityDao;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -49,6 +52,10 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+	@Override
+	public List<Address> selectAddressListByMemberNo(int memberNo) {
+		return memberDao.selectAddressListByMemberNo(memberNo);
+	}
 	
 	/**
 	 * 혜진 서비스 끝
@@ -59,6 +66,7 @@ public class MemberServiceImpl implements MemberService {
 	 * 지영 서비스 시작
 	 */
 	
+
 	/**
 	 * 아이디 찾기
 	 */
@@ -100,11 +108,19 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	/**
-	 * 회원 한명 조회
+	 * 회원 한명 조회(by id)
 	 */
 	@Override
 	public Member selectOneMemberById(String id) {
 		return memberDao.selectOneMemberById(id);
+	}
+
+	/**
+	 * 회원 한명 조회(by checkKeyword)
+	 */
+	@Override
+	public Member selectOneMemberByCheckKeyword(Map<String, Object> param) {
+		return memberDao.selectOneMemberByCheckKeyword(param);
 	}
 	
 	/**

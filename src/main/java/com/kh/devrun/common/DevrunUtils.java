@@ -198,7 +198,7 @@ public class DevrunUtils {
 					+ "<img src=\""+url+"/resources/upload/product/"+product.getThumbnail()+"\" alt=\"\" class=\"img-d img-fluid\">\r\n"
 					+ "<i class=\"shop-like-icon fas fa-heart position-absolute\"></i>\r\n"
 					+ "</div>\r\n"
-					+ "<a href=\""+url+"/shop/itemDetail.do?productCode="+product.getProductCode()+"\">\r\n"
+					+ "<a href=\""+url+"/shop/itemDetail/"+product.getProductCode()+"\">\r\n"
 					+ "<div>\r\n"
 					+ "<p class=\"m-0\">"+product.getName()+"</p>\r\n"
 					+ "<strong>&#8361;"+fmt.format(product.getPrice())+"</strong>\r\n"

@@ -30,7 +30,7 @@ public class ChatMessageController {
 	 * @return
 	 */
 	@MessageMapping("/chat/{chatId}")
-	@SendTo("/chat/{chatId}")
+	@SendTo(value={"/chat/{chatId}", "/chat/chatList"})
 	public ChatLog chatLog(@DestinationVariable String chatId, ChatLog chatLog) {
 		// Web에서 사용할때는 @PathVariable을 사용하지만 @MessageMapping에서 추출할 때는 @DestinationVariable을 사용한다. - 출처 (https://sup2is.github.io/2019/06/21/websocket-2.html)
 		log.debug("chatId = {}", chatId);

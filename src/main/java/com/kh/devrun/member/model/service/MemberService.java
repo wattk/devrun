@@ -1,6 +1,9 @@
 package com.kh.devrun.member.model.service;
 
+import java.util.List;
 import java.util.Map;
+
+import javax.mail.Address;
 
 import com.kh.devrun.member.model.vo.Member;
 
@@ -19,5 +22,9 @@ public interface MemberService {
 	int updateMemberProfile(Member member);
 
 	Member selectOneMemberById(String id);
+
+	List<Address> selectAddressListByMemberNo(int memberNo);
+	
+	Member selectOneMemberByCheckKeyword(Map<String, Object> param);
 	
 }
