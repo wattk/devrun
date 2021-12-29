@@ -27,7 +27,7 @@
 
 	<!-- body 영역 시작 -->
 	
-<sec:authentication property="principal" var="member"/>	
+	<sec:authentication property="principal" var="member"/>	
 	
 		<div id="shopItemDetailOuterDiv">
 			<div id="itemDetailDisplayDiv" class="row">
@@ -55,7 +55,7 @@
 											<sec:authorize access="isAuthenticated()">
 												<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
 												<input type="hidden" name="id" value='<sec:authentication property="principal.id"/>' />
-												<input type="hidden" name="productCode" value='${product.productCode}' />
+												<input type="hidden" id="productCodeV" name="productCode" value='${product.productCode}' />
 											</sec:authorize>
 										</div>
 										<p class="mt-3">상품 별점</p>
@@ -499,13 +499,25 @@ $('.reviewDelBtn').click((e) => {
 
 /*사진리뷰만 보기 정렬 시작 */
 function picReviewOnly(){
+	var $productCode = $(productCodeV).val(); 
 	
 	$.ajax({
 		
 		url: "${pageContext.request.contextPath}/shop/picReviewOnly",
+		data: {
+			productCode : $productCode
+		},
 		method: "GET",
-		success(data){
-			console.log(data);
+		success(data){		
+			const picReviews = data;
+			
+			picReviews.forEach(function(review,index){				
+				console.log(review);
+				console.dir(review);
+			 	const {memberNo, id, productCode, content, likeCount, regDate, rate, attach} = review;
+				
+				
+			});
 			
 		},
 		error: console.log

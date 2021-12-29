@@ -20,31 +20,29 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class ShopServiceImpl implements ShopService {
-	
+
 	@Autowired
 	private ShopDao shopDao;
-	
+
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED,
-	isolation = Isolation.READ_COMMITTED,
-	rollbackFor= Exception.class)
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
 	public int insertReview(Review review) {
 		int result = 0;
-		
+
 		try {
-			//1. review insert
+			// 1. review insert
 			result = shopDao.insertReview(review);
 
 			Attachment attach = review.getAttach();
 			log.debug("attach 없나? : {}", attach);
-			if(attach != null) {
+			if (attach != null) {
 				attach.setReviewNo(review.getReviewNo());
 				result = shopDao.insertAttach(attach);
 			}
 
-		}catch(Exception e) {
+		} catch (Exception e) {
 			log.error(e.getMessage(), e); // 로깅해주고
-			throw e; 
+			throw e;
 		}
 		return result;
 	}
@@ -59,19 +57,15 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.countAllList(productCode);
 	}
 
-
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED,
-	isolation = Isolation.READ_COMMITTED,
-	rollbackFor= Exception.class)
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
 	public int reviewDelete(int reviewNo) {
 		return shopDao.reviewDelete(reviewNo);
 	}
 
 	@Override
-	public List<Review> picReviewOnly() {
-		
-		return shopDao.picReviewOnly();
+	public List<Review> picReviewOnly(String productCode) {
+		return shopDao.picReviewOnly(productCode);
 	}
 
 	@Override
@@ -84,6 +78,4 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.selectOneAttach(reviewNo);
 	}
 
-
-	
 }
