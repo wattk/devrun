@@ -61,6 +61,11 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.selectFreeboardCommentList(communityNo);
 	}
 
+	@Override
+	public int insertFreeboardCommentEnroll(CommunityComment communityComment) {
+		return communityDao.insertFreeboardComment(communityComment);
+	}
+
 
 
 	

@@ -60,6 +60,11 @@ public class CommunityDaoImpl implements CommunityDao {
 		return session.selectList("community.selectFreeboardCommentList", communityNo);
 	}
 
+	@Override
+	public int insertFreeboardComment(CommunityComment communityComment) {
+		return session.insert("community.insertFreeboardComment", communityComment);
+	}
+
 
 	
 

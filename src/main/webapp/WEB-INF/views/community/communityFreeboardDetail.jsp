@@ -15,7 +15,7 @@
 <!-- include summernote css/js -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" integrity="sha512-ZbehZMIlGA8CTIOtdE+M81uj3mrcgyrh6ZFeG33A4FHECakGrOsTPlPQ8ijjLkxgImrdmSVUHn1j+ApjodYZow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js" integrity="sha512-lVkQNgKabKsM1DA/qbhJRFQU8TuwkLF2vSN3iU/c7+iayKs08Y8GXqfFxxTZr1IcpMovXnf2N/ZZoMgmZep1YQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="${pageContext.request.contextPath }/resources/js/summernote/lang/summernote-ko-KR.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
 <script>
 	// summernote 웹 에디터 로딩
 	$(document).ready(function(){
@@ -31,13 +31,32 @@
 		$('#summernote').summernote('disable');
 	});
 	
-	// #btnSave 버튼을 'click'하게 되면 #form을 전송(.submit)
+	
+	// #btnComment 버튼을 'click'하게 되면 #form을 전송(.submit)
 	$(document).on('click', '#btnComment', function(e){
 		console.log("클릭 이벤트 발생!");
 		e.preventDefault();
 		//freeBoardForm : form name값
-		$(document.freeBoardCommentForm).submit();
+		$(document.freeboardCommentForm).submit();
 	});
+	
+	// 댓글 유효성 검사
+	function freeboardCommentValidate(){
+		var $content = $("[name=content]");
+		// 슬래시(/) "사이"에는 매칭시킬 "패턴"을 써준다.
+		// 슬래시(/) "다음"에는 옵션을 설정하는 "플래그"를 써준다.
+		// ^문자열 : 특정 문자열로 시작(괄호 없음 주의!)
+		// . : 모든 문자열
+		// | : OR
+		// \n : 줄바꿈
+		if (/^(.|\n)+$/.test($content.val()) == false){
+			alert("내용을 입력하세요");
+			return false;
+		}
+		return true;
+	}
+	
+	
 			
 </script>
 <style>
@@ -54,6 +73,8 @@
 		display: inline;
 	}
 </style>
+<!-- authentication에 저장된(member) principal 객체를 member 변수에 담아서 사용한다. -->
+<sec:authentication property="principal" var="member"/>
 
     <div class="container-fluid">
 	<div class="row">
@@ -136,7 +157,40 @@
 	
 	<hr />
 	
-	<!-- 댓글 -->
+	<!-- 회원일때만 댓글 등록창이 보이게끔 설정 -->
+	<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
+	<!-- 댓글 등록 시작 -->
+	<div class="card mb-2">
+		<div class="card-header bg-light">
+			<i class="fa fa-comment fa"></i> 댓글 작성
+		</div>
+		<div class="card-body">
+			<ul class="list-group list-group-flush">
+			    <li class="list-group-item">
+				<div class="form-inline mb-2">
+					<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
+				</div>
+				<form:form
+					name="freeboardCommentForm"
+					action="${pageContext.request.contextPath}/community/communityFreeboardCommentEnroll.do"
+					method="POST"
+					onsubmit="return freeboardCommentValidate();">
+					<textarea class="form-control" name="content" id="comment" rows="2"></textarea>
+					<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment">등록</button>
+					
+					<input type="hidden" name="commentLevel" value="1" />
+					<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
+					<!-- <input type="hidden" name="memberNo" value='<c:if test="${member ne null}"><sec:authentication property="principal.memberNo" /></c:if>'>  -->
+					<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
+				</form:form>
+			    </li>
+			</ul>
+		</div>
+	</div>
+	<!-- 댓글 등록 끝 -->
+	</sec:authorize>
+	
+	<!-- 댓글 시작 -->
 	<div class="card mb-2">
 		<div class="card-header bg-light">
 		        <i class="fa fa-comment fa"></i> 댓글
@@ -153,7 +207,10 @@
 								&nbsp;&nbsp;<fmt:formatDate value="${communityCommentEntity.regDate}" pattern="yyyy-MM-dd HH:mm"/>
 							</div>
 							<textarea class="form-control" id="exampleFormControlTextarea1" rows="1" readonly="readonly">${communityCommentEntity.content}</textarea>
-							<button type="button" class="btn btn-dark mt-3 float-right" id="commentBtn" onClick="javascript:addReply();">등록</button>
+							<!-- 회원일때만 답글 버튼이 나타나도록 처리 -->
+							<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
+								<button type="button" class="btn btn-dark mt-3 float-right" id="commentBtn" >답글</button>
+							</sec:authorize>
 						    </li>
 						</ul>
 						</c:when>
@@ -173,10 +230,7 @@
 			</c:if>
 		</div>
 	</div>	
-			
-			
-			
-
+	<!-- 댓글 끝 -->
 
 </div>
 </div>

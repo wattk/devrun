@@ -117,4 +117,25 @@
 	    reg_date asc
   </select>
   
+  <!-- 댓글 입력 -->
+  <insert id="insertFreeboardComment">
+  	insert into community_comment
+  	values(
+  		seq_community_comment_no.nextval,
+  		#{memberNo},
+  		<choose>
+			<when test="commentRefNo eq 0">
+				null,
+			</when>
+			<when test="commentRefNo ne 0">
+				#{commentRefNo},
+			</when>
+  		</choose>
+  		#{communityNo},
+  		#{commentLevel},
+  		#{content},
+  		default
+  	)
+  </insert>
+  
 </mapper>

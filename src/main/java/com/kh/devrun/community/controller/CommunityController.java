@@ -239,14 +239,17 @@ public class CommunityController {
 	
 	// 자유게시판-댓글작성
 	@PostMapping("/communityFreeboardCommentEnroll.do")
-	public String insertComment(@RequestParam int memberNo, @RequestParam String content) throws Exception {
-		CommunityComment communityComment = new CommunityComment();
-		communityComment.setContent(content);
-		communityComment.setMemberNo(memberNo);
+	public String freeboardCommentEnroll(CommunityComment communityComment, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "/communityFreeboardCommentEnroll.do 요청!");
+		log.debug("communityComment = {}", communityComment);
+	
 		
+		// 업무로직
+		int result = communityService.insertFreeboardCommentEnroll(communityComment); 
+		String msg = result > 0 ? "댓글 등록 성공!" : "댓글 등록 실패!";
+		redirectAttributes.addFlashAttribute("msg", msg); 
 		
-		
-		return "redirect:/community/communityFreeboardList.do";
+		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + communityComment.getCommunityNo();
 	}
 	
 	
