@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.devrun.member.model.vo.Member;
-import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.controller.ShopController;
 import com.kh.devrun.shop.model.vo.Review;
 
@@ -182,11 +182,11 @@ public class DevrunUtils {
 	 * @param url
 	 * @returnL
 	 */
-	public static String getProductList(List<Product> productList, String url) {
+	public static String getProductList(List<ProductEntity> productList, String url) {
 		DecimalFormat fmt = new DecimalFormat("###,###");
 		StringBuilder sb = new StringBuilder();
 
-		for (Product product : productList) {
+		for (ProductEntity product : productList) {
 			sb.append("<div class=\"card-box-d col-md-3 p-5\">\n"
 					+ "<div class=\"card-img-d shop-item-img position-relative\">\r\n" + "<img src=\"" + url
 					+ "/resources/upload/product/" + product.getThumbnail()

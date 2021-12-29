@@ -23,7 +23,7 @@ import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.Order;
 import com.kh.devrun.order.model.vo.OrderDetail;
 import com.kh.devrun.product.model.service.ProductService;
-import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEntity;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,7 +46,7 @@ public class OrderController {
 	public String order(@PathVariable int detailNo, Model model, Authentication authentication) {
 		log.debug("productCode = {}", detailNo);
 		Member member = (Member)authentication.getPrincipal();
-		Product product = productService.selectOneProductByDetailNo(detailNo);
+		ProductEntity product = productService.selectOneProductByDetailNo(detailNo);
 		List<Address> addressList = memberService.selectAddressListByMemberNo(member.getMemberNo());
 		log.debug("AddressList = {}", addressList);
 		model.addAttribute("product", product);
