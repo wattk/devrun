@@ -1,6 +1,5 @@
 package com.kh.devrun.product.model.service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -16,8 +15,8 @@ import com.kh.devrun.product.model.dao.ProductDao;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductCategory;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
-import com.kh.devrun.product.model.vo.ProductExtends;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 		int result = 0;
 	
 		// param 값 꺼내오기
-		Product product = (Product)param.get("product");
+		ProductEntity product = (ProductEntity)param.get("product");
 		String productCode=(String)param.get("productCode");
 		String childCategoryCode = (String)param.get("childCategoryCode");
 		List<ProductDetail> productDetailList = (List<ProductDetail>)param.get("productDetailList");
@@ -56,8 +55,8 @@ public class ProductServiceImpl implements ProductService {
 			result = insertProducCategory(productCategory);
 			
 			// 상품 디테일 테이블에 추가(1:N)
-			if(product.getProductDetailList().size() > 0) {
-				for(ProductDetail productDetail : product.getProductDetailList()) {
+			if(productDetailList.size() > 0) {
+				for(ProductDetail productDetail : productDetailList) {
 					productDetail.setProductCode(product.getProductCode());
 					
 					result = insertProductDetail(productDetail);
@@ -79,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public List<Product> selectAllProductList(int offset, int limit) {
+	public List<ProductEntity> selectAllProductList(int offset, int limit) {
 		return productDao.selectAllProductList(offset, limit);
 	}
 
@@ -94,11 +93,6 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int selectTotalBoardCount() {
 		return productDao.selectTotalBoardCount();
-	}
-
-	@Override
-	public List<ProductDetail> findProductOption(String productCode) {
-		return productDao.findProductOption(productCode);
 	}
 
 	// 상품삭제
@@ -119,7 +113,7 @@ public class ProductServiceImpl implements ProductService {
 	
 	// 상품정보 하나가져오기
 	@Override
-	public ProductExtends selectProductOne(String productCode) {
+	public ProductEx selectProductOne(String productCode) {
 		return productDao.selectProductOne(productCode);
 	}
 
@@ -136,14 +130,15 @@ public class ProductServiceImpl implements ProductService {
 	
 	public int updateProduct(Map<String, Object> param) {
 		int result = 0;
-		Product product = (Product)param.get("product");
+		ProductEntity product = (ProductEntity)param.get("product");
 		List<ProductDetail>insertProductDetailList = (List<ProductDetail>)param.get("insertProductDetailList");
+		List<ProductDetail>productDetailList = (List<ProductDetail>)param.get("ProductDetailList");
 		
 		try {
 			result = productDao.updateProduct(product);
 			// 상품 디테일 테이블에 추가(1:N)
-			if(product.getProductDetailList().size() > 0) {
-				for(ProductDetail productDetail : product.getProductDetailList()) {
+			if(productDetailList != null && productDetailList.size() > 0) {
+				for(ProductDetail productDetail : productDetailList) {
 					productDetail.setProductCode(product.getProductCode());
 					
 					result = updateOption(productDetail,param);
@@ -194,9 +189,20 @@ public class ProductServiceImpl implements ProductService {
 		return productDao.selectOneItem(productCode);
 	}
 
+
 	
 	
+	/**
+	 * 혜진 상품 + 상품 상세(옵션) 조회
+	 * @param detailNo
+	 * @return
+	 */
+	@Override
+	public Product selectOneProductByDetailNo(int detailNo) {
+		return productDao.selectOneProductByDetailNo(detailNo);
+	}
 	
+	/* 혜진 끝*/
 	
 }
 

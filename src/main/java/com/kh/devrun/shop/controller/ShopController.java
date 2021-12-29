@@ -27,7 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.product.model.service.ProductService;
-import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
@@ -71,7 +71,7 @@ public class ShopController {
 	@GetMapping("/CategoryItemAll")
 	public String CategoryItemAll(@RequestParam String parentCate, Model model) {
 
-		List<Product> itemList = shopService.CategoryItemAll(parentCate);
+		List<ProductEntity> itemList = shopService.CategoryItemAll(parentCate);
 		model.addAttribute("itemList", itemList);
 
 		return "shop/shopCategory";
@@ -238,7 +238,7 @@ public class ShopController {
 			param.put("promotionCode", promotionCode);
 
 			// 1. 전체 상품 목록
-			List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
+			List<ProductEntity> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
 			model.addAttribute("promotion", promotion);
 			model.addAttribute("productCategory", productCategory);
 			model.addAttribute("productList", productList);
@@ -287,7 +287,7 @@ public class ShopController {
 		// 1. 전체 상품 목록
 		String url = request.getContextPath();
 
-		List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
+		List<ProductEntity> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
 		String productStr = DevrunUtils.getProductList(productList, url);
 
 		// 2. 전체 게시물 수 totalContent

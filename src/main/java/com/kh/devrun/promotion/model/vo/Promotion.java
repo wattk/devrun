@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +32,6 @@ public class Promotion implements Serializable {
 	private String nickname;
 	private Date enrollDate;
 	
-	private List<Product> productList;
+	private List<ProductEntity> productList;
 
 }
