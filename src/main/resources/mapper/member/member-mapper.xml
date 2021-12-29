@@ -72,14 +72,13 @@
   </update>
   <!-- 지영 mapper 끝 -->
   
-  <!-- 지원 mapper 시작 -->
+    <!-- 지원 mapper 시작 -->
   <update id="updateMemberProfile">
   	update 
 	    member
 	set
 	    name = #{name},
   		nickname = #{nickname},
-  		password = #{password},
   		birthday = #{birthday},
   		email = #{email},
   		phone = #{phone},
@@ -97,6 +96,15 @@
   		member
   	where
   		id = #{id}
+  </select>
+  
+  <select id="selectOneMemberByCheckKeyword" resultType="member">
+  	select
+  		*
+  	from
+  		member
+  	where
+  		${checkKeyword} = #{value} and id != #{id}
   </select>
   <!-- 지원 mapper 끝 -->
 </mapper>

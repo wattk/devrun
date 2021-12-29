@@ -83,6 +83,12 @@ public class MemberDaoImpl implements MemberDao {
 	public Member selectOneMemberById(String id) {
 		return session.selectOne("member.selectOneMemberById", id);
 	}
+
+
+	@Override
+	public Member selectOneMemberByCheckKeyword(Map<String, Object> param) {
+		return session.selectOne("member.selectOneMemberByCheckKeyword", param);
+	}
 	
 	/**
 	 * 지원 dao 끝
