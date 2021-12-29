@@ -12,9 +12,10 @@ import com.kh.devrun.admin.exception.ProductInsertException;
 import com.kh.devrun.admin.exception.ProductUpdateException;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.model.dao.ProductDao;
-import com.kh.devrun.product.model.vo.ProductEntity;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductCategory;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
 
 import lombok.extern.slf4j.Slf4j;
@@ -197,7 +198,7 @@ public class ProductServiceImpl implements ProductService {
 	 * @return
 	 */
 	@Override
-	public ProductEntity selectOneProductByDetailNo(int detailNo) {
+	public Product selectOneProductByDetailNo(int detailNo) {
 		return productDao.selectOneProductByDetailNo(detailNo);
 	}
 	

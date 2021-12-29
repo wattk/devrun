@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.devrun.category.model.vo.ProductChildCategory;
-import com.kh.devrun.product.model.vo.ProductEntity;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductCategory;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
 
 public interface ProductDao {
@@ -54,7 +55,7 @@ public interface ProductDao {
 	 * @param detailNo
 	 * @return
 	 */
-	ProductEntity selectOneProductByDetailNo(int detailNo);
+	Product selectOneProductByDetailNo(int detailNo);
 	/* 혜진 끝*/
 	
 	

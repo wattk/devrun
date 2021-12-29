@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.devrun.category.model.vo.ProductChildCategory;
-import com.kh.devrun.product.model.vo.ProductEntity;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductCategory;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
 
 import lombok.extern.slf4j.Slf4j;
@@ -117,7 +118,7 @@ public class ProductDaoImpl implements ProductDao{
 	 * @return
 	 */
 	@Override
-	public ProductEntity selectOneProductByDetailNo(int detailNo) {
+	public Product selectOneProductByDetailNo(int detailNo) {
 		return session.selectOne("product.selectOneProductByDetailNo", detailNo);
 	}
 	/* 혜진 끝*/

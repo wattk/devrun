@@ -227,18 +227,18 @@
 	<input type="hidden" name="productPrice" value="${product.price}"/>
 	<input type="hidden" name="shippingFee" value="${product.price >= 50000? 0 : 3000}"/>
 	<input type="hidden" name="totalPrice" value="${product.price + (product.price >= 50000? 0 : 3000)-0}"/>
-	<input type="hidden" name="detailNo" value="${product.detailNo}"/>
+	<input type="hidden" name="detailNo" value="${product.productDetail.detailNo}"/>
 </form:form>
 <form:form name="paymentFrm">
-	<input type="hidden" name="pg" value="${member.memberNo }" />
-	<input type="hidden" name="payWay" value="0"/>
-	<input type="hidden" name="orderCode" value="${product.price}"/>
-	<input type="hidden" name="payPrice" value="${product.price >= 50000? 0 : 3000}"/>
-	<input type="hidden" name="email" value="${product.price + (product.price >= 50000? 0 : 3000)-0}"/>
-	<input type="hidden" name="name" value="${product.detailNo}"/>
-	<input type="hidden" name="phone" value="${product.detailNo}"/>
-	<input type="hidden" name="address" value="${product.detailNo}"/>
-	<input type="hidden" name="postalCode" value="${product.detailNo}"/>
+	<input type="hidden" name="pg" value="" />
+	<input type="hidden" name="payWay" value=""/>
+	<input type="hidden" name="orderCode" value=""/>
+	<input type="hidden" name="payPrice" value=""/>
+	<input type="hidden" name="email" value=""/>
+	<input type="hidden" name="name" value=""/>
+	<input type="hidden" name="phone" value=""/>
+	<input type="hidden" name="address" value=""/>
+	<input type="hidden" name="postalCode" value=""/>
 </form:form>
 <script>
 //주소 검색창 띄우기
