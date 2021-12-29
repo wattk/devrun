@@ -356,26 +356,34 @@ public class AdminController {
 		log.debug("product = {}",product); 
 					
 		
-		// 서버의 기존이미지 삭제
 		String fileDirectory = application.getRealPath("/resources/upload/product/")+productCode+".png";
 		String saveDirectory = application.getRealPath("/resources/upload/product");
 		log.debug("saveDirectory = {}",saveDirectory);
 		
-		File delFile = new File(fileDirectory);
-		boolean fileDelete = delFile.delete();
-		log.debug("fileDelete = {}", fileDelete);
-		
 		// 바뀐 이미지 파일 서버에 저장
-		String newProductImg = productCode+"-1.png";
+		String newProductImg="";
 		if(!upFile.isEmpty()) {		
-			try {								
+			try {		
+				// 서버의 기존이미지 삭제
+				File delFile = new File(fileDirectory);
+				boolean fileDelete = delFile.delete();
+				log.debug("fileDelete = {}", fileDelete);
+
+				
 				// 서버 컴퓨터 저장
+				log.debug("첨부파일 있음~~~~~~~");
+				newProductImg = productCode+"-1.png";
 				File dest = new File(saveDirectory, newProductImg);
 				upFile.transferTo(dest);			
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 					 
+		}
+		else {
+			log.debug("첨부파일 없음~~~~~~~~~");
+			// 수정시 첨부파일이 없다면 기존 파일명으로 업로드
+			newProductImg = productCode+".png";
 		}
 			
 		// 바뀐 이미지 파일 명 set한 뒤 update
