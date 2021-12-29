@@ -32,7 +32,7 @@
 				     					<c:if test="${member.proPhoto eq null}"><img id="profileImg" src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt=""/></c:if>
 								      	<c:if test="${member.proPhoto ne null}"><img id="profileImg" src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png" alt=""/></c:if>
 								       	<input type="file" name="upFile" id="upFile" class="form-control" accept="image/jpeg, image/jpg, image/png">
-								       	<i id="deleteBtn" class="bi bi-x-circle-fill"></i>
+								       	<i id="deleteBtn" class="bi bi-x-circle-fill cursor"></i>
 			       					</article>
 			       					<%-- profile info --%>
 			       					<article class="col-7">
@@ -125,8 +125,8 @@
 		    					</div>
 		    					<%-- buttons : withdraw / update --%>
 		    					<section id="btns" class="col-11 row">
-		    						<button type="button" class="col-6" data-toggle="modal" data-target="#withdrawModal">탈퇴하기</button>
-		    						<button type="button" id="profileUpdateBtn" class="col-6">수정하기</button>
+		    						<button type="button" class="col-6 cursor" data-toggle="modal" data-target="#withdrawModal">탈퇴하기</button>
+		    						<button type="button" id="profileUpdateBtn" class="col-6 cursor">수정하기</button>
 		    					</section>
 	    					</form>
 	       				</div>
@@ -146,7 +146,7 @@
 		      			<div id="title" class="row col-12">
 		      				<h5 id="staticBackdropLabel" class="modal-title">회원탈퇴</h5>
 		      			</div>
-		        		<i class="bi bi-x" data-dismiss="modal"></i>
+		        		<i class="bi bi-x cursor" data-dismiss="modal"></i>
 		      		</section>
 		      		<section class="modal-body">
 			      		<div>
@@ -156,7 +156,7 @@
 		      			<div>
 			      			<h5>데브런을 탈퇴하시는 이유는 무엇인가요?</h5>
 			      			<p>데브런을 탈퇴하는 이유를 알려주시면 보다 좋은 서비스 제공을 위해 노력하겠습니다.</p>
-			      			<select class="custom-select" required>
+			      			<select class="custom-select cursor" required>
 								<option disabled selected>탈퇴사유를 선택하세요</option>
 							  	<option value="1">아이디 변경 / 재가입 목적</option>
 							  	<option value="2">사생활 기록 삭제 목적</option>
@@ -167,13 +167,13 @@
 							</select>
 		      			</div>
 		      			<div class="form-check">
-							<input type="checkbox" id="agreementCheckbox" class="form-check-input" value="" required>
+							<input type="checkbox" id="agreementCheckbox" class="form-check-input cursor" value="" required>
 						  	<label class="form-check-label" for="agreementCheckbox">
 						    	해당 내용을 모두 확인하였으며, 회원탈퇴에 동의합니다.
 						  	</label>
 						</div>
 		      			<div id="withdrawBtn" class="row">
-		      				<button type="button" id="memberWithdrawBtn" class="col-4">회원탈퇴</button>
+		      				<button type="button" id="memberWithdrawBtn" class="col-4 cursor">회원탈퇴</button>
 		      			</div>
 		      		</section>
 		    	</div>

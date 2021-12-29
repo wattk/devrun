@@ -7,7 +7,7 @@ main {height:auto; background:linear-gradient(to bottom, #1A81FF 350px, #FFFFFF 
 main .bi {font-size:20px; vertical-align:middle;}
 main .bi::before {vertical-align:baseline;}
 main .bi.bi-chevron-right {color:#A1A1A1; font-size:16px; vertical-align:middle;}
-main .cursor {cursor:pointer; cursor:hand;}
+main .cursor {cursor:pointer;}
 main button {background-color:#FFFFFF; color:#1A81FF; font-size:17px; border:1px solid #1A81FF; padding:12px; border-radius:21px; line-height:15px;}
 main button:focus {outline:none;}
 main button:hover {background-color:#1A81FF; color:#FFFFFF; border:1px solid #1A81FF; transition:.3s;}
