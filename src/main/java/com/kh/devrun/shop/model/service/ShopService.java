@@ -14,6 +14,8 @@ public interface ShopService {
 
 	int countAllList(String productCode);
 
+	int countPicReviewList(String productCode);
+
 	int reviewDelete(int reviewNo);
 
 	List<Review> picReviewOnly(String productCode);

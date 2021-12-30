@@ -249,6 +249,11 @@ public class DevrunUtils {
 	public static String getReview(List<Review> reviewList, Member member,String url) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
 		StringBuilder reviewSb = new StringBuilder();
+		log.debug("비웠나여? : {}",reviewList.isEmpty());
+		
+		if(reviewList.isEmpty()) {
+			reviewSb.append("<span id=\"reviewNone\">등록된 리뷰가 없습니다.</span>");
+		}
 
 		for(Review review : reviewList) {
 			StringBuilder sb = new StringBuilder();
@@ -290,10 +295,11 @@ public class DevrunUtils {
 						+ "						</div>"
 						+"					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->\n");
 			}
-
-			if(review.getId().equals(member.getId())) {
-				reviewSb.append("					<!-- 삭제버튼 시작 -->\n"
-						+ "						<button type=\"button\" class=\"btn btn-danger reviewDelBtn\" value=\""+review.getReviewNo()+"\">삭제</button>");
+			if(member !=null) {
+				if(review.getId().equals(member.getId())) {
+					reviewSb.append("					<!-- 삭제버튼 시작 -->\n"
+							+ "						<button type=\"button\" class=\"btn btn-danger reviewDelBtn\" value=\""+review.getReviewNo()+"\">삭제</button>");
+				}				
 			}
 			reviewSb.append("				  </div>\n"
 					+ "				</div>");
