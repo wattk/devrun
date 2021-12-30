@@ -20,7 +20,6 @@ CREATE TABLE "MEMBER" (
 );
 
 
-
 -- 회원 번호 시퀀스 생성
 create sequence seq_member_no;
 
@@ -223,7 +222,7 @@ CREATE TABLE "QUESTION_PRODUCT" (
 	"CONTENT"	varchar2(500)		NOT NULL,
 	"ENROLL_DATE"	date	DEFAULT SYSDATE NOT NULL,
 	"PRIVATE_YN"	char(1)	DEFAULT 'N'	NOT NULL,
-	"LEVEL"	NUMBER	DEFAULT 1	NULL,
+	"Q_LEVEL"	NUMBER	DEFAULT 1	NULL,
     CONSTRAINT PK_QUESTION_PRODUCT_QUESTION_NO PRIMARY KEY(QUESTION_NO),
     constraint fk_QUESTION_PRODUCT_QUESTION_REF_NO foreign key(QUESTION_REF_NO)
                                      references QUESTION_PRODUCT(QUESTION_NO) on delete cascade,
@@ -232,6 +231,7 @@ CREATE TABLE "QUESTION_PRODUCT" (
                                           references PRODUCT(PRODUCT_CODE) on delete cascade,
     CONSTRAINT CK_QUESTION_PRODUCT_PRIVATE_YN CHECK(PRIVATE_YN IN ('Y', 'N'))
 );
+
 
 -- 상품 문의 테이블 시퀀스 생성
 create sequence SEQ_QUESTION_PRODUCT_NO;
@@ -1372,6 +1372,44 @@ from
 where
     authority in('ROLE_AM','ROLE_M1');
 
+select * from QUESTION_PRODUCT;
+
+
+select seq_question_product_no.currval from dual;
+select * from product;
+
+insert into question_product
+values(
+
+    seq_question_product_no.nextval,
+    null,
+    45,
+    'mn-4mn-175',
+    '상품 문의',
+    '상품에 불량이 있어서 바꾸고 싶어요 ~~',
+    sysdate,
+    'N',
+    1 
+);
+
+
+select
+    qp.question_no,
+    qp.question_ref_no,
+    qp.title,
+    qp.content,
+    qp.private_yn,
+    p.product_code,
+    p.name,
+    p.thumbnail,
+    p.price,
+    qp.qlevel
+from
+    question_product qp join product p on
+    qp.product_code = p.product_code
+where
+   qp. question_no = 7 and p.product_code = 'mn-1mn-166';
+
 
 
 
@@ -1408,6 +1446,7 @@ from(
 
 
 select * from view_product_all_info;
+
 
 -- 김다현 상품 - 상품 관련 모든 테이블 연결 (content 있는 버전)
 create view view_product_all_info

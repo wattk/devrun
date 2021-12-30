@@ -13,6 +13,62 @@
 		enroll_date desc
 </select>
 
+<select id="selectOneQuestionProductInfo" resultType="QuestionProductEx">	
+	select
+	    qp.question_no,
+	    qp.question_ref_no,
+	    qp.title,
+	    qp.content,
+	    qp.member_no,
+	    qp.private_yn,
+	    p.product_code,
+	    p.name,
+	    p.thumbnail,
+	    p.price,
+	    qp.enroll_date,
+	    qp.q_level
+	from
+	    question_product qp join product p on
+	    qp.product_code = p.product_code
+	where
+		qp.question_no = #{questionNo} and
+		p.product_code = #{productCode}
+		
+</select>
+
+<!-- 상품 답변 추가	 -->
+<insert id="insertQuestionProduct">
+	insert into
+		question_product
+	values(
+		seq_question_product_no.nextval,
+		#{questionRefNo},
+		#{memberNo},
+		#{productCode},
+		#{title},
+		#{content},
+		#{enrollDate},
+		#{privateYn},
+		#{qLevel}
+	)
+	
+
+</insert>
+
+<!-- 문의 번호를 참조번호로 하는 게시물 조회  -->
+<select id="selectQuestionByRefNo" resultType="QuestionProduct">
+	select
+		*
+	from
+		question_product
+	where
+		question_ref_no = #{questionNo}
+
+</select>
+
+
+
+
 
 		
 </mapper>
