@@ -20,7 +20,6 @@ CREATE TABLE "MEMBER" (
 );
 
 
-
 -- 회원 번호 시퀀스 생성
 create sequence seq_member_no;
 
@@ -222,7 +221,7 @@ CREATE TABLE "QUESTION_PRODUCT" (
 	"CONTENT"	varchar2(500)		NOT NULL,
 	"ENROLL_DATE"	date	DEFAULT SYSDATE NOT NULL,
 	"PRIVATE_YN"	char(1)	DEFAULT 'N'	NOT NULL,
-	"LEVEL"	NUMBER	DEFAULT 1	NULL,
+	"Q_LEVEL"	NUMBER	DEFAULT 1	NULL,
     CONSTRAINT PK_QUESTION_PRODUCT_QUESTION_NO PRIMARY KEY(QUESTION_NO),
     constraint fk_QUESTION_PRODUCT_QUESTION_REF_NO foreign key(QUESTION_REF_NO)
                                      references QUESTION_PRODUCT(QUESTION_NO) on delete cascade,
@@ -231,6 +230,7 @@ CREATE TABLE "QUESTION_PRODUCT" (
                                           references PRODUCT(PRODUCT_CODE) on delete cascade,
     CONSTRAINT CK_QUESTION_PRODUCT_PRIVATE_YN CHECK(PRIVATE_YN IN ('Y', 'N'))
 );
+
 
 -- 상품 문의 테이블 시퀀스 생성
 create sequence SEQ_QUESTION_PRODUCT_NO;
@@ -562,49 +562,66 @@ COMMENT ON COLUMN "POINT"."MEMBER_NO" IS '회원 번호';
 COMMENT ON COLUMN "POINT"."STATUS" IS '적립 G, 사용 U';
 COMMENT ON COLUMN "POINT"."DATA" IS '포인트 이용일';
 
--- 신고사유 분류 시퀀스 생성
-CREATE SEQUENCE SEQ_REPORT_CATEGORY_NO;
 
+--=============================신고
 -- DROP TABLE REPORT_CATEGORY;
+-- Drop table report;
 -- 신고사유 분류 테이블 생성
 CREATE TABLE "REPORT_CATEGORY" (
-	"REPORT_CATEGORY_NO" NUMBER NOT NULL,
-	"REPORT_NAME"	VARCHAR2(1000)	 NULL,
-    CONSTRAINT PK_REPORT_CATEGORY_REPORT_CATEGORY_NO PRIMARY KEY(REPORT_CATEGORY_NO)
+	"REASON_CATE" CHAR(1) NOT NULL,
+	"REASON_NAME"	VARCHAR2(30) NOT NULL,
+    CONSTRAINT PK_REPORT_CATEGORY_REASON_CATE PRIMARY KEY(REASON_CATE)
 );
 
 -- 신고 사유 분류 코멘트 추가
-COMMENT ON COLUMN "REPORT_CATEGORY"."REPORT_CATEGORY__NO" IS '신고사유 분류번호';
-COMMENT ON COLUMN "REPORT_CATEGORY"."REPORT_NAME" IS '분류명';
+COMMENT ON COLUMN "REPORT_CATEGORY"."REASON_CATE" IS '신고사유 분류번호';
+COMMENT ON COLUMN "REPORT_CATEGORY"."REASON_NAME" IS '신고사유 분류명';
+
+--신고사유 분류 테이블 데이터 추가
+insert into REPORT_CATEGORY values('1','욕설/비방');
+insert into REPORT_CATEGORY values('2','광고/홍보글');
+insert into REPORT_CATEGORY values('3','음란/선정성');
+insert into REPORT_CATEGORY values('4','게시글도배');
+insert into REPORT_CATEGORY values('5','관련없는이미지/내용');
+insert into REPORT_CATEGORY values('6','기타');
 
 -- 신고 테이블 시퀀스 생성
-CREATE SEQUENCE SEQ_REPORT_BOARD_NO;
+CREATE SEQUENCE SEQ_REPORT_NO;
 
+--drop table "REPORT_BOARD";
 -- 신고 테이블 생성
-CREATE TABLE "REPORT_BOARD" (
+CREATE TABLE "REPORT" (
 	"REPORT_NO"	NUMBER	NOT NULL,
-	"REPORT_CATEGORY_NO"	NUMBER NOT NULL,
+	"REASON_CATE"	CHAR(1) NOT NULL,
+    "REPORT_ROOT_CATE" VARCHAR(2) NOT NULL,
 	"MEMBER_NO"	NUMBER NOT NULL,
-	"REPORT_CONTENT" VARCHAR2(1000) NOT NULL,
-	"STATUS"	VARCHAR2(12)	DEFAULT '진행중' NOT NULL,
-	"REG_DATE"	DATE	DEFAULT SYSDATE NULL,
-	"WARNING_YN" CHAR(1) NULL,
-	"TYPE_NO" VARCHAR2(100) NULL,
-	"MEMBER_NO2" NUMBER NULL,
-    CONSTRAINT PK_REPORT_BOARD_REPORT_NO PRIMARY KEY(REPORT_NO),
-    CONSTRAINT FK_REPORT_BOARD_REPORT_CATEGORY_NO FOREIGN KEY(REPORT_CATEGORY_NO) REFERENCES REPORT_CATEGORY(REPORT_CATEGORY_NO)
+    "ID"	VARCHAR2(50)		NOT NULL,
+    "TARGET_PK_NO" VARCHAR2(50) NOT NULL, 
+    "REPORT_CONTENT" CLOB, 
+	"STATUS"	VARCHAR2(2)	DEFAULT 'PR' NOT NULL,
+	"REG_DATE"	DATE	DEFAULT SYSDATE NOT NULL,
+	"MEMBER_NO2" NUMBER,
+    "CONFIRM_DATE" DATE,
+    CONSTRAINT PK_REPORT_REPORT_NO PRIMARY KEY(REPORT_NO),
+    CONSTRAINT FK_REPORT_REASON_CATE FOREIGN KEY(REASON_CATE) REFERENCES REPORT_CATEGORY(REASON_CATE),
+    CONSTRAINT CK_REPORT_REPORT_ROOT_CATE CHECK(REPORT_ROOT_CATE IN ('CB','CR','MB','MM','PT')),
+    CONSTRAINT CK_REPORT_STATUS CHECK(STATUS IN ('PR','DR','CF'))
 );
 
 -- 신고 테이블 코멘트 추가
-COMMENT ON COLUMN "REPORT_BOARD"."REPORT_NO" IS '신고번호';
-COMMENT ON COLUMN "REPORT_BOARD"."REPORT_CATEGORY_NO" IS '신고사유 분류번호';
-COMMENT ON COLUMN "REPORT_BOARD"."MEMBER_NO" IS '신고자';
-COMMENT ON COLUMN "REPORT_BOARD"."REPORT_CONTENT" IS '신고사유';
-COMMENT ON COLUMN "REPORT_BOARD"."STATUS" IS '처리상태 진행중/처리보류/처리';
-COMMENT ON COLUMN "REPORT_BOARD"."REG_DATE" IS '등록일';
-COMMENT ON COLUMN "REPORT_BOARD"."WARNING_YN" IS 'CHECK 제약조건 경고Y 보류N';
-COMMENT ON COLUMN "REPORT_BOARD"."TYPE_NO" IS '신고 대상별 구분자 + 해당 카테고리 PK값';
-COMMENT ON COLUMN "REPORT_BOARD"."MEMBER_NO2" IS '처리한 관리자 번호';
+COMMENT ON COLUMN "REPORT"."REPORT_NO" IS '신고번호';
+COMMENT ON COLUMN "REPORT"."REASON_CATE" IS '신고사유 분류번호';
+COMMENT ON COLUMN "REPORT"."REPORT_ROOT_CATE" IS '신고분야 카테고리';
+COMMENT ON COLUMN "REPORT"."MEMBER_NO" IS '신고자';
+COMMENT ON COLUMN "REPORT"."ID" IS '신고자 아이디';
+COMMENT ON COLUMN "REPORT"."TARGET_PK_NO" IS '신고 대상 pk 번호';
+COMMENT ON COLUMN "REPORT"."REPORT_CONTENT" IS '신고 대상 글';
+COMMENT ON COLUMN "REPORT"."STATUS" IS '처리상태';
+COMMENT ON COLUMN "REPORT"."REG_DATE" IS '등록일';
+COMMENT ON COLUMN "REPORT"."MEMBER_NO2" IS '처리한 관리자 번호';
+COMMENT ON COLUMN "REPORT"."CONFIRM_DATE" IS '관리자 신고 처리 날짜';
+
+
 
 -- 채팅 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_CHAT_MEMBER_NO;
@@ -1301,6 +1318,44 @@ from
 where
     authority in('ROLE_AM','ROLE_M1');
 
+select * from QUESTION_PRODUCT;
+
+
+select seq_question_product_no.currval from dual;
+select * from product;
+
+insert into question_product
+values(
+
+    seq_question_product_no.nextval,
+    null,
+    45,
+    'mn-4mn-175',
+    '상품 문의',
+    '상품에 불량이 있어서 바꾸고 싶어요 ~~',
+    sysdate,
+    'N',
+    1 
+);
+
+
+select
+    qp.question_no,
+    qp.question_ref_no,
+    qp.title,
+    qp.content,
+    qp.private_yn,
+    p.product_code,
+    p.name,
+    p.thumbnail,
+    p.price,
+    qp.qlevel
+from
+    question_product qp join product p on
+    qp.product_code = p.product_code
+where
+   qp. question_no = 7 and p.product_code = 'mn-1mn-166';
+
 
 
 
@@ -1337,6 +1392,7 @@ from(
 
 
 select * from view_product_all_info;
+
 
 -- 김다현 상품 - 상품 관련 모든 테이블 연결 (content 있는 버전)
 create view view_product_all_info

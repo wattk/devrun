@@ -181,7 +181,7 @@
 													</td>
 													<td>
 														<input type="radio" id="check5" name="chch">
-														<label for="check5">관련없는 이미지/내용 &emsp;&nbsp; &nbsp; </label>
+														<label for="check5">관련없는이미지/내용 &emsp;&nbsp; &nbsp; </label>
 													</td>
 													<td>													
 														<input type="radio" id="check6" name="chch">
@@ -263,7 +263,8 @@
 								  <div class="p-4" style="margin-top: 9px;"><span id="reviewTotal"></span></div>
 								  <div class="p-4" id="sortBy">
 									<span class="pr-2 pl-2 shop-sort newReview" onclick="reviewAll()">최신순</span>
-									<span class="pr-2 pl-2 shop-sort">오래된순 </span>
+									<span class="pr-2 pl-2 shop-sort" onclick="oldestToNewest()">오래된순 </span>
+									<input type="hidden" name="oldestToNewest" id="oldestToNewest" value="-1" />
 									<span class="pr-2 pl-2 shop-sort" onclick="picReviewOnly()">사진리뷰모아보기</span>
 									<sec:authorize access="hasAnyRole('M1','M2')">
 										<button type="button" class="btn btn-warning report-btn3" data-toggle="modal" data-target="#exampleModal3">리뷰작성하기</button>	
@@ -483,6 +484,7 @@ function picReviewOnly(){
 window.onload = reviewAll;
 	   
 function reviewAll(){
+	const $v = $('#oldestToNewest');
 	var $productCode = $(productCodeV).val(); 
 	var $div = $('#reviewBefore');
 	
@@ -490,7 +492,8 @@ function reviewAll(){
 		
 		url: "${pageContext.request.contextPath}/shop/review",
 		data: {
-			productCode : $productCode	
+			productCode : $productCode,
+			orderBy: $v.val()
 		},
 		method: "GET",
 		success(data){		
@@ -499,6 +502,7 @@ function reviewAll(){
 			const t = data["reviewTotal"]; 
 			$div.append(s);
 			$(reviewTotal).html(`총 \${t} 개`);
+			$v.val("-1");
 		},
 		error : function(xhr, status, err){
             console.log(xhr, status, err);
@@ -509,7 +513,15 @@ function reviewAll(){
 
 /*onload시 비동기 리뷰 조회 시작 */
 
-
+/* 리뷰 오래된 순 정렬 기능 시작 */
+function oldestToNewest(){
+	const $v = $('#oldestToNewest');
+	$v.val("1")
+	
+	reviewAll();
+	
+}
+/* 리뷰 오래된 순 정렬 기능 끝 */
 
 //바로구매 버튼 클릭 이벤트 혜진 시작
 $("#orderBtn").click((e)=>{

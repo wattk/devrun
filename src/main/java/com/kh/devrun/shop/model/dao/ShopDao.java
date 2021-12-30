@@ -13,7 +13,7 @@ public interface ShopDao {
 
 	int insertAttach(Attachment attach);
 
-	List<Review> selectAllReview(String productCode);
+	List<Review> selectAllReview(Map<String, Object> param);
 
 	int countAllList(String productCode);
 

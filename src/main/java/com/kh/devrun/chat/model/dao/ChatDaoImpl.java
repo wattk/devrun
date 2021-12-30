@@ -56,4 +56,9 @@ public class ChatDaoImpl implements ChatDao {
 	public int updateLastCheck(Map<String, Object> fromMessage) {
 		return session.update("chat.updateLastCheck", fromMessage);
 	}
+
+	@Override
+	public List<String> searchChatRoom(Map<String, Object> param) {
+		return session.selectList("chat.searchChatRoom", param);
+	}
 }

@@ -271,8 +271,8 @@
 
 
 		<!-- 채팅방 검색 -->
-		<form class="form-inline my-lg-0">
-			<input class="form-control w-75" type="search" placeholder="채팅방 검색" aria-label="Search">
+		<form class="form-inline my-lg-0" id="searchChatRoomFrm">
+			<input class="form-control w-75" type="search" name="searchChatRoom" placeholder="채팅방 검색" aria-label="Search">
 			<button class="btn btn-outline-primary my-2 my-sm-0 w-25" type="submit">검색</button>
 		</form>
 		<!-- 채팅방 검색 끝 -->
@@ -307,10 +307,31 @@
 						
 						<div class="time-unread-count d-inline-block position-absolute text-right">
 						
+							<%-- 현재 날짜 --%>
+							<c:set var="today" value="<%=new java.util.Date()%>" />
 							<!-- 날짜(오늘일 경우 - 오전 9:00 또는 15:00 / 올해일 경우 - 12월 22일 / 올해가 아닐 경우 - 2020.10.14)-->
 							<jsp:useBean id="dateValue" class="java.util.Date"/>
 							<jsp:setProperty name="dateValue" property="time" value="${chatLog.logTime}"/>
-							<p class="mb-0 chat-time"><fmt:formatDate value="${dateValue}" pattern="yyyy/MM/dd HH:mm"/></p>
+							<fmt:formatDate value="${dateValue}" pattern="yyyyMMdd" var="logTimeDate"/>
+							<fmt:formatDate value="${today}" pattern="yyyyMMdd" var="nowDate"/>
+							<fmt:formatDate value="${dateValue}" pattern="yyyy" var="logTimeYear"/>
+							<fmt:formatDate value="${today}" pattern="yyyy" var="nowYear"/>
+							<%-- 조건문 시작 --%>
+							<c:choose>
+								<%-- 오늘일 경우 ex. 15:00 --%>
+								<c:when test="${logTimeDate eq nowDate}">
+									<p class="mb-0 chat-time"><fmt:formatDate value="${dateValue}" pattern="HH:mm"/></p>
+								</c:when>
+								<%-- 올해일 경우 ex. 12월 22일 --%>
+								<c:when test="${logTimeYear eq nowYear}">
+									<p class="mb-0 chat-time"><fmt:formatDate value="${dateValue}" pattern="MM월 dd일"/></p>
+								</c:when>
+								<%-- 이외의 경우 ex. 2020.10.14 --%>
+								<c:otherwise>
+									<p class="mb-0 chat-time"><fmt:formatDate value="${dateValue}" pattern="yyyy.MM.dd"/></p>
+								</c:otherwise>
+							</c:choose>
+							<%-- 조건문 끝 --%>
 							<!-- 안읽음 메세지 --> <%-- 임의의 값 넣음 수정할 것 --%>
 							<span class="badge badge-pill badge-danger unread-count ${chatLog.unreadCount eq 0 ? 'd-none' : ''}">${chatLog.unreadCount}</span>
 							
@@ -329,21 +350,21 @@
 
 <script>
 
-// message받은것 중 logTime(유닉스 시간)을 yyyy/MM/dd HH:mm 형태로 return
+// message받은것 중 logTime(유닉스 시간)을 HH:mm 형태로 return
 function dateFormat(date) {
-	let month = date.getMonth() + 1;
-	let day = date.getDate();
+	//let month = date.getMonth() + 1;
+	//let day = date.getDate();
 	let hour = date.getHours();
 	let minute = date.getMinutes();
 	//let second = date.getSeconds();
 
-	month = month >= 10 ? month : '0' + month;
-	day = day >= 10 ? day : '0' + day;
+	//month = month >= 10 ? month : '0' + month;
+	//day = day >= 10 ? day : '0' + day;
 	hour = hour >= 10 ? hour : '0' + hour;
 	minute = minute >= 10 ? minute : '0' + minute;
 	//second = second >= 10 ? second : '0' + second;
 
-	return date.getFullYear() + '/' + month + '/' + day + ' ' + hour + ':' + minute;
+	return hour + ':' + minute;
 }
 
 //websocket 연결(SockJS)
@@ -418,6 +439,50 @@ stompClient.connect({}, (frame) => {
 	});
 	
 });
+
+
+//채팅방 검색 - 닉네임 검색
+$(searchChatRoomFrm).submit((e) => {
+	e.preventDefault(); // 폼제출방지
+	//console.log(e.target);
+
+	let searchChatRoom = $("[name=searchChatRoom]", e.target).val();
+	
+	// 빈문자열 검색할 경우 기존 채팅방 다 보이게끔 처리
+	if(searchChatRoom == '') {
+		searchChatRoom = '';
+	}
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/chat/searchChatRoom.do`,
+		data : {
+			searchChatRoom : searchChatRoom
+		},
+		method : "GET", // GET방식 생략 가능
+		success(data) { // 이 안에 들어가는 data는 변수명이다. 다른 이름으로 사용해도 된다. 위의 data : 에서 사용한 부분과 헷갈리지 말자
+			//console.log(data);
+		
+			// 존재하지 않는 결과 클릭 시 추가되는 것 방지
+			$("p.not-exist").remove();
+			
+			if(Object.keys(data).length == 0) {
+				// data 존재하지 않는 경우 '존재하는 채팅방이 없습니다.' 출력, 기존 채팅방 전부 d-none 처리
+				$("#chatList li").addClass("d-none");
+				$("#chatList").append(`<p class="text-center text-secondary not-exist">존재하는 채팅방이 없습니다.</p>`);
+			} else {
+				$("#chatList li").addClass("d-none");
+				// 채팅방 검색 결과 뿌리기
+				$(data).each((i, chatId) => {
+					//console.log(chatId);
+					const $li = $(`li[data-chat-id='\${chatId}']`);
+					$li.removeClass("d-none");
+				});
+			}
+		},
+		error : console.log
+	});
+});
+
 
 // 채팅방 생성을 위한 멤버 선택 - 닉네임 검색 폼
 $(searchNicknameFrm).submit((e) => {

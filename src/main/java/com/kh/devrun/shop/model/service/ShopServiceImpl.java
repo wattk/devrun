@@ -48,8 +48,8 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public List<Review> selectAllReview(String productCode) {
-		return shopDao.selectAllReview(productCode);
+	public List<Review> selectAllReview(Map<String, Object> param) {
+		return shopDao.selectAllReview(param);
 	}
 
 	@Override
@@ -82,5 +82,6 @@ public class ShopServiceImpl implements ShopService {
 	public Attachment selectOneAttach(int reviewNo) {
 		return shopDao.selectOneAttach(reviewNo);
 	}
+
 
 }

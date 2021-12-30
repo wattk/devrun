@@ -141,5 +141,25 @@ public class ChatController {
 		return chatId;
 	}
 	
+	/**
+	 * 비동기
+	 * 채팅방 검색 - 닉네임으로 검색
+	 */
+	@ResponseBody
+	@GetMapping("/searchChatRoom.do")
+	public List<String> searchChatRoom(Authentication authentication, @RequestParam(required = false) String searchChatRoom){
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
+		param.put("searchNickname", searchChatRoom);
+		
+		List<String> chatIdList = chatService.searchChatRoom(param);
+		log.debug("chatIdList = {}", chatIdList);
+		
+		return chatIdList;
+	}
+	
 
 }

@@ -431,6 +431,33 @@
 						<%-- 대화 내역 리스트 출력 시작 --%>
 						<c:forEach items="${list}" var="chatLog">
 						
+							<%-- 현재 날짜 --%>
+							<c:set var="today" value="<%=new java.util.Date()%>" />
+							<!-- 날짜(오늘일 경우 - 오전 9:00 또는 15:00 / 올해일 경우 - 12월 22일 / 올해가 아닐 경우 - 2020.10.14)-->
+							<jsp:useBean id="dateValue" class="java.util.Date"/>
+							<jsp:setProperty name="dateValue" property="time" value="${chatLog.logTime}"/>
+							<fmt:formatDate value="${dateValue}" pattern="yyyyMMdd" var="logTimeDate"/>
+							<fmt:formatDate value="${today}" pattern="yyyyMMdd" var="nowDate"/>
+							<fmt:formatDate value="${dateValue}" pattern="yyyy" var="logTimeYear"/>
+							<fmt:formatDate value="${today}" pattern="yyyy" var="nowYear"/>
+						
+							<%-- 조건문 시작 --%>
+							<c:choose>
+								<%-- 오늘일 경우 ex. 15:00 --%>
+								<c:when test="${logTimeDate eq nowDate}">
+									<fmt:formatDate value="${dateValue}" pattern="HH:mm" var="logTime"/>
+								</c:when>
+								<%-- 올해일 경우 ex. 12/22 15:00 --%>
+								<c:when test="${logTimeYear eq nowYear}">
+									<fmt:formatDate value="${dateValue}" pattern="MM/dd HH:mm" var="logTime"/>
+								</c:when>
+								<%-- 이외의 경우 ex. 2020.10.14 --%>
+								<c:otherwise>
+									<fmt:formatDate value="${dateValue}" pattern="yyyy.MM.dd" var="logTime"/>
+								</c:otherwise>
+							</c:choose>
+							<%-- 조건문 끝 --%>
+						
 							<li class="list-group-item">
 							
 								<%-- 본인 메시지인 경우 --%>
@@ -445,7 +472,7 @@
 											<div class="etc">
 												<!-- 읽음 표시 -->
 												<span class="read-check d-block"><c:if test="${chatLog.lastCheck ge chatLog.logTime}">읽음</c:if></span>
-												<span class="msg-time">${chatLog.logTime}</span>
+												<span class="msg-time">${logTime}</span>
 											</div>
 											<!-- 본인 메시지 내용 끝-->
 										</div>
@@ -482,7 +509,7 @@
 													<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal">메시지 신고하기</a>
 												</div>
 												
-												<span class="msg-time">${chatLog.logTime}</span>
+												<span class="msg-time">${logTime}</span>
 												
 											</div>
 											<!-- 상대방 메시지 내용 끝-->
@@ -651,7 +678,7 @@
                                         </td>
                                         <td>
                                             <input type="radio" id="check5" name="chch">
-                                            <label for="check5">관련없는 이미지/내용 &emsp;&nbsp; &nbsp; </label>
+                                            <label for="check5">관련없는이미지/내용 &emsp;&nbsp; &nbsp; </label>
                                         </td>
                                         <td>													
                                             <input type="radio" id="check6" name="chch">
@@ -721,7 +748,7 @@
                                         </td>
                                         <td>
                                             <input type="radio" id="check5" name="chch">
-                                            <label for="check5">관련없는 이미지/내용 &emsp;&nbsp; &nbsp; </label>
+                                            <label for="check5">관련없는이미지/내용 &emsp;&nbsp; &nbsp; </label>
                                         </td>
                                         <td>													
                                             <input type="radio" id="check6" name="chch">
@@ -763,15 +790,15 @@ stompClient.connect({}, (frame) => {
 		console.log("obj = ", obj);
 		const {memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, lastCheck} = obj;
 
-		// 타임스탬프 날짜 변환
+		// 타임스탬프 날짜 변환 // 채팅 보낸 시간은 당일이므로 시간만 전달 ex) 15:00
 		const date = new Date(logTime);
-		const year = date.getFullYear().toString().slice(-2); //년도 뒤에 두자리
-		const month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리 (01, 02 ... 12)
-		const day = ("0" + date.getDate()).slice(-2); //일 2자리 (01, 02 ... 31)
+		//const year = date.getFullYear().toString().slice(-2); //년도 뒤에 두자리
+		//const month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리 (01, 02 ... 12)
+		//const day = ("0" + date.getDate()).slice(-2); //일 2자리 (01, 02 ... 31)
 		const hour = ("0" + date.getHours()).slice(-2); //시 2자리 (00, 01 ... 23)
 		const minute = ("0" + date.getMinutes()).slice(-2); //분 2자리 (00, 01 ... 59)
 		//const second = ("0" + date.getSeconds()).slice(-2); //초 2자리 (00, 01 ... 59)
-		const returnDate = year + "." + month + "." + day + " " + hour + ":" + minute;
+		const returnDate = hour + ":" + minute;
 		//console.log(returnDate);
 		
 		// 프로필 사진 분기 처리

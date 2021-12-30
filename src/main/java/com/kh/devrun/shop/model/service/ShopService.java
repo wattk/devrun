@@ -1,6 +1,7 @@
 package com.kh.devrun.shop.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.vo.Attachment;
@@ -10,7 +11,7 @@ public interface ShopService {
 
 	int insertReview(Review review);
 
-	List<Review> selectAllReview(String productCode);
+	List<Review> selectAllReview(Map<String, Object> param);
 
 	int countAllList(String productCode);
 

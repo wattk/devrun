@@ -50,17 +50,16 @@ public class Member implements Serializable, UserDetails {
 	private int warningCount;
 	private String url;
 	private String intro;
-	private String authority;
+//	private String authority;
 	
-	
-	private List<SimpleGrantedAuthority> authorities;
-	
+	private List<SimpleGrantedAuthority> authorities;	
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub
 		return authorities;
 	}
+	
 	@Override
 	public String getUsername() {
 		// TODO Auto-generated method stub
