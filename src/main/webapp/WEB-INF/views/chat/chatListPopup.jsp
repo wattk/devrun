@@ -358,25 +358,30 @@ stompClient.connect({}, (frame) => {
 	
 	// 구독신청 및 핸들러 등록 // 반드시 커넥트 이후에 실행되도록 콜백함수 안에 작성한다.
 	stompClient.subscribe("/chat/chatList", (message) => {
-		console.log("message : ", message);
+		//console.log("message : ", message);
 		
 		// type속성으로 MESSAGE(chatLog), LAST_CHECK을 구분한다.
-		const obj = JSON.parse(message.body);
-		console.log("obj = ", obj);
+		var obj = JSON.parse(message.body);
+		//console.log("obj = ", obj);
 /* 		const {chatId, memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, type} = obj; */
-		const {chatId, type} = obj;
+		var {chatId, memberNo, type} = obj;
+		//console.log("누가봤습니까?", memberNo);
 		
 		const $li = $(`li[data-chat-id='\${chatId}']`);
 		//console.log("$li = ", $li);
 		const $unreadCountSpan = $li.find("span.unread-count");
 		
-		// 실제 메세지가 온 경우와 LAST_CHECK 분기처리한다.
+		// 실제 메세지가 온 경우와 LAST_CHECK, READ_STATUS 분기처리한다. - LAST_CHECK 주석함
 		switch(type){
-		case "LAST_CHECK" : 
-			$unreadCountSpan.text(0).addClass("d-none");
-			break;
+		/* LAST_CHECK가 한 일 + 실시간 읽음 처리를 READ_STATUS 가 해준다. */
+		/* case "LAST_CHECK" : 
+			// 본인이 확인한 경우에만 안읽음 메시지 건수 0처리와 d-none상태 처리
+			if(memberNo == ${loginMember.memberNo}){
+				$unreadCountSpan.text(0).addClass("d-none");
+			}
+			break; */
 		case "MESSAGE" : 
-			const {chatId, memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, type} = obj;
+			var {chatId, memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, type} = obj;
 			const $msgP = $li.find(".msg");
 			//console.log("$msgP = ", $msgP);
 			$msgP.text(msg); // p.msg 갱신
@@ -395,10 +400,23 @@ stompClient.connect({}, (frame) => {
 			$li.prependTo($("#chatList")); // 첫번째 자식요소로 추가(이동) // 기존 요소에 적용하면 이동이 된다.
 			
 			break;
+		case "READ_STATUS" : 
+			var {chatId, memberNo, readStatus, type} = obj;
+			//console.log("오고있음! chatId / memberNo / readStatus / type", chatId, memberNo, readStatus, type);
+			// 본인이 읽고 있는 상태인 경우
+			if(memberNo == ${loginMember.memberNo} && readStatus == "READ") {
+				// 해당하는 채팅방의 안읽음 메시지 건수 0처리와 d-none상태 처리
+				$unreadCountSpan.text(0).addClass("d-none");
+			}
+			break;	
 		}
-		
 
 	});	
+	
+	stompClient.subscribe("/chat/readStatus/${chatId}", (message) => {
+		
+	});
+	
 });
 
 // 채팅방 생성을 위한 멤버 선택 - 닉네임 검색 폼
