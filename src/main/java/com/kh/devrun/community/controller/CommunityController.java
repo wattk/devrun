@@ -185,7 +185,7 @@ public class CommunityController {
 	public String communityFreeboardEnroll(Community community, RedirectAttributes redirectAttributes) {
 		log.debug("{}", "/communityFreeboardEnroll.do 요청!");
 		log.debug("community = {}", community);
-		// jmg 데이터를 잘라오기 위한 Index 선언
+		// img 데이터를 잘라오기 위한 Index 선언
 		int startIndex = 0;
 		int endIndex = 0;
 		String content = community.getContent();
@@ -236,6 +236,51 @@ public class CommunityController {
 		log.debug("freeboardCommentList = {}", freeboardCommentList);
 		model.addAttribute("freeboardCommentList", freeboardCommentList);
 	}
+	
+	// 자유게시판-상세보기-수정페이지
+	@GetMapping("/communityFreeboardUpdate.do")
+	public void communityFreeboardUpdate(@RequestParam(value="communityNo") int communityNo, Model model) {
+		log.debug("{}", "/communityFreeboardUpdate.do 요청!");
+		log.debug("communityNo = {}", communityNo);
+		
+		CommunityEntity communityEntity = communityService.selectOneFreeBoard(communityNo);
+		log.debug("communityEntity", communityEntity);
+		model.addAttribute("communityEntity", communityEntity);
+	}
+	
+	// 자유게시판-상세보기-수정하기
+	@PostMapping("/freeboardUpdateEnroll.do")
+	public String freeboardUpdateEnroll(CommunityEntity community, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "freeboardUpdateEnroll.do 요청!");
+		log.debug("community = {}", community);
+		int startIndex = 0;
+		int endIndex = 0;
+		String content = community.getContent();
+		// "startindex는 "<img" 전 부터를 의미한다.
+		startIndex = content.indexOf("<img");
+		
+		// 문자열은 -1이 나올 수 없다.
+		if(startIndex != -1) {
+			// endIndex는 ">" 전까지이다. \ : escaping
+			endIndex = content.substring(startIndex).indexOf("\">");
+			// ">"까지 포함해서 읽어와야 하므로 endIndex+2로 설정한다.
+			log.debug("startIndex : {} ~ endIndex : {}", startIndex, endIndex+2);
+			
+			// thumbnail에 img 데이터를 담는다.
+			String thumbnail = content.substring(startIndex, startIndex + endIndex+2);
+			log.debug("thumbnail = {}", thumbnail);
+			System.out.println(thumbnail);
+			// community에 tumbnail을 보낸다.
+			community.setThumbnail(thumbnail);
+		}
+		
+		int result = communityService.updateFreeboard(community);
+		String msg = result > 0 ? "게시글 수정 성공!" : "게시글 수정 실패!";
+		redirectAttributes.addFlashAttribute("msg", msg);
+		
+		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + community.getCommunityNo();
+	}
+	
 	
 	// 자유게시판-댓글작성
 	@PostMapping("/communityFreeboardCommentEnroll.do")

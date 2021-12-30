@@ -29,6 +29,8 @@ public interface CommunityService {
 
 	int commentDelete(int commentNo);
 
+	int updateFreeboard(Community community);
+
 
 
 

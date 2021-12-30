@@ -100,6 +100,20 @@
   		community_no = #{community_no}
   </select>
   
+  <!-- 자유게시판 수정하기 -->
+  <update id="updateFreeboard">
+  	update
+	    community
+	set
+	    title = #{title},
+	    content = #{content},
+	    enroll_date = default,
+	    hashtag = #{hashtag},
+	    thumbnail = #{thumbnail}
+	where
+	    community_no = #{communityNo}
+  </update>
+  
   <!-- 자유게시판 댓글 -->
   <select id="selectFreeboardCommentList" resultType="communityCommentEntity">
   	select
