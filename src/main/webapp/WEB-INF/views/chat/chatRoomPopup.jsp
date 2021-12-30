@@ -444,7 +444,7 @@
 											</div>
 											<div class="etc">
 												<!-- 읽음 표시 -->
-												<span class="read-check d-block">읽음</span>
+												<span class="read-check d-block"><c:if test="${chatLog.lastCheck ge chatLog.logTime}">읽음</c:if></span>
 												<span class="msg-time">${chatLog.logTime}</span>
 											</div>
 											<!-- 본인 메시지 내용 끝-->
@@ -761,7 +761,7 @@ stompClient.connect({}, (frame) => {
 		console.log("message : ", message);
 		const obj = JSON.parse(message.body);
 		console.log("obj = ", obj);
-		const {memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime} = obj;
+		const {memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, lastCheck} = obj;
 
 		// 타임스탬프 날짜 변환
 		const date = new Date(logTime);
@@ -794,7 +794,7 @@ stompClient.connect({}, (frame) => {
 </div>
 <div class="etc">
 <!-- 읽음 표시 -->
-<span class="read-check d-block">읽음</span>
+<span class="read-check d-block"></span>
 <span class="msg-time">\${returnDate}</span>
 </div>
 <!-- 본인 메시지 내용 끝-->
@@ -840,8 +840,32 @@ stompClient.connect({}, (frame) => {
 	
 	// 팝업생성, stompClient가 연결되면 chat_member.last_check컬럼을 update한다.
 	// 위치주의 : connect된 이후 호출되어야한다.
-	lastCheck();
+// 	lastCheck(); 
+
+	// 구독요청 - 읽음 상태 처리
+	stompClient.subscribe("/chat/readStatus/${chatId}", (message) => {
+		//console.log("message : ", message);
+		const obj = JSON.parse(message.body);
+		//console.log("readStatus 구독의 obj = ", obj);
+		var {chatId, memberNo, readStatus} = obj;
+		const $readCheckSpan = $(".send-msg-wrap").find("span.read-check");
+		
+		// 상대가 읽음 상태라면 span.read-check 부분 text('읽음') 상태로 변환
+		if(memberNo != ${loginMember.memberNo} && readStatus == "READ") {
+			$readCheckSpan.text('읽음');
+		}
+		
+		
+	});
 });
+
+console.log("interval첫시작!")
+var interval = setInterval(callback, 1000);
+
+function callback(){
+	//console.log("콜백시작!")
+	readStatus("READ");
+}
 
 /**
  * 팝업창이 활성화(focus)되면 chat_member.last_check컬럼을 update한다.
@@ -849,7 +873,28 @@ stompClient.connect({}, (frame) => {
 // 다른곳 갔다가 팝업 페이지로 포커스를 다시 할 때에도 chat_member.last_check컬럼을 update되어야 한다.
 $(window).focus((e) => {
 	console.log("WINDOW FOCUS");
-	lastCheck();
+//	lastCheck();
+	console.log("interval재시작!")
+	interval = setInterval(callback, 1000);
+});
+
+/**
+ * 팝업창 포커스 잃었을 경우 이벤트 발생, setInterval 중단
+ */
+$(window).blur((e) => {
+	console.log("WINDOW BLUR");
+	console.log("interval중단요청!")
+	clearInterval(interval);
+	readStatus("UNREAD");
+});
+
+/**
+ * 윈도우창 닫을 때 이벤트 발생, setInterval 중단
+ */
+$(window).on("beforeunload", function() {
+	console.log("interval중단요청!")
+	clearInterval(interval);
+	return readStatus("UNREAD");
 });
 
 // 채팅 Send 클릭 시 이벤트 발생
@@ -887,16 +932,31 @@ $(message).keyup((e) => {
 /**
  * 채팅방 마지막 확인시각을 메시지로 발행 -> db chat_member.last_check update
  */
-const lastCheck = () => {
+/* const lastCheck = () => {
 	let data = {
-			chatId : "${chatId}",
-			memberNo : "${loginMember.memberNo}",
-			lastCheck : Date.now(),
-			type : "LAST_CHECK"
+		chatId : "${chatId}",
+		memberNo : "${loginMember.memberNo}",
+		lastCheck : Date.now(),
+		type : "LAST_CHECK"
 	};
 	
 	stompClient.send("/app/lastCheck", {},JSON.stringify(data));
 		
+}; */
+
+/**
+ * 채팅방 마지막 확인시각과 읽고 있는지 여부 메시지로 발행 -> 채팅방 읽음 처리 체크를 위함 + 기존 lastCheck 처리한 일 추가함
+ */
+const readStatus = (status) => {
+	let data = {
+		chatId : "${chatId}",
+		memberNo : "${loginMember.memberNo}",
+		lastCheck : Date.now(),
+		readStatus : status,
+		type : "READ_STATUS"
+	};
+	
+	stompClient.send("/app/chat/readStatus/${chatId}", {},JSON.stringify(data));
 };
 
 // 더보기 아이콘 클릭 이벤트 발생
