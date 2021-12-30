@@ -181,7 +181,7 @@
 													</td>
 													<td>
 														<input type="radio" id="check5" name="chch">
-														<label for="check5">관련없는 이미지/내용 &emsp;&nbsp; &nbsp; </label>
+														<label for="check5">관련없는이미지/내용 &emsp;&nbsp; &nbsp; </label>
 													</td>
 													<td>													
 														<input type="radio" id="check6" name="chch">

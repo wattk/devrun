@@ -47,6 +47,7 @@
 			order by r.reg_date desc    
 		</if>		    	
 	</select>
+	
 	<resultMap type="review" id="review">
 		<id column ="review_no" property ="reviewNo"/>
 		<result column ="member_no" property="memberNo"/>
