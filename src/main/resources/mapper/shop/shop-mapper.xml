@@ -42,8 +42,10 @@
 		from
 		    review r left join review_attachment a
 		    	on r.review_no = a.review_no
-		where product_code = #{productCode}    	
-		order by r.reg_date desc    
+		where product_code = #{productCode}
+		<if test="orderBy == -1">
+			order by r.reg_date desc    
+		</if>		    	
 	</select>
 	<resultMap type="review" id="review">
 		<id column ="review_no" property ="reviewNo"/>
