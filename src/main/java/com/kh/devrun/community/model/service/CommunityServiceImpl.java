@@ -81,6 +81,12 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.freeboardDelete(communityNo);
 	}
 
+	@Override
+	public int viewCount(int communityNo) {
+		return communityDao.viewCount(communityNo);
+	}
+
+
 
 
 	
