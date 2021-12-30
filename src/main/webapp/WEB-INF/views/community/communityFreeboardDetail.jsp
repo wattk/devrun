@@ -31,24 +31,34 @@
 		$('#summernote').summernote('disable');
 	});
 	
+	// 게시물 수정하기
+	$(document).on('click', '#freeboardUpdateBtn', function(e){
+		e.preventDefault();
+		console.log("업데이트 도착했나요?")
+		console.log("삭제할 게시글 번호 : ${communityEntity.communityNo}");
+		
+		if(confirm("정말로 수정하시겠습니까?")){
+			location.href=`${pageContext.request.contextPath}/community/communityFreeboardUpdate.do?communityNo=${communityEntity.communityNo}`;	
+		}else{
+			 return;
+		}  
+	});
 	
-	// 댓글 유효성 검사
-	function freeboardCommentValidate(){
-		//console.log("도착했나요오");
-		var $content = $('#comment');
-		//console.log($content, typeof $content);
-		// 슬래시(/) "사이"에는 매칭시킬 "패턴"을 써준다.
-		// 슬래시(/) "다음"에는 옵션을 설정하는 "플래그"를 써준다.
-		// ^문자열 : 특정 문자열로 시작(괄호 없음 주의!)
-		// . : 모든 문자열
-		// | : OR
-		// \n : 줄바꿈
-		if(/^(.|\n)+$/.test($content.val()) == false){
-			alert("내용을 입력하세요");
-			return false;
+	
+	// 게시물 삭제하기
+	$(document).on('click', '.freeboardDeleteBtn', function(e){
+		e.preventDefault();
+		console.log("삭제하기 도착했나요?");
+		console.log(e.target);
+		var communityNo = $(e.target).val();
+		console.log("삭제할 게시글 번호 : ${communityEntity.communityNo}");
+		
+		if(confirm("정말로 삭제하시겠습니까?")){
+			location.href=`${pageContext.request.contextPath}/community/freeboardDelete.do?communityNo=${communityEntity.communityNo}`;	
+		}else{
+			 return;
 		}
-		$(document.freeboardCommentForm).submit();
-	}
+	});
 	
 
 	
@@ -66,6 +76,9 @@
 	}
 	.card-body li:hover button#commentBtn {
 		display: inline;
+	}
+	textarea {
+		resize: none;
 	}
 </style>
 <!-- authentication에 저장된(member) principal 객체를 member 변수에 담아서 사용한다. -->
@@ -141,10 +154,19 @@
 				
 			<div class="row">
 				<div class="col-md-12" id="bottomButton">
-					<button type="button" class="btn btn-primary btn-lg">답글쓰기</button>
-					<button type="button" class="btn btn-secondary btn-lg">수정하기</button>
-					<button type="button" class="btn btn-primary btn-lg">삭제하기</button>
-					<button type="button" class="btn btn-secondary btn-lg">목록보기</button>
+					<button type="button" class="btn btn-secondary btn-lg" id="freeboardUpdateBtn">수정하기</button>
+					<!-- 회원일 경우 -->
+					<sec:authorize access="hasAnyRole('M1', 'M2')">
+						<!-- 회원이고 글쓴이 본인일 경우 -->
+						<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
+							<button type="button" class="btn btn-secondary btn-lg freeboardDeleteBtn" value="${communityEntity.communityNo}">삭제하기</button>
+						</c:if>
+					</sec:authorize>
+					<!-- 관리자일 경우 -->
+					<sec:authorize access="hasRole('AM')">
+						<button type="button" class="btn btn-secondary btn-lg freeboardDeleteBtn" value="${communityEntity.communityNo}">삭제하기</button>
+					</sec:authorize>
+					<button type="button" class="btn btn-secondary btn-lg" onclick="history.go(-1)">목록보기</button>
 				</div>
 			</div>
 		</div>
@@ -255,6 +277,25 @@
 </div>
 
 <script>
+
+//댓글 유효성 검사
+function freeboardCommentValidate(){
+	//console.log("도착했나요오");
+	var $content = $('#comment');
+	//console.log($content, typeof $content);
+	// 슬래시(/) "사이"에는 매칭시킬 "패턴"을 써준다.
+	// 슬래시(/) "다음"에는 옵션을 설정하는 "플래그"를 써준다.
+	// ^문자열 : 특정 문자열로 시작(괄호 없음 주의!)
+	// . : 모든 문자열
+	// | : OR
+	// \n : 줄바꿈
+	if(/^(.|\n)+$/.test($content.val()) == false){
+		alert("내용을 입력하세요");
+		return false;
+	}
+	$(document.freeboardCommentForm).submit();
+}
+
 // 답글(대댓글) 클릭 시 댓글 번호 참조 
 $(".btnReComment").click((e) => {
 	console.log("클릭 이벤트 발생!");
@@ -330,6 +371,7 @@ $('.btnCommentDelete').click((e) => {
 	}  
 	
 });
+
 
 
 

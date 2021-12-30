@@ -54,6 +54,7 @@ public class ShopController {
 
 	@Autowired
 	ServletContext application;
+	
 
 //--------------------주입-------------------------------------	
 
@@ -83,21 +84,20 @@ public class ShopController {
 	public Map<String, Object> picReviewOnly(@RequestParam String productCode, Authentication authentication,
 			HttpServletRequest request) {
 		String reviewSb = null;
-		Member member = (Member) authentication.getPrincipal();
-		log.debug("member{}", member);
+		Member member = null;
 
-		String proPhotoName = member.getProPhoto();
-		String proPhotoPath = request.getContextPath() + "/resources/upload/profilePhoto/" + proPhotoName;
-		log.debug("프로필 사진 경로 {}", proPhotoPath);
-
+		//getReivew 메소드 인자들
 		String url = request.getContextPath();
-
-		List<Review> picReviewList = shopService.picReviewOnly(productCode);
-		if (picReviewList != null) {
-			reviewSb = DevrunUtils.getReview(picReviewList, member, proPhotoPath, url);
+		if(authentication != null) {
+			member = (Member) authentication.getPrincipal();			
 		}
+		List<Review> picReviewList = shopService.picReviewOnly(productCode);
 
+			reviewSb = DevrunUtils.getReview(picReviewList, member, url);
+			
+		int reviewTotal = shopService.countPicReviewList(productCode);
 		Map<String, Object> map = new HashMap<>();
+		map.put("reviewTotal", reviewTotal);
 		map.put("reviewSb", reviewSb);
 
 		return map;
@@ -108,26 +108,23 @@ public class ShopController {
 	@GetMapping("/review")
 	public Map<String, Object> review(@RequestParam String productCode, Authentication authentication,
 			HttpServletRequest request) {
-
 		String reviewSb = null;
-		Member member = (Member) authentication.getPrincipal();
-
-		String proPhotoName = member.getProPhoto();
-		String proPhotoPath = request.getContextPath() + "/resources/upload/profilePhoto/" + proPhotoName;
-
+		Member member = null;
+		
+		//getReivew 메소드 인자들
 		String url = request.getContextPath();
-		int reviewTotal = shopService.countAllList(productCode);
+		if(authentication != null) {
+			member = (Member) authentication.getPrincipal();			
+		}
 		List<Review> reviewList = shopService.selectAllReview(productCode);
 
-		if (reviewList != null) {
-			reviewSb = DevrunUtils.getReview(reviewList, member, proPhotoPath, url);
-		}
+			reviewSb = DevrunUtils.getReview(reviewList, member, url);
 
+		int reviewTotal = shopService.countAllList(productCode);
 		Map<String, Object> map = new HashMap<>();
-		map.put("reviewTotal ", reviewTotal);
+		map.put("reviewTotal", reviewTotal);
 		map.put("reviewSb", reviewSb);
 
-		log.debug("map : {}", map);
 		return map;
 	}
 

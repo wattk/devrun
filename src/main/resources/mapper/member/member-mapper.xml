@@ -115,4 +115,14 @@
   		id = #{id}
   </delete>
   <!-- 지원 mapper 끝 -->
+  
+  <!-- 다현 -->
+  <select id="selectOneMemberByMemberNo" resultType="member">
+  	select
+  		*
+  	from 
+  		member
+  	where
+  		member_no = #{memberNo}
+  </select>
 </mapper>

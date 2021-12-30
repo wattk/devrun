@@ -465,10 +465,8 @@ function picReviewOnly(){
 		method: "GET",
 		success(data){		
 			$div.children().detach();
-			const s = data["reviewSb"];	
-			const t = data["reviewTotal"]; 
+			const s = data["reviewSb"];
 			$div.append(s);
-			$(reviewTotal).html(`총 \${t} 개`);
 			
 			
 		},
@@ -498,7 +496,7 @@ function reviewAll(){
 		success(data){		
 			$div.children().detach();
 			const s = data["reviewSb"];	
-			const t = data["reviewTotal"]; 
+			const t = data["reviewTotal"];
 			$div.append(s);
 			$(reviewTotal).html(`총 \${t} 개`);
 		},

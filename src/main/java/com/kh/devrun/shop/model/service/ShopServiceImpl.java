@@ -58,6 +58,11 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
+	public int countPicReviewList(String productCode) {
+		return shopDao.countPicReviewList(productCode);
+	}
+
+	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
 	public int reviewDelete(int reviewNo) {
 		return shopDao.reviewDelete(reviewNo);

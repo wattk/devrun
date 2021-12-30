@@ -28,5 +28,9 @@ public interface MemberDao {
 	Member selectOneMemberByCheckKeyword(Map<String, Object> param);
 	
 	int memberWithdrawal(String id);
+
+	Member selectOneMemberByMemberNo(int memberNo);
+
+	
 	
 }
