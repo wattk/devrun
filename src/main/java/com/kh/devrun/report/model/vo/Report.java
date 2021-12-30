@@ -20,7 +20,7 @@ public class Report implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private int reportNo;
 	private String reasonCate;
 	private String reportRootCate;
@@ -33,9 +33,5 @@ public class Report implements Serializable {
 	private Date regDate;
 	private int memberNo2;
 	private Date confirmDate;
-	
-	
-	
-	
 
 }

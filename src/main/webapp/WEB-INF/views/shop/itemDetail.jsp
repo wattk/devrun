@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+c<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -171,29 +171,29 @@
 											<table>
 												<tr>
 													<td>
-														<input type="radio" id="check1" name="resonCate" value="1">
+														<input type="radio" id="check1" name="reasonCate" value="1" required>
 														<label for="check1">욕설/비방 &emsp;&emsp;&emsp;&emsp;</label>
 													</td>
 													<td>
-														<input type="radio" id="check2" name="resonCate" value="2">
+														<input type="radio" id="check2" name="reasonCate" value="2">
 														<label for="check2">광고/홍보글</label>
 													</td>
 													<td>
-														<input type="radio" id="check3" name="resonCate" value="3">
+														<input type="radio" id="check3" name="reasonCate" value="3">
 														<label for="check3">음란/선정성</label>
 													</td>
 												</tr>
 												<tr>
 													<td>
-														<input type="radio" id="check4" name="resonCate" value="4">
+														<input type="radio" id="check4" name="reasonCate" value="4">
 														<label for="check4">게시글도배</label>
 													</td>
 													<td>
-														<input type="radio" id="check5" name="resonCate" value="5">
+														<input type="radio" id="check5" name="reasonCate" value="5">
 														<label for="check5">관련없는 이미지/내용 &emsp;&nbsp; &nbsp; </label>
 													</td>
 													<td>													
-														<input type="radio" id="check6" name="resonCate" value="6">
+														<input type="radio" id="check6" name="reasonCate" value="6">
 														<label for="check6">기타</label>
 													</td>
 												</tr>

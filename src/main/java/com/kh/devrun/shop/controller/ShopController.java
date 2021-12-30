@@ -15,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,11 +26,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.product.model.service.ProductService;
-import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
+import com.kh.devrun.report.model.service.ReportService;
+import com.kh.devrun.report.model.vo.Report;
 import com.kh.devrun.shop.model.service.ShopService;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Review;
@@ -54,6 +55,9 @@ public class ShopController {
 
 	@Autowired
 	ServletContext application;
+	
+	@Autowired
+	ReportService reportService;
 	
 
 //--------------------주입-------------------------------------	
@@ -206,6 +210,22 @@ public class ShopController {
 		return "redirect:" + referer;
 	}
 
+	
+	//리뷰 신고 등록
+	@PostMapping("/insertReport")
+	public String insertReport(Report report, RedirectAttributes redirectAttr, HttpServletRequest request) {
+		log.debug("report 8개 받았니? : {}", report);
+		
+		int result = reportService.insertReport(report);
+		log.debug("신고가 잘 등록? : {}",result);
+		
+		String msg = (result > 0) ? "신고 등록 성공" : "신고 등록 실패";
+		redirectAttr.addFlashAttribute("msg", msg);
+		
+	    String  referer= request.getHeader("Referer");
+	    return "redirect:"+  referer;
+	}
+	
 	/**
 	 * 혜진 작업 시작
 	 */
