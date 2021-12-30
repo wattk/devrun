@@ -237,6 +237,7 @@ public class DevrunUtils {
 			cookie.setMaxAge(365 * 24 * 60 * 60);
 			if ("promotion".equals(param))
 				cookie.setPath(request.getContextPath() + "/shop/promotionDetail.do");// 해당 경로 요청 시에만 쿠키 전송
+				
 			response.addCookie(cookie);
 		}
 

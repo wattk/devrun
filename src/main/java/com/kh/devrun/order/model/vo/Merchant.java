@@ -11,9 +11,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order implements Serializable {
+public class Merchant implements Serializable {
 
-	private String orderCode;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String merchantUid;
 	private int memberNo;
 	private Date orderDate;
 	private String orderStatus;
@@ -24,5 +28,5 @@ public class Order implements Serializable {
 	private int totalPrice;
 	private String shippingReq;
 	
-	private List<OrderDetail> orderDetailList;
+	private List<MerchantDetail> merchantDetailList;
 }

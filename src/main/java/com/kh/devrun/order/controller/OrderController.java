@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.order.model.service.OrderService;
-import com.kh.devrun.order.model.vo.Order;
-import com.kh.devrun.order.model.vo.OrderDetail;
+import com.kh.devrun.order.model.vo.Imp;
+import com.kh.devrun.order.model.vo.Merchant;
+import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
 
@@ -57,16 +57,22 @@ public class OrderController {
 	
 	@PostMapping("/orderEnroll")
 	@ResponseBody
-	public String enrollDirectOrder(Order order, @RequestParam("detailNo")int detailNo) {
-		String orderCode = "";
-		log.debug("order = {}", order);
+	public Merchant orderEnroll(Merchant merchant, @RequestParam("detailNo")int detailNo) {
+		log.debug("order = {}", merchant);
 		
-		orderCode = "ORDER_" + DevrunUtils.getRandomNo();
-		order.setOrderCode(orderCode);
-		List<OrderDetail> list = new ArrayList<>(); 
-		list.add(new OrderDetail(orderCode, detailNo, 1)) ;
-		int result = orderService.insertDirectOrder(order, list);
+		List<MerchantDetail> list = new ArrayList<>(); 
+		list.add(new MerchantDetail(merchant.getMerchantUid(), detailNo, 1)) ;
+		int result = orderService.insertDirectOrder(merchant, list);
 		
-		return orderCode;
+		return merchant;
+	}
+	
+	@PostMapping("/impEnroll")
+	public String impEnroll(Imp imp) {
+		log.debug("imp = {}", imp);
+		int result = orderService.insertImp(imp);
+		log.debug("imp result = {}", result);
+		
+		return "redirect:/mypage/orderDetail.do";
 	}
 }

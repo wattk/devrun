@@ -268,9 +268,11 @@ $(".order-form-control").change((e)=>{
 //결제창 띄우기
 $("#orderPaymentBtn").click((e)=>{
 	console.log("결제 이벤트 발생");
+	const merchantUid = 'MERC_' + new Date().getTime();
 	
 	//주문 테이블 추가
 	const data = new FormData(document.orderFrm);
+	data.append("merchantUid", merchantUid);
 	$.ajax({
 		url : "${pageContext.request.contextPath}/order/orderEnroll",
 		data : data,
@@ -294,9 +296,9 @@ function iamport(data){
 	IMP.request_pay({
 	    pg : 'kcp',
 	    pay_method : 'card',
-	    merchant_uid : 'MERCHANT_' + new Date().getTime(),
+	    merchant_uid : data.merchantUid,
 	    name : '${product.name}' , //결제창에서 보여질 이름
-	    amount : ${product.price + (product.price >= 50000? 0 : 3000)-0}, //실제 결제되는 가격
+	    amount : 100, //실제 결제되는 가격
 	    buyer_email : $(".email-input").text(),
 	    buyer_name : $(".name-input").text(),
 	    buyer_tel : $(".phone-input").text(),
@@ -307,18 +309,43 @@ function iamport(data){
 		// 결제검증
 		$.ajax({
         	type : "POST",
-        	url : "/verifyIamport/" + rsp.imp_uid 
+        	url : "${pageContext.request.contextPath}/verifyIamport/" + rsp.imp_uid 
         }).done(function(data) {
         	
         	console.log(data);
         	
         	// 위의 rsp.paid_amount 와 data.response.amount를 비교한후 로직 실행 (import 서버검증)
         	if(rsp.paid_amount == data.response.amount){
-	        	alert("결제 및 결제검증완료");
+	        	console.log("결제 및 결제검증완료");
 	        	//결제 및 검증 완료 시 결제 테이블 정보 추가 후 주문 정보 디테일 페이지로 리다이렉트
+	        	const value = {
+	        		impUid : rsp.imp_uid,
+	        		merchantUid : rsp.merchant_uid,
+	        		name : data.name,
+	        		payMethod : data.payMethod,
+	        		pgProvider : data.pgProvider,
+	        		amount : data.amount,
+	        		buyerAddf : data.buyerAddr,
+	        		buyerEmail : data.buyerEmail,
+	        		buyerName : data.buyerName,
+	        		buyerPostcode : data.buyerPostcode,
+	        		buyerTel : data.buyerTel
+	        	};
+	        	console.log(value);
+	        	
+	        	$.ajax({
+	        		url : "${pageContext.request.contextPath}/order/impEnroll",
+	        		data : JSON.stringify(value),
+	        		method : "POST",
+	        		success(data){
+	        			console.log(data);
+	        		},
+	        		error : console.log
+	        	});
+	        	
 	        	
         	} else {
-        		alert("결제 실패");
+        		alert("결제에 실패하였습니다.");
         	}
         });
 	});
