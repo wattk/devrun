@@ -239,7 +239,7 @@ public class DevrunUtils {
 	}
 
 	/**
-	 * 리뷰 비동기 처리 - 다현 ft.자바에서 HTML 코드 쓰게 되어서 넘흐 행복하다 ^^* -> 어연 5시간 뒤 ㅋㅋㅋ 아 근데 재밌는데? 진심
+	 * 리뷰 비동기 처리 - 다현
 	 */
 	public static String getReview(List<Review> reviewList, Member member, String proPhotoPath,String url) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
@@ -269,7 +269,6 @@ public class DevrunUtils {
 					+ "					  </div>  \n"
 					+ "					</div>\n"
 					+ "					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 시작 -->");
-			
 			if(review.getAttach().getReviewAttachNo() != 0) {
 				reviewSb.append("						<div class=\"reviewPhoto\">\n"
 						+ "						  <img src=\""+url+"/resources/upload/review/"+review.getAttach().getRenamedFilename()+ "\" alt=\"\" onclick=\"expandPic(event)\">\n"
@@ -279,12 +278,12 @@ public class DevrunUtils {
 						+ "						</div>");
 			}
 			if(review.getAttach().getReviewAttachNo() < 1) {
-				reviewSb.append("//						<div class=\"reviewPhoto\">\n"
-						+ "//						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
-						+ "//							<i style=\"width:100px\" class=\"far fa-heart\">3</i>\n"
-						+ "//						  </div>\n"
-						+ "//						</div>"
-						+"//					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->\n");
+				reviewSb.append("						<div class=\"reviewPhoto\">\n"
+						+ "						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
+						+ "							<i style=\"width:100px\" class=\"far fa-heart\">3</i>\n"
+						+ "						  </div>\n"
+						+ "						</div>"
+						+"					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->\n");
 			}
 
 			if(review.getId().equals(member.getId())) {
