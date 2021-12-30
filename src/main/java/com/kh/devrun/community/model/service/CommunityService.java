@@ -33,6 +33,9 @@ public interface CommunityService {
 
 	int freeboardDelete(int communityNo);
 
+	int viewCount(int communityNo);
+
+
 
 
 

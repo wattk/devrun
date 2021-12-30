@@ -40,7 +40,7 @@ $(() => {
 		// tr 태그를 찾는 작업 --> 이벤트 타겟의 부모중의 tr태그를 찾아주세요.
 		const $tr = $(e.target).parents("tr");
 		const communityNo = $tr.data("no");
-		location.href = `${pageContext.request.contextPath}/community/communityFreeboardDetail.do?communityNo=\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
+		location.href = `${pageContext.request.contextPath}/community/communityFreeboardDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
 	});
 });
 
@@ -123,7 +123,7 @@ $(() => {
 				<td>${communityEntity.nickname}</td>
 				<td><fmt:formatDate value="${communityEntity.enrollDate}" pattern="yy-MM-dd HH:mm"/> </td>
 				<td><i class="fas fa-heart"></i> ${communityEntity.likeCount}</td>
-				<td>${community.viewCount}</td>
+				<td>${communityEntity.viewCount}</td>
 				<td>만들어야함</td>
 			</tr>
 		</c:forEach>

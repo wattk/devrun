@@ -4,6 +4,8 @@
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
-		<aop:aspectj-autoproxy />
+	<!-- b. annotaion등록 방식 -->
+	<!-- @Aspect, @Pointcut advice관련 어노테이션 등록 -->
+	<aop:aspectj-autoproxy />
 
 </beans>

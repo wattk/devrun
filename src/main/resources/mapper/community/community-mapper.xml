@@ -167,4 +167,14 @@
     	comment_no = #{commentNo}
   </delete>
   
+  <!-- 조회수 증가 -->
+  <update id="viewCount">
+  	update
+	    community
+	set
+	    view_count = view_count + 1
+	where
+	    community_no = #{communityNo}
+  </update>
+  
 </mapper>

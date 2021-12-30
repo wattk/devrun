@@ -4,9 +4,9 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="order">
   <insert id="insertOrder">
-  	insert into order
+  	insert into merchant
   	values(
-  		#{orderCode},
+  		#{merchantUid},
   		#{memberNo},
   		default,
   		default,
@@ -22,12 +22,29 @@
   <update id="insertOrderDetail">
   	<foreach collection="list" item="item" separator="," open="INSERT ALL" close="SELECT * FROM DUAL">
   		into
-  			order_detail
+  			merchant_detail
   		values(
-  			#{orderCode},
-  			#{detailNo},
-  			#{buyCount}
+  			#{item.merchantUid},
+  			#{item.detailNo},
+  			#{item.buyCount}
   		)
   	</foreach>
   </update>
+  
+  <insert id="insertImp">
+  	insert into imp
+  	values(
+  		#{impUid},
+  		#{merchantUid},
+  		#{pgProvider},
+  		#{name},
+  		#{payMethod},
+  		#{amount},
+  		#{buyerAddr},
+  		#{buyerEmail},
+  		#{buyerName},
+  		#{buyerPostcode},
+  		#{buyerPhone}
+  	)
+  </insert>
 </mapper>
