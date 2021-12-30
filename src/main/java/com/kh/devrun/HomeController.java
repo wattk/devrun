@@ -79,6 +79,8 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/verifyIamport/{imp_uid}")
 	public IamportResponse<Payment> paymentByImpUid(Model model, Locale locale, HttpSession session, @PathVariable(value="imp_uid")String imp_uid) throws IamportResponseException, IOException{
+		
+		log.debug("{}", "iamport 검증 컨트롤러");
 		return api.paymentByImpUid(imp_uid); 
 	}
 	

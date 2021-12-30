@@ -68,8 +68,8 @@ public class ShopController {
 	}
 
 	// 상품 사이드 메뉴에서 전체보기 클릭 시
-	@GetMapping("/CategoryItemAll")
-	public String CategoryItemAll(@RequestParam String parentCate, Model model) {
+	@GetMapping("/categoryItemAll")
+	public String categoryItemAll(@RequestParam String parentCate, Model model) {
 
 		List<ProductEntity> itemList = shopService.CategoryItemAll(parentCate);
 		model.addAttribute("itemList", itemList);

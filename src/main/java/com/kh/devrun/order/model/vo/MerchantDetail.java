@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDetail implements Serializable {
+public class MerchantDetail implements Serializable {
 
-	private String orderCode;
+	private String merchantUid;
 	private int detailNo;
 	private int buyCount;
 	
