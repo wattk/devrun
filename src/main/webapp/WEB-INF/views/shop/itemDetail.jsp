@@ -563,7 +563,7 @@ $(document).on('click', '.report-btn', function(e) {
 $("#orderBtn").click((e)=>{
 	const detailNo = $("#detailNo").val();
 	console.log(detailNo);
-	location.href = `${pageContext.request.contextPath}/order/order/\${detailNo}`;
+	location.href = `${pageContext.request.contextPath}/order/order?detailNo=\${detailNo}`;
 });
 //바로구매 버튼 클릭 이벤트 혜진 끝
 </script>		

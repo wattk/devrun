@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.mypage.model.service.MypageService;
+import com.kh.devrun.order.model.service.OrderService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +45,9 @@ public class MypageController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private OrderService orderService;
 	
 	@Autowired
 	ServletContext application;
@@ -373,8 +378,16 @@ public class MypageController {
 	 * 혜진 주문 상세 시작
 	 */
 	
-	@GetMapping("/orderDetail.do")
-	public void orderDetail() {}
+	@GetMapping("/orderDetail/{merchantUid}")
+	public String orderDetail(@PathVariable String merchantUid, Model model) {
+		log.debug("merchantUid = {}", merchantUid);
+		Map<String, Object> map = orderService.selectOneMerchant(merchantUid);
+		model.addAttribute("merchant", map.get("merchant"));
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("imp", map.get("imp"));
+		
+		return "/mypage/orderDetail";
+	}
 	
 	/**
 	 * 혜진 주문 상세 끝

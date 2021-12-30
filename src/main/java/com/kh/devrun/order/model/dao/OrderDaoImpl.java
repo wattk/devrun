@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
+import com.kh.devrun.product.model.vo.Product;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
@@ -29,6 +30,21 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public int insertImp(Imp imp) {
 		return session.insert("order.insertImp", imp);
+	}
+
+	@Override
+	public Merchant selectOneMerchant(String merchantUid) {
+		return session.selectOne("order.selectOneMerchant", merchantUid);
+	}
+
+	@Override
+	public List<Product> selectMerchantProductList(List<Integer> detailNoList) {
+		return session.selectList("order.selectMerchantProductList", detailNoList);
+	}
+
+	@Override
+	public Imp selectOneImp(String merchantUid) {
+		return session.selectOne("order.selectOneImp", merchantUid);
 	}
 	
 	
