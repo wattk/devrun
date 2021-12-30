@@ -75,6 +75,11 @@ public class CommunityDaoImpl implements CommunityDao {
 		return session.update("community.updateFreeboard", community);
 	}
 
+	@Override
+	public int freeboardDelete(int communityNo) {
+		return session.delete("community.freeboardDelete", communityNo);
+	}
+
 
 	
 
