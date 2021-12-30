@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -222,10 +224,19 @@ public class CommunityController {
 	// 자유게시판-상세보기
 	// @RequestParam("가져올 데이터의 이름")[데이터 타입][가져온 데이터를 담을 변수]
 	// 그리고 Model 객체를 이용해서, 뷰로 값을 넘겨준다.
-	@GetMapping("/communityFreeboardDetail.do")
-	public void communityFreeboardDetail(@RequestParam int communityNo, Model model) {
+	@GetMapping("/communityFreeboardDetail/{communityNo}")
+	public String communityFreeboardDetail(@PathVariable int communityNo, Model model, HttpServletRequest request, HttpServletResponse response) {
 		log.debug("communityNo = {}", communityNo);
 		
+		// 조회 중복 방지
+		boolean hasRead = CommunityUtils.hasRead(request, response, communityNo, "community");
+		
+		if (!hasRead) {
+			// 조회수 증가
+			int result = communityService.viewCount(communityNo);
+			log.debug("viewCount = {}", result);
+		}
+			
 		// 업무로직
 		CommunityEntity communityEntity = communityService.selectOneFreeBoard(communityNo);
 		log.debug("communityEntity = {}", communityEntity);
@@ -235,6 +246,8 @@ public class CommunityController {
 		List<CommunityCommentEntity> freeboardCommentList = communityService.selectFreeboardCommentList(communityNo);
 		log.debug("freeboardCommentList = {}", freeboardCommentList);
 		model.addAttribute("freeboardCommentList", freeboardCommentList);
+		
+		return "community/communityFreeboardDetail";
 	}
 	
 	// 자유게시판-상세보기-수정페이지
@@ -323,5 +336,5 @@ public class CommunityController {
 		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + communityNo; 
 	}
 	
-	
+
 }

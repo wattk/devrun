@@ -33,6 +33,9 @@ public interface CommunityDao {
 
 	int freeboardDelete(int communityNo);
 
+	int viewCount(int communityNo);
+
+
 
 
 }
