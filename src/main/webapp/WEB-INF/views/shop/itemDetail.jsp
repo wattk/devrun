@@ -533,9 +533,8 @@ function oldestToNewest(){
 /* 리뷰 오래된 순 정렬 기능 끝 */
 
 /*신고창 정보 얻기 위해서 시작 */
+$(document).on('click', '.report-btn', function(e) {
 
-$('.report-btn').click((e)=>{
-	console.log("신고버튼 누르면 작동하나요?젭알");	
 	 var tr = e.target;
 	 
 	 const id =tr.dataset.id;
