@@ -12,6 +12,7 @@
 
 
 <!-- Modal -->
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable">
 	    <div class="modal-content">
@@ -19,80 +20,69 @@
 	        	<h5 class="modal-title fw600" id="exampleModalLabel">상품 문의</h5>
 	        	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	        </div>
-	        <div class="modal-body">
-				<div id="questionContainer">
-					<div class="question-top">
-						<div>
-							<img src="${pageContext.request.contextPath}/resources/upload/product/ch-1ch-112-1.png" />	
+	        <form name = "insertQuestionFrm"method="post" action="${pageContext.request.contextPath}/admin/questionProduct/insertQuestionProduct.do">	        			    
+		        <div class="modal-body">
+					<div id="questionContainer">
+						<div class="question-top">
+							<div>							
+								<img id="thumbnail" />	
+							</div>
+							<div class="modal-product-info">						
+								<input type="hidden" name="productCode" id="productCode" value="" />
+								<span><input type="text" name="name" id="productName" value="편안한의자" readonly /></span>	
+								<span class="price"><input type="text" name="price" id="price" value="100000" /></span>	
+							</div>
 						</div>
-						<div class="modal-product-info">
-							<span><input type="text" value="편안한의자" readonly /></span>	
-							<span class="price"><input type="text" value="100000" /></span>	
+						<hr />
+						<div class="question-mid">
+							<div class="question-mid-title">
+								<input type="hidden" name="questionNo" id="questionNo" />
+								<input type="hidden" name="questionRefNo" id="questionRefNo" />
+								<input type="hidden" name="memberNo"id="memberNo" />
+								<input type="hidden" name="enrollDate"id="enrollDate" />
+								<input type="hidden" name="qLevel"id="qLevel" />
+								<p class="fw600">제목</p>
+								<p class="fw600">문의 내용</p>
+							</div>
+							<div class="question-mid-content">
+								<span>
+									<input type="text" id="questionTitle" name="title" value="문의 제목" readonly/>
+									<label for="privateYn">비공개</label>
+									<input type="checkbox" value="N" name ="privateYn" id="privateYn" />							
+								</span>
+								<p><textarea readonly id="questionContent" name="content" >졸립군요</textarea> </p>
+													
+							</div>					
 						</div>
 					</div>
 					<hr />
-					<div class="question-mid">
-						<div class="question-mid-title">
-							<p class="fw600">제목</p>
-							<p class="fw600">문의 내용</p>
-						</div>
-						<div class="question-mid-content">
-							<span>
-								<input type="text" value="문의 제목" readonly/>
-								<label for="privateYn">비공개</label>
-								<input type="checkbox" value="공개" id="privateYn"  />							
-							</span>
-							<p><textarea readonly >졸립군요</textarea> </p>
-												
-						</div>					
-					</div>
-				</div>
-				<hr />
-				<div id ="answrerContainer">
-					<div class="answer-mid">
-						<div class="answer-title">
-							<p class="fw600">답변 내용</p>
-						</div>
-						<div class="answer-content">
-							<textarea>답변완료용</textarea>
+					<div id ="answrerContainer">
+						<div class="answer-mid">
+							<div class="answer-title">
+								<p class="fw600">답변 내용</p>
+							</div>
+							<div class="answer-content">
+								<textarea id="answer" name="answer"></textarea>
+							</div>
 						</div>
 					</div>
-				</div>
-	        </div>
-		    <div class="modal-footer">
-		        <button type="button" class="btn btn-primary">답변 완료</button>
-		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-	    	</div>
+		        </div>
+			    <div class="modal-footer">
+			        <button type="submit" id="completeBtn"class="btn btn-primary">답변 완료</button>
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+		    	</div>
+	        </form>
 	    </div>
 	</div>
 </div>
 
-<link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
-
-<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="reviewModalLabel">리뷰/쪽지 상세 내역</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        어쩌구저쩌구
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <!--------------------- -->
 
 <div class="report-container">
 	<h3 class="m-5">회원 문의 관리</h3>
 </div>
+
 <form:form>
 	<div class="report-search-container mt-3 ml-5">
 		<strong class="pr-3">날짜 선택</strong>
@@ -144,17 +134,19 @@
 		    </thead>
 		    <tbody>
 		    	<c:forEach items ="${questionList}" var="qu">
-		    	<tr>
-		    		<td>${qu.questionNo}</td>
-		    		<td>${qu.questionRefNo}</td>
-		    		<td>${qu.memberNo}</td>
-		    		<td>${qu.productCode}</td>
-		    		<td>${qu.title}</td>
-		    		<td>${qu.content}</td>
-		    		<td> <fmt:formatDate value="${qu.enrollDate}" pattern="yyyy-MM-dd"/></td>
-		    		<td>${qu.privateYn}</td>	
-		    		<td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">답변</button></td>	
-		    	</tr>								 
+			    	<%-- <c:if test="${qu.qLevel == 1}"> --%>
+			    	<tr>
+			    		<td>${qu.questionNo}</td>
+			    		<td>${qu.questionRefNo}</td>
+			    		<td>${qu.memberNo}</td>
+			    		<td>${qu.productCode}</td>
+			    		<td>${qu.title}</td>
+			    		<td>${qu.content}</td>
+			    		<td> <fmt:formatDate value="${qu.enrollDate}" pattern="yyyy-MM-dd"/></td>
+			    		<td>${qu.privateYn}</td>	
+			    		<td><button type="button" class="btn btn-primary answer-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">답변</button></td>	
+			    	</tr>								 
+			    	<%-- </c:if> --%>
 		    	</c:forEach>
 		  </tbody>
 		</table>
@@ -163,5 +155,87 @@
 		</div>
 	</div>
 </form:form>
+
+<script>
+	
+	
+	/* 답변 버튼 클릭 이벤트  */
+	$(".answer-btn").click(e=>{
+		var questionNo = $(e.target).parents("tr").children().first().html();
+		var productCode  = $(e.target).parents("tr").children().eq(3).html();
+		
+		console.log(questionNo);
+		console.log(productCode);
+		
+		var obj = {
+			"questionNo" : questionNo,
+			"productCode" : productCode
+		};
+		
+	 	$.ajax({
+			url :`${pageContext.request.contextPath}/admin/questionProduct/selectQuestion.do`,
+			data : obj,
+			contentType : "application/json; charset=utf-8",
+			success(data){
+				console.log(data.questionProductInfo);
+				var questionProductInfo = data.questionProductInfo;
+				var answer = data.answer;
+				var imgUrl = `${pageContext.request.contextPath}/resources/upload/product/\${questionProductInfo.thumbnail}`;
+				
+				console.log(imgUrl);
+				console.log("questionNo = ",questionProductInfo.questionNo);
+				console.log("qLevel = ",questionProductInfo.qlevel);
+				console.log("privateYn = ",questionProductInfo.privateYn);
+				console.log("answer = ",answer);
+				
+				
+				
+				/* 모달창 input태그들에 값 대입 */
+				$(".modal-body #questionNo").val(questionProductInfo.questionNo);
+				$(".modal-body #questionRefNo").val(questionProductInfo.questionRefNo);
+				$(".modal-body #productName").val(questionProductInfo.name);
+				$(".modal-body #productCode").val(questionProductInfo.productCode);
+				
+				/* 이미지 경로 동적으로 넣어주기 */
+				$(".modal-body #thumbnail").attr("src",imgUrl);
+				
+				$(".modal-body #price").val(questionProductInfo.price);
+				$(".modal-body #enrollDate").val(questionProductInfo.enrollDate);
+				$(".modal-body #questionTitle").val(questionProductInfo.title);
+				$(".modal-body #memberNo").val(questionProductInfo.memberNo);
+				$(".modal-body #questionContent").val(questionProductInfo.content);
+				
+				/* 이상하게 qlevel은 카멜케이싱이 적용이 안돼서 넘어온다  */
+				$(".modal-body #qLevel").val(questionProductInfo.qlevel);
+			 	$(".modal-body #privateYn").val(questionProductInfo.privateYn); 
+			 	if(questionProductInfo.privateYn == 'Y'){
+					$(".modal-body #privateYn").attr("checked",true);	
+					$(".modal-body #privateYn").val('Y');
+			 	}
+			 	else{
+			 		$(".modal-body #privateYn").attr("checked",false);	
+					$(".modal-body #privateYn").val('N');
+			 	}
+			 	
+			 	/* 답변 대입 */
+			 	$(".modal-body #answer").val(answer); 
+			 	
+			 	
+										 	
+			},
+			error:console.log
+			
+		}); 
+		
+	});
+	
+</script>
+
+
+
+
+
+
+
 
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -43,6 +44,7 @@ import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
 import com.kh.devrun.questionProduct.model.service.QuestionProductService;
 import com.kh.devrun.questionProduct.model.vo.QuestionProduct;
+import com.kh.devrun.questionProduct.model.vo.QuestionProductEx;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -238,8 +240,6 @@ public class AdminController {
 			
 			
 		}
-		
-
 		
 		redirectAttr.addFlashAttribute("msg","선택하신 상품을 삭제했습니다");	
 		return "redirect:/admin/productMain.do";
@@ -448,11 +448,7 @@ public class AdminController {
 	};
 	
 	
-	
-	
-		
-	
-	
+
 	@ResponseBody
 	@GetMapping("/memberManage/searchMember.do")
 	public Map<String,Object>searchMember(
@@ -506,6 +502,92 @@ public class AdminController {
 		redirectAttr.addFlashAttribute("msg",msg);
 		return "redirect:/admin/memberManage/memberLevel.do";
 	}
+	
+	// 문의 정보 & 상품 정보 비동기로 가져옥
+	@ResponseBody
+	@GetMapping("/questionProduct/selectQuestion.do")
+	public Map<String,Object>selectQuestionProductInfo(
+				@RequestParam int questionNo,
+				@RequestParam String productCode		
+			
+			){		
+		Map<String,Object> map = new HashMap<>();
+		log.debug("productCode={}",productCode);
+		log.debug("questionNo = {}",questionNo);
+		Map<String,Object> param = new HashMap<>();
+		param.put("productCode", productCode);
+		param.put("questionNo", questionNo);
+		
+		// 선택한 문의와 상품 정보 가져오기
+		QuestionProductEx questionProductInfo = questionProductService.selectOneQuestionProductInfo(param);
+		log.debug("questionProductInfo = {}",questionProductInfo);
+		
+		// 선택한 문의 번호에 대한 참조 문의 번호가 존재한다면 가져오기
+		QuestionProduct questionProduct = questionProductService.selectQuestionByRefNo(questionNo);
+		
+		String answer = "";
+		
+		if(questionProduct != null) {
+			answer = questionProduct.getContent();
+			log.debug("답변이 있습니다~~~~~");
+		}
+		else {
+//			answer = "답변 대기 중.";
+			log.debug("답변이 없습니다.");
+		}
+				
+		map.put("answer",answer);
+		map.put("questionProductInfo",questionProductInfo);
+		return map;	
+	}
+	
+	// 문의사항 답변 추가하기
+	@PostMapping("/questionProduct/insertQuestionProduct.do")
+	public String insertQuestionProduct(
+			QuestionProduct questionProduct,
+			RedirectAttributes redirectAttr,
+			Authentication authentication,
+			@RequestParam String answer
+			
+			) {
+		// 입력받은 답변을 content에 저장
+		questionProduct.setContent(answer);
+		// 회원 번호는 현재 로그인중인 사용자의 member_no
+		Member member = (Member)authentication.getPrincipal();
+		log.debug("member = {}",member);
+		questionProduct.setMemberNo(member.getMemberNo());
+		
+		// 대상의 문의 번호를 현재 답변의 참조 문의 번호에 넣어준다
+		questionProduct.setQuestionRefNo(questionProduct.getQuestionNo());
+		
+		// 답변이므로 레벨은 무조건 2 
+		questionProduct.setQLevel(2);
+		
+		// 비공개 체크 값이 없다면 'N'로 채우기
+		if(questionProduct.getPrivateYn() == '\u0000') {
+			questionProduct.setPrivateYn('N');
+		}
+				
+		
+		log.debug("questionProduct = {}",questionProduct);
+		
+		
+		
+		int reuslt = questionProductService.insertQuestionProduct(questionProduct);
+		  
+		String msg = "답변을 달았습니다."; redirectAttr.addFlashAttribute("msg",msg);
+		 
+		return "redirect:/admin/memberManage/questionProduct.do";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
