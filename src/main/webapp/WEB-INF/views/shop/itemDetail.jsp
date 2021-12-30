@@ -286,8 +286,6 @@
 								<div class="item-sort-container d-flex 	justify-content-between">
 								  <div class="p-4"><button type="button" class="btn btn-danger">내 문의 보기</button></div>
 								  <div class="p-4" id="sortBy">
-									<span class="pr-2 pl-2 shop-sort">최신순</span>
-									<span class="pr-2 pl-2 shop-sort">오래된순</span>
 									<!--문의 부트스트랩 버튼-->
 									<button type="button" class="btn btn-warning report-btn2" data-toggle="modal" data-target="#exampleModal2">문의작성하기</button>							  
 								  </div>
