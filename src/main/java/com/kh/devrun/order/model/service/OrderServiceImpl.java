@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.kh.devrun.order.model.dao.OrderDao;
 import com.kh.devrun.order.model.vo.Imp;
@@ -20,9 +21,11 @@ public class OrderServiceImpl implements OrderService {
 	private OrderDao orderDao;
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, 
-	isolation = Isolation.READ_COMMITTED, 
-	rollbackFor = {Exception.class})
+	@Transactional(
+			propagation = Propagation.REQUIRED, 
+			isolation = Isolation.READ_COMMITTED, 
+			rollbackFor = Exception.class
+	)
 	public int insertDirectOrder(Merchant order, List<MerchantDetail> list) {
 		int result = 0;
 		
@@ -30,8 +33,8 @@ public class OrderServiceImpl implements OrderService {
 			result = orderDao.insertOrder(order);
 			result = orderDao.insertOrderDetail(list);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			throw new RuntimeException("주문 관련 등록 오류", e);
 		}
 		return result;
 	}
