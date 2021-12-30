@@ -15,7 +15,8 @@
   		#{productPrice},
   		#{shippingFee},
   		#{totalPrice},
-  		null
+  		null,
+  		#{name}
   	)
   </insert>
   
@@ -24,8 +25,8 @@
   		into
   			merchant_detail
   		values(
-  			#{item.merchantUid},
   			#{item.detailNo},
+  			#{item.merchantUid},
   			#{item.buyCount}
   		)
   	</foreach>
@@ -47,4 +48,54 @@
   		#{buyerPhone}
   	)
   </insert>
+  
+  <select id="selectOneMerchant" resultMap="merchantCollection">
+  	select
+  		*
+  	from
+  		merchant m left join merchant_detail md
+  			on m.merchant_uid = md.merchant_uid
+  	where
+  		merchant_uid = #{merchantUid}
+  </select>
+  <resultMap type="merchant" id="merchantCollection">
+  	<id column="merchant_uid" property="merchantUid"/>
+  	<result column="member_no" property="memberNo"/>
+  	<result column="name" property="name"/>
+  	<result column="order_date" property="orderDate"/>
+  	<result column="order_status" property="orderStatus"/>
+  	<result column="cs_status" property="csStatus"/>
+  	<result column="point_value" property="pointValue"/>
+  	<result column="product_price" property="productPrice"/>
+  	<result column="shipping_fee" property="shippingFee"/>
+  	<result column="total_price" property="totalPrice"/>
+  	<result column="shipping_req" property="shippingReq"/>
+  	<collection property="merchantDetail">
+	  	<id column="detail_no" property="detailNo"/>
+	  	<id column="merchant_uid" property="merchantUid"/>
+	  	<result column="buy_count" property="buyCount"/>
+  	</collection>
+  </resultMap>
+  
+  <select id="selectMerchantProductList" resultType="product">
+  	select
+  		*
+  	from
+  		product p left join product_detail pd
+  			on p.product_code = pd.product_code
+  	where
+  		detail_no in
+  		<foreach collection="detailNoList" item="item" open="(" separator="," close=")">
+  			#{detailNo}
+  		</foreach>
+  </select>
+  
+  <select id="selectOneImp" resultType="imp">
+  	select
+  		*
+  	from
+  		imp
+  	where
+  		merchant_uid = #{merchantUid}
+  </select>
 </mapper>

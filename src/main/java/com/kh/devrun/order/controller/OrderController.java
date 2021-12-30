@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,14 +43,14 @@ public class OrderController {
 	private OrderService orderService;
 
 	
-	@GetMapping("/order/{detailNo}")
-	public String order(@PathVariable int detailNo, Model model, Authentication authentication) {
+	@GetMapping("/order")
+	public String order(@RequestParam int[] detailNo, Model model, Authentication authentication) {
 		log.debug("productCode = {}", detailNo);
 		Member member = (Member)authentication.getPrincipal();
-		Product product = productService.selectOneProductByDetailNo(detailNo);
+		List<Product> productList = productService.selectProductByDetailNo(detailNo);
 		List<Address> addressList = memberService.selectAddressListByMemberNo(member.getMemberNo());
-		log.debug("product = {}", product);
-		model.addAttribute("product", product);
+		log.debug("product = {}", productList);
+		model.addAttribute("productList", productList);
 		model.addAttribute("addressList", addressList);
 		
 		return "/order/order";
@@ -57,22 +58,25 @@ public class OrderController {
 	
 	@PostMapping("/orderEnroll")
 	@ResponseBody
-	public Merchant orderEnroll(Merchant merchant, @RequestParam("detailNo")int detailNo) {
-		log.debug("order = {}", merchant);
+	public Merchant orderEnroll(@RequestBody Merchant merchant, @RequestParam(value="detailNo") int[] detailNo) {
 		
-		List<MerchantDetail> list = new ArrayList<>(); 
-		list.add(new MerchantDetail(merchant.getMerchantUid(), detailNo, 1)) ;
-		int result = orderService.insertDirectOrder(merchant, list);
+		log.debug("merchant = {}, detailNo = {}", merchant, detailNo);
+		
+		List<MerchantDetail> list = merchant.getMerchantDetailList();
+		for(int i : detailNo) {
+			list.add(new MerchantDetail(merchant.getMerchantUid(), i, 1)) ;
+		}
+		int result = orderService.insertOrder(merchant, list);
 		
 		return merchant;
 	}
 	
 	@PostMapping("/impEnroll")
-	public String impEnroll(Imp imp) {
+	public String impEnroll(@RequestBody Imp imp) {
 		log.debug("imp = {}", imp);
 		int result = orderService.insertImp(imp);
 		log.debug("imp result = {}", result);
 		
-		return "redirect:/mypage/orderDetail.do";
+		return "/mypage/orderDetail/"+imp.getMerchantUid();
 	}
 }
