@@ -307,10 +307,31 @@
 						
 						<div class="time-unread-count d-inline-block position-absolute text-right">
 						
+							<%-- 현재 날짜 --%>
+							<c:set var="today" value="<%=new java.util.Date()%>" />
 							<!-- 날짜(오늘일 경우 - 오전 9:00 또는 15:00 / 올해일 경우 - 12월 22일 / 올해가 아닐 경우 - 2020.10.14)-->
 							<jsp:useBean id="dateValue" class="java.util.Date"/>
 							<jsp:setProperty name="dateValue" property="time" value="${chatLog.logTime}"/>
-							<p class="mb-0 chat-time"><fmt:formatDate value="${dateValue}" pattern="yyyy/MM/dd HH:mm"/></p>
+							<fmt:formatDate value="${dateValue}" pattern="yyyyMMdd" var="logTimeDate"/>
+							<fmt:formatDate value="${today}" pattern="yyyyMMdd" var="nowDate"/>
+							<fmt:formatDate value="${dateValue}" pattern="yyyy" var="logTimeYear"/>
+							<fmt:formatDate value="${today}" pattern="yyyy" var="nowYear"/>
+							<%-- 조건문 시작 --%>
+							<c:choose>
+								<%-- 오늘일 경우 ex. 15:00 --%>
+								<c:when test="${logTimeDate eq nowDate}">
+									<p class="mb-0 chat-time"><fmt:formatDate value="${dateValue}" pattern="HH:mm"/></p>
+								</c:when>
+								<%-- 올해일 경우 ex. 12월 22일 --%>
+								<c:when test="${logTimeYear eq nowYear}">
+									<p class="mb-0 chat-time"><fmt:formatDate value="${dateValue}" pattern="MM월 dd일"/></p>
+								</c:when>
+								<%-- 이외의 경우 ex. 2020.10.14 --%>
+								<c:otherwise>
+									<p class="mb-0 chat-time"><fmt:formatDate value="${dateValue}" pattern="yyyy.MM.dd"/></p>
+								</c:otherwise>
+							</c:choose>
+							<%-- 조건문 끝 --%>
 							<!-- 안읽음 메세지 --> <%-- 임의의 값 넣음 수정할 것 --%>
 							<span class="badge badge-pill badge-danger unread-count ${chatLog.unreadCount eq 0 ? 'd-none' : ''}">${chatLog.unreadCount}</span>
 							
@@ -329,21 +350,21 @@
 
 <script>
 
-// message받은것 중 logTime(유닉스 시간)을 yyyy/MM/dd HH:mm 형태로 return
+// message받은것 중 logTime(유닉스 시간)을 HH:mm 형태로 return
 function dateFormat(date) {
-	let month = date.getMonth() + 1;
-	let day = date.getDate();
+	//let month = date.getMonth() + 1;
+	//let day = date.getDate();
 	let hour = date.getHours();
 	let minute = date.getMinutes();
 	//let second = date.getSeconds();
 
-	month = month >= 10 ? month : '0' + month;
-	day = day >= 10 ? day : '0' + day;
+	//month = month >= 10 ? month : '0' + month;
+	//day = day >= 10 ? day : '0' + day;
 	hour = hour >= 10 ? hour : '0' + hour;
 	minute = minute >= 10 ? minute : '0' + minute;
 	//second = second >= 10 ? second : '0' + second;
 
-	return date.getFullYear() + '/' + month + '/' + day + ' ' + hour + ':' + minute;
+	return hour + ':' + minute;
 }
 
 //websocket 연결(SockJS)
