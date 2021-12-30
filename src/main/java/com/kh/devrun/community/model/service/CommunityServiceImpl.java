@@ -76,6 +76,11 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.updateFreeboard(community);
 	}
 
+	@Override
+	public int freeboardDelete(int communityNo) {
+		return communityDao.freeboardDelete(communityNo);
+	}
+
 
 
 	

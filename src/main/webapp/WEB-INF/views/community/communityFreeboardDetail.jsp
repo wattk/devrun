@@ -44,12 +44,23 @@
 		}  
 	});
 	
-	// #btnList 버튼을 'click'하게 되면 communityFreboardList 페이지로 이동.
-	$(document).on('click', '#btnList', function(e){
+	
+	// 게시물 삭제하기
+	$(document).on('click', '.freeboardDeleteBtn', function(e){
 		e.preventDefault();
-		location.href="${pageContext.request.contextPath}/community/communityFreeboardList.do";
+		console.log("삭제하기 도착했나요?");
+		console.log(e.target);
+		var communityNo = $(e.target).val();
+		console.log("삭제할 게시글 번호 : ${communityEntity.communityNo}");
+		
+		if(confirm("정말로 삭제하시겠습니까?")){
+			location.href=`${pageContext.request.contextPath}/community/freeboardDelete.do?communityNo=${communityEntity.communityNo}`;	
+		}else{
+			 return;
+		}
 	});
 	
+
 	
 			
 </script>
@@ -144,8 +155,18 @@
 			<div class="row">
 				<div class="col-md-12" id="bottomButton">
 					<button type="button" class="btn btn-secondary btn-lg" id="freeboardUpdateBtn">수정하기</button>
-					<button type="button" class="btn btn-secondary btn-lg">삭제하기</button>
-					<button type="button" class="btn btn-secondary btn-lg" id="btnList">목록보기</button>
+					<!-- 회원일 경우 -->
+					<sec:authorize access="hasAnyRole('M1', 'M2')">
+						<!-- 회원이고 글쓴이 본인일 경우 -->
+						<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
+							<button type="button" class="btn btn-secondary btn-lg freeboardDeleteBtn" value="${communityEntity.communityNo}">삭제하기</button>
+						</c:if>
+					</sec:authorize>
+					<!-- 관리자일 경우 -->
+					<sec:authorize access="hasRole('AM')">
+						<button type="button" class="btn btn-secondary btn-lg freeboardDeleteBtn" value="${communityEntity.communityNo}">삭제하기</button>
+					</sec:authorize>
+					<button type="button" class="btn btn-secondary btn-lg" onclick="history.go(-1)">목록보기</button>
 				</div>
 			</div>
 		</div>

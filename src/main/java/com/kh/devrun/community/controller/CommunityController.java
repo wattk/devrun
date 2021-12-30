@@ -281,6 +281,18 @@ public class CommunityController {
 		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + community.getCommunityNo();
 	}
 	
+	// 자유게시판-상세보기-삭제하기
+	@GetMapping("/freeboardDelete.do")
+	public String freeboardDelete(@RequestParam int communityNo, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "/freeboardDelete.do 요청!");
+		log.debug("communityNo = {}", communityNo);
+		
+		int result = communityService.freeboardDelete(communityNo);
+		String msg = result > 0 ? "게시글 삭제 성공!" : "게시글 삭제 실패!";
+		redirectAttributes.addFlashAttribute("msg", msg);
+		
+		return "redirect:/community/communityFreeboardList.do";
+	}
 	
 	// 자유게시판-댓글작성
 	@PostMapping("/communityFreeboardCommentEnroll.do")
@@ -305,6 +317,8 @@ public class CommunityController {
 		log.debug("{}", communityNo);
 		
 		int result = communityService.commentDelete(commentNo);
+		String msg = result > 0 ? "댓글 삭제 성공!" : "댓글 삭제 실패!";
+		redirectAttributes.addFlashAttribute("msg", msg); 
 		
 		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + communityNo; 
 	}
