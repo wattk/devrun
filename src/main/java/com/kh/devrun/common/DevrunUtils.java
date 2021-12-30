@@ -295,10 +295,11 @@ public class DevrunUtils {
 						+ "						</div>"
 						+"					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->\n");
 			}
-
-			if(review.getId().equals(member.getId())) {
-				reviewSb.append("					<!-- 삭제버튼 시작 -->\n"
-						+ "						<button type=\"button\" class=\"btn btn-danger reviewDelBtn\" value=\""+review.getReviewNo()+"\">삭제</button>");
+			if(member !=null) {
+				if(review.getId().equals(member.getId())) {
+					reviewSb.append("					<!-- 삭제버튼 시작 -->\n"
+							+ "						<button type=\"button\" class=\"btn btn-danger reviewDelBtn\" value=\""+review.getReviewNo()+"\">삭제</button>");
+				}				
 			}
 			reviewSb.append("				  </div>\n"
 					+ "				</div>");
