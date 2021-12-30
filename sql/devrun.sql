@@ -562,20 +562,28 @@ COMMENT ON COLUMN "POINT"."MEMBER_NO" IS '회원 번호';
 COMMENT ON COLUMN "POINT"."STATUS" IS '적립 G, 사용 U';
 COMMENT ON COLUMN "POINT"."DATA" IS '포인트 이용일';
 
--- 신고사유 분류 시퀀스 생성
-CREATE SEQUENCE SEQ_REPORT_CATEGORY_NO;
 
+--=============================신고
 -- DROP TABLE REPORT_CATEGORY;
+-- Drop table report;
 -- 신고사유 분류 테이블 생성
 CREATE TABLE "REPORT_CATEGORY" (
 	"REASON_CATE" CHAR(1) NOT NULL,
-	"REAONS_NAME"	VARCHAR2(30) NOT NULL,
+	"REASON_NAME"	VARCHAR2(30) NOT NULL,
     CONSTRAINT PK_REPORT_CATEGORY_REASON_CATE PRIMARY KEY(REASON_CATE)
 );
 
 -- 신고 사유 분류 코멘트 추가
 COMMENT ON COLUMN "REPORT_CATEGORY"."REASON_CATE" IS '신고사유 분류번호';
-COMMENT ON COLUMN "REPORT_CATEGORY"."REAONS_NAME" IS '신고사유 분류명';
+COMMENT ON COLUMN "REPORT_CATEGORY"."REASON_NAME" IS '신고사유 분류명';
+
+--신고사유 분류 테이블 데이터 추가
+insert into REPORT_CATEGORY values('1','욕설/비방');
+insert into REPORT_CATEGORY values('2','광고/홍보글');
+insert into REPORT_CATEGORY values('3','음란/선정성');
+insert into REPORT_CATEGORY values('4','게시글도배');
+insert into REPORT_CATEGORY values('5','관련없는이미지/내용');
+insert into REPORT_CATEGORY values('6','기타');
 
 -- 신고 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_REPORT_NO;
@@ -612,6 +620,8 @@ COMMENT ON COLUMN "REPORT"."STATUS" IS '처리상태';
 COMMENT ON COLUMN "REPORT"."REG_DATE" IS '등록일';
 COMMENT ON COLUMN "REPORT"."MEMBER_NO2" IS '처리한 관리자 번호';
 COMMENT ON COLUMN "REPORT"."CONFIRM_DATE" IS '관리자 신고 처리 날짜';
+
+
 
 -- 채팅 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_CHAT_MEMBER_NO;
