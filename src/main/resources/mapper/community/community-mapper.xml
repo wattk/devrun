@@ -114,6 +114,13 @@
 	    community_no = #{communityNo}
   </update>
   
+  <!-- 자유게시판 삭제하기 -->
+  <delete id="freeboardDelete">
+  	delete from 
+    	community 
+	where
+    	community_no = #{communityNo}
+  </delete>
   <!-- 자유게시판 댓글 -->
   <select id="selectFreeboardCommentList" resultType="communityCommentEntity">
   	select
