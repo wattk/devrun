@@ -52,10 +52,10 @@
 										<div class="row" id="qItem">
 											<img id="qPIc" src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="">
 											<p>${product.name}</p>
+											<input type="hidden" id="productCodeV" name="productCode" value='${product.productCode}' />
 											<sec:authorize access="isAuthenticated()">
-												<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
+												<input type="hidden" id="memberNoV" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
 												<input type="hidden" name="id" value='<sec:authentication property="principal.id"/>' />
-												<input type="hidden" id="productCodeV" name="productCode" value='${product.productCode}' />
 											</sec:authorize>
 										</div>
 										<p class="mt-3">상품 별점</p>
@@ -229,7 +229,7 @@
 							<i class="far fa-heart"></i>
 						</div>
 						<hr>
-						<select class="form-select col-12" aria-label="Default select example">
+						<select id="detailNo" class="form-select col-12" aria-label="Default select example">
 							<option selected>옵션선택</option>
 							<c:forEach items="${pDetail}" var ="pd">
 								<option value="${pd.detailNo}">${pd.optionNo} <c:if test="${pd.optionContent != null}"> , ${pd.optionContent}</c:if></option>
@@ -260,9 +260,9 @@
 							  <div class="content height600" >
 								<!--상단 갯수 및 선택 옵션 시작-->
 								<div class="item-sort-container d-flex justify-content-between">
-								  <div class="p-4" style="margin-top: 9px;">총 ${reviewTotal}개</div>
+								  <div class="p-4" style="margin-top: 9px;"><span id="reviewTotal"></span></div>
 								  <div class="p-4" id="sortBy">
-									<span class="pr-2 pl-2 shop-sort">최신순</span>
+									<span class="pr-2 pl-2 shop-sort newReview" onclick="reviewAll()">최신순</span>
 									<span class="pr-2 pl-2 shop-sort">오래된순 </span>
 									<span class="pr-2 pl-2 shop-sort" onclick="picReviewOnly()">사진리뷰모아보기</span>
 									<sec:authorize access="hasAnyRole('M1','M2')">
@@ -272,55 +272,8 @@
 								</div>
 								<hr>
 								<!--상단 갯수 및 선택 옵션 끝-->
-								<div></div>
+								<div id="reviewBefore"></div>
 								<!--리뷰시작-->
-								<c:if test="${reviewList != null}">
-									<c:forEach items="${reviewList}" var="l">
-										<div class="aReviewDiv forFont">
-										  <div class="shop-review row">
-											<div class="reviewProfile">
-											  <img class="rounded-circle mt-3" src="https://i.ibb.co/L6xBDk1/profile.png"  alt="">
-											</div> 
-											<div class="reviewContent ml-3">
-											<c:forEach var="i" begin="1" end="${l.rate}">
-											  <i class="fas fa-star"></i>
-											</c:forEach>
-											  <br><span>${l.id}</span> | <span> <fmt:formatDate value="${l.regDate}" pattern="yyyy년MM월dd일 HH:mm:ss"/></span> | 
-											  <!-- Button trigger modal -->
-											  <button type="button" class="btn btn-primary report-btn" data-toggle="modal" data-target="#exampleModal">신고</button>
-											  <br><span>상품옵션 : </span> <span>핑크</span>
-											  <div class="reviewP mt-3">
-											  ${l.content}
-											  </div>  
-											</div>
-											<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 시작 -->
-											<c:if test="${l.attach.reviewAttachNo != 0}">
-												<div class="reviewPhoto">
-												  <img src="${pageContext.request.contextPath}/resources/upload/review/${l.attach.renamedFilename}" alt="" onclick="expandPic(event)">
-												  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
-													<i class="far fa-heart">3</i>
-												  </div>
-												</div>
-											</c:if>
-											<c:if test="${l.attach.reviewAttachNo < 1}">
-												<div class="reviewPhoto">
-												  <div  class="reviewLikeBtn text-center border border-success rounded mt-1">
-													<i style="width:100px" class="far fa-heart">3</i>
-												  </div>
-												</div>
-											</c:if>
-											<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->
-											<!-- 삭제버튼 시작 -->
-											<c:if test="${l.id eq member.id}">
-												<button type="button" class="btn btn-danger reviewDelBtn" value="${l.reviewNo}">삭제</button>
-											</c:if>
-										  </div>
-										</div>
-									</c:forEach>
-								</c:if>
-								<c:if test="${empty  reviewList}">
-									<span id="reviewNone">등록된 리뷰가 없습니다.</span>
-								</c:if>
 								<!--리뷰끝-->
 							  </div>
 							</div>
@@ -500,24 +453,21 @@ $('.reviewDelBtn').click((e) => {
 /*사진리뷰만 보기 정렬 시작 */
 function picReviewOnly(){
 	var $productCode = $(productCodeV).val(); 
+	var $div = $('#reviewBefore');
 	
 	$.ajax({
 		
 		url: "${pageContext.request.contextPath}/shop/picReviewOnly",
 		data: {
 			productCode : $productCode
+			
 		},
 		method: "GET",
 		success(data){		
-			const picReviews = data;
+			$div.children().detach();
+			const s = data["reviewSb"];
+			$div.append(s);
 			
-			picReviews.forEach(function(review,index){				
-				console.log(review);
-				console.dir(review);
-			 	const {memberNo, id, productCode, content, likeCount, regDate, rate, attach} = review;
-				
-				
-			});
 			
 		},
 		error: console.log
@@ -528,9 +478,44 @@ function picReviewOnly(){
 /*사진리뷰만 보기 정렬 끝 */
 
 
+
+/*onload시 비동기 리뷰 조회 시작 */
+window.onload = reviewAll;
+	   
+function reviewAll(){
+	var $productCode = $(productCodeV).val(); 
+	var $div = $('#reviewBefore');
+	
+	$.ajax({
+		
+		url: "${pageContext.request.contextPath}/shop/review",
+		data: {
+			productCode : $productCode	
+		},
+		method: "GET",
+		success(data){		
+			$div.children().detach();
+			const s = data["reviewSb"];	
+			const t = data["reviewTotal"];
+			$div.append(s);
+			$(reviewTotal).html(`총 \${t} 개`);
+		},
+		error : function(xhr, status, err){
+            console.log(xhr, status, err);
+        }
+	});
+	
+}  
+
+/*onload시 비동기 리뷰 조회 시작 */
+
+
+
 //바로구매 버튼 클릭 이벤트 혜진 시작
 $("#orderBtn").click((e)=>{
-	location.href = "${pageContext.request.contextPath}/order/order/${product.productCode}";
+	const detailNo = $("#detailNo").val();
+	console.log(detailNo);
+	location.href = `${pageContext.request.contextPath}/order/order/\${detailNo}`;
 });
 //바로구매 버튼 클릭 이벤트 혜진 끝
 </script>		

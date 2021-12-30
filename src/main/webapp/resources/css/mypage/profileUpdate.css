@@ -49,4 +49,8 @@
 #withdrawModal .modal-body {padding:30px;}
 #withdrawModal .modal-body div:not(:last-of-type) {margin-bottom:25px;}
 #withdrawModal .modal-body p {margin-bottom:8px; padding:7px 12px; background-color:rgba(0,0,0,.03);}
+#withdrawModal #passwordCheck {display:none;}
+#withdrawModal #passwordCheck .row {align-items:center; margin:0 auto; padding:5px;}
+#withdrawModal #passwordCheck label {margin:0; padding:0;}
 #withdrawModal #title, #withdrawBtn {justify-content:center;}
+

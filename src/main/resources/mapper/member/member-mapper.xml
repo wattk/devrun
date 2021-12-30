@@ -72,7 +72,7 @@
   </update>
   <!-- 지영 mapper 끝 -->
   
-    <!-- 지원 mapper 시작 -->
+  <!-- 지원 mapper 시작 -->
   <update id="updateMemberProfile">
   	update 
 	    member
@@ -93,9 +93,10 @@
   	select
   		*
   	from
-  		member
+  		member m left join authorities a
+	        on m.member_no = a.member_no
   	where
-  		id = #{id}
+  		m.id = #{id}
   </select>
   
   <select id="selectOneMemberByCheckKeyword" resultType="member">
@@ -106,5 +107,22 @@
   	where
   		${checkKeyword} = #{value} and id != #{id}
   </select>
+  
+  <delete id="memberWithdrawal">
+  	delete
+	  	from member
+  	where
+  		id = #{id}
+  </delete>
   <!-- 지원 mapper 끝 -->
+  
+  <!-- 다현 -->
+  <select id="selectOneMemberByMemberNo" resultType="member">
+  	select
+  		*
+  	from 
+  		member
+  	where
+  		member_no = #{memberNo}
+  </select>
 </mapper>

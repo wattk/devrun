@@ -147,10 +147,9 @@ COMMENT ON COLUMN "DELETE_MEMBER"."QUIT_DATE" IS '탈퇴일';
 
 -- 삭제된 권한 테이블 생성
 CREATE TABLE "DELETE_AUTHORITIES" (
-	"MEMBER_NO"	NUMBER		NOT NULL,
-	"AUTHORITY"	CHAR(2)		NOT NULL
+	"AUTHORITY"	VARCHAR2(30)		NOT NULL,
+	"MEMBER_NO"	NUMBER		NOT NULL
 );
-
 
 -- 삭제된 권한 테이블 코멘트 추가
 COMMENT ON COLUMN "DELETE_AUTHORITIES"."MEMBER_NO" IS '회원번호';
@@ -880,8 +879,8 @@ COMMENT ON COLUMN "QUANTITY_LOG"."DETAIL_NO" IS '제품 상세 번호';
 --===========================
 --주문 테이블 생성
 --===========================
-DROP TABLE ORDER;
-SELECT * FROM ORDER;
+--DROP TABLE ORDER;
+SELECT * FROM "ORDER";
 
 CREATE TABLE "ORDER" (
 	"ORDER_CODE"	VARCHAR2(50)		NOT NULL,
@@ -995,10 +994,10 @@ COMMENT ON COLUMN "MESSAGE"."MESSAGE_CONTENT" IS '메세지 내용';
 CREATE SEQUENCE SEQ_MESSAGE_NO;
 
 --쪽지 테이블 삭제 (채팅, 채팅로그 테이블로 이용)
-DROP TABLE MESSAGE;
+--DROP TABLE MESSAGE;
 
 --쪽지 시퀀스 삭제
-DROP SEQUENCE SEQ_MESSAGE_NO;
+--DROP SEQUENCE SEQ_MESSAGE_NO;
 
 
 --===========================
@@ -1196,11 +1195,15 @@ CREATE TABLE "AUTHORITIES" (
 	CONSTRAINT FK_AUTHORITIES_MEMBER_NO FOREIGN KEY(MEMBER_NO) REFERENCES MEMBER(MEMBER_NO)
 );
 
-drop table authorities;
+--drop table authorities;
 
 --권한 테이블 코멘트 추가
 COMMENT ON COLUMN "AUTHORITIES"."AUTHORITY" IS '회원 M1, M2, 관리자 AM';
 COMMENT ON COLUMN "AUTHORITIES"."MEMBER_NO" IS '회원번호';
+
+--FK 제약조건 delete on cascade 추가
+ALTER TABLE AUTHORITIES DROP CONSTRAINT FK_AUTHORITIES_MEMBER_NO;
+ALTER TABLE AUTHORITIES ADD CONSTRAINT FK_AUTHORITIES_MEMBER_NO FOREIGN KEY (MEMBER_NO) REFERENCES MEMBER(MEMBER_NO) ON DELETE CASCADE;
 
 --권한 테이블 delete 트리거 추가
 create trigger trg_delete_authorities
@@ -1212,8 +1215,8 @@ begin
 				delete_authorities
 		values
 				(
-					:old.member_no,
-					:old.authority
+					:old.authority,
+					:old.member_no
 				);
 end;
 
@@ -1247,72 +1250,46 @@ values('mo','마우스');
 insert into PRODUCT_PARENT_CATEGORY
 values('ke','키보드');
 insert into PRODUCT_PARENT_CATEGORY
-values('mon','모니터');
+values('mn','모니터');
 insert into PRODUCT_PARENT_CATEGORY
 values('ot','기타');
 
 select*from PRODUCT_PARENT_CATEGORY;
 
---소분류(의자)
-insert into PRODUCT_CHILD_CATEGORY
-values('tc','ch','책상의자');
-insert into PRODUCT_CHILD_CATEGORY
-values('gc','ch','게이밍 의자');
-insert into PRODUCT_CHILD_CATEGORY
-values('sc','ch','좌식 의자');
-insert into PRODUCT_CHILD_CATEGORY
-values('ec','ch','안락 의자');
-insert into PRODUCT_CHILD_CATEGORY
-values('dc','ch','식탁의자');
-
--- 소분류(책상/책장)
-insert into PRODUCT_CHILD_CATEGORY
-values('bc','de','책장');
-insert into PRODUCT_CHILD_CATEGORY
-values('pd','de','컴퓨터 책상');
-insert into PRODUCT_CHILD_CATEGORY
-values('nd','de','일반 책상');
-
-
-select*from PRODUCT_CHILD_CATEGORY;
-
--- 소분류(마우스)
-insert into PRODUCT_CHILD_CATEGORY
-values('gm','mo','게이밍 마우스');
-insert into PRODUCT_CHILD_CATEGORY
-values('wm','mo','무선 마우스');
-insert into PRODUCT_CHILD_CATEGORY
-values('lm','mo','저소음 마우스');
-
-
---소분류(키보드)
-insert into PRODUCT_CHILD_CATEGORY
-values('ck','ke','무접점 키보드');
-insert into PRODUCT_CHILD_CATEGORY
-values('mk','ke','기계식 키보드');
-insert into PRODUCT_CHILD_CATEGORY
-values('wk','ke','무선 키보드');
-insert into PRODUCT_CHILD_CATEGORY
-values('gk','ke','게이밍 키보드');
-
-
---소분류(모니터)
-insert into PRODUCT_CHILD_CATEGORY
-values('sm','mo','표준 모니터');
-insert into PRODUCT_CHILD_CATEGORY
-values('gmo','mo','게이밍 모니터');
-insert into PRODUCT_CHILD_CATEGORY
-values('pm','mo','전문가용 모니터');
-insert into PRODUCT_CHILD_CATEGORY
-values('hm','mo','휴대용 모니터');
-
---소분류(기타)
-insert into PRODUCT_CHILD_CATEGORY
-values('sm','ot','손목 보호대');
-insert into PRODUCT_CHILD_CATEGORY
-values('gmo','ot','거치대');
-insert into PRODUCT_CHILD_CATEGORY
-values('pm','ot','팜레스트');
+--소분류
+insert all 
+into product_child_category values('1ch', 'ch', '게이밍의자')
+into product_child_category values('2ch', 'ch', '자세보정의자')
+into product_child_category values('3ch', 'ch', '컴퓨터의자')
+into product_child_category values('4ch', 'ch', '책상의자')
+into product_child_category values('5ch', 'ch', '접이식의자')
+into product_child_category values('6ch', 'ch', '좌식의자')
+into product_child_category values('1de', 'de', '높이조절책상')
+into product_child_category values('2de', 'de', '스탠딩책상')
+into product_child_category values('3de', 'de', '독서실책상')
+into product_child_category values('4de', 'de', '접이형책상')
+into product_child_category values('5de', 'de', '일반책상')
+into product_child_category values('1ot', 'ot', '컴퓨터악세사리')
+into product_child_category values('2ot', 'ot', '사무용품')
+into product_child_category values('3ot', 'ot', '아이디어상품')
+into product_child_category values('4ot', 'ot', '수납상품')
+into product_child_category values('5ot', 'ot', '기타상품')
+into product_child_category values('1mo', 'mo', '유선마우스')
+into product_child_category values('2mo', 'mo', '무선마우스')
+into product_child_category values('3mo', 'mo', '저소음마우스')
+into product_child_category values('4mo', 'mo', '버티컬마우스')
+into product_child_category values('5mo', 'mo', '인체공학마우스')
+into product_child_category values('1ke', 'ke', '무접점키보드')
+into product_child_category values('2ke', 'ke', '기계식키보드')
+into product_child_category values('3ke', 'ke', '게이밍키보드')
+into product_child_category values('4ke', 'ke', '인체공학키보드')
+into product_child_category values('5ke', 'ke', '무선키보드')
+into product_child_category values('1mn', 'mn', '표준모니터')
+into product_child_category values('2mn', 'mn', '휴대용모니터')
+into product_child_category values('3mn', 'mn', '게이밍모니터')
+into product_child_category values('4mn', 'mn', '전문가용모니터')
+into product_child_category values('5mn', 'mn', '대화면모니터')
+select * from dual;
 
 
 select*from PRODUCT_CHILD_CATEGORY;

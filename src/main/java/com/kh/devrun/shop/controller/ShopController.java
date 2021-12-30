@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.common.DevrunUtils;
+import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.product.model.service.ProductService;
-import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
@@ -51,6 +54,7 @@ public class ShopController {
 
 	@Autowired
 	ServletContext application;
+	
 
 //--------------------주입-------------------------------------	
 
@@ -68,7 +72,7 @@ public class ShopController {
 	@GetMapping("/CategoryItemAll")
 	public String CategoryItemAll(@RequestParam String parentCate, Model model) {
 
-		List<Product> itemList = shopService.CategoryItemAll(parentCate);
+		List<ProductEntity> itemList = shopService.CategoryItemAll(parentCate);
 		model.addAttribute("itemList", itemList);
 
 		return "shop/shopCategory";
@@ -77,10 +81,52 @@ public class ShopController {
 	// 사진 리뷰만 모아보기 기능
 	@ResponseBody
 	@GetMapping("picReviewOnly")
-	public List<Review> picReviewOnly(@RequestParam String productCode) {
+	public Map<String, Object> picReviewOnly(@RequestParam String productCode, Authentication authentication,
+			HttpServletRequest request) {
+		String reviewSb = null;
+		Member member = (Member) authentication.getPrincipal();
+		log.debug("member{}", member);
+
+		String proPhotoName = member.getProPhoto();
+		String proPhotoPath = request.getContextPath() + "/resources/upload/profilePhoto/" + proPhotoName;
+		log.debug("프로필 사진 경로 {}", proPhotoPath);
+
+		String url = request.getContextPath();
 
 		List<Review> picReviewList = shopService.picReviewOnly(productCode);
-		return picReviewList;
+		if (picReviewList != null) {
+			reviewSb = DevrunUtils.getReview(picReviewList, member, url);
+		}
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("reviewSb", reviewSb);
+
+		return map;
+	}
+
+	// 리뷰 전체조회
+	@ResponseBody
+	@GetMapping("/review")
+	public Map<String, Object> review(@RequestParam String productCode, Authentication authentication,
+			HttpServletRequest request) {
+		String reviewSb = null;
+		
+		//getReivew 메소드 인자들
+		String url = request.getContextPath();
+		Member member = (Member) authentication.getPrincipal();
+		List<Review> reviewList = shopService.selectAllReview(productCode);
+
+
+		if (reviewList != null) {
+			reviewSb = DevrunUtils.getReview(reviewList, member, url);
+		}
+
+		int reviewTotal = shopService.countAllList(productCode);
+		Map<String, Object> map = new HashMap<>();
+		map.put("reviewTotal", reviewTotal);
+		map.put("reviewSb", reviewSb);
+
+		return map;
 	}
 
 	// 상세페이지를 위한 상품 하나 받아오기!
@@ -94,13 +140,6 @@ public class ShopController {
 		// 옵션도 조회
 		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
 		model.addAttribute("pDetail", pDetail);
-
-		// 해당 상품 리뷰들 조회
-		List<Review> reviewList = shopService.selectAllReview(productCode);
-		int reviewTotal = shopService.countAllList(productCode);
-		log.debug("리뷰 리스트 조회! : {}", reviewList);
-		model.addAttribute("reviewList", reviewList);
-		model.addAttribute("reviewTotal", reviewTotal);
 
 		return "shop/itemDetail";
 	}
@@ -197,7 +236,7 @@ public class ShopController {
 			param.put("promotionCode", promotionCode);
 
 			// 1. 전체 상품 목록
-			List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
+			List<ProductEntity> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
 			model.addAttribute("promotion", promotion);
 			model.addAttribute("productCategory", productCategory);
 			model.addAttribute("productList", productList);
@@ -246,7 +285,7 @@ public class ShopController {
 		// 1. 전체 상품 목록
 		String url = request.getContextPath();
 
-		List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
+		List<ProductEntity> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
 		String productStr = DevrunUtils.getProductList(productList, url);
 
 		// 2. 전체 게시물 수 totalContent

@@ -13,7 +13,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/mypage/activityBadge.css" rel="stylesheet">
 
 <%-- EL에서 접근하기 위해 VAR속성 지정 --%>
-<%-- <sec:authentication property="principal" var="member"/> --%>
+<sec:authentication property="principal" var="member"/>
 
 			<%-- my page --%>
 			<div class="col-12" id="mypage">

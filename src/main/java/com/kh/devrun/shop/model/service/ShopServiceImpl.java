@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.dao.ShopDao;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Review;
@@ -69,7 +69,7 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public List<Product> CategoryItemAll(String parentCate) {
+	public List<ProductEntity> CategoryItemAll(String parentCate) {
 		return shopDao.CategoryItemAll(parentCate);
 	}
 
