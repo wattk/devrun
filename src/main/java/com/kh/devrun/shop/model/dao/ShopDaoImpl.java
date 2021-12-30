@@ -42,6 +42,11 @@ public class ShopDaoImpl implements ShopDao {
 	}
 
 	@Override
+	public int countPicReviewList(String productCode) {
+		return session.selectOne("shop.countPicReviewList", productCode);
+	}
+
+	@Override
 	public int reviewDelete(int reviewNo) {
 		return session.delete("shop.reviewDelete", reviewNo);
 	}
