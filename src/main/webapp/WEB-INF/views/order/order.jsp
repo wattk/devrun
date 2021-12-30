@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="com.kh.devrun.product.model.vo.Product"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -14,9 +16,24 @@
 <!--  iamport 관련 임포트 스크립트 -->
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 
-<link href="${pageContext.request.contextPath }/resources/css/shop/order.css" rel="stylesheet">
-<script src="${pageContext.request.contextPath }/resources/js/shop/order.js"></script>
+<link href="${pageContext.request.contextPath}/resources/css/shop/order.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/resources/js/shop/order.js"></script>
 <sec:authentication property="principal" var="member"/>
+
+<%
+	List<Product> productList = (List<Product>)request.getAttribute("productList");
+	int totalPrice = 0;
+	int[] detailNo = new int[productList.size()];
+	for(int i = 0; i < productList.size(); i++){
+		totalPrice += productList.get(i).getPrice();
+		detailNo[i] = productList.get(i).getProductDetail().getDetailNo();
+	}
+	System.out.println(totalPrice);
+	System.out.println(detailNo);
+	pageContext.setAttribute("totalPrice", totalPrice);
+	pageContext.setAttribute("detailNo", detailNo);
+%>
+
 <div class="row p-5 d-flex justify-content-around order-container">
   <div class="col-7">
   	<div class="accordion" id="orderAccordion">
@@ -116,9 +133,33 @@
   </div>
   <div class="col-4 m-3 pl-3 pt-5 d-flex flex-column justify-content-start">
   	<strong>주문 정보</strong>
-  	<div class="row d-flex justify-content-start">
-  		<img src="${pageContext.request.contextPath }/resources/upload/product/${product.thumbnail}" alt="" class="img-b w-25 p-2">
-  	</div>
+  	<c:choose>
+  	 <c:when test="${productList.size() > 3}">
+	  	<span>${productList[0].name} 외 ${productList.size() -1}건</span>
+	  	<div class="row d-flex justify-content-start">
+	  	<c:forEach items="${productList}" var="item" varStatus="vs" begin="0" end="2">
+  			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
+  		</c:forEach>
+  			<div class="img-b w-25 p-2">...</div>
+	  	</div>
+  	 </c:when>
+  	 <c:when test="${productList.size() == 1}">
+	  	<span>${productList[0].name}</span>
+	  	<div class="row d-flex justify-content-start">
+	  	<c:forEach items="${productList}" var="item" varStatus="vs">
+  			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
+  		</c:forEach>
+	  	</div>
+  	 </c:when>
+  	 <c:otherwise>
+	  	<span>${productList[0].name} 외 ${productList.size() -1}건</span>
+	  	<div class="row d-flex justify-content-start">
+	  	<c:forEach items="${productList}" var="item" varStatus="vs">
+  			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
+  		</c:forEach>
+	  	</div>
+  	 </c:otherwise>
+  	</c:choose>
     <hr class="w-100"/>
 	<table class="table order-tbl">
 	  <tbody>
@@ -127,12 +168,12 @@
 	  	</tr>
 	    <tr>
 	      <td>주문 금액(배송비 제외)</td>
-	      <td class="text-right"><fmt:formatNumber type="currency">${product.price}</fmt:formatNumber></td>
+	      <td class="text-right"><fmt:formatNumber type="currency">${totalPrice}</fmt:formatNumber></td>
 	    </tr>
 	    <tr>
 	      <td>전체 배송비</td>
 	      	<c:choose>
-	      		<c:when test="${product.price >= 50000}">
+	      		<c:when test="${totalPrice >= 50000}">
 			      <td id="productPrice" class="text-right">
 	      			&#8361;0
 				  </td>
@@ -149,11 +190,11 @@
 	      <td class="text-right">
 	      	<fmt:formatNumber type="currency">
 		      	<c:choose>
-		      		<c:when test="${product.price >= 50000}">
-		      			${product.price*0.9}
+		      		<c:when test="${totalPrice >= 50000}">
+		      			${totalPrice*0.9}
 		      		</c:when>
 		      		<c:otherwise>
-		      			${(product.price+3000)*0.9}
+		      			${(totalPrice+3000)*0.9}
 		      		</c:otherwise>
 		      	</c:choose>
 	      	</fmt:formatNumber>
@@ -164,11 +205,11 @@
 	      <td class="text-right">
 	      	<fmt:formatNumber type="currency">
 	      		<c:choose>
-		      		<c:when test="${product.price >= 50000}">
-		      			${product.price*0.1}
+		      		<c:when test="${totalPrice >= 50000}">
+		      			${totalPrice*0.1}
 		      		</c:when>
 		      		<c:otherwise>
-		      			${(product.price+3000)*0.1}
+		      			${(totalPrice)*0.1}
 		      		</c:otherwise>
 		      	</c:choose>
 	      	</fmt:formatNumber>
@@ -186,11 +227,11 @@
 	      <td class="text-right" id="totalPrice">
 	      	<fmt:formatNumber type="currency">
 	      		<c:choose>
-		      		<c:when test="${product.price >= 50000}">
-		      			${product.price}
+		      		<c:when test="${totalPrice >= 50000}">
+		      			${totalPrice}
 		      		</c:when>
 		      		<c:otherwise>
-		      			${product.price+3000}
+		      			${totalPrice+3000}
 		      		</c:otherwise>
 		      	</c:choose>
 	      	</fmt:formatNumber>
@@ -210,7 +251,7 @@
 	      </th>
 	      <td class="w-50">
 	      	<div class="input-group mb-3 ">
-			  <input type="number" id="pointValue" class="form-control" placeholder="사용 포인트" aria-describedby="basic-addon2" value="0">
+			  <input type="number" id="pointValue" class="form-control" placeholder="사용 포인트" aria-describedby="basic-addon2">
 			  <div class="input-group-append w-10">
 			    <span class="input-group-text " id="basic-addon2">적용</span>
 			  </div>
@@ -221,25 +262,7 @@
 	</table>
   </div>
 </div>
-<form:form name="orderFrm">
-	<input type="hidden" name="memberNo" value="${member.memberNo }" />
-	<input type="hidden" name="pointValue" value="0"/>
-	<input type="hidden" name="productPrice" value="${product.price}"/>
-	<input type="hidden" name="shippingFee" value="${product.price >= 50000? 0 : 3000}"/>
-	<input type="hidden" name="totalPrice" value="${product.price + (product.price >= 50000? 0 : 3000)-0}"/>
-	<input type="hidden" name="detailNo" value="${product.productDetail.detailNo}"/>
-</form:form>
-<form:form name="paymentFrm">
-	<input type="hidden" name="pg" value="" />
-	<input type="hidden" name="payWay" value=""/>
-	<input type="hidden" name="orderCode" value=""/>
-	<input type="hidden" name="payPrice" value=""/>
-	<input type="hidden" name="email" value=""/>
-	<input type="hidden" name="name" value=""/>
-	<input type="hidden" name="phone" value=""/>
-	<input type="hidden" name="address" value=""/>
-	<input type="hidden" name="postalCode" value=""/>
-</form:form>
+
 <script>
 //주소 검색창 띄우기
 let postcode = '';
@@ -269,16 +292,23 @@ $(".order-form-control").change((e)=>{
 $("#orderPaymentBtn").click((e)=>{
 	console.log("결제 이벤트 발생");
 	const merchantUid = 'MERC_' + new Date().getTime();
+	const detailNoList = [];
 	
 	//주문 테이블 추가
-	const data = new FormData(document.orderFrm);
-	data.append("merchantUid", merchantUid);
+	let orderData = {
+		memberNo : "${member.memberNo}",
+		pointValue : 0,
+		productPrice : ${totalPrice},
+		shippingFee : ${totalPrice >= 50000? 0 : 3000},
+		totalPrice : ${totalPrice + (totalPrice >= 50000? 0 : 3000)-0},
+		detailNo : ${detailNo},
+		merchantUid : merchantUid
+	};
 	$.ajax({
 		url : "${pageContext.request.contextPath}/order/orderEnroll",
-		data : data,
-		contentType : false,
-		processData : false,
+		data : JSON.stringify(orderData),
 		method : "POST",
+		contentType : "application/json; charset=utf-8",
 		success(data){
 			console.log(data);
 			
@@ -318,25 +348,28 @@ function iamport(data){
         	if(rsp.paid_amount == data.response.amount){
 	        	console.log("결제 및 결제검증완료");
 	        	//결제 및 검증 완료 시 결제 테이블 정보 추가 후 주문 정보 디테일 페이지로 리다이렉트
-	        	const value = {
+	        	let value = {
 	        		impUid : rsp.imp_uid,
 	        		merchantUid : rsp.merchant_uid,
-	        		name : data.name,
-	        		payMethod : data.payMethod,
-	        		pgProvider : data.pgProvider,
-	        		amount : data.amount,
-	        		buyerAddf : data.buyerAddr,
-	        		buyerEmail : data.buyerEmail,
-	        		buyerName : data.buyerName,
-	        		buyerPostcode : data.buyerPostcode,
-	        		buyerTel : data.buyerTel
+	        		name : data.response.name,
+	        		payMethod : data.response.payMethod,
+	        		pgProvider : data.response.pgProvider,
+	        		amount : data.response.amount,
+	        		buyerAddf : data.response.buyerAddr,
+	        		buyerEmail : data.response.buyerEmail,
+	        		buyerName : data.response.buyerName,
+	        		buyerPostcode : data.response.buyerPostcode,
+	        		buyerPhone : data.response.buyerTel
 	        	};
+	        	value = JSON.stringify(value);
 	        	console.log(value);
+	        	
 	        	
 	        	$.ajax({
 	        		url : "${pageContext.request.contextPath}/order/impEnroll",
-	        		data : JSON.stringify(value),
+	        		data : value,
 	        		method : "POST",
+	        		contentType : "application/json; charset=utf-8",
 	        		success(data){
 	        			console.log(data);
 	        		},

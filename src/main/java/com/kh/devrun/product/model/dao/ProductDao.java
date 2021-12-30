@@ -55,8 +55,9 @@ public interface ProductDao {
 	 * @param detailNo
 	 * @return
 	 */
-	Product selectOneProductByDetailNo(int detailNo);
+	List<Product> selectProductByDetailNo(int[] detailNo);
 	/* 혜진 끝*/
+
 	
 	
 	

@@ -118,10 +118,11 @@ public class ProductDaoImpl implements ProductDao{
 	 * @return
 	 */
 	@Override
-	public Product selectOneProductByDetailNo(int detailNo) {
-		return session.selectOne("product.selectOneProductByDetailNo", detailNo);
+	public List<Product> selectProductByDetailNo(int[] detailNo) {
+		return session.selectList("product.selectProductByDetailNo", detailNo);
 	}
 	/* 혜진 끝*/
+
 	
 	
 }
