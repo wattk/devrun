@@ -116,10 +116,7 @@ public class ShopController {
 		Member member = (Member) authentication.getPrincipal();
 		List<Review> reviewList = shopService.selectAllReview(productCode);
 
-
-		if (reviewList != null) {
 			reviewSb = DevrunUtils.getReview(reviewList, member, url);
-		}
 
 		int reviewTotal = shopService.countAllList(productCode);
 		Map<String, Object> map = new HashMap<>();
