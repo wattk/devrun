@@ -154,5 +154,15 @@
   	  and
   	  	member_no = #{memberNo}
   </update>
+  
+  <select id="searchChatRoom" resultType="string">
+  	select 
+	    chat_id
+	from 
+	    chat_member cm left join member m
+	        using(member_no)
+	where 
+	    member_no2 = #{memberNo} and LOWER(nickname) like LOWER('%'||#{searchNickname}||'%')
+  </select>
 
 </mapper>

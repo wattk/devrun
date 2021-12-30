@@ -271,8 +271,8 @@
 
 
 		<!-- 채팅방 검색 -->
-		<form class="form-inline my-lg-0">
-			<input class="form-control w-75" type="search" placeholder="채팅방 검색" aria-label="Search">
+		<form class="form-inline my-lg-0" id="searchChatRoomFrm">
+			<input class="form-control w-75" type="search" name="searchChatRoom" placeholder="채팅방 검색" aria-label="Search">
 			<button class="btn btn-outline-primary my-2 my-sm-0 w-25" type="submit">검색</button>
 		</form>
 		<!-- 채팅방 검색 끝 -->
@@ -439,6 +439,50 @@ stompClient.connect({}, (frame) => {
 	});
 	
 });
+
+
+//채팅방 검색 - 닉네임 검색
+$(searchChatRoomFrm).submit((e) => {
+	e.preventDefault(); // 폼제출방지
+	//console.log(e.target);
+
+	let searchChatRoom = $("[name=searchChatRoom]", e.target).val();
+	
+	// 빈문자열 검색할 경우 기존 채팅방 다 보이게끔 처리
+	if(searchChatRoom == '') {
+		searchChatRoom = '';
+	}
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/chat/searchChatRoom.do`,
+		data : {
+			searchChatRoom : searchChatRoom
+		},
+		method : "GET", // GET방식 생략 가능
+		success(data) { // 이 안에 들어가는 data는 변수명이다. 다른 이름으로 사용해도 된다. 위의 data : 에서 사용한 부분과 헷갈리지 말자
+			//console.log(data);
+		
+			// 존재하지 않는 결과 클릭 시 추가되는 것 방지
+			$("p.not-exist").remove();
+			
+			if(Object.keys(data).length == 0) {
+				// data 존재하지 않는 경우 '존재하는 채팅방이 없습니다.' 출력, 기존 채팅방 전부 d-none 처리
+				$("#chatList li").addClass("d-none");
+				$("#chatList").append(`<p class="text-center text-secondary not-exist">존재하는 채팅방이 없습니다.</p>`);
+			} else {
+				$("#chatList li").addClass("d-none");
+				// 채팅방 검색 결과 뿌리기
+				$(data).each((i, chatId) => {
+					//console.log(chatId);
+					const $li = $(`li[data-chat-id='\${chatId}']`);
+					$li.removeClass("d-none");
+				});
+			}
+		},
+		error : console.log
+	});
+});
+
 
 // 채팅방 생성을 위한 멤버 선택 - 닉네임 검색 폼
 $(searchNicknameFrm).submit((e) => {
