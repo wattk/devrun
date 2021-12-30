@@ -52,10 +52,10 @@
 										<div class="row" id="qItem">
 											<img id="qPIc" src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="">
 											<p>${product.name}</p>
+											<input type="hidden" id="productCodeV" name="productCode" value='${product.productCode}' />
 											<sec:authorize access="isAuthenticated()">
 												<input type="hidden" id="memberNoV" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
 												<input type="hidden" name="id" value='<sec:authentication property="principal.id"/>' />
-												<input type="hidden" id="productCodeV" name="productCode" value='${product.productCode}' />
 											</sec:authorize>
 										</div>
 										<p class="mt-3">상품 별점</p>
@@ -260,9 +260,9 @@
 							  <div class="content height600" >
 								<!--상단 갯수 및 선택 옵션 시작-->
 								<div class="item-sort-container d-flex justify-content-between">
-								  <div class="p-4" style="margin-top: 9px;">총 ${reviewTotal}개</div>
+								  <div class="p-4" style="margin-top: 9px;"><span id="reviewTotal"></span></div>
 								  <div class="p-4" id="sortBy">
-									<span class="pr-2 pl-2 shop-sort newReview" >최신순</span>
+									<span class="pr-2 pl-2 shop-sort newReview" onclick="reviewAll()">최신순</span>
 									<span class="pr-2 pl-2 shop-sort">오래된순 </span>
 									<span class="pr-2 pl-2 shop-sort" onclick="picReviewOnly()">사진리뷰모아보기</span>
 									<sec:authorize access="hasAnyRole('M1','M2')">
@@ -274,9 +274,6 @@
 								<!--상단 갯수 및 선택 옵션 끝-->
 								<div id="reviewBefore"></div>
 								<!--리뷰시작-->
-								<c:if test="${empty  reviewList}">
-									<span id="reviewNone">등록된 리뷰가 없습니다.</span>
-								</c:if>
 								<!--리뷰끝-->
 							  </div>
 							</div>
@@ -483,7 +480,9 @@ function picReviewOnly(){
 
 
 /*onload시 비동기 리뷰 조회 시작 */
-   window.onload = function reviewAll(){
+window.onload = reviewAll;
+	   
+function reviewAll(){
 	var $productCode = $(productCodeV).val(); 
 	var $div = $('#reviewBefore');
 	
@@ -496,8 +495,10 @@ function picReviewOnly(){
 		method: "GET",
 		success(data){		
 			$div.children().detach();
-			const s = data["reviewSb"];
+			const s = data["reviewSb"];	
+			const t = data["reviewTotal"];
 			$div.append(s);
+			$(reviewTotal).html(`총 \${t} 개`);
 		},
 		error : function(xhr, status, err){
             console.log(xhr, status, err);
@@ -505,31 +506,6 @@ function picReviewOnly(){
 	});
 	
 }  
-
-$(document).on('click', '.newReview', function(e) {
-	var $productCode = $(productCodeV).val(); 
-	var $div = $('#reviewBefore');
-	
-	$.ajax({
-		
-		url: "${pageContext.request.contextPath}/shop/review",
-		data: {
-			productCode : $productCode	
-		},
-		method: "GET",
-		success(data){		
-			$div.children().detach();
-			const s = data["reviewSb"];
-			$div.append(s);
-		},
-		error : function(xhr, status, err){
-            console.log(xhr, status, err);
-        }
-	});
-
-
-});
-
 
 /*onload시 비동기 리뷰 조회 시작 */
 

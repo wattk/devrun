@@ -127,8 +127,15 @@ public class MemberServiceImpl implements MemberService {
 	public int memberWithdrawal(String id) {
 		return memberDao.memberWithdrawal(id);
 	}
-	
+
 	/**
 	 * 지원 서비스 끝
 	 */
+	
+	//다현코드
+	@Override
+	public Member selectOneMemberByMemberNo(int memberNo) {
+		return memberDao.selectOneMemberByMemberNo(memberNo);
+	}
+	
 }

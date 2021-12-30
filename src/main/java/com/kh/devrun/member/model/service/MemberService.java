@@ -28,5 +28,8 @@ public interface MemberService {
 	Member selectOneMemberByCheckKeyword(Map<String, Object> param);
 	
 	int memberWithdrawal(String id);
+
+	//다현코드
+	Member selectOneMemberByMemberNo(int memberNo);
 	
 }
