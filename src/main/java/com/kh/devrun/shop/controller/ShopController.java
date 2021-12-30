@@ -106,8 +106,10 @@ public class ShopController {
 	// 리뷰 전체조회
 	@ResponseBody
 	@GetMapping("/review")
-	public Map<String, Object> review(@RequestParam String productCode, Authentication authentication,
+	public Map<String, Object> review(@RequestParam String productCode,@RequestParam int orderBy, Authentication authentication,
 			HttpServletRequest request) {
+		// 이게 -1일때 desc 줘야 함 (최신순보기) 
+		log.debug("orderBy 값 체크: {}", orderBy);
 		String reviewSb = null;
 		Member member = null;
 		
@@ -116,7 +118,12 @@ public class ShopController {
 		if(authentication != null) {
 			member = (Member) authentication.getPrincipal();			
 		}
-		List<Review> reviewList = shopService.selectAllReview(productCode);
+		
+		Map<String,Object>param = new HashMap<>();
+		param.put("productCode", productCode);
+		param.put("orderBy", orderBy);
+		
+		List<Review> reviewList = shopService.selectAllReview(param);
 
 			reviewSb = DevrunUtils.getReview(reviewList, member, url);
 

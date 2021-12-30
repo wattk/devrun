@@ -32,8 +32,8 @@ public class ShopDaoImpl implements ShopDao {
 	}
 
 	@Override
-	public List<Review> selectAllReview(String productCode) {
-		return session.selectList("shop.selectAllReview", productCode);
+	public List<Review> selectAllReview(Map<String, Object> param) {
+		return session.selectList("shop.selectAllReview", param);
 	}
 
 	@Override
@@ -65,5 +65,6 @@ public class ShopDaoImpl implements ShopDao {
 	public Attachment selectOneAttach(int reviewNo) {
 		return session.selectOne("shop.selectOneAttach", reviewNo);
 	}
+
 
 }
