@@ -149,7 +149,7 @@
 		        		<i class="bi bi-x cursor" data-dismiss="modal"></i>
 		      		</section>
 		      		<section class="modal-body">
-		      			<form:form name="memberWithdrawalFrm" method="POST" action="${pageContext.request.contextPath}/mypage/myinfo/memberWithdrawal">
+		      			<form:form name="memberWithdrawalFrm" method="POST" action="${pageContext.request.contextPath}/mypage/myinfo/memberWithdrawal.do">
 				      		<div>
 					      		<h5>탈퇴 시 유의사항</h5>
 				      			<p>회원탈퇴 시 개인정보 및 데브런에서 만들어진 모든 데이터는 보관됩니다.</p>

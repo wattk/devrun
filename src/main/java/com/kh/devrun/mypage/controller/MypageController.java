@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.devrun.address.model.vo.Address;
 import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.mypage.model.service.MypageService;
@@ -243,8 +244,8 @@ public class MypageController {
 					throw e;
 				}
 				return "redirect:/mypage/myinfo.do";
-			
-			} else {
+			}
+			else {
 				redirectAttr.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
 				return "redirect:/mypage/myinfo/profileUpdate.do";
 			}
@@ -262,8 +263,8 @@ public class MypageController {
 	/**
 	 * 회원 탈퇴
 	 */
-	@PostMapping("/myinfo/memberWithdrawal")
-	public String memberWithdrawal(String password, Authentication authentication, RedirectAttributes redirectAttr) {
+	@PostMapping("/myinfo/memberWithdrawal.do")
+	public String memberWithdrawal(@RequestParam String password, Authentication authentication, RedirectAttributes redirectAttr) {
 		Member member = (Member) authentication.getPrincipal();
 		String id = member.getId();
 		
@@ -285,8 +286,8 @@ public class MypageController {
 				throw e;
 			}
 			return "redirect:/member/memberLogout.do";
-			
-		} else {
+		}
+		else {
 			redirectAttr.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
 			return "redirect:/mypage/myinfo/profileUpdate.do";
 		}
@@ -299,8 +300,40 @@ public class MypageController {
 	/**
 	 * 지원 나의 정보 > 배송지 관리 시작
 	 */
-	@GetMapping("/myinfo/shippingAddress.do")
-	public String shippingAddress() {
+	@GetMapping("/myinfo/addressManage.do")
+	public String addressManage() {
+
+		return "mypage/addressManage";
+		
+	}
+	
+	/**
+	 * insert into address values(seq_address_no.nextval, #{memberNo}, #{postalCode}, #{address1}, #{address2}, #{mainYn}, #{title}, #{addressee}, #{phone})
+	 */
+	@PostMapping("/myinfo/addressEnroll.do")
+	public String addressEnroll(Address address, RedirectAttributes redirectAttr) {
+		
+		try {
+			int result = mypageService.insertAddress(address);
+			String msg = result > 0 ? "주소 등록이 완료되었습니다." : "주소 등록에 실패하였습니다.";
+			redirectAttr.addFlashAttribute("msg", msg);
+		} catch (Exception e) {
+			log.error("주소 등록 오류", e);
+			throw e;
+		}
+		return "redirect:/mypage/myinfo/addressManage.do";
+		
+	}
+	
+	@PostMapping("/myinfo/addressUpdate.do")
+	public String addressUpdate() {
+
+		return "mypage/shippingAddress";
+		
+	}
+	
+	@PostMapping("/myinfo/addressDelete.do")
+	public String addressDelete() {
 
 		return "mypage/shippingAddress";
 		
