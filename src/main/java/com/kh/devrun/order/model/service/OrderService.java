@@ -6,6 +6,7 @@ import java.util.Map;
 import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
+import com.kh.devrun.order.model.vo.MerchantExt;
 
 public interface OrderService {
 
@@ -14,5 +15,9 @@ public interface OrderService {
 	int insertImp(Imp imp);
 
 	Map<String, Object> selectOneMerchant(String merchantUid);
+
+	Map<String, Object> selectMyShopping(int memberNo);
+
+	List<MerchantExt> selectOrderList(int memberNo);
 
 }

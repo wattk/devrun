@@ -1417,3 +1417,24 @@ from(
                 on cc.child_category_code = pcc.child_category_code)ccc
                     join product_parent_category ppc
                         on ccc.parent_category_code = ppc.parent_category_code;
+
+--주문-결제-상품 뷰 테이블 생성(혜진)
+create or replace view view_merchant_imp
+as
+select
+    m.merchant_uid,
+    m.member_no,
+    m.order_date,
+    m.order_status,
+    i.name,
+    i.amount,
+    p.thumbnail
+from
+    merchant m left join imp i
+        on m.merchant_uid = i.merchant_uid
+            left join merchant_detail md
+                on m.merchant_uid = md.merchant_uid
+                    left join product_detail pd
+                        on md.detail_no = pd.detail_no
+                            left join product p
+                                on pd.product_code = p.product_code
