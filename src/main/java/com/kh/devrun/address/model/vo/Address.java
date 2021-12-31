@@ -11,6 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Address implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private int addressNo;
 	private int memberNo;
 	private String postalCode;
@@ -18,6 +23,6 @@ public class Address implements Serializable {
 	private String address2;
 	private String mainYn;
 	private String title;
-	private String Addressee;
+	private String addressee;
 	private String phone;
 }
