@@ -426,10 +426,10 @@
 								  <c:forEach items="${recommendation}" var="r"  begin="1" end="3">
 									  <!-- 상품추천 1건 시작 -->
 										<div class="recom-info">
-										  <img src="${pageContext.request.contextPath}/resources/upload/product/${r.thumbnail}"  alt="">
+										  <img src="${pageContext.request.contextPath}/resources/upload/product/${r.thumbnail}"  alt="추천상품이미지">
 										  <div class="mt-2 forFont2">
 											<span style="font-weight: bold; color: midnightblue;">${r.name}</span>
-											<br><span><fmt:formatNumber value="${r.price}" pattern="#,###,###"/></span>
+											<br><span><fmt:formatNumber value="${r.price}" pattern="#,###,### 원"/></span>
 											<br><span></span>
 										  </div>
 										</div>
