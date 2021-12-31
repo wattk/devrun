@@ -1437,4 +1437,4 @@ from
                     left join product_detail pd
                         on md.detail_no = pd.detail_no
                             left join product p
-                                on pd.product_code = p.product_code
+                                on pd.product_code = p.product_code;
