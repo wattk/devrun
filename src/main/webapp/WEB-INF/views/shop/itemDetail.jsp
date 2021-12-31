@@ -107,7 +107,7 @@
 								<div class="qm-body1">
 									<p>해당상품</p>
 									<div class="row" id="qItem">
-										<img id="qPIc" src="https://i.ibb.co/gm7H77f/square.png" alt="">
+										<img id="qPIc" src="${pageContext.request.contextPath}/resources/upload/product/${r.thumbnail}"  alt="">
 										<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
 										<input type="hidden" name="product_code">
 									</div>
@@ -232,7 +232,7 @@
 					<div id="itemDetailOptionDiv">
 						<span><fmt:formatNumber value="${product.price}" pattern="#,###,###"/></span> 원
 						<br><span>혜택 : </span><span style="color:pink;"><fmt:formatNumber value="${product.price / 200}" pattern="#,###,### P"/> </span>적립
-						<br><span>배송 : </span><span>무료배송</span>
+						<br><span>배송 : </span><span>2500원</span>
 						<br>
 						<div id="jeju">
 							<span>제주도/도서산간 지역 4,000원 추가</span>
@@ -423,16 +423,18 @@
 								<div id="recommendedDiv">
 								  <div class="p-4 ml-4" style="font-family: 'SANJUGotgam';"><h2>비슷한 상품</h2></div>
 								  <div id="recommendedPicDiv" class="d-flex">
-									<div class="recom-info">
-									  <img src="https://i.ibb.co/gm7H77f/square.png" alt="">
-									  <div class="ml-4 mt-2 forFont2">
-										<span style="font-weight: bold; color: midnightblue;">삼성 광선 마우스 332L</span>
-										<br><span>25,800</span>
-										<br><span>리뷰23</span>
-									  </div>
-									</div>
-									<img src="https://i.ibb.co/gm7H77f/square.png" alt="">
-									<img src="https://i.ibb.co/gm7H77f/square.png" alt="">
+								  <c:forEach items="${recommendation}" var="r"  begin="1" end="3">
+									  <!-- 상품추천 1건 시작 -->
+										<div class="recom-info">
+										  <img src="${pageContext.request.contextPath}/resources/upload/product/${r.thumbnail}"  alt="">
+										  <div class="mt-2 forFont2">
+											<span style="font-weight: bold; color: midnightblue;">${r.name}</span>
+											<br><span><fmt:formatNumber value="${r.price}" pattern="#,###,###"/></span>
+											<br><span></span>
+										  </div>
+										</div>
+									  <!-- 상품추천 1건 끝 -->
+								  </c:forEach>
 								  </div>
 								</div>
 							  </div>

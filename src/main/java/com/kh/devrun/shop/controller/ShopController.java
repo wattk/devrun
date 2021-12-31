@@ -2,6 +2,7 @@ package com.kh.devrun.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.product.model.service.ProductService;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
@@ -128,7 +130,6 @@ public class ShopController {
 		param.put("orderBy", orderBy);
 		
 		List<Review> reviewList = shopService.selectAllReview(param);
-		log.debug("reviewList 오래된순 왜 못 받아{}", reviewList);
 
 			reviewSb = DevrunUtils.getReview(reviewList, member, url);
 
@@ -140,17 +141,35 @@ public class ShopController {
 		return map;
 	}
 
-	// 상세페이지를 위한 상품 하나 받아오기!
+	// 상세페이지를 이동 시 
 	@GetMapping("/itemDetail/{productCode}")
 	public String selectOneItem(@PathVariable String productCode, Model model) {
+
 		// 상품 조회
 		ProductEx product = productService.selectOneItem(productCode);
 		log.debug("product 받아왔나요? : {}", product);
 		model.addAttribute("product", product);
 
-		// 옵션도 조회
+		// 상품 옵션도 조회
 		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
 		model.addAttribute("pDetail", pDetail);
+
+		//소분류 카테고리 추출
+		String childCate = productCode.substring(3, 6);
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("childCate", childCate);
+		param.put("productCode", productCode);
+		
+		//소분류로 리스트 가져오기 
+		List<Product> recommendation = shopService.selectRecommendation(param);
+		log.debug("recommendation 몇 개? :{}", recommendation.size());
+		log.debug("recommendation :{}", recommendation);
+		
+		Collections.shuffle(recommendation);
+		log.debug("recommendation : {}", recommendation);
+		model.addAttribute("recommendation", recommendation);
+		
 
 		return "shop/itemDetail";
 	}
