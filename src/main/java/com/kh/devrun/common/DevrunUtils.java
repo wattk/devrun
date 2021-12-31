@@ -273,9 +273,12 @@ public class DevrunUtils {
 			}
 			reviewSb.append(sb.toString());
 			reviewSb.append("					  <br><span>"+review.getId() +"</span> | <span> "+sdf.format(review.getRegDate())+"</span> | \n"
-					+ "					  <!-- Button trigger modal -->\n"
-					+ "					  <button type=\"button\" class=\"btn btn-primary report-btn\" data-toggle=\"modal\" data-target=\"#exampleModal\" data-content=\""+review.getContent()+"\" data-id=\""+review.getId()+"\" data-review-no=\""+review.getReviewNo() +"\" data-member-no=\""+review.getMemberNo() +"\" >신고</button>\n"
-					+ "					  <div class=\"reviewP mt-3\">\n"
+					+ "					  <!-- Button trigger modal -->\n");
+			if(member != null) {
+				reviewSb.append("<button type=\"button\" class=\"btn btn-primary report-btn\" data-toggle=\"modal\" data-target=\"#exampleModal\" data-content=\""+review.getContent()+"\" data-id=\""+review.getId()+"\" data-review-no=\""+review.getReviewNo() +"\" data-member-no=\""+review.getMemberNo() +"\" >신고</button>\n");
+			}
+			reviewSb.append(
+					  "					  <div class=\"reviewP mt-3\">\n"
 					+ "					  "+review.getContent()+"\n"
 					+ "					  </div>  \n"
 					+ "					</div>\n"
