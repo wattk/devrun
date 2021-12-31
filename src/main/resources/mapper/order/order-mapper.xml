@@ -15,8 +15,7 @@
   		#{productPrice},
   		#{shippingFee},
   		#{totalPrice},
-  		null,
-  		#{name}
+  		null
   	)
   </insert>
   
@@ -56,7 +55,7 @@
   		merchant m left join merchant_detail md
   			on m.merchant_uid = md.merchant_uid
   	where
-  		merchant_uid = #{merchantUid}
+  		m.merchant_uid = #{merchantUid}
   </select>
   <resultMap type="merchant" id="merchantCollection">
   	<id column="merchant_uid" property="merchantUid"/>
@@ -70,7 +69,7 @@
   	<result column="shipping_fee" property="shippingFee"/>
   	<result column="total_price" property="totalPrice"/>
   	<result column="shipping_req" property="shippingReq"/>
-  	<collection property="merchantDetail">
+  	<collection property="merchantDetailList" ofType="merchantDetail">
 	  	<id column="detail_no" property="detailNo"/>
 	  	<id column="merchant_uid" property="merchantUid"/>
 	  	<result column="buy_count" property="buyCount"/>
@@ -85,8 +84,8 @@
   			on p.product_code = pd.product_code
   	where
   		detail_no in
-  		<foreach collection="detailNoList" item="item" open="(" separator="," close=")">
-  			#{detailNo}
+  		<foreach collection="list" item="item" open="(" separator="," close=")">
+  			#{item}
   		</foreach>
   </select>
   

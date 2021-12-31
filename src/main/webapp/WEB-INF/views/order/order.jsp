@@ -23,15 +23,11 @@
 <%
 	List<Product> productList = (List<Product>)request.getAttribute("productList");
 	int totalPrice = 0;
-	int[] detailNo = new int[productList.size()];
 	for(int i = 0; i < productList.size(); i++){
 		totalPrice += productList.get(i).getPrice();
-		detailNo[i] = productList.get(i).getProductDetail().getDetailNo();
 	}
 	System.out.println(totalPrice);
-	System.out.println(detailNo);
 	pageContext.setAttribute("totalPrice", totalPrice);
-	pageContext.setAttribute("detailNo", detailNo);
 %>
 
 <div class="row p-5 d-flex justify-content-around order-container">
@@ -135,7 +131,7 @@
   	<strong>주문 정보</strong>
   	<c:choose>
   	 <c:when test="${productList.size() > 3}">
-	  	<span>${productList[0].name} 외 ${productList.size() -1}건</span>
+	  	<span class="merchant-title">${productList[0].name} 외 ${productList.size() -1}건</span>
 	  	<div class="row d-flex justify-content-start">
 	  	<c:forEach items="${productList}" var="item" varStatus="vs" begin="0" end="2">
   			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
@@ -144,7 +140,7 @@
 	  	</div>
   	 </c:when>
   	 <c:when test="${productList.size() == 1}">
-	  	<span>${productList[0].name}</span>
+	  	<span class="merchant-title">${productList[0].name}</span>
 	  	<div class="row d-flex justify-content-start">
 	  	<c:forEach items="${productList}" var="item" varStatus="vs">
   			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
@@ -152,7 +148,7 @@
 	  	</div>
   	 </c:when>
   	 <c:otherwise>
-	  	<span>${productList[0].name} 외 ${productList.size() -1}건</span>
+	  	<span class="merchant-title">${productList[0].name} 외 ${productList.size() -1}건</span>
 	  	<div class="row d-flex justify-content-start">
 	  	<c:forEach items="${productList}" var="item" varStatus="vs">
   			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
@@ -209,7 +205,7 @@
 		      			${totalPrice*0.1}
 		      		</c:when>
 		      		<c:otherwise>
-		      			${(totalPrice)*0.1}
+		      			${(totalPrice+3000)*0.1}
 		      		</c:otherwise>
 		      	</c:choose>
 	      	</fmt:formatNumber>
@@ -263,7 +259,18 @@
   </div>
 </div>
 
+<form:form name="orderFrm">
+	<input type="hidden" name="memberNo" value="${member.memberNo}" />
+	<input type="hidden" name="pointValue" value="0"/>
+	<input type="hidden" name="productPrice" value="${totalPrice}"/>
+	<input type="hidden" name="shippingFee" value="${totalPrice >= 50000? 0 : 3000}"/>
+	<input type="hidden" name="totalPrice" value="${totalPrice + (totalPrice >= 50000? 0 : 3000)-0}"/>
+	<c:forEach items="${detailNo}" var="no" varStatus="vs" >
+		<input type="hidden" name="detailNo" value="${no}"/>
+	</c:forEach>
+</form:form>
 <script>
+
 //주소 검색창 띄우기
 let postcode = '';
 $("#addInputBtn").click((e)=>{
@@ -292,23 +299,38 @@ $(".order-form-control").change((e)=>{
 $("#orderPaymentBtn").click((e)=>{
 	console.log("결제 이벤트 발생");
 	const merchantUid = 'MERC_' + new Date().getTime();
-	const detailNoList = [];
+
 	
 	//주문 테이블 추가
-	let orderData = {
-		memberNo : "${member.memberNo}",
-		pointValue : 0,
-		productPrice : ${totalPrice},
-		shippingFee : ${totalPrice >= 50000? 0 : 3000},
-		totalPrice : ${totalPrice + (totalPrice >= 50000? 0 : 3000)-0},
-		detailNo : ${detailNo},
-		merchantUid : merchantUid
-	};
+	let formData = new FormData(document.orderFrm);
+	formData.append("merchantUid", merchantUid);
+	
+	const obj = {};
+	
+	for(const [k,v] of formData){
+		obj[k] = v;
+	}
+	//detailNo
+	const $detailNo = $("[name=detailNo]", $(document.orderFrm));
+	const detailNo = $detailNo
+						.toArray()
+						.map((no, i)=>{
+							var reformat = {detailNo : no.value,
+											merchantUid : merchantUid,
+											buyCount : 1};
+							return reformat;
+							});
+	obj.merchantDetailList = detailNo;
+	
+	console.log(obj);
+	const jsonStr = JSON.stringify(obj);
+	console.log(jsonStr);
+	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/order/orderEnroll",
-		data : JSON.stringify(orderData),
-		method : "POST",
+		data : jsonStr,
 		contentType : "application/json; charset=utf-8",
+		method : "POST",
 		success(data){
 			console.log(data);
 			
@@ -327,7 +349,7 @@ function iamport(data){
 	    pg : 'kcp',
 	    pay_method : 'card',
 	    merchant_uid : data.merchantUid,
-	    name : '${product.name}' , //결제창에서 보여질 이름
+	    name : $(".merchant-title").text(), //결제창에서 보여질 이름
 	    amount : 100, //실제 결제되는 가격
 	    buyer_email : $(".email-input").text(),
 	    buyer_name : $(".name-input").text(),
@@ -372,6 +394,7 @@ function iamport(data){
 	        		contentType : "application/json; charset=utf-8",
 	        		success(data){
 	        			console.log(data);
+	        			location.href = `${pageContext.request.contextPath}\${data}`;
 	        		},
 	        		error : console.log
 	        	});

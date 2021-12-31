@@ -9,7 +9,7 @@ import com.kh.devrun.order.model.vo.MerchantDetail;
 
 public interface OrderService {
 
-	int insertOrder(Merchant order, List<MerchantDetail> list);
+	int insertOrder(Merchant merchant);
 
 	int insertImp(Imp imp);
 
