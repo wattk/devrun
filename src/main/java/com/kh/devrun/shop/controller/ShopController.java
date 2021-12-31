@@ -128,6 +128,7 @@ public class ShopController {
 		param.put("orderBy", orderBy);
 		
 		List<Review> reviewList = shopService.selectAllReview(param);
+		log.debug("reviewList 오래된순 왜 못 받아{}", reviewList);
 
 			reviewSb = DevrunUtils.getReview(reviewList, member, url);
 
