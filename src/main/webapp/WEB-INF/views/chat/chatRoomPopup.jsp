@@ -774,6 +774,36 @@
 
 <script>
 
+// 포커스 상태를 감지하는 변수
+var watch = 'Y';
+
+/**
+ * 팝업창이 활성화(focus)되면 chat_member.last_check컬럼을 update한다.
+ */
+// 다른곳 갔다가 팝업 페이지로 포커스를 다시 할 때에도 chat_member.last_check컬럼을 update되어야 한다.
+$(window).focus((e) => {
+	console.log("WINDOW FOCUS");
+	watch = 'Y';
+	readStatus("READ");
+});
+
+/**
+ * 팝업창 포커스 잃었을 경우 이벤트 발생
+ */
+$(window).blur((e) => {
+	console.log("WINDOW BLUR");
+	watch = 'N';
+	readStatus("UNREAD");
+});
+
+/**
+ * 윈도우창 닫을 때 이벤트 발생
+ */
+$(window).on("beforeunload", function() {
+	watch = 'N';
+	return readStatus("UNREAD");
+});
+
 // /chat/chat_mk0L0UJ93P50409 구독
 // 1. Stomp Client객체 생성(websocket)
 const ws = new SockJS(`http://\${location.host}${pageContext.request.contextPath}/stomp`);
@@ -788,7 +818,8 @@ stompClient.connect({}, (frame) => {
 		console.log("message : ", message);
 		const obj = JSON.parse(message.body);
 		console.log("obj = ", obj);
-		const {memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, lastCheck} = obj;
+		
+		var {memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, lastCheck} = obj;
 
 		// 타임스탬프 날짜 변환 // 채팅 보낸 시간은 당일이므로 시간만 전달 ex) 15:00
 		const date = new Date(logTime);
@@ -800,7 +831,6 @@ stompClient.connect({}, (frame) => {
 		//const second = ("0" + date.getSeconds()).slice(-2); //초 2자리 (00, 01 ... 59)
 		const returnDate = hour + ":" + minute;
 		//console.log(returnDate);
-		
 		// 프로필 사진 분기 처리
 		const photo = (!proPhoto) ? 
 				'${pageContext.request.contextPath}/resources/images/common/blank-profile.png' : 
@@ -859,15 +889,24 @@ stompClient.connect({}, (frame) => {
 </li>`);	
 			
 		}
+		
+		//console.log("memberNo = ", memberNo);
+		//console.log("보고있나? ", watch);
+		if(watch == 'Y') {
+			readStatus("READ");
+		}
+		
 		/* loginMember의 memberNo의 따른 수신자 발신자 분기 처리 끝 */
 		
 		// 채팅 입력된 후 최근 내용 확인을 위해 스크롤 하단으로 이동 시키기
 		$('.chat-data-wrap').scrollTop($('.chat-data-wrap')[0].scrollHeight);
+	
 	});
 	
 	// 팝업생성, stompClient가 연결되면 chat_member.last_check컬럼을 update한다.
 	// 위치주의 : connect된 이후 호출되어야한다.
-// 	lastCheck(); 
+// 	lastCheck();
+	readStatus("READ");
 
 	// 구독요청 - 읽음 상태 처리
 	stompClient.subscribe("/chat/readStatus/${chatId}", (message) => {
@@ -884,44 +923,6 @@ stompClient.connect({}, (frame) => {
 		
 		
 	});
-});
-
-console.log("interval첫시작!")
-var interval = setInterval(callback, 1000);
-
-function callback(){
-	//console.log("콜백시작!")
-	readStatus("READ");
-}
-
-/**
- * 팝업창이 활성화(focus)되면 chat_member.last_check컬럼을 update한다.
- */
-// 다른곳 갔다가 팝업 페이지로 포커스를 다시 할 때에도 chat_member.last_check컬럼을 update되어야 한다.
-$(window).focus((e) => {
-	console.log("WINDOW FOCUS");
-//	lastCheck();
-	console.log("interval재시작!")
-	interval = setInterval(callback, 1000);
-});
-
-/**
- * 팝업창 포커스 잃었을 경우 이벤트 발생, setInterval 중단
- */
-$(window).blur((e) => {
-	console.log("WINDOW BLUR");
-	console.log("interval중단요청!")
-	clearInterval(interval);
-	readStatus("UNREAD");
-});
-
-/**
- * 윈도우창 닫을 때 이벤트 발생, setInterval 중단
- */
-$(window).on("beforeunload", function() {
-	console.log("interval중단요청!")
-	clearInterval(interval);
-	return readStatus("UNREAD");
 });
 
 // 채팅 Send 클릭 시 이벤트 발생
@@ -955,21 +956,6 @@ $(message).keyup((e) => {
 		$(sendBtn).trigger('click'); // click 핸들러 호출!
 	}
 });
-
-/**
- * 채팅방 마지막 확인시각을 메시지로 발행 -> db chat_member.last_check update
- */
-/* const lastCheck = () => {
-	let data = {
-		chatId : "${chatId}",
-		memberNo : "${loginMember.memberNo}",
-		lastCheck : Date.now(),
-		type : "LAST_CHECK"
-	};
-	
-	stompClient.send("/app/lastCheck", {},JSON.stringify(data));
-		
-}; */
 
 /**
  * 채팅방 마지막 확인시각과 읽고 있는지 여부 메시지로 발행 -> 채팅방 읽음 처리 체크를 위함 + 기존 lastCheck 처리한 일 추가함
