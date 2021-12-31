@@ -29,12 +29,12 @@ public class OrderServiceImpl implements OrderService {
 			isolation = Isolation.READ_COMMITTED, 
 			rollbackFor = Exception.class
 	)
-	public int insertOrder(Merchant order, List<MerchantDetail> list) {
+	public int insertOrder(Merchant merchant) {
 		int result = 0;
 		
 		try {
-			result = orderDao.insertOrder(order);
-			result = orderDao.insertOrderDetail(list);
+			result = orderDao.insertOrder(merchant);
+			result = orderDao.insertOrderDetail(merchant.getMerchantDetailList());
 		} catch (Exception e) {
 			throw new RuntimeException("주문 관련 등록 오류", e);
 		}
