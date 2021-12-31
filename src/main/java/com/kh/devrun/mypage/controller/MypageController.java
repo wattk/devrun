@@ -5,6 +5,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -33,6 +34,7 @@ import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.mypage.model.service.MypageService;
 import com.kh.devrun.order.model.service.OrderService;
+import com.kh.devrun.order.model.vo.MerchantExt;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -372,7 +374,12 @@ public class MypageController {
 	 */
 	
 	@GetMapping("/myshopping.do")
-	public void myshopping() {}
+	public void myshopping(Authentication authentication, Model model) {
+		Member member = (Member)authentication.getPrincipal();
+		Map<String, Object> map = orderService.selectMyShopping(member.getMemberNo());
+		model.addAttribute("orderLogCnt", map.get("orderLogCnt"));
+		model.addAttribute("orderList", map.get("orderList"));
+	}
 	
 	/**
 	 * 혜진 나의 쇼핑 끝
@@ -402,7 +409,12 @@ public class MypageController {
 	 */
 	
 	@GetMapping("/orderList.do")
-	public void orderList() {}
+	public void orderList(Authentication auth, Model model) {
+		Member member = (Member)auth.getPrincipal();
+		List<MerchantExt> list = orderService.selectOrderList(member.getMemberNo());
+		
+		model.addAttribute("list", list);
+	}
 	
 	/**
 	 * 혜진 주문 내역 끝
@@ -418,7 +430,7 @@ public class MypageController {
 		model.addAttribute("merchant", map.get("merchant"));
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("imp", map.get("imp"));
-		
+		log.debug("list = {}", map.get("list"));
 		return "/mypage/orderDetail";
 	}
 	

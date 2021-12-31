@@ -17,6 +17,7 @@ public class Product extends ProductEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ProductDetail productDetail;
+	private int buyCount;
 
 	public Product(String productCode, String name, int price, Date regDate, String thumbnail, String content,
 			int viewCount, char status, int orderCount) {

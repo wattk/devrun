@@ -5,6 +5,7 @@ import java.util.List;
 import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
+import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.product.model.vo.Product;
 
 public interface OrderDao {
@@ -20,5 +21,11 @@ public interface OrderDao {
 	List<Product> selectMerchantProductList(List<Integer> detailNoList);
 
 	Imp selectOneImp(String merchantUid);
+
+	int selectOrderLogCnt(int memberNo);
+
+	List<MerchantExt> selectCurrentOrder(int memberNo);
+
+	List<MerchantExt> selectOrderList(int memberNo);
 
 }

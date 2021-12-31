@@ -111,17 +111,30 @@ enctype="multipart/form-data">
 						</tr>
 						<tr>
 							<td class="col-5">
-								<strong>[${item.name}]${item.productDetail.optionNo}${item.productDetail.optionContent}</strong>
+								<strong class="">[${item.name}]</strong>
 								<br />
-								<strong>${item.price}</strong><sub class="pl-2">1개 구매</sub>
+								<span>${item.productDetail.optionNo}${item.productDetail.optionContent}</span>
+								<br />
+								<strong><fmt:formatNumber type="currency">${item.price}</fmt:formatNumber></strong>
+								&nbsp;
+								<span class="pl-2">${item.buyCount}개 구매</span>
 							</td>
-							<td rowspan="4" class="col-2">
-								<button type="button" id="" class="question-btn order-btn btn btn-outline-light">배송완료</button>
-							</td>
-							<td rowspan="4" class="col-2">
-								<button type="button" class="order-btn btn btn-outline-primary active" data-toggle="modal" data-target="#exampleModal3">리뷰작성하기</button>
-								<button type="button" class="order-btn btn btn-outline-primary">장바구니 담기</button>
-							</td>
+							<c:if test="${merchant.orderStatus ne 'SC' and merchant.orderStatus ne 'OC'}">
+								<td rowspan="4" class="col-2">
+									<button type="button" id="" class="question-btn order-btn btn btn-outline-light">${merchant.orderStatus eq 'OR'? '주문' : merchant.orderStatus eq 'PP'? '상품준비중' : merchant.orderStatus eq 'SS'? '배송시작' : '배송중' }</button>
+								</td>
+								<td rowspan="4" class="col-2">
+									<button type="button" class="order-btn btn btn-outline-primary">장바구니 담기</button>
+							</c:if>
+							<c:if test="${merchant.orderStatus eq 'SC' or merchant.orderStatus eq 'OC'}">
+								<td rowspan="4" class="col-2">
+									<button type="button" id="" class="question-btn order-btn btn btn-outline-light">${merchant.orderStatus eq 'SC'? '배송완료' : '구매확정' }</button>
+								</td>
+								<td rowspan="4" class="col-2">
+									<button type="button" class="order-btn btn btn-outline-primary active" data-toggle="modal" data-target="#exampleModal3">리뷰작성하기</button>
+									<button type="button" class="order-btn btn btn-outline-primary">장바구니 담기</button>
+								</td>
+							</c:if>
 						</tr>
 					</table>
 				  </li>
@@ -131,23 +144,23 @@ enctype="multipart/form-data">
 			<table id="orderPaymentTbl" class="mt-3">
 				<tr>
 					<th class="col-3">총 주문금액</th>
-					<td class="col-5">${merchant.productPrice}</td>
+					<td class="col-5"><fmt:formatNumber type="currency">${merchant.productPrice}</fmt:formatNumber></td>
 				</tr>
 				<tr>
 					<th class="col-3">상품 할인</th>
-					<td class="col-5">0</td>
+					<td class="col-5"><fmt:formatNumber type="currency">0</fmt:formatNumber></td>
 				</tr>
 				<tr>
 					<th class="col-3">포인트 사용</th>
-					<td class="col-5">${merchant.pointValue}</td>
+					<td class="col-5"><fmt:formatNumber type="currency">${merchant.pointValue}</fmt:formatNumber></td>
 				</tr>
 				<tr>
 					<th class="col-3">배송비</th>
-					<td class="col-5">${merchant.shippingFee}</td>
+					<td class="col-5"><fmt:formatNumber type="currency">${merchant.shippingFee}</fmt:formatNumber></td>
 				</tr>
 				<tr>
 					<th class="col-3">결제 금액</th>
-					<td class="col-5">${imp.amount}</td>
+					<td class="col-5"><fmt:formatNumber type="currency">${imp.amount}</fmt:formatNumber></td>
 				</tr>
 				<tr>
 					<th class="col-3">결제 방법</th>
