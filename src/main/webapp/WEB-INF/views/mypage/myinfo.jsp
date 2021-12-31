@@ -62,7 +62,7 @@
 			       					<div class="card-header">배송지 관리</div>
 				       				<div class="card-body">
 				       					<p>내가 저장한 배송지를<br/>관리할 수 있습니다.</p>
-				       					<button class="col-4 cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/shippingAddress.do';">조회하기</button>
+				       					<button class="col-4 cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/addressManage.do';">조회하기</button>
 				       				</div>
 			       				</article>
 		       				</div>

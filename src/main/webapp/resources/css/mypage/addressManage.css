@@ -18,7 +18,7 @@
 
 #adressDetail table {border:1px solid rgba(0,0,0,.125);}
 #adressDetail tr:not(:last-of-type) {border-bottom:1px solid rgba(0,0,0,.125);}
-#adressDetail td, th {padding:10px; border:0;}
+#adressDetail td, th {padding:10px; border:0; vertical-align:middle;}
 #adressDetail th {color:#7F7F7F; text-align:center; vertical-align:middle;}
 #adressDetail label {margin:0 auto; color:#000000;}
 #adressDetail input {border-radius:4px;}
