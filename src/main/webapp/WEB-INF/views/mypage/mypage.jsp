@@ -65,9 +65,9 @@
 			       						<img src="https://i.ibb.co/jgyRRVB/badge.png" alt="" />
 			       						<span>
 			       							<!-- c:if 태그로 회원 권한에 따른 활동 등급명 분기 -->
-			       							<c:if test="${member.authority eq 'ROLE_M1'}">일반회원</c:if>
-			       							<c:if test="${member.authority eq 'ROLE_M2'}">지식인</c:if>
-			       							<c:if test="${member.authority eq 'ROLE_AM'}">관리자</c:if>
+			       							<c:if test="${member.authorities[0] eq 'ROLE_M1'}">일반회원</c:if>
+			       							<c:if test="${member.authorities[0] eq 'ROLE_M2'}">지식인</c:if>
+			       							<c:if test="${member.authorities[0] eq 'ROLE_AM'}">관리자</c:if>
 			       						</span>
 			       					</td>
 			       					<!-- 활동 배지 -->

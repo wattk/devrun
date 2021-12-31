@@ -15,6 +15,7 @@ import com.kh.devrun.order.model.dao.OrderDao;
 import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
+import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.product.model.vo.Product;
 
 @Service
@@ -66,6 +67,27 @@ public class OrderServiceImpl implements OrderService {
 		map.put("list", list);
 		
 		return map;
+	}
+
+	@Override
+	public Map<String, Object> selectMyShopping(int memberNo) {
+		Map<String, Object> map = new HashMap<>();
+		//주문상태별 count
+		
+		//취소/교환/환불 count
+		int orderLogCnt = orderDao.selectOrderLogCnt(memberNo);
+		map.put("orderLogCnt", orderLogCnt);
+		
+		//최근 주문 내역 3건
+		List<MerchantExt> orderList = orderDao.selectCurrentOrder(memberNo);
+		map.put("orderList", orderList);
+		
+		return map;
+	}
+
+	@Override
+	public List<MerchantExt> selectOrderList(int memberNo) {
+		return orderDao.selectOrderList(memberNo);
 	}
 	
 	
