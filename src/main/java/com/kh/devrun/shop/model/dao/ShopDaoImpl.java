@@ -66,5 +66,4 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectOne("shop.selectOneAttach", reviewNo);
 	}
 
-
 }
