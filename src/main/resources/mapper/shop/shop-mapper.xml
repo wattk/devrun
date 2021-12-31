@@ -116,4 +116,14 @@
 		where 
 			review_no =#{reviewNo}
 	</select>
+	
+	<select id="selectRecommendation" resultType="productEx">
+		select
+			*
+		from 
+			view_product_parent_category
+		where 
+			child_Category_code = #{childCate}
+			and product_code != #{productCode}
+	</select>
 </mapper>

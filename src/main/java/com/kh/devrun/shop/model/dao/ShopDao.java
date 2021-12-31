@@ -3,6 +3,7 @@ package com.kh.devrun.shop.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Review;
@@ -26,5 +27,7 @@ public interface ShopDao {
 	List<ProductEntity> CategoryItemAll(String parentCate);
 
 	Attachment selectOneAttach(int reviewNo);
+
+	List<Product> selectRecommendation(Map<String, Object> param);
 
 }

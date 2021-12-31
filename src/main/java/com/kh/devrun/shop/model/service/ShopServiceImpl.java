@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.dao.ShopDao;
 import com.kh.devrun.shop.model.vo.Attachment;
@@ -81,6 +82,11 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public Attachment selectOneAttach(int reviewNo) {
 		return shopDao.selectOneAttach(reviewNo);
+	}
+
+	@Override
+	public List<Product> selectRecommendation(Map<String, Object> param) {
+		return shopDao.selectRecommendation(param);
 	}
 
 
