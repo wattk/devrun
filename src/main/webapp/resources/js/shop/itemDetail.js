@@ -60,12 +60,6 @@ function deleteReview() {
 }
 /*상품리뷰 취소시 다 날리게 끝*/
 
-/*신고 취소시 다 날리게 시작*/
-function deleteReport(){
-	$("input:radio[name='reasonCate']").removeAttr("checked"); 
-	document.getElementById('#reportText').value='';
-}
-/*신고 취소시 다 날리게 끝*/
 
 /*리뷰 글자수 세기 시작 */
 $('#reportText').keydown((e) =>{
