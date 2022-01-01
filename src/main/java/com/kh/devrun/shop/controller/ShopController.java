@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.common.DevrunUtils;
+import com.kh.devrun.common.shopUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
@@ -60,6 +61,9 @@ public class ShopController {
 	
 	@Autowired
 	ReportService reportService;
+	
+	@Autowired
+	shopUtils shopUtils;
 	
 
 //--------------------주입-------------------------------------	
@@ -99,7 +103,7 @@ public class ShopController {
 		}
 		List<Review> picReviewList = shopService.picReviewOnly(productCode);
 
-			reviewSb = DevrunUtils.getReview(picReviewList, member, url);
+			reviewSb = shopUtils.getReview(picReviewList, member, url);
 			
 		int reviewTotal = shopService.countPicReviewList(productCode);
 		Map<String, Object> map = new HashMap<>();
@@ -131,7 +135,7 @@ public class ShopController {
 		
 		List<Review> reviewList = shopService.selectAllReview(param);
 
-			reviewSb = DevrunUtils.getReview(reviewList, member, url);
+			reviewSb = shopUtils.getReview(reviewList, member, url);
 
 		int reviewTotal = shopService.countAllList(productCode);
 		Map<String, Object> map = new HashMap<>();
