@@ -129,5 +129,11 @@ public class ShopServiceImpl implements ShopService {
 		}
 		return result2;
 	}
+	
+	//좋아요 변화 이후 새로 카운팅
+	@Override
+	public int refreshCountLikes(int reviewNo) {
+		return shopDao.refreshCountLikes(reviewNo);
+	}
 
 }

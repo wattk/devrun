@@ -560,15 +560,11 @@ $(document).on('click', '.report-btn', function(e) {
 /*좋아요 비동기 시작*/
 $(document).on('click', '.likes', function(e) {
 	
-	console.log("좋아요 도착?");
-	var $productCode = $(productCodeV).val(); 
-	var $memberNo =  $(e.target).data('memberNo');	
-	var $reviewNo = $(e.target).data('reviewNo');
-	
-	console.log('현재의 likesyn')
-	console.log($(e.target).data('likesyn'));
-	
+	const $productCode = $(productCodeV).val(); 
+	const $memberNo =  $(e.target).data('memberNo');	
+	const $reviewNo = $(e.target).data('reviewNo');
 	const s = $(e.target).data('likesyn');
+	
 	if(s == 'N'){
 		
 		$.ajax({
@@ -581,19 +577,22 @@ $(document).on('click', '.likes', function(e) {
 				
 			},
 			success(data){
-			const result = data;
+			const result = data["result"];
+			const newCountLikes = data["newCountLikes"];
+			console.log(`result : \${result}`);
+			console.log(`newCountLikes : \${newCountLikes}`);
+			
 			
 			if(result == 1) {
-			$(e.target).data('likesyn', 'Y');
-			$(e.target).attr('class', 'fas fa-heart likes');			
-			console.log($(e.target).data('likesyn'));				
-			}
+				$(e.target).data('likesyn', 'Y');
+				$(e.target).attr('class', 'fas fa-heart likes');			
+				console.log($(e.target).data('likesyn'));	
 			
+				$(e.target).text(newCountLikes);
+			}
 			},
 			error : console.log
 		});
-		
-	
 	}else{
 		
 		$.ajax({
@@ -606,12 +605,17 @@ $(document).on('click', '.likes', function(e) {
 				
 			},
 			success(data){
-				const result = data;
+				const result = data["result"];
+				const newCountLikes = data["newCountLikes"];
+				console.log(`result : \${result}`);
+				console.log(`newCountLikes : \${newCountLikes}`);
 			
 			if(result == 1) {
 				$(e.target).data('likesyn', 'N');
 				$(e.target).attr('class', 'far fa-heart likes');		
-			console.log($(e.target).data('likesyn'));				
+				console.log($(e.target).data('likesyn'));	
+			
+				$(e.target).text(newCountLikes);
 			}
 			
 			},
@@ -622,13 +626,6 @@ $(document).on('click', '.likes', function(e) {
 
 /*좋아요 비동기 끝*/
 
- 
-/*신고 취소시 다 날리게 시작*/
-$(document).on('click', '#deleteReporBtn', function(e) {
-	$("input:radio[name='reasonCate']").removeAttr("checked"); 
-	$(reportText).val('');
-})
-/*신고 취소시 다 날리게 끝*/ 
 
 //바로구매 버튼 클릭 이벤트 혜진 시작
 $("#orderBtn").click((e)=>{

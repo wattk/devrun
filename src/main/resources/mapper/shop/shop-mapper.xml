@@ -166,4 +166,12 @@
 		where review_no = #{reviewNo}
 		and product_code = #{productCode} 
 	</update>
+	
+	<select id="refreshCountLike" resultType="_int">
+		select
+			like_count
+		from 
+			review
+		where review_no = #{reviewNo}
+	</select>
 </mapper>

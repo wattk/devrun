@@ -150,7 +150,6 @@ public class ShopController {
 
 		// 상품 조회
 		ProductEx product = productService.selectOneItem(productCode);
-		log.debug("product 받아왔나요? : {}", product);
 		model.addAttribute("product", product);
 
 		// 상품 옵션도 조회
@@ -167,10 +166,8 @@ public class ShopController {
 		// 소분류로 리스트 가져오기
 		List<Product> recommendation = shopService.selectRecommendation(param);
 		log.debug("recommendation 몇 개? :{}", recommendation.size());
-		log.debug("recommendation :{}", recommendation);
 
 		Collections.shuffle(recommendation);
-		log.debug("recommendation : {}", recommendation);
 		model.addAttribute("recommendation", recommendation);
 
 		return "shop/itemDetail";
@@ -250,7 +247,7 @@ public class ShopController {
 	// 리뷰 좋아요 추가
 	@ResponseBody
 	@GetMapping("/reviewLikeAdd")
-	public int reviewLikeAdd(@RequestParam int reviewNo, @RequestParam int memberNo, @RequestParam String productCode) {
+	public Map<String,Object> reviewLikeAdd(@RequestParam int reviewNo, @RequestParam int memberNo, @RequestParam String productCode) {
 
 		Map<String, Object> param = new HashMap<>();
 		param.put("reviewNo", reviewNo);
@@ -259,15 +256,21 @@ public class ShopController {
 
 		int result = shopService.reviewLikeAdd(param);
 		log.debug("리뷰 좋아요 잘 추가? : {}", result);
-
-		return result;
-
+		
+		//좋아요 추가하고 새로 추가된 좋아요 갯수 받아오기
+		int newCountLikes = shopService.refreshCountLikes(reviewNo);
+		
+		Map<String,Object>map = new HashMap<>();
+		map.put("result", result);
+		map.put("newCountLikes", newCountLikes);
+		
+		return map;
 	}
 
 	// 리뷰 좋아요 삭제
 	@ResponseBody
 	@GetMapping("/reviewLikeDelete")
-	public int reviewLikeDelete(@RequestParam int reviewNo, @RequestParam int memberNo,
+	public Map<String,Object> reviewLikeDelete(@RequestParam int reviewNo, @RequestParam int memberNo,
 			@RequestParam String productCode) {
 
 		Map<String, Object> param = new HashMap<>();
@@ -277,10 +280,21 @@ public class ShopController {
 
 		int result = shopService.reviewLikeDelete(param);
 		log.debug("리뷰 좋아요 잘 삭제? : {}", result);
+		
+		//좋아요 삭제하고 새로 추가된 좋아요 갯수 받아오기
+		int newCountLikes = shopService.refreshCountLikes(reviewNo);
 
-		return result;
-
+		Map<String,Object>map = new HashMap<>();
+		map.put("result", result);
+		map.put("newCountLikes", newCountLikes);
+		
+		return map;
 	}
+	
+	
+	
+	
+//----------------------------------------------------------구분선---------------------------------------------------------------
 
 	/**
 	 * 혜진 작업 시작

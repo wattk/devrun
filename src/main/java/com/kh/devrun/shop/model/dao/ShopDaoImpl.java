@@ -97,4 +97,9 @@ public class ShopDaoImpl implements ShopDao {
 		return session.update("shop.reviewLikeDelete", param);
 	}
 
+	@Override
+	public int refreshCountLikes(int reviewNo) {
+		return session.selectOne("shop.refreshCountLike", reviewNo);
+	}
+
 }

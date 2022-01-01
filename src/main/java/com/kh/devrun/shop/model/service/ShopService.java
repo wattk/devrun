@@ -34,4 +34,6 @@ public interface ShopService {
 
 	int reviewLikeDelete(Map<String, Object> param);
 
+	int refreshCountLikes(int reviewNo);
+
 }
