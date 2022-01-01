@@ -28,7 +28,10 @@ public class shopUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
 		StringBuilder reviewSb = new StringBuilder();
 		
-		int loginMemberNo = member.getMemberNo();
+		int loginMemberNo = -1;
+		if (member != null) {
+			loginMemberNo = member.getMemberNo();			
+		}
 		
 		
 		
@@ -82,7 +85,15 @@ public class shopUtils {
 			if(review.getAttach().getReviewAttachNo() < 1) {
 				reviewSb.append("						<div class=\"reviewPhoto\">\n"
 						+ "						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
-						+ "							<i style=\"width:100px\"  data-review-no=\""+review.getReviewNo()+"\" class=\"far fa-heart likes\">"+review.getLikeCount()+"</i>\n"
+						+ "							<i style=\"width:100px\"  data-review-no=\""+review.getReviewNo()+"\""); 
+				
+			if(likeYesNo == 1 ) {
+				reviewSb.append("data-likesyn=\"Y\" class=\"fas fa-heart likes\">");
+			}else {
+				reviewSb.append("data-likesyn=\"N\" class=\"far fa-heart likes\">");
+			}
+			
+			reviewSb.append(review.getLikeCount()+"</i>\n"
 						+ "						  </div>\n"
 						+ "						</div>"
 						+"					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->\n");

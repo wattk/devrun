@@ -561,6 +561,71 @@ $(document).on('click', '.report-btn', function(e) {
 /*신고창 정보 얻기 위해서 끝 */
 
 
+/*좋아요 비동기 시작*/
+$('.likes').click((e) => {
+	var $productCode = $(productCodeV).val(); 
+	var $memberNo = $(memberNo).val();
+	var $reviewNo = $(e.target).data('reviewNo');
+	
+	console.log($(e.target).data('likesyn'));
+	
+	const s = $(e.target).data('likesyn');
+	if(s == 'N'){
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/shop/reviewLikeAdd",
+			method: "Get",
+			data : {
+				reviewNo : $reviewNo,
+				memberNo:  $memberNo,
+				productCode : $productCode 
+				
+			},
+			success(data){
+			const result = data;
+			
+			if(result == 1) {
+			$(e.target).data('likesyn', 'Y');
+			$(e.target).attr('class', 'fas fa-heart likes');			
+			console.log($(e.target).data('likesyn'));				
+			}
+			
+			},
+			error : console.log
+		});
+		
+	
+	}else{
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/shop/reviewLikeDelete",
+			method: "Get",
+			data : {
+				reviewNo : $reviewNo,
+				memberNo:  $memberNo,
+				productCode : $productCode 
+				
+			},
+			success(data){
+				const result = data;
+			
+			if(result == 1) {
+				$(e.target).data('likesyn', 'N');
+				$(e.target).attr('class', 'far fa-heart likes');		
+			console.log($(e.target).data('likesyn'));				
+			}
+			
+			},
+			error : console.log
+		});
+	}
+})
+
+/*좋아요 비동기 끝*/
+ 
+
+
+
 //바로구매 버튼 클릭 이벤트 혜진 시작
 $("#orderBtn").click((e)=>{
 	const detailNo = $("#detailNo").val();
