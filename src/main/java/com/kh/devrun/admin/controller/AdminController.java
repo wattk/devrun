@@ -557,7 +557,7 @@ public class AdminController {
 		// 회원 번호는 현재 로그인중인 사용자의 member_no
 		Member member = (Member)authentication.getPrincipal();
 		log.debug("member = {}",member);
-		questionProduct.setMemberNo(member.getMemberNo());
+
 		
 		// 대상의 문의 번호를 현재 답변의 참조 문의 번호에 넣어준다
 		questionProduct.setQuestionRefNo(questionProduct.getQuestionNo());
