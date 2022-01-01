@@ -569,6 +569,7 @@ $(document).on('click', '.likes', function(e) {
 	var $memberNo =  $(e.target).data('memberNo');	
 	var $reviewNo = $(e.target).data('reviewNo');
 	
+	console.log('현재의 likesyn')
 	console.log($(e.target).data('likesyn'));
 	
 	const s = $(e.target).data('likesyn');

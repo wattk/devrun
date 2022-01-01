@@ -74,19 +74,17 @@ public class shopUtils {
 					+ "					  </div>  \n"
 					+ "					</div>\n"
 					+ "					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 시작 -->");
+			reviewSb.append("						<div class=\"reviewPhoto\">\n");
+			
 			if(review.getAttach().getReviewAttachNo() != 0) {
-				reviewSb.append("						<div class=\"reviewPhoto\">\n"
-						+ "						  <img src=\""+url+"/resources/upload/review/"+review.getAttach().getRenamedFilename()+ "\" alt=\"\" onclick=\"expandPic(event)\">\n"
-						+ "						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
-						+ " 							<i style=\"width:100px\"  data-review-no=\""+review.getReviewNo()+"\" class=\"far fa-heart likes\">"+review.getLikeCount()+"</i>\n"
-						+ "						  </div>\n"
-						+ "						</div>");
+			reviewSb.append("						  <img src=\""+url+"/resources/upload/review/"+review.getAttach().getRenamedFilename()+ "\" alt=\"\" onclick=\"expandPic(event)\">\n");
 			}
-			if(review.getAttach().getReviewAttachNo() < 1) {
-				reviewSb.append("						<div class=\"reviewPhoto\">\n"
-						+ "						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
+			
+			//첨부파일 없을때
+
+			reviewSb.append("						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
 						+ "							<i style=\"width:100px\"  data-review-no=\""+review.getReviewNo()+"\" data-member-no=\"");if(member != null) {reviewSb.append(member.getMemberNo());} 
-						reviewSb.append("\""); 
+			reviewSb.append("\""); 
 				
 			if(likeYesNo == 1 ) {
 				reviewSb.append("data-likesyn=\"Y\" class=\"fas fa-heart likes\">");
@@ -98,7 +96,8 @@ public class shopUtils {
 						+ "						  </div>\n"
 						+ "						</div>"
 						+"					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->\n");
-			}
+			
+			
 			if(member !=null) {
 				if(review.getId().equals(member.getId())) {
 					reviewSb.append("					<!-- 삭제버튼 시작 -->\n"
