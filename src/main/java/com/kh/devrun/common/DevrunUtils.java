@@ -245,7 +245,7 @@ public class DevrunUtils {
 	}
 
 	/**
-	 * 리뷰 비동기 처리
+	 * 리뷰 비동기 처리 -다현-
 	 */
 	public static String getReview(List<Review> reviewList, Member member,String url) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
@@ -294,7 +294,7 @@ public class DevrunUtils {
 			if(review.getAttach().getReviewAttachNo() < 1) {
 				reviewSb.append("						<div class=\"reviewPhoto\">\n"
 						+ "						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
-						+ "							<i style=\"width:100px\" class=\"far fa-heart\">3</i>\n"
+						+ "							<i style=\"width:100px\"  data-review-no=\""+review.getReviewNo()+"\" class=\"far fa-heart likes\">"+review.getLikeCount()+"</i>\n"
 						+ "						  </div>\n"
 						+ "						</div>"
 						+"					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->\n");
