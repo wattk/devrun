@@ -198,7 +198,7 @@
 													</td>
 												</tr>
 											</table>
-											<textarea name="sideNote" id="reportText" cols="30" rows="10" maxlength='195'></textarea>
+											<textarea name="sideNote" id="reportText" cols="30" rows="10" maxlength='195' placeholder="상세내용을 기입해주세요(선택)"></textarea>
 										</form>
 										<p style="font-size: 12px;">ⓘ 신고해주신 내용은 관리자 검토 후 내부정책에 의거 조치가 진행됩니다.</p>
 									</div>
@@ -206,7 +206,7 @@
 							</div>
 							<div class="modal-footer justify-content-center">
 							<button type="submit" class="btn btn-primary col-4">신고하기</button>
-							<button type="button" class="btn btn-secondary col-4" data-dismiss="modal">취소하기</button>
+							<button type="button" class="btn btn-secondary col-4" data-dismiss="modal" id="deleteReporBtn">취소하기</button>
 							</div>
 						</div>
 						</div>
@@ -448,7 +448,8 @@
 		
 <script>
 /*리뷰삭제 */
-$('.reviewDelBtn').click((e) => {
+
+$(document).on('click', '.reviewDelBtn', function(e) {
 	var reviewNo =e.target.value;	
 	console.log(`삭제할 리뷰 아이디 : \${reviewNo}`);
 	
@@ -544,11 +545,6 @@ $(document).on('click', '.report-btn', function(e) {
 	 const reviewNo = tr.dataset.reviewNo;
 	 const content = tr.dataset.content;
 	 
-	 console.log(id);
-	 console.log(memberNo);
-	 console.log(reviewNo);
-	 console.log(content);
-	 
 	 $(hereId).text(id);
 	 $(hereContent).text(content);
 	 
@@ -625,9 +621,14 @@ $(document).on('click', '.likes', function(e) {
 })
 
 /*좋아요 비동기 끝*/
+
  
-
-
+/*신고 취소시 다 날리게 시작*/
+$(document).on('click', '#deleteReporBtn', function(e) {
+	$("input:radio[name='reasonCate']").removeAttr("checked"); 
+	$(reportText).val('');
+})
+/*신고 취소시 다 날리게 끝*/ 
 
 //바로구매 버튼 클릭 이벤트 혜진 시작
 $("#orderBtn").click((e)=>{

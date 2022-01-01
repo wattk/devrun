@@ -76,6 +76,7 @@ public class shopUtils {
 					+ "					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 시작 -->");
 			reviewSb.append("						<div class=\"reviewPhoto\">\n");
 			
+			//첨부파일 있을 때 
 			if(review.getAttach().getReviewAttachNo() != 0) {
 			reviewSb.append("						  <img src=\""+url+"/resources/upload/review/"+review.getAttach().getRenamedFilename()+ "\" alt=\"\" onclick=\"expandPic(event)\">\n");
 			}
