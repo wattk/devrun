@@ -157,6 +157,7 @@ color: green;
 
 .aReviewDiv{
   margin-left: 40px;
+  border-bottom: 2px solid black;
 }
 .reviewContent{
  width: 900px; 
@@ -476,6 +477,16 @@ color: green;
 	height: 26px;
     font-size: 1px;
     position: relative;
-    left: 1006px;
-    width: 100px;
+    left: 1007px;
+    width: 102px;
+    margin-bottom: 20px;
+}
+.reviewLikeBtn{
+    background-color: beige;
+    border: 5px solid #939b82;
+    margin-bottom: 20px;
+}
+
+.reviewP{
+	margin-bottom: 20px;
 }

@@ -83,8 +83,8 @@ public class shopUtils {
 			
 			//첨부파일 없을때
 
-			reviewSb.append("						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
-						+ "							<i style=\"width:100px\"  data-review-no=\""+review.getReviewNo()+"\" data-member-no=\"");if(member != null) {reviewSb.append(member.getMemberNo());} 
+			reviewSb.append("						  <div  class=\"reviewLikeBtn text-center rounded mt-1\">\n"
+						+ "							<i style=\"width:93px\"  data-review-no=\""+review.getReviewNo()+"\" data-member-no=\"");if(member != null) {reviewSb.append(member.getMemberNo());} 
 			reviewSb.append("\""); 
 				
 			if(likeYesNo == 1 ) {
