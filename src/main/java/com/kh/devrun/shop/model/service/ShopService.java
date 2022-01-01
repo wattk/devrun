@@ -30,4 +30,8 @@ public interface ShopService {
 
 	int didIHitLikes(Map<String, Object> param);
 
+	int reviewLikeAdd(Map<String, Object> param);
+
+	int reviewLikeDelete(Map<String, Object> param);
+
 }

@@ -126,6 +126,8 @@
 			child_Category_code = #{childCate}
 			and product_code != #{productCode}
 	</select>
+	
+	
 	<select id="didIHitLikes" resultType="_int">
 		select
 			count(*)
@@ -134,4 +136,34 @@
 			member_no = #{loginMemberNo} and
 			review_no = #{reviewNo}
 	</select>
+		<update id="reviewLikeAdd">
+		update 
+			review 
+		set like_count = like_count +1
+		where review_no = #{reviewNo}
+		and product_code = #{productCode}
+	</update>
+	
+	<insert id="insertMemberReviewLike">
+		insert into 
+			member_review_like
+		values (#{reviewNo}, #{memberNo})
+
+	</insert>
+	
+	<delete id="deleteMemberReviewLike">
+		delete 
+			member_review_like
+		where review_no = #{reviewNo}
+		and  member_no = #{memberNo}	
+	</delete>
+	
+	<update id="reviewLikeDelete">
+		update 
+			review
+		set 
+			like_count = like_count -1
+		where review_no = #{reviewNo}
+		and product_code = #{productCode} 
+	</update>
 </mapper>

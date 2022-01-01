@@ -562,9 +562,11 @@ $(document).on('click', '.report-btn', function(e) {
 
 
 /*좋아요 비동기 시작*/
-$('.likes').click((e) => {
+$(document).on('click', '.likes', function(e) {
+	
+	console.log("좋아요 도착?");
 	var $productCode = $(productCodeV).val(); 
-	var $memberNo = $(memberNo).val();
+	var $memberNo =  $(e.target).data('memberNo');	
 	var $reviewNo = $(e.target).data('reviewNo');
 	
 	console.log($(e.target).data('likesyn'));

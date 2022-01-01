@@ -85,7 +85,8 @@ public class shopUtils {
 			if(review.getAttach().getReviewAttachNo() < 1) {
 				reviewSb.append("						<div class=\"reviewPhoto\">\n"
 						+ "						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
-						+ "							<i style=\"width:100px\"  data-review-no=\""+review.getReviewNo()+"\""); 
+						+ "							<i style=\"width:100px\"  data-review-no=\""+review.getReviewNo()+"\" data-member-no=\"");if(member != null) {reviewSb.append(member.getMemberNo());} 
+						reviewSb.append("\""); 
 				
 			if(likeYesNo == 1 ) {
 				reviewSb.append("data-likesyn=\"Y\" class=\"fas fa-heart likes\">");

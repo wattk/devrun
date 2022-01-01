@@ -58,13 +58,12 @@ public class ShopController {
 
 	@Autowired
 	ServletContext application;
-	
+
 	@Autowired
 	ReportService reportService;
-	
+
 	@Autowired
 	shopUtils shopUtils;
-	
 
 //--------------------주입-------------------------------------	
 
@@ -96,15 +95,15 @@ public class ShopController {
 		String reviewSb = null;
 		Member member = null;
 
-		//getReivew 메소드 인자들
+		// getReivew 메소드 인자들
 		String url = request.getContextPath();
-		if(authentication != null) {
-			member = (Member) authentication.getPrincipal();			
+		if (authentication != null) {
+			member = (Member) authentication.getPrincipal();
 		}
 		List<Review> picReviewList = shopService.picReviewOnly(productCode);
 
-			reviewSb = shopUtils.getReview(picReviewList, member, url);
-			
+		reviewSb = shopUtils.getReview(picReviewList, member, url);
+
 		int reviewTotal = shopService.countPicReviewList(productCode);
 		Map<String, Object> map = new HashMap<>();
 		map.put("reviewTotal", reviewTotal);
@@ -116,26 +115,26 @@ public class ShopController {
 	// 리뷰 전체조회
 	@ResponseBody
 	@GetMapping("/review")
-	public Map<String, Object> review(@RequestParam String productCode,@RequestParam int orderBy, Authentication authentication,
-			HttpServletRequest request) {
-		// 이게 -1일때 desc 줘야 함 (최신순보기) 
+	public Map<String, Object> review(@RequestParam String productCode, @RequestParam int orderBy,
+			Authentication authentication, HttpServletRequest request) {
+		// 이게 -1일때 desc 줘야 함 (최신순보기)
 		log.debug("orderBy 값 체크: {}", orderBy);
 		String reviewSb = null;
 		Member member = null;
-		
-		//getReivew 메소드 인자들
+
+		// getReivew 메소드 인자들
 		String url = request.getContextPath();
-		if(authentication != null) {
-			member = (Member) authentication.getPrincipal();			
+		if (authentication != null) {
+			member = (Member) authentication.getPrincipal();
 		}
-		
-		Map<String,Object>param = new HashMap<>();
+
+		Map<String, Object> param = new HashMap<>();
 		param.put("productCode", productCode);
 		param.put("orderBy", orderBy);
-		
+
 		List<Review> reviewList = shopService.selectAllReview(param);
 
-			reviewSb = shopUtils.getReview(reviewList, member, url);
+		reviewSb = shopUtils.getReview(reviewList, member, url);
 
 		int reviewTotal = shopService.countAllList(productCode);
 		Map<String, Object> map = new HashMap<>();
@@ -145,7 +144,7 @@ public class ShopController {
 		return map;
 	}
 
-	// 상세페이지를 이동 시 
+	// 상세페이지를 이동 시
 	@GetMapping("/itemDetail/{productCode}")
 	public String selectOneItem(@PathVariable String productCode, Model model) {
 
@@ -158,22 +157,21 @@ public class ShopController {
 		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
 		model.addAttribute("pDetail", pDetail);
 
-		//소분류 카테고리 추출
+		// 소분류 카테고리 추출
 		String childCate = productCode.substring(3, 6);
 
 		Map<String, Object> param = new HashMap<>();
 		param.put("childCate", childCate);
 		param.put("productCode", productCode);
-		
-		//소분류로 리스트 가져오기 
+
+		// 소분류로 리스트 가져오기
 		List<Product> recommendation = shopService.selectRecommendation(param);
 		log.debug("recommendation 몇 개? :{}", recommendation.size());
 		log.debug("recommendation :{}", recommendation);
-		
+
 		Collections.shuffle(recommendation);
 		log.debug("recommendation : {}", recommendation);
 		model.addAttribute("recommendation", recommendation);
-		
 
 		return "shop/itemDetail";
 	}
@@ -234,22 +232,56 @@ public class ShopController {
 		return "redirect:" + referer;
 	}
 
-	
-	//리뷰 신고 등록
+	// 리뷰 신고 등록
 	@PostMapping("/insertReport")
 	public String insertReport(Report report, RedirectAttributes redirectAttr, HttpServletRequest request) {
 		log.debug("report 8개 받았니? : {}", report);
-		
+
 		int result = reportService.insertReport(report);
-		log.debug("신고가 잘 등록? : {}",result);
-		
+		log.debug("신고가 잘 등록? : {}", result);
+
 		String msg = (result > 0) ? "신고 등록 성공" : "신고 등록 실패";
 		redirectAttr.addFlashAttribute("msg", msg);
-		
-	    String  referer= request.getHeader("Referer");
-	    return "redirect:"+  referer;
+
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
 	}
-	
+
+	// 리뷰 좋아요 추가
+	@ResponseBody
+	@GetMapping("/reviewLikeAdd")
+	public int reviewLikeAdd(@RequestParam int reviewNo, @RequestParam int memberNo, @RequestParam String productCode) {
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("reviewNo", reviewNo);
+		param.put("memberNo", memberNo);
+		param.put("productCode", productCode);
+
+		int result = shopService.reviewLikeAdd(param);
+		log.debug("리뷰 좋아요 잘 추가? : {}", result);
+
+		return result;
+
+	}
+
+	// 리뷰 좋아요 삭제
+	@ResponseBody
+	@GetMapping("/reviewLikeDelete")
+	public int reviewLikeDelete(@RequestParam int reviewNo, @RequestParam int memberNo,
+			@RequestParam String productCode) {
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("reviewNo", reviewNo);
+		param.put("memberNo", memberNo);
+		param.put("productCode", productCode);
+
+		int result = shopService.reviewLikeDelete(param);
+		log.debug("리뷰 좋아요 잘 삭제? : {}", result);
+
+		return result;
+
+	}
+
 	/**
 	 * 혜진 작업 시작
 	 */
