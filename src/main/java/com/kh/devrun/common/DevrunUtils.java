@@ -287,7 +287,7 @@ public class DevrunUtils {
 				reviewSb.append("						<div class=\"reviewPhoto\">\n"
 						+ "						  <img src=\""+url+"/resources/upload/review/"+review.getAttach().getRenamedFilename()+ "\" alt=\"\" onclick=\"expandPic(event)\">\n"
 						+ "						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
-						+ "							<i class=\"far fa-heart\">3</i>\n"
+						+ " 							<i style=\"width:100px\"  data-review-no=\""+review.getReviewNo()+"\" class=\"far fa-heart likes\">"+review.getLikeCount()+"</i>\n"
 						+ "						  </div>\n"
 						+ "						</div>");
 			}
