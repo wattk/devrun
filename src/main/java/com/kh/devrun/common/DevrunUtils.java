@@ -10,16 +10,21 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
-import com.kh.devrun.product.model.vo.Product;
-import com.kh.devrun.shop.controller.ShopController;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 @Slf4j
 public class DevrunUtils {
 
+	
 	/**
 	 * 페이징바 메소드
 	 * 
@@ -182,11 +187,11 @@ public class DevrunUtils {
 	 * @param url
 	 * @returnL
 	 */
-	public static String getProductList(List<Product> productList, String url) {
+	public static String getProductList(List<ProductEntity> productList, String url) {
 		DecimalFormat fmt = new DecimalFormat("###,###");
 		StringBuilder sb = new StringBuilder();
 
-		for (Product product : productList) {
+		for (ProductEntity product : productList) {
 			sb.append("<div class=\"card-box-d col-md-3 p-5\">\n"
 					+ "<div class=\"card-img-d shop-item-img position-relative\">\r\n" + "<img src=\"" + url
 					+ "/resources/upload/product/" + product.getThumbnail()
@@ -232,6 +237,7 @@ public class DevrunUtils {
 			cookie.setMaxAge(365 * 24 * 60 * 60);
 			if ("promotion".equals(param))
 				cookie.setPath(request.getContextPath() + "/shop/promotionDetail.do");// 해당 경로 요청 시에만 쿠키 전송
+				
 			response.addCookie(cookie);
 		}
 
@@ -239,21 +245,26 @@ public class DevrunUtils {
 	}
 
 	/**
-	 * 리뷰 비동기 처리 - 다현 ft.자바에서 HTML 코드 쓰게 되어서 넘흐 행복하다 ^^* -> 어연 5시간 뒤 ㅋㅋㅋ 아 근데 재밌는데? 진심
+	 * 리뷰 비동기 처리
 	 */
-	public static String getReview(List<Review> reviewList, Member member, String proPhotoPath,String url) {
+	public static String getReview(List<Review> reviewList, Member member,String url) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm:ss");
 		StringBuilder reviewSb = new StringBuilder();
+		log.debug("비웠나여? : {}",reviewList.isEmpty());
 		
-		
+		if(reviewList.isEmpty()) {
+			reviewSb.append("<span id=\"reviewNone\">등록된 리뷰가 없습니다.</span>");
+		}
+
 		for(Review review : reviewList) {
 			StringBuilder sb = new StringBuilder();
+			String proPhotoName = review.getId();
 			
 			reviewSb.append("			<!--리뷰시작-->\n"
 					+ "				<div class=\"aReviewDiv forFont\">\n"
 					+ "				  <div class=\"shop-review row\">\n"
 					+ "					<div class=\"reviewProfile\">\n"
-					+ "					  <img class=\"rounded-circle mt-3\" src=\""+proPhotoPath+"\"  alt=\"\">\n"
+					+ "					  <img class=\"rounded-circle mt-3\" src=\""+url+"/resources/upload/profilePhoto/"+ proPhotoName +".png" +"\" alt=\"\">\n"
 					+ "					</div> \n"
 					+ "					<div class=\"reviewContent ml-3\">");
 			
@@ -261,15 +272,17 @@ public class DevrunUtils {
 				sb.append("<i class=\"fas fa-star\"></i>");
 			}
 			reviewSb.append(sb.toString());
-			reviewSb.append("					  <br><span>"+member.getId() +"</span> | <span> "+sdf.format(review.getRegDate())+"</span> | \n"
-					+ "					  <!-- Button trigger modal -->\n"
-					+ "					  <button type=\"button\" class=\"btn btn-primary report-btn\" data-toggle=\"modal\" data-target=\"#exampleModal\">신고</button>\n"
-					+ "					  <div class=\"reviewP mt-3\">\n"
+			reviewSb.append("					  <br><span>"+review.getId() +"</span> | <span> "+sdf.format(review.getRegDate())+"</span> | \n"
+					+ "					  <!-- Button trigger modal -->\n");
+			if(member != null) {
+				reviewSb.append("<button type=\"button\" class=\"btn btn-primary report-btn\" data-toggle=\"modal\" data-target=\"#exampleModal\" data-content=\""+review.getContent()+"\" data-id=\""+review.getId()+"\" data-review-no=\""+review.getReviewNo() +"\" data-member-no=\""+review.getMemberNo() +"\" >신고</button>\n");
+			}
+			reviewSb.append(
+					  "					  <div class=\"reviewP mt-3\">\n"
 					+ "					  "+review.getContent()+"\n"
 					+ "					  </div>  \n"
 					+ "					</div>\n"
 					+ "					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 시작 -->");
-			
 			if(review.getAttach().getReviewAttachNo() != 0) {
 				reviewSb.append("						<div class=\"reviewPhoto\">\n"
 						+ "						  <img src=\""+url+"/resources/upload/review/"+review.getAttach().getRenamedFilename()+ "\" alt=\"\" onclick=\"expandPic(event)\">\n"
@@ -279,24 +292,24 @@ public class DevrunUtils {
 						+ "						</div>");
 			}
 			if(review.getAttach().getReviewAttachNo() < 1) {
-				reviewSb.append("//						<div class=\"reviewPhoto\">\n"
-						+ "//						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
-						+ "//							<i style=\"width:100px\" class=\"far fa-heart\">3</i>\n"
-						+ "//						  </div>\n"
-						+ "//						</div>"
-						+"//					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->\n");
+				reviewSb.append("						<div class=\"reviewPhoto\">\n"
+						+ "						  <div  class=\"reviewLikeBtn text-center border border-success rounded mt-1\">\n"
+						+ "							<i style=\"width:100px\" class=\"far fa-heart\">3</i>\n"
+						+ "						  </div>\n"
+						+ "						</div>"
+						+"					<!-- 리뷰 첨부파일 있을 시에만 사진 띄우기 처리 끝 -->\n");
 			}
-
-			if(review.getId().equals(member.getId())) {
-				reviewSb.append("					<!-- 삭제버튼 시작 -->\n"
-						+ "						<button type=\"button\" class=\"btn btn-danger reviewDelBtn\" value=\""+review.getReviewNo()+"\">삭제</button>");
+			if(member !=null) {
+				if(review.getId().equals(member.getId())) {
+					reviewSb.append("					<!-- 삭제버튼 시작 -->\n"
+							+ "						<button type=\"button\" class=\"btn btn-danger reviewDelBtn\" value=\""+review.getReviewNo()+"\">삭제</button>");
+				}				
 			}
 			reviewSb.append("				  </div>\n"
 					+ "				</div>");
+			
 
 		}
-		
-		
 	
 		return reviewSb.toString();
 	}

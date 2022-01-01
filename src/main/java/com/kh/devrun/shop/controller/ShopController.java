@@ -2,6 +2,7 @@ package com.kh.devrun.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +29,12 @@ import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
+import com.kh.devrun.report.model.service.ReportService;
+import com.kh.devrun.report.model.vo.Report;
 import com.kh.devrun.shop.model.service.ShopService;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Review;
@@ -54,6 +57,10 @@ public class ShopController {
 
 	@Autowired
 	ServletContext application;
+	
+	@Autowired
+	ReportService reportService;
+	
 
 //--------------------주입-------------------------------------	
 
@@ -68,10 +75,10 @@ public class ShopController {
 	}
 
 	// 상품 사이드 메뉴에서 전체보기 클릭 시
-	@GetMapping("/CategoryItemAll")
-	public String CategoryItemAll(@RequestParam String parentCate, Model model) {
+	@GetMapping("/categoryItemAll")
+	public String categoryItemAll(@RequestParam String parentCate, Model model) {
 
-		List<Product> itemList = shopService.CategoryItemAll(parentCate);
+		List<ProductEntity> itemList = shopService.CategoryItemAll(parentCate);
 		model.addAttribute("itemList", itemList);
 
 		return "shop/shopCategory";
@@ -83,44 +90,86 @@ public class ShopController {
 	public Map<String, Object> picReviewOnly(@RequestParam String productCode, Authentication authentication,
 			HttpServletRequest request) {
 		String reviewSb = null;
-		Member member = (Member) authentication.getPrincipal();
-		log.debug("member{}", member);
+		Member member = null;
 
-		String proPhotoName = member.getProPhoto();
-		String proPhotoPath = request.getContextPath() + "/resources/upload/profilePhoto/" + proPhotoName;
-		log.debug("프로필 사진 경로 {}", proPhotoPath);
-		
+		//getReivew 메소드 인자들
 		String url = request.getContextPath();
-
-		List<Review> picReviewList = shopService.picReviewOnly(productCode);
-		if (picReviewList != null) {
-			reviewSb = DevrunUtils.getReview(picReviewList, member,proPhotoPath,url);
+		if(authentication != null) {
+			member = (Member) authentication.getPrincipal();			
 		}
+		List<Review> picReviewList = shopService.picReviewOnly(productCode);
 
+			reviewSb = DevrunUtils.getReview(picReviewList, member, url);
+			
+		int reviewTotal = shopService.countPicReviewList(productCode);
 		Map<String, Object> map = new HashMap<>();
+		map.put("reviewTotal", reviewTotal);
 		map.put("reviewSb", reviewSb);
-		
+
 		return map;
 	}
 
-	// 상세페이지를 위한 상품 하나 받아오기!
+	// 리뷰 전체조회
+	@ResponseBody
+	@GetMapping("/review")
+	public Map<String, Object> review(@RequestParam String productCode,@RequestParam int orderBy, Authentication authentication,
+			HttpServletRequest request) {
+		// 이게 -1일때 desc 줘야 함 (최신순보기) 
+		log.debug("orderBy 값 체크: {}", orderBy);
+		String reviewSb = null;
+		Member member = null;
+		
+		//getReivew 메소드 인자들
+		String url = request.getContextPath();
+		if(authentication != null) {
+			member = (Member) authentication.getPrincipal();			
+		}
+		
+		Map<String,Object>param = new HashMap<>();
+		param.put("productCode", productCode);
+		param.put("orderBy", orderBy);
+		
+		List<Review> reviewList = shopService.selectAllReview(param);
+
+			reviewSb = DevrunUtils.getReview(reviewList, member, url);
+
+		int reviewTotal = shopService.countAllList(productCode);
+		Map<String, Object> map = new HashMap<>();
+		map.put("reviewTotal", reviewTotal);
+		map.put("reviewSb", reviewSb);
+
+		return map;
+	}
+
+	// 상세페이지를 이동 시 
 	@GetMapping("/itemDetail/{productCode}")
 	public String selectOneItem(@PathVariable String productCode, Model model) {
+
 		// 상품 조회
 		ProductEx product = productService.selectOneItem(productCode);
 		log.debug("product 받아왔나요? : {}", product);
 		model.addAttribute("product", product);
 
-		// 옵션도 조회
+		// 상품 옵션도 조회
 		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
 		model.addAttribute("pDetail", pDetail);
 
-		// 해당 상품 리뷰들 조회
-		List<Review> reviewList = shopService.selectAllReview(productCode);
-		int reviewTotal = shopService.countAllList(productCode);
-		log.debug("리뷰 리스트 조회! : {}", reviewList);
-		model.addAttribute("reviewList", reviewList);
-		model.addAttribute("reviewTotal", reviewTotal);
+		//소분류 카테고리 추출
+		String childCate = productCode.substring(3, 6);
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("childCate", childCate);
+		param.put("productCode", productCode);
+		
+		//소분류로 리스트 가져오기 
+		List<Product> recommendation = shopService.selectRecommendation(param);
+		log.debug("recommendation 몇 개? :{}", recommendation.size());
+		log.debug("recommendation :{}", recommendation);
+		
+		Collections.shuffle(recommendation);
+		log.debug("recommendation : {}", recommendation);
+		model.addAttribute("recommendation", recommendation);
+		
 
 		return "shop/itemDetail";
 	}
@@ -181,6 +230,22 @@ public class ShopController {
 		return "redirect:" + referer;
 	}
 
+	
+	//리뷰 신고 등록
+	@PostMapping("/insertReport")
+	public String insertReport(Report report, RedirectAttributes redirectAttr, HttpServletRequest request) {
+		log.debug("report 8개 받았니? : {}", report);
+		
+		int result = reportService.insertReport(report);
+		log.debug("신고가 잘 등록? : {}",result);
+		
+		String msg = (result > 0) ? "신고 등록 성공" : "신고 등록 실패";
+		redirectAttr.addFlashAttribute("msg", msg);
+		
+	    String  referer= request.getHeader("Referer");
+	    return "redirect:"+  referer;
+	}
+	
 	/**
 	 * 혜진 작업 시작
 	 */
@@ -217,7 +282,7 @@ public class ShopController {
 			param.put("promotionCode", promotionCode);
 
 			// 1. 전체 상품 목록
-			List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
+			List<ProductEntity> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
 			model.addAttribute("promotion", promotion);
 			model.addAttribute("productCategory", productCategory);
 			model.addAttribute("productList", productList);
@@ -266,7 +331,7 @@ public class ShopController {
 		// 1. 전체 상품 목록
 		String url = request.getContextPath();
 
-		List<Product> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
+		List<ProductEntity> productList = promotionService.selectProductListByPromotionCode(param, offset, limit);
 		String productStr = DevrunUtils.getProductList(productList, url);
 
 		// 2. 전체 게시물 수 totalContent

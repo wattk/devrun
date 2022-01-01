@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.promotion.model.dao.PromotionDao;
 import com.kh.devrun.promotion.model.exception.PromotionException;
 import com.kh.devrun.promotion.model.vo.ProductPromotion;
@@ -26,7 +26,7 @@ public class PromotionServiceImpl implements PromotionService {
 	private PromotionDao promotionDao;
 
 	@Override
-	public List<Product> selectProductListByProductCode(String searchCode) {
+	public List<ProductEntity> selectProductListByProductCode(String searchCode) {
 		return promotionDao.selectProductListByProductCode(searchCode);
 	}
 
@@ -96,7 +96,7 @@ public class PromotionServiceImpl implements PromotionService {
 	}
 
 	@Override
-	public List<Product> selectProductListByPromotionCode(Map<String, Object> param) {
+	public List<ProductEntity> selectProductListByPromotionCode(Map<String, Object> param) {
 		return promotionDao.selectProductListByPromotionCode(param);
 	}
 
@@ -119,7 +119,7 @@ public class PromotionServiceImpl implements PromotionService {
 	}
 
 	@Override
-	public List<Product> selectProductPromotionListByChildCategoryCode(Map<String, Object> param) {
+	public List<ProductEntity> selectProductPromotionListByChildCategoryCode(Map<String, Object> param) {
 		return promotionDao.selectProductPromotionListByChildCategoryCode(param);
 	}
 
@@ -142,7 +142,7 @@ public class PromotionServiceImpl implements PromotionService {
 	}
 
 	@Override
-	public List<Product> selectProductListByPromotionCode(Map<String, Object> param, int offset, int limit) {
+	public List<ProductEntity> selectProductListByPromotionCode(Map<String, Object> param, int offset, int limit) {
 		return promotionDao.selectProductListByPromotionCode(param, offset, limit);
 	}
 

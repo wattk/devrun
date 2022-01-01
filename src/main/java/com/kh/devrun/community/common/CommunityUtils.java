@@ -1,5 +1,9 @@
 package com.kh.devrun.community.common;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public class CommunityUtils {
 
 	/**
@@ -146,6 +150,64 @@ public class CommunityUtils {
 				+ "		</script>\n");
 		
 		return pagebar.toString();
+	}
+	
+	/**
+	 * 게시글 읽음 여부 확인
+	 * 
+	 * HttpServletRequest로부터 클라이언트의 쿠키를 가져온다. 
+	 * 먼저 쿠키가 null인지 검사하고, 그렇지 않다면 foreach를 통해 해당 쿠키들 중 postView라는 이름의 쿠키가 있는지 검사한다.
+	 * 만약 존재한다면 oldCookie라는 이름으로 가져온다.
+	 * 
+	 * param : 쿠키 저장소 이름(key) 지정
+	 */
+	public static boolean hasRead(HttpServletRequest request, HttpServletResponse response, int communityNo, String param) {
+		
+		// 쿠키 배열 선언
+		Cookie[] cookies = request.getCookies();
+		// hasRead 기본값 fasle로 지정
+		boolean hasRead = false;
+		// boardValue 선언
+		String boardValue = "";
+		
+		// 쿠기가 null이 아닐 때
+		if (cookies != null) {
+			// foreach를 통해 해당 쿠키들 중
+			for (Cookie c : cookies) {
+				String name = c.getName();
+				String value = c.getValue();
+
+				// 쿠키의 name(key)이 param과 같을 때 
+				if (param.equals(name)) {
+					// 선언해 놓은 boardValue에 해당 value를 저장
+					boardValue = value;
+					
+					// communityNo가 확인될 경우 읽었던 게시글임을 확인 할 수 있다.
+					if (value.contains("|" + communityNo + "|")) {
+						hasRead = true;
+					}
+					break;
+				}
+			}
+		}
+
+		// 게시글을 읽지 않았다면
+		if (!hasRead) {
+			// cookie 생성
+			// param : name, boardValue : value
+			Cookie cookie = new Cookie(param, boardValue + "|" + communityNo + "|");// 그냥 숫자만 쓰면 혼동이 올 수 있으므로 no에 대한 padding문자 추가
+			
+			// 쿠키 유효기간 정보를 얻음
+			cookie.setMaxAge(365 * 24 * 60 * 60);
+			
+			if ("community".equals(param))
+				// setPath() : 쿠키사용 유효 디렉토리를 설정
+				cookie.setPath(request.getContextPath() + "/community/communityFreeboardDetail");// 해당 경로 요청 시에만 쿠키 전송
+			// response.addCoolie를 해줘야지 쿠키값에 실어진다.
+			response.addCookie(cookie);
+		}
+
+		return hasRead;
 	}
 	
 }

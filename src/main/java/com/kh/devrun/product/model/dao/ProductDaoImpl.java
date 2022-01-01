@@ -12,14 +12,14 @@ import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductCategory;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
-import com.kh.devrun.product.model.vo.ProductExtends;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Repository
 @Slf4j
-public class ProductDaoImpe implements ProductDao{
+public class ProductDaoImpl implements ProductDao{
 
 	@Autowired
 	SqlSession session;
@@ -31,7 +31,7 @@ public class ProductDaoImpe implements ProductDao{
 
 	//상품 등록
 	@Override
-	public int insertProduct(Product product) {
+	public int insertProduct(ProductEntity product) {
 		return session.insert("product.insertProduct",product);
 	}
 
@@ -48,7 +48,7 @@ public class ProductDaoImpe implements ProductDao{
 	}
 	
 	@Override
-	public List<Product> selectAllProductList(int offset, int limit) {
+	public List<ProductEntity> selectAllProductList(int offset, int limit) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("product.selectAllProductList",null,rowBounds);
 	}
@@ -59,12 +59,6 @@ public class ProductDaoImpe implements ProductDao{
 		return session.selectOne("product.selectTotalBoardCount");
 	}
 
-	// 옵션 리스트 조회(비동기)
-	@Override
-	public List<ProductDetail> findProductOption(String productCode) {
-		return session.selectList("product.findProductOption", productCode);
-	}
-	
 	// 상품 삭제
 	@Override
 	public int deleteProduct(String productCode) {
@@ -73,7 +67,7 @@ public class ProductDaoImpe implements ProductDao{
 
 	// 상품정보 하나 가져오기
 	@Override
-	public ProductExtends selectProductOne(String productCode) {
+	public ProductEx selectProductOne(String productCode) {
 		return session.selectOne("product.selectProductOne",productCode);
 	}
 
@@ -84,7 +78,7 @@ public class ProductDaoImpe implements ProductDao{
 	}
 	// 상품 정보 업데이트	
 	@Override
-	public int updateProduct(Product product) {
+	public int updateProduct(ProductEntity product) {
 		return session.update("product.updateProduct", product);
 	}
 	
@@ -117,6 +111,19 @@ public class ProductDaoImpe implements ProductDao{
 	public ProductEx selectOneItem(String productCode) {
 		return session.selectOne("product.selectOneItem",productCode);
 	}
+
+	/**
+	 * 혜진 상품 + 상품 상세(옵션) 조회
+	 * @param detailNo
+	 * @return
+	 */
+	@Override
+	public List<Product> selectProductByDetailNo(int[] detailNo) {
+		return session.selectList("product.selectProductByDetailNo", detailNo);
+	}
+	/* 혜진 끝*/
+
+	
 	
 }
 

@@ -13,7 +13,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/mypage/profileUpdate.css" rel="stylesheet">
 
 <%-- EL에서 접근하기 위해 VAR속성 지정 --%>
-<%-- <sec:authentication property="principal" var="member"/> --%>
+<sec:authentication property="principal" var="member"/>
 
 		<div class="col-12" id="profileUpdate">
 			<div class="row">
@@ -149,32 +149,40 @@
 		        		<i class="bi bi-x cursor" data-dismiss="modal"></i>
 		      		</section>
 		      		<section class="modal-body">
-			      		<div>
-				      		<h5>탈퇴 시 유의사항</h5>
-			      			<p>회원탈퇴 시 개인정보 및 데브런에서 만들어진 모든 데이터는 보관됩니다.</p>
-			      		</div>
-		      			<div>
-			      			<h5>데브런을 탈퇴하시는 이유는 무엇인가요?</h5>
-			      			<p>데브런을 탈퇴하는 이유를 알려주시면 보다 좋은 서비스 제공을 위해 노력하겠습니다.</p>
-			      			<select class="custom-select cursor" required>
-								<option disabled selected>탈퇴사유를 선택하세요</option>
-							  	<option value="1">아이디 변경 / 재가입 목적</option>
-							  	<option value="2">사생활 기록 삭제 목적</option>
-							  	<option value="3">서비스 기능 불편</option>
-							  	<option value="4">개인정보 및 보안 우려</option>
-							  	<option value="5">데브런 이용 안 함</option>
-							  	<option value="6">기타</option>
-							</select>
-		      			</div>
-		      			<div class="form-check">
-							<input type="checkbox" id="agreementCheckbox" class="form-check-input cursor" value="" required>
-						  	<label class="form-check-label" for="agreementCheckbox">
-						    	해당 내용을 모두 확인하였으며, 회원탈퇴에 동의합니다.
-						  	</label>
-						</div>
-		      			<div id="withdrawBtn" class="row">
-		      				<button type="button" id="memberWithdrawBtn" class="col-4 cursor">회원탈퇴</button>
-		      			</div>
+		      			<form:form name="memberWithdrawalFrm" method="POST" action="${pageContext.request.contextPath}/mypage/myinfo/memberWithdrawal.do">
+				      		<div>
+					      		<h5>탈퇴 시 유의사항</h5>
+				      			<p>회원탈퇴 시 개인정보 및 데브런에서 만들어진 모든 데이터는 보관됩니다.</p>
+				      		</div>
+			      			<div>
+				      			<h5>데브런을 탈퇴하시는 이유는 무엇인가요?</h5>
+				      			<p>데브런을 탈퇴하는 이유를 알려주시면 보다 좋은 서비스 제공을 위해 노력하겠습니다.</p>
+				      			<select id="reason" class="custom-select cursor" required>
+									<option value="" disabled selected>탈퇴사유를 선택하세요</option>
+								  	<option value="1">아이디 변경 / 재가입 목적</option>
+								  	<option value="2">사생활 기록 삭제 목적</option>
+								  	<option value="3">서비스 기능 불편</option>
+								  	<option value="4">개인정보 및 보안 우려</option>
+								  	<option value="5">데브런 이용 안 함</option>
+								  	<option value="6">기타</option>
+								</select>
+			      			</div>
+			      			<div class="form-check">
+								<input type="checkbox" id="check" class="form-check-input cursor" required>
+							  	<label class="form-check-label" for="check">
+							    	해당 내용을 모두 확인하였으며, 회원탈퇴에 동의합니다.
+							  	</label>
+							</div>
+							<div id="passwordCheck">
+								<div class="row col-6">
+									<label for="password" class="col-4">비밀번호<sup class="text-danger">*</sup></label>
+									<input type="password" name="password" id="password" class="form-control col-8" required>
+								</div>
+							</div>
+			      			<div id="withdrawBtn" class="row">
+			      				<button type="submit" id="memberWithdrawalBtn" class="col-4 cursor">회원탈퇴</button>
+			      			</div>
+		      			</form:form>
 		      		</section>
 		    	</div>
 		  	</div>
@@ -212,6 +220,8 @@ $("#deleteBtn").click((e) => {
 	//선택 파일 제거
     $("#upFile").val("");
 });
+
+
 
 /* 회원가입 참고 : 닉네임, 이메일 유효성 검사 & 중복 검사 */
 $(".duplicate-check").keyup((e) => {
@@ -318,13 +328,29 @@ $(profileUpdateBtn).click((e)=>{
 	
 	const profileImgSrc = $("#profileImg").attr("src");
 	const profileImgPath = "${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png";
-	if(profileImgSrc == profileImgPath) {
+	if(profileImgSrc == profileImgPath)
 		$("#upFile").append(`<input type="hidden" name="proPhoto" value="${member.proPhoto}"/>`);
-	}
 	
 	$(document.profileUpdateFrm).submit();
 });
 
+
+
+/* 회원탈퇴 동의약관 체크 시 비밀번호 입력창 제공 */
+$("#check").change(function() {
+    if($("#check").is(":checked")) 
+    	$("#passwordCheck").slideDown();
+    else
+    	$("#passwordCheck").slideUp();
+});
+
+/* 탈퇴 버튼 클릭 시 회원탈퇴 */
+$(memberWithdrawalBtn).click((e)=>{
+	//탈퇴사유, 동의약관, 비밀번호 유효성검사
+	if(($("#reason").val() == '') || ($("#check").val() == '') || ($("#password").val() == ''))
+		return;
+	$(document.memberWithdrawalFrm).submit();
+});
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

@@ -5,19 +5,23 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,9 +29,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.devrun.address.model.vo.Address;
 import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.mypage.model.service.MypageService;
+import com.kh.devrun.order.model.service.OrderService;
+import com.kh.devrun.order.model.vo.MerchantExt;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +48,9 @@ public class MypageController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private OrderService orderService;
 	
 	@Autowired
 	ServletContext application;
@@ -57,7 +67,7 @@ public class MypageController {
 	 * 지원 마이페이지 메인 시작
 	 */
 	@GetMapping("/mypage.do")
-	public String mypage(Model model, Authentication authentication) {
+	public String mypage() {
 //		Member principal = (Member) authentication.getPrincipal();
 //		String id = principal.getId();
 //		Object credentials = authentication.getCredentials();
@@ -78,7 +88,7 @@ public class MypageController {
 //		Member member = memberService.selectOneMemberById(id);
 //		log.debug("member = {}", member);
 //		model.addAttribute("member", member);
-		mypageMember(model, authentication);
+		//mypageMember(model, authentication);
 		
 		return "mypage/mypage";
 	}
@@ -90,8 +100,7 @@ public class MypageController {
 	 * 지원 나의 정보 메인 시작
 	 */
 	@GetMapping("/myinfo.do")
-	public String myinfo(Model model, Authentication authentication) {
-		mypageMember(model, authentication);
+	public String myinfo() {
 		
 		return "mypage/myinfo";
 	}
@@ -115,8 +124,7 @@ public class MypageController {
 	 * 지원 나의 정보 > 활동 배지 시작
 	 */
 	@GetMapping("/myinfo/activityBadge.do")
-	public String activityBagde(Model model, Authentication authentication) {
-		mypageMember(model, authentication);
+	public String activityBagde() {
 		
 		return "mypage/activityBadge";
 	}
@@ -128,8 +136,7 @@ public class MypageController {
 	 * 지원 나의 정보 > 프로필 수정 시작
 	 */
 	@GetMapping("/myinfo/profileUpdate.do")
-	public String profileUpdate(Model model, Authentication authentication) {
-		mypageMember(model, authentication);
+	public String profileUpdate() {
 		
 		return "mypage/profileUpdate";
 	}
@@ -152,6 +159,9 @@ public class MypageController {
 		return map;
 	}
 	
+	/**
+	 * 프로필 수정
+	 */
 	@PostMapping("/myinfo/profileUpdate.do")
 	public String profileUpdate(
 			Member member,
@@ -159,11 +169,12 @@ public class MypageController {
 			RedirectAttributes redirectAttr,
 			Authentication authentication) throws Exception {
 			
-			String memberId = member.getId();
+			String id = member.getId();
 			String pro_Photo = member.getProPhoto();
 			String password = member.getPassword();
 			log.debug("password = {}", password);
 			Member principal = (Member) authentication.getPrincipal();
+			log.debug("principal = {}", principal);
 			/**
 			 * 비밀번호 확인
 			 * - BCryptPasswordEncoder의 matches()함수로 사용자가 입력한 비밀번호와 DB의 암호화된 비밀번호 값을 비교
@@ -185,7 +196,7 @@ public class MypageController {
 					
 					//proPhoto가 null이라면
 					if(pro_Photo == null) {
-						File proPhoto = new File(saveDirectory + "/" + memberId + ".png");
+						File proPhoto = new File(saveDirectory + "/" + id + ".png");
 						log.debug("proPhoto = {}", proPhoto);
 						if(proPhoto.exists()) proPhoto.delete();
 					}
@@ -197,14 +208,14 @@ public class MypageController {
 						log.debug("upFile.size = {}", upFile.getSize());
 						
 						if(member.getProPhoto() != null) { //이미 프로필 사진이 있을 경우
-							File proPhoto = new File(saveDirectory + "/" + memberId + ".png");
+							File proPhoto = new File(saveDirectory + "/" + id + ".png");
 							if(proPhoto.exists()) proPhoto.delete();
 						}
 						
-						String proPhoto = memberId + ".png";
+						String proPhoto = id + ".png";
 						member.setProPhoto(proPhoto);
 							
-						//1.서버컴퓨터에 저장
+						//서버컴퓨터에 저장
 						File dest = new File(saveDirectory, proPhoto);
 						log.debug("dest = {}", dest);
 						upFile.transferTo(dest);
@@ -218,14 +229,25 @@ public class MypageController {
 					int result = memberService.updateMemberProfile(member);
 					String msg = result > 0 ? "프로필 수정이 완료되었습니다." : "프로필 수정에 실패하였습니다.";
 					redirectAttr.addFlashAttribute("msg", msg);
+					
+					//Authentication객체 갱신
+					Member updateMember = memberService.selectOneMemberById(id);
+					Authentication newAuthentication = 
+						new UsernamePasswordAuthenticationToken(
+							updateMember,
+							authentication.getCredentials(),
+							authentication.getAuthorities()
+						);
+					SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+					log.debug("newAuthentication = {}", newAuthentication);
 				
 				} catch (Exception e) {
 					log.error("프로필 수정 오류", e);
 					throw e;
 				}
 				return "redirect:/mypage/myinfo.do";
-			
-			} else {
+			}
+			else {
 				redirectAttr.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
 				return "redirect:/mypage/myinfo/profileUpdate.do";
 			}
@@ -239,6 +261,39 @@ public class MypageController {
 		PropertyEditor editor = new CustomDateEditor(sdf, true);
 		binder.registerCustomEditor(Date.class, editor);
 	}
+	
+	/**
+	 * 회원 탈퇴
+	 */
+	@PostMapping("/myinfo/memberWithdrawal.do")
+	public String memberWithdrawal(@RequestParam String password, Authentication authentication, RedirectAttributes redirectAttr) {
+		Member member = (Member) authentication.getPrincipal();
+		String id = member.getId();
+		
+		//비밀번호 확인
+		if(passwordEncoder.matches(password, member.getPassword())) {
+			try {
+				//업로드 된 프로필 사진이 있다면 삭제
+				String saveDirectory = application.getRealPath("/resources/upload/profilePhoto");
+				if(member.getProPhoto() != null) {
+					File proPhoto = new File(saveDirectory + "/" + id + ".png");
+					if(proPhoto.exists()) proPhoto.delete();
+				}
+				int result = memberService.memberWithdrawal(id);
+				String msg = result > 0 ? "회원 탈퇴가 완료되었습니다." : "회원 탈퇴에 실패하였습니다.";
+				redirectAttr.addFlashAttribute("msg", msg);
+				
+			} catch (Exception e) {
+				log.error("회원 탈퇴 오류", e);
+				throw e;
+			}
+			return "redirect:/member/memberLogout.do";
+		}
+		else {
+			redirectAttr.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
+			return "redirect:/mypage/myinfo/profileUpdate.do";
+		}
+	}
 			
 	/**
 	 * 지원 나의 정보 > 프로필 수정 끝
@@ -247,8 +302,40 @@ public class MypageController {
 	/**
 	 * 지원 나의 정보 > 배송지 관리 시작
 	 */
-	@GetMapping("/myinfo/shippingAddress.do")
-	public String shippingAddress() {
+	@GetMapping("/myinfo/addressManage.do")
+	public String addressManage() {
+
+		return "mypage/addressManage";
+		
+	}
+	
+	/**
+	 * insert into address values(seq_address_no.nextval, #{memberNo}, #{postalCode}, #{address1}, #{address2}, #{mainYn}, #{title}, #{addressee}, #{phone})
+	 */
+	@PostMapping("/myinfo/addressEnroll.do")
+	public String addressEnroll(Address address, RedirectAttributes redirectAttr) {
+		
+		try {
+			int result = mypageService.insertAddress(address);
+			String msg = result > 0 ? "주소 등록이 완료되었습니다." : "주소 등록에 실패하였습니다.";
+			redirectAttr.addFlashAttribute("msg", msg);
+		} catch (Exception e) {
+			log.error("주소 등록 오류", e);
+			throw e;
+		}
+		return "redirect:/mypage/myinfo/addressManage.do";
+		
+	}
+	
+	@PostMapping("/myinfo/addressUpdate.do")
+	public String addressUpdate() {
+
+		return "mypage/shippingAddress";
+		
+	}
+	
+	@PostMapping("/myinfo/addressDelete.do")
+	public String addressDelete() {
 
 		return "mypage/shippingAddress";
 		
@@ -270,13 +357,13 @@ public class MypageController {
 	 * 지원 나의 정보 > 신고 내역 끝
 	 */
 	
-	private void mypageMember(Model model, Authentication authentication) {
-		Member principal = (Member) authentication.getPrincipal();
-		String id = principal.getId();
-		Member member = memberService.selectOneMemberById(id);
-		log.debug("member = {}", member);
-		model.addAttribute("member", member);
-	}
+//	private void mypageMember(Model model, Authentication authentication) {
+//		Member principal = (Member) authentication.getPrincipal();
+//		String id = principal.getId();
+//		Member member = memberService.selectOneMemberById(id);
+//		log.debug("member = {}", member);
+//		model.addAttribute("member", member);
+//	}
 	
 	/**
 	 * 지원 끝
@@ -287,7 +374,12 @@ public class MypageController {
 	 */
 	
 	@GetMapping("/myshopping.do")
-	public void myshopping() {}
+	public void myshopping(Authentication authentication, Model model) {
+		Member member = (Member)authentication.getPrincipal();
+		Map<String, Object> map = orderService.selectMyShopping(member.getMemberNo());
+		model.addAttribute("orderLogCnt", map.get("orderLogCnt"));
+		model.addAttribute("orderList", map.get("orderList"));
+	}
 	
 	/**
 	 * 혜진 나의 쇼핑 끝
@@ -317,7 +409,12 @@ public class MypageController {
 	 */
 	
 	@GetMapping("/orderList.do")
-	public void orderList() {}
+	public void orderList(Authentication auth, Model model) {
+		Member member = (Member)auth.getPrincipal();
+		List<MerchantExt> list = orderService.selectOrderList(member.getMemberNo());
+		
+		model.addAttribute("list", list);
+	}
 	
 	/**
 	 * 혜진 주문 내역 끝
@@ -326,8 +423,16 @@ public class MypageController {
 	 * 혜진 주문 상세 시작
 	 */
 	
-	@GetMapping("/orderDetail.do")
-	public void orderDetail() {}
+	@GetMapping("/orderDetail/{merchantUid}")
+	public String orderDetail(@PathVariable String merchantUid, Model model) {
+		log.debug("merchantUid = {}", merchantUid);
+		Map<String, Object> map = orderService.selectOneMerchant(merchantUid);
+		model.addAttribute("merchant", map.get("merchant"));
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("imp", map.get("imp"));
+		log.debug("list = {}", map.get("list"));
+		return "/mypage/orderDetail";
+	}
 	
 	/**
 	 * 혜진 주문 상세 끝

@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -185,7 +187,7 @@ public class CommunityController {
 	public String communityFreeboardEnroll(Community community, RedirectAttributes redirectAttributes) {
 		log.debug("{}", "/communityFreeboardEnroll.do 요청!");
 		log.debug("community = {}", community);
-		// jmg 데이터를 잘라오기 위한 Index 선언
+		// img 데이터를 잘라오기 위한 Index 선언
 		int startIndex = 0;
 		int endIndex = 0;
 		String content = community.getContent();
@@ -222,10 +224,19 @@ public class CommunityController {
 	// 자유게시판-상세보기
 	// @RequestParam("가져올 데이터의 이름")[데이터 타입][가져온 데이터를 담을 변수]
 	// 그리고 Model 객체를 이용해서, 뷰로 값을 넘겨준다.
-	@GetMapping("/communityFreeboardDetail.do")
-	public void communityFreeboardDetail(@RequestParam int communityNo, Model model) {
+	@GetMapping("/communityFreeboardDetail/{communityNo}")
+	public String communityFreeboardDetail(@PathVariable int communityNo, Model model, HttpServletRequest request, HttpServletResponse response) {
 		log.debug("communityNo = {}", communityNo);
 		
+		// 조회 중복 방지
+		boolean hasRead = CommunityUtils.hasRead(request, response, communityNo, "community");
+		
+		if (!hasRead) {
+			// 조회수 증가
+			int result = communityService.viewCount(communityNo);
+			log.debug("viewCount = {}", result);
+		}
+			
 		// 업무로직
 		CommunityEntity communityEntity = communityService.selectOneFreeBoard(communityNo);
 		log.debug("communityEntity = {}", communityEntity);
@@ -235,6 +246,65 @@ public class CommunityController {
 		List<CommunityCommentEntity> freeboardCommentList = communityService.selectFreeboardCommentList(communityNo);
 		log.debug("freeboardCommentList = {}", freeboardCommentList);
 		model.addAttribute("freeboardCommentList", freeboardCommentList);
+		
+		return "community/communityFreeboardDetail";
+	}
+	
+	// 자유게시판-상세보기-수정페이지
+	@GetMapping("/communityFreeboardUpdate.do")
+	public void communityFreeboardUpdate(@RequestParam(value="communityNo") int communityNo, Model model) {
+		log.debug("{}", "/communityFreeboardUpdate.do 요청!");
+		log.debug("communityNo = {}", communityNo);
+		
+		CommunityEntity communityEntity = communityService.selectOneFreeBoard(communityNo);
+		log.debug("communityEntity", communityEntity);
+		model.addAttribute("communityEntity", communityEntity);
+	}
+	
+	// 자유게시판-상세보기-수정하기
+	@PostMapping("/freeboardUpdateEnroll.do")
+	public String freeboardUpdateEnroll(CommunityEntity community, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "freeboardUpdateEnroll.do 요청!");
+		log.debug("community = {}", community);
+		int startIndex = 0;
+		int endIndex = 0;
+		String content = community.getContent();
+		// "startindex는 "<img" 전 부터를 의미한다.
+		startIndex = content.indexOf("<img");
+		
+		// 문자열은 -1이 나올 수 없다.
+		if(startIndex != -1) {
+			// endIndex는 ">" 전까지이다. \ : escaping
+			endIndex = content.substring(startIndex).indexOf("\">");
+			// ">"까지 포함해서 읽어와야 하므로 endIndex+2로 설정한다.
+			log.debug("startIndex : {} ~ endIndex : {}", startIndex, endIndex+2);
+			
+			// thumbnail에 img 데이터를 담는다.
+			String thumbnail = content.substring(startIndex, startIndex + endIndex+2);
+			log.debug("thumbnail = {}", thumbnail);
+			System.out.println(thumbnail);
+			// community에 tumbnail을 보낸다.
+			community.setThumbnail(thumbnail);
+		}
+		
+		int result = communityService.updateFreeboard(community);
+		String msg = result > 0 ? "게시글 수정 성공!" : "게시글 수정 실패!";
+		redirectAttributes.addFlashAttribute("msg", msg);
+		
+		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + community.getCommunityNo();
+	}
+	
+	// 자유게시판-상세보기-삭제하기
+	@GetMapping("/freeboardDelete.do")
+	public String freeboardDelete(@RequestParam int communityNo, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "/freeboardDelete.do 요청!");
+		log.debug("communityNo = {}", communityNo);
+		
+		int result = communityService.freeboardDelete(communityNo);
+		String msg = result > 0 ? "게시글 삭제 성공!" : "게시글 삭제 실패!";
+		redirectAttributes.addFlashAttribute("msg", msg);
+		
+		return "redirect:/community/communityFreeboardList.do";
 	}
 	
 	// 자유게시판-댓글작성
@@ -260,9 +330,11 @@ public class CommunityController {
 		log.debug("{}", communityNo);
 		
 		int result = communityService.commentDelete(commentNo);
+		String msg = result > 0 ? "댓글 삭제 성공!" : "댓글 삭제 실패!";
+		redirectAttributes.addFlashAttribute("msg", msg); 
 		
 		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + communityNo; 
 	}
 	
-	
+
 }

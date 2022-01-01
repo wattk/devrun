@@ -52,10 +52,10 @@
 										<div class="row" id="qItem">
 											<img id="qPIc" src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="">
 											<p>${product.name}</p>
+											<input type="hidden" id="productCodeV" name="productCode" value='${product.productCode}' />
 											<sec:authorize access="isAuthenticated()">
 												<input type="hidden" id="memberNoV" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
 												<input type="hidden" name="id" value='<sec:authentication property="principal.id"/>' />
-												<input type="hidden" id="productCodeV" name="productCode" value='${product.productCode}' />
 											</sec:authorize>
 										</div>
 										<p class="mt-3">상품 별점</p>
@@ -107,7 +107,7 @@
 								<div class="qm-body1">
 									<p>해당상품</p>
 									<div class="row" id="qItem">
-										<img id="qPIc" src="https://i.ibb.co/gm7H77f/square.png" alt="">
+										<img id="qPIc" src="${pageContext.request.contextPath}/resources/upload/product/${r.thumbnail}"  alt="">
 										<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
 										<input type="hidden" name="product_code">
 									</div>
@@ -136,6 +136,10 @@
 				<!--문의 글 작성 시작(부트스트랩)-->
 	
 				<!--신고 모달 시작 (부트스트랩)-->
+				<form:form 
+					name="reviewReportFrm" 
+					method="POST"
+					action="${pageContext.request.contextPath}/shop/insertReport">
 					<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog" role="document">
 						<div class="modal-content">
@@ -149,10 +153,15 @@
 								<div class="m-body1">
 									<p>신고대상 ID 및 내용</p>
 									<div>
-										<span id="reportId">해당 ID : </span> watt0930
+										<span id="reportId">해당 ID : </span> <span id="hereId"></span>
 										<hr id="reportHr">
 										<p style="font-weight: bold;">신고 대상 글  </p>
-										<span>그지같은깽깽이야 이삐리리삐리리 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum mollitia quo dolorum nobis ut unde commodi blanditiis! Distinctio adipisci quidem, repellendus eum cupiditate at sunt ab iste, voluptates, aperiam alias!</span>
+										<span id="hereContent"></span>
+										<input type="hidden" name="id" id="rId"/>
+										<input type="hidden" name="memberNo" id="rMemberNo"/>
+										<input type="hidden" name="targetPkNo" id="rReviewNo"/>
+										<input type="hidden" name="reportContent" id="rContent"/>
+										<input type="hidden" name="reportRootCate" value="PR"/>
 									</div>
 								</div>
 								<div class="m-body2 mt-3">
@@ -162,46 +171,47 @@
 											<table>
 												<tr>
 													<td>
-														<input type="radio" id="check1" name="chch">
+														<input type="radio" id="check1" name="reasonCate" value="1" required>
 														<label for="check1">욕설/비방 &emsp;&emsp;&emsp;&emsp;</label>
 													</td>
 													<td>
-														<input type="radio" id="check2" name="chch">
+														<input type="radio" id="check2" name="reasonCate" value="2">
 														<label for="check2">광고/홍보글</label>
 													</td>
 													<td>
-														<input type="radio" id="check3" name="chch">
+														<input type="radio" id="check3" name="reasonCate" value="3">
 														<label for="check3">음란/선정성</label>
 													</td>
 												</tr>
 												<tr>
 													<td>
-														<input type="radio" id="check4" name="chch">
+														<input type="radio" id="check4" name="reasonCate" value="4">
 														<label for="check4">게시글도배</label>
 													</td>
 													<td>
-														<input type="radio" id="check5" name="chch">
+														<input type="radio" id="check5" name="reasonCate" value="5">
 														<label for="check5">관련없는 이미지/내용 &emsp;&nbsp; &nbsp; </label>
 													</td>
 													<td>													
-														<input type="radio" id="check6" name="chch">
+														<input type="radio" id="check6" name="reasonCate" value="6">
 														<label for="check6">기타</label>
 													</td>
 												</tr>
 											</table>
-											<textarea name="" id="reportText" cols="30" rows="10"></textarea>
+											<textarea name="sideNote" id="reportText" cols="30" rows="10" maxlength='195'></textarea>
 										</form>
 										<p style="font-size: 12px;">ⓘ 신고해주신 내용은 관리자 검토 후 내부정책에 의거 조치가 진행됩니다.</p>
 									</div>
 								</div>
 							</div>
 							<div class="modal-footer justify-content-center">
-							<button type="button" class="btn btn-primary col-4">신고하기</button>
+							<button type="submit" class="btn btn-primary col-4">신고하기</button>
 							<button type="button" class="btn btn-secondary col-4" data-dismiss="modal">취소하기</button>
 							</div>
 						</div>
 						</div>
 					</div>
+				</form:form>
 				<!--신고 모달 끝 (부트스트랩)-->
 				<!--리뷰사진확대 모달 시작-->
 				<div id="reviewModal" class="review-modal-div ml-12" onclick="expandClose()">
@@ -222,14 +232,14 @@
 					<div id="itemDetailOptionDiv">
 						<span><fmt:formatNumber value="${product.price}" pattern="#,###,###"/></span> 원
 						<br><span>혜택 : </span><span style="color:pink;"><fmt:formatNumber value="${product.price / 200}" pattern="#,###,### P"/> </span>적립
-						<br><span>배송 : </span><span>무료배송</span>
+						<br><span>배송 : </span><span>2500원</span>
 						<br>
 						<div id="jeju">
 							<span>제주도/도서산간 지역 4,000원 추가</span>
 							<i class="far fa-heart"></i>
 						</div>
 						<hr>
-						<select class="form-select col-12" aria-label="Default select example">
+						<select id="detailNo" class="form-select col-12" aria-label="Default select example">
 							<option selected>옵션선택</option>
 							<c:forEach items="${pDetail}" var ="pd">
 								<option value="${pd.detailNo}">${pd.optionNo} <c:if test="${pd.optionContent != null}"> , ${pd.optionContent}</c:if></option>
@@ -260,10 +270,11 @@
 							  <div class="content height600" >
 								<!--상단 갯수 및 선택 옵션 시작-->
 								<div class="item-sort-container d-flex justify-content-between">
-								  <div class="p-4" style="margin-top: 9px;">총 ${reviewTotal}개</div>
+								  <div class="p-4" style="margin-top: 9px;"><span id="reviewTotal"></span></div>
 								  <div class="p-4" id="sortBy">
-									<span class="pr-2 pl-2 shop-sort">최신순</span>
-									<span class="pr-2 pl-2 shop-sort">오래된순 </span>
+									<span class="pr-2 pl-2 shop-sort newReview" onclick="reviewAll()">최신순</span>
+									<span class="pr-2 pl-2 shop-sort" onclick="oldestToNewest()">오래된순 </span>
+									<input type="hidden" name="oldestToNewest" id="oldestToNewest" value="-1" />
 									<span class="pr-2 pl-2 shop-sort" onclick="picReviewOnly()">사진리뷰모아보기</span>
 									<sec:authorize access="hasAnyRole('M1','M2')">
 										<button type="button" class="btn btn-warning report-btn3" data-toggle="modal" data-target="#exampleModal3">리뷰작성하기</button>	
@@ -274,9 +285,6 @@
 								<!--상단 갯수 및 선택 옵션 끝-->
 								<div id="reviewBefore"></div>
 								<!--리뷰시작-->
-								<c:if test="${empty  reviewList}">
-									<span id="reviewNone">등록된 리뷰가 없습니다.</span>
-								</c:if>
 								<!--리뷰끝-->
 							  </div>
 							</div>
@@ -289,10 +297,8 @@
 								<div class="item-sort-container d-flex 	justify-content-between">
 								  <div class="p-4"><button type="button" class="btn btn-danger">내 문의 보기</button></div>
 								  <div class="p-4" id="sortBy">
-									<span class="pr-2 pl-2 shop-sort">최신순</span>
-									<span class="pr-2 pl-2 shop-sort">오래된순</span>
 									<!--문의 부트스트랩 버튼-->
-									<button type="button" class="btn btn-warning report-btn2" data-toggle="modal" data-target="#exampleModal2">문의작성하기</button>							  
+									<button type="button" class="btn btn-warning 2" data-toggle="modal" data-target="#exampleModal2">문의작성하기</button>							  
 								  </div>
 								</div>
 								<hr>
@@ -417,16 +423,18 @@
 								<div id="recommendedDiv">
 								  <div class="p-4 ml-4" style="font-family: 'SANJUGotgam';"><h2>비슷한 상품</h2></div>
 								  <div id="recommendedPicDiv" class="d-flex">
-									<div class="recom-info">
-									  <img src="https://i.ibb.co/gm7H77f/square.png" alt="">
-									  <div class="ml-4 mt-2 forFont2">
-										<span style="font-weight: bold; color: midnightblue;">삼성 광선 마우스 332L</span>
-										<br><span>25,800</span>
-										<br><span>리뷰23</span>
-									  </div>
-									</div>
-									<img src="https://i.ibb.co/gm7H77f/square.png" alt="">
-									<img src="https://i.ibb.co/gm7H77f/square.png" alt="">
+								  <c:forEach items="${recommendation}" var="r"  begin="1" end="3">
+									  <!-- 상품추천 1건 시작 -->
+										<div class="recom-info">
+										  <img src="${pageContext.request.contextPath}/resources/upload/product/${r.thumbnail}"  alt="추천상품이미지">
+										  <div class="mt-2 forFont2">
+											<span style="font-weight: bold; color: midnightblue;">${r.name}</span>
+											<br><span><fmt:formatNumber value="${r.price}" pattern="#,###,### 원"/></span>
+											<br><span></span>
+										  </div>
+										</div>
+									  <!-- 상품추천 1건 끝 -->
+								  </c:forEach>
 								  </div>
 								</div>
 							  </div>
@@ -467,11 +475,11 @@ function picReviewOnly(){
 		},
 		method: "GET",
 		success(data){		
-			console.log(data);
-			console.dir(data);
-			
-			const s = data["reviewSb"];
-			$div.after(s);
+			$div.children().detach();
+			const s = data["reviewSb"];	
+			const t = data["reviewTotal"]; 
+			$div.append(s);
+			$(reviewTotal).html(`총 \${t} 개`);
 			
 			
 		},
@@ -483,9 +491,81 @@ function picReviewOnly(){
 /*사진리뷰만 보기 정렬 끝 */
 
 
+/*onload시 비동기 리뷰 조회 시작 */
+window.onload = reviewAll;
+	   
+function reviewAll(){
+	const $v = $('#oldestToNewest');
+	var $productCode = $(productCodeV).val(); 
+	var $div = $('#reviewBefore');
+	
+	$.ajax({
+		
+		url: "${pageContext.request.contextPath}/shop/review",
+		data: {
+			productCode : $productCode,
+			orderBy: $v.val()
+		},
+		method: "GET",
+		success(data){		
+			$div.children().detach();
+			const s = data["reviewSb"];	
+			const t = data["reviewTotal"]; 
+			$div.append(s);
+			$(reviewTotal).html(`총 \${t} 개`);
+			$v.val("-1");
+		},
+		error : function(xhr, status, err){
+            console.log(xhr, status, err);
+        }
+	});
+	
+}  
+
+/*onload시 비동기 리뷰 조회 시작 */
+
+/* 리뷰 오래된 순 정렬 기능 시작 */
+function oldestToNewest(){
+	const $v = $('#oldestToNewest');
+	$v.val("1")
+	
+	reviewAll();
+	
+}
+/* 리뷰 오래된 순 정렬 기능 끝 */
+
+/*신고창 정보 얻기 위해서 시작 */
+$(document).on('click', '.report-btn', function(e) {
+
+	 var tr = e.target;
+	 
+	 const id =tr.dataset.id;
+	 const memberNo = tr.dataset.memberNo;
+	 const reviewNo = tr.dataset.reviewNo;
+	 const content = tr.dataset.content;
+	 
+	 console.log(id);
+	 console.log(memberNo);
+	 console.log(reviewNo);
+	 console.log(content);
+	 
+	 $(hereId).text(id);
+	 $(hereContent).text(content);
+	 
+	 $(rId).val(id);
+	 $(rMemberNo).val(memberNo);
+	 $(rReviewNo).val(reviewNo);
+	 $(rContent).val(content);
+})
+
+/*신고창 정보 얻기 위해서 끝 */
+
+
 //바로구매 버튼 클릭 이벤트 혜진 시작
 $("#orderBtn").click((e)=>{
-	location.href = "${pageContext.request.contextPath}/order/order/${product.productCode}";
+	const detailNo = $("#detailNo").val();
+	console.log(detailNo);
+	location.href = `${pageContext.request.contextPath}/order/order?detailNo=\${detailNo}`;
 });
 //바로구매 버튼 클릭 이벤트 혜진 끝
 </script>		

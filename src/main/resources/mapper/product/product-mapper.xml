@@ -77,7 +77,7 @@
 	
 	
 	<!-- 상품 리스트   -->
-	<select id="selectAllProductList" resultType="Product">
+	<select id="selectAllProductList" resultType="productEntity">
 			select
 				product_code,
 				thumbnail,
@@ -100,18 +100,6 @@
 		        on pc.product_code = pd.product_code
 	</select>
 
-
-	<!-- 비동기로 옵션값 가져오기 -->
-	<select  id="findProductOption" resultType="ProductDetail">
-		select
-			*
-		from
-			product_detail
-		where
-			product_code = #{productCode}				
-	</select>
-
-
 	<!-- 상품 삭제 -->
 	<delete id="deleteProduct">
 		delete
@@ -121,7 +109,7 @@
 	</delete>
 
 	<!-- 상품상세에서 사용할 정보 가져오기 -->
-	<select id="selectProductOne" resultType="ProductExtends">
+	<select id="selectProductOne" resultType="productEx">
 		select
             p.name,
 		    p.thumbnail,
@@ -142,14 +130,13 @@
 	</select>
 	
 	<!-- 상품 디테일정보 가져오기 -->
-	<select id="selectProductDetail" resultType="ProductDetail">
+	<select id="selectProductDetail" resultType="productDetail">
 		select
 			*
 		from
 			product_detail
 		where
 			product_code = #{productCode}
-				
 	</select>
 	
 	<!-- 상품 정보 업데이트  -->
@@ -211,7 +198,7 @@
 
 		
 	<!-- 혜진 시작 -->
-	<select id="selectProductListByProductCode" resultType="product">
+	<select id="selectProductListByProductCode" resultType="productEntity">
 		select
 			*
 		from
@@ -232,6 +219,44 @@
 			product_code = #{productCode}
 	</select>
 	<!--다현 - 상세 페이지 뿌리기 위한 item 받아오기 끝-->
+	
+	<!-- 혜진 mapper 시작 -->
+	<select id="selectProductByDetailNo" resultMap="productCollection">
+		select
+		    p.*,
+		    d.detail_no,
+		    d.option_no,
+		    d.option_content,
+		    d.sku,
+		    d.quantity
+		from
+		    product p left join product_detail d
+		        on p.product_code = d.product_code
+		where
+		    d.detail_no in
+		    <foreach collection="array" item="item" open="(" separator="," close=")">
+			     #{item}
+		    </foreach>
+	</select>
+	<resultMap type="product" id="productCollection">
+		<id column="product_code" property="productCode"/>
+		<result column="name" property="name"/>
+		<result column="price" property="price"/>
+		<result column="reg_date" property="regDate"/>
+		<result column="thumbnail" property="thumbnail"/>
+		<result column="content" property="content"/>
+		<result column="view_count" property="viewCount"/>
+		<result column="status" property="status"/>
+		<result column="order_count" property="orderCount"/>
+		<association property="productDetail" javaType ="productDetail">
+			<id column="detail_no" property="detailNo"/>
+			<result column="option_no" property="optionNo"/>
+			<result column="option_content" property="optionContent"/>
+			<result column="sku" property="sku"/>
+			<result column="quantity" property="quantity"/>
+		</association>
+	</resultMap>
+	<!-- 혜진 mapper 끝 -->
 </mapper>
 
 

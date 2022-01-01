@@ -25,4 +25,6 @@ public interface ChatDao {
 
 	int updateLastCheck(Map<String, Object> fromMessage);
 
+	List<String> searchChatRoom(Map<String, Object> param);
+
 }

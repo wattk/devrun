@@ -24,13 +24,13 @@
                     <div class="side-overlay-content">
                     <!-- ACCORDION
                       ================================================== -->
-                    <h1 id="accordion">Accordion Side Nav</h1>
+                    <h1 id="accordion">DevRun Shop</h1>
                     <a href="" class="subCategory"><span style="font-size: 15px;">신상품</span></a>
                     <a href="" class="subCategory" style="padding-top: 0;"><span style="font-size: 15px;">할인상품</span></a>
                     <aside class="accordion">
                       <h1>모니터</h1>
                       <div>
-                        <h2><a href="${pageContext.request.contextPath}/shop/CategoryItemAll?parentCate=mn">전체보기</a></h2>
+                        <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=mn">전체보기</a></h2>
                         <a href="">표준모니터</a>
                         <a href="">휴대용모니터</a>
                         <a href="">게이밍모니터</a>
@@ -39,7 +39,7 @@
                       </div>
                       <h1>키보드</h1>
                       <div>
-                        <h2><a href="${pageContext.request.contextPath}/shop/CategoryItemAll?parentCate=ke">전체보기</a></h2>
+                        <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ke">전체보기</a></h2>
                         <a href="">무접점키보드</a>
                         <a href="">기계식키보드</a>
                         <a href="">게이밍키보드</a>
@@ -48,7 +48,7 @@
                       </div>
                       <h1>마우스</h1>
                       <div>
-                         <h2><a href="${pageContext.request.contextPath}/shop/CategoryItemAll?parentCate=mo">전체보기</a></h2>
+                         <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=mo">전체보기</a></h2>
                         <a href="">유선마우스</a>
                         <a href="">무선마우스</a>
                         <a href="">저소음마우스</a>
@@ -58,7 +58,7 @@
                       </div>
                       <h1>책상</h1>
                       <div>
-                        <h2><a href="${pageContext.request.contextPath}/shop/CategoryItemAll?parentCate=de">전체보기</a></h2>
+                        <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=de">전체보기</a></h2>
                         <a href="">높이조절책상</a>
                         <a href="">스탠딩책상</a>
                         <a href="">독서실책상</a>
@@ -67,7 +67,7 @@
                       </div>
                       <h1>의자</h1>
                       <div>
-                        <h2><a href="${pageContext.request.contextPath}/shop/CategoryItemAll?parentCate=ch">전체보기</a></h2>
+                        <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ch">전체보기</a></h2>
                         <a href="">게이밍의자</a>
                         <a href="">자세보정의자</a>
                         <a href="">컴퓨터의자</a>
@@ -77,7 +77,7 @@
                       </div>
                       <h1>기타상품</h1>
                       <div>
-                        <h2><a href="${pageContext.request.contextPath}/shop/CategoryItemAll?parentCate=ot">전체보기</a></h2>
+                        <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ot">전체보기</a></h2>
                         <a href="">컴퓨터 악세사리</a>
                         <a href="">사무용품</a>
                         <a href="">아이디어상품</a>

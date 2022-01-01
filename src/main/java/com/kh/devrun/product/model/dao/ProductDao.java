@@ -7,35 +7,33 @@ import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductCategory;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
-import com.kh.devrun.product.model.vo.ProductExtends;
 
 public interface ProductDao {
 	List<ProductChildCategory> selectChildCategory(Map<String, Object> param);
 
-	int insertProduct(Product product);
+	int insertProduct(ProductEntity product);
 
 	int insertProducCategory(ProductCategory productCategory);
 	
 	int insertProductDetail(ProductDetail productDetail);
 	
-	List<Product>selectAllProductList(int offset, int limit);
+	List<ProductEntity>selectAllProductList(int offset, int limit);
 	
 	int selectTotalBoardCount();
 
-	List<ProductDetail> findProductOption(String productCode);
-	
 	// 상품삭제
 	int deleteProduct(String productCode);
 
 	// 상품정보 하나 가져오기
-	ProductExtends selectProductOne(String productCode);
+	ProductEx selectProductOne(String productCode);
 
 	// 상품 디테일 정보 가져오기
 	List<ProductDetail> selectProductDetail(String productCode); 
 
 	// 상품 정보 업데이트
-	int updateProduct(Product product);
+	int updateProduct(ProductEntity product);
 	
 	// nextval 번호까지 붙은 thumbnail 값 가져오기 (최근 등록된)
 	String selectRealProductImg();
@@ -51,6 +49,15 @@ public interface ProductDao {
 	
 	//다현 - 상세 페이지 뿌리기 위한 item 받아오기
 	ProductEx selectOneItem(String productCode);
+
+	/**
+	 * 혜진 상품 + 상품 상세(옵션) 조회
+	 * @param detailNo
+	 * @return
+	 */
+	List<Product> selectProductByDetailNo(int[] detailNo);
+	/* 혜진 끝*/
+
 	
 	
 	

@@ -3,6 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mypage">
+	<!-- 지원 mapper 시작 -->
 	<select id="selectMessageTotalCount" resultType="_int">
 		select 
 			count(*) 
@@ -11,4 +12,21 @@
 		where
 			member_no2 = #{member_no2} and read_chk = 'N'
 	</select>
+	
+	<insert id="insertAddress">
+		insert into
+			address
+		values(
+			seq_address_no.nextval,
+			#{memberNo},
+			#{postalCode},
+			#{address1},
+			#{address2},
+			#{mainYn},
+			#{title},
+			#{addressee},
+			#{phone}
+		)
+	</insert>
+	<!-- 지원 mapper 끝 -->
 </mapper>

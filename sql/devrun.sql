@@ -1,4 +1,3 @@
-
 -- 회원 테이블 생성
 CREATE TABLE "MEMBER" (
 	"MEMBER_NO"	NUMBER		NOT NULL,
@@ -146,10 +145,9 @@ COMMENT ON COLUMN "DELETE_MEMBER"."QUIT_DATE" IS '탈퇴일';
 
 -- 삭제된 권한 테이블 생성
 CREATE TABLE "DELETE_AUTHORITIES" (
-	"MEMBER_NO"	NUMBER		NOT NULL,
-	"AUTHORITY"	CHAR(2)		NOT NULL
+	"AUTHORITY"	VARCHAR2(30)		NOT NULL,
+	"MEMBER_NO"	NUMBER		NOT NULL
 );
-
 
 -- 삭제된 권한 테이블 코멘트 추가
 COMMENT ON COLUMN "DELETE_AUTHORITIES"."MEMBER_NO" IS '회원번호';
@@ -472,7 +470,7 @@ COMMENT ON COLUMN "COMMUNITY"."ENROLL_DATE" IS '작성일';
 COMMENT ON COLUMN "COMMUNITY"."VIEW_COUNT" IS '조회수';
 COMMENT ON COLUMN "COMMUNITY"."LIKE_COUNT" IS '좋아요 수';
 COMMENT ON COLUMN "COMMUNITY"."THUMNAIL" IS '썸네일';
-COMMENT ON COLUMN "COMMUNITY"."ANSWER_YN" IS '해결'Y', 미해결'N'';
+COMMENT ON COLUMN "COMMUNITY"."ANSWER_YN" IS '해결 Y 미해결N';
 COMMENT ON COLUMN "COMMUNITY"."HASHTAG" IS '글 관련 해시태그, 구분자/';
 
 -- 커뮤니티 댓글 테이블 시퀀스 생성
@@ -498,7 +496,7 @@ COMMENT ON COLUMN "COMMUNITY_COMMENT"."COMMENT_NO" IS 'SEQ';
 COMMENT ON COLUMN "COMMUNITY_COMMENT"."MEMBER_NO" IS '작성자';
 COMMENT ON COLUMN "COMMUNITY_COMMENT"."COMMENT_REF_NO" IS 'SEQ';
 COMMENT ON COLUMN "COMMUNITY_COMMENT"."COMMUNITY_NO" IS '게시글 번호 SEQ';
-COMMENT ON COLUMN "COMMUNITY_COMMENT"."COMMENT_LEVEL" IS '댓글 '1' 대댓글 '2'';
+COMMENT ON COLUMN "COMMUNITY_COMMENT"."COMMENT_LEVEL" IS '댓글 1 대댓글 2';
 COMMENT ON COLUMN "COMMUNITY_COMMENT"."CONTENT" IS '댓글내용';
 COMMENT ON COLUMN "COMMUNITY_COMMENT"."REG_DATE" IS '댓글 등록일';
 
@@ -560,52 +558,72 @@ CREATE TABLE "POINT" (
 
 -- 포인트 코멘트 추가
 COMMENT ON COLUMN "POINT"."MEMBER_NO" IS '회원 번호';
-COMMENT ON COLUMN "POINT"."STATUS" IS '적립 'G', 사용 'U'';
+COMMENT ON COLUMN "POINT"."STATUS" IS '적립 G, 사용 U';
 COMMENT ON COLUMN "POINT"."DATA" IS '포인트 이용일';
 
--- 신고사유 분류 시퀀스 생성
-CREATE SEQUENCE SEQ_REPORT_CATEGORY_NO;
 
+--=============================신고
+-- DROP TABLE REPORT;
 -- DROP TABLE REPORT_CATEGORY;
+
 -- 신고사유 분류 테이블 생성
 CREATE TABLE "REPORT_CATEGORY" (
-	"REPORT_CATEGORY_NO" NUMBER NOT NULL,
-	"REPORT_NAME"	VARCHAR2(1000)	 NULL,
-    CONSTRAINT PK_REPORT_CATEGORY_REPORT_CATEGORY_NO PRIMARY KEY(REPORT_CATEGORY_NO)
+	"REASON_CATE" CHAR(1) NOT NULL,
+	"REASON_NAME"	VARCHAR2(30) NOT NULL,
+    CONSTRAINT PK_REPORT_CATEGORY_REASON_CATE PRIMARY KEY(REASON_CATE)
 );
 
 -- 신고 사유 분류 코멘트 추가
-COMMENT ON COLUMN "REPORT_CATEGORY"."REPORT_CATEGORY__NO" IS '신고사유 분류번호';
-COMMENT ON COLUMN "REPORT_CATEGORY"."REPORT_NAME" IS '분류명';
+COMMENT ON COLUMN "REPORT_CATEGORY"."REASON_CATE" IS '신고사유 분류번호';
+COMMENT ON COLUMN "REPORT_CATEGORY"."REASON_NAME" IS '신고사유 분류명';
+
+--신고사유 분류 테이블 데이터 추가
+insert into REPORT_CATEGORY values('1','욕설/비방');
+insert into REPORT_CATEGORY values('2','광고/홍보글');
+insert into REPORT_CATEGORY values('3','음란/선정성');
+insert into REPORT_CATEGORY values('4','게시글도배');
+insert into REPORT_CATEGORY values('5','관련없는이미지/내용');
+insert into REPORT_CATEGORY values('6','기타');
 
 -- 신고 테이블 시퀀스 생성
-CREATE SEQUENCE SEQ_REPORT_BOARD_NO;
+CREATE SEQUENCE SEQ_REPORT_NO;
 
+--drop table "REPORT_BOARD";
 -- 신고 테이블 생성
-CREATE TABLE "REPORT_BOARD" (
+CREATE TABLE "REPORT" (
 	"REPORT_NO"	NUMBER	NOT NULL,
-	"REPORT_CATEGORY_NO"	NUMBER NOT NULL,
+	"REASON_CATE"	CHAR(1) NOT NULL,
+    "REPORT_ROOT_CATE" VARCHAR(2) NOT NULL,
 	"MEMBER_NO"	NUMBER NOT NULL,
-	"REPORT_CONTENT" VARCHAR2(1000) NOT NULL,
-	"STATUS"	VARCHAR2(12)	DEFAULT '진행중' NOT NULL,
-	"REG_DATE"	DATE	DEFAULT SYSDATE NULL,
-	"WARNING_YN" CHAR(1) NULL,
-	"TYPE_NO" VARCHAR2(100) NULL,
-	"MEMBER_NO2" NUMBER NULL,
-    CONSTRAINT PK_REPORT_BOARD_REPORT_NO PRIMARY KEY(REPORT_NO),
-    CONSTRAINT FK_REPORT_BOARD_REPORT_CATEGORY_NO FOREIGN KEY(REPORT_CATEGORY_NO) REFERENCES REPORT_CATEGORY(REPORT_CATEGORY_NO)
+    "ID"	VARCHAR2(50)		NOT NULL,
+    "TARGET_PK_NO" VARCHAR2(50) NOT NULL, 
+    "REPORT_CONTENT" CLOB,
+    "SIDENOTE" VARCHAR2(600),
+	"STATUS"	VARCHAR2(2)	DEFAULT 'PR' NOT NULL,
+	"REG_DATE"	DATE	DEFAULT SYSDATE NOT NULL,
+	"MEMBER_NO2" NUMBER,
+    "CONFIRM_DATE" DATE,
+    CONSTRAINT PK_REPORT_REPORT_NO PRIMARY KEY(REPORT_NO),
+    CONSTRAINT FK_REPORT_REASON_CATE FOREIGN KEY(REASON_CATE) REFERENCES REPORT_CATEGORY(REASON_CATE),
+    CONSTRAINT CK_REPORT_REPORT_ROOT_CATE CHECK(REPORT_ROOT_CATE IN ('CB','CR','MB','MM','PR')),
+    CONSTRAINT CK_REPORT_STATUS CHECK(STATUS IN ('PR','DR','CF'))
 );
 
 -- 신고 테이블 코멘트 추가
-COMMENT ON COLUMN "REPORT_BOARD"."REPORT_NO" IS '신고번호';
-COMMENT ON COLUMN "REPORT_BOARD"."REPORT_CATEGORY_NO" IS '신고사유 분류번호';
-COMMENT ON COLUMN "REPORT_BOARD"."MEMBER_NO" IS '신고자';
-COMMENT ON COLUMN "REPORT_BOARD"."REPORT_CONTENT" IS '신고사유';
-COMMENT ON COLUMN "REPORT_BOARD"."STATUS" IS '처리상태 진행중/처리보류/처리';
-COMMENT ON COLUMN "REPORT_BOARD"."REG_DATE" IS '등록일';
-COMMENT ON COLUMN "REPORT_BOARD"."WARNING_YN" IS 'CHECK 제약조건 경고'Y' 보류'N'';
-COMMENT ON COLUMN "REPORT_BOARD"."TYPE_NO" IS '신고 대상별 구분자 + 해당 카테고리 PK값';
-COMMENT ON COLUMN "REPORT_BOARD"."MEMBER_NO2" IS '처리한 관리자 번호';
+COMMENT ON COLUMN "REPORT"."REPORT_NO" IS '신고번호';
+COMMENT ON COLUMN "REPORT"."REASON_CATE" IS '신고사유 분류번호';
+COMMENT ON COLUMN "REPORT"."REPORT_ROOT_CATE" IS '신고분야 카테고리';
+COMMENT ON COLUMN "REPORT"."MEMBER_NO" IS '신고자';
+COMMENT ON COLUMN "REPORT"."ID" IS '신고자 아이디';
+COMMENT ON COLUMN "REPORT"."TARGET_PK_NO" IS '신고 대상 pk 번호';
+COMMENT ON COLUMN "REPORT"."REPORT_CONTENT" IS '신고 대상 글';
+COMMENT ON COLUMN "REPORT"."SIDENOTE" IS '신고 사유 부가 설명';
+COMMENT ON COLUMN "REPORT"."STATUS" IS '처리상태';
+COMMENT ON COLUMN "REPORT"."REG_DATE" IS '등록일';
+COMMENT ON COLUMN "REPORT"."MEMBER_NO2" IS '처리한 관리자 번호';
+COMMENT ON COLUMN "REPORT"."CONFIRM_DATE" IS '관리자 신고 처리 날짜';
+
+
 
 -- 채팅 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_CHAT_MEMBER_NO;
@@ -702,7 +720,7 @@ CREATE TABLE "DELETE_COMMUNITY_COMMENT" (
 
 -- 삭제된 커뮤니티 댓글 테이블 코멘트 추가
 COMMENT ON COLUMN "DELETE_COMMUNITY_COMMENT"."COMMENT_NO" IS 'SEQ';
-COMMENT ON COLUMN "DELETE_COMMUNITY_COMMENT"."COMMENT_LEVEL" IS '댓글 '1' 대댓글 '2'';
+COMMENT ON COLUMN "DELETE_COMMUNITY_COMMENT"."COMMENT_LEVEL" IS '댓글 1 대댓글 2';
 COMMENT ON COLUMN "DELETE_COMMUNITY_COMMENT"."CONTENT" IS '댓글내용';
 COMMENT ON COLUMN "DELETE_COMMUNITY_COMMENT"."COMMUNITY_NO" IS '게시글 번호 SEQ';
 COMMENT ON COLUMN "DELETE_COMMUNITY_COMMENT"."MEMBER_NO" IS '회원 번호';
@@ -880,40 +898,45 @@ COMMENT ON COLUMN "QUANTITY_LOG"."DETAIL_NO" IS '제품 상세 번호';
 --===========================
 --주문 테이블 생성
 --===========================
-DROP TABLE ORDER;
-SELECT * FROM ORDER;
-
-CREATE TABLE "ORDER" (
-	"ORDER_CODE"	VARCHAR2(50)		NOT NULL,
-	"MEMBER_NO"	 NUMBER		NOT NULL,
-	"ORDER_DATE"	DATE	DEFAULT SYSDATE	NOT NULL,
-	"ORDER_STATUS"	CHAR(1)	DEFAULT 'O'	NOT NULL,
-	"CS_STATUS"	CHAR(3)		NULL,
-	"POINT_VALUE"	NUMBER	DEFAULT 0	NOT NULL,
-	"PRODUCT_PRICE"	NUMBER		NOT NULL,
-	"SHIPPING_FEE"	NUMBER		NOT NULL,
-	"TOTAL_PRICE"	NUMBER		NOT NULL,
-	"SHIPPING_REQ"	VARCHAR2(100)		NULL,
-	CONSTRAINT PK_ORDER_ORDER_CODE PRIMARY KEY(ORDER_CODE),
-  CONSTRAINT FK_ORDER_MEBMER_NO FOREIGN KEY(MEMBER_NO) REFERENCES MEMBER(MEMBER_NO),
-	CONSTRAINT CK_ORDER_ORDER_STATUS CHECK(ORDER_STATUS IN ('1','2','3')),
-	CONSTRAINT CK_ORDER_CS_STATUS CHECK(CS_STATUS IN ('RF','EX','RT'))
+CREATE TABLE MERCHANT (
+	MERCHANT_UID	VARCHAR2(50)	NOT NULL,
+	MEMBER_NO	NUMBER	NOT NULL	,
+	ORDER_DATE	DATE	 DEFAULT SYSDATE,
+	ORDER_STATUS	CHAR(2) DEFAULT 'OR'	NOT NULL,
+	CS_STATUS	CHAR(3) DEFAULT 'COM' NOT NULL,
+	POINT_VALUE	NUMBER DEFAULT 0	NOT NULL,
+	PRODUCT_PRICE	NUMBER	NOT NULL	,
+	SHIPPING_FEE	NUMBER	NOT NULL	,
+	TOTAL_PRICE	NUMBER	NOT NULL	,
+	SHIPPING_REQ	VARCHAR2(100)	NULL	,
+    CONSTRAINT PK_MERCHANT_MERCHANT_UID PRIMARY KEY (MERCHANT_UID),
+    CONSTRAINT FK_MERCHANT_MEMBER_NO FOREIGN KEY(MEMBER_NO) REFERENCES MEMBER(MEMBER_NO)
 );
 
---주문 테이블 코멘트 추가
-COMMENT ON COLUMN "ORDER"."ORDER_CODE" IS '주문 번호';
-COMMENT ON COLUMN "ORDER"."MEMBER_NO" IS '주문자 회원 번호';
-COMMENT ON COLUMN "ORDER"."ORDER_DATE" IS '주문일자';
-COMMENT ON COLUMN "ORDER"."ORDER_STATUS" IS '주문상태(주문-상품준비중-배송시작-배송중-배송완료-구매확정)';
-COMMENT ON COLUMN "ORDER"."CS_STATUS" IS '상품 처리 상태 정상/환불/교환/반품/주문취소 + 접수/진행/완료';
-COMMENT ON COLUMN "ORDER"."POINT_VALUE" IS '사용 포인트';
-COMMENT ON COLUMN "ORDER"."PRODUCT_PRICE" IS '총상품금액';
-COMMENT ON COLUMN "ORDER"."SHIPPING_FEE" IS '배송비';
-COMMENT ON COLUMN "ORDER"."TOTAL_PRICE" IS '총주문금액(총 상품금액 + 배송비)';
-COMMENT ON COLUMN "ORDER"."SHIPPING_REQ" IS '배송요청사항';
 
--- 주문 테이블 SEQ
-CREATE SEQUENCE SEQ_ORDER_CODE_NO;
+CREATE TABLE MERCHANT_DETAIL (
+	DETAIL_NO	NUMBER	NOT NULL	,
+	MERCHANT_UID	VARCHAR2(50)	NOT NULL	,
+	BUY_COUNT	NUMBER	NULL	
+);
+
+ALTER TABLE MERCHANT_DETAIL ADD CONSTRAINT PK_MERCHANT_DETAIL PRIMARY KEY (
+	DETAIL_NO,
+	MERCHANT_UID
+);
+ALTER TABLE MERCHANT_DETAIL ADD CONSTRAINT FK_MERCHANT_DETAIL_DETAIL_NO FOREIGN KEY (
+	DETAIL_NO
+)
+REFERENCES PRODUCT_DETAIL (
+	DETAIL_NO
+);
+
+ALTER TABLE MERCHANT_DETAIL ADD CONSTRAINT FK_MERCHANT_DETAIL_MERCHANT_UID FOREIGN KEY (
+	MERCHANT_UID
+)
+REFERENCES MERCHANT (
+	MERCHANT_UID
+);
 
 
 --===========================
@@ -922,18 +945,18 @@ CREATE SEQUENCE SEQ_ORDER_CODE_NO;
 CREATE TABLE "SHIPMENT" (
 	"SHIPMENT_NO"	NUMBER		NOT NULL,
 	"TRACKING_NUMBER"	NUMBER		NULL,
-	"ORDER_CODE"	VARCHAR2(50)		NOT NULL,
+	"MERCHANT_UID"	VARCHAR2(50)		NOT NULL,
 	"ORDER_LOG_NO"	NUMBER		NOT NULL,
 	"SHIPMENT_DATE"	DATE		NULL,
 	CONSTRAINT PK_SHIPMENT_SHIPMENT_NO PRIMARY KEY(SHIPMENT_NO),
-	CONSTRAINT FK_SHIPMENT_ORDER_CODE FOREIGN KEY(ORDER_CODE) REFERENCES "ORDER"(ORDER_CODE),
+	CONSTRAINT FK_SHIPMENT_MERCHANT_UID FOREIGN KEY(MERCHANT_UID) REFERENCES MERCHANT(MERCHANT_UID),
 	CONSTRAINT FK_SHIPMENT_ORDER_LOG_NO FOREIGN KEY(ORDER_LOG_NO) REFERENCES ORDER_LOG(ORDER_LOG_NO)
 );
 
 --배송 테이블 코멘트 추가
 COMMENT ON COLUMN "SHIPMENT"."SHIPMENT_NO" IS '배송 번호';
 COMMENT ON COLUMN "SHIPMENT"."TRACKING_NUMBER" IS '운송장 번호';
-COMMENT ON COLUMN "SHIPMENT"."ORDER_CODE" IS '주문 번호';
+COMMENT ON COLUMN "SHIPMENT"."MERCHANT_UID" IS '주문 번호';
 COMMENT ON COLUMN "SHIPMENT"."ORDER_LOG_NO" IS '변동 기록 일자';
 COMMENT ON COLUMN "SHIPMENT"."SHIPMENT_DATE" IS '발송 일자';
 
@@ -995,10 +1018,10 @@ COMMENT ON COLUMN "MESSAGE"."MESSAGE_CONTENT" IS '메세지 내용';
 CREATE SEQUENCE SEQ_MESSAGE_NO;
 
 --쪽지 테이블 삭제 (채팅, 채팅로그 테이블로 이용)
-DROP TABLE MESSAGE;
+--DROP TABLE MESSAGE;
 
 --쪽지 시퀀스 삭제
-DROP SEQUENCE SEQ_MESSAGE_NO;
+--DROP SEQUENCE SEQ_MESSAGE_NO;
 
 
 --===========================
@@ -1033,23 +1056,6 @@ COMMENT ON COLUMN "ADDRESS"."PHONE" IS '연락처';
 --주소 테이블 SEQ
 CREATE SEQUENCE SEQ_ADDRESS_NO;
 
-
---===========================
---주문-상품상세 테이블 생성
---===========================
-CREATE TABLE "ORDER_DETAIL" (
-	"ORDER_CODE"	VARCHAR2(50)		NOT NULL,
-	"DETAIL_NO"	NUMBER		NOT NULL,
-	"BUY_COUNT"	NUMBER		NULL,
-	CONSTRAINT PK_ORDER_DETAIL_ORDER_CODE_DETAIL_NO PRIMARY KEY(ORDER_CODE, DETAIL_NO),
-	CONSTRAINT FK_ORDER_DETAIL_ORDER_CODE FOREIGN KEY(ORDER_CODE) REFERENCES "ORDER"(ORDER_CODE),
-	CONSTRAINT FK_ORDER_DETAIL_DETAIL_NO FOREIGN KEY(DETAIL_NO) REFERENCES PRODUCT_DETAIL(DETAIL_NO)
-);
-
---주문-상품상세 테이블 코멘트 추가
-COMMENT ON COLUMN "ORDER_DETAIL"."ORDER_CODE" IS '주문 번호';
-COMMENT ON COLUMN "ORDER_DETAIL"."DETAIL_NO" IS '상품 상세 번호';
-COMMENT ON COLUMN "ORDER_DETAIL"."BUY_COUNT" IS '구매 수량';
 
 
 --===========================
@@ -1097,34 +1103,22 @@ COMMENT ON COLUMN "REASON_CATEGORY"."REASON_NAME" IS '분류명';
 --결제 테이블 생성
 --추후 API 사용시 변경될 예정
 --===========================
-CREATE TABLE "PAYMENT" (
-	"PAYMENT_NO"	NUMBER		NOT NULL,
-	"PG"	VARCHAR2(50)		NULL,
-	"PAY_WAY"	VARCHAR2(50)		NOT NULL,
-	"ORDER_CODE"	VARCHAR2(50)		NOT NULL,
-	"PAY_PRICE"	NUMBER		NOT NULL,
-	"EMAIL"	VARCHAR2(300)		NULL,
-	"NAME"	VARCHAR2(10)		NOT NULL,
-	"PHONE"	CHAR(11)		NULL,
-	"ADDRESS"	VARCHAR2(100)		NOT NULL,
-	"POSTAL_CODE"	VARCHAR2(7)		NOT NULL,
-	CONSTRAINT PK_PAYMENT_PAYMENT_NO PRIMARY KEY(PAYMENT_NO)
+CREATE TABLE IMP (
+	IMP_UID 	VARCHAR2(50)	NOT NULL,
+	MERCHANT_UID	VARCHAR2(50)	NOT NULL,
+	PG_PROVIDER	VARCHAR2(50)	NULL,
+	NAME	VARCHAR2(100)	NULL,
+	PAY_METHOD	VARCHAR2(50)	NULL,
+	AMOUNT	NUMBER	NULL,
+	BUYER_ADDR	VARCHAR2(100)	NULL,
+	BUYER_EMAIL	VARCHAR2(100)	NULL,
+	BUYER_NAME	VARCHAR2(10)	NULL,
+	BUYER_POSTCODE	CHAR(5)	NULL,
+	BUYER_PHONE	CHAR(11)	NULL
 );
-
---결제 테이블 코멘트 추가
-COMMENT ON COLUMN "PAYMENT"."PAYMENT_NO" IS '결제 번호';
-COMMENT ON COLUMN "PAYMENT"."PG" IS 'PG사';
-COMMENT ON COLUMN "PAYMENT"."PAY_WAY" IS '결제 수단';
-COMMENT ON COLUMN "PAYMENT"."ORDER_CODE" IS '주문 번호';
-COMMENT ON COLUMN "PAYMENT"."PAY_PRICE" IS '결제 금액';
-COMMENT ON COLUMN "PAYMENT"."EMAIL" IS '구매자 이메일';
-COMMENT ON COLUMN "PAYMENT"."NAME" IS '구매자 이름';
-COMMENT ON COLUMN "PAYMENT"."PHONE" IS '구매자 연락처';
-COMMENT ON COLUMN "PAYMENT"."ADDRESS" IS '구매자 주소';
-COMMENT ON COLUMN "PAYMENT"."POSTAL_CODE" IS '구매자 우편번호';
-
--- 결제 테이블 SEQ
-CREATE SEQUENCE SEQ_PAYMENT_NO;
+ALTER TABLE IMP ADD CONSTRAINT PK_IMP_IMP_UID PRIMARY KEY (
+	IMP_UID
+);
 
 
 --===========================
@@ -1196,11 +1190,15 @@ CREATE TABLE "AUTHORITIES" (
 	CONSTRAINT FK_AUTHORITIES_MEMBER_NO FOREIGN KEY(MEMBER_NO) REFERENCES MEMBER(MEMBER_NO)
 );
 
-drop table authorities;
+--drop table authorities;
 
 --권한 테이블 코멘트 추가
 COMMENT ON COLUMN "AUTHORITIES"."AUTHORITY" IS '회원 M1, M2, 관리자 AM';
 COMMENT ON COLUMN "AUTHORITIES"."MEMBER_NO" IS '회원번호';
+
+--FK 제약조건 delete on cascade 추가
+ALTER TABLE AUTHORITIES DROP CONSTRAINT FK_AUTHORITIES_MEMBER_NO;
+ALTER TABLE AUTHORITIES ADD CONSTRAINT FK_AUTHORITIES_MEMBER_NO FOREIGN KEY (MEMBER_NO) REFERENCES MEMBER(MEMBER_NO) ON DELETE CASCADE;
 
 --권한 테이블 delete 트리거 추가
 create trigger trg_delete_authorities
@@ -1212,8 +1210,8 @@ begin
 				delete_authorities
 		values
 				(
-					:old.member_no,
-					:old.authority
+					:old.authority,
+					:old.member_no
 				);
 end;
 
@@ -1247,84 +1245,45 @@ values('mo','마우스');
 insert into PRODUCT_PARENT_CATEGORY
 values('ke','키보드');
 insert into PRODUCT_PARENT_CATEGORY
-values('mon','모니터');
+values('mn','모니터');
 insert into PRODUCT_PARENT_CATEGORY
 values('ot','기타');
 
-select*from PRODUCT_PARENT_CATEGORY;
+--소분류
+insert all 
+into product_child_category values('1ch', 'ch', '게이밍의자')
+into product_child_category values('2ch', 'ch', '자세보정의자')
+into product_child_category values('3ch', 'ch', '컴퓨터의자')
+into product_child_category values('4ch', 'ch', '책상의자')
+into product_child_category values('5ch', 'ch', '접이식의자')
+into product_child_category values('6ch', 'ch', '좌식의자')
+into product_child_category values('1de', 'de', '높이조절책상')
+into product_child_category values('2de', 'de', '스탠딩책상')
+into product_child_category values('3de', 'de', '독서실책상')
+into product_child_category values('4de', 'de', '접이형책상')
+into product_child_category values('5de', 'de', '일반책상')
+into product_child_category values('1ot', 'ot', '컴퓨터악세사리')
+into product_child_category values('2ot', 'ot', '사무용품')
+into product_child_category values('3ot', 'ot', '아이디어상품')
+into product_child_category values('4ot', 'ot', '수납상품')
+into product_child_category values('5ot', 'ot', '기타상품')
+into product_child_category values('1mo', 'mo', '유선마우스')
+into product_child_category values('2mo', 'mo', '무선마우스')
+into product_child_category values('3mo', 'mo', '저소음마우스')
+into product_child_category values('4mo', 'mo', '버티컬마우스')
+into product_child_category values('5mo', 'mo', '인체공학마우스')
+into product_child_category values('1ke', 'ke', '무접점키보드')
+into product_child_category values('2ke', 'ke', '기계식키보드')
+into product_child_category values('3ke', 'ke', '게이밍키보드')
+into product_child_category values('4ke', 'ke', '인체공학키보드')
+into product_child_category values('5ke', 'ke', '무선키보드')
+into product_child_category values('1mn', 'mn', '표준모니터')
+into product_child_category values('2mn', 'mn', '휴대용모니터')
+into product_child_category values('3mn', 'mn', '게이밍모니터')
+into product_child_category values('4mn', 'mn', '전문가용모니터')
+into product_child_category values('5mn', 'mn', '대화면모니터')
+select * from dual;
 
---소분류(의자)
-insert into PRODUCT_CHILD_CATEGORY
-values('tc','ch','책상의자');
-insert into PRODUCT_CHILD_CATEGORY
-values('gc','ch','게이밍 의자');
-insert into PRODUCT_CHILD_CATEGORY
-values('sc','ch','좌식 의자');
-insert into PRODUCT_CHILD_CATEGORY
-values('ec','ch','안락 의자');
-insert into PRODUCT_CHILD_CATEGORY
-values('dc','ch','식탁의자');
-
--- 소분류(책상/책장)
-insert into PRODUCT_CHILD_CATEGORY
-values('bc','de','책장');
-insert into PRODUCT_CHILD_CATEGORY
-values('pd','de','컴퓨터 책상');
-insert into PRODUCT_CHILD_CATEGORY
-values('nd','de','일반 책상');
-
-
-select*from PRODUCT_CHILD_CATEGORY;
-
--- 소분류(마우스)
-insert into PRODUCT_CHILD_CATEGORY
-values('gm','mo','게이밍 마우스');
-insert into PRODUCT_CHILD_CATEGORY
-values('wm','mo','무선 마우스');
-insert into PRODUCT_CHILD_CATEGORY
-values('lm','mo','저소음 마우스');
-
-
---소분류(키보드)
-insert into PRODUCT_CHILD_CATEGORY
-values('ck','ke','무접점 키보드');
-insert into PRODUCT_CHILD_CATEGORY
-values('mk','ke','기계식 키보드');
-insert into PRODUCT_CHILD_CATEGORY
-values('wk','ke','무선 키보드');
-insert into PRODUCT_CHILD_CATEGORY
-values('gk','ke','게이밍 키보드');
-
-
---소분류(모니터)
-insert into PRODUCT_CHILD_CATEGORY
-values('sm','mo','표준 모니터');
-insert into PRODUCT_CHILD_CATEGORY
-values('gmo','mo','게이밍 모니터');
-insert into PRODUCT_CHILD_CATEGORY
-values('pm','mo','전문가용 모니터');
-insert into PRODUCT_CHILD_CATEGORY
-values('hm','mo','휴대용 모니터');
-
---소분류(기타)
-insert into PRODUCT_CHILD_CATEGORY
-values('sm','ot','손목 보호대');
-insert into PRODUCT_CHILD_CATEGORY
-values('gmo','ot','거치대');
-insert into PRODUCT_CHILD_CATEGORY
-values('pm','ot','팜레스트');
-
-
-select*from PRODUCT_CHILD_CATEGORY;
-select*from PRODUCT_PARENT_CATEGORY;
-
-select * from product_category;
-
-select * from product order by reg_date desc;
-
-select * from product_detail;
-
-update
 
 -- 상품- 분류
 
@@ -1347,17 +1306,6 @@ select
 from
     product p left join product_category pc
         on p.product_code = pc.product_code;
-
-select * from member;
-
-select * from authorities;
-
-
-insert into authorities
-values(
-    'ROLE_AM',
-    48
-);
 
 
 select
@@ -1469,3 +1417,24 @@ from(
                 on cc.child_category_code = pcc.child_category_code)ccc
                     join product_parent_category ppc
                         on ccc.parent_category_code = ppc.parent_category_code;
+
+--주문-결제-상품 뷰 테이블 생성(혜진)
+create or replace view view_merchant_imp
+as
+select
+    m.merchant_uid,
+    m.member_no,
+    m.order_date,
+    m.order_status,
+    i.name,
+    i.amount,
+    p.thumbnail
+from
+    merchant m left join imp i
+        on m.merchant_uid = i.merchant_uid
+            left join merchant_detail md
+                on m.merchant_uid = md.merchant_uid
+                    left join product_detail pd
+                        on md.detail_no = pd.detail_no
+                            left join product p
+                                on pd.product_code = p.product_code

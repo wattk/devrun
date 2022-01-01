@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.dao.ShopDao;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Review;
@@ -48,13 +49,18 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public List<Review> selectAllReview(String productCode) {
-		return shopDao.selectAllReview(productCode);
+	public List<Review> selectAllReview(Map<String, Object> param) {
+		return shopDao.selectAllReview(param);
 	}
 
 	@Override
 	public int countAllList(String productCode) {
 		return shopDao.countAllList(productCode);
+	}
+
+	@Override
+	public int countPicReviewList(String productCode) {
+		return shopDao.countPicReviewList(productCode);
 	}
 
 	@Override
@@ -69,7 +75,7 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public List<Product> CategoryItemAll(String parentCate) {
+	public List<ProductEntity> CategoryItemAll(String parentCate) {
 		return shopDao.CategoryItemAll(parentCate);
 	}
 
@@ -77,5 +83,11 @@ public class ShopServiceImpl implements ShopService {
 	public Attachment selectOneAttach(int reviewNo) {
 		return shopDao.selectOneAttach(reviewNo);
 	}
+
+	@Override
+	public List<Product> selectRecommendation(Map<String, Object> param) {
+		return shopDao.selectRecommendation(param);
+	}
+
 
 }
