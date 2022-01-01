@@ -89,5 +89,10 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.selectRecommendation(param);
 	}
 
+	@Override
+	public int didIHitLikes(Map<String, Object> param) {
+		return shopDao.didIHitLikes(param);
+	}
+
 
 }

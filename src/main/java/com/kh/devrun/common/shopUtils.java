@@ -46,6 +46,7 @@ public class shopUtils {
 			param.put("reviewNo", reviewNo);
 			
 			int likeYesNo = shopService.didIHitLikes(param);
+			log.debug("이게 1이면 좋아요를 눌렀던 것 : {}", likeYesNo);
 			
 			reviewSb.append("			<!--리뷰시작-->\n"
 					+ "				<div class=\"aReviewDiv forFont\">\n"

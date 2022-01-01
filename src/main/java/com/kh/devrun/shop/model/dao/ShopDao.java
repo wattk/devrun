@@ -30,4 +30,6 @@ public interface ShopDao {
 
 	List<Product> selectRecommendation(Map<String, Object> param);
 
+	int didIHitLikes(Map<String, Object> param);
+
 }

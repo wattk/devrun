@@ -72,4 +72,9 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectList("shop.selectRecommendation",param);
 	}
 
+	@Override
+	public int didIHitLikes(Map<String, Object> param) {
+		return session.selectOne("shop.didIHitLikes",param);
+	}
+
 }

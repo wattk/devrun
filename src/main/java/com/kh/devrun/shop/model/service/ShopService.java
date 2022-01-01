@@ -28,4 +28,6 @@ public interface ShopService {
 
 	List<Product> selectRecommendation(Map<String, Object> param);
 
+	int didIHitLikes(Map<String, Object> param);
+
 }

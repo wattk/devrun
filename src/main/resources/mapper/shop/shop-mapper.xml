@@ -126,4 +126,12 @@
 			child_Category_code = #{childCate}
 			and product_code != #{productCode}
 	</select>
+	<select id="didIHitLikes" resultType="_int">
+		select
+			count(*)
+		from member_review_like
+		where 
+			member_no = #{loginMemberNo} and
+			review_no = #{reviewNo}
+	</select>
 </mapper>
