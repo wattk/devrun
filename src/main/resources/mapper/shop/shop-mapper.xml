@@ -42,9 +42,14 @@
 		from
 		    review r left join review_attachment a
 		    	on r.review_no = a.review_no
-		where product_code = #{productCode}    	
-		order by r.reg_date desc    
+		where product_code = #{productCode}
+		order by 
+			r.reg_date 
+		<if test="orderBy == -1">
+			desc    
+		</if>		    	
 	</select>
+	
 	<resultMap type="review" id="review">
 		<id column ="review_no" property ="reviewNo"/>
 		<result column ="member_no" property="memberNo"/>
@@ -110,5 +115,63 @@
 			review_attachment
 		where 
 			review_no =#{reviewNo}
+	</select>
+	
+	<select id="selectRecommendation" resultType="productEx">
+		select
+			*
+		from 
+			view_product_parent_category
+		where 
+			child_Category_code = #{childCate}
+			and product_code != #{productCode}
+	</select>
+	
+	
+	<select id="didIHitLikes" resultType="_int">
+		select
+			count(*)
+		from member_review_like
+		where 
+			member_no = #{loginMemberNo} and
+			review_no = #{reviewNo}
+	</select>
+		<update id="reviewLikeAdd">
+		update 
+			review 
+		set like_count = like_count +1
+		where review_no = #{reviewNo}
+		and product_code = #{productCode}
+	</update>
+	
+	<insert id="insertMemberReviewLike">
+		insert into 
+			member_review_like
+		values (#{reviewNo}, #{memberNo})
+
+	</insert>
+	
+	<delete id="deleteMemberReviewLike">
+		delete 
+			member_review_like
+		where review_no = #{reviewNo}
+		and  member_no = #{memberNo}	
+	</delete>
+	
+	<update id="reviewLikeDelete">
+		update 
+			review
+		set 
+			like_count = like_count -1
+		where review_no = #{reviewNo}
+		and product_code = #{productCode} 
+	</update>
+	
+	<select id="refreshCountLike" resultType="_int">
+		select
+			like_count
+		from 
+			review
+		where review_no = #{reviewNo}
 	</select>
 </mapper>

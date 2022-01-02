@@ -129,9 +129,9 @@
 					<td> <fmt:formatDate value="${member.enrollDate }" pattern="yyyy-MM-dd"/>  </td>
 					<td>
 						<select class="select-authority">
-				            <option value="ROLE_AM" ${member.authority =="ROLE_AM" ? "selected" : "" }>관리자</option>		
-				            <option value="ROLE_M1" ${member.authority =="ROLE_M1" ? "selected" : "" }>지식인</option>		
-				            <option value="ROLE_M2" ${member.authority =="ROLE_M2" ? "selected" : "" }>일반 회원</option>
+				            <option value="ROLE_AM" ${member.authorities[0]  =="ROLE_AM" ? "selected" : "" }>관리자</option>		
+				            <option value="ROLE_M1" ${member.authorities[0]  =="ROLE_M1" ? "selected" : "" }>지식인</option>		
+				            <option value="ROLE_M2" ${member.authorities[0] =="ROLE_M2" ? "selected" : "" }>일반 회원</option>
 				        </select>
 	        		</td>
 				</tr>
@@ -159,7 +159,8 @@
 		console.log( $(document.memberRoleUpdateFrm).find("[name=memberNo]").val()   );
 		console.log( $(document.memberRoleUpdateFrm).find("[name=authority]").val()   );
 		
-		$(memberRoleUpdateFrm).submit();
+		$(memberRoleUpdateFrm).submit()
+		;
 		
 	});
 
@@ -283,9 +284,9 @@
 					<td>\${memberList[i].enrollDate}</td>
 					<td>
 						<select class="select-authority">
-				            <option value="ROLE_AM" \${memberList[i].authority =="ROLE_AM" ? "selected" : "" }>관리자</option>		
-				            <option value="ROLE_M1" \${memberList[i].authority =="ROLE_M1" ? "selected" : "" }>지식인</option>		
-				            <option value="ROLE_M2" \${memberList[i].authority =="ROLE_M2" ? "selected" : "" }>일반 회원</option>
+				            <option value="ROLE_AM" \${memberList[i].authorities[0] =="ROLE_AM" ? "selected" : "" }>관리자</option>		
+				            <option value="ROLE_M1" \${memberList[i].authorities[0] =="ROLE_M1" ? "selected" : "" }>지식인</option>		
+				            <option value="ROLE_M2" \${memberList[i].authorities[0] =="ROLE_M2" ? "selected" : "" }>일반 회원</option>
 			       		</select>						
 					</td>				
 					</tr>`);

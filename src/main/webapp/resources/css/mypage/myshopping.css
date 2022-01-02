@@ -105,3 +105,7 @@ px
 .modal-backdrop.show{
 	z-index : -999;
 }
+.order-img{
+	width : 5rem;
+	height : 5rem;
+}

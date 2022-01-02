@@ -4,9 +4,9 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="order">
   <insert id="insertOrder">
-  	insert into order
+  	insert into merchant
   	values(
-  		#{orderCode},
+  		#{merchantUid},
   		#{memberNo},
   		default,
   		default,
@@ -22,12 +22,138 @@
   <update id="insertOrderDetail">
   	<foreach collection="list" item="item" separator="," open="INSERT ALL" close="SELECT * FROM DUAL">
   		into
-  			order_detail
+  			merchant_detail
   		values(
-  			#{orderCode},
-  			#{detailNo},
-  			#{buyCount}
+  			#{item.detailNo},
+  			#{item.merchantUid},
+  			#{item.buyCount}
   		)
   	</foreach>
   </update>
+  
+  <insert id="insertImp">
+  	insert into imp
+  	values(
+  		#{impUid},
+  		#{merchantUid},
+  		#{pgProvider},
+  		#{name},
+  		#{payMethod},
+  		#{amount},
+  		#{buyerAddr},
+  		#{buyerEmail},
+  		#{buyerName},
+  		#{buyerPostcode},
+  		#{buyerPhone}
+  	)
+  </insert>
+  
+  <select id="selectOneMerchant" resultMap="merchantCollection">
+  	select
+  		*
+  	from
+  		merchant m left join merchant_detail md
+  			on m.merchant_uid = md.merchant_uid
+  	where
+  		m.merchant_uid = #{merchantUid}
+  </select>
+  <resultMap type="merchant" id="merchantCollection">
+  	<id column="merchant_uid" property="merchantUid"/>
+  	<result column="member_no" property="memberNo"/>
+  	<result column="order_date" property="orderDate"/>
+  	<result column="order_status" property="orderStatus"/>
+  	<result column="cs_status" property="csStatus"/>
+  	<result column="point_value" property="pointValue"/>
+  	<result column="product_price" property="productPrice"/>
+  	<result column="shipping_fee" property="shippingFee"/>
+  	<result column="total_price" property="totalPrice"/>
+  	<result column="shipping_req" property="shippingReq"/>
+  	<collection property="merchantDetailList" ofType="merchantDetail">
+	  	<id column="detail_no" property="detailNo"/>
+	  	<id column="merchant_uid" property="merchantUid"/>
+	  	<result column="buy_count" property="buyCount"/>
+  	</collection>
+  </resultMap>
+  
+  <select id="selectMerchantProductList" resultMap="productCollection">
+  	select
+  		p.product_code,
+        p.name,
+        p.price,
+        p.thumbnail,
+        pd.detail_no,
+        pd.option_no,
+        pd.option_content,
+        md.buy_count
+  	from
+  		product p left join product_detail pd
+  			on p.product_code = pd.product_code
+  				left join merchant_detail md
+  					on pd.detail_no = md.detail_no
+  	where
+  		pd.detail_no in
+  		<foreach collection="list" item="item" open="(" separator="," close=")">
+  			#{item}
+  		</foreach>
+  </select>
+  <resultMap type="product" id="productCollection">
+  	<id column="product_code" property="productCode"/>
+	<result column="name" property="name"/>
+	<result column="price" property="price"/>
+	<result column="thumbnail" property="thumbnail"/>
+	<result column="buy_count" property="buyCount"/>
+	<association property="productDetail" javaType ="productDetail">
+		<id column="detail_no" property="detailNo"/>
+		<result column="option_no" property="optionNo"/>
+		<result column="option_content" property="optionContent"/>
+	</association>
+  </resultMap>
+  
+  <select id="selectOneImp" resultType="imp">
+  	select
+  		*
+  	from
+  		imp
+  	where
+  		merchant_uid = #{merchantUid}
+  </select>
+  
+  <select id="selectOrderLogCnt" resultType="_int">
+  	select
+  		count(*)
+  	from
+  		order_log
+  	where
+  		member_no = #{memberNo}
+  		and
+  		end_date is null
+  	order by
+  		req_date desc
+  </select>
+  
+  <select id="selectOrder" resultMap="orderCollection">
+  	select
+	    merchant_uid,
+	    member_no,
+	    order_date,
+	    order_status,
+	    name,
+	    amount,
+	    thumbnail
+	from
+	    view_merchant_imp
+	where
+	    member_no = #{memberNo}
+  </select>
+    <resultMap type="merchantExt" id="orderCollection">
+  	<id column="merchant_uid" property="merchantUid"/>
+  	<result column="member_no" property="memberNo"/>
+  	<result column="order_date" property="orderDate"/>
+  	<result column="order_status" property="orderStatus"/>
+  	<result column="thumbnail" property="thumbnail"/>
+  	<association property="imp" javaType ="imp">
+	  	<result column="name" property="name"/>
+	  	<result column="amount" property="amount"/>
+  	</association>
+  </resultMap>
 </mapper>

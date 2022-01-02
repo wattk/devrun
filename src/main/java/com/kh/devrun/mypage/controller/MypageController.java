@@ -5,6 +5,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,9 +29,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.devrun.address.model.vo.Address;
 import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.mypage.model.service.MypageService;
+import com.kh.devrun.order.model.service.OrderService;
+import com.kh.devrun.order.model.vo.MerchantExt;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +48,9 @@ public class MypageController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private OrderService orderService;
 	
 	@Autowired
 	ServletContext application;
@@ -238,8 +246,8 @@ public class MypageController {
 					throw e;
 				}
 				return "redirect:/mypage/myinfo.do";
-			
-			} else {
+			}
+			else {
 				redirectAttr.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
 				return "redirect:/mypage/myinfo/profileUpdate.do";
 			}
@@ -257,8 +265,8 @@ public class MypageController {
 	/**
 	 * 회원 탈퇴
 	 */
-	@PostMapping("/myinfo/memberWithdrawal")
-	public String memberWithdrawal(String password, Authentication authentication, RedirectAttributes redirectAttr) {
+	@PostMapping("/myinfo/memberWithdrawal.do")
+	public String memberWithdrawal(@RequestParam String password, Authentication authentication, RedirectAttributes redirectAttr) {
 		Member member = (Member) authentication.getPrincipal();
 		String id = member.getId();
 		
@@ -280,8 +288,8 @@ public class MypageController {
 				throw e;
 			}
 			return "redirect:/member/memberLogout.do";
-			
-		} else {
+		}
+		else {
 			redirectAttr.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
 			return "redirect:/mypage/myinfo/profileUpdate.do";
 		}
@@ -294,8 +302,40 @@ public class MypageController {
 	/**
 	 * 지원 나의 정보 > 배송지 관리 시작
 	 */
-	@GetMapping("/myinfo/shippingAddress.do")
-	public String shippingAddress() {
+	@GetMapping("/myinfo/addressManage.do")
+	public String addressManage() {
+
+		return "mypage/addressManage";
+		
+	}
+	
+	/**
+	 * insert into address values(seq_address_no.nextval, #{memberNo}, #{postalCode}, #{address1}, #{address2}, #{mainYn}, #{title}, #{addressee}, #{phone})
+	 */
+	@PostMapping("/myinfo/addressEnroll.do")
+	public String addressEnroll(Address address, RedirectAttributes redirectAttr) {
+		
+		try {
+			int result = mypageService.insertAddress(address);
+			String msg = result > 0 ? "주소 등록이 완료되었습니다." : "주소 등록에 실패하였습니다.";
+			redirectAttr.addFlashAttribute("msg", msg);
+		} catch (Exception e) {
+			log.error("주소 등록 오류", e);
+			throw e;
+		}
+		return "redirect:/mypage/myinfo/addressManage.do";
+		
+	}
+	
+	@PostMapping("/myinfo/addressUpdate.do")
+	public String addressUpdate() {
+
+		return "mypage/shippingAddress";
+		
+	}
+	
+	@PostMapping("/myinfo/addressDelete.do")
+	public String addressDelete() {
 
 		return "mypage/shippingAddress";
 		
@@ -334,7 +374,12 @@ public class MypageController {
 	 */
 	
 	@GetMapping("/myshopping.do")
-	public void myshopping() {}
+	public void myshopping(Authentication authentication, Model model) {
+		Member member = (Member)authentication.getPrincipal();
+		Map<String, Object> map = orderService.selectMyShopping(member.getMemberNo());
+		model.addAttribute("orderLogCnt", map.get("orderLogCnt"));
+		model.addAttribute("orderList", map.get("orderList"));
+	}
 	
 	/**
 	 * 혜진 나의 쇼핑 끝
@@ -364,7 +409,12 @@ public class MypageController {
 	 */
 	
 	@GetMapping("/orderList.do")
-	public void orderList() {}
+	public void orderList(Authentication auth, Model model) {
+		Member member = (Member)auth.getPrincipal();
+		List<MerchantExt> list = orderService.selectOrderList(member.getMemberNo());
+		
+		model.addAttribute("list", list);
+	}
 	
 	/**
 	 * 혜진 주문 내역 끝
@@ -373,8 +423,16 @@ public class MypageController {
 	 * 혜진 주문 상세 시작
 	 */
 	
-	@GetMapping("/orderDetail.do")
-	public void orderDetail() {}
+	@GetMapping("/orderDetail/{merchantUid}")
+	public String orderDetail(@PathVariable String merchantUid, Model model) {
+		log.debug("merchantUid = {}", merchantUid);
+		Map<String, Object> map = orderService.selectOneMerchant(merchantUid);
+		model.addAttribute("merchant", map.get("merchant"));
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("imp", map.get("imp"));
+		log.debug("list = {}", map.get("list"));
+		return "/mypage/orderDetail";
+	}
 	
 	/**
 	 * 혜진 주문 상세 끝

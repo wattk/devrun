@@ -62,4 +62,9 @@ public class ChatServiceImpl implements ChatService {
 	public int updateLastCheck(Map<String, Object> fromMessage) {
 		return chatDao.updateLastCheck(fromMessage);
 	}
+
+	@Override
+	public List<String> searchChatRoom(Map<String, Object> param) {
+		return chatDao.searchChatRoom(param);
+	}
 }

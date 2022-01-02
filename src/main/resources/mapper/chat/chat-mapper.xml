@@ -49,7 +49,8 @@
 	    m.member_no member_no1,
 	    m.id,
 	    m.nickname,
-	    m.pro_photo
+	    m.pro_photo,
+	    (select last_check from chat_member where member_no != cl.member_no and chat_id = #{chatId}) last_check
 	from
 	    chat_log cl left join member m
 	        on cl.member_no = m.member_no
@@ -65,6 +66,7 @@
 	<result column="member_no" property="memberNo"/>
 	<result column="msg" property="msg"/>
 	<result column="log_time" property="logTime"/>
+	<result column="last_check" property="lastCheck"/>
 	<association property="member" javaType="member">
 		<id column="member_no1" property="memberNo"/>
 		<result column="id" property="id"/>
@@ -152,5 +154,15 @@
   	  and
   	  	member_no = #{memberNo}
   </update>
+  
+  <select id="searchChatRoom" resultType="string">
+  	select 
+	    chat_id
+	from 
+	    chat_member cm left join member m
+	        using(member_no)
+	where 
+	    member_no2 = #{memberNo} and LOWER(nickname) like LOWER('%'||#{searchNickname}||'%')
+  </select>
 
 </mapper>

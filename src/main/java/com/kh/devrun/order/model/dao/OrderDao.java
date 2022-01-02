@@ -2,13 +2,30 @@ package com.kh.devrun.order.model.dao;
 
 import java.util.List;
 
-import com.kh.devrun.order.model.vo.Order;
-import com.kh.devrun.order.model.vo.OrderDetail;
+import com.kh.devrun.order.model.vo.Imp;
+import com.kh.devrun.order.model.vo.Merchant;
+import com.kh.devrun.order.model.vo.MerchantDetail;
+import com.kh.devrun.order.model.vo.MerchantExt;
+import com.kh.devrun.product.model.vo.Product;
 
 public interface OrderDao {
 
-	int insertOrder(Order order);
+	int insertOrder(Merchant order);
 
-	int insertOrderDetail(List<OrderDetail> list);
+	int insertOrderDetail(List<MerchantDetail> list);
+
+	int insertImp(Imp imp);
+
+	Merchant selectOneMerchant(String merchantUid);
+
+	List<Product> selectMerchantProductList(List<Integer> detailNoList);
+
+	Imp selectOneImp(String merchantUid);
+
+	int selectOrderLogCnt(int memberNo);
+
+	List<MerchantExt> selectCurrentOrder(int memberNo);
+
+	List<MerchantExt> selectOrderList(int memberNo);
 
 }

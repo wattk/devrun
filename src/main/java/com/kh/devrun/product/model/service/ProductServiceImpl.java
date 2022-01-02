@@ -197,9 +197,10 @@ public class ProductServiceImpl implements ProductService {
 	 * @param detailNo
 	 * @return
 	 */
+
 	@Override
-	public Product selectOneProductByDetailNo(int detailNo) {
-		return productDao.selectOneProductByDetailNo(detailNo);
+	public List<Product> selectProductByDetailNo(int[] detailNo) {
+		return productDao.selectProductByDetailNo(detailNo);
 	}
 	
 	/* 혜진 끝*/

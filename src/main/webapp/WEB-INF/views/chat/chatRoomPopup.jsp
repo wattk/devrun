@@ -431,6 +431,33 @@
 						<%-- 대화 내역 리스트 출력 시작 --%>
 						<c:forEach items="${list}" var="chatLog">
 						
+							<%-- 현재 날짜 --%>
+							<c:set var="today" value="<%=new java.util.Date()%>" />
+							<!-- 날짜(오늘일 경우 - 오전 9:00 또는 15:00 / 올해일 경우 - 12월 22일 / 올해가 아닐 경우 - 2020.10.14)-->
+							<jsp:useBean id="dateValue" class="java.util.Date"/>
+							<jsp:setProperty name="dateValue" property="time" value="${chatLog.logTime}"/>
+							<fmt:formatDate value="${dateValue}" pattern="yyyyMMdd" var="logTimeDate"/>
+							<fmt:formatDate value="${today}" pattern="yyyyMMdd" var="nowDate"/>
+							<fmt:formatDate value="${dateValue}" pattern="yyyy" var="logTimeYear"/>
+							<fmt:formatDate value="${today}" pattern="yyyy" var="nowYear"/>
+						
+							<%-- 조건문 시작 --%>
+							<c:choose>
+								<%-- 오늘일 경우 ex. 15:00 --%>
+								<c:when test="${logTimeDate eq nowDate}">
+									<fmt:formatDate value="${dateValue}" pattern="HH:mm" var="logTime"/>
+								</c:when>
+								<%-- 올해일 경우 ex. 12/22 15:00 --%>
+								<c:when test="${logTimeYear eq nowYear}">
+									<fmt:formatDate value="${dateValue}" pattern="MM/dd HH:mm" var="logTime"/>
+								</c:when>
+								<%-- 이외의 경우 ex. 2020.10.14 --%>
+								<c:otherwise>
+									<fmt:formatDate value="${dateValue}" pattern="yyyy.MM.dd" var="logTime"/>
+								</c:otherwise>
+							</c:choose>
+							<%-- 조건문 끝 --%>
+						
 							<li class="list-group-item">
 							
 								<%-- 본인 메시지인 경우 --%>
@@ -444,8 +471,8 @@
 											</div>
 											<div class="etc">
 												<!-- 읽음 표시 -->
-												<span class="read-check d-block">읽음</span>
-												<span class="msg-time">${chatLog.logTime}</span>
+												<span class="read-check d-block"><c:if test="${chatLog.lastCheck ge chatLog.logTime}">읽음</c:if></span>
+												<span class="msg-time">${logTime}</span>
 											</div>
 											<!-- 본인 메시지 내용 끝-->
 										</div>
@@ -482,7 +509,7 @@
 													<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal">메시지 신고하기</a>
 												</div>
 												
-												<span class="msg-time">${chatLog.logTime}</span>
+												<span class="msg-time">${logTime}</span>
 												
 											</div>
 											<!-- 상대방 메시지 내용 끝-->
@@ -651,7 +678,7 @@
                                         </td>
                                         <td>
                                             <input type="radio" id="check5" name="chch">
-                                            <label for="check5">관련없는 이미지/내용 &emsp;&nbsp; &nbsp; </label>
+                                            <label for="check5">관련없는이미지/내용 &emsp;&nbsp; &nbsp; </label>
                                         </td>
                                         <td>													
                                             <input type="radio" id="check6" name="chch">
@@ -721,7 +748,7 @@
                                         </td>
                                         <td>
                                             <input type="radio" id="check5" name="chch">
-                                            <label for="check5">관련없는 이미지/내용 &emsp;&nbsp; &nbsp; </label>
+                                            <label for="check5">관련없는이미지/내용 &emsp;&nbsp; &nbsp; </label>
                                         </td>
                                         <td>													
                                             <input type="radio" id="check6" name="chch">
@@ -747,6 +774,36 @@
 
 <script>
 
+// 포커스 상태를 감지하는 변수
+var watch = 'Y';
+
+/**
+ * 팝업창이 활성화(focus)되면 chat_member.last_check컬럼을 update한다.
+ */
+// 다른곳 갔다가 팝업 페이지로 포커스를 다시 할 때에도 chat_member.last_check컬럼을 update되어야 한다.
+$(window).focus((e) => {
+	console.log("WINDOW FOCUS");
+	watch = 'Y';
+	readStatus("READ");
+});
+
+/**
+ * 팝업창 포커스 잃었을 경우 이벤트 발생
+ */
+$(window).blur((e) => {
+	console.log("WINDOW BLUR");
+	watch = 'N';
+	readStatus("UNREAD");
+});
+
+/**
+ * 윈도우창 닫을 때 이벤트 발생
+ */
+$(window).on("beforeunload", function() {
+	watch = 'N';
+	return readStatus("UNREAD");
+});
+
 // /chat/chat_mk0L0UJ93P50409 구독
 // 1. Stomp Client객체 생성(websocket)
 const ws = new SockJS(`http://\${location.host}${pageContext.request.contextPath}/stomp`);
@@ -761,19 +818,19 @@ stompClient.connect({}, (frame) => {
 		console.log("message : ", message);
 		const obj = JSON.parse(message.body);
 		console.log("obj = ", obj);
-		const {memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime} = obj;
+		
+		var {memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, lastCheck} = obj;
 
-		// 타임스탬프 날짜 변환
+		// 타임스탬프 날짜 변환 // 채팅 보낸 시간은 당일이므로 시간만 전달 ex) 15:00
 		const date = new Date(logTime);
-		const year = date.getFullYear().toString().slice(-2); //년도 뒤에 두자리
-		const month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리 (01, 02 ... 12)
-		const day = ("0" + date.getDate()).slice(-2); //일 2자리 (01, 02 ... 31)
+		//const year = date.getFullYear().toString().slice(-2); //년도 뒤에 두자리
+		//const month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리 (01, 02 ... 12)
+		//const day = ("0" + date.getDate()).slice(-2); //일 2자리 (01, 02 ... 31)
 		const hour = ("0" + date.getHours()).slice(-2); //시 2자리 (00, 01 ... 23)
 		const minute = ("0" + date.getMinutes()).slice(-2); //분 2자리 (00, 01 ... 59)
 		//const second = ("0" + date.getSeconds()).slice(-2); //초 2자리 (00, 01 ... 59)
-		const returnDate = year + "." + month + "." + day + " " + hour + ":" + minute;
+		const returnDate = hour + ":" + minute;
 		//console.log(returnDate);
-		
 		// 프로필 사진 분기 처리
 		const photo = (!proPhoto) ? 
 				'${pageContext.request.contextPath}/resources/images/common/blank-profile.png' : 
@@ -794,7 +851,7 @@ stompClient.connect({}, (frame) => {
 </div>
 <div class="etc">
 <!-- 읽음 표시 -->
-<span class="read-check d-block">읽음</span>
+<span class="read-check d-block"></span>
 <span class="msg-time">\${returnDate}</span>
 </div>
 <!-- 본인 메시지 내용 끝-->
@@ -832,24 +889,40 @@ stompClient.connect({}, (frame) => {
 </li>`);	
 			
 		}
+		
+		//console.log("memberNo = ", memberNo);
+		//console.log("보고있나? ", watch);
+		if(watch == 'Y') {
+			readStatus("READ");
+		}
+		
 		/* loginMember의 memberNo의 따른 수신자 발신자 분기 처리 끝 */
 		
 		// 채팅 입력된 후 최근 내용 확인을 위해 스크롤 하단으로 이동 시키기
 		$('.chat-data-wrap').scrollTop($('.chat-data-wrap')[0].scrollHeight);
+	
 	});
 	
 	// 팝업생성, stompClient가 연결되면 chat_member.last_check컬럼을 update한다.
 	// 위치주의 : connect된 이후 호출되어야한다.
-	lastCheck();
-});
+// 	lastCheck();
+	readStatus("READ");
 
-/**
- * 팝업창이 활성화(focus)되면 chat_member.last_check컬럼을 update한다.
- */
-// 다른곳 갔다가 팝업 페이지로 포커스를 다시 할 때에도 chat_member.last_check컬럼을 update되어야 한다.
-$(window).focus((e) => {
-	console.log("WINDOW FOCUS");
-	lastCheck();
+	// 구독요청 - 읽음 상태 처리
+	stompClient.subscribe("/chat/readStatus/${chatId}", (message) => {
+		//console.log("message : ", message);
+		const obj = JSON.parse(message.body);
+		//console.log("readStatus 구독의 obj = ", obj);
+		var {chatId, memberNo, readStatus} = obj;
+		const $readCheckSpan = $(".send-msg-wrap").find("span.read-check");
+		
+		// 상대가 읽음 상태라면 span.read-check 부분 text('읽음') 상태로 변환
+		if(memberNo != ${loginMember.memberNo} && readStatus == "READ") {
+			$readCheckSpan.text('읽음');
+		}
+		
+		
+	});
 });
 
 // 채팅 Send 클릭 시 이벤트 발생
@@ -885,18 +958,18 @@ $(message).keyup((e) => {
 });
 
 /**
- * 채팅방 마지막 확인시각을 메시지로 발행 -> db chat_member.last_check update
+ * 채팅방 마지막 확인시각과 읽고 있는지 여부 메시지로 발행 -> 채팅방 읽음 처리 체크를 위함 + 기존 lastCheck 처리한 일 추가함
  */
-const lastCheck = () => {
+const readStatus = (status) => {
 	let data = {
-			chatId : "${chatId}",
-			memberNo : "${loginMember.memberNo}",
-			lastCheck : Date.now(),
-			type : "LAST_CHECK"
+		chatId : "${chatId}",
+		memberNo : "${loginMember.memberNo}",
+		lastCheck : Date.now(),
+		readStatus : status,
+		type : "READ_STATUS"
 	};
 	
-	stompClient.send("/app/lastCheck", {},JSON.stringify(data));
-		
+	stompClient.send("/app/chat/readStatus/${chatId}", {},JSON.stringify(data));
 };
 
 // 더보기 아이콘 클릭 이벤트 발생
