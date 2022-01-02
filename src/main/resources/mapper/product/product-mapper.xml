@@ -258,6 +258,10 @@
 	</resultMap>
 	
 	<select id="selectCartValidList">
+		select
+			*
+		from
+			cart
 	</select>
 	<!-- 혜진 mapper 끝 -->
 </mapper>
