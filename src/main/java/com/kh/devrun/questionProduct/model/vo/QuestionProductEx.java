@@ -31,6 +31,6 @@ public class QuestionProductEx implements Serializable {
 	private int price;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date enrollDate;
-	private int qLevel;
+	private int questionLevel;
 			
 }

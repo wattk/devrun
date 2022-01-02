@@ -38,6 +38,12 @@ public class QuestionProductDaoImpe implements QuestionProductDao {
 	public QuestionProduct selectQuestionByRefNo(int questionNo) {
 		return session.selectOne("questionProduct.selectQuestionByRefNo",questionNo);
 	}
+
+	// 답변 등록 후 바로 question_ref_no 업데이트
+	@Override
+	public int updateQuestionRefNo(QuestionProduct questionProduct) {
+		return session.update("questionProduct.updateQuestionRefNo",questionProduct);
+	}
 	
 	
 }
