@@ -202,6 +202,12 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> selectProductByDetailNo(int[] detailNo) {
 		return productDao.selectProductByDetailNo(detailNo);
 	}
+
+	@Override
+	public List<Map<String, Object>> selectCartValidList(Map<String, Object> cartParam) {
+		return productDao.selectCartValidList(cartParam);
+	}
+	
 	
 	/* 혜진 끝*/
 	

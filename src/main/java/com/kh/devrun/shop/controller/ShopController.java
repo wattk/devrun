@@ -146,8 +146,10 @@ public class ShopController {
 
 	// 상세페이지를 이동 시
 	@GetMapping("/itemDetail/{productCode}")
-	public String selectOneItem(@PathVariable String productCode, Model model) {
+	public String selectOneItem(@PathVariable String productCode, Model model, Authentication authentication) {
 
+		int memberNo = ((Member)authentication.getPrincipal()).getMemberNo();
+		
 		// 상품 조회
 		ProductEx product = productService.selectOneItem(productCode);
 		model.addAttribute("product", product);
@@ -169,6 +171,14 @@ public class ShopController {
 
 		Collections.shuffle(recommendation);
 		model.addAttribute("recommendation", recommendation);
+		
+		//장바구니 좋아요 여부
+		Map<String, Object> cartParam = new HashMap<>();
+		cartParam.put("memberNo", memberNo);
+		cartParam.put("productCode", productCode);
+		
+		List<Map<String, Object>> cartValidList = productService.selectCartValidList(cartParam);
+		model.addAttribute("cartValidList", cartValidList);
 
 		return "shop/itemDetail";
 	}
@@ -397,6 +407,12 @@ public class ShopController {
 		resultMap.put("pagebar", pagebar);
 
 		return resultMap;
+	}
+	
+	@PostMapping("/cartEnroll")
+	public int cartEnroll() {
+		
+		return 0;
 	}
 
 	/**

@@ -230,7 +230,7 @@
 						<p>${product.name}</p>
 					</div>
 					<div id="itemDetailOptionDiv">
-						<span id="price"><fmt:formatNumber value="${product.price}" pattern="#,###,###"/></span> 원
+						<span id="price" data-price="${product.price}"><fmt:formatNumber value="${product.price}" pattern="#,###,###"/></span> 원
 						<br><span>혜택 : </span><span style="color:pink;"><fmt:formatNumber value="${product.price / 200}" pattern="#,###,### P"/> </span>적립
 						<br><span>배송 : </span><span>2500원</span>
 						<br>
@@ -249,9 +249,9 @@
 							<span>주문금액</span><span><fmt:formatNumber value="${product.price}" pattern="#,###,### 원"/></span>
 						</div>
 						<div id="orderBtnDiv" class="text-center row">
+						
 							<button type="button" id="cartBtn" class="btn btn-primary col-6">장바구니</button>
 							<button type="button" id="orderBtn" class="btn btn-secondary col-6">바로구매</button>
-							
 						</div>
 					</div>
 					<div id="itemDetailOrderDiv">
@@ -644,7 +644,7 @@ $("#cartBtn").click((e)=>{
 		data : {
 			memberNo : ${member.memberNo},
 			detailNo : detailNo,
-			price : 
+			price : $("#price").data("price")
 		} ,
 		success(data){
 			console.log(data);

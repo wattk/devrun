@@ -121,6 +121,13 @@ public class ProductDaoImpl implements ProductDao{
 	public List<Product> selectProductByDetailNo(int[] detailNo) {
 		return session.selectList("product.selectProductByDetailNo", detailNo);
 	}
+
+	@Override
+	public List<Map<String, Object>> selectCartValidList(Map<String, Object> cartParam) {
+		return session.selectList("product.selectCartValidList", cartParam);
+	}
+	
+	
 	/* 혜진 끝*/
 
 	

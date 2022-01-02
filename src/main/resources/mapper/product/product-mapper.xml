@@ -256,6 +256,9 @@
 			<result column="quantity" property="quantity"/>
 		</association>
 	</resultMap>
+	
+	<select id="selectCartValidList">
+	</select>
 	<!-- 혜진 mapper 끝 -->
 </mapper>
 
