@@ -230,7 +230,7 @@
 						<p>${product.name}</p>
 					</div>
 					<div id="itemDetailOptionDiv">
-						<span><fmt:formatNumber value="${product.price}" pattern="#,###,###"/></span> 원
+						<span id="price"><fmt:formatNumber value="${product.price}" pattern="#,###,###"/></span> 원
 						<br><span>혜택 : </span><span style="color:pink;"><fmt:formatNumber value="${product.price / 200}" pattern="#,###,### P"/> </span>적립
 						<br><span>배송 : </span><span>2500원</span>
 						<br>
@@ -249,7 +249,7 @@
 							<span>주문금액</span><span><fmt:formatNumber value="${product.price}" pattern="#,###,### 원"/></span>
 						</div>
 						<div id="orderBtnDiv" class="text-center row">
-							<button type="button" class="btn btn-primary col-6">장바구니</button>
+							<button type="button" id="cartBtn" class="btn btn-primary col-6">장바구니</button>
 							<button type="button" id="orderBtn" class="btn btn-secondary col-6">바로구매</button>
 							
 						</div>
@@ -568,6 +568,25 @@ $("#orderBtn").click((e)=>{
 	location.href = `${pageContext.request.contextPath}/order/order?detailNo=\${detailNo}`;
 });
 //바로구매 버튼 클릭 이벤트 혜진 끝
+//장바구니 버튼 클릭 이벤트 혜진 시작
+$("#cartBtn").click((e)=>{
+	const detailNo = $("#detailNo").val();
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/shop/cartEnroll",
+		method : "POST",
+		data : {
+			memberNo : ${member.memberNo},
+			detailNo : detailNo,
+			price : 
+		} ,
+		success(data){
+			console.log(data);
+		},
+		error : console.log
+	});
+});
+//장바구니 버튼 클릭 이벤트 혜진 끝
 </script>		
 	<!-- body 영역 끝 -->	
 			
