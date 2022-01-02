@@ -262,6 +262,8 @@ COMMENT ON COLUMN "QUESTION_PRODUCT"."ENROLL_DATE" IS '등록일';
 COMMENT ON COLUMN "QUESTION_PRODUCT"."PRIVATE_YN" IS '비밀글 여부';
 COMMENT ON COLUMN "QUESTION_PRODUCT"."LEVEL" IS '문의 레벨';
 
+-- drop table WISHLIST;
+-- drop table MEMBER_WISHLIST;
 
 -- 상품 찜 테이블 생성
 -- ◆상품코드 외래키 제약 조건 부모 데이터 삭제 디폴트 상태
@@ -270,7 +272,7 @@ CREATE TABLE "WISHLIST" (
 	"PRODUCT_CODE"	VARCHAR2(100)		NOT NULL,
 	"REG_DATE"	DATE DEFAULT SYSDATE NOT NULL,
     CONSTRAINT PK_WISHLIST_WISHLIST_NO PRIMARY KEY(WISHLIST_NO),
-    constraint fk_WISHLIST_PRODUCT_CODE foreign key(PRODUCT_CODE) references PRODUCT(PRODUCT_CODE)
+    constraint fk_WISHLIST_PRODUCT_CODE foreign key(PRODUCT_CODE) references PRODUCT(PRODUCT_CODE) on delete cascade
 );
 
 -- 상품 찜 테이블 시퀀스 생성
@@ -287,8 +289,8 @@ CREATE TABLE "MEMBER_WISHLIST" (
 	"WISHLIST_NO"	NUMBER		NOT NULL,
 	"MEMBER_NO"	NUMBER		NOT NULL,
     constraint PK_MEMBER_WISHLIST primary key(WISHLIST_NO, MEMBER_NO),
-    constraint FK_MEMBER_WISHLIST_WISHLIST_NO foreign key(WISHLIST_NO) references WISHLIST(WISHLIST_NO),
-    constraint FK_MEMBER_WISHLIST_MEMBER_NO foreign key(MEMBER_NO) references MEMBER(MEMBER_NO)
+    constraint FK_MEMBER_WISHLIST_WISHLIST_NO foreign key(WISHLIST_NO) references WISHLIST(WISHLIST_NO)on delete cascade ,
+    constraint FK_MEMBER_WISHLIST_MEMBER_NO foreign key(MEMBER_NO) references MEMBER(MEMBER_NO) on delete cascade
 );
 
 -- 회원-상품 찜 테이블 코멘트 추가
@@ -1454,3 +1456,14 @@ from
                         on md.detail_no = pd.detail_no
                             left join product p
                                 on pd.product_code = p.product_code;
+                                
+                                
+-- 다현 WISHLIST 테이블 조인한 거                                
+create view wishlistInfo
+as select
+    w.wishlist_no,
+    w.PRODUCT_CODE,
+    w.REG_DATE,
+    mw.MEMBER_NO
+from wishlist w join member_wishlist mw
+ on w.wishlist_no = mw.wishlist_no;                                

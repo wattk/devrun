@@ -16,6 +16,7 @@ import com.kh.devrun.shop.model.dao.ShopDao;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
+import com.kh.devrun.shop.model.vo.Wishlist;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -137,16 +138,19 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.refreshCountLikes(reviewNo);
 	}
 
-
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
-	public int wishlistAdd(Map<String, Object> param) {
+	public int wishlistAdd(Wishlist wishlist, int memberNo) {
 		int result = 0;
 		int result2 = 0;
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
 
 		try {
 
-			result = shopDao.insertWishlist(param);
+			result = shopDao.insertWishlist(wishlist);
+			int wishlistNo = wishlist.getWishlistNo();
+			param.put("wishlistNo", wishlistNo);
 
 			if (result == 1) {
 				result2 = shopDao.insertMemberWishlist(param);
@@ -157,16 +161,43 @@ public class ShopServiceImpl implements ShopService {
 			throw e;
 		}
 
-		return result;
+		return result2;
 	}
 
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public int wishlistDelete(Map<String, Object> param) {
+		int result = 0;
+		
+		log.debug("param이 null 이라고? : {}", param);
+		
+		try {
+			// wishlistNo조회
+			int wishlistNo = shopDao.findWishlistNo(param);
+			log.debug("삭제를 위한 wishlistNo : {}", wishlistNo);
+			result = shopDao.wishlistDelete(wishlistNo);
+
+		} catch (Exception e) {
+			log.debug(e.getMessage());
+			throw e;
+		}
+
+		return result;
+	}
 	
-	/*혜진 장바구니 시작*/
+	@Override
+	public int didIHitWishlist(Map<String, Object> param) {
+		return shopDao.didIHitWishlist(param);
+	}
+
+//--------------------------------------------------------구분선---------------------------------------------------------
+
+	/* 혜진 장바구니 시작 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
 	public int insertCart(Cart cart) {
 		int result = 0;
-		
+
 		try {
 			result = shopDao.insertCart(cart);
 			result = shopDao.insertMemberCart(cart);
@@ -174,11 +205,11 @@ public class ShopServiceImpl implements ShopService {
 			e.printStackTrace();
 			throw e;
 		}
-		
+
 		return result;
 	}
-	
-	/*혜진 장바구니 끝*/
 
+
+	/* 혜진 장바구니 끝 */
 
 }

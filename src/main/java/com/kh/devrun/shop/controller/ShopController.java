@@ -40,6 +40,7 @@ import com.kh.devrun.shop.model.service.ShopService;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
+import com.kh.devrun.shop.model.vo.Wishlist;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -318,30 +319,42 @@ public class ShopController {
 	// 위시리스트 추가
 	@ResponseBody
 	@GetMapping("/wishlistAdd")
-	public int wishlistAdd(@RequestParam int memberNo, @RequestParam String productCode) {
-		log.debug("productCode : {}", productCode);
-		log.debug("memberNo: {}", memberNo);
-		Map<String, Object> param = new HashMap<>();
-		param.put("memberNo", memberNo);
-		param.put("productCode", productCode);
-
-		int result = shopService.wishlistAdd(param);
-
-		return 1;
+	public int wishlistAdd(Wishlist wishlist, @RequestParam int memberNo) {
+		int result = shopService.wishlistAdd(wishlist, memberNo);
+		log.debug("위시리스트 잘 추가? : {}", result);
+		return result;
 	}
 
-	// 위시리스트 제거
+	// 위시리스트 삭제
 	@ResponseBody
 	@GetMapping("/wishlistDelete")
-	public int wishlistDelete(@RequestParam int memberNo, @RequestParam String productCode) {
-		log.debug("productCode : {}", productCode);
-		log.debug("memberNo: {}", memberNo);
-		return 1;
+	public int wishlistDelete(@RequestParam String productCode, @RequestParam int memberNo) {
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("productCode", productCode);
+		param.put("memberNo", memberNo);
+
+		int result = shopService.wishlistDelete(param);
+		log.debug("위시리스트 잘 삭제? : {}", result);
+
+		return result;
 	}
 
-	
-	
-	
+	@ResponseBody
+	@GetMapping("/wishCheck")
+	public int wishCheck(@RequestParam String productCode, @RequestParam int memberNo) {
+		int wishCheckYn = 0;
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("productCode", productCode);
+		param.put("memberNo", memberNo);
+		
+		wishCheckYn = shopService.didIHitWishlist(param);
+		log.debug("wishCheckYn 이게 1이면 위시리스트에 담겼다는 것 : {}", wishCheckYn);
+
+		return wishCheckYn;
+	}
+
 //----------------------------------------------------------구분선---------------------------------------------------------------
 
 	/**
@@ -452,10 +465,10 @@ public class ShopController {
 	@ResponseBody
 	public int cartEnroll(Cart cart) {
 		log.debug("cart = {}", cart);
-		
+
 		int result = shopService.insertCart(cart);
 		log.debug("result = {}", result);
-		
+
 		return result;
 	}
 
