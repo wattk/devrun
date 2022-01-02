@@ -629,10 +629,9 @@ function reviewAll(){
 	
 	//위시리스트 비동기 처리
 	const $memberNo = ${member.memberNo};
-	const $productCode = '${product.productCode}';
+	console.log("작동하나요?1");
 	
 	$.ajax({
-		
 		url: "${pageContext.request.contextPath}/shop/wishCheck",
 		method: "Get",
 		data : {

@@ -242,14 +242,14 @@
 		)
 	</insert>
 	
-	<select id="didIHitWishlist" resultType="_int">
+	<select id="didIHitWishlist" resultType="int">
 		select
 			count(*)
 		from 
 			wishlistInfo
 		where 
 			member_no = #{memberNo}
-			and productCode = #{productCode}
+			and product_code = #{productCode}
 	</select>
 	<!-- 혜진 장바구니 끝 -->
 </mapper>

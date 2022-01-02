@@ -340,6 +340,7 @@ public class ShopController {
 		return result;
 	}
 
+	@ResponseBody
 	@GetMapping("/wishCheck")
 	public int wishCheck(@RequestParam String productCode, @RequestParam int memberNo) {
 		int wishCheckYn = 0;
