@@ -92,7 +92,7 @@
 		       			
 		       			<h5>나의 활동</h5>
 		       			<section class="row cursor" id="myActivity">
-		       				<span class="col-6 row" onclick="location.href='${pageContext.request.contextPath}/member/cart.do';">
+		       				<span class="col-6 row" onclick="location.href='${pageContext.request.contextPath}/order/cart.do';">
 		       					<span class="cart-icon"><i class="bi bi-minecart-loaded"></i> &nbsp; 장바구니</span>
 				       			<i class="bi bi-chevron-right"></i>
 		       				</span>
