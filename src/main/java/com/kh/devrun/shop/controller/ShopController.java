@@ -38,6 +38,7 @@ import com.kh.devrun.report.model.service.ReportService;
 import com.kh.devrun.report.model.vo.Report;
 import com.kh.devrun.shop.model.service.ShopService;
 import com.kh.devrun.shop.model.vo.Attachment;
+import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
@@ -153,7 +154,7 @@ public class ShopController {
 	@GetMapping("/itemDetail/{productCode}")
 	public String selectOneItem(@PathVariable String productCode, Model model, Authentication authentication) {
 
-		int memberNo = ((Member)authentication.getPrincipal()).getMemberNo();
+
 		
 		// 상품 조회
 		ProductEx product = productService.selectOneItem(productCode);
@@ -178,12 +179,21 @@ public class ShopController {
 		model.addAttribute("recommendation", recommendation);
 		
 		//장바구니 좋아요 여부
-		Map<String, Object> cartParam = new HashMap<>();
-		cartParam.put("memberNo", memberNo);
-		cartParam.put("productCode", productCode);
 		
-		List<Map<String, Object>> cartValidList = productService.selectCartValidList(cartParam);
-		model.addAttribute("cartValidList", cartValidList);
+		if(authentication != null) {
+			
+			int memberNo = ((Member)authentication.getPrincipal()).getMemberNo();
+			Map<String, Object> cartParam = new HashMap<>();
+			cartParam.put("memberNo", memberNo);
+			cartParam.put("productCode", productCode);
+			
+			List<Integer> cartValidList = productService.selectCartValidList(cartParam);
+			String cartValid = "";
+			for(int i : cartValidList) {
+				cartValid += i + ",";
+			}
+			model.addAttribute("cartValid", cartValid);
+		}
 
 		return "shop/itemDetail";
 	}
@@ -414,8 +424,12 @@ public class ShopController {
 		return resultMap;
 	}
 	
+	/*장바구니 추가*/
 	@PostMapping("/cartEnroll")
-	public int cartEnroll() {
+	public int cartEnroll(Cart cart) {
+		log.debug("cart = {}", cart);
+		
+		int result = shopService.insertCart(cart);
 		
 		return 0;
 	}

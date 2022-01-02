@@ -24,10 +24,7 @@
 <jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
 
-
 	<!-- body 영역 시작 -->
-	
-	<sec:authentication property="principal" var="member"/>	
 	
 		<div id="shopItemDetailOuterDiv">
 			<div id="itemDetailDisplayDiv" class="row">
@@ -107,7 +104,7 @@
 								<div class="qm-body1">
 									<p>해당상품</p>
 									<div class="row" id="qItem">
-										<img id="qPIc" src="${pageContext.request.contextPath}/resources/upload/product/${r.thumbnail}"  alt="">
+										<img id="qPIc" src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}"  alt="">
 										<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
 										<input type="hidden" name="product_code">
 									</div>
@@ -241,9 +238,16 @@
 						<hr>
 						<select id="detailNo" class="form-select col-12" aria-label="Default select example">
 							<option selected>옵션선택</option>
-							<c:forEach items="${pDetail}" var ="pd">
-								<option value="${pd.detailNo}">${pd.optionNo} <c:if test="${pd.optionContent != null}"> , ${pd.optionContent}</c:if></option>
-							</c:forEach>
+							<c:if test="${cartValid ne null }">
+								<c:forEach items="${pDetail}" var ="pd">
+									<option value="${pd.detailNo}" data-cart-valid="${fn:contains(cartValid, pd.detailNo)? 1 : 0}">${pd.optionNo} <c:if test="${pd.optionContent != null}"> , ${pd.optionContent}</c:if></option>
+								</c:forEach>
+							</c:if>
+							<c:if test="${cartValid eq null }">
+								<c:forEach items="${pDetail}" var ="pd">
+									<option value="${pd.detailNo}">${pd.optionNo} <c:if test="${pd.optionContent != null}"> , ${pd.optionContent}</c:if></option>
+								</c:forEach>
+							</c:if>
 						</select>
 						<div id="priceDiv" class="mt-3 mb-3">
 							<span>주문금액</span><span><fmt:formatNumber value="${product.price}" pattern="#,###,### 원"/></span>
@@ -640,19 +644,28 @@ $("#orderBtn").click((e)=>{
 //장바구니 버튼 클릭 이벤트 혜진 시작
 $("#cartBtn").click((e)=>{
 	const detailNo = $("#detailNo").val();
+	const cartValid = $(`option[value=\${detailNo}]`).data("cartValid");
+	
+	if(cartValid == 1){
+		alert("이미 장바구니 추가된 상품입니다.");
+		return;
+	}
 	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/shop/cartEnroll",
 		method : "POST",
 		data : {
-			memberNo : ${member.memberNo},
+			memberNo : $("#memberNoV").val(),
 			detailNo : detailNo,
-			price : $("#price").data("price")
+			amount : 1,
+			price : $("#price").data("price")*1
 		} ,
 		success(data){
 			console.log(data);
 		},
-		error : console.log
+		error(){
+			alert("로그인 후 이용 가능합니다.");
+		}
 	});
 });
 //장바구니 버튼 클릭 이벤트 혜진 끝

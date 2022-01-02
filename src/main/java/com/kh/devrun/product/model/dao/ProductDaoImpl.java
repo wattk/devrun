@@ -123,7 +123,7 @@ public class ProductDaoImpl implements ProductDao{
 	}
 
 	@Override
-	public List<Map<String, Object>> selectCartValidList(Map<String, Object> cartParam) {
+	public List<Integer> selectCartValidList(Map<String, Object> cartParam) {
 		return session.selectList("product.selectCartValidList", cartParam);
 	}
 	
