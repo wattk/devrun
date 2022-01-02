@@ -36,4 +36,6 @@ public interface ShopService {
 
 	int refreshCountLikes(int reviewNo);
 
+	int wishlistAdd(Map<String, Object> param);
+
 }

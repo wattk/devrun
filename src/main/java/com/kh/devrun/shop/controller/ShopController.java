@@ -296,7 +296,29 @@ public class ShopController {
 		return map;
 	}
 	
+	//위시리스트 추가
+	@ResponseBody
+	@GetMapping("/wishlistAdd")
+	public int wishlistAdd(@RequestParam int memberNo, @RequestParam String productCode) {
+		log.debug("productCode : {}", productCode);
+		log.debug("memberNo: {}", memberNo);
+		Map<String, Object>param = new HashMap<>();
+		param.put("memberNo", memberNo);
+		param.put("productCode", productCode);
+		
+		int result = shopService.wishlistAdd(param);
+		
+		return 1;
+	}
 	
+	//위시리스트 제거
+	@ResponseBody
+	@GetMapping("/wishlistDelete")
+	public int wishlistDelete(@RequestParam int memberNo, @RequestParam String productCode) {
+		log.debug("productCode : {}", productCode);
+		log.debug("memberNo: {}", memberNo);
+		return 1;
+	}
 	
 	
 //----------------------------------------------------------구분선---------------------------------------------------------------

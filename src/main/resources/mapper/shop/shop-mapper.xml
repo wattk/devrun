@@ -174,4 +174,16 @@
 			review
 		where review_no = #{reviewNo}
 	</select>
+	<insert id="wishlistAdd">
+		insert 
+			into wishlist
+		values
+			(seq_wishlist_no.nextval, #{productCode}, default)
+		<selectKey keyProperty="reviewNo" resultType="_int" order="AFTER">
+			select
+				seq_wishlist_no.currval
+			from
+				dual
+		</selectKey>			
+	</insert>
 </mapper>

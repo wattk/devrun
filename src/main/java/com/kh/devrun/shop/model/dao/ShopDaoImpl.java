@@ -102,4 +102,14 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectOne("shop.refreshCountLike", reviewNo);
 	}
 
+	@Override
+	public int insertWishlist(Map<String, Object> param) {
+		return session.insert("shop.wishlistAdd",param);
+	}
+
+	@Override
+	public int insertMemberWishlist(Map<String, Object> param) {
+		return session.insert("shop.insertMemberWishlist",param);
+	}
+
 }

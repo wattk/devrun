@@ -42,4 +42,8 @@ public interface ShopDao {
 
 	int refreshCountLikes(int reviewNo);
 
+	int insertWishlist(Map<String, Object> param);
+
+	int insertMemberWishlist(Map<String, Object> param);
+
 }
