@@ -204,7 +204,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Map<String, Object>> selectCartValidList(Map<String, Object> cartParam) {
+	public List<Integer> selectCartValidList(Map<String, Object> cartParam) {
 		return productDao.selectCartValidList(cartParam);
 	}
 	

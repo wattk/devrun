@@ -11,6 +11,7 @@ import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.service.ShopServiceImpl;
 import com.kh.devrun.shop.model.vo.Attachment;
+import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
@@ -102,4 +103,17 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectOne("shop.refreshCountLike", reviewNo);
 	}
 
+
+	/*혜진 장바구니 시작*/
+	@Override
+	public int insertCart(Cart cart) {
+		return session.insert("shop.insertCart", cart);
+	}
+
+	@Override
+	public int insertMemberCart(Cart cart) {
+		return session.insert("shop.insertMemberCart", cart);
+	}
+	
+	/*혜진 장바구니 끝*/
 }

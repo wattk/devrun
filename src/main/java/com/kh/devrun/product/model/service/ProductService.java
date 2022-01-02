@@ -52,7 +52,7 @@ public interface ProductService {
 	 */
 	List<Product> selectProductByDetailNo(int[] detailNo);
 	
-	List<Map<String, Object>> selectCartValidList(Map<String, Object> cartParam);
+	List<Integer> selectCartValidList(Map<String, Object> cartParam);
 	/* 혜진 끝*/
 
 

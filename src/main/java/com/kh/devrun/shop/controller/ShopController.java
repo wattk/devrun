@@ -38,6 +38,7 @@ import com.kh.devrun.report.model.service.ReportService;
 import com.kh.devrun.report.model.vo.Report;
 import com.kh.devrun.shop.model.service.ShopService;
 import com.kh.devrun.shop.model.vo.Attachment;
+import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
@@ -151,8 +152,10 @@ public class ShopController {
 
 	// 상세페이지를 이동 시
 	@GetMapping("/itemDetail/{productCode}")
-	public String selectOneItem(@PathVariable String productCode, Model model) {
+	public String selectOneItem(@PathVariable String productCode, Model model, Authentication authentication) {
 
+
+		
 		// 상품 조회
 		ProductEx product = productService.selectOneItem(productCode);
 		model.addAttribute("product", product);
@@ -174,6 +177,23 @@ public class ShopController {
 
 		Collections.shuffle(recommendation);
 		model.addAttribute("recommendation", recommendation);
+		
+		//장바구니 좋아요 여부
+		
+		if(authentication != null) {
+			
+			int memberNo = ((Member)authentication.getPrincipal()).getMemberNo();
+			Map<String, Object> cartParam = new HashMap<>();
+			cartParam.put("memberNo", memberNo);
+			cartParam.put("productCode", productCode);
+			
+			List<Integer> cartValidList = productService.selectCartValidList(cartParam);
+			String cartValid = "";
+			for(int i : cartValidList) {
+				cartValid += i + ",";
+			}
+			model.addAttribute("cartValid", cartValid);
+		}
 
 		return "shop/itemDetail";
 	}
@@ -402,6 +422,18 @@ public class ShopController {
 		resultMap.put("pagebar", pagebar);
 
 		return resultMap;
+	}
+	
+	/*장바구니 추가*/
+	@PostMapping("/cartEnroll")
+	@ResponseBody
+	public int cartEnroll(Cart cart) {
+		log.debug("cart = {}", cart);
+		
+		int result = shopService.insertCart(cart);
+		log.debug("result = {}", result);
+		
+		return result;
 	}
 
 	/**

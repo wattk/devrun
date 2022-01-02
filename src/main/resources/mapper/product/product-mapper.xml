@@ -257,11 +257,15 @@
 		</association>
 	</resultMap>
 	
-	<select id="selectCartValidList">
+	<select id="selectCartValidList" resultType="_int">
 		select
-			*
+		    c.detail_no
 		from
-			cart
+		    member_cart mc left join cart c
+		        on mc.cart_no = c.cart_no
+		where
+		    c.detail_no in (select detail_no from product_detail pd where pd.product_code = #{productCode})
+		    and member_no = #{memberNo}
 	</select>
 	<!-- 혜진 mapper 끝 -->
 </mapper>

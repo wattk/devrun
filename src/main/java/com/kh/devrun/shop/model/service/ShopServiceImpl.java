@@ -14,6 +14,7 @@ import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.dao.ShopDao;
 import com.kh.devrun.shop.model.vo.Attachment;
+import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
@@ -135,5 +136,25 @@ public class ShopServiceImpl implements ShopService {
 	public int refreshCountLikes(int reviewNo) {
 		return shopDao.refreshCountLikes(reviewNo);
 	}
+
+	
+	/*혜진 장바구니 시작*/
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public int insertCart(Cart cart) {
+		int result = 0;
+		
+		try {
+			result = shopDao.insertCart(cart);
+			result = shopDao.insertMemberCart(cart);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		return result;
+	}
+	
+	/*혜진 장바구니 끝*/
 
 }

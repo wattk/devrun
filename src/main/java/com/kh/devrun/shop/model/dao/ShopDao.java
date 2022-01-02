@@ -6,6 +6,7 @@ import java.util.Map;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.vo.Attachment;
+import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
 
 public interface ShopDao {
@@ -41,5 +42,11 @@ public interface ShopDao {
 	int reviewLikeDelete(Map<String, Object> param);
 
 	int refreshCountLikes(int reviewNo);
+
+	/*혜진 장바구니 시작*/
+	int insertCart(Cart cart);
+	int insertMemberCart(Cart cart);
+	/*혜진 장바구니 끝*/
+
 
 }

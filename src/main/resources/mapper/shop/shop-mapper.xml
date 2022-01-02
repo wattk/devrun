@@ -174,4 +174,33 @@
 			review
 		where review_no = #{reviewNo}
 	</select>
+	
+	<!-- 혜진 장바구니 시작 -->
+	<insert id="insertCart">
+		insert into
+			cart
+		values(
+			seq_cart_no.nextval,
+			#{detailNo},
+			#{amount},
+			default
+			
+		)
+		<selectKey keyProperty="cartNo" resultType="_int" order="AFTER">
+			select
+				seq_cart_no.currval
+			from
+				dual
+		</selectKey>
+	</insert>
+	
+	<insert id="insertMemberCart">
+		insert into
+			member_cart
+		values(
+			#{memberNo},
+			#{cartNo}
+		)
+	</insert>
+	<!-- 혜진 장바구니 끝 -->
 </mapper>
