@@ -21,7 +21,6 @@
 
 
 
-/*************** 사용자 css 추가 ********************/
 
 /*************** 사용자 css 추가 ********************/
  #content{min-width:1200px;}
@@ -110,7 +109,7 @@
 
 
 /* 상품 디테일 페이지  */
-#fileName{position:relative;background-color:white; top:36px; left: 90px;}
+#fileName{position:relative;background-color:white; top:36px; left: 90px; width:160px;}
 #productInsertContainer{margin-left:7%}
 #deleteOptionContainer{display:none}
 
@@ -145,8 +144,8 @@
 #searchType{margin-right:30px}
 
 /* 답변 모달 */
-.modal-content{min-width:400px;width:40vw;height: 90vh;}
-.modal-body{height:73vh;}
+#insertQuestionFrm .modal-content{min-width:400px;width:40vw;height: 90vh;}
+#insertQuestionFrm .modal-body{height:73vh;}
 .modal-footer{height: 90px;}
 .question-top {display:flex;}
 .question-top img{width:120px;height:120px; margin-right:30px}
@@ -169,8 +168,10 @@
 #inquiryListTbl th,td{text-align: center}
 .table-title{ font-size: 1.2rem;}
 #secretYn{width:42%}
-#inquiryListTbl th:nth-child(5){width: 11%;}
-#command{width: 90%;margin: auto;}
+#inquiryListTbl th:nth-child(4){width: 11%;}
+#inquiryListTbl th:nth-child(7){width: 9%;}
+#inquiryListTbl th:nth-child(8){width: 10%;}
+#command{width: 94%;margin: auto;}
 
 
 

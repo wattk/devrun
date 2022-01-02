@@ -532,7 +532,6 @@ public class AdminController {
 			log.debug("답변이 있습니다~~~~~");
 		}
 		else {
-//			answer = "답변 대기 중.";
 			log.debug("답변이 없습니다.");
 		}
 				
@@ -556,12 +555,14 @@ public class AdminController {
 		Member member = (Member)authentication.getPrincipal();
 		log.debug("member = {}",member);
 
+		// 답변글의 title은 answer로 고정시킨다.
+		questionProduct.setTitle("answer");
 		
 		// 대상의 문의 번호를 현재 답변의 참조 문의 번호에 넣어준다
 		questionProduct.setQuestionRefNo(questionProduct.getQuestionNo());
 		
 		// 답변이므로 레벨은 무조건 2 
-		questionProduct.setQLevel(2);
+		questionProduct.setQuestionLevel(2);
 		
 		// 비공개 체크 값이 없다면 'N'로 채우기
 		if(questionProduct.getPrivateYn() == '\u0000') {

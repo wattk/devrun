@@ -26,7 +26,7 @@
 	    p.thumbnail,
 	    p.price,
 	    qp.enroll_date,
-	    qp.q_level
+	    qp.question_level
 	from
 	    question_product qp join product p on
 	    qp.product_code = p.product_code
@@ -49,11 +49,31 @@
 		#{content},
 		#{enrollDate},
 		#{privateYn},
-		#{qLevel}
-	)
+		#{questionLevel}
+	)	
 	
-
+	<selectKey  keyProperty="questionNo" resultType="_int"  order="AFTER">
+		select
+			seq_question_product_no.currval
+		from
+			dual
+	</selectKey>	
 </insert>
+
+<!-- 답변 추가시 question_ref_no 업데이트  -->
+<update id="updateQuestionRefNo">
+	update 
+		question_product
+	set
+		question_ref_no = #{questionNo}
+	where
+		question_no = #{questionRefNo}
+
+</update>
+
+
+
+
 
 <!-- 문의 번호를 참조번호로 하는 게시물 조회  -->
 <select id="selectQuestionByRefNo" resultType="QuestionProduct">

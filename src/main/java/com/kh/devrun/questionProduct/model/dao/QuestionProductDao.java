@@ -16,4 +16,7 @@ public interface QuestionProductDao {
 
 	QuestionProduct selectQuestionByRefNo(int questionNo);
 
+	// question_ref_no update
+	int updateQuestionRefNo(QuestionProduct questionProduct);
+
 }
