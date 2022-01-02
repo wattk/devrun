@@ -180,13 +180,39 @@
 			into wishlist
 		values
 			(seq_wishlist_no.nextval, #{productCode}, default)
-		<selectKey keyProperty="reviewNo" resultType="_int" order="AFTER">
+		<selectKey keyProperty="wishlistNo" resultType="_int" order="AFTER">
 			select
 				seq_wishlist_no.currval
 			from
 				dual
 		</selectKey>			
 	</insert>
+	
+	<insert id="insertMemberWishlist">
+		insert 
+			into MEMBER_WISHLIST
+		values 
+			(#{wishlistNo}, #{memberNo})
+	</insert>
+	
+	<select id="findWishlistNo" resultType="_int">
+		select
+			wishlist_no
+		from 
+			wishlistInfo
+		where member_no = #{memberNo}
+		and product_code = #{productCode}
+	</select>
+	
+	<delete id="wishlistDelete">
+		delete
+		from
+			wishlist
+		where 
+			wishlist_no = #{wishlistNo}
+	</delete>
+
+<!-- =================================================구분선 ================================================= -->
 	
 	<!-- 혜진 장바구니 시작 -->
 	<insert id="insertCart">
@@ -215,5 +241,15 @@
 			#{cartNo}
 		)
 	</insert>
+	
+	<select id="didIHitWishlist" resultType="int">
+		select
+			count(*)
+		from 
+			wishlistInfo
+		where 
+			member_no = #{memberNo}
+			and product_code = #{productCode}
+	</select>
 	<!-- 혜진 장바구니 끝 -->
 </mapper>

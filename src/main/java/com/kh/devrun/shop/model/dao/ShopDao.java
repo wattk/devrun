@@ -8,6 +8,7 @@ import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
+import com.kh.devrun.shop.model.vo.Wishlist;
 
 public interface ShopDao {
 
@@ -43,14 +44,20 @@ public interface ShopDao {
 
 	int refreshCountLikes(int reviewNo);
 
-	int insertWishlist(Map<String, Object> param);
+	int insertWishlist(Wishlist wishlist);
 
 	int insertMemberWishlist(Map<String, Object> param);
+
+	int findWishlistNo(Map<String, Object> param);
+
+	int wishlistDelete(int wishlistNo);
 
 	/* 혜진 장바구니 시작 */
 	int insertCart(Cart cart);
 
 	int insertMemberCart(Cart cart);
 	/* 혜진 장바구니 끝 */
+
+	int didIHitWishlist(Map<String, Object> param);
 
 }
