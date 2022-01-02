@@ -1,6 +1,7 @@
 package com.kh.devrun.community.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,6 +85,12 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int viewCount(int communityNo) {
 		return communityDao.viewCount(communityNo);
+	}
+
+	@Override
+	public List<CommunityEntity> searchFreeboardList(Map<String, Object> param) {	
+		return communityDao.searchFreeboardList(param);
+		
 	}
 
 

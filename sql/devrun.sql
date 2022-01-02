@@ -18,7 +18,45 @@ CREATE TABLE "MEMBER" (
 	"INTRO"	VARCHAR2(1000)		NULL
 );
 
+select * from member;
 
+<<<<<<< HEAD
+  	select
+	    c.community_no,
+	    c.title,
+	    m.nickname,
+	   	to_char(c.enroll_date, 'YYYY/MM/DD HH24:MI:SS') enroll_date,
+	   	c.like_count,
+	   	c.view_count
+	from
+	    community c join member m on
+	    c.member_no = m.member_no
+	where
+		page_code = 4 and
+        title like '%리%'
+	order by
+	    community_no desc;
+
+select
+    
+from
+    community 
+where
+    ${searchType} like '%'|| #{searchKeyword} ||'%'	
+	select
+	    m.member_no,
+	    m.id,
+	    m.name,
+	    m.nickname,
+	    m.enroll_date,
+	    authority
+	from
+	    member m join authorities a on
+	    m.member_no = a.member_no
+	where
+		${searchType} like '%'|| #{searchKeyword} ||'%'	
+=======
+>>>>>>> branch 'master' of https://github.com/wattk/devrun.git
 -- 회원 번호 시퀀스 생성
 create sequence seq_member_no;
 
