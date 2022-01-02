@@ -40,15 +40,17 @@
 								<input type="hidden" name="questionRefNo" id="questionRefNo" />
 								<input type="hidden" name="memberNo"id="memberNo" />
 								<input type="hidden" name="enrollDate"id="enrollDate" />
-								<input type="hidden" name="qLevel"id="qLevel" />
+								<input type="hidden" name="questionLevel"id="questionLevel" />
 								<p class="fw600">제목</p>
 								<p class="fw600">문의 내용</p>
 							</div>
 							<div class="question-mid-content">
 								<span>
 									<input type="text" id="questionTitle" name="title" value="문의 제목" readonly/>
-									<label for="privateYn">비공개</label>
-									<input type="checkbox" value="N" name ="privateYn" id="privateYn" />							
+									<!-- <label for="privateYn">비공개</label> -->
+									<span>공개 여부 : </span>
+									<span id="PY"></span>
+									<input type="hidden" value="N" name ="privateYn" id="privateYn" />																				
 								</span>
 								<p><textarea readonly id="questionContent" name="content" >졸립군요</textarea> </p>
 													
@@ -134,7 +136,7 @@
 		    </thead>
 		    <tbody>
 		    	<c:forEach items ="${questionList}" var="qu">
-			    	<%-- <c:if test="${qu.qLevel == 1}"> --%>
+				<c:if test="${qu.questionLevel == 1 }">
 			    	<tr>
 			    		<td>${qu.questionNo}</td>
 			    		<td>${qu.questionRefNo}</td>
@@ -143,10 +145,19 @@
 			    		<td>${qu.title}</td>
 			    		<td>${qu.content}</td>
 			    		<td> <fmt:formatDate value="${qu.enrollDate}" pattern="yyyy-MM-dd"/></td>
-			    		<td>${qu.privateYn}</td>	
-			    		<td><button type="button" class="btn btn-primary answer-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">답변</button></td>	
+			    		<td>${qu.privateYn}</td>		    	
+			    		<c:choose>
+			    			<c:when test="${null eq qu.questionRefNo}">
+				    			<td><button type="button" class="btn btn-primary answer-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">답변 완료</button></td>	
+			    			</c:when>
+			    			<c:when test="${null ne qu.questionRefNo}">
+				    			<td><button type="button" class="btn btn-primary answer-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">답변 완료</button></td>	
+			    			</c:when>
+			    		</c:choose>
+			    		
 			    	</tr>								 
-			    	<%-- </c:if> --%>
+
+				</c:if>
 		    	</c:forEach>
 		  </tbody>
 		</table>
@@ -184,7 +195,7 @@
 				
 				console.log(imgUrl);
 				console.log("questionNo = ",questionProductInfo.questionNo);
-				console.log("qLevel = ",questionProductInfo.qlevel);
+				console.log("questionLevel = ",questionProductInfo.questionLevel);
 				console.log("privateYn = ",questionProductInfo.privateYn);
 				console.log("answer = ",answer);
 				
@@ -205,23 +216,21 @@
 				$(".modal-body #memberNo").val(questionProductInfo.memberNo);
 				$(".modal-body #questionContent").val(questionProductInfo.content);
 				
-				/* 이상하게 qlevel은 카멜케이싱이 적용이 안돼서 넘어온다  */
-				$(".modal-body #qLevel").val(questionProductInfo.qlevel);
+				$(".modal-body #questionLevel").val(questionProductInfo.questionLevel); 
 			 	$(".modal-body #privateYn").val(questionProductInfo.privateYn); 
-			 	if(questionProductInfo.privateYn == 'Y'){
-					$(".modal-body #privateYn").attr("checked",true);	
-					$(".modal-body #privateYn").val('Y');
+			 	if(questionProductInfo.privateYn == 'Y'){					
+			 		$("#PY").html("O");
+		 			$(".modal-body #privateYn").val('Y'); 
 			 	}
 			 	else{
-			 		$(".modal-body #privateYn").attr("checked",false);	
+			 		$("#PY").html("X");
 					$(".modal-body #privateYn").val('N');
 			 	}
 			 	
 			 	/* 답변 대입 */
-			 	$(".modal-body #answer").val(answer); 
+			 	$(".modal-body #answer").val(answer);
 			 	
-			 	
-										 	
+
 			},
 			error:console.log
 			

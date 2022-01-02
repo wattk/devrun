@@ -25,7 +25,7 @@ public class QuestionProduct implements Serializable {
 	private String content;
 	private Date enrollDate;
 	private char privateYn;
-	private int qLevel;
+	private int questionLevel;
 
 	
 }

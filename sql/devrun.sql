@@ -1340,6 +1340,7 @@ values(
     1 
 );
 
+alter question_product rename column q_level to question_level;
 
 select
     qp.question_no,

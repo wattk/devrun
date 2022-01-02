@@ -38,7 +38,7 @@
 			<div id="productImgContainer">	
 				<img id ="imgContainer" src="${pageContext.request.contextPath}/resources/upload/product/${productInfo.thumbnail}"/><br />	
 				<div>
-					<span id="fileName">${productInfo.thumbnail}</span>
+					<div id="fileName">${productInfo.thumbnail}</div>
 					<input type="file" name="upFile" id="imgInput" />				
 				</div>
 			</div>
