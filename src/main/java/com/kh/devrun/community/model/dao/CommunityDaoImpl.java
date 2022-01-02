@@ -1,6 +1,7 @@
 package com.kh.devrun.community.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -83,6 +84,11 @@ public class CommunityDaoImpl implements CommunityDao {
 	@Override
 	public int viewCount(int communityNo) {
 		return session.update("community.viewCount", communityNo);
+	}
+
+	@Override
+	public List<CommunityEntity> searchFreeboardList(Map<String, Object> param) {
+		return session.selectList("community.searchFreeboardList", param);
 	}
 
 

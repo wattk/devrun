@@ -73,7 +73,7 @@
 	where
 		page_code = 4
 	order by
-	    community_no desc
+	   community_no desc
   </select>
   
   <!-- 자유게시판 총 게시물 수 -->
@@ -177,4 +177,22 @@
 	    community_no = #{communityNo}
   </update>
   
+  <!-- 자유게시판 타입별 검색 -->
+  <select id="searchFreeboardList" resultType="communityEntity">
+  	select
+	    c.community_no,
+	    c.title,
+	    m.nickname,
+	   	c.enroll_date,
+	   	c.like_count,
+	   	c.view_count
+	from
+	    community c join member m on
+	    c.member_no = m.member_no
+	where
+		page_code = 4 and
+        ${searchType} like '%'|| #{searchKeyword} ||'%'	
+	order by
+	    community_no desc
+  </select>
 </mapper>
