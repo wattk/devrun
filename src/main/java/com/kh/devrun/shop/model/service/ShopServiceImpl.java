@@ -89,5 +89,51 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.selectRecommendation(param);
 	}
 
+	@Override
+	public int didIHitLikes(Map<String, Object> param) {
+		return shopDao.didIHitLikes(param);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public int reviewLikeAdd(Map<String, Object> param) {
+		int result = 0;
+		int result2 = 0;
+		try {
+			result = shopDao.insertMemberReviewLike(param);
+			result2 = shopDao.reviewLikeAdd(param);
+			// thorw e 처리 어케?
+
+		} catch (Exception e) {
+			log.error(e.getMessage(), e); // 로깅해주고
+			throw e;
+
+		}
+		return result2;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public int reviewLikeDelete(Map<String, Object> param) {
+		int result = 0;
+		int result2 = 0;
+		try {
+			result = shopDao.deleteMemberReviewLike(param);
+			result2 = shopDao.reviewLikeDelete(param);
+			// thorw e 처리 어케?
+
+		} catch (Exception e) {
+			log.error(e.getMessage(), e); // 로깅해주고
+			throw e;
+
+		}
+		return result2;
+	}
+	
+	//좋아요 변화 이후 새로 카운팅
+	@Override
+	public int refreshCountLikes(int reviewNo) {
+		return shopDao.refreshCountLikes(reviewNo);
+	}
 
 }
