@@ -236,7 +236,7 @@
 						<br>
 						<div id="jeju">
 							<span>제주도/도서산간 지역 4,000원 추가</span>
-							<i class="far fa-heart"></i>
+							<i class="far fa-heart wishBtn"></i>
 						</div>
 						<hr>
 						<select id="detailNo" class="form-select col-12" aria-label="Default select example">
@@ -446,6 +446,38 @@
 			</div>
 		</div>
 		
+		
+		
+<sec:authorize access="isAuthenticated()">
+<script>
+
+/*위시리스트 비동기 시작*/
+$(document).on('click', '.wishBtn', function(e) {
+	
+	const $memberNo = ${member.memberNo};
+	const $productCode = '${product.productCode}';
+
+	console.log(`$memberNo : \${$memberNo}`);
+	console.log(`$productCode : \${$productCode}`);
+
+	
+	
+})
+/*위시리스트 비동기 끝*/
+</script>
+</sec:authorize>		
+<sec:authorize access="isAnonymous()">
+<script>
+$(document).on('click', '.wishBtn', function(e) {
+	alert("로그인 후 이용가능합니다.");
+	return;
+
+})
+
+</script>
+</sec:authorize>		
+		
+		
 <script>
 /*리뷰삭제 */
 
@@ -628,6 +660,10 @@ $(document).on('click', '.likes', function(e) {
 })
 
 /*좋아요 비동기 끝*/
+
+
+
+
 
 
 //바로구매 버튼 클릭 이벤트 혜진 시작
