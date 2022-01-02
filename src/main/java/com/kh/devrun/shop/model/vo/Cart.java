@@ -3,7 +3,8 @@ package com.kh.devrun.shop.model.vo;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,13 +20,13 @@ public class Cart implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private int memberNo;
 	private int cartNo;
+	private int memberNo;
 	private int detailNo;
 	private int amount;
-	private int price;
 	private Date regDate;
 	
-	private Product product;
+	private ProductEntity product;
+	private ProductDetail productDetail;
 
 }

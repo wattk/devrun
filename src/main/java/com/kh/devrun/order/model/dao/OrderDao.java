@@ -7,6 +7,7 @@ import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.shop.model.vo.Cart;
 
 public interface OrderDao {
 
@@ -27,5 +28,7 @@ public interface OrderDao {
 	List<MerchantExt> selectCurrentOrder(int memberNo);
 
 	List<MerchantExt> selectOrderList(int memberNo);
+
+	List<Cart> selectCartList(int memberNo);
 
 }
