@@ -80,7 +80,7 @@ public class ShopController {
 
 	@GetMapping("wishlist")
 	public void wishlist() {
-		
+
 	}
 
 	// 상품 사이드 메뉴에서 전체보기 클릭 시
@@ -154,8 +154,6 @@ public class ShopController {
 	@GetMapping("/itemDetail/{productCode}")
 	public String selectOneItem(@PathVariable String productCode, Model model, Authentication authentication) {
 
-
-		
 		// 상품 조회
 		ProductEx product = productService.selectOneItem(productCode);
 		model.addAttribute("product", product);
@@ -177,19 +175,19 @@ public class ShopController {
 
 		Collections.shuffle(recommendation);
 		model.addAttribute("recommendation", recommendation);
-		
-		//장바구니 좋아요 여부
-		
-		if(authentication != null) {
-			
-			int memberNo = ((Member)authentication.getPrincipal()).getMemberNo();
+
+		// 장바구니 좋아요 여부
+
+		if (authentication != null) {
+
+			int memberNo = ((Member) authentication.getPrincipal()).getMemberNo();
 			Map<String, Object> cartParam = new HashMap<>();
 			cartParam.put("memberNo", memberNo);
 			cartParam.put("productCode", productCode);
-			
+
 			List<Integer> cartValidList = productService.selectCartValidList(cartParam);
 			String cartValid = "";
-			for(int i : cartValidList) {
+			for (int i : cartValidList) {
 				cartValid += i + ",";
 			}
 			model.addAttribute("cartValid", cartValid);
@@ -272,7 +270,8 @@ public class ShopController {
 	// 리뷰 좋아요 추가
 	@ResponseBody
 	@GetMapping("/reviewLikeAdd")
-	public Map<String,Object> reviewLikeAdd(@RequestParam int reviewNo, @RequestParam int memberNo, @RequestParam String productCode) {
+	public Map<String, Object> reviewLikeAdd(@RequestParam int reviewNo, @RequestParam int memberNo,
+			@RequestParam String productCode) {
 
 		Map<String, Object> param = new HashMap<>();
 		param.put("reviewNo", reviewNo);
@@ -281,21 +280,21 @@ public class ShopController {
 
 		int result = shopService.reviewLikeAdd(param);
 		log.debug("리뷰 좋아요 잘 추가? : {}", result);
-		
-		//좋아요 추가하고 새로 추가된 좋아요 갯수 받아오기
+
+		// 좋아요 추가하고 새로 추가된 좋아요 갯수 받아오기
 		int newCountLikes = shopService.refreshCountLikes(reviewNo);
-		
-		Map<String,Object>map = new HashMap<>();
+
+		Map<String, Object> map = new HashMap<>();
 		map.put("result", result);
 		map.put("newCountLikes", newCountLikes);
-		
+
 		return map;
 	}
 
 	// 리뷰 좋아요 삭제
 	@ResponseBody
 	@GetMapping("/reviewLikeDelete")
-	public Map<String,Object> reviewLikeDelete(@RequestParam int reviewNo, @RequestParam int memberNo,
+	public Map<String, Object> reviewLikeDelete(@RequestParam int reviewNo, @RequestParam int memberNo,
 			@RequestParam String productCode) {
 
 		Map<String, Object> param = new HashMap<>();
@@ -305,17 +304,41 @@ public class ShopController {
 
 		int result = shopService.reviewLikeDelete(param);
 		log.debug("리뷰 좋아요 잘 삭제? : {}", result);
-		
-		//좋아요 삭제하고 새로 추가된 좋아요 갯수 받아오기
+
+		// 좋아요 삭제하고 새로 추가된 좋아요 갯수 받아오기
 		int newCountLikes = shopService.refreshCountLikes(reviewNo);
 
-		Map<String,Object>map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("result", result);
 		map.put("newCountLikes", newCountLikes);
-		
+
 		return map;
 	}
-	
+
+	// 위시리스트 추가
+	@ResponseBody
+	@GetMapping("/wishlistAdd")
+	public int wishlistAdd(@RequestParam int memberNo, @RequestParam String productCode) {
+		log.debug("productCode : {}", productCode);
+		log.debug("memberNo: {}", memberNo);
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
+		param.put("productCode", productCode);
+
+		int result = shopService.wishlistAdd(param);
+
+		return 1;
+	}
+
+	// 위시리스트 제거
+	@ResponseBody
+	@GetMapping("/wishlistDelete")
+	public int wishlistDelete(@RequestParam int memberNo, @RequestParam String productCode) {
+		log.debug("productCode : {}", productCode);
+		log.debug("memberNo: {}", memberNo);
+		return 1;
+	}
+
 	
 	
 	
@@ -423,8 +446,8 @@ public class ShopController {
 
 		return resultMap;
 	}
-	
-	/*장바구니 추가*/
+
+	/* 장바구니 추가 */
 	@PostMapping("/cartEnroll")
 	@ResponseBody
 	public int cartEnroll(Cart cart) {

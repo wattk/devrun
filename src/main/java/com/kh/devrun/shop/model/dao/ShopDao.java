@@ -43,10 +43,14 @@ public interface ShopDao {
 
 	int refreshCountLikes(int reviewNo);
 
-	/*혜진 장바구니 시작*/
-	int insertCart(Cart cart);
-	int insertMemberCart(Cart cart);
-	/*혜진 장바구니 끝*/
+	int insertWishlist(Map<String, Object> param);
 
+	int insertMemberWishlist(Map<String, Object> param);
+
+	/* 혜진 장바구니 시작 */
+	int insertCart(Cart cart);
+
+	int insertMemberCart(Cart cart);
+	/* 혜진 장바구니 끝 */
 
 }

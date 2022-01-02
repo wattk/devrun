@@ -36,7 +36,7 @@ public class ShopServiceImpl implements ShopService {
 			result = shopDao.insertReview(review);
 
 			Attachment attach = review.getAttach();
-			log.debug("attach 없나? : {}", attach);
+
 			if (attach != null) {
 				attach.setReviewNo(review.getReviewNo());
 				result = shopDao.insertAttach(attach);
@@ -130,11 +130,34 @@ public class ShopServiceImpl implements ShopService {
 		}
 		return result2;
 	}
-	
-	//좋아요 변화 이후 새로 카운팅
+
+	// 좋아요 변화 이후 새로 카운팅
 	@Override
 	public int refreshCountLikes(int reviewNo) {
 		return shopDao.refreshCountLikes(reviewNo);
+	}
+
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public int wishlistAdd(Map<String, Object> param) {
+		int result = 0;
+		int result2 = 0;
+
+		try {
+
+			result = shopDao.insertWishlist(param);
+
+			if (result == 1) {
+				result2 = shopDao.insertMemberWishlist(param);
+
+			}
+		} catch (Exception e) {
+			log.debug(e.getMessage());
+			throw e;
+		}
+
+		return result;
 	}
 
 	
@@ -156,5 +179,6 @@ public class ShopServiceImpl implements ShopService {
 	}
 	
 	/*혜진 장바구니 끝*/
+
 
 }

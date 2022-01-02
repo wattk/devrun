@@ -103,8 +103,17 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectOne("shop.refreshCountLike", reviewNo);
 	}
 
+	@Override
+	public int insertWishlist(Map<String, Object> param) {
+		return session.insert("shop.wishlistAdd", param);
+	}
 
-	/*혜진 장바구니 시작*/
+	@Override
+	public int insertMemberWishlist(Map<String, Object> param) {
+		return session.insert("shop.insertMemberWishlist", param);
+	}
+
+	/* 혜진 장바구니 시작 */
 	@Override
 	public int insertCart(Cart cart) {
 		return session.insert("shop.insertCart", cart);
@@ -114,6 +123,6 @@ public class ShopDaoImpl implements ShopDao {
 	public int insertMemberCart(Cart cart) {
 		return session.insert("shop.insertMemberCart", cart);
 	}
-	
-	/*혜진 장바구니 끝*/
+
+	/* 혜진 장바구니 끝 */
 }
