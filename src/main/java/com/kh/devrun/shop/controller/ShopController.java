@@ -77,6 +77,11 @@ public class ShopController {
 	public void shopSearch() {
 	}
 
+	@GetMapping("wishlist")
+	public void wishlist() {
+		
+	}
+
 	// 상품 사이드 메뉴에서 전체보기 클릭 시
 	@GetMapping("/categoryItemAll")
 	public String categoryItemAll(@RequestParam String parentCate, Model model) {
