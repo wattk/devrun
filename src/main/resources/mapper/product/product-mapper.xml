@@ -45,10 +45,10 @@
 			#{productCode}
 		)
 	
-	<!-- 상품 상세 테이블 추가 -->			
 	</insert>
 	
-		<insert id="insertProductDetail">
+	<!-- 상품 상세 테이블 추가 -->			
+	<insert id="insertProductDetail">
 		insert into
 			product_detail
 		values(

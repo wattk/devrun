@@ -232,7 +232,7 @@
 					<div id="itemDetailOptionDiv">
 						<span id="price" data-price="${product.price}"><fmt:formatNumber value="${product.price}" pattern="#,###,###"/></span> 원
 						<br><span>혜택 : </span><span style="color:pink;"><fmt:formatNumber value="${product.price / 200}" pattern="#,###,### P"/> </span>적립
-						<br><span>배송 : </span><span>2500원</span>
+						<br><span>배송 : </span><span>3,000원</span>
 						<br>
 						<div id="jeju">
 							<span>제주도/도서산간 지역 4,000원 추가</span>
@@ -559,7 +559,7 @@ $(document).on('click', '.report-btn', function(e) {
 
 /*좋아요 비동기 시작*/
 $(document).on('click', '.likes', function(e) {
-	
+
 	const $productCode = $(productCodeV).val(); 
 	const $memberNo =  $(e.target).data('memberNo');	
 	const $reviewNo = $(e.target).data('reviewNo');
@@ -591,7 +591,10 @@ $(document).on('click', '.likes', function(e) {
 				$(e.target).text(newCountLikes);
 			}
 			},
-			error : console.log
+			error : function(xhr, status, err){
+	            console.log(xhr, status, err);
+	            alert("로그인 후 이용이 가능합니다.");
+	        } 
 		});
 	}else{
 		

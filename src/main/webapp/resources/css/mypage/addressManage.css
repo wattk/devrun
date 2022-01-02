@@ -13,13 +13,19 @@
 /* address list */
 #addressList {margin-bottom:50px;}
 
+#addressList table {border:1px solid rgba(0,0,0,.125);}
+#addressList tr:not(:last-of-type) {border-bottom:1px solid rgba(0,0,0,.125);}
+#addressList td, #addressList th {padding:15px; border:0; vertical-align:middle; text-align:center;}
+#addressList td {cursor:pointer;}
+#addressList th {color:#000000;}
+
 /* address detail */
 #adressDetail h5 {color:#1A81FF; padding:5px;}
 
 #adressDetail table {border:1px solid rgba(0,0,0,.125);}
 #adressDetail tr:not(:last-of-type) {border-bottom:1px solid rgba(0,0,0,.125);}
-#adressDetail td, th {padding:10px; border:0; vertical-align:middle;}
-#adressDetail th {color:#7F7F7F; text-align:center; vertical-align:middle;}
+#adressDetail td, #adressDetail th {padding:10px; border:0; vertical-align:middle;}
+#adressDetail th {text-align:center;}
 #adressDetail label {margin:0 auto; color:#000000;}
 #adressDetail input {border-radius:4px;}
 #adressDetail td button {margin-left:10px; border-radius:4px; font-size:16px;}
