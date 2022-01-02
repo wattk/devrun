@@ -24,7 +24,10 @@
 <jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
 
+
 	<!-- body 영역 시작 -->
+	
+	<sec:authentication property="principal" var="member"/>	
 	
 		<div id="shopItemDetailOuterDiv">
 			<div id="itemDetailDisplayDiv" class="row">
@@ -233,7 +236,7 @@
 						<br>
 						<div id="jeju">
 							<span>제주도/도서산간 지역 4,000원 추가</span>
-							<i class="far fa-heart"></i>
+							<i class="far fa-heart wishBtn"></i>
 						</div>
 						<hr>
 						<select id="detailNo" class="form-select col-12" aria-label="Default select example">
@@ -253,9 +256,9 @@
 							<span>주문금액</span><span><fmt:formatNumber value="${product.price}" pattern="#,###,### 원"/></span>
 						</div>
 						<div id="orderBtnDiv" class="text-center row">
-						
 							<button type="button" id="cartBtn" class="btn btn-primary col-6">장바구니</button>
 							<button type="button" id="orderBtn" class="btn btn-secondary col-6">바로구매</button>
+							
 						</div>
 					</div>
 					<div id="itemDetailOrderDiv">
@@ -450,6 +453,38 @@
 			</div>
 		</div>
 		
+		
+		
+<sec:authorize access="isAuthenticated()">
+<script>
+
+/*위시리스트 비동기 시작*/
+$(document).on('click', '.wishBtn', function(e) {
+	
+	const $memberNo = ${member.memberNo};
+	const $productCode = '${product.productCode}';
+
+	console.log(`$memberNo : \${$memberNo}`);
+	console.log(`$productCode : \${$productCode}`);
+
+	
+	
+})
+/*위시리스트 비동기 끝*/
+</script>
+</sec:authorize>		
+<sec:authorize access="isAnonymous()">
+<script>
+$(document).on('click', '.wishBtn', function(e) {
+	alert("로그인 후 이용가능합니다.");
+	return;
+
+})
+
+</script>
+</sec:authorize>		
+		
+		
 <script>
 /*리뷰삭제 */
 
@@ -634,6 +669,10 @@ $(document).on('click', '.likes', function(e) {
 /*좋아요 비동기 끝*/
 
 
+
+
+
+
 //바로구매 버튼 클릭 이벤트 혜진 시작
 $("#orderBtn").click((e)=>{
 	const detailNo = $("#detailNo").val();
@@ -643,6 +682,7 @@ $("#orderBtn").click((e)=>{
 //바로구매 버튼 클릭 이벤트 혜진 끝
 //장바구니 버튼 클릭 이벤트 혜진 시작
 $("#cartBtn").click((e)=>{
+	console.log("클릭 이벤트");
 	const detailNo = $("#detailNo").val();
 	let cartValid = $(`option[value=\${detailNo}]`).data("cartValid");
 	console.log(detailNo);
@@ -681,7 +721,6 @@ $("#cartBtn").click((e)=>{
 		error: console.log
 	});
 });
-//장바구니 버튼 클릭 이벤트 혜진 끝
 </script>		
 	<!-- body 영역 끝 -->	
 			
