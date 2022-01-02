@@ -1151,6 +1151,11 @@ CREATE TABLE "MEMBER_CART" (
 COMMENT ON COLUMN "MEMBER_CART"."MEMBER_NO" IS '회원 번호';
 COMMENT ON COLUMN "MEMBER_CART"."CART_NO" IS '장바구니 번호';
 
+-- member_cart 제약조건 on delete cascade 추가
+--ALTER TABLE MEMBER_CART DROP CONSTRAINT FK_MEMBER_CART_MEMBER_NO;
+--ALTER TABLE MEMBER_CART ADD CONSTRAINT  FK_MEMBER_CART_MEMBER_NO FOREIGN KEY(MEMBER_NO) REFERENCES MEMBER(MEMBER_NO) ON DELETE CASCADE;
+--ALTER TABLE MEMBER_CART DROP CONSTRAINT FK_MEMBER_CART_CART_NO;
+--ALTER TABLE MEMBER_CART ADD CONSTRAINT  FK_MEMBER_CART_CART_NO FOREIGN KEY(CART_NO) REFERENCES CART(CART_NO) ON DELETE CASCADE;
 
 --===========================
 --주문 변동 기록 테이블 생성
@@ -1435,22 +1440,45 @@ from(
                         on ccc.parent_category_code = ppc.parent_category_code;
 
 --주문-결제-상품 뷰 테이블 생성(혜진)
-create or replace view view_merchant_imp
-as
-select
-    m.merchant_uid,
-    m.member_no,
-    m.order_date,
-    m.order_status,
-    i.name,
-    i.amount,
-    p.thumbnail
-from
-    merchant m left join imp i
-        on m.merchant_uid = i.merchant_uid
-            left join merchant_detail md
-                on m.merchant_uid = md.merchant_uid
-                    left join product_detail pd
-                        on md.detail_no = pd.detail_no
-                            left join product p
-                                on pd.product_code = p.product_code;
+--create or replace view view_merchant_imp
+--as
+--select
+--    m.merchant_uid,
+--    m.member_no,
+--    m.order_date,
+--    m.order_status,
+--    i.name,
+--    i.amount,
+--    p.thumbnail
+--from
+--    merchant m left join imp i
+--        on m.merchant_uid = i.merchant_uid
+--            left join merchant_detail md
+--                on m.merchant_uid = md.merchant_uid
+--                    left join product_detail pd
+--                        on md.detail_no = pd.detail_no
+--                            left join product p
+--                                on pd.product_code = p.product_code;
+
+--장바구니-상품 뷰 생성(혜진)
+--create or replace view view_cart_product
+--as
+--select
+--  		mc.member_no,
+--        p.product_code,
+--        p.name,
+--        p.thumbnail,
+--        p.price,
+--         c.reg_date,
+--  		c.cart_no,
+--        c.amount,
+--  		c.detail_no,
+--  		pd.option_no,
+--        pd.option_content
+--from
+--    member_cart mc left join cart c
+--        on mc.cart_no = c.cart_no
+--            left join product_detail pd
+--                on c.detail_no = pd.detail_no
+--                    left join product p
+--                        on pd.product_code = p.product_code;
