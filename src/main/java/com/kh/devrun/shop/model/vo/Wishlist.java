@@ -11,14 +11,12 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Wishlist implements Serializable  {
-
+public class Wishlist implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private int wishlistNo;
 	private String productCode;
 	private Date regDate;
-
 
 }
