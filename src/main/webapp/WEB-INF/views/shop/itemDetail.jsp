@@ -626,30 +626,7 @@ function reviewAll(){
 	const $v = $('#oldestToNewest');
 	var $productCode = $(productCodeV).val(); 
 	var $div = $('#reviewBefore');
-	
-	//위시리스트 비동기 처리
-	const $memberNo = ${member.memberNo};
-	console.log("작동하나요?1");
-	
-	$.ajax({
-		url: "${pageContext.request.contextPath}/shop/wishCheck",
-		method: "Get",
-		data : {
-			memberNo:  $memberNo,
-			productCode : $productCode 
-			
-		},
-		success(data){
-			if(data == 1){
-				$('#wishlistBtn').data('wishyn', 'Y');
-				$('#wishlistBtn').attr('class', 'fas fa-heart wishBtn');							
-			}
-		},
-		error: console.log
-	});
-	
-	//위시리스트 비동기 끝	
-	
+
 	$.ajax({
 		
 		url: "${pageContext.request.contextPath}/shop/review",
@@ -665,6 +642,14 @@ function reviewAll(){
 			$div.append(s);
 			$(reviewTotal).html(`총 \${t} 개`);
 			$v.val("-1");
+			
+			//위시리스트 check
+			const wishCheckYn = data["wishCheckYn"];
+			if(wishCheckYn == 1){
+				$('#wishlistBtn').data('wishyn', 'Y');
+				$('#wishlistBtn').attr('class', 'fas fa-heart wishBtn');							
+			}
+			
 		},
 		error : function(xhr, status, err){
             console.log(xhr, status, err);
