@@ -45,6 +45,8 @@ public interface ShopDao {
 
 	/*혜진 장바구니 시작*/
 	int insertCart(Cart cart);
+	int insertMemberCart(Cart cart);
 	/*혜진 장바구니 끝*/
+
 
 }

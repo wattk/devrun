@@ -20,7 +20,6 @@ CREATE TABLE "MEMBER" (
 
 select * from member;
 
-<<<<<<< HEAD
   	select
 	    c.community_no,
 	    c.title,
@@ -37,26 +36,6 @@ select * from member;
 	order by
 	    community_no desc;
 
-select
-    
-from
-    community 
-where
-    ${searchType} like '%'|| #{searchKeyword} ||'%'	
-	select
-	    m.member_no,
-	    m.id,
-	    m.name,
-	    m.nickname,
-	    m.enroll_date,
-	    authority
-	from
-	    member m join authorities a on
-	    m.member_no = a.member_no
-	where
-		${searchType} like '%'|| #{searchKeyword} ||'%'	
-=======
->>>>>>> branch 'master' of https://github.com/wattk/devrun.git
 -- 회원 번호 시퀀스 생성
 create sequence seq_member_no;
 
@@ -1009,7 +988,6 @@ CREATE TABLE "CART" (
 	"CART_NO"	NUMBER		NOT NULL,
 	"DETAIL_NO"	NUMBER		NOT NULL,
 	"AMOUNT"	NUMBER	DEFAULT 1	NOT NULL,
-	"PRICE"	NUMBER		NOT NULL,
 	"REG_DATE"	DATE	DEFAULT SYSDATE	NOT NULL,
 	CONSTRAINT PK_CART_CART_NO PRIMARY KEY(CART_NO),
 	CONSTRAINT FK_CART_DETAIL_NO FOREIGN KEY(DETAIL_NO) REFERENCES PRODUCT_DETAIL(DETAIL_NO)
@@ -1019,7 +997,6 @@ CREATE TABLE "CART" (
 COMMENT ON COLUMN "CART"."CART_NO" IS '장바구니 번호';
 COMMENT ON COLUMN "CART"."DETAIL_NO" IS '상품 상세 번호';
 COMMENT ON COLUMN "CART"."AMOUNT" IS '상품수량';
-COMMENT ON COLUMN "CART"."PRICE" IS '장바구니 가격';
 COMMENT ON COLUMN "CART"."REG_DATE" IS '장바구니 등록일';
 
 --장바구니 테이블 SEQ
@@ -1378,7 +1355,7 @@ values(
     1 
 );
 
-alter question_product rename column q_level to question_level;
+alter table question_product rename column q_level to question_level;
 
 select
     qp.question_no,

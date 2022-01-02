@@ -644,7 +644,18 @@ $("#orderBtn").click((e)=>{
 //장바구니 버튼 클릭 이벤트 혜진 시작
 $("#cartBtn").click((e)=>{
 	const detailNo = $("#detailNo").val();
-	const cartValid = $(`option[value=\${detailNo}]`).data("cartValid");
+	let cartValid = $(`option[value=\${detailNo}]`).data("cartValid");
+	console.log(detailNo);
+	
+	if($("#memberNoV").val() == null){
+		alert("로그인 후 이용 가능합니다.");
+		return;
+	}
+	
+	if(detailNo == '옵션선택'){
+		alert("옵션을 먼저 선택해 주세요.");
+		return;
+	}
 	
 	if(cartValid == 1){
 		alert("이미 장바구니 추가된 상품입니다.");
@@ -662,10 +673,12 @@ $("#cartBtn").click((e)=>{
 		} ,
 		success(data){
 			console.log(data);
+			if(data == 1){
+				cartValid = 1;
+				alert("장바구니에 추가되었습니다.");
+			}
 		},
-		error(){
-			alert("로그인 후 이용 가능합니다.");
-		}
+		error: console.log
 	});
 });
 //장바구니 버튼 클릭 이벤트 혜진 끝

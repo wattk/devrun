@@ -426,12 +426,14 @@ public class ShopController {
 	
 	/*장바구니 추가*/
 	@PostMapping("/cartEnroll")
+	@ResponseBody
 	public int cartEnroll(Cart cart) {
 		log.debug("cart = {}", cart);
 		
 		int result = shopService.insertCart(cart);
+		log.debug("result = {}", result);
 		
-		return 0;
+		return result;
 	}
 
 	/**

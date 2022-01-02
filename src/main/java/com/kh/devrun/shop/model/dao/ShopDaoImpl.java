@@ -109,6 +109,11 @@ public class ShopDaoImpl implements ShopDao {
 	public int insertCart(Cart cart) {
 		return session.insert("shop.insertCart", cart);
 	}
+
+	@Override
+	public int insertMemberCart(Cart cart) {
+		return session.insert("shop.insertMemberCart", cart);
+	}
 	
 	/*혜진 장바구니 끝*/
 }

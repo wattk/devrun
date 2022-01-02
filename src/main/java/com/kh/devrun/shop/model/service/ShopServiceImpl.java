@@ -140,9 +140,19 @@ public class ShopServiceImpl implements ShopService {
 	
 	/*혜진 장바구니 시작*/
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
 	public int insertCart(Cart cart) {
 		int result = 0;
-		return shopDao.insertCart(cart);
+		
+		try {
+			result = shopDao.insertCart(cart);
+			result = shopDao.insertMemberCart(cart);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		
+		return result;
 	}
 	
 	/*혜진 장바구니 끝*/
