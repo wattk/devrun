@@ -12,6 +12,8 @@ import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -303,10 +305,29 @@ public class MypageController {
 	 * 지원 나의 정보 > 배송지 관리 시작
 	 */
 	@GetMapping("/myinfo/addressManage.do")
-	public String addressManage() {
-
+	public String addressManage(Model model, Authentication authentication) {
+		Member member = (Member) authentication.getPrincipal();
+		int memberNo = member.getMemberNo();
+		List<Address> list = mypageService.selectAllAddressById(memberNo);
+		log.debug("list = {}", list);
+		model.addAttribute("addressList", list);
 		return "mypage/addressManage";
-		
+	}
+	
+	/**
+	 * 주소 한개 조회
+	 * select * from address where address_no = ${addressNo}
+	 */
+	@GetMapping("/myinfo/selectOneAddress/{addressNo}")
+	public ResponseEntity<Address> selectOneAddress(@PathVariable int addressNo) {
+		Address address = mypageService.selectOneAddress(addressNo);
+		log.debug("address = {}", address);
+		//조회된 결과가 있는 경우
+		if(address != null) 
+			return new ResponseEntity<>(address, HttpStatus.OK); //200
+		//조회된 결과가 없는 경우
+		else 
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND); //404
 	}
 	
 	/**
@@ -328,16 +349,32 @@ public class MypageController {
 	}
 	
 	@PostMapping("/myinfo/addressUpdate.do")
-	public String addressUpdate() {
+	public String addressUpdate(Address address, RedirectAttributes redirectAttr) {
 
-		return "mypage/shippingAddress";
+		try {
+			int result = mypageService.updateAddress(address);
+			String msg = result > 0 ? "주소 수정이 완료되었습니다." : "주소 수정에 실패하였습니다.";
+			redirectAttr.addFlashAttribute("msg", msg);
+		} catch (Exception e) {
+			log.error("주소 수정 오류", e);
+			throw e;
+		}
+		return "redirect:/mypage/myinfo/addressManage.do";
 		
 	}
 	
 	@PostMapping("/myinfo/addressDelete.do")
-	public String addressDelete() {
+	public String addressDelete(Address address, RedirectAttributes redirectAttr) {
 
-		return "mypage/shippingAddress";
+		try {
+			int result = mypageService.deleteAddress(address);
+			String msg = result > 0 ? "주소 삭제가 완료되었습니다." : "주소 삭제에 실패하였습니다.";
+			redirectAttr.addFlashAttribute("msg", msg);
+		} catch (Exception e) {
+			log.error("주소 삭제 오류", e);
+			throw e;
+		}
+		return "redirect:/mypage/myinfo/addressManage.do";
 		
 	}
 	/**
