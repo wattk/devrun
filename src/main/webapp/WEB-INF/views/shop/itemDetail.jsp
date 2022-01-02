@@ -236,7 +236,7 @@
 						<br>
 						<div id="jeju">
 							<span>제주도/도서산간 지역 4,000원 추가</span>
-							<i class="far fa-heart wishBtn"></i>
+							<i class="far fa-heart wishBtn" data-wishyn="N"></i>
 						</div>
 						<hr>
 						<select id="detailNo" class="form-select col-12" aria-label="Default select example">
@@ -452,13 +452,13 @@
 				<!-- 탭 끝  -->
 			</div>
 		</div>
+
 		
 		
 		
+<!-- 위시리스트 로그인 했을 시 비동기 시작 -->
 <sec:authorize access="isAuthenticated()">
 <script>
-
-/*위시리스트 비동기 시작*/
 $(document).on('click', '.wishBtn', function(e) {
 	
 	const $memberNo = ${member.memberNo};
@@ -466,13 +466,52 @@ $(document).on('click', '.wishBtn', function(e) {
 
 	console.log(`$memberNo : \${$memberNo}`);
 	console.log(`$productCode : \${$productCode}`);
-
 	
+	const wishYn = $(e.target).data("wishyn");
+	
+	if(wishYn == 'N'){
+		console.log("위시 비동기 도착");
+			$.ajax({
+				
+				url: "${pageContext.request.contextPath}/shop/wishlistAdd",
+				method: "Get",
+				data : {
+					memberNo:  $memberNo,
+					productCode : $productCode 
+					
+				},
+				success(data){
+					$(e.target).data('wishyn', 'Y');
+					$(e.target).attr('class', 'fas fa-heart likes');	
+				},
+				error: console.log
+		});
+	}else{
+		$.ajax({
+			
+			url: "${pageContext.request.contextPath}/shop/wishlistDelete",
+			method: "Get",
+			data : {
+				memberNo:  $memberNo,
+				productCode : $productCode 
+				
+			},
+			success(data){
+				$(e.target).data('wishyn', 'N');
+				$(e.target).attr('class', 'far fa-heart likes');	
+			},
+			error: console.log
+	});
+		
+		
+	}
 	
 })
-/*위시리스트 비동기 끝*/
 </script>
-</sec:authorize>		
+</sec:authorize>
+<!-- 위시리스트 로그인 했을 시 비동기 끝 -->
+
+<!-- 위시리스트 비 로그인 시 비동기 시작 -->		
 <sec:authorize access="isAnonymous()">
 <script>
 $(document).on('click', '.wishBtn', function(e) {
@@ -482,8 +521,8 @@ $(document).on('click', '.wishBtn', function(e) {
 })
 
 </script>
-</sec:authorize>		
-		
+</sec:authorize>	
+<!-- 위시리스트 비 로그인 시 비동기 끝 -->		
 		
 <script>
 /*리뷰삭제 */
@@ -669,7 +708,7 @@ $(document).on('click', '.likes', function(e) {
 /*좋아요 비동기 끝*/
 
 
-
+//-------------------------------------------------------구분선-------------------------------------------------------------
 
 
 
