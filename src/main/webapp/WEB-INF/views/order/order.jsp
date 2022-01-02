@@ -29,6 +29,11 @@
 	System.out.println(totalPrice);
 	pageContext.setAttribute("totalPrice", totalPrice);
 %>
+<script>
+	
+	const item = JSON.parse(localStorage.getItem("cartItem"));
+	console.log(item);
+</script>
 
 <div class="row p-5 d-flex justify-content-around order-container">
   <div class="col-7">

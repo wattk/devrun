@@ -716,7 +716,7 @@ $(document).on('click', '.likes', function(e) {
 $("#orderBtn").click((e)=>{
 	const detailNo = $("#detailNo").val();
 	console.log(detailNo);
-	location.href = `${pageContext.request.contextPath}/order/order?detailNo=\${detailNo}`;
+	location.href = `${pageContext.request.contextPath}/order/order?detailNo=\${detailNo}&amount=1`;
 });
 //바로구매 버튼 클릭 이벤트 혜진 끝
 //장바구니 버튼 클릭 이벤트 혜진 시작
@@ -738,8 +738,9 @@ $("#cartBtn").click((e)=>{
 	
 	if(cartValid == 1){
 		const cartConfirm = confirm("이미 장바구니 추가된 상품입니다. 장바구니로 이동하시겠습니까?");
-		if(cartConfrim){
+		if(cartConfirm){
 			location.href = "${pageContext.request.contextPath}/order/cart.do";
+			return;
 		}
 		else{
 			return;

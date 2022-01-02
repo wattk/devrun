@@ -45,13 +45,13 @@ public class OrderController {
 		Member member = (Member) authentication.getPrincipal();
 		
 		List<Cart> list = orderService.selectCartList(member.getMemberNo());
-		
+		log.debug("cartList = {}", list);
 		model.addAttribute("list", list);
 		
 	}
 	
 	@GetMapping("/order")
-	public String order(@RequestParam(value="detailNo") int[] detailNo, Model model, Authentication authentication) {
+	public String order(@RequestParam(value="detailNo") int[] detailNo,@RequestParam(value="amount") int[] amount, Model model, Authentication authentication) {
 		log.debug("productCode = {}", detailNo);
 		Member member = (Member)authentication.getPrincipal();
 		List<Product> productList = productService.selectProductByDetailNo(detailNo);
