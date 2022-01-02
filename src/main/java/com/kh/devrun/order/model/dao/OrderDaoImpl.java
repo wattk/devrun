@@ -12,6 +12,7 @@ import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.shop.model.vo.Cart;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
@@ -63,6 +64,11 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public List<MerchantExt> selectOrderList(int memberNo) {
 		return session.selectList("order.selectOrder", memberNo);
+	}
+
+	@Override
+	public List<Cart> selectCartList(int memberNo) {
+		return session.selectList("order.selectCartList", memberNo);
 	}
 	
 	

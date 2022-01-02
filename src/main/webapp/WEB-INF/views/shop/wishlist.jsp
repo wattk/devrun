@@ -75,7 +75,7 @@
 	  	type="button" 
 	  	id="wishCartBtn" 
 	  	class="btn btn-primary w-100 h-25 mt-5"
-	  	onclick="location.href='${pageContext.request.contextPath}/member/cart.do'">
+	  	onclick="location.href='${pageContext.request.contextPath}/order/cart.do'">
 	  	모든 제품 장바구니에 추가하기 <i class="fas fa-chevron-circle-right"></i>
 	  </button>
 	  <hr class="w-100"/>

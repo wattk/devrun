@@ -17,6 +17,7 @@ import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.shop.model.vo.Cart;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -88,6 +89,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<MerchantExt> selectOrderList(int memberNo) {
 		return orderDao.selectOrderList(memberNo);
+	}
+
+	@Override
+	public List<Cart> selectCartList(int memberNo) {
+		return orderDao.selectCartList(memberNo);
 	}
 	
 	

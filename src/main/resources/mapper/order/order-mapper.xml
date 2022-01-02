@@ -95,6 +95,8 @@
   		<foreach collection="list" item="item" open="(" separator="," close=")">
   			#{item}
   		</foreach>
+  	order by
+  		product_code
   </select>
   <resultMap type="product" id="productCollection">
   	<id column="product_code" property="productCode"/>
@@ -144,6 +146,8 @@
 	    view_merchant_imp
 	where
 	    member_no = #{memberNo}
+	order by
+		order_date desc
   </select>
     <resultMap type="merchantExt" id="orderCollection">
   	<id column="merchant_uid" property="merchantUid"/>

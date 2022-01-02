@@ -7,6 +7,7 @@ import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
+import com.kh.devrun.shop.model.vo.Cart;
 
 public interface OrderService {
 
@@ -19,5 +20,7 @@ public interface OrderService {
 	Map<String, Object> selectMyShopping(int memberNo);
 
 	List<MerchantExt> selectOrderList(int memberNo);
+
+	List<Cart> selectCartList(int memberNo);
 
 }

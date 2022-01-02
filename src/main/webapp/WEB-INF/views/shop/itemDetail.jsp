@@ -698,8 +698,13 @@ $("#cartBtn").click((e)=>{
 	}
 	
 	if(cartValid == 1){
-		alert("이미 장바구니 추가된 상품입니다.");
-		return;
+		const cartConfirm = confirm("이미 장바구니 추가된 상품입니다. 장바구니로 이동하시겠습니까?");
+		if(cartConfrim){
+			location.href = "${pageContext.request.contextPath}/order/cart.do";
+		}
+		else{
+			return;
+		}
 	}
 	
 	$.ajax({

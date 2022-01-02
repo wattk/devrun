@@ -110,11 +110,7 @@ public class MemberController{
 		binder.registerCustomEditor(Date.class, editor);
 	}
 	
-	@GetMapping("/cart.do")
-	public void cart() {}
-	
 
-	
 	@GetMapping("/wishlist.do")
 	public void wishlist() {}
 	
