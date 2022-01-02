@@ -1,5 +1,6 @@
 package com.kh.devrun.community.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.community.common.CommunityUtils;
 import com.kh.devrun.community.model.service.CommunityService;
 import com.kh.devrun.community.model.vo.Community;
@@ -171,12 +174,52 @@ public class CommunityController {
 		
 		// 3. pagebar
 		String url = request.getRequestURI(); // /devrun/community/communityFreeboardList.do
-		String pagebar = CommunityUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
 		
 		return "community/communityFreeboardList";
 	}
+	
+	
+	// 자유게시판-타입별검색
+	// @ResponseBody : Http 요청 body를 Java 객체로 전달받을 수 있다.
+	@ResponseBody
+	@GetMapping("/communityFreeboardFinder.do")
+	public Map<String, Object> FreeboardFinder(
+			@RequestParam String searchType,
+			@RequestParam String searchKeyword,
+			@RequestParam(defaultValue = "1") int cPage,
+			// HttpServletRequest : 값을 받아올 수 있다. 
+			// HttpServletRequest 객체 안에 모든 데이터들이 들어가게 된다.
+			HttpServletRequest request){
+		
+		// jsp로 리턴받기 위한 map 선언
+		Map<String, Object> map = new HashMap<>();
+		
+		int limit = 11;
+		int offset = (cPage - 1) * limit;
+		
+		log.debug("searchType = {}", searchType);
+		log.debug("searchKeyword = {}", searchKeyword);
+		
+		// 서버로 요청하기 위한 param 선언
+		Map<String, Object> param = new HashMap<>();
+				
+		param.put("limit", limit);
+		param.put("offset", offset);
+		param.put("searchType", searchType);
+		param.put("searchKeyword", searchKeyword);
+		
+		// 설정해놓은 param값을 받아오기 위한 searchFreeboardList 선언
+		List<CommunityEntity> searchFreeboardList = communityService.searchFreeboardList(param);
+		
+		// 데이터를 받아온 searchFreeboardList를 map에 추가
+		map.put("searchFreeboardList", searchFreeboardList);
+		
+		return map;	
+	}
+	
 	
 	// 자유게시판-글쓰기
 	@GetMapping("/communityFreeboardForm.do")
@@ -335,6 +378,7 @@ public class CommunityController {
 		
 		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + communityNo; 
 	}
+
 	
 
 }

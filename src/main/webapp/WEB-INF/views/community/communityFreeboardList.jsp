@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="" name="title"/>
@@ -18,8 +20,24 @@
 	justify-content: center;
 }
 td, th {
-	text-align: center;
+	text-align: center;	
 }
+
+/* 타입별 검색 - 제목 */
+div#search-title {
+	display: inline-block;
+}
+
+/* 타입별 검색 - 내용 */
+div#search-content {
+	display: none;
+}
+
+/* 타입별 검색 - 작성자(별명) */
+div#search-nickname {
+	display: none;
+}
+    
 </style>
 
 <script>
@@ -43,6 +61,9 @@ $(() => {
 		location.href = `${pageContext.request.contextPath}/community/communityFreeboardDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
 	});
 });
+ 
+
+
 
 </script>
 
@@ -66,19 +87,37 @@ $(() => {
 			<hr />
 					
 			<!-- 검색창 시작-->
-			<div class="input-group mb-3" id="search">
-			  <div class="input-group-prepend">
-			    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">전체</button>
-			    <div class="dropdown-menu">
-			      <a class="dropdown-item" href="#">제목</a>
-			      <a class="dropdown-item" href="#">작성자</a>
-			      <a class="dropdown-item" href="#">내용</a>
-			    </div>
-			  </div>
-			  <div>
-			  	<input type="text" class="form-control" aria-label="Text input with dropdown button">
-			  </div>
-			  <button type="button" class="btn btn-primary">검색</button>
+			<div class="row py-3 border-bottom m-0 search justify-content-center" id="search-container">
+				<select id="searchType" class="custom-select" style="width:100px; float:right;">
+				  	<option value="title">제목</option>
+				  	<option value="content">내용</option>
+				  	<option value="nickname">작성자</option>
+				</select>
+				<div id="search-title" class="search-type">
+		            <form class="form-inline search-form"> 
+		            	<input type="hidden" name="searchType" value="title" />
+						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
+						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
+				  	</form>
+		        </div>
+		        <div id="search-content" class="search-type">
+		            <form
+		            	class="form-inline search-form" 
+		            	action="${pageContext.request.contextPath}/community/communityFreeboardFinder">
+		            	<input type="hidden" name="searchType" value="content" />
+						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
+						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
+				  	</form>
+		        </div>
+		        <div id="search-nickname" class="search-type">
+		            <form 
+		            	class="form-inline search-form" 
+		            	action="${pageContext.request.contextPath}/community/communityFreeboardFinder">
+		            	<input type="hidden" name="searchType" value="nickname" />
+						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
+						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
+				  	</form>
+		        </div>	
 			</div>
 			<!-- 검색창 끝 -->
 			
@@ -116,17 +155,19 @@ $(() => {
 		
 		<!-- 반복접근할 요소 : items="${list} -->
 		<!-- 꺼내면 cmmunityEntity니까 communityEntity라는 이름으로 사용 -->
-		<c:forEach items="${list}" var="communityEntity">
-			<tr data-no="${communityEntity.communityNo}">
-				<td>${communityEntity.communityNo}</td>
-				<td>${communityEntity.title}</td>
-				<td>${communityEntity.nickname}</td>
-				<td><fmt:formatDate value="${communityEntity.enrollDate}" pattern="yy-MM-dd HH:mm"/> </td>
-				<td><i class="fas fa-heart"></i> ${communityEntity.likeCount}</td>
-				<td>${communityEntity.viewCount}</td>
-				<td>만들어야함</td>
-			</tr>
-		</c:forEach>
+		<tbody id = "tbody">
+			<c:forEach items="${list}" var="communityEntity">
+				<tr data-no="${communityEntity.communityNo}">
+					<td>${communityEntity.communityNo}</td>
+					<td>${communityEntity.title}</td>
+					<td>${communityEntity.nickname}</td>
+					<td><fmt:formatDate value="${communityEntity.enrollDate}" pattern="yy-MM-dd HH:mm"/></td>
+					<td><i class="fas fa-heart"></i> ${communityEntity.likeCount}</td>
+					<td>${communityEntity.viewCount}</td>
+					<td>만들어야함</td>
+				</tr>
+			</c:forEach>
+		</tbody>
 	</table>  
 	<!-- 리스트 끝 -->
 	
@@ -142,6 +183,76 @@ $(() => {
 	<!-- 페이징 끝 -->
 </div>
 </div>
+
+<script>
+//타입별 검색
+/**
+ * searchType별 change 이벤트 핸들러를 이용해서 해당 div만 보여주고 나머지는 감춘다.
+ */
+$("#searchType").change(function(e){
+	// e.target 이벤트 발생객체 -> #searchtype
+	const type = $(e.target).val();
+	console.log(type);
+	
+	// 1. .search-type 감추기 --> 해당 div 세개가 모두 감춰진다.
+	$(".search-type").hide();
+	
+	// 2. #search-${type} 보여주기(display:inline-block)
+	//console.log(`#search-\${type}`);
+	//console.log($(`#search-\${type}`));
+	// .show는 해당 태그의 원래 디스플레이 속성으로 보여주게되므로 .css로 임의로 지정한다.
+	$(`#search-\${type}`).css("display", "inline-block");
+});
+
+$(".search-btn").click((e) => {
+	//console.log(".search-btn 되나요");
+	//console.log($(e.target));
+	//e.target = .searh-btn
+	e.preventDefault();
+	
+	var $searchType = $(e.target).parent().children("input[name=searchType]").val();
+	var $searchKeyword = $(e.target).parent().children("input[name=searchKeyword]").val();
+	
+	//console.log($searchType);
+	//console.log($searchKeyword);
+	
+	const search = {
+		"searchType" : $searchType,
+		"searchKeyword" : $searchKeyword
+	};
+	
+	console.log(search);
+	
+	$.ajax({
+		url:`${pageContext.request.contextPath}/community/communityFreeboardFinder.do`,
+		data: search,
+		contentType: "application/json; charset=utf-8",
+		success(res){
+			//.html() : 선택한 요소 안의 내용을 가져오거나, 다른 내용으로 바꾼다.
+			$("#tbody").html("");
+			
+			var searchFreeboardList = res.searchFreeboardList;
+			
+			console.log(searchFreeboardList);
+			console.log(searchFreeboardList.length);
+						
+			for(let i = 0; i < searchFreeboardList.length; i++) {
+				$("#tbody").append(`<tr>
+				<td>\${searchFreeboardList[i].communityNo}</td>
+				<td>\${searchFreeboardList[i].title}</td>
+				<td>\${searchFreeboardList[i].nickname}</td>
+				<td>\${searchFreeboardList[i].enrollDate}</td>
+				<td>\${searchFreeboardList[i].likeCount}</td>
+				<td>\${searchFreeboardList[i].viewCount}</td>
+				</tr>`);
+			}
+		},
+		error: console.log
+	});
+});
+
+
+</script>
 
 <script src="${pageContext.request.contextPath}/resources/js/community/communityQnAList/scripts.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

@@ -1,6 +1,7 @@
 package com.kh.devrun.community.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kh.devrun.community.model.vo.Community;
 import com.kh.devrun.community.model.vo.CommunityComment;
@@ -34,6 +35,8 @@ public interface CommunityService {
 	int freeboardDelete(int communityNo);
 
 	int viewCount(int communityNo);
+
+	List<CommunityEntity> searchFreeboardList(Map<String, Object> param);
 
 
 
