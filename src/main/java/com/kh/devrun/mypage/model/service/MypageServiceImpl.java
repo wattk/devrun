@@ -1,5 +1,7 @@
 package com.kh.devrun.mypage.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,38 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public int insertAddress(Address address) {
 		return mypageDao.insertAddress(address);
+	}
+
+	/**
+	 * 주소 수정
+	 */
+	@Override
+	public int updateAddress(Address address) {
+		return mypageDao.updateAddress(address);
+	}
+
+	/**
+	 * 주소 삭제
+	 */
+	@Override
+	public int deleteAddress(Address address) {
+		return mypageDao.deleteAddress(address);
+	}
+
+	/**
+	 * 전체 주소 조회
+	 */
+	@Override
+	public List<Address> selectAllAddressById(int memberNo) {
+		return mypageDao.selectAllAddressById(memberNo);
+	}
+
+	/**
+	 * 주소 상세 조회
+	 */
+	@Override
+	public Address selectOneAddress(int addressNo) {
+		return mypageDao.selectOneAddress(addressNo);
 	}
 	
 	/**

@@ -89,7 +89,7 @@
 	    id = #{id}
   </update>
   
-  <select id="selectOneMemberById" resultType="member">
+  <select id="selectOneMemberById" resultMap="memberMap">
   	select
   		*
   	from
@@ -98,6 +98,32 @@
   	where
   		m.id = #{id}
   </select>
+  <resultMap type="member" id="memberMap">
+  	<id column="member_no" property="memberNo"/>
+  	<result column="id" property="id"/>
+	<result column="name" property="name"/>
+	<result column="nickname" property="nickname"/>
+	<result column="password" property="password"/>
+	<result column="birthday" property="birthday"/>
+	<result column="email" property="email"/>
+	<result column="phone" property="phone"/>
+	<result column="point" property="point"/>		
+	<result column="enroll_date" property="enrollDate"/>
+	<result column="pro_photo" property="proPhoto"/>
+	<result column="black_yn" property="blackYn"/>
+	<result column="sms_yn" property="smsYn"/>
+	<result column="warning_count" property="warningCount"/>
+	<result column="url" property="url"/>
+	<result column="intro" property="intro"/>
+
+	<collection 
+		property="authorities" 
+		ofType="org.springframework.security.core.authority.SimpleGrantedAuthority">
+		<constructor>
+			<arg column="authority" javaType="string"/>
+		</constructor>
+	</collection>		
+  </resultMap>
   
   <select id="selectOneMemberByCheckKeyword" resultType="member">
   	select

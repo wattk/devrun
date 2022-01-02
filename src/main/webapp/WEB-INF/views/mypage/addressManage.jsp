@@ -23,50 +23,46 @@
 		       		<hr/>
 		       		
 		       		<%-- shipping address list --%>
-		       		<section id="addressList" class="card">
-		       			<div class="card-body">
-		       				<div class="row">
-				       			<!-- 수신자명, 주소, 우편번호, 연락처 -->
-				       			<article class="col-12">
-				     				<%--
-				     				주소가 있으면
-				     				<c:forEach items="${addressList} var="adressList">
-				     					<tr>
-				     						<th>수신자명</th>
-				     						<th>주소</th>
-				     						<th>우편번호</th>
-				     						<th>연락처</th>
-				     					</tr>
-				     					<tr>
-				     						<td>${address.}</td>
-				     						<td>${address.}</td>
-				     						<td>${address.}</td>
-				     						<td>${address.}</td>
-				     					</tr>
-				     				</c:forEach>
-				     				주소가 없으면
-				     				<tr><td colspan="4">주소가 없습니다.</td></tr>
-				     				--%>
-		       					</article>
-			       			</div>
-	       				</div>
-	       			</section>
+		       		<section id="addressList">
+				       	<table class="table">
+				       		<tr>
+			     				<th>배송지명</th>
+			     				<th>수령인</th>
+			     				<th>우편번호</th>
+			     				<th>주소</th>
+			     				<th>연락처</th>
+			     			</tr>
+	       					<c:if test="${addressList ne null}">
+		       					<c:forEach items="${addressList}" var="address">
+			     					<tr data-no="${address.addressNo}">
+			     						<td>${address.title}</td>
+			     						<td>${address.addressee}</td>
+			     						<td>${address.postalCode}</td>
+			     						<td>${address.address1} ${address.address2}</td>
+			     						<td>${address.phone}</td>
+			     					</tr>
+			     				</c:forEach>
+	       					</c:if>
+	       					<c:if test="${addressList eq null}">
+	       						<tr><td colspan="4">주소가 없습니다.</td></tr>
+	       					</c:if>
+	       				</table>
+     				</section>
 	       			
 	       			<%-- shipping address detail --%>
 	       			<section id="adressDetail">
 	       				<h5>배송지정보 추가 / 수정 / 삭제</h5>
 		       			<!-- 배송지정보 폼 -->
-		       			<form name="addressFrm" method="POST">
-		       				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+		       			<form name="addressFrm" method="POST" action="${pageContext.request.contextPath}/mypage/myinfo/addressEnroll.do">
 		       				<input type="hidden" name="memberNo" value="${member.memberNo}"/>
 			       			<table class="table">
 			       				<tr>
 			       					<th><label for="title">배송지명</label></th>
-			       					<td><input type="text" name="title" id="title" class="form-control col-4"/></td>
+			       					<td><input type="text" name="title" id="title" class="form-control col-4" required/></td>
 			       				</tr>
 			       				<tr>
-			       					<th><label for="addessee">수령인</label></th>
-			       					<td><input type="text" name="addessee" id="addessee" class="form-control col-4" required/></td>
+			       					<th><label for="addressee">수령인</label></th>
+			       					<td><input type="text" name="addressee" id="addressee" class="form-control col-4" required/></td>
 			       				</tr>
 			       				<tr>
 			       					<th><label for="postalCode">우편번호</label></th>
@@ -91,14 +87,14 @@
 			       				</tr>
 			       				<tr>
 			       					<th><label for="mainYn">기본배송지</label></th>
-			       					<td><input type="checkbox" name="mainYn" id="mainYn"/> 기본 배송지로 설정</td>
+			       					<td><input type="checkbox" name="mainYn" id="mainYn" value="N"/> 기본 배송지로 설정</td>
 			       				</tr>
 			       			</table>
 			       			<%-- buttons : address enroll / update / delete --%>
 		    				<section id="btns" class="col-11 row">
-		    					<button type="button" class="col-4" id="addressEnrollBtn">추가</button>
-		    					<button type="button" class="col-4" id="addressUpdateBtn">수정</button>
-		    					<button type="button" class="col-4" id="addressDeleteBtn">삭제</button>
+		    					<button type="submit" class="col-4" id="addressEnrollBtn" onclick='addressEnroll(this.form);'>추가</button>
+		    					<button type="button" class="col-4" id="addressUpdateBtn" onclick='addressUpdate(this.form);'>수정</button>
+		    					<button type="button" class="col-4" id="addressDeleteBtn" onclick='addressDelete(this.form);'>삭제</button>
 		    				</section>
 		       			</form>
 	       			</section>
@@ -109,6 +105,36 @@
 		</div>
 		
 <script>
+/* 주소 한개 ajax로 가져오기 */
+$("tr[data-no]").click((e) => {
+	const addressNo = $(e.target).parents("tr").data("no");
+	console.log(addressNo);
+	//if(!$tr.data("no")) return; //addressNo가 undefined라면 조기리턴해서 이하코드 실행하지 않도록 한다.
+	
+	$.ajax({
+		url: `${pageContext.request.contextPath}/mypage/myinfo/selectOneAddress/\${addressNo}`,
+		method: "GET",
+		success(data){
+			console.log(data);
+			const $frm = $(addressFrm);
+			const {title, addressee, postalCode, address1, address2, phone, mainYn} = data;
+			$("[name=title]", $frm).val(title);
+			$("[name=addressee]", $frm).val(addressee);
+			$("[name=postalCode]", $frm).val(postalCode);
+			$("[name=address1]", $frm).val(address1);
+			$("[name=address2]", $frm).val(address2);
+			$("[name=phone]", $frm).val(phone);
+			$(`[name=mainYn][value=\${mainYn}]`, $frm).prop("checked", true);
+		},
+		error(xhr, textStatus, err){
+			console.log(xhr, textStatus, err);
+			if(xhr.status == 404){
+				alert("조회한 주소는 존재하지 않습니다 : " + addressNo);
+			}
+		}
+	});
+});
+
 /* Daum 우편번호 검색 API */
 $("#searchPostcodeBtn").click(function(){
 	//팝업 위치를 지정(화면의 가운데 정렬)
@@ -172,9 +198,79 @@ $("#searchPostcodeBtn").click(function(){
         popupKey: 'popup1' 
     });
 });
+/* $(document).ready(function(){
+	if($("#mainYn").is(":checked") == true){
+		$("#mainYn").val("Y");
+	} else {
+		$("#mainYn").val("N");
+	}
+}); */
+$("#mainYn").change(function(){
+	$mainYn = $("#mainYn");
+	if($mainYn.is(":checked")){
+		$mainYn.val("Y");
+	} else {
+		$mainYn.val("N");
+	}
+});
+
+function addressEnroll(frm) {
+	/* 유효성검사 : 배송지명, 수령인, 우편번호, 주소, 상세주소, 연락처, 기본배송지 여부 */
+	const $title = $("#title");
+	if(!/^.{1,}$/.test($title.val())){
+		alert("배송지명을 작성해주세요.");
+		$title.focus();
+		return;
+	}
+	const $addressee = $("#addressee");
+	if(!/^[가-힣]{2,}$/.test($addressee.val())){
+		alert("수령인을 작성해주세요.");
+		$addressee.focus();
+		return;
+	}
+	const $postalCode = $("#postalCode");
+	if(!/^[0-9]{5}$/.test($postalCode.val())){
+		alert("우편번호를 작성해주세요.");
+		$postalCode.focus();
+		return;
+	}
+	const $address1 = $("#address1");
+	if(!/^.{1,}$/.test($address1.val())){
+		alert("주소를 작성해주세요.");
+		$address1.focus();
+		return;
+	}
+	const $phone = $("#phone");
+	$phone.val($phone.val().replace(/[^0-9]/g, "")); //숫자아닌 문자(복수개)제거하기
+	if(!/^010[0-9]{8}$/.test($phone.val())){
+		alert("연락처를 작성해주세요.");
+		$phone.focus();
+		return;
+	}
+	/* const $mainYn = $("#mainYn");
+	if($mainYn.is(":checked")){
+    	$mainYn.val(Y);
+	}
+    else {
+    	$mainYn.val(N);
+    } */
+	
+	frm.action = `${pageContext.request.contextPath}/mypage/myinfo/addressEnroll.do`;
+	frm.submit();
+}
+
+function addressUpdate(frm) {
+	frm.action = `${pageContext.request.contextPath}/mypage/myinfo/addressUpdate.do`;
+	frm.submit();
+}
+
+function addressDelete(frm) {
+	frm.action = `${pageContext.request.contextPath}/mypage/myinfo/addressDelete.do`;
+	frm.submit();
+}
 
 /* 추가, 수정, 삭제 */
-$("#addressEnrollBtn").click((e) => {
+/* $("#addressEnrollBtn").click((e) => {
 	//유효성검사
 		
 	//기본배송지 value값 설정
@@ -186,7 +282,7 @@ $("#addressEnrollBtn").click((e) => {
 		
 	$(document.addressFrm).action=`${pageContext.request.contextPath}/mypage/myinfo/addressEnroll.do`;
 	$(document.addressFrm).submit();
-});
+}); */
 
 /* $(document.addressFrm).action='${pageContext.request.contextPath}/mypage/myinfo/addressUpdate.do';
 $(document.addressFrm).action='${pageContext.request.contextPath}/mypage/myinfo/addressDelete.do'; */
