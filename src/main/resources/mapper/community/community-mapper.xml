@@ -183,7 +183,7 @@
 	    c.community_no,
 	    c.title,
 	    m.nickname,
-	   	enroll_date,
+	   	c.enroll_date,
 	   	c.like_count,
 	   	c.view_count
 	from
