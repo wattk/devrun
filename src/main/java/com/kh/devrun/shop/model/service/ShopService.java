@@ -28,4 +28,12 @@ public interface ShopService {
 
 	List<Product> selectRecommendation(Map<String, Object> param);
 
+	int didIHitLikes(Map<String, Object> param);
+
+	int reviewLikeAdd(Map<String, Object> param);
+
+	int reviewLikeDelete(Map<String, Object> param);
+
+	int refreshCountLikes(int reviewNo);
+
 }

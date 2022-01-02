@@ -69,7 +69,37 @@ public class ShopDaoImpl implements ShopDao {
 
 	@Override
 	public List<Product> selectRecommendation(Map<String, Object> param) {
-		return session.selectList("shop.selectRecommendation",param);
+		return session.selectList("shop.selectRecommendation", param);
+	}
+
+	@Override
+	public int didIHitLikes(Map<String, Object> param) {
+		return session.selectOne("shop.didIHitLikes", param);
+	}
+
+	@Override
+	public int reviewLikeAdd(Map<String, Object> param) {
+		return session.update("shop.reviewLikeAdd", param);
+	}
+
+	@Override
+	public int insertMemberReviewLike(Map<String, Object> param) {
+		return session.insert("shop.insertMemberReviewLike", param);
+	}
+
+	@Override
+	public int deleteMemberReviewLike(Map<String, Object> param) {
+		return session.delete("shop.deleteMemberReviewLike", param);
+	}
+
+	@Override
+	public int reviewLikeDelete(Map<String, Object> param) {
+		return session.update("shop.reviewLikeDelete", param);
+	}
+
+	@Override
+	public int refreshCountLikes(int reviewNo) {
+		return session.selectOne("shop.refreshCountLike", reviewNo);
 	}
 
 }
