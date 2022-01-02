@@ -447,6 +447,16 @@ public class ShopController {
 
 		// 2. 전체 게시물 수 totalContent
 		url = request.getRequestURI();
+		if(keyword != null) {
+			url += "&keyword="+keyword;
+		}
+		
+		if(!childCategoryCode.isEmpty()) {
+			for(String code : childCategoryCode) {
+				url += "&childCategoryCode="+code;
+			}
+		}
+		
 		int totalContent = promotionService.selectProductTotalCount(param);
 
 		// 3. pagebar

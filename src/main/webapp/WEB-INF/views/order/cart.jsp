@@ -78,8 +78,22 @@ $(".cart-checkbox").change((e)=>{
 
 //주문하기 버튼 클릭 시 주문 페이지 이동
 $("#cartPayBtn").click((e)=>{
-	const $cartItems = $(".cart-item"); 
-	//localStorage.setItem("cartItems", JSON.stringify());
+	let cartArr = [];
+	const $cartItems = $(".cart-item");
+	console.log($cartItems, typeof $cartItems);
+	for(let i = 0; i < $cartItems.length; i++){
+		let data = {
+				productCode : $cartItems.eq(i).data("productCode"),
+				detailNo : $cartItems.eq(i).data("detailNo"),
+				name : $cartItems.eq(i).data("name"),
+				price : $cartItems.eq(i).data("price"),
+				amount : $cartItems.eq(i).data("amount")
+		};
+		console.log(data);
+		cartArr.push(data);
+	};
+	console.log(cartArr);
+	localStorage.setItem("cartItems", JSON.stringify(cartArr));
 	$(document.orderEnrollFrm).submit();
 });
 </script>

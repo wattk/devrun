@@ -30,9 +30,31 @@
 	pageContext.setAttribute("totalPrice", totalPrice);
 %>
 <script>
+
+$(document).ready((e)=>{
 	
-	const item = JSON.parse(localStorage.getItem("cartItem"));
+	const item = JSON.parse(localStorage.getItem("cartItems"));
 	console.log(item);
+	
+	if(item.length == 3){
+		$(".merchant-title").text(item[0].name);
+		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].thumbnail}" class="img-b w-25 p-2">`);
+	}
+	else if(item.length > 3){
+		$(".merchant-title").text(item[0].name+"외 "+(item.length - 1)+"건");
+		if(item.length < 4){
+			item.forEach((i, index)=>{
+				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[index].thumbnail}" class="img-b w-25 p-2">`);
+			});
+		}
+		else{
+			for(let i = 0; i < 3; i++){
+				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[i].thumbnail}" class="img-b w-25 p-2">`);
+				
+			}
+		}
+	}
+});
 </script>
 
 <div class="row p-5 d-flex justify-content-around order-container">
@@ -136,19 +158,19 @@
   </div>
   <div class="col-4 m-3 pl-3 pt-5 d-flex flex-column justify-content-start">
   	<strong>주문 정보</strong>
-  	<c:choose>
-  	 <c:when test="${productList.size() > 3}">
-	  	<span class="merchant-title">${productList[0].name} 외 ${productList.size() -1}건</span>
-	  	<div class="row d-flex justify-content-start">
-	  	<c:forEach items="${productList}" var="item" varStatus="vs" begin="0" end="2">
+  	<%-- <c:choose>
+  	 <c:when test="${productList.size() > 3}"> --%>
+	  	<span class="merchant-title"><%-- ${productList[0].name} 외 ${productList.size() -1}건 --%></span>
+	  	<div class="thumbnail-box row d-flex justify-content-start">
+	  	<%-- <c:forEach items="${productList}" var="item" varStatus="vs" begin="0" end="2">
   			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
-  		</c:forEach>
+  		</c:forEach> --%>
   			<div class="img-b w-25 p-2">...</div>
 	  	</div>
-  	 </c:when>
+  	 <%-- </c:when>
   	 <c:when test="${productList.size() == 1}">
 	  	<span class="merchant-title">${productList[0].name}</span>
-	  	<div class="row d-flex justify-content-start">
+	  	<div class="thumbnail-box row d-flex justify-content-start">
 	  	<c:forEach items="${productList}" var="item" varStatus="vs">
   			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
   		</c:forEach>
@@ -156,13 +178,13 @@
   	 </c:when>
   	 <c:otherwise>
 	  	<span class="merchant-title">${productList[0].name} 외 ${productList.size() -1}건</span>
-	  	<div class="row d-flex justify-content-start">
+	  	<div class="thumbnail-box row d-flex justify-content-start">
 	  	<c:forEach items="${productList}" var="item" varStatus="vs">
   			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
   		</c:forEach>
 	  	</div>
   	 </c:otherwise>
-  	</c:choose>
+  	</c:choose> --%>
     <hr class="w-100"/>
 	<table class="table order-tbl">
 	  <tbody>
