@@ -325,7 +325,7 @@ public class ShopController {
 		return result;
 	}
 
-	//위시리스트 삭제
+	// 위시리스트 삭제
 	@ResponseBody
 	@GetMapping("/wishlistDelete")
 	public int wishlistDelete(@RequestParam String productCode, @RequestParam int memberNo) {
@@ -333,11 +333,25 @@ public class ShopController {
 		Map<String, Object> param = new HashMap<>();
 		param.put("productCode", productCode);
 		param.put("memberNo", memberNo);
-	
+
 		int result = shopService.wishlistDelete(param);
 		log.debug("위시리스트 잘 삭제? : {}", result);
 
 		return result;
+	}
+
+	@GetMapping("/wishCheck")
+	public int wishCheck(@RequestParam String productCode, @RequestParam int memberNo) {
+		int wishCheckYn = 0;
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("productCode", productCode);
+		param.put("memberNo", memberNo);
+		
+		wishCheckYn = shopService.didIHitWishlist(param);
+		log.debug("wishCheckYn 이게 1이면 위시리스트에 담겼다는 것 : {}", wishCheckYn);
+
+		return wishCheckYn;
 	}
 
 //----------------------------------------------------------구분선---------------------------------------------------------------

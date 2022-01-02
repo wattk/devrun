@@ -116,6 +116,11 @@ public class ShopDaoImpl implements ShopDao {
 		return session.insert("shop.insertMemberWishlist", param);
 	}
 
+	@Override
+	public int didIHitWishlist(Map<String, Object> param) {
+		return session.selectOne("shop.didIHitWishlist",param);
+	}
+
 	/* 혜진 장바구니 시작 */
 	@Override
 	public int insertCart(Cart cart) {

@@ -184,6 +184,11 @@ public class ShopServiceImpl implements ShopService {
 
 		return result;
 	}
+	
+	@Override
+	public int didIHitWishlist(Map<String, Object> param) {
+		return shopDao.didIHitWishlist(param);
+	}
 
 //--------------------------------------------------------구분선---------------------------------------------------------
 
@@ -203,6 +208,7 @@ public class ShopServiceImpl implements ShopService {
 
 		return result;
 	}
+
 
 	/* 혜진 장바구니 끝 */
 

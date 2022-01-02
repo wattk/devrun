@@ -255,7 +255,7 @@
 						value="${product.price / 200}" pattern="#,###,### P" /> </span>적립 <br>
 				<span>배송 : </span><span>3,000원</span> <br>
 				<div id="jeju">
-					<span>제주도/도서산간 지역 4,000원 추가</span> <i class="far fa-heart wishBtn"
+					<span>제주도/도서산간 지역 4,000원 추가</span> <i id="wishlistBtn" class="far fa-heart wishBtn"
 						data-wishyn="N"></i>
 				</div>
 				<hr>
@@ -627,6 +627,30 @@ function reviewAll(){
 	var $productCode = $(productCodeV).val(); 
 	var $div = $('#reviewBefore');
 	
+	//위시리스트 비동기 처리
+	const $memberNo = ${member.memberNo};
+	const $productCode = '${product.productCode}';
+	
+	$.ajax({
+		
+		url: "${pageContext.request.contextPath}/shop/wishCheck",
+		method: "Get",
+		data : {
+			memberNo:  $memberNo,
+			productCode : $productCode 
+			
+		},
+		success(data){
+			if(data == 1){
+				$('#wishlistBtn').data('wishyn', 'Y');
+				$('#wishlistBtn').attr('class', 'fas fa-heart wishBtn');							
+			}
+		},
+		error: console.log
+	});
+	
+	//위시리스트 비동기 끝	
+	
 	$.ajax({
 		
 		url: "${pageContext.request.contextPath}/shop/review",
@@ -755,6 +779,8 @@ $(document).on('click', '.likes', function(e) {
 })
 
 /*좋아요 비동기 끝*/
+
+
 
 
 //-------------------------------------------------------구분선-------------------------------------------------------------

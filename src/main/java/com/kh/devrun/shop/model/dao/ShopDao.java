@@ -58,4 +58,6 @@ public interface ShopDao {
 	int insertMemberCart(Cart cart);
 	/* 혜진 장바구니 끝 */
 
+	int didIHitWishlist(Map<String, Object> param);
+
 }

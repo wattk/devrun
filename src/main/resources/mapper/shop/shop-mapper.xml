@@ -241,5 +241,15 @@
 			#{cartNo}
 		)
 	</insert>
+	
+	<select id="didIHitWishlist" resultType="_int">
+		select
+			count(*)
+		from 
+			wishlistInfo
+		where 
+			member_no = #{memberNo}
+			and productCode = #{productCode}
+	</select>
 	<!-- 혜진 장바구니 끝 -->
 </mapper>

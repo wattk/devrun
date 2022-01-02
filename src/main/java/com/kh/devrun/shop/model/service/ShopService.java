@@ -46,4 +46,6 @@ public interface ShopService {
 	int insertCart(Cart cart);
 	/* 혜진 장바구니 끝 */
 
+	int didIHitWishlist(Map<String, Object> param);
+
 }
