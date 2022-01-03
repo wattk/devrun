@@ -15,7 +15,7 @@
   	<h4>위시리스트</h4>
   	<table class="table m-3 pr-3">
 	  <tbody>
-	  <c:forEach items="${wishlist}" var="wl" varStatus="">
+	  <c:forEach items="${wishlist}" var="wl" varStatus="vs">
 		  <!-- 위시리스트 한 건 시작 -->
 		    <tr>
 		      <td>
@@ -28,7 +28,10 @@
 			  </td>
 		      <td class="col-4 align-middle">${wl.name}</td>
 		      <td class="col-3 align-middle">
-		      <fmt:formatNumber	value="${wl.price}" pattern="#,###,### 원" /></td>
+		      	<span class="wishPrice" data-price="${wl.price}">
+		      		<fmt:formatNumber value="${wl.price}" pattern="#,###,### 원" />
+		      	</span>
+		     </td>
 		      <td colspan="" class="align-middle">
 		      	<i class="wish-icon fas fa-cart-plus pr-3"></i>
 		      </td>
@@ -47,7 +50,7 @@
 	  <strong>위시리스트 요약</strong>
 	  <hr class="w-100"/>
 	  <strong>정가</strong>
-	  <h4 class="text-right">0,000원</h4>
+	  <h4 class="text-right" id="wishTotalPrice"></h4>
 	  <button 
 	  	type="button" 
 	  	id="wishCartBtn" 
@@ -58,4 +61,29 @@
 	  <hr class="w-100"/>
   </div>
 </div>	
+
+
+<script>
+window.onload = calTotal;
+
+function calTotal(){
+	const prices = document.getElementsByClassName('wishPrice');
+	console.log(prices, typeof prices);
+	
+	var totalPrice = 0;
+	Array.prototype.forEach.call(prices, (elem, index) => {
+		console.log(elem.dataset.price);
+		totalPrice +=  parseInt(elem.dataset.price);
+		
+	});
+	console.log(`최종 가격 : \${totalPrice}`);
+	$(wishTotalPrice).text(numberWithCommas(totalPrice) + '원');
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+</script>
+
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
