@@ -149,7 +149,7 @@ public class MemberController{
 	/**
 	 * 비밀번호 찾기 - 임시 비밀번호 이메일 발송
 	 */
-	@GetMapping("/{id}/{email}/findPassword.do")
+	@PostMapping("/{id}/{email}/findPassword.do")
 	public String findPassword(@PathVariable String id, @PathVariable String email, Model model) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();

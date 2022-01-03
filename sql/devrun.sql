@@ -1538,4 +1538,19 @@ from
         from wishlist w join member_wishlist mw
          on w.wishlist_no = mw.wishlist_no)wish join product p
             on wish.product_code = p.product_code
-order by wish.reg_date desc; 
+order by wish.reg_date desc;
+
+
+-- (지영) 채팅 나가기 후 상대 메시지 여부 처리에 따른 목록 조회를 위한 뷰 생성
+-- chat_member의 end_date값이 null이거나 chat_log 대화 중 end_date(나가기) 이후의 작성한 log가 있다면 조회된다.
+-- 회원이 나가기한 채팅방은 chat_member의 end_date가 null 아니며 상대가 대화를 이어가지 않으면 이후의 작성한 log가 존재하지 않는다.
+create or replace view view_chat_exit_check
+as
+select
+    distinct(cm.chat_id),
+    cm.member_no
+from
+    chat_member cm join chat_log cl
+        on cm.chat_id = cl.chat_id
+where
+    cm.end_date < TO_TIMESTAMP('1970-01-01 09:00:00.0','YYYY-MM-DD HH24:MI:SS.FF') + NUMTODSINTERVAL(cl.log_time/1000, 'SECOND') or cm.end_date is null;

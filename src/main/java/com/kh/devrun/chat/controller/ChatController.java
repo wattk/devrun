@@ -76,6 +76,12 @@ public class ChatController {
 		Member receiver = chatService.selectOneReceiver(param);
 		//log.debug("receiver = {}", receiver);
 		model.addAttribute("receiver", receiver);
+		
+		// 로그인한 회원의 chat_member.end_date 조회하여 그 이후 채팅 로그만 보이게 하기 위함 (end_date null인경우 0으로 받아온다.)
+		// unix초 받아온다.
+		long endDate = chatService.findEndDate(param);
+		//log.debug("endDate = {}", endDate);
+		model.addAttribute("endDate", endDate);
 
 		return "chat/chatRoomPopup";
 	}
@@ -159,6 +165,26 @@ public class ChatController {
 		log.debug("chatIdList = {}", chatIdList);
 		
 		return chatIdList;
+	}
+	
+	/**
+	 * 비동기
+	 * 채팅방 나가기
+	 */
+	@ResponseBody
+	@PostMapping("/{chatId}/exitChatRoom.do")
+	public int exitChatRoom(Authentication authentication, @PathVariable String chatId) {
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
+		param.put("chatId", chatId);
+		
+		// db chat_member.end_date update
+		int result = chatService.exitChatRoom(param);
+		
+		return result;
 	}
 	
 
