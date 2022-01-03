@@ -224,11 +224,15 @@
   		<if test="(searchType != null or searchType != '') and (searchKeyword != null or searchType != '')">
   			<choose>
   				<when test="searchType eq 'memberNo'">
-  					and member_no = '%'||#{searchKeyword}||'%'
+  					and member_no like '%'||#{searchKeyword}||'%'
   				</when>
   				<when test="searchType eq 'orderNo'">
-  					and merchant_uid = '%'||#{searchKeyword}||'%'
+  					and merchant_uid like '%'||#{searchKeyword}||'%'
   				</when>
+  				<otherwise>
+  					and (member_no like '%'||#{searchKeyword}||'%'
+  					or merchant_uid like '%'||#{searchKeyword}||'%')
+  				</otherwise>
   			</choose>
   		</if>
   		<if test="startDate != null">

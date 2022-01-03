@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.category.model.vo.ProductChildCategory;
+import com.kh.devrun.common.AdminUtils;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.memberManage.model.service.MemberManageService;
@@ -660,12 +661,12 @@ public class AdminController {
 		
 		List<Merchant> list = orderService.selectMerchantList(param);
 		log.debug("list = {}", list);
-		//String merchantStr = AdminUtils.getMerchantList(list, url);
-		//log.debug("merchantStr = {}", merchantStr);
+		String merchantStr = AdminUtils.getMerchantList(list, url);
+		log.debug("merchantStr = {}", merchantStr);
 		
-		//resultMap.put("merchantStr", merchantStr);
+		resultMap.put("merchantStr", merchantStr);
 		
-		return null;
+		return resultMap;
 	}
 	
 	@GetMapping("/shipmentManage.do")

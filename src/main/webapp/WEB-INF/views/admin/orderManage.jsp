@@ -93,7 +93,7 @@
 	      <th scope="col">요청사항</th>
 	    </tr>
 	  </thead>
-	  <tbody>
+	  <tbody id="orderBody">
 	  	<c:forEach items="${list}" var="m" varStatus="vs">
 	    <tr>
 	      <td>${m.merchantUid}</td>
@@ -287,6 +287,7 @@ $("#orderSearchBtn").click((e)=>{
 		},
 		success(data){
 			console.log(data);
+			$("#orderBody").html(data.merchantStr);
 		},
 		error : console.log
 	});
