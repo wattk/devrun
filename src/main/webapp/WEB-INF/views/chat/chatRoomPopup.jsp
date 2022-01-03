@@ -213,7 +213,6 @@
     
 }
 
-
 .chat-data-wrap .msg-p {
 	margin: 10px 12px 9px;
 }
@@ -431,94 +430,99 @@
 						<%-- 대화 내역 리스트 출력 시작 --%>
 						<c:forEach items="${list}" var="chatLog">
 						
-							<%-- 현재 날짜 --%>
-							<c:set var="today" value="<%=new java.util.Date()%>" />
-							<!-- 날짜(오늘일 경우 - 오전 9:00 또는 15:00 / 올해일 경우 - 12월 22일 / 올해가 아닐 경우 - 2020.10.14)-->
-							<jsp:useBean id="dateValue" class="java.util.Date"/>
-							<jsp:setProperty name="dateValue" property="time" value="${chatLog.logTime}"/>
-							<fmt:formatDate value="${dateValue}" pattern="yyyyMMdd" var="logTimeDate"/>
-							<fmt:formatDate value="${today}" pattern="yyyyMMdd" var="nowDate"/>
-							<fmt:formatDate value="${dateValue}" pattern="yyyy" var="logTimeYear"/>
-							<fmt:formatDate value="${today}" pattern="yyyy" var="nowYear"/>
-						
-							<%-- 조건문 시작 --%>
-							<c:choose>
-								<%-- 오늘일 경우 ex. 15:00 --%>
-								<c:when test="${logTimeDate eq nowDate}">
-									<fmt:formatDate value="${dateValue}" pattern="HH:mm" var="logTime"/>
-								</c:when>
-								<%-- 올해일 경우 ex. 12/22 15:00 --%>
-								<c:when test="${logTimeYear eq nowYear}">
-									<fmt:formatDate value="${dateValue}" pattern="MM/dd HH:mm" var="logTime"/>
-								</c:when>
-								<%-- 이외의 경우 ex. 2020.10.14 --%>
-								<c:otherwise>
-									<fmt:formatDate value="${dateValue}" pattern="yyyy.MM.dd" var="logTime"/>
-								</c:otherwise>
-							</c:choose>
-							<%-- 조건문 끝 --%>
-						
-							<li class="list-group-item">
+							<%-- 로그인한 회원번호와 chat_id 이용하여 조회해온 end_date값이 존재한다면(end_date가 존재하지 않는다면 0으로 받아온다 - 전체 대화 받아옴) 그 이후의 log_time 대화목록만 받아오기 --%>					
+							<c:if test="${endDate eq 0 || (endDate ne 0 && endDate le chatLog.logTime)}">
 							
-								<%-- 본인 메시지인 경우 --%>
-								<c:if test="${chatLog.memberNo eq loginMember.memberNo}">
-									<!-- 본인 메시지 -->
-									<div class="send-msg-wrap">
-										<div class="talk-info position-relative">
-											<!-- 본인 메시지 내용 -->
-											<div class="send-msg">
-												<p class="msg-p">${chatLog.msg}</p>
-											</div>
-											<div class="etc">
-												<!-- 읽음 표시 -->
-												<span class="read-check d-block"><c:if test="${chatLog.lastCheck ge chatLog.logTime}">읽음</c:if></span>
-												<span class="msg-time">${logTime}</span>
-											</div>
-											<!-- 본인 메시지 내용 끝-->
-										</div>
-									</div>
-									<!-- 본인 메시지 끝 -->
-								</c:if>
+								<%-- 현재 날짜 --%>
+								<c:set var="today" value="<%=new java.util.Date()%>" />
+								<!-- 날짜(오늘일 경우 - 오전 9:00 또는 15:00 / 올해일 경우 - 12월 22일 / 올해가 아닐 경우 - 2020.10.14)-->
+								<jsp:useBean id="dateValue" class="java.util.Date"/>
+								<jsp:setProperty name="dateValue" property="time" value="${chatLog.logTime}"/>
+								<fmt:formatDate value="${dateValue}" pattern="yyyyMMdd" var="logTimeDate"/>
+								<fmt:formatDate value="${today}" pattern="yyyyMMdd" var="nowDate"/>
+								<fmt:formatDate value="${dateValue}" pattern="yyyy" var="logTimeYear"/>
+								<fmt:formatDate value="${today}" pattern="yyyy" var="nowYear"/>
+							
+								<%-- 조건문 시작 --%>
+								<c:choose>
+									<%-- 오늘일 경우 ex. 15:00 --%>
+									<c:when test="${logTimeDate eq nowDate}">
+										<fmt:formatDate value="${dateValue}" pattern="HH:mm" var="logTime"/>
+									</c:when>
+									<%-- 올해일 경우 ex. 12/22 15:00 --%>
+									<c:when test="${logTimeYear eq nowYear}">
+										<fmt:formatDate value="${dateValue}" pattern="MM/dd HH:mm" var="logTime"/>
+									</c:when>
+									<%-- 이외의 경우 ex. 2020.10.14 --%>
+									<c:otherwise>
+										<fmt:formatDate value="${dateValue}" pattern="yyyy.MM.dd" var="logTime"/>
+									</c:otherwise>
+								</c:choose>
+								<%-- 조건문 끝 --%>
+							
+								<li class="list-group-item">
 								
-								<%-- 상대방 메시지인 경우 --%>
-								<c:if test="${chatLog.memberNo ne loginMember.memberNo}">
-									<!-- 상대방 메시지 -->
-									<div class="receive-msg-wrap">
-										<!-- 회원 프로필 사진 -->
-										<%-- 프로필 사진 없는 경우 --%>
-										<c:if test="${chatLog.member.proPhoto eq null}">
-											<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
-										</c:if>
-										<%-- 프로필 사진 있는 경우 --%>
-								      	<c:if test="${chatLog.member.proPhoto ne null}">
-								      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${chatLog.member.proPhoto}" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>	
-								      	</c:if>
-
-										<div class="talk-info position-relative">
-											<!-- 회원 닉네임 -->
-											<strong class="nickname d-inline-block">${chatLog.member.nickname}</strong>
-											<!-- 상대방 메시지 내용 -->
-											<div class="receive-msg">
-												<p class="msg-p">${chatLog.msg}</p>
-											</div>
-											<div class="etc">
-												<!-- 메시지 신고하기 - 클릭 시 옆으로 드롭다운 만들기 -->
-												<i class="fas fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
-												
-												<div class="dropdown-menu report-dropdown-menu">
-													<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal">메시지 신고하기</a>
+									<%-- 본인 메시지인 경우 --%>
+									<c:if test="${chatLog.memberNo eq loginMember.memberNo}">
+										<!-- 본인 메시지 -->
+										<div class="send-msg-wrap">
+											<div class="talk-info position-relative">
+												<!-- 본인 메시지 내용 -->
+												<div class="send-msg">
+													<p class="msg-p">${chatLog.msg}</p>
 												</div>
-												
-												<span class="msg-time">${logTime}</span>
-												
+												<div class="etc">
+													<!-- 읽음 표시 -->
+													<span class="read-check d-block"><c:if test="${chatLog.lastCheck ge chatLog.logTime}">읽음</c:if></span>
+													<span class="msg-time">${logTime}</span>
+												</div>
+												<!-- 본인 메시지 내용 끝-->
 											</div>
-											<!-- 상대방 메시지 내용 끝-->
-										</div>	
-									</div>
-									<!-- 상대방 메시지 끝 -->
-								</c:if>
-								
-							</li>
+										</div>
+										<!-- 본인 메시지 끝 -->
+									</c:if>
+									
+									<%-- 상대방 메시지인 경우 --%>
+									<c:if test="${chatLog.memberNo ne loginMember.memberNo}">
+										<!-- 상대방 메시지 -->
+										<div class="receive-msg-wrap">
+											<!-- 회원 프로필 사진 -->
+											<%-- 프로필 사진 없는 경우 --%>
+											<c:if test="${chatLog.member.proPhoto eq null}">
+												<img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>
+											</c:if>
+											<%-- 프로필 사진 있는 경우 --%>
+									      	<c:if test="${chatLog.member.proPhoto ne null}">
+									      		<img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${chatLog.member.proPhoto}" alt="회원 프로필 사진" class="member-profile" data-toggle="modal" data-target="#reportBlockModal"/>	
+									      	</c:if>
+	
+											<div class="talk-info position-relative">
+												<!-- 회원 닉네임 -->
+												<strong class="nickname d-inline-block">${chatLog.member.nickname}</strong>
+												<!-- 상대방 메시지 내용 -->
+												<div class="receive-msg">
+													<p class="msg-p">${chatLog.msg}</p>
+												</div>
+												<div class="etc">
+													<!-- 메시지 신고하기 - 클릭 시 옆으로 드롭다운 만들기 -->
+													<i class="fas fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+													
+													<div class="dropdown-menu report-dropdown-menu">
+														<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal">메시지 신고하기</a>
+													</div>
+													
+													<span class="msg-time">${logTime}</span>
+													
+												</div>
+												<!-- 상대방 메시지 내용 끝-->
+											</div>	
+										</div>
+										<!-- 상대방 메시지 끝 -->
+									</c:if>
+									
+								</li>
+							
+							</c:if>
 							
 						</c:forEach>
 						<%-- 대화 내역 리스트 출력 끝 --%>	
@@ -774,34 +778,13 @@
 
 <script>
 
-// 포커스 상태를 감지하는 변수
-var watch = 'Y';
-
 /**
  * 팝업창이 활성화(focus)되면 chat_member.last_check컬럼을 update한다.
  */
 // 다른곳 갔다가 팝업 페이지로 포커스를 다시 할 때에도 chat_member.last_check컬럼을 update되어야 한다.
 $(window).focus((e) => {
 	console.log("WINDOW FOCUS");
-	watch = 'Y';
-	readStatus("READ");
-});
-
-/**
- * 팝업창 포커스 잃었을 경우 이벤트 발생
- */
-$(window).blur((e) => {
-	console.log("WINDOW BLUR");
-	watch = 'N';
-	readStatus("UNREAD");
-});
-
-/**
- * 윈도우창 닫을 때 이벤트 발생
- */
-$(window).on("beforeunload", function() {
-	watch = 'N';
-	return readStatus("UNREAD");
+	readStatus();
 });
 
 // /chat/chat_mk0L0UJ93P50409 구독
@@ -890,10 +873,13 @@ stompClient.connect({}, (frame) => {
 			
 		}
 		
-		//console.log("memberNo = ", memberNo);
-		//console.log("보고있나? ", watch);
-		if(watch == 'Y') {
-			readStatus("READ");
+		/**
+		 * Document.hasFocus() 메소드는 문서 또는 문서 내의 요소(element) 중 어느 하나라도 포커스(focus)를 갖고 있으면 true, 그렇지 않으면 false인 Boolean 값을 반환한다.
+		 */
+		// 포커스인 경우 실행 - last_check 컬럼 업데이트
+		if(document.hasFocus()) {
+			//console.log("memberNo = ", memberNo);
+			readStatus();
 		}
 		
 		/* loginMember의 memberNo의 따른 수신자 발신자 분기 처리 끝 */
@@ -905,8 +891,7 @@ stompClient.connect({}, (frame) => {
 	
 	// 팝업생성, stompClient가 연결되면 chat_member.last_check컬럼을 update한다.
 	// 위치주의 : connect된 이후 호출되어야한다.
-// 	lastCheck();
-	readStatus("READ");
+	readStatus();
 
 	// 구독요청 - 읽음 상태 처리
 	stompClient.subscribe("/chat/readStatus/${chatId}", (message) => {
@@ -916,12 +901,11 @@ stompClient.connect({}, (frame) => {
 		var {chatId, memberNo, readStatus} = obj;
 		const $readCheckSpan = $(".send-msg-wrap").find("span.read-check");
 		
-		// 상대가 읽음 상태라면 span.read-check 부분 text('읽음') 상태로 변환
-		if(memberNo != ${loginMember.memberNo} && readStatus == "READ") {
+		// 상대의 readStatus 왔다면(읽음상태란 뜻) span.read-check 부분 text('읽음') 상태로 변환
+		if(memberNo != ${loginMember.memberNo}) {
 			$readCheckSpan.text('읽음');
 		}
-		
-		
+
 	});
 });
 
@@ -958,14 +942,13 @@ $(message).keyup((e) => {
 });
 
 /**
- * 채팅방 마지막 확인시각과 읽고 있는지 여부 메시지로 발행 -> 채팅방 읽음 처리 체크를 위함 + 기존 lastCheck 처리한 일 추가함
+ * 채팅방 마지막 확인시각과 읽고 있는지 여부 메시지로 발행 -> 채팅방 읽음 처리 체크 + 채팅방 목록 안읽음 메시지 건수 처리
  */
-const readStatus = (status) => {
+const readStatus = () => {
 	let data = {
 		chatId : "${chatId}",
 		memberNo : "${loginMember.memberNo}",
 		lastCheck : Date.now(),
-		readStatus : status,
 		type : "READ_STATUS"
 	};
 	
@@ -1001,11 +984,26 @@ $('.block-btn').click((e) => {
 채팅방에서 자동으로 나가게 됩니다.`);
 });
 
-//'나가기' 클릭 시 이벤트 발생 - 기능 구현 추가할 것
+//'나가기' 클릭 시 이벤트 발생
 $('.exit').click((e) => {
-	console.log("안녕!");
-	confirm(`채팅방을 나가시겠습니까?
-대화방은 목록에서 삭제되고 대화 내용을 다시 볼 수 없습니다.`);
+	if(confirm(`채팅방을 나가시겠습니까?
+대화방은 목록에서 삭제되고 대화 내용을 다시 볼 수 없습니다.`)) {
+		// 확인 누른 경우
+		$.ajax({
+			url : `${pageContext.request.contextPath}/chat/${chatId}/exitChatRoom.do`,
+			method : "POST",
+			success(data) { // 이 안에 들어가는 data는 변수명이다. 다른 이름으로 사용해도 된다. 위의 data : 에서 사용한 부분과 헷갈리지 말자
+				console.log(data);
+				if(data == 1){
+					// 팝업창 닫기
+					window.close();
+				}
+			},
+			error : console.log
+		});
+
+	}
+	
 });
 
 </script>

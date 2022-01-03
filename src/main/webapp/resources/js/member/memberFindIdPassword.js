@@ -69,18 +69,18 @@ $(memberFindIdFrm).submit((e) => {
 	
 	
 });
+
 //비밀번호 찾기
-$(memberFindPasswordFrm).submit((e) => {
-	e.preventDefault(); // 폼제출방지
+function findPassword() {
 	
-	//console.log($(e.target));
+	const frm = document.memberFindPasswordFrm;
 	
 	// 이름
-	const id = $(e.target).find("input[name=id]").val();
+	const id = $('form[name=memberFindPasswordFrm]').find("input[name=id]").val();
 	// 이메일
-	const email = $(e.target).find("input[name=email]").val();
-	// 팝업요청
-	const url = `${getContextPath()}/member/${id}/${email}/findPassword.do`;
+	const email = $('form[name=memberFindPasswordFrm]').find("input[name=email]").val();
+
+	const title = "findPasswordPopup";
 	
 	// 띄울 팝업창 높이
 	const popHeight = 300;		                                      
@@ -96,6 +96,11 @@ $(memberFindPasswordFrm).submit((e) => {
 	const winY = window.screenTop;	                          
 	const popX = winX + (winWidth - popWidth)/2;
 	const popY = winY + (winHeight - popHeight)/2;
-	open(url, name, `top=${popY}, left=${popX}, width=${popWidth}, height=${popHeight}`);
-	
-});
+	open("", title, `top=${popY}, left=${popX}, width=${popWidth}, height=${popHeight}`);
+
+	frm.action = `${getContextPath()}/member/${id}/${email}/findPassword.do`;
+	frm.target = title;
+	frm.method = "POST";
+	frm.submit();
+
+}
