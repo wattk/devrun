@@ -51,8 +51,16 @@ public class MypageServiceImpl implements MypageService {
 	 * 전체 주소 조회
 	 */
 	@Override
-	public List<Address> selectAllAddressById(int memberNo) {
-		return mypageDao.selectAllAddressById(memberNo);
+	public List<Address> selectAllAddressByMemberNo(int memberNo, int offset, int limit) {
+		return mypageDao.selectAllAddressByMemberNo(memberNo, offset, limit);
+	}
+	
+	/**
+	 * 전체 주소 개수
+	 */
+	@Override
+	public int selectAddressTotalCount(int memberNo) {
+		return mypageDao.selectAddressTotalCount(memberNo);
 	}
 
 	/**
@@ -62,7 +70,7 @@ public class MypageServiceImpl implements MypageService {
 	public Address selectOneAddress(int addressNo) {
 		return mypageDao.selectOneAddress(addressNo);
 	}
-	
+
 	/**
 	 * 지원 서비스 끝
 	 */

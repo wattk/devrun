@@ -14,7 +14,9 @@ public interface MypageService {
 
 	int deleteAddress(Address address);
 
-	List<Address> selectAllAddressById(int memberNo);
+	List<Address> selectAllAddressByMemberNo(int memberNo, int offset, int limit);
+	
+	int selectAddressTotalCount(int memberNo);
 
 	Address selectOneAddress(int addressNo);
 	
