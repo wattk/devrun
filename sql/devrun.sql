@@ -1339,8 +1339,29 @@ values(
     'N',
     1 
 );
+    select * from QUESTION_PRODUCT order by enroll_date;
 
-alter question_product rename column q_level to question_level;
+	SELECT
+		  question_no
+		FROM (
+		   SELECT
+		      question_no,
+		      ROW_NUMBER() OVER(ORDER BY ENROLL_DATE DESC) RN
+		   FROM QUESTION_PRODUCT
+		   ORDER BY ENROLL_DATE DESC
+		) A
+		WHERE RN = 1;
+
+select * from member;
+select * from authorities;
+
+select
+    count(*)
+from
+    member
+where
+    member_id like '%a%';
+
 
 select
     qp.question_no,

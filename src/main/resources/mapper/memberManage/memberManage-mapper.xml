@@ -4,22 +4,49 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="memberManage">
 
-<!-- 전체 회원검색  -->
-<select id="selectAllMember" resultType="Member">
+	<!-- 전체 회원조회  -->
+	<select id="selectAllMember" resultMap="memberMap">
 	select
-	    m.member_no,
-	    m.id,
-	    m.name,
-	    m.nickname,
-	    m.enroll_date,
-	    authority
+   	 *
 	from
-	    member m join authorities a on
-	    m.member_no = a.member_no
-</select>
+	    member m left join authorities a
+	        on m.member_no = a.member_no
+	order by 
+		enroll_date desc		
+	</select>
+	
+	<resultMap type="member" id="memberMap">
+		<id column="member_no" property="memberNo"/>
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="nickname" property="nickname"/>
+		<result column="password" property="password"/>
+		<result column="birthday" property="birthday"/>
+		<result column="email" property="email"/>
+		<result column="phone" property="phone"/>
+		<result column="point" property="point"/>		
+		<result column="enroll_date" property="enrollDate"/>
+		<result column="pro_photo" property="proPhoto"/>
+		<result column="black_yn" property="blackYn"/>
+		<result column="sms_yn" property="smsYn"/>
+		<result column="warning_count" property="warningCount"/>
+		<result column="url" property="url"/>
+		<result column="intro" property="intro"/>
+		
+		<collection 
+			property="authorities" 
+			ofType="org.springframework.security.core.authority.SimpleGrantedAuthority">
+			<constructor>
+				<arg column="authority" javaType="string"/>
+			</constructor>
+		</collection>
+				
+	</resultMap>
+
+
 
 <!-- 번호,아이디,이름,별명으로 회원 검색  -->
-<select id="searchMemberList" resultType="Member">
+<select id="searchMemberList" resultMap="memberMap">
 	select
 	    m.member_no,
 	    m.id,
@@ -34,9 +61,20 @@
 		${searchType} like '%'|| #{searchKeyword} ||'%'		
 </select>
 
+<!-- 검색한 회원의 수  -->
+<select id="searchMemberListCount" resultType="_int" >
+	select
+		count(*)
+	from
+	    member m join authorities a on
+	    m.member_no = a.member_no
+	where
+		${searchType} like '%'|| #{searchKeyword} ||'%'		
+</select>
+
 <!-- 권한으로 회원검색  -->
-<select id="seachMemberListByAuthority" resultType="Member">
-		select
+<select id="seachMemberListByAuthority" resultMap="memberMap">
+	select
 	    m.member_no,
 	    m.id,
 	    m.name,
@@ -46,6 +84,19 @@
 	from
 	    member m join authorities a on
 	    m.member_no = a.member_no
+	where
+		authority in
+		<foreach collection="searchKeyword" item="item" open="(" separator="," close=")" >
+			#{item}
+		</foreach>
+</select>
+
+<!-- 권한으로 검색한 회원의 수  -->
+<select id="searchMemberListCountByAuthority" resultType="_int" >
+	select
+	    count(*)
+	from
+	   	authorities
 	where
 		authority in
 		<foreach collection="searchKeyword" item="item" open="(" separator="," close=")" >

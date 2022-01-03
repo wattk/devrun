@@ -68,6 +68,23 @@ public class MemberManageServiceImpl implements MemberManageService {
 		
 		return result;
 	}
+
+	// 검색한 회원의 숫자(권한 검색은 분기처리)
+	@Override
+	public int searchMemberListCount(Map<String, Object> param) {
+		int result = 0;
+		
+		// 권한 검색일 경우 분기처리한다.
+		if("m.authority".equals(param.get("searchType"))) {
+			log.debug("권한 검색");
+			result = memberManageDao.searchMemberListCountByAuthority(param);
+		}
+		else {
+			result = memberManageDao.searchMemberListCount(param);
+		}
+		
+		return result;
+	}
 }
 
 
