@@ -229,17 +229,13 @@
   				<when test="searchType eq 'orderNo'">
   					and merchant_uid = '%'||#{searchKeyword}||'%'
   				</when>
-  				<otherwise>
-  					and merchant_uid = '%'||#{searchKeyword}||'%'
-  					and member_no = '%'||#{searchKeyword}||'%'
-  				</otherwise>
   			</choose>
   		</if>
   		<if test="startDate != null">
   			and order_date <![CDATA[ >= ]]> #{startDate}
   		</if>
   		<if test="endDate != null">
-  			and order_date <![CDATA[ <= ]]> #{endDate}
+  			and order_date <![CDATA[ < ]]> #{endDate}
   		</if>
   	</where>
   	order by order_date desc

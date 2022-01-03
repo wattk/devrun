@@ -215,8 +215,12 @@ $(".date-badge").click((e)=>{
 	
 	if($(e.target).data("target") == 'today'){
 		let now = new Date();
+        let nowDay = now.getDate(); 
+        let nowMonth = now.getMonth(); 
+        let nowYear = now.getYear(); 
+        nowYear += (nowYear < 2000) ? 1900 : 0; 
 		$startDate.val(formatDate(now));
-        $endDate.val(formatDate(now));
+        $endDate.val(formatDate(new Date(nowYear, nowMonth, nowDay, 11, 59, 59)));
 	}
 	else if($(e.target).data("target") == 'week'){
 		let now = new Date(); 
@@ -226,7 +230,7 @@ $(".date-badge").click((e)=>{
         let nowYear = now.getYear(); 
         nowYear += (nowYear < 2000) ? 1900 : 0; 
         let weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek); 
-        let weekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek));
+        let weekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek), 11, 59, 59);
         $startDate.val(formatDate(weekStartDate));
         $endDate.val(formatDate(weekEndDate));
 	}
@@ -235,7 +239,7 @@ $(".date-badge").click((e)=>{
 	    let nowYear = now.getYear();
 	    nowYear += (nowYear < 2000) ? 1900 : 0; 
 	    let firstDate = new Date(nowYear,now.getMonth(), 1);
-	    let lastDate = new Date(nowYear,now.getMonth()+1, 0);
+	    let lastDate = new Date(nowYear,now.getMonth()+1, 0, 11, 59, 59);
         $startDate.val(formatDate(firstDate));
         $endDate.val(formatDate(lastDate));
 	}
@@ -266,7 +270,8 @@ $("#orderSearchBtn").click((e)=>{
 	const searchType = $("[name=searchType]:selected").val();
 	const searchKeyword = $("[name=searchKeyword]").val();
 	const startDate = $("[name=startDate]").val(); 
-	const endDate = $("[name=endDate]").val(); 
+	const endDate = $("[name=endDate]").val();
+	const time = $(".badge-primary").data("target");
 	console.log(orderStatus);
 	console.log(csStatus);
 	$.ajax({
