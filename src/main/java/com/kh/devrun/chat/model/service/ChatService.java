@@ -27,4 +27,8 @@ public interface ChatService {
 
 	List<String> searchChatRoom(Map<String, Object> param);
 
+	long findEndDate(Map<String, Object> param);
+
+	int exitChatRoom(Map<String, Object> param);
+
 }

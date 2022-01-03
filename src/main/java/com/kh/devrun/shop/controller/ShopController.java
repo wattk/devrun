@@ -192,6 +192,7 @@ public class ShopController {
 		// 상품 옵션도 조회
 		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
 		model.addAttribute("pDetail", pDetail);
+		log.debug("재고 : {}",pDetail);
 
 		// 소분류 카테고리 추출
 		String childCate = productCode.substring(3, 6);

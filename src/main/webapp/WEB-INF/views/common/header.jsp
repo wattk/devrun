@@ -145,6 +145,7 @@
 	              <a class="dropdown-item" id="chat">채팅</a>
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/orderList.do">주문/배송</a>
 	              <a class="dropdown-item" href="${pageContext.request.contextPath}/order/cart.do">장바구니</a>
+	              <a class="dropdown-item" href="${pageContext.request.contextPath}/shop/wishlist">위시리스트</a>
 	              <a class="dropdown-item" href="#">
 	              	<form:form
 				    	id="navLogoutFrm"

@@ -253,38 +253,6 @@ $(document).ready((e)=>{
 </form:form>
 <script>
 
-//주소 검색창 띄우기
-let postcode = '';
-$("#addInputBtn").click((e)=>{
-	new daum.Postcode({
-        oncomplete(data){ //선택시 입력값 세팅
-        	console.log(data);
-        	postcode = data.zonecode;
-            $(".add-input").text(data.address);
-            $("#addInput").val(data.address);
-            $(".add-detail-input").text('');
-            $("#addDetailInput").val('');
-        }
-    }).open();
-});
-
-//상세 정보 입력 시 정보 수정
-$(".order-form-control").change((e)=>{
-	console.log($(e.target).val());
-	const value = $(e.target).val();
-	const target = $(e.target).data("target");
-	$(target).text(value);
-});
-
-//사용 포인트 입력 시 결제 금액 변경
-$("#pointBtn").click((e)=>{
-	const use = $(e.target).val();
-	$("[name=pointValue]").val(use);
-	const total = $("[name=totalPrice]").val() - use;
-	$("[name=totalPrice]").val(total);
-	$("#priceInput").text(total);
-});
-
 //결제창 띄우기
 $("#orderPaymentBtn").click((e)=>{
 	console.log("결제 이벤트 발생");

@@ -99,6 +99,16 @@ public class OrderServiceImpl implements OrderService {
 	public List<Cart> selectCartList(int memberNo) {
 		return orderDao.selectCartList(memberNo);
 	}
+
+	@Override
+	public List<Merchant> selectAllMerchant() {
+		return orderDao.selectAllMerchant();
+	}
+
+	@Override
+	public List<Merchant> selectMerchantList(Map<String, Object> param) {
+		return orderDao.selectMerchantProductList(param);
+	}
 	
 	
 
