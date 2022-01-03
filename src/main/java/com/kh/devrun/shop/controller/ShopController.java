@@ -2,6 +2,7 @@ package com.kh.devrun.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.common.shopUtils;
 import com.kh.devrun.member.model.vo.Member;
+import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
@@ -58,6 +60,9 @@ public class ShopController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private OrderService orderService;
 
 	@Autowired
 	ServletContext application;
@@ -457,6 +462,16 @@ public class ShopController {
 
 		// 2. 전체 게시물 수 totalContent
 		url = request.getRequestURI();
+		if(keyword != null) {
+			url += "&keyword="+keyword;
+		}
+		
+		if(!childCategoryCode.isEmpty()) {
+			for(String code : childCategoryCode) {
+				url += "&childCategoryCode="+code;
+			}
+		}
+		
 		int totalContent = promotionService.selectProductTotalCount(param);
 
 		// 3. pagebar
@@ -482,6 +497,21 @@ public class ShopController {
 		return result;
 	}
 
+	
+	@PostMapping("/cartDelete")
+	@ResponseBody
+	public List<Cart> cartDelete(@RequestParam(value="cartNoArr[]") List<Integer> cartNoArr, Authentication authentication) {
+		log.debug("cartNoArr = {}", cartNoArr);
+		int result = shopService.deleteCart(cartNoArr); 
+		List<Cart> list = new ArrayList<>();
+		
+		if(result > 0){
+			Member member = (Member) authentication.getPrincipal();
+			list = orderService.selectCartList(member.getMemberNo());
+		}
+		
+		return list;
+	}
 	/**
 	 * 혜진 작업 끝
 	 * 
