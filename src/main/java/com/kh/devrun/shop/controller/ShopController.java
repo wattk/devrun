@@ -128,6 +128,7 @@ public class ShopController {
 		log.debug("orderBy 값 체크: {}", orderBy);
 		String reviewSb = null;
 		Member member = null;
+		int memberNo = -1;
 
 		// getReivew 메소드 인자들
 		String url = request.getContextPath();
@@ -147,6 +148,19 @@ public class ShopController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("reviewTotal", reviewTotal);
 		map.put("reviewSb", reviewSb);
+
+		// 위시리스트 체크
+		int wishCheckYn = 0;
+		if (authentication != null) {
+			memberNo = member.getMemberNo();
+		}
+		Map<String, Object> param2 = new HashMap<>();
+		param2.put("productCode", productCode);
+		param2.put("memberNo", memberNo);
+
+		wishCheckYn = shopService.didIHitWishlist(param2);
+		log.debug("wishCheckYn 이게 1이면 위시리스트에 담겼다는 것 : {}", wishCheckYn);
+		map.put("wishCheckYn", wishCheckYn);
 
 		return map;
 	}
@@ -338,21 +352,6 @@ public class ShopController {
 		log.debug("위시리스트 잘 삭제? : {}", result);
 
 		return result;
-	}
-
-	@ResponseBody
-	@GetMapping("/wishCheck")
-	public int wishCheck(@RequestParam String productCode, @RequestParam int memberNo) {
-		int wishCheckYn = 0;
-		
-		Map<String, Object> param = new HashMap<>();
-		param.put("productCode", productCode);
-		param.put("memberNo", memberNo);
-		
-		wishCheckYn = shopService.didIHitWishlist(param);
-		log.debug("wishCheckYn 이게 1이면 위시리스트에 담겼다는 것 : {}", wishCheckYn);
-
-		return wishCheckYn;
 	}
 
 //----------------------------------------------------------구분선---------------------------------------------------------------
