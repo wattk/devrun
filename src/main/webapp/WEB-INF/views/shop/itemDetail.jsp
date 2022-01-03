@@ -510,7 +510,7 @@
 
 <!-- 위시리스트 로그인 했을 시 비동기 시작 -->
 <sec:authorize access="isAuthenticated()">
-	<script>
+<script>
 $(document).on('click', '.wishBtn', function(e) {
 	
 	const $memberNo = ${member.memberNo};

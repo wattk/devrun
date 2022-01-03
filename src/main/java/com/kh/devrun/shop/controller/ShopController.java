@@ -43,6 +43,7 @@ import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
 import com.kh.devrun.shop.model.vo.Wishlist;
+import com.kh.devrun.shop.model.vo.WishlistProduct;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -85,8 +86,18 @@ public class ShopController {
 	}
 
 	@GetMapping("wishlist")
-	public void wishlist() {
+	public String wishlist(Authentication authentication, Model model) {
 
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
+		
+		// 위시리스트 조회해오기
+		List<WishlistProduct> wishlist = shopService.selectAllWishlist(memberNo);
+		log.debug("whislist 잘 받앗? : {}", wishlist);
+		
+		model.addAttribute("wishlist",wishlist);
+		model.addAttribute("loginMember",loginMember);
+		return "shop/wishlist";
 	}
 
 	// 상품 사이드 메뉴에서 전체보기 클릭 시

@@ -17,6 +17,7 @@ import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
 import com.kh.devrun.shop.model.vo.Wishlist;
+import com.kh.devrun.shop.model.vo.WishlistProduct;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +27,39 @@ public class ShopServiceImpl implements ShopService {
 
 	@Autowired
 	private ShopDao shopDao;
+	
+	
+	
+//--------------------------------------------------------구분선---------------------------------------------------------
+
+		/* 혜진 장바구니 시작 */
+		@Override
+		@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+		public int insertCart(Cart cart) {
+			int result = 0;
+
+			try {
+				result = shopDao.insertCart(cart);
+				result = shopDao.insertMemberCart(cart);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+
+			return result;
+		}
+
+		@Override
+		public int deleteCart(List<Integer> cartNoArr) {
+			int result = shopDao.deleteCart(cartNoArr);
+			
+			return result;
+			
+		}
+
+		/* 혜진 장바구니 끝 */
+	
+//--------------------------------------------------------구분선---------------------------------------------------------
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
@@ -189,34 +223,12 @@ public class ShopServiceImpl implements ShopService {
 	public int didIHitWishlist(Map<String, Object> param) {
 		return shopDao.didIHitWishlist(param);
 	}
-
-//--------------------------------------------------------구분선---------------------------------------------------------
-
-	/* 혜진 장바구니 시작 */
+	
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
-	public int insertCart(Cart cart) {
-		int result = 0;
-
-		try {
-			result = shopDao.insertCart(cart);
-			result = shopDao.insertMemberCart(cart);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-
-		return result;
+	public List<WishlistProduct> selectAllWishlist(int memberNo) {
+		return shopDao.selectAllWishlist(memberNo);
 	}
 
-	@Override
-	public int deleteCart(List<Integer> cartNoArr) {
-		int result = shopDao.deleteCart(cartNoArr);
-		
-		return result;
-		
-	}
 
-	/* 혜진 장바구니 끝 */
 
 }

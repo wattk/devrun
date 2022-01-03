@@ -36,7 +36,10 @@ public interface CommunityService {
 
 	int viewCount(int communityNo);
 
-	List<CommunityEntity> searchFreeboardList(Map<String, Object> param);
+	List<CommunityEntity> selectFreeboardListByType(Map<String, Object> param, int offset, int limit);
+
+	int selectFreeboardTotalCountByType(Map<String, Object> param);
+
 
 
 

@@ -87,9 +87,19 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public List<CommunityEntity> searchFreeboardList(Map<String, Object> param) {
-		return session.selectList("community.searchFreeboardList", param);
+	public List<CommunityEntity> selectFreeboardListByType(Map<String, Object> param, int offset, int limit) {
+		// mybatis가 제공하는 RowBounds 객체를 하나 제공한다. -- 페이징 처리를 위해서
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectFreeboardListByType", param, rowBounds);
 	}
+
+	@Override
+	public int selectFreeboardTotalCountByType(Map<String, Object> param) {
+		return session.selectOne("community.selectFreeboardTotalCountByType", param);
+	}
+
+
+
 
 
 
