@@ -11,7 +11,7 @@
 		#{productCode} ||'-'||seq_product_no.nextval,
 		#{name},
 		#{price},
-		sysdate,
+		current_date,
 		#{productCode} ||'-'||seq_product_no.nextval ||'.png',
 		#{content},
 		#{viewCount},
