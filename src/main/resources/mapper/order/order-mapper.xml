@@ -199,4 +199,49 @@
 		<result column="option_content" property="optionContent"/>
 	</association>
   </resultMap>
+  
+  <select id="selectAllMerchant" resultType="merchant">
+  	select
+  		*
+  	from
+  		merchant
+  	order by
+  		order_date desc
+  </select>
+  
+  <select id="selectMerchantList" resultType="merchant">
+  	select
+  		*
+  	from
+  		merchant
+  	<where>
+  		<if test="orderStatus != null and orderStatus != ''">
+   			order_status = #{orderStatus}
+  		</if>
+  		<if test="csStatus != null and csStatus != ''">
+  			and cs_status = #{csStatus}
+  		</if>
+  		<if test="(searchType != null or searchType != '') and (searchKeyword != null or searchType != '')">
+  			<choose>
+  				<when test="searchType eq 'memberNo'">
+  					and member_no = '%'||#{searchKeyword}||'%'
+  				</when>
+  				<when test="searchType eq 'orderNo'">
+  					and merchant_uid = '%'||#{searchKeyword}||'%'
+  				</when>
+  				<otherwise>
+  					and merchant_uid = '%'||#{searchKeyword}||'%'
+  					and member_no = '%'||#{searchKeyword}||'%'
+  				</otherwise>
+  			</choose>
+  		</if>
+  		<if test="startDate != null">
+  			and order_date <![CDATA[ >= ]]> #{startDate}
+  		</if>
+  		<if test="endDate != null">
+  			and order_date <![CDATA[ <= ]]> #{endDate}
+  		</if>
+  	</where>
+  	order by order_date desc
+  </select>
 </mapper>

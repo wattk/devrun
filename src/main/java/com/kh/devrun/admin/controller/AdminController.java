@@ -33,12 +33,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.category.model.vo.ProductChildCategory;
+import com.kh.devrun.common.AdminUtils;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.memberManage.model.service.MemberManageService;
+import com.kh.devrun.order.model.service.OrderService;
+import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.product.model.service.ProductService;
-import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
@@ -58,6 +61,9 @@ public class AdminController {
 	
 	@Autowired
 	PromotionService promotionService;
+	
+	@Autowired
+	OrderService orderService;
 	
 	@Autowired
 	ServletContext application;
@@ -602,8 +608,45 @@ public class AdminController {
 	 * 혜진 시작 
 	 */
 	@GetMapping("/orderManage.do")
-	public void orderManage() {}
-
+	public void orderManage(Model model) {
+		List<Merchant> list = orderService.selectAllMerchant();
+		
+		model.addAttribute("list", list);
+	}
+	
+	@GetMapping("/orderSearch")
+	@ResponseBody
+	public Map<String, Object> orderSearch(
+			@RequestParam(required = false) String orderStatus,
+			@RequestParam(required = false) String csStatus,
+			@RequestParam(required = false) String searchType,
+			@RequestParam(required = false) String searchKeyword,
+			@RequestParam(required = false) Date startDate,
+			@RequestParam(required = false) Date endDate,
+			HttpServletRequest request){
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("orderStatus", orderStatus);
+		param.put("csStatus", csStatus);
+		param.put("searchType", searchType);
+		param.put("searchKeyword", searchKeyword);
+		param.put("startDate", startDate);
+		param.put("endDate", endDate);
+		log.debug("param = {}", param);
+		
+		String url = request.getContextPath();
+		
+		List<Merchant> list = orderService.selectMerchantList(param);
+		log.debug("list = {}", list);
+		//String merchantStr = AdminUtils.getMerchantList(list, url);
+		//log.debug("merchantStr = {}", merchantStr);
+		
+		//resultMap.put("merchantStr", merchantStr);
+		
+		return null;
+	}
 	
 	@GetMapping("/shipmentManage.do")
 	public void shipmentManage() {}

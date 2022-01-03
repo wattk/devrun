@@ -76,7 +76,15 @@ public class OrderDaoImpl implements OrderDao {
 	public List<Cart> selectCartList(int memberNo) {
 		return session.selectList("order.selectCartList", memberNo);
 	}
-	
-	
+
+	@Override
+	public List<Merchant> selectAllMerchant() {
+		return session.selectList("order.selectAllMerchant");
+	}
+
+	@Override
+	public List<Merchant> selectMerchantProductList(Map<String, Object> param) {
+		return session.selectList("order.selectMerchantList", param);
+	}
 
 }
