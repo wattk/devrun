@@ -9,6 +9,7 @@ import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
 import com.kh.devrun.shop.model.vo.Wishlist;
+import com.kh.devrun.shop.model.vo.WishlistProduct;
 
 public interface ShopService {
 
@@ -47,5 +48,7 @@ public interface ShopService {
 	/* 혜진 장바구니 끝 */
 
 	int didIHitWishlist(Map<String, Object> param);
+
+	List<WishlistProduct> selectAllWishlist(int memberNo);
 
 }
