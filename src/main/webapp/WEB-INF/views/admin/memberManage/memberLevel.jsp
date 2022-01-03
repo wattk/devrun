@@ -65,7 +65,7 @@
 	            </form>	
 	        </div>
 	        <div id="searchMemberId" class="search-type other">
-	            <form action="<%=request.getContextPath()%>/admin/memberFinder">
+	            <form>
 	                <input type="hidden" name="searchType" value="id"/>
 	                <input type="text" name="searchKeyword" size="25" placeholder="검색할 회원 아이디를 입력하세요" value=""/>
 	                <button type="submit" class="btn-blue search-btn">검색</button>			
@@ -103,8 +103,11 @@
 	                <button type="submit" class="btn-blue search-btn">검색</button>
 	            </form>
 	        </div>
-	    </div>
-	  </div>
+		</div>
+	</div>
+	<div id="totalCountContainer">
+		
+	</div>
 	<div id="memberListContainer">
 	  <br /><hr /><br />
 		<!-- 상품 리스트 테이블 -->
@@ -283,6 +286,7 @@
 				$("#tbody").html(data["memberStr"]);
 				$(".pagebar").detach();
 				$("#memberListContainer").after(data["pagebar"]);
+				$(totalCountContainer).html(`<span class="countTitle">검색된 회원 수 : </span> <span class="countContent">\${data["totalContent"]}</span>`)			
 			},
 			error:console.log			
 		});
