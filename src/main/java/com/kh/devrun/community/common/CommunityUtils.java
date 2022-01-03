@@ -1,8 +1,14 @@
 package com.kh.devrun.community.common;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.kh.devrun.community.model.vo.CommunityEntity;
 
 public class CommunityUtils {
 
@@ -209,5 +215,34 @@ public class CommunityUtils {
 
 		return hasRead;
 	}
+	
+	/**
+	 * 상품 정렬 후 다시 띄우기
+	 * 
+	 * @param productList
+	 * @param url
+	 * @returnL
+	 */
+	public static String getFreeboardList(List<CommunityEntity> searchFreeboardList, String url) {
+		DecimalFormat fmt = new DecimalFormat("###,###");
+		StringBuilder sb = new StringBuilder();
+	
+		
+		for (CommunityEntity freeboard : searchFreeboardList) {
+			sb.append("<tr data-no=\"${communityEntity.communityNo}\">\n" 
+					+ "<td>" + freeboard.getCommunityNo() + "</td>\n"
+					+ "<td>" + freeboard.getTitle() + "</td>\n"
+					+ "<td>" + freeboard.getNickname() + "</td>\n"
+					+ "<td>" + new SimpleDateFormat("yyyy-MM-dd kk:mm").format(freeboard.getEnrollDate()) + "</td>\n"
+					+ "<td>" + freeboard.getLikeCount() + "</td>\n"
+					+ "<td>" + freeboard.getViewCount() + "</td>"
+					+ "/<tr>"
+					);
+		}
+
+		return sb.toString();
+
+	}
+	
 	
 }
