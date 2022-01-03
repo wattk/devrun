@@ -272,7 +272,13 @@
 						<c:forEach items="${pDetail}" var="pd">
 							<option value="${pd.detailNo}"
 								data-cart-valid="${fn:contains(cartValid, pd.detailNo)? 1 : 0}">${pd.optionNo}
-								<c:if test="${pd.optionContent != null}"> , ${pd.optionContent}</c:if></option>
+								<c:if test="${pd.optionContent != null}">
+									, ${pd.optionContent}
+								</c:if> 
+								<sec:authorize access="hasRole('AM')">
+									<span style="font-size: 10px;"> [재고 : ${pd.quantity}]</span>
+								</sec:authorize> 
+							</option>
 						</c:forEach>
 					</c:if>
 					<c:if test="${cartValid eq null }">
