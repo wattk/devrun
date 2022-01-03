@@ -43,7 +43,7 @@ public class DevrunUtils {
 		// 페이지번호를 클릭했을때 링크
 		String delimeter = url.contains("?") ? "&" : "?";
 		url = url + delimeter + "cPage="; // /spring/board/boardList.do?cPage=
-
+		log.debug("Utils URL = {}",url);
 		// 페이지바크기
 		int pagebarSize = 5;
 
@@ -243,6 +243,121 @@ public class DevrunUtils {
 
 		return hasRead;
 	}
+	
+	/**
+	 *  회원 목록 비동기로 띄우기
+	 * @param url 
+	 */
+	public static String getMemberList(List<Member> memberList) {
+		//DecimalFormat fmt = new DecimalFormat("###,###");
+		StringBuilder sb = new StringBuilder();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		for (Member member : memberList) {
+			sb.append(
+			"<tr> \n"
+				+"<td>"+member.getMemberNo()+"</td>\n"
+				+"<td>"+member.getId() +"</td>\n"
+				+"<td>"+member.getName()+"</td>\n"
+				+"<td>"+member.getNickname()+"</td>\n"						
+				+"<td>"+sdf.format(member.getEnrollDate())+"</td>\n"
+				+"<td><select class=\"select-authority\">"	
+				+"<option value=\"ROLE_AM\" "+(member.getAuthorities().toString().equals("[ROLE_AM]") ? "selected " : "")+" >관리자</option>"
+				+"<option value=\"ROLE_M1\" "+(member.getAuthorities().toString().equals("[ROLE_M1]") ? "selected " : "")+" >지식인</option>"
+				+"<option value=\"ROLE_M2\" "+(member.getAuthorities().toString().equals("[ROLE_M2]") ? "selected " : "")+" >일반 회원</option>"
+				+"</select></td>\n"
+					+"</tr>");
+		}		
+		return sb.toString();
+
+	}
+	public static String getPagebar2(int cPage, int numPerPage, int totalContents, String url) {
+		StringBuilder pagebar = new StringBuilder();
+
+		// 전체페이지수
+		int totalPage = (int) Math.ceil((double) totalContents / numPerPage);
+
+		// 페이지번호를 클릭했을때 링크
+		String delimeter = url.contains("?") ? "&" : "?";
+		url = url + delimeter + "cPage="; // /spring/board/boardList.do?cPage=
+		log.debug("Utils URL = {}",url);
+		// 페이지바크기
+		int pagebarSize = 5;
+
+		/*
+		 * 1 2 3 4 5 >>
+		 * 
+		 * << 6 7 8 9 10 >>
+		 * 
+		 * << 11 12
+		 * 
+		 * pageStart : 시작하는 pageNo - cPage와 pagebarSize에 의해 결정
+		 */
+		int pageStart = (cPage - 1) / pagebarSize * pagebarSize + 1;
+		int pageEnd = pageStart + pagebarSize - 1;
+
+		int pageNo = pageStart;
+
+		pagebar.append("<nav class=\"pagebar\" aria-label=\"Page navigation example\">\n"
+				+ "		  <ul class=\"pagination justify-content-center\">\n");
+
+		// 1.이전
+		if (pageNo == 1) {
+			pagebar.append("<li class=\"page-item disabled\">\r\n"
+					+ "		      <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" tabindex=\"-1\">\r\n"
+					+ "		        <span aria-hidden=\"true\">&laquo;</span>\r\n"
+					+ "		        <span class=\"sr-only\">Previous</span>\r\n" + "		      </a>\r\n"
+					+ "		    </li>\n");
+		} else {
+			pagebar.append(
+					"<li class=\"page-item \">\r\n" + "		      <a class=\"page-link\" href=\"javascript:getPage("
+							+ (pageNo - 1) + ")\" aria-label=\"Previous\" >\r\n"
+							+ "		        <span aria-hidden=\"true\">&laquo;</span>\r\n"
+							+ "		        <span class=\"sr-only\">Previous</span>\r\n" + "		      </a>\r\n"
+							+ "		    </li>\n");
+		}
+
+		// 2.pageNo
+		while (pageNo <= pageEnd && pageNo <= totalPage) {
+			if (pageNo == cPage) {
+				// 현재페이지인 경우 링크 제공안함.
+				pagebar.append("<li class=\"page-item active\"><a class=\"page-link\" href=\"#\">" + pageNo
+						+ "<span class=\"sr-only\">(current)</span></a></li>\n");
+			} else {
+				// 현재페이지가 아닌 경우 링크를 제공.
+				pagebar.append("<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:getPage(" + pageNo
+						+ ")\">" + pageNo + "</a></li>\n");
+			}
+
+			pageNo++;
+		}
+
+		// 3.다음
+		if (pageNo > totalPage) {
+			pagebar.append("<li class=\"page-item disabled\">\r\n"
+					+ "		      <a class=\"page-link\" href=\"#\" tabindex=\"-1\" aria-label=\"Next\">\r\n"
+					+ "		        <span aria-hidden=\"true\">&raquo;</span>\r\n"
+					+ "		        <span class=\"sr-only\">Next</span>\r\n" + "		      </a>\r\n"
+					+ "		    </li>\n");
+		} else {
+			pagebar.append("<li class=\"page-item\">\r\n"
+					+ "		      <a class=\"page-link\" href=\"javascript:getPage(" + pageNo
+					+ ")\" aria-label=\"Next\">\r\n" + "		        <span aria-hidden=\"true\">&raquo;</span>\r\n"
+					+ "		        <span class=\"sr-only\">Next</span>\r\n" + "		      </a>\r\n"
+					+ "		    </li>\n");
+		}
+
+		pagebar.append(" </ul>\r\n" + "</nav>\r\n" );
+
+		return pagebar.toString();
+	}
+	
+	
+	
+	
+	
+	
+	
 
 
 }

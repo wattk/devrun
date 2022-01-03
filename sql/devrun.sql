@@ -1361,8 +1361,33 @@ values(
     'N',
     1 
 );
+    select * from QUESTION_PRODUCT order by enroll_date;
+
+
+	SELECT
+		  question_no
+		FROM (
+		   SELECT
+		      question_no,
+		      ROW_NUMBER() OVER(ORDER BY ENROLL_DATE DESC) RN
+		   FROM QUESTION_PRODUCT
+		   ORDER BY ENROLL_DATE DESC
+		) A
+		WHERE RN = 1;
+
+select * from member;
+select * from authorities;
+
+select
+    count(*)
+from
+    member
+where
+    member_id like '%a%';
+
 
 alter table question_product rename column q_level to question_level;
+
 
 select
     qp.question_no,
@@ -1494,3 +1519,23 @@ as select
     mw.MEMBER_NO
 from wishlist w join member_wishlist mw
  on w.wishlist_no = mw.wishlist_no;                                
+
+
+-- 다현 wishlist_product 테이블 조인
+create view wishProduct    
+as select
+    wish.*,
+    p.name,
+    p.price,
+    p.thumbnail,
+    p.status
+from    
+    (select
+    w.wishlist_no,
+    w.PRODUCT_CODE,
+    w.REG_DATE,
+    mw.MEMBER_NO
+        from wishlist w join member_wishlist mw
+         on w.wishlist_no = mw.wishlist_no)wish join product p
+            on wish.product_code = p.product_code
+order by wish.reg_date desc; 
