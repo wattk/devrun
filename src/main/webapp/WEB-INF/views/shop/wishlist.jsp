@@ -15,54 +15,31 @@
   	<h4>위시리스트</h4>
   	<table class="table m-3 pr-3">
 	  <tbody>
-	    <tr>
-	      <td>
-	      	<input type="checkbox" class="ml-3" name="" id="" />
-		  </td>
-	      <td class="col-4">
-	      	<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-75">
-		  </td>
-	      <td class="col-4 align-middle">제품명</td>
-	      <td class="col-3 align-middle">가격</td>
-	      <td colspan="" class="align-middle">
-	      	<i class="wish-icon fas fa-cart-plus pr-3"></i>
-	      </td>
-	      <td colspan="" class="align-middle">
-	      	<i class="wish-icon fas fa-trash-alt"></i>
-	      </td>
-	    </tr>
-	    <tr>
-	      <td>
-	      	<input type="checkbox" class="ml-3" name="" id="" />
-		  </td>
-	      <td class="col-4">
-	      	<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-75">
-		  </td>
-	      <td class="col-4 align-middle">제품명</td>
-	      <td class="col-3 align-middle">가격</td>
-	      <td colspan="" class="align-middle">
-	      	<i class="wish-icon fas fa-cart-plus pr-3"></i>
-	      </td>
-	      <td colspan="" class="align-middle">
-	      	<i class="wish-icon fas fa-trash-alt"></i>
-	      </td>
-	    </tr>
-	    <tr>
-	      <td>
-	      	<input type="checkbox" class="ml-3" name="" id="" />
-		  </td>
-	      <td class="col-4">
-	      	<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-75">
-		  </td>
-	      <td class="col-4 align-middle">제품명</td>
-	      <td class="col-3 align-middle">가격</td>
-	      <td colspan="" class="align-middle">
-	      	<i class="wish-icon fas fa-cart-plus pr-3"></i>
-	      </td>
-	      <td colspan="" class="align-middle">
-	      	<i class="wish-icon fas fa-trash-alt"></i>
-	      </td>
-	    </tr>
+	  <c:forEach items="${wishlist}" var="wl" varStatus="">
+		  <!-- 위시리스트 한 건 시작 -->
+		    <tr>
+		      <td>
+		      	<input type="checkbox" class="ml-3" name="" id="" />
+			  </td>
+		      <td class="col-4">
+		      	<img 
+		      	src="${pageContext.request.contextPath}/resources/upload/product/${wl.thumbnail}"
+		      	alt="" class="img-b w-75">
+			  </td>
+		      <td class="col-4 align-middle">${wl.name}</td>
+		      <td class="col-3 align-middle">
+		      <fmt:formatNumber	value="${wl.price}" pattern="#,###,### 원" /></td>
+		      <td colspan="" class="align-middle">
+		      	<i class="wish-icon fas fa-cart-plus pr-3"></i>
+		      </td>
+		      <td colspan="" class="align-middle">
+		      	<i class="wish-icon fas fa-trash-alt"></i>
+		      </td>
+		      <input type="hidden" name="productCode" value="{wl.productCode}" />
+		      <input type="hidden" name="wishlistNo" value="{wl.wishlistNo}" />
+		    </tr>
+		    <!-- 위시리스트 한 건 끝 -->
+	  </c:forEach>
 	  </tbody>
 	</table>
   </div>

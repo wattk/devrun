@@ -211,6 +211,15 @@
 		where 
 			wishlist_no = #{wishlistNo}
 	</delete>
+	
+	<select id="selectAllWishlist" resultType="wishlistProduct">
+		select
+			*
+		from 
+			wishProduct
+		where 
+			member_no = #{memberNo}
+	</select>
 
 <!-- =================================================구분선 ================================================= -->
 	
