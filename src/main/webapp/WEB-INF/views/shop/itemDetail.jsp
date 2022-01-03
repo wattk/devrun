@@ -244,12 +244,18 @@
 					alt="">
 			</div>
 		</div>
-		<div id="itemDetailInfoDiv">
+		<div 
+			id="itemDetailInfoDiv"
+			data-product-code="${product.productCode }"
+			data-price="${product.price }"
+			data-name="${product.name }"
+			data-amount="1"
+			>
 			<div id="itemDetailNameDiv">
 				<p>${product.name}</p>
 			</div>
 			<div id="itemDetailOptionDiv">
-				<span id="price" data-price="${product.price}"><fmt:formatNumber
+				<span id="price" ><fmt:formatNumber
 						value="${product.price}" pattern="#,###,###" /></span> 원 <br>
 				<span>혜택 : </span><span style="color: pink;"><fmt:formatNumber
 						value="${product.price / 200}" pattern="#,###,### P" /> </span>적립 <br>
@@ -774,8 +780,22 @@ $(document).on('click', '.likes', function(e) {
 //바로구매 버튼 클릭 이벤트 혜진 시작
 $("#orderBtn").click((e)=>{
 	const detailNo = $("#detailNo").val();
-	console.log(detailNo);
-	location.href = `${pageContext.request.contextPath}/order/order?detailNo=\${detailNo}&amount=1`;
+	const $itemDetailInfo = $("#itemDetailInfoDiv");
+	let cartArr = [];
+	
+	let data = {
+			productCode : $itemDetailInfo.data("productCode"),
+			detailNo : detailNo,
+			name : $itemDetailInfo.data("name"),
+			price : $itemDetailInfo.data("price"),
+			amount : $itemDetailInfo.data("amount")
+	};
+	console.log(data);
+	cartArr.push(data);
+	console.log(cartArr);
+	localStorage.setItem("cartItems", JSON.stringify(cartArr));
+	location.href = "${pageContext.request.contextPath}/order/order";
+
 });
 //바로구매 버튼 클릭 이벤트 혜진 끝
 //장바구니 버튼 클릭 이벤트 혜진 시작

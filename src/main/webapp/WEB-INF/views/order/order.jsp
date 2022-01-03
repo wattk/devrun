@@ -20,15 +20,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/shop/order.js"></script>
 <sec:authentication property="principal" var="member"/>
 
-<%
-	List<Product> productList = (List<Product>)request.getAttribute("productList");
-	int totalPrice = 0;
-	for(int i = 0; i < productList.size(); i++){
-		totalPrice += productList.get(i).getPrice();
-	}
-	System.out.println(totalPrice);
-	pageContext.setAttribute("totalPrice", totalPrice);
-%>
 <script>
 
 $(document).ready((e)=>{
@@ -36,24 +27,56 @@ $(document).ready((e)=>{
 	const item = JSON.parse(localStorage.getItem("cartItems"));
 	console.log(item);
 	
-	if(item.length == 3){
+	if(item.length == 1){
 		$(".merchant-title").text(item[0].name);
-		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].thumbnail}" class="img-b w-25 p-2">`);
+		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].productCode}.png" class="img-b w-25 p-2">`);
 	}
-	else if(item.length > 3){
-		$(".merchant-title").text(item[0].name+"외 "+(item.length - 1)+"건");
-		if(item.length < 4){
+	else{
+		$(".merchant-title").text(item[0].name+" 외 "+(item.length - 1)+"건");
+		
+		if(item.length < 3){
 			item.forEach((i, index)=>{
-				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[index].thumbnail}" class="img-b w-25 p-2">`);
+				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[index].productCode}.png" class="img-b w-25 p-2">`);
 			});
 		}
 		else{
 			for(let i = 0; i < 3; i++){
-				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[i].thumbnail}" class="img-b w-25 p-2">`);
-				
+				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[i].productCode}.png" class="img-b w-25 p-2">`);
 			}
+			$(".thumbnail-box").append(`<div class="img-b w-25 p-2">...</div>`);
+			
 		}
 	}
+	
+	let price = 0;
+	item.forEach((i, index)=>{
+		price += item[index].price*item[index].amount;
+		$(document.orderFrm).append(`<input type="hidden" name="detailNo" value="\${item[index].detailNo}" data-buy-count="\${item[index].amount}"/>`);
+	});
+	console.log(price);
+	$("#totalWithoutShipping").html(`&#8361;\${price.toLocaleString()}`);
+	$(document.orderFrm).append(`<input type="hidden" name="productPrice" value="\${price}"/>
+		<input type="hidden" name="shippingFee" value="\${price >= 50000? 0 : 3000}"/>
+		<input type="hidden" name="totalPrice" value="\${price + (price >= 50000? 0 : 3000)-0}"/>
+	`);
+	
+	if(price > 50000){
+		$("#shippingFee").html("&#8361;0");
+		$("#orderPrice").html("&#8361;"+(price*(0.9)).toLocaleString());
+		$("#vat").html("&#8361;"+(price*(0.1)).toLocaleString());
+		$("#totalPrice").html("&#8361;"+price.toLocaleString());
+		$("#priceInput").html("&#8361;"+price.toLocaleString());
+	}
+	else{
+		$("#shippingFee").html("&#8361;3,000");
+		$("#orderPrice").html("&#8361;"+((price+3000)*(0.9)).toLocaleString());
+		$("#vat").html("&#8361;"+((price+3000)*(0.1)).toLocaleString());
+		$("#totalPrice").html("&#8361;"+(price+3000).toLocaleString());
+		$("#priceInput").html("&#8361;"+(price+3000).toLocaleString());
+	}
+	
+	//사용한 후에는 스토리지에서 지워줄 것
+	localStorage.removeItem("cartItems");
 });
 </script>
 
@@ -158,33 +181,9 @@ $(document).ready((e)=>{
   </div>
   <div class="col-4 m-3 pl-3 pt-5 d-flex flex-column justify-content-start">
   	<strong>주문 정보</strong>
-  	<%-- <c:choose>
-  	 <c:when test="${productList.size() > 3}"> --%>
-	  	<span class="merchant-title"><%-- ${productList[0].name} 외 ${productList.size() -1}건 --%></span>
-	  	<div class="thumbnail-box row d-flex justify-content-start">
-	  	<%-- <c:forEach items="${productList}" var="item" varStatus="vs" begin="0" end="2">
-  			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
-  		</c:forEach> --%>
-  			<div class="img-b w-25 p-2">...</div>
-	  	</div>
-  	 <%-- </c:when>
-  	 <c:when test="${productList.size() == 1}">
-	  	<span class="merchant-title">${productList[0].name}</span>
-	  	<div class="thumbnail-box row d-flex justify-content-start">
-	  	<c:forEach items="${productList}" var="item" varStatus="vs">
-  			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
-  		</c:forEach>
-	  	</div>
-  	 </c:when>
-  	 <c:otherwise>
-	  	<span class="merchant-title">${productList[0].name} 외 ${productList.size() -1}건</span>
-	  	<div class="thumbnail-box row d-flex justify-content-start">
-	  	<c:forEach items="${productList}" var="item" varStatus="vs">
-  			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
-  		</c:forEach>
-	  	</div>
-  	 </c:otherwise>
-  	</c:choose> --%>
+  	<span class="merchant-title"></span>
+  	<div class="thumbnail-box row d-flex justify-content-start">
+  	</div>
     <hr class="w-100"/>
 	<table class="table order-tbl">
 	  <tbody>
@@ -193,51 +192,21 @@ $(document).ready((e)=>{
 	  	</tr>
 	    <tr>
 	      <td>주문 금액(배송비 제외)</td>
-	      <td class="text-right"><fmt:formatNumber type="currency">${totalPrice}</fmt:formatNumber></td>
+	      <td id="totalWithoutShipping" class="text-right"></td>
 	    </tr>
 	    <tr>
 	      <td>전체 배송비</td>
-	      	<c:choose>
-	      		<c:when test="${totalPrice >= 50000}">
-			      <td id="productPrice" class="text-right">
-	      			&#8361;0
-				  </td>
-	      		</c:when>
-	      		<c:otherwise>
-			      <td id="productPrice" class="text-right">
-	      			&#8361;3,000
-				  </td>
-	      		</c:otherwise>
-	      	</c:choose>
+	      <td id="shippingFee" class="text-right">
+		  </td>
 	    </tr>
 	    <tr>
 	      <td>주문 금액(부가세 제외)</td>
-	      <td class="text-right">
-	      	<fmt:formatNumber type="currency">
-		      	<c:choose>
-		      		<c:when test="${totalPrice >= 50000}">
-		      			${totalPrice*0.9}
-		      		</c:when>
-		      		<c:otherwise>
-		      			${(totalPrice+3000)*0.9}
-		      		</c:otherwise>
-		      	</c:choose>
-	      	</fmt:formatNumber>
+	      <td id="orderPrice" class="text-right">
 	      </td>
 	    </tr>
 	    <tr>
 	      <td>부가세(10%)</td>
-	      <td class="text-right">
-	      	<fmt:formatNumber type="currency">
-	      		<c:choose>
-		      		<c:when test="${totalPrice >= 50000}">
-		      			${totalPrice*0.1}
-		      		</c:when>
-		      		<c:otherwise>
-		      			${(totalPrice+3000)*0.1}
-		      		</c:otherwise>
-		      	</c:choose>
-	      	</fmt:formatNumber>
+	      <td id="vat" class="text-right">
 	      </td>
 	    </tr>
 	  </tbody>
@@ -250,16 +219,6 @@ $(document).ready((e)=>{
 			총 주문 금액
 	      </th>
 	      <td class="text-right" id="totalPrice">
-	      	<fmt:formatNumber type="currency">
-	      		<c:choose>
-		      		<c:when test="${totalPrice >= 50000}">
-		      			${totalPrice}
-		      		</c:when>
-		      		<c:otherwise>
-		      			${totalPrice+3000}
-		      		</c:otherwise>
-		      	</c:choose>
-	      	</fmt:formatNumber>
 		  </td>
 	    </tr>
 	    <tr>
@@ -291,12 +250,6 @@ $(document).ready((e)=>{
 <form:form name="orderFrm">
 	<input type="hidden" name="memberNo" value="${member.memberNo}" />
 	<input type="hidden" name="pointValue" value="0"/>
-	<input type="hidden" name="productPrice" value="${totalPrice}"/>
-	<input type="hidden" name="shippingFee" value="${totalPrice >= 50000? 0 : 3000}"/>
-	<input type="hidden" name="totalPrice" value="${totalPrice + (totalPrice >= 50000? 0 : 3000)-0}"/>
-	<c:forEach items="${detailNo}" var="no" varStatus="vs" >
-		<input type="hidden" name="detailNo" value="${no}"/>
-	</c:forEach>
 </form:form>
 <script>
 
@@ -382,7 +335,7 @@ $("#orderPaymentBtn").click((e)=>{
 						.map((no, i)=>{
 							var reformat = {detailNo : no.value,
 											merchantUid : merchantUid,
-											buyCount : 1};
+											buyCount : $(no).data("buyCount")};
 							return reformat;
 							});
 	obj.merchantDetailList = detailNo;
