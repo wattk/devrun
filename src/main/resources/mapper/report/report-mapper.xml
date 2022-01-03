@@ -11,4 +11,24 @@
 		default, default, null, null )
 	</insert>
 
+	<select id="selectAllReportByMemberNo" resultType="report">
+		select 
+			*
+		from 
+			report r left join report_category c
+				using(reason_cate)
+		where
+			r.member_no = #{memberNo}
+		order by
+			r.report_no desc
+	</select>
+	
+	<select id="selectReportTotalCount" resultType="_int">
+		select 
+			count(*)
+		from 
+			report
+		where
+			member_no = #{memberNo}
+	</select>
 </mapper>

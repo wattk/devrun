@@ -51,7 +51,7 @@
   			title = #{title}
 	</delete>
 	
-	<select id="selectAllAddressById" resultType="address">
+	<select id="selectAllAddressByMemberNo" resultType="address">
 		select 
 			*
 		from 
@@ -60,6 +60,15 @@
 			member_no = #{memberNo}
 		order by
 			address_no desc
+	</select>
+	
+	<select id="selectAddressTotalCount" resultType="_int">
+		select 
+			count(*)
+		from 
+			address
+		where
+			member_no = #{memberNo}
 	</select>
 	
 	<select id="selectOneAddress" resultType="address">

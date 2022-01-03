@@ -3,13 +3,9 @@ package com.kh.devrun.report.model.vo;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.kh.devrun.shop.model.vo.Attachment;
-import com.kh.devrun.shop.model.vo.Review;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
@@ -33,5 +29,6 @@ public class Report implements Serializable {
 	private Date regDate;
 	private int memberNo2;
 	private Date confirmDate;
+	private String reasonName;
 
 }

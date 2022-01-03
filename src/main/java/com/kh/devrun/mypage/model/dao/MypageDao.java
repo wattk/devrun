@@ -13,9 +13,11 @@ public interface MypageDao {
 	int updateAddress(Address address);
 
 	int deleteAddress(Address address);
+	
+	List<Address> selectAllAddressByMemberNo(int memberNo, int offset, int limit);
 
-	List<Address> selectAllAddressById(int memberNo);
-
+	int selectAddressTotalCount(int memberNo);
+	
 	Address selectOneAddress(int addressNo);
 
 }
