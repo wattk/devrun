@@ -178,7 +178,7 @@
   </update>
   
   <!-- 자유게시판 타입별 검색 -->
-  <select id="searchFreeboardList" resultType="communityEntity">
+  <select id="selectFreeboardListByType" resultType="communityEntity">
   	select
 	    c.community_no,
 	    c.title,
@@ -194,5 +194,18 @@
         ${searchType} like '%'|| #{searchKeyword} ||'%'	
 	order by
 	    community_no desc
+  </select>
+  
+  <select id="selectFreeboardTotalCountByType" resultType="_int">
+  	select
+  		count(*)
+  	from
+  		community c join member m on
+	    c.member_no = m.member_no
+  	where
+  		page_code = 4 and 
+  		${searchType} like '%'|| #{searchKeyword} || '%'
+  	order by
+  		community_no desc
   </select>
 </mapper>

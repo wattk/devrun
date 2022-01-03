@@ -88,9 +88,13 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public List<CommunityEntity> searchFreeboardList(Map<String, Object> param) {	
-		return communityDao.searchFreeboardList(param);
-		
+	public List<CommunityEntity> selectFreeboardListByType(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectFreeboardListByType(param, offset, limit);
+	}
+
+	@Override
+	public int selectFreeboardTotalCountByType(Map<String, Object> param) {
+		return communityDao.selectFreeboardTotalCountByType(param);
 	}
 
 
