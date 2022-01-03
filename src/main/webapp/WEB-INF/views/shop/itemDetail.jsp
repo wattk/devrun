@@ -290,8 +290,18 @@
 					</c:if>
 					<c:if test="${cartValid eq null }">
 						<c:forEach items="${pDetail}" var="pd">
-							<option value="${pd.detailNo}">${pd.optionNo}
-								<c:if test="${pd.optionContent != null}"> , ${pd.optionContent}</c:if></option>
+							<option value="${pd.detailNo}"
+								<c:if test="${pd.quantity <1}">
+									disabled
+								</c:if>
+							>${pd.optionNo} 
+								<c:if test="${pd.optionContent != null}">
+									 , ${pd.optionContent}
+								</c:if>
+								<c:if test="${pd.quantity <1}">
+									[품절된 상품입니다]
+								</c:if>
+							</option>
 						</c:forEach>
 					</c:if>
 				</select>
