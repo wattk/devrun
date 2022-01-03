@@ -111,8 +111,8 @@
 	            on CM.member_no = M.member_no
 	where
 	    rnum = 1 and
-	    CL.chat_id in (select chat_id from chat_member where member_no = #{memberNo}) and
-	    CM.member_no != #{memberNo}
+	    CM.member_no != #{memberNo} and
+	    CL.chat_id in (select chat_id from view_chat_exit_check where member_no = #{memberNo})
 	order by
 	    log_time desc
   </select>
@@ -162,7 +162,26 @@
 	    chat_member cm left join member m
 	        using(member_no)
 	where 
-	    member_no2 = #{memberNo} and LOWER(nickname) like LOWER('%'||#{searchNickname}||'%')
+	    member_no2 = #{memberNo} and LOWER(nickname) like LOWER('%'||#{searchNickname}||'%') and
+	    chat_id in (select chat_id from view_chat_exit_check where member_no = #{memberNo})
   </select>
-
+  
+  <select id="findEndDate" resultType="_long">
+  	select 
+    	nvl((TO_NUMBER(end_date-TO_DATE('01-01-1970 09:00:00', 'DD-MM-YYYY HH24:MI:SS'))*24*60*60)*1000, 0) end_date
+	from 
+	    chat_member
+	where 
+	    member_no = #{memberNo} and chat_id = #{chatId}
+  </select>
+  
+  <update id="exitChatRoom">
+  	update 
+  		chat_member
+	set
+	    end_date = current_date
+	where
+	    chat_id = #{chatId} and
+	    member_no = #{memberNo}
+  </update>
 </mapper>

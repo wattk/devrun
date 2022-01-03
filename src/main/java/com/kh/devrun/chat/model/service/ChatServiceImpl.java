@@ -67,4 +67,14 @@ public class ChatServiceImpl implements ChatService {
 	public List<String> searchChatRoom(Map<String, Object> param) {
 		return chatDao.searchChatRoom(param);
 	}
+
+	@Override
+	public long findEndDate(Map<String, Object> param) {
+		return chatDao.findEndDate(param);
+	}
+
+	@Override
+	public int exitChatRoom(Map<String, Object> param) {
+		return chatDao.exitChatRoom(param);
+	}
 }
