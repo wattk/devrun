@@ -56,7 +56,10 @@ public interface ProductDao {
 	 * @return
 	 */
 	List<Product> selectProductByDetailNo(int[] detailNo);
+	
+	List<Integer> selectCartValidList(Map<String, Object> cartParam);
 	/* 혜진 끝*/
+
 
 	
 	

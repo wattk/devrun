@@ -29,6 +29,11 @@
 	System.out.println(totalPrice);
 	pageContext.setAttribute("totalPrice", totalPrice);
 %>
+<script>
+	
+	const item = JSON.parse(localStorage.getItem("cartItem"));
+	console.log(item);
+</script>
 
 <div class="row p-5 d-flex justify-content-around order-container">
   <div class="col-7">
@@ -36,7 +41,7 @@
 	  <div class="card">
 	    <div class="card-header" id="headingOne">
 	      <h5 class="mb-0">
-	        <button class="btn btn-link order-btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+	        <button id="orderOneBtn" class="btn btn-link order-btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 		        <span class="badge badge-dark">1</span>
 		        배송 정보
 	        </button>
@@ -56,7 +61,7 @@
 	      	<div class="input-group mb-3 w-75">
 			  <input type="text" id="addInput" class="add-input form-control" placeholder="주소" aria-describedby="addInputBtn" value="${addressList[0].address1}">
 			  <div class="input-group-append w-10">
-			    <span class="input-group-text " id="addInputBtn">수정</span>
+			    <span class="input-group-text cursor" id="addInputBtn">수정</span>
 			  </div>
 			</div>
 			<strong>배송 옵션</strong>
@@ -64,7 +69,8 @@
 				<i class="fas fa-truck"><strong>일반 배송</strong></i>
 				<p class="pt-2 mb-0">택배 배송 : 출고 예정일 3~5일 이내에 배송되며, 2박스 이상으로 분리 배송될 수 있습니다.</p>
 			</div>
-		    <button 
+		    <button
+		      id="orderTwoBtn"
 		  	  type="button" 
 		  	  id="orderNextBtn" 
 		  	  class="btn btn-primary w-100 h-50 mt-2 order-btn" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -91,12 +97,13 @@
 	    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#orderAccordion">
 	      <div class="card-body">
 	      	<ul class="list-group">
-			  <li class="address-item list-group-item">이름 : <input type="text" class="order-form-control" data-target=".name-input" value="${member.name}" name="" id="" /></li>
-			  <li class="address-item list-group-item">이메일 : <input type="text" class="order-form-control" data-target=".email-input" value="${member.email}" name="" id="" /></li>
-			  <li class="address-item list-group-item">전화번호 : <input type="text" class="order-form-control" data-target=".phone-input" value="${member.phone}" name="" id="" /></li>
-			  <li class="address-item list-group-item">상세주소 : <input type="text" id="addDetailInput" class="add-detail-input order-form-control" data-target=".add-detail-input" value="${addressList[0].address2}" name="" id="" /></li>
+			  <li class="address-item list-group-item">이름 : <input type="text" class="order-form-control" data-target=".name-input" value="${member.name}" name="" id="nameInput" /></li>
+			  <li class="address-item list-group-item">이메일 : <input type="text" class="order-form-control" data-target=".email-input" value="${member.email}" name="" id="emailInput" /></li>
+			  <li class="address-item list-group-item">전화번호 : <input type="text" class="order-form-control" data-target=".phone-input" value="${member.phone}" name="" id="phoneInput" /></li>
+			  <li class="address-item list-group-item">상세주소 : <input type="text" id="addDetailInput" class="add-detail-input order-form-control" data-target=".add-detail-input" value="${addressList[0].address2}" name="" id="addDetailInput" /></li>
 			</ul>
 		    <button 
+		      id="orderThreeBtn"
 		  	  type="button" 
 		  	  id="orderNextBtn" 
 		  	  class="btn btn-primary w-100 h-50 mt-2 order-btn" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
@@ -247,9 +254,9 @@
 	      </th>
 	      <td class="w-50">
 	      	<div class="input-group mb-3 ">
-			  <input type="number" id="pointValue" class="form-control" placeholder="사용 포인트" aria-describedby="basic-addon2">
+			  <input type="number" id="pointValue" class="form-control" placeholder="사용 포인트" aria-describedby="pointBtn" max="${member.point}">
 			  <div class="input-group-append w-10">
-			    <span class="input-group-text " id="basic-addon2">적용</span>
+			    <span class="input-group-text cursor" id="pointBtn">적용</span>
 			  </div>
 			</div>
 	      </td>
@@ -294,10 +301,46 @@ $(".order-form-control").change((e)=>{
 	$(target).text(value);
 });
 
+//사용 포인트 입력 시 결제 금액 변경
+$("#pointBtn").click((e)=>{
+	const use = $(e.target).val();
+	$("[name=pointValue]").val(use);
+	const total = $("[name=totalPrice]").val() - use;
+	$("[name=totalPrice]").val(total);
+	$("#priceInput").text(total);
+});
 
 //결제창 띄우기
 $("#orderPaymentBtn").click((e)=>{
 	console.log("결제 이벤트 발생");
+	
+	//주소 및 상세정보(이메일 제외) 미입력시 결제 불가
+	if($("#addInput").val() == ''){
+		alert("주소를 입력해주세요.");
+		$("#orderOneBtn").click();
+		$("#addInput").focus();
+		return;
+	}
+	
+	if($("#nameInput").val() == ''){
+		alert("수령인을 입력해 주세요.");
+		$("#orderTwoBtn").click();
+		$("#nameInput").focus();
+		return;
+	}
+	if($("#phoneInput").val() == ''){
+		alert("연락처를 입력해 주세요.");
+		$("#orderTwoBtn").click();
+		$("#phoneInput").focus();
+		return;
+	}
+	if($("#addDetailInput").val() == ''){
+		alert("상세주소를 입력해 주세요.");
+		$("#orderTwoBtn").click();
+		$("#addDetailInput").focus();
+		return;
+	}
+	
 	const merchantUid = 'MERC_' + new Date().getTime();
 
 	
@@ -350,7 +393,7 @@ function iamport(data){
 	    pay_method : 'card',
 	    merchant_uid : data.merchantUid,
 	    name : $(".merchant-title").text(), //결제창에서 보여질 이름
-	    amount : 100, //실제 결제되는 가격
+	    amount : $("[name=totalPrice]").val(), //실제 결제되는 가격
 	    buyer_email : $(".email-input").text(),
 	    buyer_name : $(".name-input").text(),
 	    buyer_tel : $(".phone-input").text(),
@@ -407,20 +450,5 @@ function iamport(data){
 	});
 }
 	
-
-
-$(document).ready((e)=>{
-	let today = new Date();
-	const year = today.getFullYear(); 
-	const month = today.getMonth() + 1; 
-	const date = today.getDate();
-	today = (year-2000) + "-" + month + "-" + (date+1);
-	
-	console.log(today, typeof today);
-	$("#releaseDate").text(today + " 09:00 ~ 21:00");
-	
-	const price = $("#totalPrice").text();
-	$("#priceInput").text(price);
-});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

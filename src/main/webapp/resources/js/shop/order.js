@@ -3,6 +3,18 @@
  */
  
 $(document).ready(()=>{
+let today = new Date();
+const year = today.getFullYear(); 
+const month = today.getMonth() + 1; 
+const date = today.getDate();
+today = (year-2000) + "-" + month + "-" + (date+1);
+
+console.log(today, typeof today);
+$("#releaseDate").text(today + " 09:00 ~ 21:00");
+
+const price = $("#totalPrice").text();
+$("#priceInput").text(price);
+
 //버튼 클릭 시 주문 아코디언 헤더의 상세 내용 숨기거나 드러내기
 $(".order-btn").click((e)=>{
 	const target = $(e.target).data("target");
@@ -24,6 +36,8 @@ $(".order-btn").click((e)=>{
 	}
 		
 });
+
+
 });
 
 /**
