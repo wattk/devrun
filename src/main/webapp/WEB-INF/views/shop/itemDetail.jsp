@@ -271,13 +271,20 @@
 					<c:if test="${cartValid ne null }">
 						<c:forEach items="${pDetail}" var="pd">
 							<option value="${pd.detailNo}"
-								data-cart-valid="${fn:contains(cartValid, pd.detailNo)? 1 : 0}">${pd.optionNo}
+								data-cart-valid="${fn:contains(cartValid, pd.detailNo)? 1 : 0}" 
+								<c:if test="${pd.quantity <1}">
+									disabled
+								</c:if>
+								>${pd.optionNo}
 								<c:if test="${pd.optionContent != null}">
 									, ${pd.optionContent}
 								</c:if> 
 								<sec:authorize access="hasRole('AM')">
 									<span style="font-size: 10px;"> [재고 : ${pd.quantity}]</span>
 								</sec:authorize> 
+								<c:if test="${pd.quantity <1}">
+									[품절된 상품입니다]
+								</c:if>
 							</option>
 						</c:forEach>
 					</c:if>
