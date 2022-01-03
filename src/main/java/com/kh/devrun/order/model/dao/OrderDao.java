@@ -34,4 +34,8 @@ public interface OrderDao {
 
 	int deleteCart(Map<String, Object> param);
 
+	List<Merchant> selectAllMerchant();
+
+	List<Merchant> selectMerchantProductList(Map<String, Object> param);
+
 }
