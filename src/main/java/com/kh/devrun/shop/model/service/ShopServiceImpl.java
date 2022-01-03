@@ -209,6 +209,13 @@ public class ShopServiceImpl implements ShopService {
 		return result;
 	}
 
+	@Override
+	public int deleteCart(List<Integer> cartNoArr) {
+		int result = shopDao.deleteCart(cartNoArr);
+		
+		return result;
+		
+	}
 
 	/* 혜진 장바구니 끝 */
 

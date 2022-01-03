@@ -14,40 +14,41 @@
 <link href="${pageContext.request.contextPath}/resources/css/shop/order.css" rel="stylesheet">
 <div class="row p-5 d-flex justify-content-around order-container">
   <div class="col-7">
-  	<h4>장바구니</h4>
-	  	<table class="table m-3 pr-3">
-		  <tbody>
-		  	<c:set var="sum" value="0" />
-		  	<c:forEach items="${list}" var="cart" varStatus="vs">
-		    <tr 
-		    	id="${cart.detailNo}"
-		    	class="cart-item"
-		    	data-product-code = "${cart.product.productCode }"
-		    	data-detail-no = "${cart.detailNo}"
-		    	data-name = "${cart.product.name }"
-		    	data-price = "${cart.product.price }"
-		    	data-amount = "${cart.amount}">
-		      <td rowspan="2">
-		      	<input type="checkbox" class="cart-checkbox ml-3" name="" id="" checked/>
-			  </td>
-		      <td rowspan="2" class="col-3">
-		      	<img src="${pageContext.request.contextPath}/resources/upload/product/${cart.product.thumbnail}" alt="" class=" img-b w-75" >
-			  </td>
-		      <td class="col-5 align-middle ">${cart.product.name}</td>
-		      <td class="col-3 align-middle " >
-		      	<fmt:formatNumber type="currency">${cart.product.price * cart.amount}</fmt:formatNumber>
-		      </td>
-		    </tr>
-		    <tr>
-		      <td colspan="2" class="align-middle text-right">
-		      	<input type="number" name="amount" id="" class="col-2 " placeholder="수량" value="${cart.amount}" data-target="${cart.detailNo}"/>
-		      	<button type="button" class="btn btn-primary">삭제</button>
-		      </td>
-		    </tr>
-		    <c:set var="sum" value="${sum + (cart.product.price * cart.amount)}" />
-		    </c:forEach>
-		  </tbody>
-		</table>
+  	<h4 class="d-inline">장바구니</h4>
+  	<button id="allDeleteBtn" type="button" class="btn btn-secondary">전체삭제</button>
+  	<table class="table m-3 pr-3">
+	  <tbody id="cartBody">
+	  	<c:set var="sum" value="0" />
+	  	<c:forEach items="${list}" var="cart" varStatus="vs">
+	    <tr 
+	    	id="${cart.detailNo}"
+	    	class="cart-item"
+	    	data-product-code = "${cart.product.productCode }"
+	    	data-detail-no = "${cart.detailNo}"
+	    	data-name = "${cart.product.name }"
+	    	data-price = "${cart.product.price }"
+	    	data-amount = "${cart.amount}">
+	      <td rowspan="2">
+	      	<input type="checkbox" class="cart-checkbox ml-3" name="" id="" checked/>
+		  </td>
+	      <td rowspan="2" class="col-3">
+	      	<img src="${pageContext.request.contextPath}/resources/upload/product/${cart.product.thumbnail}" alt="" class=" img-b w-75" >
+		  </td>
+	      <td class="col-5 align-middle ">${cart.product.name}</td>
+	      <td class="col-3 align-middle " >
+	      	<fmt:formatNumber type="currency">${cart.product.price * cart.amount}</fmt:formatNumber>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td colspan="2" class="align-middle text-right">
+	      	<input type="number" name="amount" id="" class="col-2 " placeholder="수량" value="${cart.amount}" data-target="${cart.detailNo}"/>
+	      	<button type="button" class="cart-delete-btn btn btn-primary" data-cart-no = "${cart.cartNo}">삭제</button>
+	      </td>
+	    </tr>
+	    <c:set var="sum" value="${sum + (cart.product.price * cart.amount)}" />
+	    </c:forEach>
+	  </tbody>
+	</table>
   </div>
   <div class="col-4 m-3 pl-3 pt-5 d-flex flex-column justify-content-start">
 	  <strong>주문 내역</strong>
@@ -85,6 +86,8 @@ $(".cart-checkbox").change((e)=>{
 		$("#total").data("total", cal);
 	}
 });
+
+//수량 변경 시 가격 변경
 $("[name=amount]").change((e)=>{
 	const target = "#"+$(e.target).data("target");
 	const originalAmount = $(target).data("amount");
@@ -120,6 +123,69 @@ $("[name=amount]").change((e)=>{
 	}
 	$(target).data("amount", amount);
 	console.log($(target).data("amount"));
+});
+
+//전체 삭제 버튼 클릭 시 장바구니 전체 데이터 삭제
+$("#allDeleteBtn, .cart-delete-btn").click((e)=>{
+	let $cartBtns;
+	if($(e.target).attr("id") == "allDeleteBtn"){
+		$cartBtns = $(".cart-delete-btn");
+	}
+	else{
+		$cartBtns = $(e.target);
+	}
+	let cartNoArr = [];
+	for(let i = 0; i < $cartBtns.length; i++){
+		cartNoArr[i] = $cartBtns.eq(i).data("cartNo");
+	}
+	console.log(cartNoArr);
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/shop/cartDelete",
+		data : {
+			cartNoArr : cartNoArr
+		},
+		dataType : "json",
+		method : "POST",
+		success(data){
+			console.log(data);
+			console.log(data.length);
+			
+			$("#cartBody").html('');
+			if(data == null) return;
+			data.forEach((cart,i)=>{
+				console.log(cart.detailNo);
+				$("#cartBody").html(`<tr 
+				    	id= "\${cart.detailNo}"
+				    	class="cart-item"
+				    	data-product-code = "\${cart.product.productCode}"
+				    	data-detail-no = "\${cart.detailNo}"
+				    	data-name = "\${cart.product.name}"
+				    	data-price = "\${cart.product.price}"
+				    	data-amount = "\${cart.amount}">
+				      <td rowspan="2">
+				      	<input type="checkbox" class="cart-checkbox ml-3" name="" id="" checked/>
+					  </td>
+				      <td rowspan="2" class="col-3">
+				      	<img src="${pageContext.request.contextPath}/resources/upload/product/\${cart.product.thumbnail}" alt="" class=" img-b w-75" >
+					  </td>
+				      <td class="col-5 align-middle ">\${cart.product.name}</td>
+				      <td class="col-3 align-middle " >
+				      	&#8361;\${(cart.product.price * cart.amount).toLocaleString()}
+				      </td>
+				    </tr>
+				    <tr>
+				      <td colspan="2" class="align-middle text-right">
+				      	<input type="number" name="amount" id="" class="col-2 " placeholder="수량" value="\${cart.amount}" data-target="\${cart.detailNo}"/>
+				      	<button type="button" class="cart-delete-btn btn btn-primary" data-cart-no = "\${cart.cartNo}">삭제</button>
+				      </td>
+				    </tr>`);
+			});
+		},
+		error : console.log
+	}); 
+	
+	
 });
 
 //주문하기 버튼 클릭 시 주문 페이지 이동

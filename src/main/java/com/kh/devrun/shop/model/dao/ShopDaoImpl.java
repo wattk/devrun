@@ -133,14 +133,18 @@ public class ShopDaoImpl implements ShopDao {
 	}
 
 	@Override
+	public int deleteCart(List<Integer> cartNoArr) {
+		return session.delete("shop.deleteCart", cartNoArr);
+	}
+
+	/* 혜진 장바구니 끝 */
+	@Override
 	public int findWishlistNo(Map<String, Object> param) {
 		return session.selectOne("shop.findWishlistNo", param);
 	}
-
+	
 	@Override
 	public int wishlistDelete(int wishlistNo) {
 		return session.delete("shop.wishlistDelete", wishlistNo);
 	}
-
-	/* 혜진 장바구니 끝 */
 }

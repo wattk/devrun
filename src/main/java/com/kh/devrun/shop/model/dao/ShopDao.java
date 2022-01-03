@@ -56,8 +56,11 @@ public interface ShopDao {
 	int insertCart(Cart cart);
 
 	int insertMemberCart(Cart cart);
+	
+	int deleteCart(List<Integer> cartNoArr);
 	/* 혜진 장바구니 끝 */
 
 	int didIHitWishlist(Map<String, Object> param);
+
 
 }
