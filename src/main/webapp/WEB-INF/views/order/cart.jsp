@@ -12,13 +12,15 @@
 	<jsp:param value="장바구니" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath}/resources/css/shop/order.css" rel="stylesheet">
+<script src="${pageContext.request.contextPath}/resources/js/shop/cart.js"></script>
 <div class="row p-5 d-flex justify-content-around order-container">
   <div class="col-7">
   	<h4 class="d-inline">장바구니</h4>
   	<button id="allDeleteBtn" type="button" class="btn btn-secondary">전체삭제</button>
   	<table class="table m-3 pr-3">
-	  <tbody id="cartBody">
+	  	<c:if test="${not empty list}">
 	  	<c:set var="sum" value="0" />
+	  <tbody id="cartBody">
 	  	<c:forEach items="${list}" var="cart" varStatus="vs">
 	    <tr 
 	    	id="${cart.detailNo}"
@@ -48,6 +50,14 @@
 	    <c:set var="sum" value="${sum + (cart.product.price * cart.amount)}" />
 	    </c:forEach>
 	  </tbody>
+	    </c:if>
+	    <c:if test="${empty list }">
+		  <tbody id="cartBody" style="height: 300px;">
+	    	<tr class="text-center mt-5">
+	    		<td colspan="4" class="h-100">장바구니에 담긴 상품이 없습니다.</td>
+	    	</tr>
+	 	 </tbody>
+	    </c:if>
 	</table>
   </div>
   <div class="col-4 m-3 pl-3 pt-5 d-flex flex-column justify-content-start">
@@ -67,63 +77,7 @@
   </div>
 </div>
 <script>
-//체크박스 해제 시 합산 가격 변경
-$(".cart-checkbox").change((e)=>{
-	const isChecked = $(e.target).prop("checked");
-	const $parent = $(e.target).parent().parent();
-	const price = $parent.data("price");
-	const amount = $parent.data("amount");
-	const total = $("#total").data("total");
-	
-	if(!isChecked){
-		const cal = total-(price*amount);
-		$("#total").html("&#8361;"+(cal).toLocaleString());
-		$("#total").data("total", cal);
-	}
-	else{
-		const cal = total + (price*amount)
-		$("#total").html("&#8361;"+(cal).toLocaleString());
-		$("#total").data("total", cal);
-	}
-});
 
-//수량 변경 시 가격 변경
-$("[name=amount]").change((e)=>{
-	const target = "#"+$(e.target).data("target");
-	const originalAmount = $(target).data("amount");
-	const checkbox = $(target).find("input:checkbox");
-	const isChecked = $(checkbox).prop("checked");
-	const amount = $(e.target).val();
-	const price = $(target).data("price");
-	const total = $("#total").data("total");
-	console.log(target);
-	console.log(amount);
-	
-	//체크박스 해제되면 가격 빼기, 체크되면 가격 더하기
-	if(isChecked){
-		const cal = total + (price*amount)
-		$("#total").html("&#8361;"+(cal).toLocaleString());
-		$("#total").data("total", cal);
-	}
-	else{
-		const cal = total-(price*amount);
-		$("#total").html("&#8361;"+(cal).toLocaleString());
-		$("#total").data("total", cal);
-	}
-	
-	if(originalAmount<amount){
-		const cal = total + (price*(amount-originalAmount));
-		$("#total").html("&#8361;"+(cal).toLocaleString());
-		$("#total").data("total", cal);
-	}
-	else{
-		const cal = total - (price*(originalAmount-amount));
-		$("#total").html("&#8361;"+(cal).toLocaleString());
-		$("#total").data("total", cal);
-	}
-	$(target).data("amount", amount);
-	console.log($(target).data("amount"));
-});
 
 //전체 삭제 버튼 클릭 시 장바구니 전체 데이터 삭제
 $("#allDeleteBtn, .cart-delete-btn").click((e)=>{
@@ -152,9 +106,15 @@ $("#allDeleteBtn, .cart-delete-btn").click((e)=>{
 			console.log(data.length);
 			
 			$("#cartBody").html('');
-			if(data == null) return;
+			if(data.length == 0){
+				$("#cartBody").html(`<tr class="text-center mt-5"><td colspan="4">장바구니에 담긴 상품이 없습니다.</td></tr>`);
+				$("#cartBody").css("height","300px");
+				return;
+			}
+			let total = 0;
 			data.forEach((cart,i)=>{
 				console.log(cart.detailNo);
+				total += cart.product.price;
 				$("#cartBody").html(`<tr 
 				    	id= "\${cart.detailNo}"
 				    	class="cart-item"
@@ -181,6 +141,7 @@ $("#allDeleteBtn, .cart-delete-btn").click((e)=>{
 				      </td>
 				    </tr>`);
 			});
+			$("#total").html("&#8361;"+total);
 		},
 		error : console.log
 	}); 

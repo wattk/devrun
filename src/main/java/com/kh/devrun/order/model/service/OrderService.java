@@ -23,4 +23,8 @@ public interface OrderService {
 
 	List<Cart> selectCartList(int memberNo);
 
+	List<Merchant> selectAllMerchant();
+
+	List<Merchant> selectMerchantList(Map<String, Object> param);
+
 }
