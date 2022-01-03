@@ -1,6 +1,5 @@
 package com.kh.devrun.community.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,18 +183,15 @@ public class CommunityController {
 	
 	// 자유게시판-타입별검색
 	// @ResponseBody : Http 요청 body를 Java 객체로 전달받을 수 있다.
-	@ResponseBody
 	@GetMapping("/communityFreeboardFinder.do")
+	@ResponseBody
 	public Map<String, Object> FreeboardFinder(
+			@RequestParam(defaultValue = "1") int cPage,
 			@RequestParam String searchType,
 			@RequestParam String searchKeyword,
-			@RequestParam(defaultValue = "1") int cPage,
-			// HttpServletRequest : 값을 받아올 수 있다. 
-			// HttpServletRequest 객체 안에 모든 데이터들이 들어가게 된다.
 			HttpServletRequest request){
 		
-		// jsp로 리턴받기 위한 map 선언
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> resultMap = new HashMap<>();
 		
 		int limit = 11;
 		int offset = (cPage - 1) * limit;
@@ -203,24 +199,31 @@ public class CommunityController {
 		log.debug("searchType = {}", searchType);
 		log.debug("searchKeyword = {}", searchKeyword);
 		
-		// 서버로 요청하기 위한 param 선언
 		Map<String, Object> param = new HashMap<>();
-				
-		param.put("limit", limit);
-		param.put("offset", offset);
 		param.put("searchType", searchType);
 		param.put("searchKeyword", searchKeyword);
+		log.debug("param = {}", param);
 		
-		// 설정해놓은 param값을 받아오기 위한 searchFreeboardList 선언
-		List<CommunityEntity> searchFreeboardList = communityService.searchFreeboardList(param);
+		// 1. 전체 상품 목록
+		String url = request.getContextPath();
 		
-		// 데이터를 받아온 searchFreeboardList를 map에 추가
-		map.put("searchFreeboardList", searchFreeboardList);
+		List<CommunityEntity> freeboardList = communityService.selectFreeboardListByType(param, offset, limit);
+		String freeboardStr = CommunityUtils.getFreeboardList(freeboardList, url);
 		
-		return map;	
+		// 2. 전체 게시물 수 totalCount
+		url = request.getRequestURI();
+		int totalContent = communityService.selectFreeboardTotalCountByType(param);
+		
+		// 3. pagebar
+		String pagebar = CommunityUtils.getPagebar(cPage, cPage, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		
+		resultMap.put("freeboardStr", freeboardStr);
+		resultMap.put("totalContent", totalContent);
+		resultMap.put("pagebar", pagebar);
+		
+		return resultMap;
 	}
-	
-	
 	// 자유게시판-글쓰기
 	@GetMapping("/communityFreeboardForm.do")
 	public void communityFreeboardForm() {}

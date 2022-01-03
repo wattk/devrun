@@ -123,7 +123,7 @@ $(() => {
 			
 			<!-- 상단 탭 시작 -->	
 			<nav>
-			  <p>총 ${totalContent}개의 게시물이 있습니다.</p>
+			  <p>총<span id="freeboardSize">${totalContent}</span>개의 게시물이 있습니다.</p>
 			  <div class="nav nav-tabs" id="nav-tab" role="tablist">
 			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">최신순</a>
 			    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">댓글 많은 순</a>
@@ -142,6 +142,7 @@ $(() => {
 	
 	
 	<!-- 리스트 시작 -->
+	<div id="freeboardContainer">
 	<table id="tbl-board" class="table table-striped table-hover">
 		<tr>
 			<th class="col-1">번호</th>
@@ -175,7 +176,7 @@ $(() => {
 	<div style="float: right">
 		<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-primary" onclick="goFreeboardForm();"/>
 	</div>
-	
+	</div>
 	<!-- 페이징 시작 -->
 	<div>
 		${pagebar}
@@ -224,28 +225,16 @@ $(".search-btn").click((e) => {
 	console.log(search);
 	
 	$.ajax({
-		url:`${pageContext.request.contextPath}/community/communityFreeboardFinder.do`,
-		data: search,
-		contentType: "application/json; charset=utf-8",
+		url : "${pageContext.request.contextPath}/community/communityFreeboardFinder.do",
+		data : search,
+		method : "GET",
 		success(res){
+			console.log(res);
 			//.html() : 선택한 요소 안의 내용을 가져오거나, 다른 내용으로 바꾼다.
-			$("#tbody").html("");
-			
-			var searchFreeboardList = res.searchFreeboardList;
-			
-			console.log(searchFreeboardList);
-			console.log(searchFreeboardList.length);
-						
-			for(let i = 0; i < searchFreeboardList.length; i++) {
-				$("#tbody").append(`<tr>
-				<td>\${searchFreeboardList[i].communityNo}</td>
-				<td>\${searchFreeboardList[i].title}</td>
-				<td>\${searchFreeboardList[i].nickname}</td>
-				<td>\${searchFreeboardList[i].enrollDate}</td>
-				<td>\${searchFreeboardList[i].likeCount}</td>
-				<td>\${searchFreeboardList[i].viewCount}</td>
-				</tr>`);
-			}
+		 	$("#tbody").html(res["freeboardStr"]);
+			$("#freeboardSize").text(res["totalContent"]);
+			$(".pagebar").detach();
+			$("#freeboardContainer").after(res["pagebar"]);
 		},
 		error: console.log
 	});
