@@ -4,7 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<%-- EL에서 접근하기 위해 var속성 지정 --%>
+<sec:authentication property="principal" var="loginMember"/>
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="아이디/비밀번호 찾기" name="title"/>
@@ -44,7 +47,7 @@
 								<img class="mx-auto logo" src="${pageContext.request.contextPath }/resources/images/logo-devrun.png" alt="데브런로고"/>
 							</div>
 							
-							<h3 class="mx-auto">아이디 찾기</h2>
+							<h3 class="mx-auto">아이디 찾기</h3>
 						
 							<!-- 이름 -->
 							<label for="name" class="col-md-12 col-form-label">이름</label>
@@ -77,17 +80,18 @@
 				<!-- 비밀번호 찾기 Tab 내용 -->
 			  	<div class="tab-pane fade" id="pills-pw" role="tabpanel" aria-labelledby="pills-pw-tab">
 			  		
-					<form 
-						id="memberFindPasswordFrm" 
-						action="" >
+					<form:form 
+						name="memberFindPasswordFrm" 
+						action="/"
+						method="POST">
 						
 						<div class="row">
 						
 							<div class="col-md-12 text-center">
-								<img class="mx-auto logo" src="${pageContext.request.contextPath }/resources/images/logo-devrun.png" alt="데브런로고"/>
+								<img class="mx-auto logo" src="${pageContext.request.contextPath}/resources/images/logo-devrun.png" alt="데브런로고"/>
 							</div>
 							
-							<h3 class="mx-auto">비밀번호 찾기</h2>
+							<h3 class="mx-auto">비밀번호 찾기</h3>
 						
 							<!-- 이름 -->
 							<label for="name" class="col-md-12 col-form-label">아이디</label>
@@ -103,7 +107,7 @@
 							
 							<!-- 찾기 -->
 							<div class="col-md-6">
-								<button type="submit" class="btn btn-primary btn-block">찾기</button>
+								<button type="button" class="btn btn-primary btn-block" onclick="findPassword()">찾기</button>
 							</div>
 							
 							<!-- 로그인으로 -->
@@ -113,7 +117,7 @@
 							
 						</div>
 					
-					</form>
+					</form:form>
 
 			  	</div>
 			

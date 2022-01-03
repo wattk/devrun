@@ -61,4 +61,14 @@ public class ChatDaoImpl implements ChatDao {
 	public List<String> searchChatRoom(Map<String, Object> param) {
 		return session.selectList("chat.searchChatRoom", param);
 	}
+
+	@Override
+	public long findEndDate(Map<String, Object> param) {
+		return session.selectOne("chat.findEndDate", param);
+	}
+
+	@Override
+	public int exitChatRoom(Map<String, Object> param) {
+		return session.update("chat.exitChatRoom", param);
+	}
 }

@@ -392,15 +392,9 @@ stompClient.connect({}, (frame) => {
 		//console.log("$li = ", $li);
 		const $unreadCountSpan = $li.find("span.unread-count");
 		
-		// 실제 메세지가 온 경우와 LAST_CHECK, READ_STATUS 분기처리한다. - LAST_CHECK 주석함
+		// 실제 메세지가 온 경우와 READ_STATUS 분기처리한다. - LAST_CHECK 주석함
 		switch(type){
-		/* LAST_CHECK가 한 일 + 실시간 읽음 처리를 READ_STATUS 가 해준다. */
-		/* case "LAST_CHECK" : 
-			// 본인이 확인한 경우에만 안읽음 메시지 건수 0처리와 d-none상태 처리
-			if(memberNo == ${loginMember.memberNo}){
-				$unreadCountSpan.text(0).addClass("d-none");
-			}
-			break; */
+		
 		case "MESSAGE" : 
 			var {chatId, memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, type} = obj;
 			const $msgP = $li.find(".msg");
@@ -421,11 +415,11 @@ stompClient.connect({}, (frame) => {
 			$li.prependTo($("#chatList")); // 첫번째 자식요소로 추가(이동) // 기존 요소에 적용하면 이동이 된다.
 			
 			break;
+			
 		case "READ_STATUS" : 
-			var {chatId, memberNo, readStatus, type} = obj;
-			//console.log("오고있음! chatId / memberNo / readStatus / type", chatId, memberNo, readStatus, type);
+			var {chatId, memberNo, type} = obj;
 			// 본인이 읽고 있는 상태인 경우
-			if(memberNo == ${loginMember.memberNo} && readStatus == "READ") {
+			if(memberNo == ${loginMember.memberNo}) {
 				// 해당하는 채팅방의 안읽음 메시지 건수 0처리와 d-none상태 처리
 				$unreadCountSpan.text(0).addClass("d-none");
 			}
@@ -433,10 +427,6 @@ stompClient.connect({}, (frame) => {
 		}
 
 	});	
-	
-	stompClient.subscribe("/chat/readStatus/${chatId}", (message) => {
-		
-	});
 	
 });
 
@@ -565,11 +555,11 @@ $(document).on('click', '#inviteBtn', function(e) {
 		data : {
 			receiverNo : receiverNo
 		},
-		method : "POST", // GET방식 생략 가능
+		method : "POST",
 		success(chatId) { // 이 안에 들어가는 data는 변수명이다. 다른 이름으로 사용해도 된다. 위의 data : 에서 사용한 부분과 헷갈리지 말자
 			//console.log(chatId);
 
-			// 팝업요청 // url 부분 기능 구현 시 수정할 것
+			// 팝업요청
 			const url = `${pageContext.request.contextPath}/chat/chatRoom.do/\${chatId}`;
 			const name = chatId; // 팝업창 Window객체의 name
 			const spec = "width=400px, height=600px";
@@ -620,16 +610,16 @@ $('.plus-modal').on('hidden.bs.modal', function (e) {
 	$("#nicknameSearchResultList").children().remove();
 });
 
-// 채팅방 list 클릭 시 이벤트 발생 - 기능 구현 시 수정할 부분 url 부분 li마다 달라져야 함. 위의 코드 수정할 것
+// 채팅방 list 클릭 시 이벤트 발생
 $('.chat-list li').click((e) => {
 	const $li = $(e.target).parents("li");
 	//console.log($li);
 	const chatId = $li.data("chatId"); // getter camelcasing으로 참조하기
 	//console.log(chatId);
 	
-	// 팝업요청 // url 부분 기능 구현 시 수정할 것
+	// 팝업요청
 	const url = `${pageContext.request.contextPath}/chat/chatRoom.do/\${chatId}`;
-	const name = chatId; // 팝업창 Window객체의 name. // 이후에 const name = chatId; 이런식으로 바꿀 것. 수업 코드 참고
+	const name = chatId; // 팝업창 Window객체의 name.
 	const spec = "width=400px, height=600px";
 	open(url, name, spec);
 });
