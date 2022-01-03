@@ -365,7 +365,7 @@ public class CommunityController {
 		String msg = result > 0 ? "댓글 등록 성공!" : "댓글 등록 실패!";
 		redirectAttributes.addFlashAttribute("msg", msg); 
 		
-		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + communityComment.getCommunityNo();
+		return "redirect:/community/communityFreeboardDetail/" + communityComment.getCommunityNo();
 	}
 	
 	// 자유게시판-댓글삭제
@@ -379,7 +379,7 @@ public class CommunityController {
 		String msg = result > 0 ? "댓글 삭제 성공!" : "댓글 삭제 실패!";
 		redirectAttributes.addFlashAttribute("msg", msg); 
 		
-		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + communityNo; 
+		return "redirect:/community/communityFreeboardDetail/" + communityNo; 
 	}
 
 	
