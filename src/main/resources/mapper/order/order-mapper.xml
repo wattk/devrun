@@ -20,7 +20,7 @@
   </insert>
   
   <update id="insertOrderDetail">
-  	<foreach collection="list" item="item" separator="," open="INSERT ALL" close="SELECT * FROM DUAL">
+  	<foreach collection="list" item="item" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
   		into
   			merchant_detail
   		values(
@@ -30,6 +30,18 @@
   		)
   	</foreach>
   </update>
+  
+  <delete id="deleteCart">
+  	delete from cart
+  	where
+  		detail_no in 
+  			(select 
+  				detail_no 
+  			from 
+  				merchant_detail md left join merchant m 
+  					on md.merchant_uid = m.merchant_uid 
+  			where m.merchant_uid = #{merchantUid})
+  </delete>
   
   <insert id="insertImp">
   	insert into imp

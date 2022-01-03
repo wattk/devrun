@@ -1,6 +1,7 @@
 package com.kh.devrun.order.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -28,6 +29,11 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public int insertOrderDetail(List<MerchantDetail> list) {
 		return session.insert("order.insertOrderDetail", list);
+	}
+	
+	@Override
+	public int deleteCart(Map<String, Object> param) {
+		return session.delete("order.deleteCart", param);
 	}
 
 	@Override

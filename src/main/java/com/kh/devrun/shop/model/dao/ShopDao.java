@@ -53,14 +53,17 @@ public interface ShopDao {
 
 	int wishlistDelete(int wishlistNo);
 
+	
+	int didIHitWishlist(Map<String, Object> param);
+	
+	List<WishlistProduct> selectAllWishlist(int memberNo);
+	
 	/* 혜진 장바구니 시작 */
 	int insertCart(Cart cart);
 
 	int insertMemberCart(Cart cart);
+	
+	int deleteCart(List<Integer> cartNoArr);
 	/* 혜진 장바구니 끝 */
-
-	int didIHitWishlist(Map<String, Object> param);
-
-	List<WishlistProduct> selectAllWishlist(int memberNo);
 
 }
