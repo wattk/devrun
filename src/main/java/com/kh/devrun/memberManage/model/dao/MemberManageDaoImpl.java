@@ -22,7 +22,11 @@ public class MemberManageDaoImpl implements MemberManageDao {
 
 	@Override
 	public List<Member> searchMemberList(Map<String, Object> param) {
-		return session.selectList("memberManage.searchMemberList",param);
+		int limit = (int)param.get("limit");
+		int offset = (int)param.get("offset");
+		RowBounds rowBounds = new RowBounds(offset,limit);
+				
+		return session.selectList("memberManage.searchMemberList",param,rowBounds);
 	}
 
 	// 전체 회원 리스트
@@ -31,12 +35,14 @@ public class MemberManageDaoImpl implements MemberManageDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("memberManage.selectAllMember",null,rowBounds);
 	}
-	// 전체 회원 수
 	
-
 	// 권한으로 검색
 	@Override
 	public List<Member> seachMemberListByAuthority(Map<String, Object> param) {
+		int limit = (int)param.get("limit");
+		int offset = (int)param.get("offset");
+		RowBounds rowBounds = new RowBounds(offset,limit);				
+		
 		String key = (String) param.get("searchKeyword");
 		
 		// 문자열 -> 리스트로 변환 후 mapper에서 반복문 사용 
@@ -47,7 +53,7 @@ public class MemberManageDaoImpl implements MemberManageDao {
 		log.debug("searchKeyword = {}",searchKeyword);  
 		log.debug("param = {}",param);  
 		
-		return session.selectList("memberManage.seachMemberListByAuthority",param);
+		return session.selectList("memberManage.seachMemberListByAuthority",param,rowBounds);
 	}
 
 	// 전체 회원 수 검색
@@ -55,11 +61,25 @@ public class MemberManageDaoImpl implements MemberManageDao {
 	public int selectTotalMemberCount() {
 		return session.selectOne("memberManage.selectTotalMemberCount");
 	}
+	
+	//  검색한 회원의 수 
+	@Override
+	public int searchMemberListCount(Map<String, Object> param) {		
+		return session.selectOne("memberManage.searchMemberListCount", param);
+	}
+	
+	//  권한으로 검색한 회원의 수 
+	@Override
+	public int searchMemberListCountByAuthority(Map<String, Object> param) {		
+		return session.selectOne("memberManage.searchMemberListCountByAuthority", param);
+	}
 
+	
 	// 멤버 권한 수정
 	@Override
 	public int updateAuthority(Map<String, Object> param) {		
 		return session.update("memberManage.updateAuthority",param);
 	}
+
 	
 }

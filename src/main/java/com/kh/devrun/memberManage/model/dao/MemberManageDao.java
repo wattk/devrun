@@ -20,4 +20,10 @@ public interface MemberManageDao {
 	// 멤버 권한 수정
 	int updateAuthority(Map<String, Object> param);
 
+	// 검색한 회원의 총 갯수
+	int searchMemberListCount(Map<String, Object> param);
+
+	// 권한으로 검색한 회원의 총 갯수
+	int searchMemberListCountByAuthority(Map<String, Object> param);
+
 }
