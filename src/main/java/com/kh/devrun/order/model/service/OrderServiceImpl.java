@@ -17,6 +17,7 @@ import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.shop.model.vo.Cart;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -32,10 +33,14 @@ public class OrderServiceImpl implements OrderService {
 	)
 	public int insertOrder(Merchant merchant) {
 		int result = 0;
+		String merchantUid = merchant.getMerchantUid();
+		Map<String, Object> param = new HashMap<>();
+		param.put("merchantUid", merchantUid);
 		
 		try {
 			result = orderDao.insertOrder(merchant);
 			result = orderDao.insertOrderDetail(merchant.getMerchantDetailList());
+			result = orderDao.deleteCart(param);
 		} catch (Exception e) {
 			throw new RuntimeException("주문 관련 등록 오류", e);
 		}
@@ -88,6 +93,11 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<MerchantExt> selectOrderList(int memberNo) {
 		return orderDao.selectOrderList(memberNo);
+	}
+
+	@Override
+	public List<Cart> selectCartList(int memberNo) {
+		return orderDao.selectCartList(memberNo);
 	}
 	
 	

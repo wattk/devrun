@@ -347,8 +347,9 @@ $("#check").change(function() {
 /* 탈퇴 버튼 클릭 시 회원탈퇴 */
 $(memberWithdrawalBtn).click((e)=>{
 	//탈퇴사유, 동의약관, 비밀번호 유효성검사
-	if(($("#reason").val() == '') || ($("#check").val() == '') || ($("#password").val() == ''))
-		return;
+	if(($("#reason").val() == '')) return;
+	else if(($("#check").val() == '')) return;
+	else if(($("#password").val() == '')) return;
 	$(document.memberWithdrawalFrm).submit();
 });
 </script>

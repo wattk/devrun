@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.community.common.CommunityUtils;
 import com.kh.devrun.community.model.service.CommunityService;
 import com.kh.devrun.community.model.vo.Community;
@@ -171,13 +173,57 @@ public class CommunityController {
 		
 		// 3. pagebar
 		String url = request.getRequestURI(); // /devrun/community/communityFreeboardList.do
-		String pagebar = CommunityUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
 		
 		return "community/communityFreeboardList";
 	}
 	
+	
+	// 자유게시판-타입별검색
+	// @ResponseBody : Http 요청 body를 Java 객체로 전달받을 수 있다.
+	@GetMapping("/communityFreeboardFinder.do")
+	@ResponseBody
+	public Map<String, Object> FreeboardFinder(
+			@RequestParam(defaultValue = "1") int cPage,
+			@RequestParam String searchType,
+			@RequestParam String searchKeyword,
+			HttpServletRequest request){
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		int limit = 11;
+		int offset = (cPage - 1) * limit;
+		
+		log.debug("searchType = {}", searchType);
+		log.debug("searchKeyword = {}", searchKeyword);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("searchType", searchType);
+		param.put("searchKeyword", searchKeyword);
+		log.debug("param = {}", param);
+		
+		// 1. 전체 상품 목록
+		String url = request.getContextPath();
+		
+		List<CommunityEntity> freeboardList = communityService.selectFreeboardListByType(param, offset, limit);
+		String freeboardStr = CommunityUtils.getFreeboardList(freeboardList, url);
+		
+		// 2. 전체 게시물 수 totalCount
+		url = request.getRequestURI();
+		int totalContent = communityService.selectFreeboardTotalCountByType(param);
+		
+		// 3. pagebar
+		String pagebar = CommunityUtils.getPagebar(cPage, cPage, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		
+		resultMap.put("freeboardStr", freeboardStr);
+		resultMap.put("totalContent", totalContent);
+		resultMap.put("pagebar", pagebar);
+		
+		return resultMap;
+	}
 	// 자유게시판-글쓰기
 	@GetMapping("/communityFreeboardForm.do")
 	public void communityFreeboardForm() {}
@@ -319,7 +365,7 @@ public class CommunityController {
 		String msg = result > 0 ? "댓글 등록 성공!" : "댓글 등록 실패!";
 		redirectAttributes.addFlashAttribute("msg", msg); 
 		
-		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + communityComment.getCommunityNo();
+		return "redirect:/community/communityFreeboardDetail/" + communityComment.getCommunityNo();
 	}
 	
 	// 자유게시판-댓글삭제
@@ -333,8 +379,9 @@ public class CommunityController {
 		String msg = result > 0 ? "댓글 삭제 성공!" : "댓글 삭제 실패!";
 		redirectAttributes.addFlashAttribute("msg", msg); 
 		
-		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + communityNo; 
+		return "redirect:/community/communityFreeboardDetail/" + communityNo; 
 	}
+
 	
 
 }

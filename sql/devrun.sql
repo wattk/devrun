@@ -18,6 +18,23 @@ CREATE TABLE "MEMBER" (
 	"INTRO"	VARCHAR2(1000)		NULL
 );
 
+select * from member;
+
+  	select
+	    c.community_no,
+	    c.title,
+	    m.nickname,
+	   	to_char(c.enroll_date, 'YYYY/MM/DD HH24:MI:SS') enroll_date,
+	   	c.like_count,
+	   	c.view_count
+	from
+	    community c join member m on
+	    c.member_no = m.member_no
+	where
+		page_code = 4 and
+        title like '%리%'
+	order by
+	    community_no desc;
 
 -- 회원 번호 시퀀스 생성
 create sequence seq_member_no;
@@ -245,6 +262,8 @@ COMMENT ON COLUMN "QUESTION_PRODUCT"."ENROLL_DATE" IS '등록일';
 COMMENT ON COLUMN "QUESTION_PRODUCT"."PRIVATE_YN" IS '비밀글 여부';
 COMMENT ON COLUMN "QUESTION_PRODUCT"."LEVEL" IS '문의 레벨';
 
+-- drop table WISHLIST;
+-- drop table MEMBER_WISHLIST;
 
 -- 상품 찜 테이블 생성
 -- ◆상품코드 외래키 제약 조건 부모 데이터 삭제 디폴트 상태
@@ -253,7 +272,7 @@ CREATE TABLE "WISHLIST" (
 	"PRODUCT_CODE"	VARCHAR2(100)		NOT NULL,
 	"REG_DATE"	DATE DEFAULT SYSDATE NOT NULL,
     CONSTRAINT PK_WISHLIST_WISHLIST_NO PRIMARY KEY(WISHLIST_NO),
-    constraint fk_WISHLIST_PRODUCT_CODE foreign key(PRODUCT_CODE) references PRODUCT(PRODUCT_CODE)
+    constraint fk_WISHLIST_PRODUCT_CODE foreign key(PRODUCT_CODE) references PRODUCT(PRODUCT_CODE) on delete cascade
 );
 
 -- 상품 찜 테이블 시퀀스 생성
@@ -270,8 +289,8 @@ CREATE TABLE "MEMBER_WISHLIST" (
 	"WISHLIST_NO"	NUMBER		NOT NULL,
 	"MEMBER_NO"	NUMBER		NOT NULL,
     constraint PK_MEMBER_WISHLIST primary key(WISHLIST_NO, MEMBER_NO),
-    constraint FK_MEMBER_WISHLIST_WISHLIST_NO foreign key(WISHLIST_NO) references WISHLIST(WISHLIST_NO),
-    constraint FK_MEMBER_WISHLIST_MEMBER_NO foreign key(MEMBER_NO) references MEMBER(MEMBER_NO)
+    constraint FK_MEMBER_WISHLIST_WISHLIST_NO foreign key(WISHLIST_NO) references WISHLIST(WISHLIST_NO)on delete cascade ,
+    constraint FK_MEMBER_WISHLIST_MEMBER_NO foreign key(MEMBER_NO) references MEMBER(MEMBER_NO) on delete cascade
 );
 
 -- 회원-상품 찜 테이블 코멘트 추가
@@ -287,7 +306,7 @@ CREATE TABLE "REVIEW" (
 	"PRODUCT_CODE"	VARCHAR2(100)		NOT NULL,
 	"CONTENT"	VARCHAR2(3000)		NOT NULL,
 	"LIKE_COUNT"	NUMBER	DEFAULT 0	NULL,
-	"REG_DATE"	DATE	DEFAULT SYSDATE	NOT NULL,
+	"REG_DATE"	DATE	DEFAULT current_date NOT NULL,
 	"RATE"	NUMBER	DEFAULT 5	NOT NULL,
     CONSTRAINT PK_REVIEW_REVIEW_NO PRIMARY KEY(REVIEW_NO),
     constraint FK_REVIEW_MEMBER_NO foreign key(MEMBER_NO) references MEMBER(MEMBER_NO),
@@ -600,7 +619,7 @@ CREATE TABLE "REPORT" (
     "REPORT_CONTENT" CLOB,
     "SIDENOTE" VARCHAR2(600),
 	"STATUS"	VARCHAR2(2)	DEFAULT 'PR' NOT NULL,
-	"REG_DATE"	DATE	DEFAULT SYSDATE NOT NULL,
+	"REG_DATE"	DATE	DEFAULT current_date NOT NULL,
 	"MEMBER_NO2" NUMBER,
     "CONFIRM_DATE" DATE,
     CONSTRAINT PK_REPORT_REPORT_NO PRIMARY KEY(REPORT_NO),
@@ -635,7 +654,7 @@ CREATE TABLE "CHAT_MEMBER" (
 	"MEMBER_NO"	NUMBER NOT NULL,
 	"MEMBER_NO2" NUMBER NULL,
 	"LAST_CHECK" NUMBER	DEFAULT 0	NULL,
-	"START_DATE" 	DATE DEFAULT SYSDATE	NULL,
+	"START_DATE" 	DATE DEFAULT CURRENT_DATE	NULL,
 	"END_DATE"	 DATE NULL,
     CONSTRAINT PK_CHAT_MEMBER_CHAT_ID_NO PRIMARY KEY(CHAT_ID, MEMBER_NO)
 );
@@ -971,7 +990,6 @@ CREATE TABLE "CART" (
 	"CART_NO"	NUMBER		NOT NULL,
 	"DETAIL_NO"	NUMBER		NOT NULL,
 	"AMOUNT"	NUMBER	DEFAULT 1	NOT NULL,
-	"PRICE"	NUMBER		NOT NULL,
 	"REG_DATE"	DATE	DEFAULT SYSDATE	NOT NULL,
 	CONSTRAINT PK_CART_CART_NO PRIMARY KEY(CART_NO),
 	CONSTRAINT FK_CART_DETAIL_NO FOREIGN KEY(DETAIL_NO) REFERENCES PRODUCT_DETAIL(DETAIL_NO)
@@ -981,7 +999,6 @@ CREATE TABLE "CART" (
 COMMENT ON COLUMN "CART"."CART_NO" IS '장바구니 번호';
 COMMENT ON COLUMN "CART"."DETAIL_NO" IS '상품 상세 번호';
 COMMENT ON COLUMN "CART"."AMOUNT" IS '상품수량';
-COMMENT ON COLUMN "CART"."PRICE" IS '장바구니 가격';
 COMMENT ON COLUMN "CART"."REG_DATE" IS '장바구니 등록일';
 
 --장바구니 테이블 SEQ
@@ -1136,6 +1153,11 @@ CREATE TABLE "MEMBER_CART" (
 COMMENT ON COLUMN "MEMBER_CART"."MEMBER_NO" IS '회원 번호';
 COMMENT ON COLUMN "MEMBER_CART"."CART_NO" IS '장바구니 번호';
 
+-- member_cart 제약조건 on delete cascade 추가
+--ALTER TABLE MEMBER_CART DROP CONSTRAINT FK_MEMBER_CART_MEMBER_NO;
+--ALTER TABLE MEMBER_CART ADD CONSTRAINT  FK_MEMBER_CART_MEMBER_NO FOREIGN KEY(MEMBER_NO) REFERENCES MEMBER(MEMBER_NO) ON DELETE CASCADE;
+--ALTER TABLE MEMBER_CART DROP CONSTRAINT FK_MEMBER_CART_CART_NO;
+--ALTER TABLE MEMBER_CART ADD CONSTRAINT  FK_MEMBER_CART_CART_NO FOREIGN KEY(CART_NO) REFERENCES CART(CART_NO) ON DELETE CASCADE;
 
 --===========================
 --주문 변동 기록 테이블 생성
@@ -1341,6 +1363,7 @@ values(
 );
     select * from QUESTION_PRODUCT order by enroll_date;
 
+
 	SELECT
 		  question_no
 		FROM (
@@ -1361,6 +1384,9 @@ from
     member
 where
     member_id like '%a%';
+
+
+alter table question_product rename column q_level to question_level;
 
 
 select
@@ -1441,22 +1467,55 @@ from(
                         on ccc.parent_category_code = ppc.parent_category_code;
 
 --주문-결제-상품 뷰 테이블 생성(혜진)
-create or replace view view_merchant_imp
-as
-select
-    m.merchant_uid,
-    m.member_no,
-    m.order_date,
-    m.order_status,
-    i.name,
-    i.amount,
-    p.thumbnail
-from
-    merchant m left join imp i
-        on m.merchant_uid = i.merchant_uid
-            left join merchant_detail md
-                on m.merchant_uid = md.merchant_uid
-                    left join product_detail pd
-                        on md.detail_no = pd.detail_no
-                            left join product p
-                                on pd.product_code = p.product_code
+--create or replace view view_merchant_imp
+--as
+--select
+--    m.merchant_uid,
+--    m.member_no,
+--    m.order_date,
+--    m.order_status,
+--    i.name,
+--    i.amount,
+--    p.thumbnail
+--from
+--    merchant m left join imp i
+--        on m.merchant_uid = i.merchant_uid
+--            left join merchant_detail md
+--                on m.merchant_uid = md.merchant_uid
+--                    left join product_detail pd
+--                        on md.detail_no = pd.detail_no
+--                            left join product p
+--                                on pd.product_code = p.product_code;
+
+--장바구니-상품 뷰 생성(혜진)
+--create or replace view view_cart_product
+--as
+--select
+--  		mc.member_no,
+--        p.product_code,
+--        p.name,
+--        p.thumbnail,
+--        p.price,
+--         c.reg_date,
+--  		c.cart_no,
+--        c.amount,
+--  		c.detail_no,
+--  		pd.option_no,
+--        pd.option_content
+--from
+--    member_cart mc left join cart c
+--        on mc.cart_no = c.cart_no
+--            left join product_detail pd
+--                on c.detail_no = pd.detail_no
+--                    left join product p
+--                        on pd.product_code = p.product_code;
+                                
+-- 다현 WISHLIST 테이블 조인한 거                                
+create view wishlistInfo
+as select
+    w.wishlist_no,
+    w.PRODUCT_CODE,
+    w.REG_DATE,
+    mw.MEMBER_NO
+from wishlist w join member_wishlist mw
+ on w.wishlist_no = mw.wishlist_no;                                

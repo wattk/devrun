@@ -20,7 +20,7 @@
   </insert>
   
   <update id="insertOrderDetail">
-  	<foreach collection="list" item="item" separator="," open="INSERT ALL" close="SELECT * FROM DUAL">
+  	<foreach collection="list" item="item" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
   		into
   			merchant_detail
   		values(
@@ -30,6 +30,18 @@
   		)
   	</foreach>
   </update>
+  
+  <delete id="deleteCart">
+  	delete from cart
+  	where
+  		detail_no in 
+  			(select 
+  				detail_no 
+  			from 
+  				merchant_detail md left join merchant m 
+  					on md.merchant_uid = m.merchant_uid 
+  			where m.merchant_uid = #{merchantUid})
+  </delete>
   
   <insert id="insertImp">
   	insert into imp
@@ -95,6 +107,8 @@
   		<foreach collection="list" item="item" open="(" separator="," close=")">
   			#{item}
   		</foreach>
+  	order by
+  		product_code
   </select>
   <resultMap type="product" id="productCollection">
   	<id column="product_code" property="productCode"/>
@@ -144,6 +158,8 @@
 	    view_merchant_imp
 	where
 	    member_no = #{memberNo}
+	order by
+		order_date desc
   </select>
     <resultMap type="merchantExt" id="orderCollection">
   	<id column="merchant_uid" property="merchantUid"/>
@@ -155,5 +171,32 @@
 	  	<result column="name" property="name"/>
 	  	<result column="amount" property="amount"/>
   	</association>
+  </resultMap>
+  
+  <select id="selectCartList" resultMap="cartCollection">
+  	select
+  		*
+  	from
+  		view_cart_product
+  	where
+  		member_no = #{memberNo}						
+  </select>
+  <resultMap type="cart" id="cartCollection">
+  	<id column="cart_no" property="cartNo"/>
+  	<id column="member_no" property="memberNo"/>
+  	<result column="detail_no" property="detailNo"/>
+  	<result column="amount" property="amount"/>
+  	<result column="reg_date" property="regDate"/>
+  	<association property="product" javaType="productEntity">
+  		<id column="product_code" property="productCode"/>
+  		<result column="name" property="name"/>
+  		<result column="price" property="price"/>
+  		<result column="thumbnail" property="thumbnail"/>
+  	</association>
+	<association property="productDetail" javaType="productDetail" >
+		<id column="detail_no" property="detailNo"/>
+		<result column="option_no" property="optionNo"/>
+		<result column="option_content" property="optionContent"/>
+	</association>
   </resultMap>
 </mapper>

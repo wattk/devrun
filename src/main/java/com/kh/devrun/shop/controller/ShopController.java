@@ -2,6 +2,7 @@ package com.kh.devrun.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.common.shopUtils;
 import com.kh.devrun.member.model.vo.Member;
+import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
@@ -38,7 +40,10 @@ import com.kh.devrun.report.model.service.ReportService;
 import com.kh.devrun.report.model.vo.Report;
 import com.kh.devrun.shop.model.service.ShopService;
 import com.kh.devrun.shop.model.vo.Attachment;
+import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
+import com.kh.devrun.shop.model.vo.Wishlist;
+import com.kh.devrun.shop.model.vo.WishlistProduct;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,6 +60,9 @@ public class ShopController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private OrderService orderService;
 
 	@Autowired
 	ServletContext application;
@@ -75,6 +83,21 @@ public class ShopController {
 	// 검색 페이지로 이동
 	@GetMapping("/shopSearch.do")
 	public void shopSearch() {
+	}
+
+	@GetMapping("wishlist")
+	public String wishlist(Authentication authentication, Model model) {
+
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
+		
+		// 위시리스트 조회해오기
+		List<WishlistProduct> wishlist = shopService.selectAllWishlist(memberNo);
+		log.debug("whislist 잘 받앗? : {}", wishlist);
+		
+		model.addAttribute("wishlist",wishlist);
+		model.addAttribute("loginMember",loginMember);
+		return "shop/wishlist";
 	}
 
 	// 상품 사이드 메뉴에서 전체보기 클릭 시
@@ -121,6 +144,7 @@ public class ShopController {
 		log.debug("orderBy 값 체크: {}", orderBy);
 		String reviewSb = null;
 		Member member = null;
+		int memberNo = -1;
 
 		// getReivew 메소드 인자들
 		String url = request.getContextPath();
@@ -141,12 +165,25 @@ public class ShopController {
 		map.put("reviewTotal", reviewTotal);
 		map.put("reviewSb", reviewSb);
 
+		// 위시리스트 체크
+		int wishCheckYn = 0;
+		if (authentication != null) {
+			memberNo = member.getMemberNo();
+		}
+		Map<String, Object> param2 = new HashMap<>();
+		param2.put("productCode", productCode);
+		param2.put("memberNo", memberNo);
+
+		wishCheckYn = shopService.didIHitWishlist(param2);
+		log.debug("wishCheckYn 이게 1이면 위시리스트에 담겼다는 것 : {}", wishCheckYn);
+		map.put("wishCheckYn", wishCheckYn);
+
 		return map;
 	}
 
 	// 상세페이지를 이동 시
 	@GetMapping("/itemDetail/{productCode}")
-	public String selectOneItem(@PathVariable String productCode, Model model) {
+	public String selectOneItem(@PathVariable String productCode, Model model, Authentication authentication) {
 
 		// 상품 조회
 		ProductEx product = productService.selectOneItem(productCode);
@@ -169,6 +206,23 @@ public class ShopController {
 
 		Collections.shuffle(recommendation);
 		model.addAttribute("recommendation", recommendation);
+
+		// 장바구니 좋아요 여부
+
+		if (authentication != null) {
+
+			int memberNo = ((Member) authentication.getPrincipal()).getMemberNo();
+			Map<String, Object> cartParam = new HashMap<>();
+			cartParam.put("memberNo", memberNo);
+			cartParam.put("productCode", productCode);
+
+			List<Integer> cartValidList = productService.selectCartValidList(cartParam);
+			String cartValid = "";
+			for (int i : cartValidList) {
+				cartValid += i + ",";
+			}
+			model.addAttribute("cartValid", cartValid);
+		}
 
 		return "shop/itemDetail";
 	}
@@ -247,7 +301,8 @@ public class ShopController {
 	// 리뷰 좋아요 추가
 	@ResponseBody
 	@GetMapping("/reviewLikeAdd")
-	public Map<String,Object> reviewLikeAdd(@RequestParam int reviewNo, @RequestParam int memberNo, @RequestParam String productCode) {
+	public Map<String, Object> reviewLikeAdd(@RequestParam int reviewNo, @RequestParam int memberNo,
+			@RequestParam String productCode) {
 
 		Map<String, Object> param = new HashMap<>();
 		param.put("reviewNo", reviewNo);
@@ -256,21 +311,21 @@ public class ShopController {
 
 		int result = shopService.reviewLikeAdd(param);
 		log.debug("리뷰 좋아요 잘 추가? : {}", result);
-		
-		//좋아요 추가하고 새로 추가된 좋아요 갯수 받아오기
+
+		// 좋아요 추가하고 새로 추가된 좋아요 갯수 받아오기
 		int newCountLikes = shopService.refreshCountLikes(reviewNo);
-		
-		Map<String,Object>map = new HashMap<>();
+
+		Map<String, Object> map = new HashMap<>();
 		map.put("result", result);
 		map.put("newCountLikes", newCountLikes);
-		
+
 		return map;
 	}
 
 	// 리뷰 좋아요 삭제
 	@ResponseBody
 	@GetMapping("/reviewLikeDelete")
-	public Map<String,Object> reviewLikeDelete(@RequestParam int reviewNo, @RequestParam int memberNo,
+	public Map<String, Object> reviewLikeDelete(@RequestParam int reviewNo, @RequestParam int memberNo,
 			@RequestParam String productCode) {
 
 		Map<String, Object> param = new HashMap<>();
@@ -280,20 +335,41 @@ public class ShopController {
 
 		int result = shopService.reviewLikeDelete(param);
 		log.debug("리뷰 좋아요 잘 삭제? : {}", result);
-		
-		//좋아요 삭제하고 새로 추가된 좋아요 갯수 받아오기
+
+		// 좋아요 삭제하고 새로 추가된 좋아요 갯수 받아오기
 		int newCountLikes = shopService.refreshCountLikes(reviewNo);
 
-		Map<String,Object>map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("result", result);
 		map.put("newCountLikes", newCountLikes);
-		
+
 		return map;
 	}
-	
-	
-	
-	
+
+	// 위시리스트 추가
+	@ResponseBody
+	@GetMapping("/wishlistAdd")
+	public int wishlistAdd(Wishlist wishlist, @RequestParam int memberNo) {
+		int result = shopService.wishlistAdd(wishlist, memberNo);
+		log.debug("위시리스트 잘 추가? : {}", result);
+		return result;
+	}
+
+	// 위시리스트 삭제
+	@ResponseBody
+	@GetMapping("/wishlistDelete")
+	public int wishlistDelete(@RequestParam String productCode, @RequestParam int memberNo) {
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("productCode", productCode);
+		param.put("memberNo", memberNo);
+
+		int result = shopService.wishlistDelete(param);
+		log.debug("위시리스트 잘 삭제? : {}", result);
+
+		return result;
+	}
+
 //----------------------------------------------------------구분선---------------------------------------------------------------
 
 	/**
@@ -386,6 +462,16 @@ public class ShopController {
 
 		// 2. 전체 게시물 수 totalContent
 		url = request.getRequestURI();
+		if(keyword != null) {
+			url += "&keyword="+keyword;
+		}
+		
+		if(!childCategoryCode.isEmpty()) {
+			for(String code : childCategoryCode) {
+				url += "&childCategoryCode="+code;
+			}
+		}
+		
 		int totalContent = promotionService.selectProductTotalCount(param);
 		log.debug("url = {}",url);
 		// 3. pagebar
@@ -399,6 +485,33 @@ public class ShopController {
 		return resultMap;
 	}
 
+	/* 장바구니 추가 */
+	@PostMapping("/cartEnroll")
+	@ResponseBody
+	public int cartEnroll(Cart cart) {
+		log.debug("cart = {}", cart);
+
+		int result = shopService.insertCart(cart);
+		log.debug("result = {}", result);
+
+		return result;
+	}
+
+	
+	@PostMapping("/cartDelete")
+	@ResponseBody
+	public List<Cart> cartDelete(@RequestParam(value="cartNoArr[]") List<Integer> cartNoArr, Authentication authentication) {
+		log.debug("cartNoArr = {}", cartNoArr);
+		int result = shopService.deleteCart(cartNoArr); 
+		List<Cart> list = new ArrayList<>();
+		
+		if(result > 0){
+			Member member = (Member) authentication.getPrincipal();
+			list = orderService.selectCartList(member.getMemberNo());
+		}
+		
+		return list;
+	}
 	/**
 	 * 혜진 작업 끝
 	 * 

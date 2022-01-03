@@ -1,7 +1,6 @@
 package com.kh.devrun.order.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.mail.Address;
 
@@ -21,9 +20,9 @@ import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
-import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.shop.model.vo.Cart;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,17 +40,28 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 
+	@GetMapping("/cart.do")
+	public void cart(Authentication authentication, Model model) {
+		Member member = (Member) authentication.getPrincipal();
+		
+		List<Cart> list = orderService.selectCartList(member.getMemberNo());
+		log.debug("cartList = {}", list);
+		model.addAttribute("list", list);
+		
+	}
 	
 	@GetMapping("/order")
-	public String order(@RequestParam(value="detailNo") int[] detailNo, Model model, Authentication authentication) {
-		log.debug("productCode = {}", detailNo);
+	public String order(Model model, Authentication authentication) {
+		//@RequestParam(value="detailNo") int[] detailNo,@RequestParam(value="amount") int[] amount, 
+		//log.debug("productCode = {}", detailNo);
 		Member member = (Member)authentication.getPrincipal();
-		List<Product> productList = productService.selectProductByDetailNo(detailNo);
+		//List<Product> productList = productService.selectProductByDetailNo(detailNo);
 		List<Address> addressList = memberService.selectAddressListByMemberNo(member.getMemberNo());
-		log.debug("product = {}", productList);
-		model.addAttribute("productList", productList);
+		//log.debug("product = {}", productList);
+		//model.addAttribute("productList", productList);
+		log.debug("addresssList = {}", addressList);
 		model.addAttribute("addressList", addressList);
-		model.addAttribute("detailNo", detailNo);
+		//model.addAttribute("detailNo", detailNo);
 		
 		return "/order/order";
 	}
@@ -75,4 +85,6 @@ public class OrderController {
 		
 		return url;
 	}
+	
+
 }

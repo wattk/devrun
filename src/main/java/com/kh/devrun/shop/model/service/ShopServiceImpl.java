@@ -14,7 +14,10 @@ import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.dao.ShopDao;
 import com.kh.devrun.shop.model.vo.Attachment;
+import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
+import com.kh.devrun.shop.model.vo.Wishlist;
+import com.kh.devrun.shop.model.vo.WishlistProduct;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +27,39 @@ public class ShopServiceImpl implements ShopService {
 
 	@Autowired
 	private ShopDao shopDao;
+	
+	
+	
+//--------------------------------------------------------구분선---------------------------------------------------------
+
+		/* 혜진 장바구니 시작 */
+		@Override
+		@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+		public int insertCart(Cart cart) {
+			int result = 0;
+
+			try {
+				result = shopDao.insertCart(cart);
+				result = shopDao.insertMemberCart(cart);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+
+			return result;
+		}
+
+		@Override
+		public int deleteCart(List<Integer> cartNoArr) {
+			int result = shopDao.deleteCart(cartNoArr);
+			
+			return result;
+			
+		}
+
+		/* 혜진 장바구니 끝 */
+	
+//--------------------------------------------------------구분선---------------------------------------------------------
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
@@ -35,7 +71,7 @@ public class ShopServiceImpl implements ShopService {
 			result = shopDao.insertReview(review);
 
 			Attachment attach = review.getAttach();
-			log.debug("attach 없나? : {}", attach);
+
 			if (attach != null) {
 				attach.setReviewNo(review.getReviewNo());
 				result = shopDao.insertAttach(attach);
@@ -129,11 +165,70 @@ public class ShopServiceImpl implements ShopService {
 		}
 		return result2;
 	}
-	
-	//좋아요 변화 이후 새로 카운팅
+
+	// 좋아요 변화 이후 새로 카운팅
 	@Override
 	public int refreshCountLikes(int reviewNo) {
 		return shopDao.refreshCountLikes(reviewNo);
 	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public int wishlistAdd(Wishlist wishlist, int memberNo) {
+		int result = 0;
+		int result2 = 0;
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
+
+		try {
+
+			result = shopDao.insertWishlist(wishlist);
+			int wishlistNo = wishlist.getWishlistNo();
+			param.put("wishlistNo", wishlistNo);
+
+			if (result == 1) {
+				result2 = shopDao.insertMemberWishlist(param);
+
+			}
+		} catch (Exception e) {
+			log.debug(e.getMessage());
+			throw e;
+		}
+
+		return result2;
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public int wishlistDelete(Map<String, Object> param) {
+		int result = 0;
+		
+		log.debug("param이 null 이라고? : {}", param);
+		
+		try {
+			// wishlistNo조회
+			int wishlistNo = shopDao.findWishlistNo(param);
+			log.debug("삭제를 위한 wishlistNo : {}", wishlistNo);
+			result = shopDao.wishlistDelete(wishlistNo);
+
+		} catch (Exception e) {
+			log.debug(e.getMessage());
+			throw e;
+		}
+
+		return result;
+	}
+	
+	@Override
+	public int didIHitWishlist(Map<String, Object> param) {
+		return shopDao.didIHitWishlist(param);
+	}
+	
+	@Override
+	public List<WishlistProduct> selectAllWishlist(int memberNo) {
+		return shopDao.selectAllWishlist(memberNo);
+	}
+
+
 
 }

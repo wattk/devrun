@@ -20,15 +20,65 @@
 <script src="${pageContext.request.contextPath}/resources/js/shop/order.js"></script>
 <sec:authentication property="principal" var="member"/>
 
-<%
-	List<Product> productList = (List<Product>)request.getAttribute("productList");
-	int totalPrice = 0;
-	for(int i = 0; i < productList.size(); i++){
-		totalPrice += productList.get(i).getPrice();
+<script>
+
+$(document).ready((e)=>{
+	
+	const item = JSON.parse(localStorage.getItem("cartItems"));
+	console.log(item);
+	
+	if(item.length == 1){
+		$(".merchant-title").text(item[0].name);
+		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].productCode}.png" class="img-b w-25 p-2">`);
 	}
-	System.out.println(totalPrice);
-	pageContext.setAttribute("totalPrice", totalPrice);
-%>
+	else{
+		$(".merchant-title").text(item[0].name+" 외 "+(item.length - 1)+"건");
+		
+		if(item.length < 3){
+			item.forEach((i, index)=>{
+				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[index].productCode}.png" class="img-b w-25 p-2">`);
+			});
+		}
+		else{
+			for(let i = 0; i < 3; i++){
+				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[i].productCode}.png" class="img-b w-25 p-2">`);
+			}
+			$(".thumbnail-box").append(`<div class="img-b w-25 p-2">...</div>`);
+			
+		}
+	}
+	
+	let price = 0;
+	item.forEach((i, index)=>{
+		price += item[index].price*item[index].amount;
+		$(document.orderFrm).append(`<input type="hidden" name="detailNo" value="\${item[index].detailNo}" data-buy-count="\${item[index].amount}"/>`);
+	});
+	console.log(price);
+	$("#totalWithoutShipping").html(`&#8361;\${price.toLocaleString()}`);
+	$(document.orderFrm).append(`<input type="hidden" name="productPrice" value="\${price}"/>
+		<input type="hidden" name="shippingFee" value="\${price >= 50000? 0 : 3000}"/>
+		<input type="hidden" name="totalPrice" value="\${price + (price >= 50000? 0 : 3000)-0}"/>
+	`);
+	
+	if(price > 50000){
+		$("#shippingFee").html("&#8361;0");
+		$("#orderPrice").html("&#8361;"+(price*(0.9)).toLocaleString());
+		$("#vat").html("&#8361;"+(price*(0.1)).toLocaleString());
+		$("#totalPrice").html("&#8361;"+price.toLocaleString());
+		$("#priceInput").html("&#8361;"+price.toLocaleString());
+	}
+	else{
+		$("#shippingFee").html("&#8361;3,000");
+		$("#orderPrice").html("&#8361;"+((price+3000)*(0.9)).toLocaleString());
+		$("#vat").html("&#8361;"+((price+3000)*(0.1)).toLocaleString());
+		$("#totalPrice").html("&#8361;"+(price+3000).toLocaleString());
+		$("#priceInput").html("&#8361;"+(price+3000).toLocaleString());
+	}
+	
+	//사용한 후에는 스토리지에서 지워줄 것
+	localStorage.removeItem("cartItems");
+});
+</script>
 
 <div class="row p-5 d-flex justify-content-around order-container">
   <div class="col-7">
@@ -36,7 +86,7 @@
 	  <div class="card">
 	    <div class="card-header" id="headingOne">
 	      <h5 class="mb-0">
-	        <button class="btn btn-link order-btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+	        <button id="orderOneBtn" class="btn btn-link order-btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 		        <span class="badge badge-dark">1</span>
 		        배송 정보
 	        </button>
@@ -56,7 +106,7 @@
 	      	<div class="input-group mb-3 w-75">
 			  <input type="text" id="addInput" class="add-input form-control" placeholder="주소" aria-describedby="addInputBtn" value="${addressList[0].address1}">
 			  <div class="input-group-append w-10">
-			    <span class="input-group-text " id="addInputBtn">수정</span>
+			    <span class="input-group-text cursor" id="addInputBtn">수정</span>
 			  </div>
 			</div>
 			<strong>배송 옵션</strong>
@@ -64,7 +114,8 @@
 				<i class="fas fa-truck"><strong>일반 배송</strong></i>
 				<p class="pt-2 mb-0">택배 배송 : 출고 예정일 3~5일 이내에 배송되며, 2박스 이상으로 분리 배송될 수 있습니다.</p>
 			</div>
-		    <button 
+		    <button
+		      id="orderTwoBtn"
 		  	  type="button" 
 		  	  id="orderNextBtn" 
 		  	  class="btn btn-primary w-100 h-50 mt-2 order-btn" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
@@ -91,12 +142,13 @@
 	    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#orderAccordion">
 	      <div class="card-body">
 	      	<ul class="list-group">
-			  <li class="address-item list-group-item">이름 : <input type="text" class="order-form-control" data-target=".name-input" value="${member.name}" name="" id="" /></li>
-			  <li class="address-item list-group-item">이메일 : <input type="text" class="order-form-control" data-target=".email-input" value="${member.email}" name="" id="" /></li>
-			  <li class="address-item list-group-item">전화번호 : <input type="text" class="order-form-control" data-target=".phone-input" value="${member.phone}" name="" id="" /></li>
-			  <li class="address-item list-group-item">상세주소 : <input type="text" id="addDetailInput" class="add-detail-input order-form-control" data-target=".add-detail-input" value="${addressList[0].address2}" name="" id="" /></li>
+			  <li class="address-item list-group-item">이름 : <input type="text" class="order-form-control" data-target=".name-input" value="${member.name}" name="" id="nameInput" /></li>
+			  <li class="address-item list-group-item">이메일 : <input type="text" class="order-form-control" data-target=".email-input" value="${member.email}" name="" id="emailInput" /></li>
+			  <li class="address-item list-group-item">전화번호 : <input type="text" class="order-form-control" data-target=".phone-input" value="${member.phone}" name="" id="phoneInput" /></li>
+			  <li class="address-item list-group-item">상세주소 : <input type="text" id="addDetailInput" class="add-detail-input order-form-control" data-target=".add-detail-input" value="${addressList[0].address2}" name="" id="addDetailInput" /></li>
 			</ul>
 		    <button 
+		      id="orderThreeBtn"
 		  	  type="button" 
 		  	  id="orderNextBtn" 
 		  	  class="btn btn-primary w-100 h-50 mt-2 order-btn" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
@@ -129,33 +181,9 @@
   </div>
   <div class="col-4 m-3 pl-3 pt-5 d-flex flex-column justify-content-start">
   	<strong>주문 정보</strong>
-  	<c:choose>
-  	 <c:when test="${productList.size() > 3}">
-	  	<span class="merchant-title">${productList[0].name} 외 ${productList.size() -1}건</span>
-	  	<div class="row d-flex justify-content-start">
-	  	<c:forEach items="${productList}" var="item" varStatus="vs" begin="0" end="2">
-  			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
-  		</c:forEach>
-  			<div class="img-b w-25 p-2">...</div>
-	  	</div>
-  	 </c:when>
-  	 <c:when test="${productList.size() == 1}">
-	  	<span class="merchant-title">${productList[0].name}</span>
-	  	<div class="row d-flex justify-content-start">
-	  	<c:forEach items="${productList}" var="item" varStatus="vs">
-  			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
-  		</c:forEach>
-	  	</div>
-  	 </c:when>
-  	 <c:otherwise>
-	  	<span class="merchant-title">${productList[0].name} 외 ${productList.size() -1}건</span>
-	  	<div class="row d-flex justify-content-start">
-	  	<c:forEach items="${productList}" var="item" varStatus="vs">
-  			<img src="${pageContext.request.contextPath }/resources/upload/product/${item.thumbnail}" alt="" class="img-b w-25 p-2">
-  		</c:forEach>
-	  	</div>
-  	 </c:otherwise>
-  	</c:choose>
+  	<span class="merchant-title"></span>
+  	<div class="thumbnail-box row d-flex justify-content-start">
+  	</div>
     <hr class="w-100"/>
 	<table class="table order-tbl">
 	  <tbody>
@@ -164,51 +192,21 @@
 	  	</tr>
 	    <tr>
 	      <td>주문 금액(배송비 제외)</td>
-	      <td class="text-right"><fmt:formatNumber type="currency">${totalPrice}</fmt:formatNumber></td>
+	      <td id="totalWithoutShipping" class="text-right"></td>
 	    </tr>
 	    <tr>
 	      <td>전체 배송비</td>
-	      	<c:choose>
-	      		<c:when test="${totalPrice >= 50000}">
-			      <td id="productPrice" class="text-right">
-	      			&#8361;0
-				  </td>
-	      		</c:when>
-	      		<c:otherwise>
-			      <td id="productPrice" class="text-right">
-	      			&#8361;3,000
-				  </td>
-	      		</c:otherwise>
-	      	</c:choose>
+	      <td id="shippingFee" class="text-right">
+		  </td>
 	    </tr>
 	    <tr>
 	      <td>주문 금액(부가세 제외)</td>
-	      <td class="text-right">
-	      	<fmt:formatNumber type="currency">
-		      	<c:choose>
-		      		<c:when test="${totalPrice >= 50000}">
-		      			${totalPrice*0.9}
-		      		</c:when>
-		      		<c:otherwise>
-		      			${(totalPrice+3000)*0.9}
-		      		</c:otherwise>
-		      	</c:choose>
-	      	</fmt:formatNumber>
+	      <td id="orderPrice" class="text-right">
 	      </td>
 	    </tr>
 	    <tr>
 	      <td>부가세(10%)</td>
-	      <td class="text-right">
-	      	<fmt:formatNumber type="currency">
-	      		<c:choose>
-		      		<c:when test="${totalPrice >= 50000}">
-		      			${totalPrice*0.1}
-		      		</c:when>
-		      		<c:otherwise>
-		      			${(totalPrice+3000)*0.1}
-		      		</c:otherwise>
-		      	</c:choose>
-	      	</fmt:formatNumber>
+	      <td id="vat" class="text-right">
 	      </td>
 	    </tr>
 	  </tbody>
@@ -221,16 +219,6 @@
 			총 주문 금액
 	      </th>
 	      <td class="text-right" id="totalPrice">
-	      	<fmt:formatNumber type="currency">
-	      		<c:choose>
-		      		<c:when test="${totalPrice >= 50000}">
-		      			${totalPrice}
-		      		</c:when>
-		      		<c:otherwise>
-		      			${totalPrice+3000}
-		      		</c:otherwise>
-		      	</c:choose>
-	      	</fmt:formatNumber>
 		  </td>
 	    </tr>
 	    <tr>
@@ -247,9 +235,9 @@
 	      </th>
 	      <td class="w-50">
 	      	<div class="input-group mb-3 ">
-			  <input type="number" id="pointValue" class="form-control" placeholder="사용 포인트" aria-describedby="basic-addon2">
+			  <input type="number" id="pointValue" class="form-control" placeholder="사용 포인트" aria-describedby="pointBtn" max="${member.point}">
 			  <div class="input-group-append w-10">
-			    <span class="input-group-text " id="basic-addon2">적용</span>
+			    <span class="input-group-text cursor" id="pointBtn">적용</span>
 			  </div>
 			</div>
 	      </td>
@@ -262,12 +250,6 @@
 <form:form name="orderFrm">
 	<input type="hidden" name="memberNo" value="${member.memberNo}" />
 	<input type="hidden" name="pointValue" value="0"/>
-	<input type="hidden" name="productPrice" value="${totalPrice}"/>
-	<input type="hidden" name="shippingFee" value="${totalPrice >= 50000? 0 : 3000}"/>
-	<input type="hidden" name="totalPrice" value="${totalPrice + (totalPrice >= 50000? 0 : 3000)-0}"/>
-	<c:forEach items="${detailNo}" var="no" varStatus="vs" >
-		<input type="hidden" name="detailNo" value="${no}"/>
-	</c:forEach>
 </form:form>
 <script>
 
@@ -294,10 +276,46 @@ $(".order-form-control").change((e)=>{
 	$(target).text(value);
 });
 
+//사용 포인트 입력 시 결제 금액 변경
+$("#pointBtn").click((e)=>{
+	const use = $(e.target).val();
+	$("[name=pointValue]").val(use);
+	const total = $("[name=totalPrice]").val() - use;
+	$("[name=totalPrice]").val(total);
+	$("#priceInput").text(total);
+});
 
 //결제창 띄우기
 $("#orderPaymentBtn").click((e)=>{
 	console.log("결제 이벤트 발생");
+	
+	//주소 및 상세정보(이메일 제외) 미입력시 결제 불가
+	if($("#addInput").val() == ''){
+		alert("주소를 입력해주세요.");
+		$("#orderOneBtn").click();
+		$("#addInput").focus();
+		return;
+	}
+	
+	if($("#nameInput").val() == ''){
+		alert("수령인을 입력해 주세요.");
+		$("#orderTwoBtn").click();
+		$("#nameInput").focus();
+		return;
+	}
+	if($("#phoneInput").val() == ''){
+		alert("연락처를 입력해 주세요.");
+		$("#orderTwoBtn").click();
+		$("#phoneInput").focus();
+		return;
+	}
+	if($("#addDetailInput").val() == ''){
+		alert("상세주소를 입력해 주세요.");
+		$("#orderTwoBtn").click();
+		$("#addDetailInput").focus();
+		return;
+	}
+	
 	const merchantUid = 'MERC_' + new Date().getTime();
 
 	
@@ -317,7 +335,7 @@ $("#orderPaymentBtn").click((e)=>{
 						.map((no, i)=>{
 							var reformat = {detailNo : no.value,
 											merchantUid : merchantUid,
-											buyCount : 1};
+											buyCount : $(no).data("buyCount")};
 							return reformat;
 							});
 	obj.merchantDetailList = detailNo;
@@ -350,7 +368,8 @@ function iamport(data){
 	    pay_method : 'card',
 	    merchant_uid : data.merchantUid,
 	    name : $(".merchant-title").text(), //결제창에서 보여질 이름
-	    amount : 100, //실제 결제되는 가격
+	    amount : 200, //실제 결제되는 가격
+	    //amount : $("[name=totalPrice]").val(), //실제 결제되는 가격
 	    buyer_email : $(".email-input").text(),
 	    buyer_name : $(".name-input").text(),
 	    buyer_tel : $(".phone-input").text(),
@@ -407,20 +426,5 @@ function iamport(data){
 	});
 }
 	
-
-
-$(document).ready((e)=>{
-	let today = new Date();
-	const year = today.getFullYear(); 
-	const month = today.getMonth() + 1; 
-	const date = today.getDate();
-	today = (year-2000) + "-" + month + "-" + (date+1);
-	
-	console.log(today, typeof today);
-	$("#releaseDate").text(today + " 09:00 ~ 21:00");
-	
-	const price = $("#totalPrice").text();
-	$("#priceInput").text(price);
-});
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

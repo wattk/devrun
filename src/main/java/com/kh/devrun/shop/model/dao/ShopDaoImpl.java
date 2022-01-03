@@ -9,9 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductEntity;
-import com.kh.devrun.shop.model.service.ShopServiceImpl;
 import com.kh.devrun.shop.model.vo.Attachment;
+import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
+import com.kh.devrun.shop.model.vo.Wishlist;
+import com.kh.devrun.shop.model.vo.WishlistProduct;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +23,35 @@ public class ShopDaoImpl implements ShopDao {
 
 	@Autowired
 	private SqlSession session;
+
+	/* 혜진 장바구니 시작 */
+	@Override
+	public int insertCart(Cart cart) {
+		return session.insert("shop.insertCart", cart);
+	}
+
+	@Override
+	public int insertMemberCart(Cart cart) {
+		return session.insert("shop.insertMemberCart", cart);
+	}
+	
+	@Override
+	public int deleteCart(List<Integer> cartNoArr) {
+		return session.delete("shop.deleteCart", cartNoArr);
+	}
+
+	/* 혜진 장바구니 끝 */
+
+	@Override
+	public int findWishlistNo(Map<String, Object> param) {
+		return session.selectOne("shop.findWishlistNo", param);
+	}
+
+	@Override
+	public int wishlistDelete(int wishlistNo) {
+		return session.delete("shop.wishlistDelete", wishlistNo);
+	}
+
 
 	@Override
 	public int insertReview(Review review) {
@@ -101,5 +132,26 @@ public class ShopDaoImpl implements ShopDao {
 	public int refreshCountLikes(int reviewNo) {
 		return session.selectOne("shop.refreshCountLike", reviewNo);
 	}
+
+	@Override
+	public int insertWishlist(Wishlist wishlist) {
+		return session.insert("shop.wishlistAdd", wishlist);
+	}
+
+	@Override
+	public int insertMemberWishlist(Map<String, Object> param) {
+		return session.insert("shop.insertMemberWishlist", param);
+	}
+
+	@Override
+	public int didIHitWishlist(Map<String, Object> param) {
+		return session.selectOne("shop.didIHitWishlist", param);
+	}
+
+	@Override
+	public List<WishlistProduct> selectAllWishlist(int memberNo) {
+		return session.selectList("shop.selectAllWishlist", memberNo);
+	}
+
 
 }

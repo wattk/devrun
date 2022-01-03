@@ -1,6 +1,7 @@
 package com.kh.devrun.order.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -12,6 +13,7 @@ import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.shop.model.vo.Cart;
 
 @Repository
 public class OrderDaoImpl implements OrderDao {
@@ -27,6 +29,11 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public int insertOrderDetail(List<MerchantDetail> list) {
 		return session.insert("order.insertOrderDetail", list);
+	}
+	
+	@Override
+	public int deleteCart(Map<String, Object> param) {
+		return session.delete("order.deleteCart", param);
 	}
 
 	@Override
@@ -63,6 +70,11 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public List<MerchantExt> selectOrderList(int memberNo) {
 		return session.selectList("order.selectOrder", memberNo);
+	}
+
+	@Override
+	public List<Cart> selectCartList(int memberNo) {
+		return session.selectList("order.selectCartList", memberNo);
 	}
 	
 	

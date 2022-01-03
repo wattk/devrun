@@ -1,6 +1,7 @@
 package com.kh.devrun.community.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -84,6 +85,21 @@ public class CommunityDaoImpl implements CommunityDao {
 	public int viewCount(int communityNo) {
 		return session.update("community.viewCount", communityNo);
 	}
+
+	@Override
+	public List<CommunityEntity> selectFreeboardListByType(Map<String, Object> param, int offset, int limit) {
+		// mybatis가 제공하는 RowBounds 객체를 하나 제공한다. -- 페이징 처리를 위해서
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectFreeboardListByType", param, rowBounds);
+	}
+
+	@Override
+	public int selectFreeboardTotalCountByType(Map<String, Object> param) {
+		return session.selectOne("community.selectFreeboardTotalCountByType", param);
+	}
+
+
+
 
 
 

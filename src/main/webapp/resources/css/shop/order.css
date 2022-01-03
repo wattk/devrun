@@ -4,9 +4,15 @@
 	font-size : x-large;
 }
 
+#allDeleteBtn{
+	font-size : x-small;
+	margin-left : 15px;
+}
+
 .order-tbl td, .order-tbl th{
 	border-top: 0;
 }
+
 .card-header{
 	background-color: inherit;
 }
