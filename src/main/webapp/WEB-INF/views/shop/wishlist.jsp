@@ -43,10 +43,10 @@
 		      	<i class="wish-icon fas fa-cart-plus pr-3"></i>
 		      </td>
 		      <td colspan="" class="align-middle ">
-		      	<i class="wish-icon fas fa-trash-alt wishDeleteBtn" data-product-code="${wl.productCode}"></i>
+		      	<i class="wish-icon fas fa-trash-alt wishDeleteBtn"></i>
 		      </td>
-		      <input type="hidden" name="productCode" value="{wl.productCode}" />
-		      <input type="hidden" name="wishlistNo" value="{wl.wishlistNo}" />
+		      <input type="hidden" id= "productCode" name="productCode" value="${wl.productCode}" />
+		      <input type="hidden" id="wishlistNo" name="wishlistNo" value="${wl.wishlistNo}" />
 		    </tr>
 		  <!-- 위시리스트 한 건 끝 -->
 	  </c:forEach>
@@ -96,9 +96,11 @@ function numberWithCommas(x) {
 // 위시리스트 삭제 비동기 시작
 $(document).on('click', '.wishDeleteBtn', function(e) {
 	const memberNo = ${loginMember.memberNo};
-	const productCode = (e.target).dataset.productCode;
+	const productCode = $('#productCode').val();
 	
+	console.log(productCode);
 	if(confirm("위시리스트를 삭제하시겠습니까?")){
+		
 		
 	 	$.ajax({
 			
