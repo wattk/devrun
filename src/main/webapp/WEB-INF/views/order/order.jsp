@@ -368,7 +368,8 @@ function iamport(data){
 	    pay_method : 'card',
 	    merchant_uid : data.merchantUid,
 	    name : $(".merchant-title").text(), //결제창에서 보여질 이름
-	    amount : $("[name=totalPrice]").val(), //실제 결제되는 가격
+	    amount : 200, //실제 결제되는 가격
+	    //amount : $("[name=totalPrice]").val(), //실제 결제되는 가격
 	    buyer_email : $(".email-input").text(),
 	    buyer_name : $(".name-input").text(),
 	    buyer_tel : $(".phone-input").text(),
