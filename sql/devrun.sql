@@ -1494,3 +1494,23 @@ as select
     mw.MEMBER_NO
 from wishlist w join member_wishlist mw
  on w.wishlist_no = mw.wishlist_no;                                
+
+
+-- 다현 wishlist_product 테이블 조인
+create view wishProduct    
+as select
+    wish.*,
+    p.name,
+    p.price,
+    p.thumbnail,
+    p.status
+from    
+    (select
+    w.wishlist_no,
+    w.PRODUCT_CODE,
+    w.REG_DATE,
+    mw.MEMBER_NO
+        from wishlist w join member_wishlist mw
+         on w.wishlist_no = mw.wishlist_no)wish join product p
+            on wish.product_code = p.product_code
+order by wish.reg_date desc; 

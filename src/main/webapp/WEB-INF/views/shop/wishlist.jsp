@@ -15,7 +15,7 @@
   	<h4>위시리스트</h4>
   	<table class="table m-3 pr-3">
 	  <tbody>
-	  <c:forEach items="${wishlist}" var="wl" varStatus="">
+	  <c:forEach items="${wishlist}" var="wl" varStatus="vs">
 		  <!-- 위시리스트 한 건 시작 -->
 		    <tr>
 		      <td>
@@ -27,7 +27,7 @@
 		      	alt="" class="img-b w-75">
 			  </td>
 		      <td class="col-4 align-middle">${wl.name}</td>
-		      <td class="col-3 align-middle">
+		      <td class="col-3 align-middle" id="wishPrice${vs.count}">
 		      <fmt:formatNumber	value="${wl.price}" pattern="#,###,### 원" /></td>
 		      <td colspan="" class="align-middle">
 		      	<i class="wish-icon fas fa-cart-plus pr-3"></i>
