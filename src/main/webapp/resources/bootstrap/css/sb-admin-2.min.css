@@ -127,7 +127,7 @@
 #searchKeywordContainer button{width:80px;margin-left:20px; margin: 0px 10px 8px 45px}
 #searchKeywordContainer label{margin: 0px 5px 8px 5px}
 #searchType{background-color:#f8f9fc!important; border: 0px}
-
+#memberListContainer{margin-bottom: 40px;}
 
 /* 표 */ 
 #productList tr th:nth-child(1){width:12%}

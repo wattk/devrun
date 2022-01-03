@@ -473,7 +473,7 @@ public class ShopController {
 		}
 		
 		int totalContent = promotionService.selectProductTotalCount(param);
-
+		log.debug("url = {}",url);
 		// 3. pagebar
 		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);

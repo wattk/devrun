@@ -413,7 +413,7 @@ public class AdminController {
 			HttpServletRequest request
 			) {
 		// 1.페이징 처리 : 페이지 설정
-		int limit = 11;
+		int limit = 5;
 		int offset = (cPage - 1) * limit;
 		
 		// 게시물 리스트 가져오기
@@ -430,11 +430,11 @@ public class AdminController {
 		// 3. pagebar
 		String url = request.getRequestURI(); 
 		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalMemberCount, url);
+				
 		log.debug("pagebar = {}", pagebar);
-		model.addAttribute("pagebar", pagebar);
 		
-			
 		
+		model.addAttribute("pagebar", pagebar);		
 		model.addAttribute("memberList",memberList);
 	};
 	
@@ -460,11 +460,13 @@ public class AdminController {
 		
 		Map<String,Object>map = new HashMap<>();
 		
-		int limit = 11;
+		int limit = 4;
 		int offset = (cPage - 1) * limit;
+		
 		
 		log.debug("searchType = {}",searchType);
 		log.debug("searchKeyword = {}",searchKeyword);
+		log.debug("cPage = {}",cPage);
 		Map<String,Object>param = new HashMap<>();
 		
 		if(searchKeyword.contains(",")) {
@@ -476,12 +478,27 @@ public class AdminController {
 		
 		param.put("searchType", "m."+searchType);
 		param.put("searchKeyword", searchKeyword);
-			
-		List<Member>memberList = memberManageService.searchMemberList(param);
 		
+		// 1.조회한 리스트 가져오기
+		String url = request.getRequestURI()+"?searchType="+searchType+"&searchKeyword="+searchKeyword;
+		log.debug("url = {}", url);
+		
+		List<Member>memberList = memberManageService.searchMemberList(param);
+		String memberStr = DevrunUtils.getMemberList(memberList);
+		
+		// 2.조회한 게시물 수
+		int totalContent = memberManageService.searchMemberListCount(param);
+		
+		// 3.페이지 바
+		log.debug("pagebarUrl = {}",url);
+		String pagebar = DevrunUtils.getPagebar2(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+				
 		
 		map.put("memberList",memberList);
-		map.put("date",new Date());
+		map.put("totalContent",totalContent);
+		map.put("pagebar",pagebar);
+		map.put("memberStr",memberStr);
 		return map;
 	}
 	
