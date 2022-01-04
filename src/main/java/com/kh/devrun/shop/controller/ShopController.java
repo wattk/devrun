@@ -12,6 +12,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -46,6 +47,8 @@ import com.kh.devrun.shop.model.vo.Wishlist;
 import com.kh.devrun.shop.model.vo.WishlistProduct;
 
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @Controller
 @Slf4j
@@ -72,6 +75,10 @@ public class ShopController {
 
 	@Autowired
 	shopUtils shopUtils;
+	
+	//SMS api 주입
+	@Autowired
+	Message message;
 
 //--------------------주입-------------------------------------	
 
@@ -370,12 +377,30 @@ public class ShopController {
 
 		return result;
 	}
-
-	@PostMapping("/sms")
+	
+	//SMS api 핸들러
+	@RequestMapping("/restock")
 	public void sms() {
 		
-		
+	    // 4 params(to, from, type, text) are mandatory. must be filled
+	    HashMap<String, String> params = new HashMap<String, String>();
+	    params.put("to", "01074003717");
+	    params.put("from", "01074003717");
+	    params.put("type", "LMS");
+	    params.put("text", "나의 첫번째 메시지 전송 프로그램 테스트");
+	    params.put("app_version", "test app 1.2"); // application name and version
+
+	    try {
+	      JSONObject obj = (JSONObject) message.send(params);
+	      System.out.println(obj.toString());
+	    } catch (CoolsmsException e) {
+	      System.out.println(e.getMessage());
+	      System.out.println(e.getCode());
+	    }
 	}
+	
+	
+	
 //----------------------------------------------------------구분선---------------------------------------------------------------
 
 	/**
