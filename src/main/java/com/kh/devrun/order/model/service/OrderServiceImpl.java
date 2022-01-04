@@ -16,6 +16,7 @@ import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
+import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.shop.model.vo.Cart;
 
@@ -148,6 +149,29 @@ public class OrderServiceImpl implements OrderService {
 		merchantCntList.put("monthCnt", monthCnt);
 		
 		return merchantCntList;
+	}
+
+	@Override
+	public List<Shipment> selectAllShipment() {
+		return orderDao.selectAllShipment();
+	}
+
+	@Override
+	public List<Merchant> selectSomeMerchant(String str) {
+		return orderDao.selectSomeMerchant(str);
+	}
+
+	@Override
+	@Transactional(
+			propagation = Propagation.REQUIRED, 
+			isolation = Isolation.READ_COMMITTED, 
+			rollbackFor = Exception.class
+	)
+	public int insertShipment(Map<String, Object> shipmentArr) {
+		shipmentArr.put("orderStatus", "SS");
+		int result = orderDao.insertShipment((List<Map<String, Object>>)shipmentArr.get("shipmentArr"));
+		result = orderDao.updateMerchant(shipmentArr);
+		return result;
 	}
 
 	
