@@ -16,9 +16,9 @@
 /* report history */
 #reportList table {margin-bottom:50px;}
 #reportList tr:not(:last-of-type) {border-bottom:1px solid rgba(0,0,0,.125);}
-#reportList tr#noList td {height:500px; border:0;}
+#reportList tr#noList td {height:500px; border:0; text-align:center;}
 #reportList td {padding:12px; border:1px solid rgba(0,0,0,.125);}
-#reportList td:last-of-type {text-align:left; vertical-align:middle; padding:25px;}
+#reportList td:last-of-type {text-align:left; vertical-align:middle;}
 #reportList td div {margin-bottom:4px;}
 #reportList div:first-of-type {display:-webkit-box; height:27px; overflow:hidden; text-overflow:ellipsis; word-wrap:break-word; -webkit-line-clamp:1; -webkit-box-orient:vertical;}
 
@@ -26,7 +26,7 @@
 #reportType, #reportCategory {padding:2px 5px; font-size:13px;}
 #reportCategory {background-color:#FDE99A; color:#E74C3C;}
 #reportCategory i {font-size:14px;}
-#reportStatus span {padding:0 12px; color:rgba(0,0,0,.2);}
+#reportStatus span {padding:0 6px; color:rgba(0,0,0,.2);}
 
 .popover {font-family:"Gowun Dodum";}
 .popover-header, .popover-body {font-size:15px; background-color:#FFFFFF;}

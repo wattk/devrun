@@ -18,12 +18,12 @@
 				<article class="col-10" id="info">
 		      		<h4 id="breadcrumb"><a href="${pageContext.request.contextPath}/mypage/myinfo.do">나의 정보</a> <i class="bi bi-chevron-right"></i> <span>신고 내역</span></h4>
 		       		<hr/>
-		       		<p id="reportInfo"><i tabindex="0" class="bi bi-info-circle-fill" data-toggle="popover" data-trigger="hover" title="신고사유 및 운영자 조치" data-content="내가 신고한 내역의 신고사유와 신고일시를 확인하실 수 있습니다."></i> 내가 신고한 내역의 신고사유와 신고일시를 확인하실 수 있습니다.</p>
+		       		<p id="reportInfo"><i tabindex="0" class="bi bi-info-circle-fill" data-toggle="popover" data-trigger="hover" title="신고사유 및 일시" data-content="내가 신고한 내역의 신고사유와 신고일시를 확인하실 수 있습니다."></i> 내가 신고한 내역의 신고사유와 신고일시를 확인하실 수 있습니다.</p>
 		       		
 		       		<%-- report history --%>
 		       		<section id="reportList">
 		       			<table class="table">
-		       				<c:if test="${reportList ne null}">
+		       				<c:if test="${totalContent ne 0}">
 		       					<c:forEach items="${reportList}" var="report">
 			     					<tr>
 			     						<td class="col-9">
@@ -59,13 +59,13 @@
 			     					</tr>
 			     				</c:forEach>
 	       					</c:if>
-	       					<c:if test="${reportList eq null}">
+	       					<c:if test="${totalContent eq 0}">
 	       						<tr id="noList"><td>신고 내역이 없습니다.</td></tr>
 	       					</c:if>
 		       			</table>
 	       			</section>
-	       			<!-- page navigation -->
-	       			${pagebar}
+	       			<!-- pagebar : 신고 내역이 있는 경우에만 제공 -->
+	       			<c:if test="${totalContent ne 0}">${pagebar}</c:if>
 	       		</article>
 
 			</div>
