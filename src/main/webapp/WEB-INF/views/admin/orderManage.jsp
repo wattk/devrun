@@ -368,7 +368,6 @@ $(".order-modal-btn").click((e)=>{
 				</td>
 			</tr>`);
 			}
-			
 		},
 		error : console.log
 	});
@@ -376,7 +375,7 @@ $(".order-modal-btn").click((e)=>{
 
 //주문 접수 클릭 시 주문 상태 업데이트, 상품 재고 -1
 $("#osChangeBtn").click((e)=>{
-	const merchantUid = $("#orderModalUid").text();
+	const merchantUid = [$("#orderModalUid").text()];
 	let detailList = [];
 	const $detailTitle = $(".detail-title");
 	const length = $detailTitle.length;
@@ -389,21 +388,18 @@ $("#osChangeBtn").click((e)=>{
 	}
 	
 	console.log(detailList);
-
+	console.log(merchantUid, typeof merchantUid);
 	const data = {
 			merchantUid : merchantUid,
 			orderStatus : 'PP',
 			detailList : detailList
 		};
-	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/admin/orderUpdate",
 		method : "POST",
-		data : {
-			merchantUid : merchantUid,
-			orderStatus : 'PP',
-			detailList : JSON.stringify(detailList)
-		},
+		dataType : "json",
+		contentType : "application/json; charset=utf-8",
+		data : JSON.stringify(data),
 		success(data){
 			alert("주문이 정상적으로 접수되었습니다.");
 			$(`#\${merchantUid}`).detach();
@@ -412,5 +408,6 @@ $("#osChangeBtn").click((e)=>{
 	});
 	
 });
+			
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>
