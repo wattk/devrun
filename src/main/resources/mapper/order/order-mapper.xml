@@ -251,7 +251,10 @@
   	update merchant set
   		order_status = #{orderStatus}
   	where
-  		merchant_uid = #{merchantUid}
+  		merchant_uid in
+  		<foreach collection="merchantUid" item="merchantUid" open="(" separator="," close=")">
+	  		 #{merchantUid}
+  		</foreach>
   </update>
   
   <update id="updateProductQuantity">
@@ -285,4 +288,33 @@
 		</if>
 	</where>
   </select>
+  
+  <select id="selectAllShipment" resultType="shipment">
+  	select
+  		*
+  	from
+  		shipment
+  	order by
+  		shipment_date desc
+  </select>
+  
+  <select id="selectSomeMerchant" resultType="merchant">
+  	select
+  		*
+  	from
+  		merchant
+  	where
+  		order_status = #{value}
+  </select>
+  
+  <insert id="insertShipment">
+ 	insert into	shipment
+	values(
+		seq_shipment_no.nextval,
+		#{shipmentNo},
+		#{merchantUid},
+		null,
+		default
+	)
+  </insert>
 </mapper>
