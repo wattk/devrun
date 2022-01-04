@@ -226,9 +226,10 @@ public class CommunityController {
 		
 		return resultMap;
 	}
-	// 자유게시판-글쓰기
-	@GetMapping("/communityFreeboardForm.do")
-	public void communityFreeboardForm() {}
+	
+	// 글쓰기
+	@GetMapping("/communityWriteForm.do")
+	public void communityWriteForm() {}
 	
 	// 자유게시판-글등록
 	@PostMapping("/communityFreeboardEnroll.do")
