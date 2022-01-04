@@ -52,7 +52,7 @@
 			          <span aria-hidden="true">&times;</span>
 			        </button>
 			      </div>
-			      <div class="modal-body">
+			      <div class="modal-body" id="smsBody">
 			      	<c:if test="${!empty outOfStock}">
 			      	 	<p>재입고 알림을 받을 상품 옵션을 선택해주세요. </p>
 			      	 	<select style="height: 35px;" class="col-8" name="smsOption" id="smsOption" required>
@@ -877,18 +877,27 @@ $(phoneSms).keyup((e)=>{
 		//전화번호
 		const phoneNumber = $(phoneSms).val();
 		const detailNo = $("#smsOption option:selected").val();
+		const options = $("#smsOption option:selected").text();
 		console.log(`전화번호 : \${phoneNumber}`);
 		console.log(`detailNo : \${detailNo}`);
+		console.log(`productName: ${product.name}`);
+		
+		const msg = `<p>&#171;${product.name}&#187; 상품의 &#171\${options}&#187; 옵션 재입고 알람 신청이 완료되었습니다.</p>`;
 		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/shop/restock",
 			method : "POST",
 			data :{
 				detailNo : detailNo,
-				phoneNumber : phoneNumber
+				phoneNumber : phoneNumber,
+				productName: '${product.name}'
 			},
 			success(data){
-				console.log("도착?");
+				if(data ==1){
+					$(smsBody).html('');
+					$(smsBody).append(msg);
+					
+				}
 			},
 			error :console.log
 			

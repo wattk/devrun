@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
@@ -34,7 +35,7 @@ public class ShopDaoImpl implements ShopDao {
 	public int insertMemberCart(Cart cart) {
 		return session.insert("shop.insertMemberCart", cart);
 	}
-	
+
 	@Override
 	public int deleteCart(List<Integer> cartNoArr) {
 		return session.delete("shop.deleteCart", cartNoArr);
@@ -51,7 +52,6 @@ public class ShopDaoImpl implements ShopDao {
 	public int wishlistDelete(int wishlistNo) {
 		return session.delete("shop.wishlistDelete", wishlistNo);
 	}
-
 
 	@Override
 	public int insertReview(Review review) {
@@ -153,5 +153,9 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectList("shop.selectAllWishlist", memberNo);
 	}
 
+	@Override
+	public ProductDetail selectOneProductDetail(int detailNo) {
+		return session.selectOne("shop.selectOneProductDetail", detailNo);
+	}
 
 }
