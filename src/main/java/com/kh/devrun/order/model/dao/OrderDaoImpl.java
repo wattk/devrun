@@ -3,6 +3,7 @@ package com.kh.devrun.order.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,11 @@ public class OrderDaoImpl implements OrderDao {
 		return session.update("order.updateProductQuantity", detailList);
 	}
 
+	@Override
+	public Map<String, Object> countMerchant(Map<String, Object> param) {
+		return session.selectOne("order.countMerchant", param);
+	}
 
+	
 	
 }

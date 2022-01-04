@@ -29,5 +29,7 @@ public interface OrderService {
 
 	int updateMerchant(Map<String, Object> param);
 
+	Map<String, Object> countMerchant();
+
 
 }

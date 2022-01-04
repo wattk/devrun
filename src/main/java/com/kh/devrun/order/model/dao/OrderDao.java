@@ -3,6 +3,8 @@ package com.kh.devrun.order.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
@@ -41,6 +43,8 @@ public interface OrderDao {
 	int updateMerchant(Map<String, Object> param);
 
 	int updateProductQuantity(List<Map<String, Object>> detailList);
+
+	Map<String, Object> countMerchant(Map<String, Object> param);
 
 
 }
