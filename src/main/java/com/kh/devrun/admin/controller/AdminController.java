@@ -40,6 +40,7 @@ import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.memberManage.model.service.MemberManageService;
 import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.Merchant;
+import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEntity;
@@ -667,6 +668,14 @@ public class AdminController {
 		resultMap.put("merchantStr", merchantStr);
 		
 		return resultMap;
+	}
+	
+	@GetMapping("/findMerchantDetail")
+	@ResponseBody
+	public MerchantExt findMerchantDetail(@RequestParam(value = "merchantUid") String merchantUid) {
+		log.debug("merchantUid = {}", merchantUid);
+		MerchantExt merchant = orderService.selectOneMerchantExt(merchantUid);
+		return merchant;
 	}
 	
 	@GetMapping("/shipmentManage.do")

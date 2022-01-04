@@ -11,6 +11,9 @@
 .order-search-container>label{
 	margin-right : 0.5rem;
 }
+.date-badge{
+	cursor : pointer;
+}
 
 /*리뷰 신고*/
 .report-save-btn{

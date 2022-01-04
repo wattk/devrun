@@ -38,4 +38,6 @@ public interface OrderDao {
 
 	List<Merchant> selectMerchantProductList(Map<String, Object> param);
 
+	MerchantExt selectOneMerchantExt(String merchantUid);
+
 }

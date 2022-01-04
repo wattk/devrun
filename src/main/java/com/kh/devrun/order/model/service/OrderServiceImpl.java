@@ -109,6 +109,11 @@ public class OrderServiceImpl implements OrderService {
 	public List<Merchant> selectMerchantList(Map<String, Object> param) {
 		return orderDao.selectMerchantProductList(param);
 	}
+
+	@Override
+	public MerchantExt selectOneMerchantExt(String merchantUid) {
+		return orderDao.selectOneMerchantExt(merchantUid);
+	}
 	
 	
 

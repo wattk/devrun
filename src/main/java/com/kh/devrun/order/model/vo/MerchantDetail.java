@@ -13,15 +13,20 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MerchantDetail implements Serializable{
+public class MerchantDetail extends ProductDetail implements Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private String merchantUid;
-	private int detailNo;
 	private int buyCount;
+	public MerchantDetail(int detailNo, String productCode, String optionNo, String optionContent, String sku,
+			int quantity) {
+		super(detailNo, productCode, optionNo, optionContent, sku, quantity);
+		// TODO Auto-generated constructor stub
+	}
+	
 	
 	
 }

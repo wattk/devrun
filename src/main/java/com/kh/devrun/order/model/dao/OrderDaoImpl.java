@@ -87,4 +87,10 @@ public class OrderDaoImpl implements OrderDao {
 		return session.selectList("order.selectMerchantList", param);
 	}
 
+	@Override
+	public MerchantExt selectOneMerchantExt(String merchantUid) {
+		return session.selectOne("order.selectOneMerchantExt", merchantUid);
+	}
+
+	
 }

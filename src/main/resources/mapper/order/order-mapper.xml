@@ -244,4 +244,42 @@
   	</where>
   	order by order_date desc
   </select>
+  
+  <select id="selectOneMerchantExt" resultMap="merchantExtCollection">
+  	select
+  		merchant_uid,
+  		name,
+  		product_code,
+  		detail_no,
+  		option_no,
+  		option_content,
+  		quantity,
+  		buy_count,
+  		total_price,
+  		member_no,
+  		order_date
+  	from
+  		view_merchant_imp
+  	where
+  		merchant_uid = #{merchantUid}
+  </select>
+  <resultMap type="merchantExt" id="merchantExtCollection">
+  	<id column="merchant_uid" property="merchantUid"/>
+  	<result column="member_no" property="memberNo"/>
+  	<result column="order_date" property="orderDate"/>
+  	<result column="order_status" property="orderStatus"/>
+  	<result column="product_code" property="productCode"/>
+  	<result column="total_price" property="totalPrice"/>
+  	<association property="imp" javaType ="imp">
+	  	<result column="name" property="name"/>
+	  	<result column="amount" property="amount"/>
+  	</association>
+  	<collection property="merchantDetailList" ofType="merchantDetail">
+  		<id column="detail_no" property="detailNo"/>
+  		<result column="buy_count" property="buyCount"/>
+  		<result column="quantity" property="quantity"/>
+  		<result column="option_no" property="optionNo"/>
+  		<result column="option_content" property="optionContent"/>
+  	</collection>
+  </resultMap>
 </mapper>
