@@ -244,12 +244,18 @@
 					alt="">
 			</div>
 		</div>
-		<div id="itemDetailInfoDiv">
+		<div 
+			id="itemDetailInfoDiv"
+			data-product-code="${product.productCode }"
+			data-price="${product.price }"
+			data-name="${product.name }"
+			data-amount="1"
+			>
 			<div id="itemDetailNameDiv">
 				<p>${product.name}</p>
 			</div>
 			<div id="itemDetailOptionDiv">
-				<span id="price" data-price="${product.price}"><fmt:formatNumber
+				<span id="price" ><fmt:formatNumber
 						value="${product.price}" pattern="#,###,###" /></span> 원 <br>
 				<span>혜택 : </span><span style="color: pink;"><fmt:formatNumber
 						value="${product.price / 200}" pattern="#,###,### P" /> </span>적립 <br>
@@ -265,14 +271,37 @@
 					<c:if test="${cartValid ne null }">
 						<c:forEach items="${pDetail}" var="pd">
 							<option value="${pd.detailNo}"
-								data-cart-valid="${fn:contains(cartValid, pd.detailNo)? 1 : 0}">${pd.optionNo}
-								<c:if test="${pd.optionContent != null}"> , ${pd.optionContent}</c:if></option>
+								data-cart-valid="${fn:contains(cartValid, pd.detailNo)? 1 : 0}" 
+								<c:if test="${pd.quantity <1}">
+									disabled
+								</c:if>
+								>${pd.optionNo}
+								<c:if test="${pd.optionContent != null}">
+									, ${pd.optionContent}
+								</c:if> 
+								<sec:authorize access="hasRole('AM')">
+									<span style="font-size: 10px;"> [재고 : ${pd.quantity}]</span>
+								</sec:authorize> 
+								<c:if test="${pd.quantity <1}">
+									[품절된 상품입니다]
+								</c:if>
+							</option>
 						</c:forEach>
 					</c:if>
 					<c:if test="${cartValid eq null }">
 						<c:forEach items="${pDetail}" var="pd">
-							<option value="${pd.detailNo}">${pd.optionNo}
-								<c:if test="${pd.optionContent != null}"> , ${pd.optionContent}</c:if></option>
+							<option value="${pd.detailNo}"
+								<c:if test="${pd.quantity <1}">
+									disabled
+								</c:if>
+							>${pd.optionNo} 
+								<c:if test="${pd.optionContent != null}">
+									 , ${pd.optionContent}
+								</c:if>
+								<c:if test="${pd.quantity <1}">
+									[품절된 상품입니다]
+								</c:if>
+							</option>
 						</c:forEach>
 					</c:if>
 				</select>
@@ -504,7 +533,7 @@
 
 <!-- 위시리스트 로그인 했을 시 비동기 시작 -->
 <sec:authorize access="isAuthenticated()">
-	<script>
+<script>
 $(document).on('click', '.wishBtn', function(e) {
 	
 	const $memberNo = ${member.memberNo};
@@ -774,8 +803,22 @@ $(document).on('click', '.likes', function(e) {
 //바로구매 버튼 클릭 이벤트 혜진 시작
 $("#orderBtn").click((e)=>{
 	const detailNo = $("#detailNo").val();
-	console.log(detailNo);
-	location.href = `${pageContext.request.contextPath}/order/order?detailNo=\${detailNo}&amount=1`;
+	const $itemDetailInfo = $("#itemDetailInfoDiv");
+	let cartArr = [];
+	
+	let data = {
+			productCode : $itemDetailInfo.data("productCode"),
+			detailNo : detailNo,
+			name : $itemDetailInfo.data("name"),
+			price : $itemDetailInfo.data("price"),
+			amount : $itemDetailInfo.data("amount")
+	};
+	console.log(data);
+	cartArr.push(data);
+	console.log(cartArr);
+	localStorage.setItem("cartItems", JSON.stringify(cartArr));
+	location.href = "${pageContext.request.contextPath}/order/order";
+
 });
 //바로구매 버튼 클릭 이벤트 혜진 끝
 //장바구니 버튼 클릭 이벤트 혜진 시작

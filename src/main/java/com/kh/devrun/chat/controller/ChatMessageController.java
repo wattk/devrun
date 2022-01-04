@@ -42,25 +42,13 @@ public class ChatMessageController {
 		
 		return chatLog;
 	}
-	
-//	@MessageMapping("/lastCheck")
-//	@SendTo("/chat/chatList")
-//	public Map<String, Object> lastCheck(Map<String, Object> lastCheck){
-//		log.debug("lastCheck = {}", lastCheck);
-//		// db chat_member.last_check update
-//		int result = chatService.updateLastCheck(lastCheck);
-//		
-//		return lastCheck;
-//	}
-//	
+
 	@MessageMapping("/chat/readStatus/{chatId}")
 	@SendTo(value={"/chat/readStatus/{chatId}", "/chat/chatList"})
 	public Map<String, Object> readStatus(Map<String, Object> readStatus){
 		//log.debug("readStatus = {}", readStatus);
-		// 읽고있는 경우
-		if("READ".equals(readStatus.get("readStatus"))) {
-			int result = chatService.updateLastCheck(readStatus);
-		}
+		// 읽음 상태이므로 db chat_member.last_check update
+		int result = chatService.updateLastCheck(readStatus);
 
 		return readStatus;
 	}

@@ -17,4 +17,7 @@ public interface MemberManageService {
 	// 멤버 권한 수정
 	int updateAuthority(Map<String, Object> param);
 
+	// 검색한 회원의 숫자
+	int searchMemberListCount(Map<String, Object> param);
+
 }

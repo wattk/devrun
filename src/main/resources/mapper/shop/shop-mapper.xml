@@ -211,6 +211,15 @@
 		where 
 			wishlist_no = #{wishlistNo}
 	</delete>
+	
+	<select id="selectAllWishlist" resultType="wishlistProduct">
+		select
+			*
+		from 
+			wishProduct
+		where 
+			member_no = #{memberNo}
+	</select>
 
 <!-- =================================================구분선 ================================================= -->
 	
@@ -251,5 +260,14 @@
 			member_no = #{memberNo}
 			and product_code = #{productCode}
 	</select>
+	
+	<delete id="deleteCart">
+		delete from cart
+		where
+			cart_no in
+			<foreach collection="list" open="(" separator="," close=")" item="cartNo">
+				#{cartNo}
+			</foreach> 
+	</delete>
 	<!-- 혜진 장바구니 끝 -->
 </mapper>

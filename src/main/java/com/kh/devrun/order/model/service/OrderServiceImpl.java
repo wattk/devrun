@@ -33,10 +33,14 @@ public class OrderServiceImpl implements OrderService {
 	)
 	public int insertOrder(Merchant merchant) {
 		int result = 0;
+		String merchantUid = merchant.getMerchantUid();
+		Map<String, Object> param = new HashMap<>();
+		param.put("merchantUid", merchantUid);
 		
 		try {
 			result = orderDao.insertOrder(merchant);
 			result = orderDao.insertOrderDetail(merchant.getMerchantDetailList());
+			result = orderDao.deleteCart(param);
 		} catch (Exception e) {
 			throw new RuntimeException("주문 관련 등록 오류", e);
 		}
@@ -94,6 +98,16 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<Cart> selectCartList(int memberNo) {
 		return orderDao.selectCartList(memberNo);
+	}
+
+	@Override
+	public List<Merchant> selectAllMerchant() {
+		return orderDao.selectAllMerchant();
+	}
+
+	@Override
+	public List<Merchant> selectMerchantList(Map<String, Object> param) {
+		return orderDao.selectMerchantProductList(param);
 	}
 	
 	

@@ -3,8 +3,10 @@ package com.kh.devrun.admin.controller;
 import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -36,9 +39,11 @@ import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.memberManage.model.service.MemberManageService;
+import com.kh.devrun.order.model.service.OrderService;
+import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.product.model.service.ProductService;
-import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
@@ -58,6 +63,9 @@ public class AdminController {
 	
 	@Autowired
 	PromotionService promotionService;
+	
+	@Autowired
+	OrderService orderService;
 	
 	@Autowired
 	ServletContext application;
@@ -413,7 +421,7 @@ public class AdminController {
 			HttpServletRequest request
 			) {
 		// 1.페이징 처리 : 페이지 설정
-		int limit = 11;
+		int limit = 5;
 		int offset = (cPage - 1) * limit;
 		
 		// 게시물 리스트 가져오기
@@ -430,11 +438,11 @@ public class AdminController {
 		// 3. pagebar
 		String url = request.getRequestURI(); 
 		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalMemberCount, url);
+				
 		log.debug("pagebar = {}", pagebar);
-		model.addAttribute("pagebar", pagebar);
 		
-			
 		
+		model.addAttribute("pagebar", pagebar);		
 		model.addAttribute("memberList",memberList);
 	};
 	
@@ -448,7 +456,7 @@ public class AdminController {
 	};
 	
 	
-
+	// 검색결과 페이징처리
 	@ResponseBody
 	@GetMapping("/memberManage/searchMember.do")
 	public Map<String,Object>searchMember(
@@ -460,11 +468,13 @@ public class AdminController {
 		
 		Map<String,Object>map = new HashMap<>();
 		
-		int limit = 11;
+		int limit = 5;
 		int offset = (cPage - 1) * limit;
+		
 		
 		log.debug("searchType = {}",searchType);
 		log.debug("searchKeyword = {}",searchKeyword);
+		log.debug("cPage = {}",cPage);
 		Map<String,Object>param = new HashMap<>();
 		
 		if(searchKeyword.contains(",")) {
@@ -476,12 +486,27 @@ public class AdminController {
 		
 		param.put("searchType", "m."+searchType);
 		param.put("searchKeyword", searchKeyword);
-			
-		List<Member>memberList = memberManageService.searchMemberList(param);
 		
+		// 1.조회한 리스트 가져오기
+		String url = request.getRequestURI()+"?searchType="+searchType+"&searchKeyword="+searchKeyword;
+		log.debug("url = {}", url);
+		
+		List<Member>memberList = memberManageService.searchMemberList(param);
+		String memberStr = DevrunUtils.getMemberList(memberList);
+		
+		// 2.조회한 게시물 수
+		int totalContent = memberManageService.searchMemberListCount(param);
+		
+		// 3.페이지 바
+		log.debug("pagebarUrl = {}",url);
+		String pagebar = DevrunUtils.getPagebar2(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+				
 		
 		map.put("memberList",memberList);
-		map.put("date",new Date());
+		map.put("totalContent",totalContent);
+		map.put("pagebar",pagebar);
+		map.put("memberStr",memberStr);
 		return map;
 	}
 	
@@ -508,8 +533,8 @@ public class AdminController {
 	@GetMapping("/questionProduct/selectQuestion.do")
 	public Map<String,Object>selectQuestionProductInfo(
 				@RequestParam int questionNo,
-				@RequestParam String productCode		
-			
+				@RequestParam String productCode
+				
 			){		
 		Map<String,Object> map = new HashMap<>();
 		log.debug("productCode={}",productCode);
@@ -525,7 +550,7 @@ public class AdminController {
 		// 선택한 문의 번호에 대한 참조 문의 번호가 존재한다면 가져오기
 		QuestionProduct questionProduct = questionProductService.selectQuestionByRefNo(questionNo);
 		
-		String answer = "";
+		String answer = "no";
 		
 		if(questionProduct != null) {
 			answer = questionProduct.getContent();
@@ -581,8 +606,7 @@ public class AdminController {
 		return "redirect:/admin/memberManage/questionProduct.do";
 	}
 	
-	
-	
+
 	
 	
 	
@@ -602,8 +626,48 @@ public class AdminController {
 	 * 혜진 시작 
 	 */
 	@GetMapping("/orderManage.do")
-	public void orderManage() {}
-
+	public void orderManage(Model model) {
+		List<Merchant> list = orderService.selectAllMerchant();
+		
+		model.addAttribute("list", list);
+	}
+	
+	@GetMapping("/orderSearch")
+	@ResponseBody
+	public Map<String, Object> orderSearch(
+			@RequestParam(required = false) String orderStatus,
+			@RequestParam(required = false) String csStatus,
+			@RequestParam(required = false) String searchType,
+			@RequestParam(required = false) String searchKeyword,
+			@RequestParam(required = false) Date startDate,
+			@RequestParam(required = false) Date endDate,
+			HttpServletRequest request){
+		Calendar cal = Calendar.getInstance();	 //날짜 계산을 위해 Calendar 추상클래스 선언 getInstance()메소드 사용	
+		cal.setTime(endDate);	
+		cal.add(Calendar.DATE, 1);	//6개월 더하기
+		Date date = cal.getTime();
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("orderStatus", orderStatus);
+		param.put("csStatus", csStatus);
+		param.put("searchType", searchType);
+		param.put("searchKeyword", searchKeyword);
+		param.put("startDate", startDate);
+		param.put("endDate", date);
+		log.debug("param = {}", param);
+		
+		String url = request.getContextPath();
+		
+		List<Merchant> list = orderService.selectMerchantList(param);
+		log.debug("list = {}", list);
+		//String merchantStr = AdminUtils.getMerchantList(list, url);
+		//log.debug("merchantStr = {}", merchantStr);
+		
+		//resultMap.put("merchantStr", merchantStr);
+		
+		return null;
+	}
 	
 	@GetMapping("/shipmentManage.do")
 	public void shipmentManage() {}

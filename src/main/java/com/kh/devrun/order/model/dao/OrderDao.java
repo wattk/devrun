@@ -1,6 +1,7 @@
 package com.kh.devrun.order.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
@@ -30,5 +31,11 @@ public interface OrderDao {
 	List<MerchantExt> selectOrderList(int memberNo);
 
 	List<Cart> selectCartList(int memberNo);
+
+	int deleteCart(Map<String, Object> param);
+
+	List<Merchant> selectAllMerchant();
+
+	List<Merchant> selectMerchantProductList(Map<String, Object> param);
 
 }

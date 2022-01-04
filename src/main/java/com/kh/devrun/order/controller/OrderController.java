@@ -51,15 +51,17 @@ public class OrderController {
 	}
 	
 	@GetMapping("/order")
-	public String order(@RequestParam(value="detailNo") int[] detailNo,@RequestParam(value="amount") int[] amount, Model model, Authentication authentication) {
-		log.debug("productCode = {}", detailNo);
+	public String order(Model model, Authentication authentication) {
+		//@RequestParam(value="detailNo") int[] detailNo,@RequestParam(value="amount") int[] amount, 
+		//log.debug("productCode = {}", detailNo);
 		Member member = (Member)authentication.getPrincipal();
-		List<Product> productList = productService.selectProductByDetailNo(detailNo);
+		//List<Product> productList = productService.selectProductByDetailNo(detailNo);
 		List<Address> addressList = memberService.selectAddressListByMemberNo(member.getMemberNo());
-		log.debug("product = {}", productList);
-		model.addAttribute("productList", productList);
+		//log.debug("product = {}", productList);
+		//model.addAttribute("productList", productList);
+		log.debug("addresssList = {}", addressList);
 		model.addAttribute("addressList", addressList);
-		model.addAttribute("detailNo", detailNo);
+		//model.addAttribute("detailNo", detailNo);
 		
 		return "/order/order";
 	}
@@ -83,4 +85,6 @@ public class OrderController {
 		
 		return url;
 	}
+	
+
 }

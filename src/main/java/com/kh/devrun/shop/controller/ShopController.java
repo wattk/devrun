@@ -2,6 +2,7 @@ package com.kh.devrun.shop.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.common.shopUtils;
 import com.kh.devrun.member.model.vo.Member;
+import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
@@ -41,6 +43,7 @@ import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
 import com.kh.devrun.shop.model.vo.Wishlist;
+import com.kh.devrun.shop.model.vo.WishlistProduct;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,6 +60,9 @@ public class ShopController {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private OrderService orderService;
 
 	@Autowired
 	ServletContext application;
@@ -80,8 +86,18 @@ public class ShopController {
 	}
 
 	@GetMapping("wishlist")
-	public void wishlist() {
+	public String wishlist(Authentication authentication, Model model) {
 
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
+		
+		// 위시리스트 조회해오기
+		List<WishlistProduct> wishlist = shopService.selectAllWishlist(memberNo);
+		log.debug("whislist 잘 받앗? : {}", wishlist);
+		
+		model.addAttribute("wishlist",wishlist);
+		model.addAttribute("loginMember",loginMember);
+		return "shop/wishlist";
 	}
 
 	// 상품 사이드 메뉴에서 전체보기 클릭 시
@@ -176,6 +192,7 @@ public class ShopController {
 		// 상품 옵션도 조회
 		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
 		model.addAttribute("pDetail", pDetail);
+		log.debug("재고 : {}",pDetail);
 
 		// 소분류 카테고리 추출
 		String childCate = productCode.substring(3, 6);
@@ -446,8 +463,18 @@ public class ShopController {
 
 		// 2. 전체 게시물 수 totalContent
 		url = request.getRequestURI();
+		if(keyword != null) {
+			url += "&keyword="+keyword;
+		}
+		
+		if(!childCategoryCode.isEmpty()) {
+			for(String code : childCategoryCode) {
+				url += "&childCategoryCode="+code;
+			}
+		}
+		
 		int totalContent = promotionService.selectProductTotalCount(param);
-
+		log.debug("url = {}",url);
 		// 3. pagebar
 		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
@@ -471,6 +498,21 @@ public class ShopController {
 		return result;
 	}
 
+	
+	@PostMapping("/cartDelete")
+	@ResponseBody
+	public List<Cart> cartDelete(@RequestParam(value="cartNoArr[]") List<Integer> cartNoArr, Authentication authentication) {
+		log.debug("cartNoArr = {}", cartNoArr);
+		int result = shopService.deleteCart(cartNoArr); 
+		List<Cart> list = new ArrayList<>();
+		
+		if(result > 0){
+			Member member = (Member) authentication.getPrincipal();
+			list = orderService.selectCartList(member.getMemberNo());
+		}
+		
+		return list;
+	}
 	/**
 	 * 혜진 작업 끝
 	 * 

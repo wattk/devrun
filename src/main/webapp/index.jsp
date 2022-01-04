@@ -395,7 +395,7 @@
               <h2 class="title-a">이벤트</h2>
             </div>
             <div class="title-link">
-              <a href="blog-grid.html">더보기
+              <a href="${pageContext.request.contextPath}/shop/promotion.do">더보기
                 <span class="ion-ios-arrow-forward"></span>
               </a>
             </div>

@@ -20,7 +20,7 @@
   </insert>
   
   <update id="insertOrderDetail">
-  	<foreach collection="list" item="item" separator="," open="INSERT ALL" close="SELECT * FROM DUAL">
+  	<foreach collection="list" item="item" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
   		into
   			merchant_detail
   		values(
@@ -30,6 +30,18 @@
   		)
   	</foreach>
   </update>
+  
+  <delete id="deleteCart">
+  	delete from cart
+  	where
+  		detail_no in 
+  			(select 
+  				detail_no 
+  			from 
+  				merchant_detail md left join merchant m 
+  					on md.merchant_uid = m.merchant_uid 
+  			where m.merchant_uid = #{merchantUid})
+  </delete>
   
   <insert id="insertImp">
   	insert into imp
@@ -187,4 +199,45 @@
 		<result column="option_content" property="optionContent"/>
 	</association>
   </resultMap>
+  
+  <select id="selectAllMerchant" resultType="merchant">
+  	select
+  		*
+  	from
+  		merchant
+  	order by
+  		order_date desc
+  </select>
+  
+  <select id="selectMerchantList" resultType="merchant">
+  	select
+  		*
+  	from
+  		merchant
+  	<where>
+  		<if test="orderStatus != null and orderStatus != ''">
+   			order_status = #{orderStatus}
+  		</if>
+  		<if test="csStatus != null and csStatus != ''">
+  			and cs_status = #{csStatus}
+  		</if>
+  		<if test="(searchType != null or searchType != '') and (searchKeyword != null or searchType != '')">
+  			<choose>
+  				<when test="searchType eq 'memberNo'">
+  					and member_no = '%'||#{searchKeyword}||'%'
+  				</when>
+  				<when test="searchType eq 'orderNo'">
+  					and merchant_uid = '%'||#{searchKeyword}||'%'
+  				</when>
+  			</choose>
+  		</if>
+  		<if test="startDate != null">
+  			and order_date <![CDATA[ >= ]]> #{startDate}
+  		</if>
+  		<if test="endDate != null">
+  			and order_date <![CDATA[ < ]]> #{endDate}
+  		</if>
+  	</where>
+  	order by order_date desc
+  </select>
 </mapper>

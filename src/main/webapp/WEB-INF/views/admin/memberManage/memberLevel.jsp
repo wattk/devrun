@@ -65,7 +65,7 @@
 	            </form>	
 	        </div>
 	        <div id="searchMemberId" class="search-type other">
-	            <form action="<%=request.getContextPath()%>/admin/memberFinder">
+	            <form>
 	                <input type="hidden" name="searchType" value="id"/>
 	                <input type="text" name="searchKeyword" size="25" placeholder="검색할 회원 아이디를 입력하세요" value=""/>
 	                <button type="submit" class="btn-blue search-btn">검색</button>			
@@ -103,8 +103,11 @@
 	                <button type="submit" class="btn-blue search-btn">검색</button>
 	            </form>
 	        </div>
-	    </div>
-	  </div>
+		</div>
+	</div>
+	<div id="totalCountContainer">
+		
+	</div>
 	<div id="memberListContainer">
 	  <br /><hr /><br />
 		<!-- 상품 리스트 테이블 -->
@@ -138,11 +141,7 @@
 			</c:forEach>	
 			</tbody>
 		</table>
-	</div>	
-					
- 
-	<br />
-
+	</div>						
 	${pagebar}
 	
 </div>
@@ -200,21 +199,18 @@
 		
 		$frm.find("[name = memberNo]").val(targetMemberNo);
 		$frm.find("[name = authority]").val(afterVal);
-		
-		
+			
 	});
-	
+ 	
  	//취소 선택시 이전 값으로 돌리기  && preVal afterVal 값 초기화
 	$(document).on("click","#cancelBtn",(e)=>{	
 		$(searchBymemberAll).trigger("click");
-		
-	
+			
 		console.log("변경전 값 = ",preVal);
 		console.log("변경후 값 = ",afterVal);
-		
+	
 	});
 		
-
  	
 	/*  호버 이벤트 */
 	$("#productList tr").hover(
@@ -233,12 +229,28 @@
 			.filter("#search" + searchTypeVal)
 			.css("display", "inline-block");
 	});
-
-	$(".search-btn").click(e=>{
-		e.preventDefault(); 
+	
+	/* search 입력값 대입  */
+	$("input[name=searchKeyword]").change(e=>{		
+		console.log($(e.target).parent().children("input[name=searchType]").val());
+		/* console.log($(e.target).val()); */
 		
-		var $searchType = $(e.target).parent().children("input[name=searchType]").val();
-		var $searchKeyword = $(e.target).parent().children("input[name=searchKeyword]").val();
+		$searchType = $(e.target).parent().children("input[name=searchType]").val();
+	 	$searchKeyword = $(e.target).val() ;
+	});
+	
+	/* 전역 변수 */
+	var $searchType = "";
+	var $searchKeyword = "";
+
+		function getPage(cPage){
+	
+		const $btn = $(".search-btn");
+		
+		searchType = $searchType;
+		searchKeyword =  $searchKeyword;
+		var cPage;
+		
 		
 		/* 검색 타입이 권한인 경우 검색 내용에 check된 box들의 value값을 담아준다  */
 		if($searchType == "authority"){
@@ -249,16 +261,16 @@
 			});
 			
 			// 배열값으로 넘기지 못해 변환 후 keyword에 저장
-			authority.toString();
 			$searchKeyword = authority.toString();
 		}
 			
-		console.log($searchType);
-		console.log($searchKeyword);
+		console.log(searchType);
+		console.log(searchKeyword);
 		
 		const search = {
 			"searchType" : $searchType,
-			"searchKeyword" : $searchKeyword
+			"searchKeyword" : $searchKeyword,
+			"cPage" : cPage
 		};
 		
 
@@ -269,33 +281,21 @@
 			data:search,
 			contentType:"application/json; charset=utf-8",
 			success(data){
-				$("#tbody").html("");
-				
-				var memberList = data.memberList;
-				
-				console.log(memberList);	
-				
-				for(let i = 0; i < memberList.length; i++){
-					$("#tbody").append(`<tr>
-					<td>\${memberList[i].memberNo}</td>
-					<td>\${memberList[i].id}</td>
-					<td>\${memberList[i].name}</td>
-					<td>\${memberList[i].nickname}</td>
-					<td>\${memberList[i].enrollDate}</td>
-					<td>
-						<select class="select-authority">
-				            <option value="ROLE_AM" \${memberList[i].authorities[0] =="ROLE_AM" ? "selected" : "" }>관리자</option>		
-				            <option value="ROLE_M1" \${memberList[i].authorities[0] =="ROLE_M1" ? "selected" : "" }>지식인</option>		
-				            <option value="ROLE_M2" \${memberList[i].authorities[0] =="ROLE_M2" ? "selected" : "" }>일반 회원</option>
-			       		</select>						
-					</td>				
-					</tr>`);
-				}						
+				console.log(data);
+										 			
+				$("#tbody").html(data["memberStr"]);
+				$(".pagebar").detach();
+				$("#memberListContainer").after(data["pagebar"]);
+				$(totalCountContainer).html(`<span class="countTitle">검색된 회원 수 : </span> <span class="countContent">\${data["totalContent"]}</span>`)			
 			},
-			error:console.log
-			
+			error:console.log			
 		});
-		
+	
+	}
+	
+	$(".search-btn").click(e=>{
+		e.preventDefault(); 
+		getPage();			
 	});
 	
 	
