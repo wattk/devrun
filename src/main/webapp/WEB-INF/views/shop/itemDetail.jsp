@@ -38,6 +38,27 @@
 
 <div id="shopItemDetailOuterDiv">
 	<div id="itemDetailDisplayDiv" class="row">
+		<!-- sms 모달 시작-->
+		<div class="modal" id="exampleModal4" tabindex="-1" role="dialog">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title">재입고 SMS 알람 신청</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <p>Modal body text goes here.</p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-primary">Save changes</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>		
+		<!-- sms 모달 끝 -->
 		<!--리뷰작성모달 시작(부트스트랩)-->
 		<form:form name="reviewFrm" method="POST"
 			action="${pageContext.request.contextPath}/shop/insertReview"
@@ -266,7 +287,11 @@
 				</div>
 				<hr>
 				<div id="restockDiv">
-					<i class="far fa-envelope" id="restock"><span id="restockSpan"> &nbsp; 재입고 시 sms 알림</span></i>
+					<button id="restockModalBtn" type="button" data-toggle="modal" data-target="#exampleModal4">
+						<i class="far fa-envelope" id="restock">
+							<span id="restockSpan"> &nbsp; 재입고 시 sms 알림</span>
+						</i>
+					</button>
 				</div>
 				<select id="detailNo" class="form-select col-12"
 					aria-label="Default select example">
@@ -287,6 +312,7 @@
 								</sec:authorize> 
 								<c:if test="${pd.quantity <1}">
 									[품절된 상품입니다]
+									<input type="hidden" name="soldOut" class="sold-out" value="${pd.optionContent}" />
 								</c:if>
 							</option>
 						</c:forEach>
@@ -313,8 +339,8 @@
 							value="${product.price}" pattern="#,###,### 원" /></span>
 				</div>
 				<div id="orderBtnDiv" class="text-center row">
-					<button type="button" id="cartBtn" class="btn btn-primary col-6">장바구니</button>
-					<button type="button" id="orderBtn" class="btn btn-secondary col-6">바로구매</button>
+					<button type="button" id="cartBtn" class="col-6">장바구니</button>
+					<button type="button" id="orderBtn" class="col-6">바로구매</button>
 
 				</div>
 			</div>
