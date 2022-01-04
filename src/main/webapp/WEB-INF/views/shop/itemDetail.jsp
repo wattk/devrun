@@ -40,6 +40,8 @@
 	<div id="itemDetailDisplayDiv" class="row">
 		<!-- sms 모달 시작-->
 		<form:form
+			name="smsFrm"
+			method="POST"
 			action="#">
 			<div class="modal" id="exampleModal4" tabindex="-1" role="dialog">
 			  <div class="modal-dialog" role="document">
@@ -844,20 +846,6 @@ $(document).on('click', '.likes', function(e) {
 })
 
 /*좋아요 비동기 끝*/
-/* $(document).on('click', '#restock', function(e) {
-	
-	$.ajax({
-		url : "${pageContext.request.contextPath}/sms/send-one",
-		method : "POST",
-		success(data){
-			console.log("도착?");
-		},
-		error :console.log
-		
-	});
-
-}) */
-
 
 /*재입고 sms 전화번호 유효성 검사 시작*/
 $(phoneSms).keyup((e)=>{
@@ -872,11 +860,47 @@ $(phoneSms).keyup((e)=>{
 		$('#checkPhone').attr("data-vaild","Y");
 	}
 })
-
-
  /*재입고 sms 전화번호 유효성 검사 끝*/
  
-
+ 
+ /*sms 문자보내기 비동기 처리*/
+ $(smsFrm).submit((e) => {
+	e.preventDefault(); // 폼제출방지
+	
+	const vaild = $('#checkPhone').data('vaild');
+	console.log(`유효성 체크 : \${vaild}`);	
+	
+	if(vaild == 'N'){
+		alert("유효하지 않은 전화번호입니다. 다시 입력해주세요.");
+		return;
+	}else{
+		//전화번호
+		const phoneNumber = $(phoneSms).val();
+		const detailNo = $("#smsOption option:selected").val();
+		console.log(`전화번호 : \${phoneNumber}`);
+		console.log(`detailNo : \${detailNo}`);
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/shop/restock",
+			method : "POST",
+			data :{
+				detailNo : detailNo,
+				phoneNumber : phoneNumber
+			},
+			success(data){
+				console.log("도착?");
+			},
+			error :console.log
+			
+		});
+		
+		
+		
+	}
+	
+ 
+ })
+ /*sms 문자보내기 비동기 처리*/
 //-------------------------------------------------------구분선-------------------------------------------------------------
 
 
