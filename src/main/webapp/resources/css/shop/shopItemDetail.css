@@ -497,3 +497,13 @@ color: green;
 #restock:hover{
 	cursor: pointer;
 }
+#restockSpan{
+	font-family: 'SANJUGotgam';
+	font-size: 10px;
+}
+#restockDiv{
+	display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+
+}

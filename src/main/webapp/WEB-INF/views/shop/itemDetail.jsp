@@ -265,7 +265,9 @@
 						data-wishyn="N"></i>
 				</div>
 				<hr>
-				<i class="far fa-envelope" id="restock"></i>
+				<div id="restockDiv">
+					<i class="far fa-envelope" id="restock"><span id="restockSpan"> &nbsp; 재입고 시 sms 알림</span></i>
+				</div>
 				<select id="detailNo" class="form-select col-12"
 					aria-label="Default select example">
 					<option selected>옵션선택</option>
