@@ -39,25 +39,51 @@
 <div id="shopItemDetailOuterDiv">
 	<div id="itemDetailDisplayDiv" class="row">
 		<!-- sms 모달 시작-->
-		<div class="modal" id="exampleModal4" tabindex="-1" role="dialog">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title">재입고 SMS 알람 신청</h5>
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		          <span aria-hidden="true">&times;</span>
-		        </button>
-		      </div>
-		      <div class="modal-body">
-		        <p>Modal body text goes here.</p>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-primary">Save changes</button>
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>		
+		<form:form
+			name="smsFrm"
+			method="POST"
+			action="#">
+			<div class="modal" id="exampleModal4" tabindex="-1" role="dialog">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title">재입고 SMS 알람 신청</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			      	<c:if test="${!empty outOfStock}">
+			      	 	<p>재입고 알림을 받을 상품 옵션을 선택해주세요. </p>
+			      	 	<select style="height: 35px;" class="col-8" name="smsOption" id="smsOption" required>
+			      	 		<option value="" selected disabled >옵션 선택</option>
+			      	 		<c:forEach items="${outOfStock}" var="s">
+				      	 		<option value="${s.detailNo}">${s.optionNo}
+				      	 			<c:if test="${pd.optionContent != null}">
+										, ${pd.optionContent}
+									</c:if> 
+				      	 		</option>
+			      	 		</c:forEach>
+			      	 	</select>
+			      	 	<hr />
+			      	 	<p>문자 메세지를 받을 전화번호를 입력해주세요.[숫자만 입력]</p>
+			      	 	<input style="height: 35px;" class="col-8" id="phoneSms" name="phoneSms" type="tel" required/>
+			      	 	<p id="checkPhone" data-vaild="N"></p>
+			      	</c:if>
+			      	<c:if test="${empty outOfStock}">
+			      	 	<p>모든 옵션이 재고가 있습니다.</p>
+			      	</c:if>
+			      </div>
+			      <div class="modal-footer text-center">
+			      	<c:if test="${!empty outOfStock}">
+			        	<button type="submit" class="btn btn-primary">신청하기</button>
+			      	</c:if>
+			        <button type="button" id="smsCloseBtn" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>		
+		</form:form>
 		<!-- sms 모달 끝 -->
 		<!--리뷰작성모달 시작(부트스트랩)-->
 		<form:form name="reviewFrm" method="POST"
@@ -312,7 +338,6 @@
 								</sec:authorize> 
 								<c:if test="${pd.quantity <1}">
 									[품절된 상품입니다]
-									<input type="hidden" name="soldOut" class="sold-out" value="${pd.optionContent}" />
 								</c:if>
 							</option>
 						</c:forEach>
@@ -821,22 +846,61 @@ $(document).on('click', '.likes', function(e) {
 })
 
 /*좋아요 비동기 끝*/
-$(document).on('click', '#restock', function(e) {
-	console.log("sms 핸들러");
+
+/*재입고 sms 전화번호 유효성 검사 시작*/
+$(phoneSms).keyup((e)=>{
+	const $phone = $("#phoneSms");
+	$phone.val($phone.val().replace(/[^0-9]/g, "")); //숫자아닌 문자(복수개)제거하기
 	
-	$.ajax({
-		url : "${pageContext.request.contextPath}/sms/send-one",
-		method : "POST",
-		success(data){
-			console.log("도착?");
-		},
-		error :console.log
-		
-	});
-
+	if(!/^010[0-9]{8}$/.test($phone.val())){
+    	$('#checkPhone').text('유효하지 않은 전화번호입니다.');
+    	$('#checkPhone').attr("data-vaild","N");
+	}else{
+		$('#checkPhone').text('올바른 형식의 전화번호입니다.');
+		$('#checkPhone').attr("data-vaild","Y");
+	}
 })
-
-
+ /*재입고 sms 전화번호 유효성 검사 끝*/
+ 
+ 
+ /*sms 문자보내기 비동기 처리*/
+ $(smsFrm).submit((e) => {
+	e.preventDefault(); // 폼제출방지
+	
+	const vaild = $('#checkPhone').data('vaild');
+	console.log(`유효성 체크 : \${vaild}`);	
+	
+	if(vaild == 'N'){
+		alert("유효하지 않은 전화번호입니다. 다시 입력해주세요.");
+		return;
+	}else{
+		//전화번호
+		const phoneNumber = $(phoneSms).val();
+		const detailNo = $("#smsOption option:selected").val();
+		console.log(`전화번호 : \${phoneNumber}`);
+		console.log(`detailNo : \${detailNo}`);
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/shop/restock",
+			method : "POST",
+			data :{
+				detailNo : detailNo,
+				phoneNumber : phoneNumber
+			},
+			success(data){
+				console.log("도착?");
+			},
+			error :console.log
+			
+		});
+		
+		
+		
+	}
+	
+ 
+ })
+ /*sms 문자보내기 비동기 처리*/
 //-------------------------------------------------------구분선-------------------------------------------------------------
 
 

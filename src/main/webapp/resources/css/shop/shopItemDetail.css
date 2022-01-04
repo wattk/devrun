@@ -535,3 +535,9 @@ color: green;
     border: 0px;
     border-radius: 10px;
 }    
+
+#checkPhone{
+    margin-top: 8px;
+	font-size: 11px;
+    color: brown;
+}

@@ -217,7 +217,7 @@ public class ShopController {
 
 		// 품절상품 정보
 		List<ProductDetail> outOfStock = productService.selectOutOfStock(productCode);
-		model.addAttribute("pDetail", outOfStock);
+		model.addAttribute("outOfStock", outOfStock);
 		log.debug("품절 : {}", outOfStock);
 
 		// 장바구니 좋아요 여부
@@ -384,24 +384,27 @@ public class ShopController {
 	}
 
 	// SMS api 핸들러
-	@RequestMapping("/restock")
-	public void sms() {
+	@ResponseBody
+	@PostMapping("/restock")
+	public void sms(@RequestParam String phoneNumber, @RequestParam int detailNo) {
+		log.debug("phoneNumber : {}",phoneNumber);
+		log.debug("detailNo : {}",detailNo);
 
-		// 4 params(to, from, type, text) are mandatory. must be filled
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("to", "01074003717");
-		params.put("from", "01074003717");
-		params.put("type", "LMS");
-		params.put("text", "나의 첫번째 메시지 전송 프로그램 테스트");
-		params.put("app_version", "test app 1.2"); // application name and version
-
-		try {
-			JSONObject obj = (JSONObject) message.send(params);
-			System.out.println(obj.toString());
-		} catch (CoolsmsException e) {
-			System.out.println(e.getMessage());
-			System.out.println(e.getCode());
-		}
+//		// 4 params(to, from, type, text) are mandatory. must be filled
+//		HashMap<String, String> params = new HashMap<String, String>();
+//		params.put("to", "01074003717");
+//		params.put("from", "01074003717");
+//		params.put("type", "LMS");
+//		params.put("text", "나의 첫번째 메시지 전송 프로그램 테스트");
+//		params.put("app_version", "test app 1.2"); // application name and version
+//
+//		try {
+//			JSONObject obj = (JSONObject) message.send(params);
+//			System.out.println(obj.toString());
+//		} catch (CoolsmsException e) {
+//			System.out.println(e.getMessage());
+//			System.out.println(e.getCode());
+//		}
 	}
 
 //----------------------------------------------------------구분선---------------------------------------------------------------
