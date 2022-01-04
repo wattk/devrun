@@ -397,6 +397,7 @@ COMMENT ON COLUMN "DELETE_REVIEW_ATTACHMENT"."REVIEW_NO" IS '리뷰 번호';
 COMMENT ON COLUMN "DELETE_REVIEW_ATTACHMENT"."DELETE_DATE" IS '파일 삭제일';
 
 
+
 -- 회원-리뷰 좋아요 테이블 생성
 -- ◆외래키 제약 조건 전부 디폴트 상태
 CREATE TABLE "MEMBER_REVIEW_LIKE" (
@@ -406,6 +407,7 @@ CREATE TABLE "MEMBER_REVIEW_LIKE" (
     constraint FK_MEMBER_REVIEW_LIKE_REVIEW_NO foreign key(REVIEW_NO) references REVIEW(REVIEW_NO) on delete cascade,
     constraint FK_MEMBER_REVIEW_LIKE_MEMBER_NO foreign key(MEMBER_NO) references MEMBER(MEMBER_NO) on delete cascade
 );
+
 
 -- 회원-리뷰 좋아요 테이블 코멘트 추가
 COMMENT ON COLUMN "MEMBER_REVIEW_LIKE"."REVIEW_NO" IS '리뷰 번호';
@@ -458,9 +460,35 @@ alter table community drop column thumnail;
 alter table community add (thumbnail clob);
 commit;
 
+CREATE TABLE "MEMBER_REVIEW_LIKE" (
+	"REVIEW_NO"	NUMBER		NOT NULL,
+	"MEMBER_NO"	NUMBER		NOT NULL,
+    constraint PK_MEMBER_REVIEW_LIKE primary key(REVIEW_NO, MEMBER_NO),
+    constraint FK_MEMBER_REVIEW_LIKE_REVIEW_NO foreign key(REVIEW_NO) references REVIEW(REVIEW_NO) on delete cascade,
+    constraint FK_MEMBER_REVIEW_LIKE_MEMBER_NO foreign key(MEMBER_NO) references MEMBER(MEMBER_NO) on delete cascade
+);
+drop table member_community_like;
+-- 회원-커뮤니티 좋아요
+create table member_community_likee(
+    community_no number not null,
+    member_no number not null,
+    constraint pk_member_community_likee primary key(community_no, member_no),
+    constraint fk_member_community_likee_community_no foreign key(community_no) references community(community_no) on delete cascade,
+    constraint fk_member_community_likee_member_no foreign key(member_no) references member(member_no) on delete cascade
+ );
+commit;
+
+select * from member_community_like;
 -- 커뮤니티 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_COMMUNITY_NO;
 
+
+
+select * from community_comment;
+select * from community;
+
+DROP TABLE community CASCADE CONSTRAINTS;
+DROP TABLE community;
 -- 커뮤니티 테이블 생성
 CREATE TABLE "COMMUNITY" (
 	"COMMUNITY_NO"	NUMBER NOT NULL,
@@ -479,6 +507,12 @@ CREATE TABLE "COMMUNITY" (
     CONSTRAINT CK_COMMUNITY_ANSWER_YN CHECK(ANSWER_YN IN ('Y', 'N'))
 );
 
+
+ALTER TABLE  community DROP CONSTRAINT fk_community_member_no;
+ALTER TABLE  community DROP CONSTRAINT ck_community_answer_yn;
+ALTER TABLE  community DROP CONSTRAINT pk_community_community_no;
+
+
 -- 커뮤니티 테이블 코멘트 추가
 COMMENT ON COLUMN "COMMUNITY"."COMMUNITY_NO" IS '게시글 번호 SEQ';
 COMMENT ON COLUMN "COMMUNITY"."MEMBER_NO" IS '회원 번호';
@@ -492,9 +526,13 @@ COMMENT ON COLUMN "COMMUNITY"."THUMNAIL" IS '썸네일';
 COMMENT ON COLUMN "COMMUNITY"."ANSWER_YN" IS '해결 Y 미해결N';
 COMMENT ON COLUMN "COMMUNITY"."HASHTAG" IS '글 관련 해시태그, 구분자/';
 
+commit;
+
 -- 커뮤니티 댓글 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_COMMUNITY_COMMENT_NO;
 
+ALTER TABLE  community_comment DROP CONSTRAINT fk_community_comment_community_no;
+DROP TABLE COMMUNITY_COMMENT;
 -- 커뮤니티 댓글 테이블 생성
 CREATE TABLE "COMMUNITY_COMMENT" (
 	"COMMENT_NO"	NUMBER	NOT NULL,

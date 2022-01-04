@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import com.kh.devrun.community.model.vo.Community;
 import com.kh.devrun.community.model.vo.CommunityComment;
 import com.kh.devrun.community.model.vo.CommunityCommentEntity;
 import com.kh.devrun.community.model.vo.CommunityEntity;
+import com.kh.devrun.member.model.vo.Member;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -271,12 +273,23 @@ public class CommunityController {
 	// @RequestParam("가져올 데이터의 이름")[데이터 타입][가져온 데이터를 담을 변수]
 	// 그리고 Model 객체를 이용해서, 뷰로 값을 넘겨준다.
 	@GetMapping("/communityFreeboardDetail/{communityNo}")
-	public String communityFreeboardDetail(@PathVariable int communityNo, Model model, HttpServletRequest request, HttpServletResponse response) {
+	public String communityFreeboardDetail(
+									@PathVariable int communityNo, 
+									Model model, HttpServletRequest request,
+									HttpServletResponse response,
+									Authentication authentication) {
 		log.debug("communityNo = {}", communityNo);
+		Member member = null;
+		
+		// memberNo를 가져오기 위해 authentication을 활용
+		if(authentication != null) {
+			member = (Member) authentication.getPrincipal();
+		}
 		
 		// 조회 중복 방지
 		boolean hasRead = CommunityUtils.hasRead(request, response, communityNo, "community");
 		
+		// 읽음 여부
 		if (!hasRead) {
 			// 조회수 증가
 			int result = communityService.viewCount(communityNo);
@@ -288,12 +301,67 @@ public class CommunityController {
 		log.debug("communityEntity = {}", communityEntity);
 		model.addAttribute("communityEntity", communityEntity);
 		
+		// 좋아요 클릭 유무 확인
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", member.getMemberNo());
+		param.put("communityNo", communityNo);
+		
+		// 좋아요 여부 확인(누름 = 1, 안누름 = 0)
+		int likeYesNo = communityService.didIHitLikes(param);
+		log.debug("param = {}", param);
+		log.debug("likeYesNo = {}", likeYesNo);
+		model.addAttribute(likeYesNo);
+		
 		// 댓글
 		List<CommunityCommentEntity> freeboardCommentList = communityService.selectFreeboardCommentList(communityNo);
 		log.debug("freeboardCommentList = {}", freeboardCommentList);
 		model.addAttribute("freeboardCommentList", freeboardCommentList);
 		
 		return "community/communityFreeboardDetail";
+	}
+	
+	// 자유게시판-좋아요추가
+	@ResponseBody
+	@GetMapping("/freeboardLikeAdd")
+	public Map<String, Object> freeboardLikeAdd(@RequestParam int communityNo, @RequestParam int memberNo){
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("communityNo", communityNo);
+		param.put("memberNo", memberNo);
+
+		int result = communityService.freeboardLikeAdd(param);
+		log.debug("좋아요 추가(result) : {}", result);
+		
+		// 좋아요 추가하고 새로 추가된 좋아요 갯수 받아오기
+		int newCountLikes = communityService.refreshCountLikes(communityNo); 
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", result);
+		map.put("newCountLikes", newCountLikes);
+		
+		return map;
+	}
+	
+	// 자유게시판-좋아요삭제
+	@ResponseBody
+	@GetMapping("/freeboardLikeDelete")
+	public Map<String, Object> freeboardLikeDelete(@RequestParam int communityNo, @RequestParam int memberNo){
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("communityNo", communityNo);
+		param.put("memberNo", memberNo);
+		
+		int result = communityService.freeboardLikeDelete(param);
+		log.debug("좋아요 삭제(result) : {}", result);
+		
+		// 좋아요 삭제하고 새로 추가된 좋아요 갯수 받아오기
+		int newCountLikes = communityService.refreshCountLikes(communityNo);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", result);
+		map.put("newCountLikes", newCountLikes);
+		
+		return map;
 	}
 	
 	// 자유게시판-상세보기-수정페이지

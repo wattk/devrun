@@ -53,12 +53,15 @@ function goFreeboardForm(){
  */
 $(() => {
 	$("tr[data-no]").click((e) => {
-		//console.log(e.target);
-		//console.log($(e.target).data("no"));
+		console.log(e.target);
+		console.log($(e.target).data("no"));
 		// tr 태그를 찾는 작업 --> 이벤트 타겟의 부모중의 tr태그를 찾아주세요.
 		const $tr = $(e.target).parents("tr");
 		const communityNo = $tr.data("no");
+		
 		location.href = `${pageContext.request.contextPath}/community/communityFreeboardDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
+		
+
 	});
 });
  
