@@ -71,6 +71,10 @@
 		<websocket:simple-broker prefix="/chat"/>
 	</websocket:message-broker>
 	
-	
+	<!-- 다현 sms api 빈등록 -->
+	<beans:bean class="net.nurigo.java_sdk.api.Message" id="message">
+		<beans:constructor-arg index="0" value="NCSTDEQFRIAB8CBC"/>
+		<beans:constructor-arg index="1" value="UCLQIXWFIQCWZBJM4TRKR3J5XHYKUTRP"/>
+	</beans:bean>
 	
 </beans:beans>
