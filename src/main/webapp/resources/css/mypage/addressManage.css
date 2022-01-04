@@ -19,6 +19,12 @@
 #addressList td {cursor:pointer;}
 #addressList th {color:#000000;}
 
+#addressList tr#noList td {text-align:center;}
+
+.page-item:focus-visible, .page-link:focus-visible {outline:none;}
+.page-link:focus {box-shadow:none;}
+.page-link {padding:7px 14px;}
+
 /* address detail */
 #adressDetail h5 {color:#1A81FF; padding:5px;}
 

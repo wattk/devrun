@@ -96,6 +96,7 @@
         pd.detail_no,
         pd.option_no,
         pd.option_content,
+        pd.quantity,
         md.buy_count
   	from
   		product p left join product_detail pd
@@ -120,6 +121,7 @@
 		<id column="detail_no" property="detailNo"/>
 		<result column="option_no" property="optionNo"/>
 		<result column="option_content" property="optionContent"/>
+		<result column="quantity" property="quantity"/>
 	</association>
   </resultMap>
   
@@ -224,11 +226,15 @@
   		<if test="(searchType != null or searchType != '') and (searchKeyword != null or searchType != '')">
   			<choose>
   				<when test="searchType eq 'memberNo'">
-  					and member_no = '%'||#{searchKeyword}||'%'
+  					and member_no like '%'||#{searchKeyword}||'%'
   				</when>
   				<when test="searchType eq 'orderNo'">
-  					and merchant_uid = '%'||#{searchKeyword}||'%'
+  					and merchant_uid like '%'||#{searchKeyword}||'%'
   				</when>
+  				<otherwise>
+  					and (member_no like '%'||#{searchKeyword}||'%'
+  					or merchant_uid like '%'||#{searchKeyword}||'%')
+  				</otherwise>
   			</choose>
   		</if>
   		<if test="startDate != null">
@@ -240,4 +246,20 @@
   	</where>
   	order by order_date desc
   </select>
+  
+  <update id="updateMerchant">
+  	update merchant set
+  		order_status = #{orderStatus}
+  	where
+  		merchant_uid = #{merchantUid}
+  </update>
+  
+  <update id="updateProductQuantity">
+	<foreach collection="list" item="map"  open="DECLARE BEGIN" close="; END;" separator=";">
+  		update product_detail set
+  			quantity = quantity - #{map.buyCount}
+  		where
+  			detail_no = #{map.detailNo}
+  	</foreach>
+  </update>
 </mapper>

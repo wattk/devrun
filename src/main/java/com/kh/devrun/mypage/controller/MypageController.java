@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -32,11 +34,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.address.model.vo.Address;
+import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.mypage.model.service.MypageService;
 import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.MerchantExt;
+import com.kh.devrun.report.model.service.ReportService;
+import com.kh.devrun.report.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,6 +58,9 @@ public class MypageController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private ReportService reportService;
 	
 	@Autowired
 	ServletContext application;
@@ -259,7 +267,7 @@ public class MypageController {
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		// 형식객체, 빈값허용여부("" -> null)
+		//형식객체, 빈값허용여부("" -> null)
 		PropertyEditor editor = new CustomDateEditor(sdf, true);
 		binder.registerCustomEditor(Date.class, editor);
 	}
@@ -305,12 +313,34 @@ public class MypageController {
 	 * 지원 나의 정보 > 배송지 관리 시작
 	 */
 	@GetMapping("/myinfo/addressManage.do")
-	public String addressManage(Model model, Authentication authentication) {
-		Member member = (Member) authentication.getPrincipal();
-		int memberNo = member.getMemberNo();
-		List<Address> list = mypageService.selectAllAddressById(memberNo);
-		log.debug("list = {}", list);
-		model.addAttribute("addressList", list);
+	public String addressManage(@RequestParam(defaultValue = "1") int cPage, Authentication authentication,
+			HttpServletRequest request, HttpServletResponse response, Model model) {
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		try {
+			Member member = (Member) authentication.getPrincipal();
+			int memberNo = member.getMemberNo();
+			
+			//1. 전체 주소 목록
+			List<Address> addressList = mypageService.selectAllAddressByMemberNo(memberNo, offset, limit);
+			model.addAttribute("addressList", addressList);
+			log.debug("addressList = {}", addressList);
+			
+			//2. 전체 주소 수 totalContent
+			int totalContent = mypageService.selectAddressTotalCount(memberNo);
+			model.addAttribute("totalContent", totalContent);
+			
+			//3. pagebar
+			String url = request.getRequestURI(); // /spring/board/boardList.do
+			String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+			log.debug("pagebar = {}", pagebar);
+			model.addAttribute("pagebar", pagebar);
+			
+		} catch (Exception e) {
+			log.error("주소 목록 조회 오류", e);
+			throw e;
+		}
 		return "mypage/addressManage";
 	}
 	
@@ -331,6 +361,7 @@ public class MypageController {
 	}
 	
 	/**
+	 * 주소 등록
 	 * insert into address values(seq_address_no.nextval, #{memberNo}, #{postalCode}, #{address1}, #{address2}, #{mainYn}, #{title}, #{addressee}, #{phone})
 	 */
 	@PostMapping("/myinfo/addressEnroll.do")
@@ -348,6 +379,9 @@ public class MypageController {
 		
 	}
 	
+	/**
+	 * 주소 수정
+	 */
 	@PostMapping("/myinfo/addressUpdate.do")
 	public String addressUpdate(Address address, RedirectAttributes redirectAttr) {
 
@@ -363,6 +397,9 @@ public class MypageController {
 		
 	}
 	
+	/**
+	 * 주소 삭제
+	 */
 	@PostMapping("/myinfo/addressDelete.do")
 	public String addressDelete(Address address, RedirectAttributes redirectAttr) {
 
@@ -385,8 +422,34 @@ public class MypageController {
 	 * 지원 나의 정보 > 신고 내역 시작
 	 */
 	@GetMapping("/myinfo/reportHistory.do")
-	public String reportHistory() {
-
+	public String reportHistory(@RequestParam(defaultValue = "1") int cPage, Authentication authentication,
+			HttpServletRequest request, HttpServletResponse response, Model model) {
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		try {
+			Member member = (Member) authentication.getPrincipal();
+			int memberNo = member.getMemberNo();
+			
+			//1. 전체 신고 내역
+			List<Report> reportList = reportService.selectAllReportByMemberNo(memberNo, offset, limit);
+			model.addAttribute("reportList", reportList);
+			log.debug("reportList = {}", reportList);
+			
+			//2. 전체 신고 수 totalContent
+			int totalContent = reportService.selectReportTotalCount(memberNo);
+			model.addAttribute("totalContent", totalContent);
+			
+			//3. pagebar
+			String url = request.getRequestURI(); // /spring/board/boardList.do
+			String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+			log.debug("pagebar = {}", pagebar);
+			model.addAttribute("pagebar", pagebar);
+			
+		} catch (Exception e) {
+			log.error("신고 내역 조회 오류", e);
+			throw e;
+		}
 		return "mypage/reportHistory";
 		
 	}

@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.category.model.vo.ProductChildCategory;
+import com.kh.devrun.common.AdminUtils;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.memberManage.model.service.MemberManageService;
@@ -50,6 +51,8 @@ import com.kh.devrun.questionProduct.model.vo.QuestionProduct;
 import com.kh.devrun.questionProduct.model.vo.QuestionProductEx;
 
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @Slf4j
@@ -454,7 +457,7 @@ public class AdminController {
 	};
 	
 	
-
+	// 검색결과 페이징처리
 	@ResponseBody
 	@GetMapping("/memberManage/searchMember.do")
 	public Map<String,Object>searchMember(
@@ -466,7 +469,7 @@ public class AdminController {
 		
 		Map<String,Object>map = new HashMap<>();
 		
-		int limit = 4;
+		int limit = 5;
 		int offset = (cPage - 1) * limit;
 		
 		
@@ -531,8 +534,8 @@ public class AdminController {
 	@GetMapping("/questionProduct/selectQuestion.do")
 	public Map<String,Object>selectQuestionProductInfo(
 				@RequestParam int questionNo,
-				@RequestParam String productCode		
-			
+				@RequestParam String productCode
+				
 			){		
 		Map<String,Object> map = new HashMap<>();
 		log.debug("productCode={}",productCode);
@@ -548,7 +551,7 @@ public class AdminController {
 		// 선택한 문의 번호에 대한 참조 문의 번호가 존재한다면 가져오기
 		QuestionProduct questionProduct = questionProductService.selectQuestionByRefNo(questionNo);
 		
-		String answer = "";
+		String answer = "no";
 		
 		if(questionProduct != null) {
 			answer = questionProduct.getContent();
@@ -604,8 +607,7 @@ public class AdminController {
 		return "redirect:/admin/memberManage/questionProduct.do";
 	}
 	
-	
-	
+
 	
 	
 	
@@ -627,8 +629,14 @@ public class AdminController {
 	@GetMapping("/orderManage.do")
 	public void orderManage(Model model) {
 		List<Merchant> list = orderService.selectAllMerchant();
+		List<Merchant> orList = new ArrayList<>();
+		for(Merchant m : list) {
+			if("OR".equals(m.getOrderStatus()))
+				orList.add(m);
+		}
 		
 		model.addAttribute("list", list);
+		model.addAttribute("orList", orList);
 	}
 	
 	@GetMapping("/orderSearch")
@@ -660,12 +668,51 @@ public class AdminController {
 		
 		List<Merchant> list = orderService.selectMerchantList(param);
 		log.debug("list = {}", list);
-		//String merchantStr = AdminUtils.getMerchantList(list, url);
-		//log.debug("merchantStr = {}", merchantStr);
+		String merchantStr = AdminUtils.getMerchantList(list, url);
+		log.debug("merchantStr = {}", merchantStr);
 		
-		//resultMap.put("merchantStr", merchantStr);
+		resultMap.put("merchantStr", merchantStr);
 		
-		return null;
+		return resultMap;
+	}
+	
+	@GetMapping("/findMerchantDetail")
+	@ResponseBody
+	public Map<String, Object> findMerchantDetail(@RequestParam(value = "merchantUid") String merchantUid) {
+		log.debug("merchantUid = {}", merchantUid);
+		Map<String, Object> merchant = orderService.selectOneMerchant(merchantUid);
+		return merchant;
+	}
+	
+	@PostMapping("/orderUpdate")
+	@ResponseBody
+	public Map<String, Object> orderUpdate(@RequestParam Map<String, Object> param) {
+		log.debug("param = {}", param);
+		String str = (String)param.get("detailList");
+		log.debug("str = {}", str);
+		JSONArray arr = JSONArray.fromObject(str);
+		log.debug("arr = {}", arr);
+		List<Map<String, Object>> detailUpdateList = new ArrayList<Map<String, Object>>();
+		
+		for(int i = 0; i < arr.size(); i++) {
+			JSONObject obj = (JSONObject)arr.get(i);
+			log.debug("obj = {}", obj);
+			Map<String, Object> map = new HashMap<>();
+			map.put("detailNo", obj.get("detailNo"));
+			map.put("buyCount", obj.get("buyCount"));
+			
+			detailUpdateList.add(map);
+		}
+		
+		param.put("detailList", detailUpdateList);
+		
+		int result = orderService.updateMerchant(param);
+		log.debug("result = {}", result);
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		resultMap.put("result", result);
+		return resultMap;
 	}
 	
 	@GetMapping("/shipmentManage.do")

@@ -87,4 +87,16 @@ public class OrderDaoImpl implements OrderDao {
 		return session.selectList("order.selectMerchantList", param);
 	}
 
+	@Override
+	public int updateMerchant(Map<String, Object> param) {
+		return session.update("order.updateMerchant", param);
+	}
+
+	@Override
+	public int updateProductQuantity(List<Map<String, Object>> detailList) {
+		return session.update("order.updateProductQuantity", detailList);
+	}
+
+
+	
 }

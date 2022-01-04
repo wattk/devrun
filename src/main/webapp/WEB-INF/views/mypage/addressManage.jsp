@@ -26,15 +26,17 @@
 		       		<section id="addressList">
 				       	<table class="table">
 				       		<tr>
+				       			<th>선택</th>
 			     				<th>배송지명</th>
 			     				<th>수령인</th>
 			     				<th>우편번호</th>
 			     				<th>주소</th>
 			     				<th>연락처</th>
 			     			</tr>
-	       					<c:if test="${addressList ne null}">
+	       					<c:if test="${totalContent ne 0}">
 		       					<c:forEach items="${addressList}" var="address">
 			     					<tr data-no="${address.addressNo}">
+			     						<td><input type="radio" name="addressNo"/></td>
 			     						<td>${address.title}</td>
 			     						<td>${address.addressee}</td>
 			     						<td>${address.postalCode}</td>
@@ -43,10 +45,12 @@
 			     					</tr>
 			     				</c:forEach>
 	       					</c:if>
-	       					<c:if test="${addressList eq null}">
-	       						<tr><td colspan="4">주소가 없습니다.</td></tr>
+	       					<c:if test="${totalContent eq 0}">
+	       						<tr id="noList"><td colspan="6">등록된 주소가 없습니다.</td></tr>
 	       					</c:if>
 	       				</table>
+	       				<!-- pagebar : 등록된 주소가 있는 경우에만 제공 -->
+	       				<c:if test="${totalContent ne 0}">${pagebar}</c:if>
      				</section>
 	       			
 	       			<%-- shipping address detail --%>
@@ -87,7 +91,10 @@
 			       				</tr>
 			       				<tr>
 			       					<th><label for="mainYn">기본배송지</label></th>
-			       					<td><input type="checkbox" name="mainYn" id="mainYn" value="N"/> 기본 배송지로 설정</td>
+			       					<td>
+			       						<input type="checkbox" name="mainYn" value="Y" id="mainYn"/> 기본 배송지로 설정
+			       						<input type="hidden" name="mainYn" value="N" id="mainYnHidden"/>
+			       					</td>
 			       				</tr>
 			       			</table>
 			       			<%-- buttons : address enroll / update / delete --%>
@@ -105,17 +112,23 @@
 		</div>
 		
 <script>
-/* 주소 한개 ajax로 가져오기 */
+/* 주소 상세 조회 */
 $("tr[data-no]").click((e) => {
-	const addressNo = $(e.target).parents("tr").data("no");
-	console.log(addressNo);
-	//if(!$tr.data("no")) return; //addressNo가 undefined라면 조기리턴해서 이하코드 실행하지 않도록 한다.
+	//radio버튼을 클릭하여 value값을 가져오는 코드(-> radio버튼을 체크해야만 정보가 띄워져서 사용하기에 불편했다)
+	//input태그에 value값 대신 data-no속성을 지정하여 .data("no")로 가져올 수도 있다.
+	//const addressNo = $("input[name=addressNo]:checked").val();
+	
+	$tr = $(e.target).parents("tr");
+	$tr.find("input[name=addressNo]").prop("checked", true); //radio버튼 체크 처리
+	const addressNo = $tr.data("no");
+	//console.log(addressNo);
+	if(!addressNo) return; //addressNo가 undefined라면 조기리턴해서 이하 코드 실행하지 않도록 한다.
 	
 	$.ajax({
 		url: `${pageContext.request.contextPath}/mypage/myinfo/selectOneAddress/\${addressNo}`,
 		method: "GET",
 		success(data){
-			console.log(data);
+			//console.log(data);
 			const $frm = $(addressFrm);
 			const {title, addressee, postalCode, address1, address2, phone, mainYn} = data;
 			$("[name=title]", $frm).val(title);
@@ -124,7 +137,12 @@ $("tr[data-no]").click((e) => {
 			$("[name=address1]", $frm).val(address1);
 			$("[name=address2]", $frm).val(address2);
 			$("[name=phone]", $frm).val(phone);
-			$(`[name=mainYn][value=\${mainYn}]`, $frm).prop("checked", true);
+			//mainYn값이 Y이면 체크되도록 하고, N이면 체크되지 않도록 한다.
+			if(mainYn == "Y") {
+				$("[name=mainYn]", $frm).prop("checked", true);
+			} else {
+				$("[name=mainYn]", $frm).prop("checked", false);
+			}
 		},
 		error(xhr, textStatus, err){
 			console.log(xhr, textStatus, err);
@@ -198,21 +216,6 @@ $("#searchPostcodeBtn").click(function(){
         popupKey: 'popup1' 
     });
 });
-/* $(document).ready(function(){
-	if($("#mainYn").is(":checked") == true){
-		$("#mainYn").val("Y");
-	} else {
-		$("#mainYn").val("N");
-	}
-}); */
-$("#mainYn").change(function(){
-	$mainYn = $("#mainYn");
-	if($mainYn.is(":checked")){
-		$mainYn.val("Y");
-	} else {
-		$mainYn.val("N");
-	}
-});
 
 function addressEnroll(frm) {
 	/* 유효성검사 : 배송지명, 수령인, 우편번호, 주소, 상세주소, 연락처, 기본배송지 여부 */
@@ -247,13 +250,9 @@ function addressEnroll(frm) {
 		$phone.focus();
 		return;
 	}
-	/* const $mainYn = $("#mainYn");
-	if($mainYn.is(":checked")){
-    	$mainYn.val(Y);
+	if($("#mainYn").is(":checked")){
+		$("#mainYnHidden").prop("disabled", true);
 	}
-    else {
-    	$mainYn.val(N);
-    } */
 	
 	frm.action = `${pageContext.request.contextPath}/mypage/myinfo/addressEnroll.do`;
 	frm.submit();
@@ -268,24 +267,6 @@ function addressDelete(frm) {
 	frm.action = `${pageContext.request.contextPath}/mypage/myinfo/addressDelete.do`;
 	frm.submit();
 }
-
-/* 추가, 수정, 삭제 */
-/* $("#addressEnrollBtn").click((e) => {
-	//유효성검사
-		
-	//기본배송지 value값 설정
-	const $mainYn = $("#mainYn")
-	if($mainYn.is(":checked"))
-		$mainYn.val("Y");
-    else
-    	$mainYn.val("N");
-		
-	$(document.addressFrm).action=`${pageContext.request.contextPath}/mypage/myinfo/addressEnroll.do`;
-	$(document.addressFrm).submit();
-}); */
-
-/* $(document.addressFrm).action='${pageContext.request.contextPath}/mypage/myinfo/addressUpdate.do';
-$(document.addressFrm).action='${pageContext.request.contextPath}/mypage/myinfo/addressDelete.do'; */
 </script>
 
 
