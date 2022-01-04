@@ -15,6 +15,11 @@
 <link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
 <!-- 폰트어썸 CDN -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+<!-- include summernote css/js -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" integrity="sha512-ZbehZMIlGA8CTIOtdE+M81uj3mrcgyrh6ZFeG33A4FHECakGrOsTPlPQ8ijjLkxgImrdmSVUHn1j+ApjodYZow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js" integrity="sha512-lVkQNgKabKsM1DA/qbhJRFQU8TuwkLF2vSN3iU/c7+iayKs08Y8GXqfFxxTZr1IcpMovXnf2N/ZZoMgmZep1YQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="${pageContext.request.contextPath }/resources/js/summernote/lang/summernote-ko-KR.js"></script>
+
 <style>
 .input-group {
 	justify-content: center;
@@ -37,13 +42,34 @@ div#search-content {
 div#search-nickname {
 	display: none;
 }
+
+.modal-dialog.modal-80size {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
     
 </style>
 
 <script>
+
+// summernote 웹 에디터 로딩
+$(document).ready(function(){
+	$('#summernote').summernote({
+		height: 300, // 에디터 높이
+		minHeight: null, // 최소 높이
+		maxHeight: null, // 최대 높이
+		focus: true, // 에디터 로딩 후 포커스를 맞출 지 여부
+		lang: "ko-KR", // 한글 설정
+		placeholder: "내용을 입력해 주세요"  // placeholder 설정
+	});
+});
+
 // 글쓰기 폼으로 이동
-function goFreeboardForm(){
-	location.href = "${pageContext.request.contextPath}/community/communityFreeboardForm.do";
+function goWriteForm(){
+	location.href = "${pageContext.request.contextPath}/community/communityWriteForm.do";
 }
 
 // 게시글 상세보기로 이동
@@ -53,12 +79,15 @@ function goFreeboardForm(){
  */
 $(() => {
 	$("tr[data-no]").click((e) => {
-		//console.log(e.target);
-		//console.log($(e.target).data("no"));
+		console.log(e.target);
+		console.log($(e.target).data("no"));
 		// tr 태그를 찾는 작업 --> 이벤트 타겟의 부모중의 tr태그를 찾아주세요.
 		const $tr = $(e.target).parents("tr");
 		const communityNo = $tr.data("no");
+		
 		location.href = `${pageContext.request.contextPath}/community/communityFreeboardDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
+		
+
 	});
 });
  
@@ -174,9 +203,59 @@ $(() => {
 	
 	<!-- 글쓰기 버튼 -->
 	<div style="float: right">
-		<input type="button" value="글쓰기" id="btn-add" class="btn btn-outline-primary" onclick="goFreeboardForm();"/>
+	<button class="btn btn-primary" data-toggle="modal" data-target="#bs-example-modal-lg">글쓰기</button>
 	</div>
 	</div>
+	
+	<!-- 게시판 글쓰기 모달 시작 -->
+	<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h6 class="modal-title" id="myLargeModalLabel"><strong>커뮤니티</strong></h6>
+	      </div>
+	      <br />
+	      <div class="row justify-content-center">
+		      <div>
+		      	<button type="button" class="btn btn-primary">Q&A</button>
+		      </div>
+		      &nbsp;
+		      <div>
+		      	<button type="button" class="btn btn-primary">스터디</button>
+		      </div>
+		      &nbsp;
+		      <div>
+		      	<button type="button" class="btn btn-primary">자유게시판</button>
+		      </div>
+	      </div>
+	      <div class="modal-body">
+	      <p><strong>제목</strong></p>
+	      <hr />
+			<div class="input-group flex-nowrap">
+			  <input type="text" class="form-control" placeholder="제목을 입력해주세요." aria-label="Username" aria-describedby="addon-wrapping">
+			</div>
+		  <br />	
+		  <p><strong>태그</strong></p>
+		  <hr />
+		  	<div class="input-group flex-nowrap">
+			  <span class="input-group-text" id="addon-wrapping">#</span>
+			  <input type="text" class="form-control" placeholder="태그를 설정해주세요." aria-label="Username" aria-describedby="addon-wrapping">
+			</div>
+		  <br />	
+		  <p><strong>내용</strong></p>
+		  <hr />	
+			<div class="input-group flex-nowrap">
+				<textarea class="form-control" rows="5" name="content" id="summernote"></textarea>
+			</div>
+	      </div>
+	      <div class="modal-footer justify-content-center">
+			<button type="submit" class="btn btn-primary col-4">저장</button>
+			<button type="button" class="btn btn-secondary col-4"data-dismiss="modal" id="deleteReporBtn">취소</button>
+		  </div>
+	    </div>
+	  </div>
+	</div>
+	
 	<!-- 페이징 시작 -->
 	<div>
 		${pagebar}

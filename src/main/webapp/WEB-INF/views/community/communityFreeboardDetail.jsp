@@ -31,6 +31,7 @@
 		$('#summernote').summernote('disable');
 	});
 	
+	
 	// 게시물 수정하기
 	$(document).on('click', '#freeboardUpdateBtn', function(e){
 		e.preventDefault();
@@ -60,9 +61,7 @@
 		}
 	});
 	
-
-	
-			
+		
 </script>
 <style>
 	#likeButton, #reportButton {
@@ -144,10 +143,13 @@
 			</div>
 			
 			<hr />
-			<div class="row">
-				<div class="col-md-12 text-center"> 
+			<div class="row" >
+				<div class="col-md-12 row justify-content-end"> 
 					<button type="button" class="btn btn-danger" id="reportButton">신고하기</button>
-					<button type="button" class="btn btn-primary" id="likeButton">좋아요</button>
+					<button type="button" class="btn btn-primary" id="likeButton" 
+						data-community-no = "${communityEntity.communityNo}"
+						data-member-no = "${communityEntity.memberNo}"
+						data-like-yes-no = "${likeYesNo}">좋아요</button>
 				</div>
 			</div>
 				<hr />
@@ -372,7 +374,75 @@ $('.btnCommentDelete').click((e) => {
 	
 });
 
-
+// 좋아요 
+$(document).on('click', '#likeButton', function(e) {
+	console.log("좋아요 도착하나요?");
+	
+	const $communityNo = $(e.target).data("communityNo");
+	const $memberNo = $(e.target).data("memberNo");
+	const likeYesNo = $(e.target).data("likeYesNo");
+	console.log($communityNo);
+	console.log($memberNo);
+	console.log(likeYesNo);
+	
+	if(likeYesNo == 0){
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/community/freeboardLikeAdd",
+			method : "GET",
+			data : {
+				memberNo : $memberNo,
+				communityNo : $communityNo
+			},
+			success(data){
+				const result = data["result"]
+				const newCountLikes = data["newCountLikes"];
+				console.log(`result : \${result}`);
+				console.log(`newCountLikes : \${newCountLikes}`);
+				
+				if(result == 1) {
+					$(e.target).data("likeYesNo", 1);
+					console.log($(e.target).data("likeYesNo"));
+					
+					$(e.target).text(newCountLikes);
+					console.log("newCountLikes = " + newCountLikes);
+					
+					$.ajax({
+						url : "${pageContext.request.contextPath}/community/communityFreeboardList.do"
+					})
+				}
+			},
+			error : function(xhr, status, err){
+				console.log(xhr, status, err);
+					alert("로그인 후 이용이 가능합니다.");
+			}
+		});
+	}else{
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/community/freeboardLikeDelete",
+			method : "GET",
+			data : {
+				communityNo : $communityNo,
+				memberNo : $memberNo
+			},
+			success(data){
+				const result = data["result"];
+				const newCountLikes = data["newCountLikes"];
+				console.log(`result : \${result}`);
+				console.log(`newcountLikes : \${newCountLikes}`);
+				
+				if(result == 1) {
+					$(e.target).data("likeYesNo", 0);
+					console.log($(e.target).data("likeYesNo"));
+					
+					$(e.target).text(newCountLikes);
+				}
+			},
+			error : console.log
+		})
+	}
+});
 
 
 </script>
