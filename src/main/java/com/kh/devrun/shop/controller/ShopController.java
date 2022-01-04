@@ -63,7 +63,7 @@ public class ShopController {
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
 	private OrderService orderService;
 
@@ -75,8 +75,8 @@ public class ShopController {
 
 	@Autowired
 	shopUtils shopUtils;
-	
-	//SMS api 주입
+
+	// SMS api 주입
 	@Autowired
 	Message message;
 
@@ -97,13 +97,13 @@ public class ShopController {
 
 		Member loginMember = (Member) authentication.getPrincipal();
 		int memberNo = loginMember.getMemberNo();
-		
+
 		// 위시리스트 조회해오기
 		List<WishlistProduct> wishlist = shopService.selectAllWishlist(memberNo);
 		log.debug("whislist 잘 받앗? : {}", wishlist);
-		
-		model.addAttribute("wishlist",wishlist);
-		model.addAttribute("loginMember",loginMember);
+
+		model.addAttribute("wishlist", wishlist);
+		model.addAttribute("loginMember", loginMember);
 		return "shop/wishlist";
 	}
 
@@ -199,7 +199,7 @@ public class ShopController {
 		// 상품 옵션도 조회
 		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
 		model.addAttribute("pDetail", pDetail);
-		log.debug("재고 : {}",pDetail);
+		log.debug("재고 : {}", pDetail);
 
 		// 소분류 카테고리 추출
 		String childCate = productCode.substring(3, 6);
@@ -214,6 +214,11 @@ public class ShopController {
 
 		Collections.shuffle(recommendation);
 		model.addAttribute("recommendation", recommendation);
+
+		// 품절상품 정보
+		List<ProductDetail> outOfStock = productService.selectOutOfStock(productCode);
+		model.addAttribute("outOfStock", outOfStock);
+		log.debug("품절 : {}", outOfStock);
 
 		// 장바구니 좋아요 여부
 
@@ -377,30 +382,31 @@ public class ShopController {
 
 		return result;
 	}
-	
-	//SMS api 핸들러
-	@RequestMapping("/restock")
-	public void sms() {
-		
-	    // 4 params(to, from, type, text) are mandatory. must be filled
-	    HashMap<String, String> params = new HashMap<String, String>();
-	    params.put("to", "01074003717");
-	    params.put("from", "01074003717");
-	    params.put("type", "LMS");
-	    params.put("text", "나의 첫번째 메시지 전송 프로그램 테스트");
-	    params.put("app_version", "test app 1.2"); // application name and version
 
-	    try {
-	      JSONObject obj = (JSONObject) message.send(params);
-	      System.out.println(obj.toString());
-	    } catch (CoolsmsException e) {
-	      System.out.println(e.getMessage());
-	      System.out.println(e.getCode());
-	    }
+	// SMS api 핸들러
+	@ResponseBody
+	@PostMapping("/restock")
+	public void sms(@RequestParam String phoneNumber, @RequestParam int detailNo) {
+		log.debug("phoneNumber : {}",phoneNumber);
+		log.debug("detailNo : {}",detailNo);
+
+//		// 4 params(to, from, type, text) are mandatory. must be filled
+//		HashMap<String, String> params = new HashMap<String, String>();
+//		params.put("to", "01074003717");
+//		params.put("from", "01074003717");
+//		params.put("type", "LMS");
+//		params.put("text", "나의 첫번째 메시지 전송 프로그램 테스트");
+//		params.put("app_version", "test app 1.2"); // application name and version
+//
+//		try {
+//			JSONObject obj = (JSONObject) message.send(params);
+//			System.out.println(obj.toString());
+//		} catch (CoolsmsException e) {
+//			System.out.println(e.getMessage());
+//			System.out.println(e.getCode());
+//		}
 	}
-	
-	
-	
+
 //----------------------------------------------------------구분선---------------------------------------------------------------
 
 	/**
@@ -493,18 +499,18 @@ public class ShopController {
 
 		// 2. 전체 게시물 수 totalContent
 		url = request.getRequestURI();
-		if(keyword != null) {
-			url += "&keyword="+keyword;
+		if (keyword != null) {
+			url += "&keyword=" + keyword;
 		}
-		
-		if(!childCategoryCode.isEmpty()) {
-			for(String code : childCategoryCode) {
-				url += "&childCategoryCode="+code;
+
+		if (!childCategoryCode.isEmpty()) {
+			for (String code : childCategoryCode) {
+				url += "&childCategoryCode=" + code;
 			}
 		}
-		
+
 		int totalContent = promotionService.selectProductTotalCount(param);
-		log.debug("url = {}",url);
+		log.debug("url = {}", url);
 		// 3. pagebar
 		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
@@ -528,19 +534,19 @@ public class ShopController {
 		return result;
 	}
 
-	
 	@PostMapping("/cartDelete")
 	@ResponseBody
-	public List<Cart> cartDelete(@RequestParam(value="cartNoArr[]") List<Integer> cartNoArr, Authentication authentication) {
+	public List<Cart> cartDelete(@RequestParam(value = "cartNoArr[]") List<Integer> cartNoArr,
+			Authentication authentication) {
 		log.debug("cartNoArr = {}", cartNoArr);
-		int result = shopService.deleteCart(cartNoArr); 
+		int result = shopService.deleteCart(cartNoArr);
 		List<Cart> list = new ArrayList<>();
-		
-		if(result > 0){
+
+		if (result > 0) {
 			Member member = (Member) authentication.getPrincipal();
 			list = orderService.selectCartList(member.getMemberNo());
 		}
-		
+
 		return list;
 	}
 	/**

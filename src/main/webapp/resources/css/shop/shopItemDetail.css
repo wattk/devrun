@@ -441,9 +441,12 @@ color: green;
 	width: 466px;
 	margin: auto auto;
 }
-#exampleModal3, #exampleModal2, #exampleModal {
+#exampleModal3, #exampleModal2, #exampleModal, #exampleModal4{
 	background: rgb(147 144 144 / 74%);
 	padding-right:0px !important;
+}
+.modal-title{
+	color: white;
 }
 .modal-backdrop {
 	background-color: rgba(0,0,0,.0001) !important;
@@ -499,11 +502,42 @@ color: green;
 }
 #restockSpan{
 	font-family: 'SANJUGotgam';
-	font-size: 10px;
+	font-size: 11px;
 }
 #restockDiv{
 	display: flex;
     justify-content: flex-end;
     margin-bottom: 10px;
 
+}
+#restock{
+	display: flex;
+    align-items: center;
+}
+
+#restockModalBtn{
+	border: 0px;
+	display: flex;
+    background-color: lightsalmon;
+    color: white;
+    width: 142px;
+    justify-content: center;
+}
+#cartBtn{
+	background-color: #ff8d9d;
+    color: white;
+    border: 0px;
+    border-radius: 10px;
+}
+#orderBtn{
+	background-color: #cbd019;
+    color: white;
+    border: 0px;
+    border-radius: 10px;
+}    
+
+#checkPhone{
+    margin-top: 8px;
+	font-size: 11px;
+    color: brown;
 }
