@@ -195,39 +195,39 @@
 	  <tbody>
 	    <tr>
 	      <th scope="row">의자</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["CH"]}건</td>
+	      <td>${weekCnt["CH"]}건</td>
+	      <td>${monthCnt["CH"]}건</td>
 	    </tr>
 	    <tr>
 	      <th scope="row">책상</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["DE"]}건</td>
+	      <td>${weekCnt["DE"]}건</td>
+	      <td>${monthCnt["DE"]}건</td>
 	    </tr>
 	    <tr>
 	      <th scope="row">모니터</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["MN"]}건</td>
+	      <td>${weekCnt["MN"]}건</td>
+	      <td>${monthCnt["MN"]}건</td>
 	    </tr>
 	    <tr>
 	      <th scope="row">키보드</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["KE"]}건</td>
+	      <td>${weekCnt["KE"]}건</td>
+	      <td>${monthCnt["KE"]}건</td>
 	    </tr>
 	    <tr>
 	      <th scope="row">마우스</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["MO"]}건</td>
+	      <td>${weekCnt["MO"]}건</td>
+	      <td>${monthCnt["MO"]}건</td>
 	    </tr>
 	    <tr>
 	      <th scope="row">기타용품</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["OT"]}건</td>
+	      <td>${weekCnt["OT"]}건</td>
+	      <td>${monthCnt["OT"]}건</td>
 	    </tr>
 	  </tbody>
 	</table>

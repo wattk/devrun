@@ -3,6 +3,7 @@ package com.kh.devrun.admin.controller;
 import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -637,6 +638,16 @@ public class AdminController {
 		
 		model.addAttribute("list", list);
 		model.addAttribute("orList", orList);
+		
+		//일간, 주간, 월간 판매 데이터 가져오기
+		Map<String, Object> merchantCntList = orderService.countMerchant();
+		log.debug("merchantCntList = {}", merchantCntList);
+		Map<String, Object> todayCnt = (Map<String, Object>)merchantCntList.get("todayCnt");
+		Map<String, Object> weekCnt = (Map<String, Object>)merchantCntList.get("weekCnt");
+		Map<String, Object> monthCnt = (Map<String, Object>)merchantCntList.get("monthCnt");
+		model.addAttribute("todayCnt", todayCnt);
+		model.addAttribute("weekCnt", weekCnt);
+		model.addAttribute("monthCnt", monthCnt);
 	}
 	
 	@GetMapping("/orderSearch")

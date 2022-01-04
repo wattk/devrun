@@ -262,4 +262,27 @@
   			detail_no = #{map.detailNo}
   	</foreach>
   </update>
+  
+  <select id="countMerchant" resultType="map">
+  	select
+	    nvl(sum(decode(substr(product_code,0,2), 'ch', buy_count)),0) ch,
+	    nvl(sum(decode(substr(product_code,0,2), 'de', buy_count)),0) de,
+	    nvl(sum(decode(substr(product_code,0,2), 'ot', buy_count)),0) ot,
+	    nvl(sum(decode(substr(product_code,0,2), 'mo', buy_count)),0) mo,
+	    nvl(sum(decode(substr(product_code,0,2), 'ke', buy_count)),0) ke,
+	    nvl(sum(decode(substr(product_code,0,2), 'mn', buy_count)),0) mn
+	from
+	    view_merchant_imp
+	<where>
+		<if test="date eq 'today'">
+		    extract(day from order_date) = extract(day from sysdate)
+		</if>
+		<if test="date eq 'week'">
+		    TRUNC(order_date, 'd') between TRUNC(sysdate, 'd') and TRUNC(sysdate, 'd')+6
+		</if>
+		<if test="date eq 'month'">
+		    extract(month from order_date) = extract(month from sysdate)
+		</if>
+	</where>
+  </select>
 </mapper>
