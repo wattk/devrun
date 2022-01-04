@@ -26,14 +26,14 @@
 		       		<section id="addressList">
 				       	<table class="table">
 				       		<tr>
-				       			<th> </th>
+				       			<th>선택</th>
 			     				<th>배송지명</th>
 			     				<th>수령인</th>
 			     				<th>우편번호</th>
 			     				<th>주소</th>
 			     				<th>연락처</th>
 			     			</tr>
-	       					<c:if test="${addressList ne null}">
+	       					<c:if test="${totalContent ne 0}">
 		       					<c:forEach items="${addressList}" var="address">
 			     					<tr data-no="${address.addressNo}">
 			     						<td><input type="radio" name="addressNo"/></td>
@@ -45,11 +45,12 @@
 			     					</tr>
 			     				</c:forEach>
 	       					</c:if>
-	       					<c:if test="${addressList eq null}">
-	       						<tr><td colspan="4">주소가 없습니다.</td></tr>
+	       					<c:if test="${totalContent eq 0}">
+	       						<tr id="noList"><td colspan="6">등록된 주소가 없습니다.</td></tr>
 	       					</c:if>
 	       				</table>
-	       				${pagebar}
+	       				<!-- pagebar : 등록된 주소가 있는 경우에만 제공 -->
+	       				<c:if test="${totalContent ne 0}">${pagebar}</c:if>
      				</section>
 	       			
 	       			<%-- shipping address detail --%>
