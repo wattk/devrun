@@ -265,6 +265,9 @@
 						data-wishyn="N"></i>
 				</div>
 				<hr>
+				<div id="restockDiv">
+					<i class="far fa-envelope" id="restock"><span id="restockSpan"> &nbsp; 재입고 시 sms 알림</span></i>
+				</div>
 				<select id="detailNo" class="form-select col-12"
 					aria-label="Default select example">
 					<option selected>옵션선택</option>
@@ -792,8 +795,20 @@ $(document).on('click', '.likes', function(e) {
 })
 
 /*좋아요 비동기 끝*/
+$(document).on('click', '#restock', function(e) {
+	console.log("sms 핸들러");
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/sms/send-one",
+		method : "POST",
+		success(data){
+			console.log("도착?");
+		},
+		error :console.log
+		
+	});
 
-
+})
 
 
 //-------------------------------------------------------구분선-------------------------------------------------------------
@@ -868,6 +883,7 @@ $("#cartBtn").click((e)=>{
 		error: console.log
 	});
 });
+
 </script>
 <!-- body 영역 끝 -->
 
