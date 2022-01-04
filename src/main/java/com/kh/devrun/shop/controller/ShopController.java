@@ -217,7 +217,7 @@ public class ShopController {
 
 		// 품절상품 정보
 		List<ProductDetail> outOfStock = productService.selectOutOfStock(productCode);
-		model.addAttribute("pDetail", outOfStock);
+		model.addAttribute("outOfStock", outOfStock);
 		log.debug("품절 : {}", outOfStock);
 
 		// 장바구니 좋아요 여부
