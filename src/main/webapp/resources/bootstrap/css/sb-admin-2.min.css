@@ -73,6 +73,7 @@
 #imgInput{width:100%}
 #modalOptionList div{display: flex;justify-content: space-around;}
 #imgContainer{width:100%; height:100%}
+#infoTable td{text-align: inherit;}
 
 .bold{font-weight:bold}
 .fw600{font-weight:600}
@@ -128,6 +129,7 @@
 #searchKeywordContainer label{margin: 0px 5px 8px 5px}
 #searchType{background-color:#f8f9fc!important; border: 0px}
 #memberListContainer{margin-bottom: 40px;}
+.countTitle{font-weight: 600; font-size: 15px;}
 
 /* 표 */ 
 #productList tr th:nth-child(1){width:12%}
@@ -144,8 +146,8 @@
 #searchType{margin-right:30px}
 
 /* 답변 모달 */
-#insertQuestionFrm .modal-content{min-width:400px;width:40vw;height: 90vh;}
-#insertQuestionFrm .modal-body{height:73vh;}
+#insertQuestionFrm .modal-content{min-width:400px;width:40vw;height: 85vh;}
+#answerModalBody{height: 75vh;}
 .modal-footer{height: 90px;}
 .question-top {display:flex;}
 .question-top img{width:120px;height:120px; margin-right:30px}

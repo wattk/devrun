@@ -1355,8 +1355,8 @@ values(
     null,
     45,
     'mn-4mn-175',
-    '상품 문의',
-    '상품에 불량이 있어서 바꾸고 싶어요 ~~',
+    '상품 교환 문의',
+    '다른걸로 바꿀래요 ~~',
     sysdate,
     'N',
     1 
@@ -1375,18 +1375,7 @@ values(
 		) A
 		WHERE RN = 1;
 
-select * from member;
-select * from authorities;
 
-select
-    count(*)
-from
-    member
-where
-    member_id like '%a%';
-
-
-alter table question_product rename column q_level to question_level;
 
 
 select

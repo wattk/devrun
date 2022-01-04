@@ -2,6 +2,7 @@ package com.kh.devrun.mypage.model.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,15 +40,21 @@ public class MypageDaoImpl implements MypageDao {
 	}
 
 	@Override
-	public List<Address> selectAllAddressById(int memberNo) {
-		return session.selectList("mypage.selectAllAddressById", memberNo);
+	public List<Address> selectAllAddressByMemberNo(int memberNo, int offset, int limit) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("mypage.selectAllAddressByMemberNo", memberNo, rowBounds);
 	}
 
+	@Override
+	public int selectAddressTotalCount(int memberNo) {
+		return session.selectOne("mypage.selectAddressTotalCount", memberNo);
+	}
+	
 	@Override
 	public Address selectOneAddress(int addressNo) {
 		return session.selectOne("mypage.selectOneAddress", addressNo);
 	}
-	
+
 	/**
 	 * 지원 dao 끝
 	 */

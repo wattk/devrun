@@ -3,6 +3,7 @@ package com.kh.devrun.admin.controller;
 import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,6 +15,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -456,7 +458,7 @@ public class AdminController {
 	};
 	
 	
-
+	// 검색결과 페이징처리
 	@ResponseBody
 	@GetMapping("/memberManage/searchMember.do")
 	public Map<String,Object>searchMember(
@@ -468,7 +470,7 @@ public class AdminController {
 		
 		Map<String,Object>map = new HashMap<>();
 		
-		int limit = 4;
+		int limit = 5;
 		int offset = (cPage - 1) * limit;
 		
 		
@@ -533,8 +535,8 @@ public class AdminController {
 	@GetMapping("/questionProduct/selectQuestion.do")
 	public Map<String,Object>selectQuestionProductInfo(
 				@RequestParam int questionNo,
-				@RequestParam String productCode		
-			
+				@RequestParam String productCode
+				
 			){		
 		Map<String,Object> map = new HashMap<>();
 		log.debug("productCode={}",productCode);
@@ -550,7 +552,7 @@ public class AdminController {
 		// 선택한 문의 번호에 대한 참조 문의 번호가 존재한다면 가져오기
 		QuestionProduct questionProduct = questionProductService.selectQuestionByRefNo(questionNo);
 		
-		String answer = "";
+		String answer = "no";
 		
 		if(questionProduct != null) {
 			answer = questionProduct.getContent();
@@ -606,8 +608,7 @@ public class AdminController {
 		return "redirect:/admin/memberManage/questionProduct.do";
 	}
 	
-	
-	
+
 	
 	
 	

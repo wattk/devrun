@@ -121,7 +121,7 @@ $(".option-add-btn").click(e=>{
 	if(trCnt < 5){		
 		$(optionTable).append(`<tr>
 				<td class="option">색상</td><td><input name="option" type="text" value="red" /></td>
-				<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="-" /></td>
+				<td class="option">옵션내용</td><td><input name="optionContent" type="text" value="" /></td>
 				<td class="option">재고</td><td><input name="quantity" type="text" value="1" /></td>
 				<td><button class="btn btn-danger delete-btn" type="button"><i class="fas fa-minus-square"></i></button></td>
 			</tr>`);
@@ -158,20 +158,83 @@ $(imgInput).on("change", (e)=>{
 	reader.readAsDataURL(file);
 });
 
-
+let imgs = "";
 /* 썸머노트 */
 $(document).ready(function() {
 	//여기 아래 부분
 	$('#summernote').summernote({
 		  height: 300,                 // 에디터 높이
-		  minHeight: null,             // 최소 높이
-		  maxHeight: null,             // 최대 높이
-		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+		  minHeight: 300,             // 최소 높이
+		  maxHeight: 300,             // 최대 높이
+		  focus: false,                  // 에디터 로딩후 포커스를 맞출지 여부
 		  lang: "ko-KR",					// 한글 설정
-		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
-          
+		  placeholder: '최대 2048자까지 쓸 수 있습니다',	//placeholder 설정
+		  
+		  callbacks:{
+				onImageUpload : function(files){
+					uploadSummernoteImageFile(files[0], this);
+				},
+				onPaste : ((e)=>{
+					let clipboardData = e.originalEvent.clipboardData;
+					if(clipboardData && clipboardData.items && clipboardData.items.length){
+						let item = clipboardData.items[0];
+						if(item.kind === 'file' && item.type.indexof('image/') != -1){
+							e.preventDefault();
+						}
+					}
+				})
+			}         
+	});
+	function uploadSummernoteImageFile(file, editor){
+		const data = new FormData();
+		data.append("file", file);
+		$.ajax({
+			data : data,
+			type : "POST",
+			url : "${pageContext.request.contextPath}/product/uploadSummernoteImageFile",
+			contentType : false,
+			processData : false,
+			success(data){
+				console.log(data);
+				//imgs 변수 안에 /filename 추가. /는 구분자
+				imgs += "/" + data["filename"];
+				$('#summernote').summernote('insertImage', "${pageContext.request.contextPath}/resources/upload/product/productSummerNoteImg/"+data["filename"]);
+			},
+			error : console.log
+			
+		});
+	}
+		
+});
+//페이지 벗어날 때 썸머노트 안의 이미지 파일을 서버 상에서 삭제
+$(document).ready(function () { 
+	//페이지 이동 전에 beforeunload함수 실행
+    $(window).bind('beforeunload',  
+      	function (e) {  
+    	//비동기 요청을 통해 서버에 저장된 이미지 파일 삭제
+    	$.ajax({
+    		url : "${pageContext.request.contextPath}/product/deleteSummernoteImageFile",
+    		data : {imgs : imgs},
+    		method : "POST",
+    		success(data){
+    		console.log(data);
+    		},
+    		error : console.log
+    		
+    	});
+    	//크롬은 문자열을 리턴해야만 페이지를 나가겠냐는 confirm창이 뜬다.
+    	return "";
 	});
 });
+
+//등록 버튼 클릭 시 form 제출
+$(submitBtn).click((e)=>{
+    $(window).unbind('beforeunload');
+    $(document.promotionEnrollFrm).submit();    
+}); 
+
+
+
 
 
 $("#smallCategory").change(e=>{
