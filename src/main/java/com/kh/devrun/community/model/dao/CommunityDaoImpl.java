@@ -98,6 +98,26 @@ public class CommunityDaoImpl implements CommunityDao {
 		return session.selectOne("community.selectFreeboardTotalCountByType", param);
 	}
 
+	@Override
+	public int didIHitLikes(Map<String, Object> param) {
+		return session.selectOne("community.didIHitLikes", param);
+	}
+
+	@Override
+	public int freeboardLikeAdd(Map<String, Object> param) {
+		return session.update("community.freeboardLikeAdd", param);
+	}
+
+	@Override
+	public int refreshCountLikes(int communityNo) {
+		return session.selectOne("community.refreshCountLike", communityNo);
+	}
+
+	@Override
+	public int freeboardLikeDelete(Map<String, Object> param) {
+		return session.update("community.freeboardLikeDelete", param);
+	}
+
 
 
 
