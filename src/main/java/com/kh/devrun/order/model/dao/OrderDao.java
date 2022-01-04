@@ -38,4 +38,9 @@ public interface OrderDao {
 
 	List<Merchant> selectMerchantProductList(Map<String, Object> param);
 
+	int updateMerchant(Map<String, Object> param);
+
+	int updateProductQuantity(List<Map<String, Object>> detailList);
+
+
 }

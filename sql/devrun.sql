@@ -1503,7 +1503,13 @@ from(
 --    m.order_status,
 --    i.name,
 --    i.amount,
---    p.thumbnail
+--    p.product_code,
+--    pd.detail_no,
+--    pd.option_no,
+--    pd.option_content,
+--    pd.quantity,
+--    md.buy_count,
+--    m.total_price
 --from
 --    merchant m left join imp i
 --        on m.merchant_uid = i.merchant_uid
