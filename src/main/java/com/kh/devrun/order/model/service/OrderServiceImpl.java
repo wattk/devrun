@@ -133,6 +133,23 @@ public class OrderServiceImpl implements OrderService {
 		return result;
 	}
 
+	@Override
+	public Map<String, Object> countMerchant() {
+		Map<String, Object> merchantCntList = new HashMap<>();
+		Map<String, Object> param = new HashMap<>();
+		param.put("date", "today");
+		Map<String, Object> todayCnt = orderDao.countMerchant(param);
+		param.put("date", "week");
+		Map<String, Object> weekCnt = orderDao.countMerchant(param);
+		param.put("date", "week");
+		Map<String, Object> monthCnt = orderDao.countMerchant(param);
+		merchantCntList.put("todayCnt", todayCnt);
+		merchantCntList.put("weekCnt", weekCnt);
+		merchantCntList.put("monthCnt", monthCnt);
+		
+		return merchantCntList;
+	}
+
 	
 	
 
