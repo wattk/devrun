@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 /**
  * Handles requests for the application home page.
@@ -64,6 +67,32 @@ public class HomeController {
 		// welcompage를 직접가지 않고, handler를 거쳐가는 설정
 		return "forward:/index.jsp";
 	}
+	
+	@Autowired
+	Message message;
+	
+	
+	@RequestMapping("/sms.do")
+	public void sms() {
+		
+
+	    // 4 params(to, from, type, text) are mandatory. must be filled
+	    HashMap<String, String> params = new HashMap<String, String>();
+	    params.put("to", "01074003717");
+	    params.put("from", "01074003717");
+	    params.put("type", "LMS");
+	    params.put("text", "나의 첫번째 메시지 전송 프로그램 테스트");
+	    params.put("app_version", "test app 1.2"); // application name and version
+
+	    try {
+	      JSONObject obj = (JSONObject) message.send(params);
+	      System.out.println(obj.toString());
+	    } catch (CoolsmsException e) {
+	      System.out.println(e.getMessage());
+	      System.out.println(e.getCode());
+	    }
+	}
+	
 	
 	@RequestMapping("/error/accessDenied.do")
 	public void errorPage() {}

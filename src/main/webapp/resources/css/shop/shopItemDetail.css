@@ -494,3 +494,6 @@ color: green;
 	font-size: 10px;
 	color: grey;
 }
+#restock:hover{
+	cursor: pointer;
+}
