@@ -11,8 +11,8 @@
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
 <!-- 주문 확인 모달 -->
-<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalProductTitle">주문 상세</h5>
@@ -21,10 +21,21 @@
         </button>
       </div>
       <div class="modal-body" id="modalOrderList">
-      	
+      	<span id="orderModalUid"></span>
+			<h5 id="orderModalName" class="pb-2"></h5>
+			<ul class="list-group list-group-flush">
+			  <li class="list-group-item">
+				<table id="orderDetailTbl" class="table mt-3 w-100">
+				
+				</table>
+			  </li>
+			  <li class="list-group-item text-right">
+			 	 <strong>총 주문 가격</strong><span id="orderModalTotal" class="pl-2"></span>
+			  </li>
+			</ul>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">저장</button>
+        <button type="button" id="osChangeBtn" class="btn btn-primary" data-dismiss="modal">주문 접수</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
       </div>
     </div>
@@ -138,7 +149,6 @@
 	<table class="admin-tbl table table-hover mx-auto mt-3">
 	  <thead>
 	    <tr>
-	      <th scope="col"></th>
 	      <th scope="col">주문 번호</th>
 	      <th scope="col">회원 번호</th>
 	      <th scope="col">주문 일자</th>
@@ -146,27 +156,27 @@
 	    </tr>
 	  </thead>
 	  <tbody id="orderBody">
-	  	<c:forEach items="${list}" var="m" varStatus="vs">
-	  		<c:if test="${m.orderStatus eq 'OR'}">
-			    <tr>
-			      <td>
-			      	<input type="checkbox" name="orderUpdateChk" id="" value="${m.merchantUid}"/>
-			      </td>
-			      <td>${m.merchantUid}</td>
-			      <td>${m.memberNo}</td>
-			      <td><fmt:formatDate value="${m.orderDate}" pattern="yy-MM-dd"/></td>
-			      <td>
-			      	<button 
-			      		type="button" 
-			      		class="order-modal-btn btn btn-secondary" 
-			      		data-toggle="modal" 
-			      		data-target="#orderModal"
-			      		data-merchant="${m.merchantUid}">
-			      		주문 확인
-			      	</button>
-			      </td>
-			    </tr>
-			</c:if>
+	  	<c:if test="${empty orList}">
+	  		<tr class="mx-auto">
+	  			<td colspan="4">처리 대기 중인 주문이 없습니다.</td>
+	  		</tr>
+	  	</c:if>
+	  	<c:forEach items="${orList}" var="m" varStatus="vs">
+		    <tr id="${m.merchantUid}">
+		      <td>${m.merchantUid}</td>
+		      <td>${m.memberNo}</td>
+		      <td><fmt:formatDate value="${m.orderDate}" pattern="yy-MM-dd"/></td>
+		      <td>
+		      	<button 
+		      		type="button" 
+		      		class="order-modal-btn btn btn-secondary" 
+		      		data-toggle="modal" 
+		      		data-target="#orderModal"
+		      		data-merchant="${m.merchantUid}">
+		      		주문 확인
+		      	</button>
+		      </td>
+		    </tr>
 	    </c:forEach>
 	  </tbody>
 	</table>
@@ -326,34 +336,81 @@ $(".order-modal-btn").click((e)=>{
 		},
 		success(data){
 			console.log(data);
-			$("#modalOrderList").append(`<h5 class="pb-2">\${data.imp.name}</h5>
-<ul class="list-group list-group-flush">
-	  <li class="list-group-item">
-		<table class="mt-3">
-			<tr>
-				<td rowspan="4" class="col-2">
-					<img src="${pageContext.request.contextPath}/resources/upload/product/\${data.productCode}.png" alt="" class="img-thumbnail"/>
-				</td>
-			</tr>
-			<tr>`);
+			$("#orderModalTotal").html("&#8361;"+data.merchant.totalPrice.toLocaleString());
+			$("#orderModalName").text(data.imp.name);
+			$("#orderModalUid").text(data.merchant.merchantUid);
+			$("#orderDetailTbl").html('');
 			
-			for(let item in data.merchantDetailList){
-				$("#modalOrderList").append(`<td class="col-5">
-						<strong class="">[${item.name}]</strong>
+			for(let i = 0; i < data.list.length; i++){
+				const item = data.list[i];
+				$("#orderDetailTbl").append(`<tr>
+					<td rowspan="2" class="orderModalImg ">
+						<img src="${pageContext.request.contextPath}/resources/upload/product/\${item.thumbnail}" alt=""class=" img-thumbnail"/>
+					</td>
+				</tr>
+				<tr>
+					<td class=" text-left">
+						<strong 
+							class="detail-title pl-2" 
+							data-detail-no="\${item.productDetail.detailNo}"
+							data-buy-count="\${item.buyCount}">
+							[\${item.name}]
+						</strong>
 						<br />
-						<span>${item.productDetail.optionNo}${item.productDetail.optionContent}</span>
+						<span class="pl-2"></span>
 						<br />
-						<span class="pl-2">${item.buyCount}개 구매</span>
-					</td>`);
+						<span class="pl-2">\${item.buyCount}개 구매</span>
+					</td>
+				</tr>
+				<tr>
+				<td class=" text-right" colspan="2">
+					<span class="pl-2">현재 재고 : \${item.productDetail.quantity}개</span>
+				</td>
+			</tr>`);
 			}
 			
-			$("#modalOrderList").append(`</tr>
-		</table>
-	  </li>
-</ul>`);
 		},
 		error : console.log
 	});
+});
+
+//주문 접수 클릭 시 주문 상태 업데이트, 상품 재고 -1
+$("#osChangeBtn").click((e)=>{
+	const merchantUid = $("#orderModalUid").text();
+	let detailList = [];
+	const $detailTitle = $(".detail-title");
+	const length = $detailTitle.length;
+	
+	for(let i = 0; i < length; i++){
+		detailList[i] = {
+				detailNo : $detailTitle.eq(i).data("detailNo"),
+				buyCount : $detailTitle.eq(i).data("buyCount")
+		}
+	}
+	
+	console.log(detailList);
+
+	const data = {
+			merchantUid : merchantUid,
+			orderStatus : 'PP',
+			detailList : detailList
+		};
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/admin/orderUpdate",
+		method : "POST",
+		data : {
+			merchantUid : merchantUid,
+			orderStatus : 'PP',
+			detailList : JSON.stringify(detailList)
+		},
+		success(data){
+			alert("주문이 정상적으로 접수되었습니다.");
+			$(`#\${merchantUid}`).detach();
+		},
+		error : console.log
+	});
+	
 });
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>

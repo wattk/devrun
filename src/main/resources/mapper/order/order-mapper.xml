@@ -96,6 +96,7 @@
         pd.detail_no,
         pd.option_no,
         pd.option_content,
+        pd.quantity,
         md.buy_count
   	from
   		product p left join product_detail pd
@@ -120,6 +121,7 @@
 		<id column="detail_no" property="detailNo"/>
 		<result column="option_no" property="optionNo"/>
 		<result column="option_content" property="optionContent"/>
+		<result column="quantity" property="quantity"/>
 	</association>
   </resultMap>
   
@@ -245,41 +247,19 @@
   	order by order_date desc
   </select>
   
-  <select id="selectOneMerchantExt" resultMap="merchantExtCollection">
-  	select
-  		merchant_uid,
-  		name,
-  		product_code,
-  		detail_no,
-  		option_no,
-  		option_content,
-  		quantity,
-  		buy_count,
-  		total_price,
-  		member_no,
-  		order_date
-  	from
-  		view_merchant_imp
+  <update id="updateMerchant">
+  	update merchant set
+  		order_status = #{orderStatus}
   	where
   		merchant_uid = #{merchantUid}
-  </select>
-  <resultMap type="merchantExt" id="merchantExtCollection">
-  	<id column="merchant_uid" property="merchantUid"/>
-  	<result column="member_no" property="memberNo"/>
-  	<result column="order_date" property="orderDate"/>
-  	<result column="order_status" property="orderStatus"/>
-  	<result column="product_code" property="productCode"/>
-  	<result column="total_price" property="totalPrice"/>
-  	<association property="imp" javaType ="imp">
-	  	<result column="name" property="name"/>
-	  	<result column="amount" property="amount"/>
-  	</association>
-  	<collection property="merchantDetailList" ofType="merchantDetail">
-  		<id column="detail_no" property="detailNo"/>
-  		<result column="buy_count" property="buyCount"/>
-  		<result column="quantity" property="quantity"/>
-  		<result column="option_no" property="optionNo"/>
-  		<result column="option_content" property="optionContent"/>
-  	</collection>
-  </resultMap>
+  </update>
+  
+  <update id="updateProductQuantity">
+	<foreach collection="list" item="map"  open="DECLARE BEGIN" close="; END;" separator=";">
+  		update product_detail set
+  			quantity = quantity - #{map.buyCount}
+  		where
+  			detail_no = #{map.detailNo}
+  	</foreach>
+  </update>
 </mapper>

@@ -105,6 +105,7 @@ $(document).ready((e)=>{
 	      	배송지 : 
 	      	<div class="input-group mb-3 w-75">
 			  <input type="text" id="addInput" class="add-input form-control" placeholder="주소" aria-describedby="addInputBtn" value="${addressList[0].address1}">
+			  <input type="hidden" name="postcode" value="${addressList[0].postalCode}" />
 			  <div class="input-group-append w-10">
 			    <span class="input-group-text cursor" id="addInputBtn">수정</span>
 			  </div>
@@ -342,7 +343,7 @@ function iamport(data){
 	    buyer_name : $(".name-input").text(),
 	    buyer_tel : $(".phone-input").text(),
 	    buyer_addr : $(".add-input").text()+$(".add-detail-input").text(),
-	    buyer_postcode : postcode
+	    buyer_postcode : $("[name=postcode]").val()
 	}, function(rsp) {
 		console.log(rsp);
 		// 결제검증

@@ -19,6 +19,9 @@ import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.shop.model.vo.Cart;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
 	
@@ -111,9 +114,25 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public MerchantExt selectOneMerchantExt(String merchantUid) {
-		return orderDao.selectOneMerchantExt(merchantUid);
+	@Transactional(
+			propagation = Propagation.REQUIRED, 
+			isolation = Isolation.READ_COMMITTED, 
+			rollbackFor = Exception.class
+	)
+	public int updateMerchant(Map<String, Object> param) {
+		int result = 0;
+		try {
+			result = orderDao.updateMerchant(param);
+			List<Map<String, Object>> detailList = (List<Map<String, Object>>)param.get("detailList");
+			log.debug("detailList = {}", detailList);
+			result = orderDao.updateProductQuantity(detailList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
+
 	
 	
 

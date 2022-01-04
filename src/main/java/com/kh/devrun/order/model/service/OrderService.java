@@ -27,6 +27,7 @@ public interface OrderService {
 
 	List<Merchant> selectMerchantList(Map<String, Object> param);
 
-	MerchantExt selectOneMerchantExt(String merchantUid);
+	int updateMerchant(Map<String, Object> param);
+
 
 }
