@@ -12,8 +12,8 @@
 
 
 
-.guide{display:none; font-size:smaller;}
-.guide-box{height:0px; width:230px;}
+.guide {display:none; font-size:smaller;}
+.guide-box {height:0px; width:230px;}
 
 /* member profile */
 #myProfile form div.row {justify-content:space-evenly;}

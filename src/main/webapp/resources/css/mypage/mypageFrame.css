@@ -4,6 +4,7 @@
 main {height:auto; background:linear-gradient(to bottom, #1A81FF 350px, #FFFFFF 350px); font-family:"Gowun Dodum";}
 
 /** 공통 적용 style **/
+.back-to-top {z-index:9999;}
 main .bi {font-size:20px; vertical-align:middle;}
 main .bi::before {vertical-align:baseline;}
 main .bi.bi-chevron-right {color:#A1A1A1; font-size:16px; vertical-align:middle;}
