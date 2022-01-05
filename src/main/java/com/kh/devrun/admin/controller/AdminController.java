@@ -228,7 +228,7 @@ public class AdminController {
 		redirectAttr.addFlashAttribute("msg",msg);
 		
 																					
-		return "redirect:/admin/productMain.do";
+		return "redirect:/admin/product/productMain.do";
 	}
 	
 	// 상품 삭제
