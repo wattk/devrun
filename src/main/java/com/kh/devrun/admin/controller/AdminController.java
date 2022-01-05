@@ -27,18 +27,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
+import com.kh.devrun.common.AdminUtils;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.memberManage.model.service.MemberManageService;
 import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.Merchant;
+import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEntity;
@@ -51,6 +57,8 @@ import com.kh.devrun.questionProduct.model.vo.QuestionProductEx;
 import com.kh.devrun.questionProduct.utils.QuestionProductUtils;
 
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Controller
 @Slf4j
@@ -740,8 +748,24 @@ public class AdminController {
 	@GetMapping("/orderManage.do")
 	public void orderManage(Model model) {
 		List<Merchant> list = orderService.selectAllMerchant();
+		List<Merchant> orList = new ArrayList<>();
+		for(Merchant m : list) {
+			if("OR".equals(m.getOrderStatus()))
+				orList.add(m);
+		}
 		
 		model.addAttribute("list", list);
+		model.addAttribute("orList", orList);
+		
+		//일간, 주간, 월간 판매 데이터 가져오기
+		Map<String, Object> merchantCntList = orderService.countMerchant();
+		log.debug("merchantCntList = {}", merchantCntList);
+		Map<String, Object> todayCnt = (Map<String, Object>)merchantCntList.get("todayCnt");
+		Map<String, Object> weekCnt = (Map<String, Object>)merchantCntList.get("weekCnt");
+		Map<String, Object> monthCnt = (Map<String, Object>)merchantCntList.get("monthCnt");
+		model.addAttribute("todayCnt", todayCnt);
+		model.addAttribute("weekCnt", weekCnt);
+		model.addAttribute("monthCnt", monthCnt);
 	}
 	
 	@GetMapping("/orderSearch")
@@ -756,7 +780,7 @@ public class AdminController {
 			HttpServletRequest request){
 		Calendar cal = Calendar.getInstance();	 //날짜 계산을 위해 Calendar 추상클래스 선언 getInstance()메소드 사용	
 		cal.setTime(endDate);	
-		cal.add(Calendar.DATE, 1);	//6개월 더하기
+		cal.add(Calendar.DATE, 1);	//하루 더하기
 		Date date = cal.getTime();
 		Map<String, Object> resultMap = new HashMap<>();
 		
@@ -773,16 +797,70 @@ public class AdminController {
 		
 		List<Merchant> list = orderService.selectMerchantList(param);
 		log.debug("list = {}", list);
-		//String merchantStr = AdminUtils.getMerchantList(list, url);
-		//log.debug("merchantStr = {}", merchantStr);
+		String merchantStr = AdminUtils.getMerchantList(list, url);
+		log.debug("merchantStr = {}", merchantStr);
 		
-		//resultMap.put("merchantStr", merchantStr);
+		resultMap.put("merchantStr", merchantStr);
 		
-		return null;
+		return resultMap;
+	}
+	
+	@GetMapping("/findMerchantDetail")
+	@ResponseBody
+	public Map<String, Object> findMerchantDetail(@RequestParam(value = "merchantUid") String merchantUid) {
+		log.debug("merchantUid = {}", merchantUid);
+		Map<String, Object> merchant = orderService.selectOneMerchant(merchantUid);
+		return merchant;
+	}
+	
+	@PostMapping("/orderUpdate")
+	@ResponseBody
+	public Map<String, Object> orderUpdate(@RequestBody String jsonStr) {
+		Map<String, Object> param = new HashMap<>();
+		Map<String, Object> resultMap = new HashMap<>();
+		try {
+			param = new ObjectMapper().readValue(jsonStr, Map.class);
+			log.debug("map = {}", param);
+			
+			int result = orderService.updateMerchant(param);
+			log.debug("result = {}", result);
+			
+			
+			resultMap.put("result", result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return resultMap;
 	}
 	
 	@GetMapping("/shipmentManage.do")
-	public void shipmentManage() {}
+	public void shipmentManage(Model model) {
+		List<Shipment> shipmentList = orderService.selectAllShipment();
+		List<Merchant> merchantList = orderService.selectSomeMerchant("PP");
+		model.addAttribute("shipmentList", shipmentList);
+		model.addAttribute("merchantList", merchantList);
+		
+	}
+	
+	@PostMapping("/enrollShipmentNo")
+	@ResponseBody
+	public Map<String, Object> enrollShipmentNo(@RequestBody String jsonStr) {
+		Map<String, Object> param = new HashMap<>();
+		Map<String, Object> returnVal = new HashMap<>();
+		try {
+			param = new ObjectMapper().readValue(jsonStr, Map.class);
+			log.debug("map = {}", param);
+			
+			int result = orderService.insertShipment(param);
+			returnVal.put("msg", "송장 번호 입력이 완료되었습니다.");
+			returnVal.put("inputValid", 1);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			returnVal.put("inputValid", 0);
+		}
+		return returnVal;
+	}
 	
 	@GetMapping("/reviewReport.do")
 	public String reviewReport() {

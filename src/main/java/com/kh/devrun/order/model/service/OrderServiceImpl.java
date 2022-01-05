@@ -16,9 +16,13 @@ import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
+import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.shop.model.vo.Cart;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
 	
@@ -109,6 +113,67 @@ public class OrderServiceImpl implements OrderService {
 	public List<Merchant> selectMerchantList(Map<String, Object> param) {
 		return orderDao.selectMerchantProductList(param);
 	}
+
+	@Override
+	@Transactional(
+			propagation = Propagation.REQUIRED, 
+			isolation = Isolation.READ_COMMITTED, 
+			rollbackFor = Exception.class
+	)
+	public int updateMerchant(Map<String, Object> param) {
+		int result = 0;
+		try {
+			result = orderDao.updateMerchant(param);
+			List<Map<String, Object>> detailList = (List<Map<String, Object>>)param.get("detailList");
+			log.debug("detailList = {}", detailList);
+			result = orderDao.updateProductQuantity(detailList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
+	}
+
+	@Override
+	public Map<String, Object> countMerchant() {
+		Map<String, Object> merchantCntList = new HashMap<>();
+		Map<String, Object> param = new HashMap<>();
+		param.put("date", "today");
+		Map<String, Object> todayCnt = orderDao.countMerchant(param);
+		param.put("date", "week");
+		Map<String, Object> weekCnt = orderDao.countMerchant(param);
+		param.put("date", "week");
+		Map<String, Object> monthCnt = orderDao.countMerchant(param);
+		merchantCntList.put("todayCnt", todayCnt);
+		merchantCntList.put("weekCnt", weekCnt);
+		merchantCntList.put("monthCnt", monthCnt);
+		
+		return merchantCntList;
+	}
+
+	@Override
+	public List<Shipment> selectAllShipment() {
+		return orderDao.selectAllShipment();
+	}
+
+	@Override
+	public List<Merchant> selectSomeMerchant(String str) {
+		return orderDao.selectSomeMerchant(str);
+	}
+
+	@Override
+	@Transactional(
+			propagation = Propagation.REQUIRED, 
+			isolation = Isolation.READ_COMMITTED, 
+			rollbackFor = Exception.class
+	)
+	public int insertShipment(Map<String, Object> shipmentArr) {
+		shipmentArr.put("orderStatus", "SS");
+		int result = orderDao.insertShipment((List<Map<String, Object>>)shipmentArr.get("shipmentArr"));
+		result = orderDao.updateMerchant(shipmentArr);
+		return result;
+	}
+
 	
 	
 

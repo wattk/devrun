@@ -40,6 +40,14 @@ public interface CommunityService {
 
 	int selectFreeboardTotalCountByType(Map<String, Object> param);
 
+	int didIHitLikes(Map<String, Object> param);
+
+	int freeboardLikeAdd(Map<String, Object> param);
+
+	int refreshCountLikes(int communityNo);
+
+	int freeboardLikeDelete(Map<String, Object> param);
+
 
 
 

@@ -46,6 +46,9 @@ import com.kh.devrun.shop.model.vo.Wishlist;
 import com.kh.devrun.shop.model.vo.WishlistProduct;
 
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
+import net.nurigo.java_sdk.api.Message;
+import org.json.simple.JSONObject;
 
 @Controller
 @Slf4j
@@ -60,7 +63,7 @@ public class ShopController {
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
 	private OrderService orderService;
 
@@ -72,6 +75,10 @@ public class ShopController {
 
 	@Autowired
 	shopUtils shopUtils;
+
+	// SMS api 주입
+	@Autowired
+	Message message;
 
 //--------------------주입-------------------------------------	
 
@@ -90,13 +97,13 @@ public class ShopController {
 
 		Member loginMember = (Member) authentication.getPrincipal();
 		int memberNo = loginMember.getMemberNo();
-		
+
 		// 위시리스트 조회해오기
 		List<WishlistProduct> wishlist = shopService.selectAllWishlist(memberNo);
 		log.debug("whislist 잘 받앗? : {}", wishlist);
-		
-		model.addAttribute("wishlist",wishlist);
-		model.addAttribute("loginMember",loginMember);
+
+		model.addAttribute("wishlist", wishlist);
+		model.addAttribute("loginMember", loginMember);
 		return "shop/wishlist";
 	}
 
@@ -192,7 +199,7 @@ public class ShopController {
 		// 상품 옵션도 조회
 		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
 		model.addAttribute("pDetail", pDetail);
-		log.debug("재고 : {}",pDetail);
+		log.debug("재고 : {}", pDetail);
 
 		// 소분류 카테고리 추출
 		String childCate = productCode.substring(3, 6);
@@ -207,6 +214,11 @@ public class ShopController {
 
 		Collections.shuffle(recommendation);
 		model.addAttribute("recommendation", recommendation);
+
+		// 품절상품 정보
+		List<ProductDetail> outOfStock = productService.selectOutOfStock(productCode);
+		model.addAttribute("outOfStock", outOfStock);
+		log.debug("품절 : {}", outOfStock);
 
 		// 장바구니 좋아요 여부
 
@@ -371,6 +383,53 @@ public class ShopController {
 		return result;
 	}
 
+	// SMS api 핸들러
+	@ResponseBody
+	@PostMapping("/restock")
+	public int sms(@RequestParam String phoneNumber, @RequestParam int detailNo, @RequestParam String productName) {
+		int result = 0;
+		
+		log.debug("phoneNumber : {}", phoneNumber);
+		log.debug("detailNo : {}", detailNo);
+		log.debug("productName : {}", productName);
+
+		// 메세지를 위한 디테일 불러오기
+		ProductDetail pDetail = shopService.selectOneProductDetail(detailNo);
+		log.debug("손님이 재입고 원한 상품 디테일 : {}", pDetail);
+		
+		String option1 = pDetail.getOptionNo();
+		String option2 = pDetail.getOptionContent();
+		
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(option1);
+		if(option2 != null) {
+			sb.append(", ");
+			sb.append(option2);
+		}
+		
+		log.debug("옵션 정보는? : {}",sb.toString());
+
+		// 4 params(to, from, type, text) are mandatory. must be filled
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("to", phoneNumber);
+		params.put("from", "01074003717");
+		params.put("type", "LMS");
+		params.put("text", "(devRun 알림) 고객님 <" + productName + "> 상품의 <" + sb.toString() + "> 옵션의 재입고 시 문자로 알려드리겠습니다. 쇼핑몰을 이용해주셔서 감사합니다:)" );
+		params.put("app_version", "test app 1.2"); // application name and version
+
+		try {
+			JSONObject obj = (JSONObject) message.send(params);
+			System.out.println(obj.toString());
+			result = 1;
+		} catch (CoolsmsException e) {
+			System.out.println(e.getMessage());
+			System.out.println(e.getCode());
+		}
+		
+		return result;
+	}
+
 //----------------------------------------------------------구분선---------------------------------------------------------------
 
 	/**
@@ -463,18 +522,18 @@ public class ShopController {
 
 		// 2. 전체 게시물 수 totalContent
 		url = request.getRequestURI();
-		if(keyword != null) {
-			url += "&keyword="+keyword;
+		if (keyword != null) {
+			url += "&keyword=" + keyword;
 		}
-		
-		if(!childCategoryCode.isEmpty()) {
-			for(String code : childCategoryCode) {
-				url += "&childCategoryCode="+code;
+
+		if (!childCategoryCode.isEmpty()) {
+			for (String code : childCategoryCode) {
+				url += "&childCategoryCode=" + code;
 			}
 		}
-		
+
 		int totalContent = promotionService.selectProductTotalCount(param);
-		log.debug("url = {}",url);
+		log.debug("url = {}", url);
 		// 3. pagebar
 		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
@@ -498,19 +557,19 @@ public class ShopController {
 		return result;
 	}
 
-	
 	@PostMapping("/cartDelete")
 	@ResponseBody
-	public List<Cart> cartDelete(@RequestParam(value="cartNoArr[]") List<Integer> cartNoArr, Authentication authentication) {
+	public List<Cart> cartDelete(@RequestParam(value = "cartNoArr[]") List<Integer> cartNoArr,
+			Authentication authentication) {
 		log.debug("cartNoArr = {}", cartNoArr);
-		int result = shopService.deleteCart(cartNoArr); 
+		int result = shopService.deleteCart(cartNoArr);
 		List<Cart> list = new ArrayList<>();
-		
-		if(result > 0){
+
+		if (result > 0) {
 			Member member = (Member) authentication.getPrincipal();
 			list = orderService.selectCartList(member.getMemberNo());
 		}
-		
+
 		return list;
 	}
 	/**

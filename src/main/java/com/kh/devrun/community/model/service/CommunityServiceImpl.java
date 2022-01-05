@@ -5,6 +5,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.devrun.community.model.dao.CommunityDao;
 import com.kh.devrun.community.model.vo.Community;
@@ -95,6 +98,27 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int selectFreeboardTotalCountByType(Map<String, Object> param) {
 		return communityDao.selectFreeboardTotalCountByType(param);
+	}
+
+	@Override
+	public int didIHitLikes(Map<String, Object> param) {
+		return communityDao.didIHitLikes(param);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public int freeboardLikeAdd(Map<String, Object> param) {
+		return communityDao.freeboardLikeAdd(param);
+	}
+
+	@Override
+	public int refreshCountLikes(int communityNo) {
+		return communityDao.refreshCountLikes(communityNo);
+	}
+
+	@Override
+	public int freeboardLikeDelete(Map<String, Object> param) {
+		return communityDao.freeboardLikeDelete(param);
 	}
 
 

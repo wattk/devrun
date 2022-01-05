@@ -7,6 +7,7 @@ import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
+import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.shop.model.vo.Cart;
 
 public interface OrderService {
@@ -26,5 +27,16 @@ public interface OrderService {
 	List<Merchant> selectAllMerchant();
 
 	List<Merchant> selectMerchantList(Map<String, Object> param);
+
+	int updateMerchant(Map<String, Object> param);
+
+	Map<String, Object> countMerchant();
+
+	List<Shipment> selectAllShipment();
+
+	List<Merchant> selectSomeMerchant(String string);
+
+	int insertShipment(Map<String, Object> shipmentArr);
+
 
 }

@@ -397,6 +397,7 @@ COMMENT ON COLUMN "DELETE_REVIEW_ATTACHMENT"."REVIEW_NO" IS '리뷰 번호';
 COMMENT ON COLUMN "DELETE_REVIEW_ATTACHMENT"."DELETE_DATE" IS '파일 삭제일';
 
 
+
 -- 회원-리뷰 좋아요 테이블 생성
 -- ◆외래키 제약 조건 전부 디폴트 상태
 CREATE TABLE "MEMBER_REVIEW_LIKE" (
@@ -406,6 +407,7 @@ CREATE TABLE "MEMBER_REVIEW_LIKE" (
     constraint FK_MEMBER_REVIEW_LIKE_REVIEW_NO foreign key(REVIEW_NO) references REVIEW(REVIEW_NO) on delete cascade,
     constraint FK_MEMBER_REVIEW_LIKE_MEMBER_NO foreign key(MEMBER_NO) references MEMBER(MEMBER_NO) on delete cascade
 );
+
 
 -- 회원-리뷰 좋아요 테이블 코멘트 추가
 COMMENT ON COLUMN "MEMBER_REVIEW_LIKE"."REVIEW_NO" IS '리뷰 번호';
@@ -458,9 +460,35 @@ alter table community drop column thumnail;
 alter table community add (thumbnail clob);
 commit;
 
+CREATE TABLE "MEMBER_REVIEW_LIKE" (
+	"REVIEW_NO"	NUMBER		NOT NULL,
+	"MEMBER_NO"	NUMBER		NOT NULL,
+    constraint PK_MEMBER_REVIEW_LIKE primary key(REVIEW_NO, MEMBER_NO),
+    constraint FK_MEMBER_REVIEW_LIKE_REVIEW_NO foreign key(REVIEW_NO) references REVIEW(REVIEW_NO) on delete cascade,
+    constraint FK_MEMBER_REVIEW_LIKE_MEMBER_NO foreign key(MEMBER_NO) references MEMBER(MEMBER_NO) on delete cascade
+);
+drop table member_community_like;
+-- 회원-커뮤니티 좋아요
+create table member_community_likee(
+    community_no number not null,
+    member_no number not null,
+    constraint pk_member_community_likee primary key(community_no, member_no),
+    constraint fk_member_community_likee_community_no foreign key(community_no) references community(community_no) on delete cascade,
+    constraint fk_member_community_likee_member_no foreign key(member_no) references member(member_no) on delete cascade
+ );
+commit;
+
+select * from member_community_like;
 -- 커뮤니티 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_COMMUNITY_NO;
 
+
+
+select * from community_comment;
+select * from community;
+
+DROP TABLE community CASCADE CONSTRAINTS;
+DROP TABLE community;
 -- 커뮤니티 테이블 생성
 CREATE TABLE "COMMUNITY" (
 	"COMMUNITY_NO"	NUMBER NOT NULL,
@@ -479,6 +507,12 @@ CREATE TABLE "COMMUNITY" (
     CONSTRAINT CK_COMMUNITY_ANSWER_YN CHECK(ANSWER_YN IN ('Y', 'N'))
 );
 
+
+ALTER TABLE  community DROP CONSTRAINT fk_community_member_no;
+ALTER TABLE  community DROP CONSTRAINT ck_community_answer_yn;
+ALTER TABLE  community DROP CONSTRAINT pk_community_community_no;
+
+
 -- 커뮤니티 테이블 코멘트 추가
 COMMENT ON COLUMN "COMMUNITY"."COMMUNITY_NO" IS '게시글 번호 SEQ';
 COMMENT ON COLUMN "COMMUNITY"."MEMBER_NO" IS '회원 번호';
@@ -492,9 +526,13 @@ COMMENT ON COLUMN "COMMUNITY"."THUMNAIL" IS '썸네일';
 COMMENT ON COLUMN "COMMUNITY"."ANSWER_YN" IS '해결 Y 미해결N';
 COMMENT ON COLUMN "COMMUNITY"."HASHTAG" IS '글 관련 해시태그, 구분자/';
 
+commit;
+
 -- 커뮤니티 댓글 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_COMMUNITY_COMMENT_NO;
 
+ALTER TABLE  community_comment DROP CONSTRAINT fk_community_comment_community_no;
+DROP TABLE COMMUNITY_COMMENT;
 -- 커뮤니티 댓글 테이블 생성
 CREATE TABLE "COMMUNITY_COMMENT" (
 	"COMMENT_NO"	NUMBER	NOT NULL,
@@ -747,49 +785,54 @@ COMMENT ON COLUMN "DELETE_COMMUNITY_COMMENT"."COMMENT_NO2" IS 'SEQ';
 
 
 -- 공지사항 테이블 생성
-CREATE TABLE "NOTICE_BOARD" (
-	"NOTICE_BOARD_NO"	NUMBER NOT NULL,
+CREATE TABLE "NOTICE" (
+	"NOTICE_NO"	NUMBER NOT NULL,
 	"MEMBER_NO"	NUMBER NOT NULL,
 	"TITLE"	VARCHAR2(100) NULL,
 	"CONTENT"	CLOB NULL,
-	"ENROLL_DATE"	DATE NULL,
-	"VIEW_COUNT"	NUMBER DEFAULT 1 NULL,
+	"ENROLL_DATE"	DATE DEFAULT CURRENT_DATE NULL,
+	"VIEW_COUNT"	NUMBER DEFAULT 0 NULL,
 	"NOTICE_CODE"	CHAR(1) NULL
 );
 
+--공지테이블 NOTICE_NO PK 제약조건 추가
+ALTER TABLE "NOTICE" ADD CONSTRAINT "PK_NOTICE_NOTICE_NO" PRIMARY KEY (
+	"NOTICE_NO"
+);
+
 -- 공지사항 테이블 시퀀스 생성
-create sequence SEQ_NOTICE_BOARD_NO;
+create sequence SEQ_NOTICE_NO;
 
 -- 공지사항 테이블 코멘트 추가
-COMMENT ON COLUMN "NOTICE_BOARD"."NOTICE_BOARD_NO" IS '공지번호';
-COMMENT ON COLUMN "NOTICE_BOARD"."MEMBER_NO" IS '작성자';
-COMMENT ON COLUMN "NOTICE_BOARD"."TITLE" IS '공지명';
-COMMENT ON COLUMN "NOTICE_BOARD"."CONTENT" IS '공지내용';
-COMMENT ON COLUMN "NOTICE_BOARD"."ENROLL_DATE" IS '작성일';
-COMMENT ON COLUMN "NOTICE_BOARD"."VIEW_COUNT" IS '조회수';
-COMMENT ON COLUMN "NOTICE_BOARD"."NOTICE_CODE" IS '공지코드';
+COMMENT ON COLUMN "NOTICE"."NOTICE_NO" IS '공지번호';
+COMMENT ON COLUMN "NOTICE"."MEMBER_NO" IS '작성자';
+COMMENT ON COLUMN "NOTICE"."TITLE" IS '공지명';
+COMMENT ON COLUMN "NOTICE"."CONTENT" IS '공지내용';
+COMMENT ON COLUMN "NOTICE"."ENROLL_DATE" IS '작성일';
+COMMENT ON COLUMN "NOTICE"."VIEW_COUNT" IS '조회수';
+COMMENT ON COLUMN "NOTICE"."NOTICE_CODE" IS '공지 N, 자주묻는질문 - 쇼핑몰 S, 커뮤니티 C, 기타 E';
 
 -- 삭제된 공지사항 테이블 생성
-CREATE TABLE "DELETE_NOTICE_BOARD" (
-	"NOTICE_BOARD_NO"	NUMBER NOT NULL,
+CREATE TABLE "DELETE_NOTICE" (
+	"NOTICE_NO"	NUMBER NOT NULL,
 	"MEMBER_NO"	NUMBER NOT NULL,
 	"TITLE"	VARCHAR2(100) NULL,
 	"CONTENT"	CLOB NULL,
 	"ENROLL_DATE"	DATE NULL,
 	"VIEW_NUM"	NUMBER NULL,
-	"DELETE_DATE"	DATE DEFAULT SYSDATE	NULL,
+	"DELETE_DATE"	DATE DEFAULT CURRENT_DATE NULL,
 	"NOTICE_CODE"	CHAR(1) NULL
 );
 
 -- 삭제된 공지사항 테이블 코멘트 추가
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."NOTICE_BOARD_NO" IS '공지번호';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."MEMBER_NO" IS '작성자';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."TITLE" IS '공지명';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."CONTENT" IS '공지내용';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."ENROLL_DATE" IS '작성일';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."VIEW_COUNT" IS '조회수';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."DELETE_DATE" IS '삭제일';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."NOTICE_CODE" IS '공지코드';
+COMMENT ON COLUMN "DELETE_NOTICE"."NOTICE_NO" IS '공지번호';
+COMMENT ON COLUMN "DELETE_NOTICE"."MEMBER_NO" IS '작성자';
+COMMENT ON COLUMN "DELETE_NOTICE"."TITLE" IS '공지명';
+COMMENT ON COLUMN "DELETE_NOTICE"."CONTENT" IS '공지내용';
+COMMENT ON COLUMN "DELETE_NOTICE"."ENROLL_DATE" IS '작성일';
+COMMENT ON COLUMN "DELETE_NOTICE"."VIEW_COUNT" IS '조회수';
+COMMENT ON COLUMN "DELETE_NOTICE"."DELETE_DATE" IS '삭제일';
+COMMENT ON COLUMN "DELETE_NOTICE"."NOTICE_CODE" IS '공지 N, 자주묻는질문 - 쇼핑몰 S, 커뮤니티 C, 기타 E';
 
 -- 상품 대분류 카테고리 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_PRODUCT_PARENT_CATEGORY_NO;
@@ -963,10 +1006,10 @@ REFERENCES MERCHANT (
 --===========================
 CREATE TABLE "SHIPMENT" (
 	"SHIPMENT_NO"	NUMBER		NOT NULL,
-	"TRACKING_NUMBER"	NUMBER		NULL,
+	"TRACKING_NO"	CHAR(12)		NULL,
 	"MERCHANT_UID"	VARCHAR2(50)		NOT NULL,
-	"ORDER_LOG_NO"	NUMBER		NOT NULL,
-	"SHIPMENT_DATE"	DATE		NULL,
+	"ORDER_LOG_NO"	NUMBER		NULL,
+	"SHIPMENT_DATE"	DATE		default sysdate,
 	CONSTRAINT PK_SHIPMENT_SHIPMENT_NO PRIMARY KEY(SHIPMENT_NO),
 	CONSTRAINT FK_SHIPMENT_MERCHANT_UID FOREIGN KEY(MERCHANT_UID) REFERENCES MERCHANT(MERCHANT_UID),
 	CONSTRAINT FK_SHIPMENT_ORDER_LOG_NO FOREIGN KEY(ORDER_LOG_NO) REFERENCES ORDER_LOG(ORDER_LOG_NO)
@@ -1475,7 +1518,13 @@ from(
 --    m.order_status,
 --    i.name,
 --    i.amount,
---    p.thumbnail
+--    p.product_code,
+--    pd.detail_no,
+--    pd.option_no,
+--    pd.option_content,
+--    pd.quantity,
+--    md.buy_count,
+--    m.total_price
 --from
 --    merchant m left join imp i
 --        on m.merchant_uid = i.merchant_uid
