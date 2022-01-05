@@ -220,6 +220,17 @@
 		where 
 			member_no = #{memberNo}
 	</select>
+	
+	<select id="selectOneProductDetail" resultType="productDetail">
+		select
+			*
+		from
+			product_detail
+		where
+			detail_no = #{detailNo}
+	</select>
+	
+	
 
 <!-- =================================================구분선 ================================================= -->
 	
