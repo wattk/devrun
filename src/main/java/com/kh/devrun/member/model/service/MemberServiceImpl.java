@@ -3,7 +3,7 @@ package com.kh.devrun.member.model.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.Address;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kh.devrun.address.model.vo.Address;
 import com.kh.devrun.member.model.dao.MemberDao;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.security.model.dao.SecurityDao;
