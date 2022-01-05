@@ -22,25 +22,43 @@
   	)
   </insert>
   
- <insert id="insertCommunityWriteEnroll">
- 	insert into
- 		community
- 	values(
- 		seq_community_no.nextval,
- 		#{memberNo},
- 		#{pageCode},
- 		#{title},
- 		#{content},
- 		default,
- 		default,
- 		default,
- 		default,
- 		#{hashtag},
- 		#{thumbnail}
- 	)
- </insert>
+  <!-- 커뮤니티 통합 글쓰기 -->
+  <insert id="insertCommunityWriteEnroll">
+	insert into
+		community
+	values(
+		seq_community_no.nextval,
+		#{memberNo},
+		#{pageCode},
+		#{title},
+		#{content},
+		default,
+		default,
+		default,
+		default,
+		#{hashtag},
+		#{thumbnail}
+	)
+  </insert>
   
-
+  <insert id="insertCommunityReport">
+ 	insert into
+		report
+	values(
+		seq_report_no.nextval,
+		#{reasonCate}, 
+		#{reportRootCate},
+		#{memberNo}, 
+		#{id}, 
+		#{targetPkNo}, 
+		#{reportContent}, 
+		#{sideNote}, 
+		default, 
+		default, 
+		null, 
+		null 
+	)
+  </insert>
 
 
   

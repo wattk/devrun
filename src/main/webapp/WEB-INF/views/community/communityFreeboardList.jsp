@@ -181,21 +181,6 @@ $(() => {
 </div>
 
 <script>
-/* $("#writeType").click(function(e){
-	console.log("글쓰기 타입 버튼 되나요");
-	var writeType = $(e.target).val();
-	console.log(writeType);
-	
-});
-
-$(document).on('click', '#writeBtn', function(e) {
-	console.log("저장 도착하나요?");
-	console.log(writeType);
-	
-}); */
-
-
-
 
 //타입별 검색
 /**
