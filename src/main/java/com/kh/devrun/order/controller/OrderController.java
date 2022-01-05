@@ -108,12 +108,13 @@ public class OrderController {
 						log.debug("token = {}", _token);
 						
 						JSONObject json2 = new JSONObject();
-						json.put("reason", orderLog.getReasonDetail());
-						json.put("imp_uid", imp.getImpUid());
-						json.put("amount", imp.getAmount());
+						json2.put("reason", orderLog.getReasonDetail());
+						json2.put("imp_uid", imp.getImpUid());
+						json2.put("amount", imp.getAmount());
 						
 						String cancelResult = AdminUtils.getRefund(request, response, json2, _token);
 						log.debug("cancelResult = {}", cancelResult);
+						resultMap.put("result", cancelResult);
 					}
 					resultMap.put("msg", "접수가 완료되었습니다.");
 				}

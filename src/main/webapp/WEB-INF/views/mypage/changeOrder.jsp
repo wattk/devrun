@@ -230,8 +230,10 @@ $("#orderLogEnrollBtn").click((e)=>{
 		contentType : "application/json; charset=utf-8",
 		success(data){
 			console.log(data);
-			if(data.token != null){
-				
+			const result = JSON.parse(data.result);
+			console.log(result);
+			if(result.code == 0){
+				alert("주문 취소가 완료되었습니다.");
 			}
 		},
 		error : console.log

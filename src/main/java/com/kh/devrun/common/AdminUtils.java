@@ -113,11 +113,12 @@ public class AdminUtils {
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type", "application/json");
 			connection.setRequestProperty("Authorization", _token);
+			connection.setRequestProperty("Accept", "application/json");
 			OutputStream os= connection.getOutputStream();
-			os.write(json.toString().getBytes("UTF-8"));
+			os.write(json.toString().getBytes());
 			os.flush();
 			StringBuilder sb = new StringBuilder(); 
-			if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+			if(connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
 				BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
 				String line = null;  
 				while ((line = br.readLine()) != null) {  
@@ -129,6 +130,12 @@ public class AdminUtils {
 			}
 			connection.disconnect();
 			log.debug("result : {}", requestString);
+			
+			JSONParser jsonParser = new JSONParser();
+			JSONObject jsonObj = (JSONObject) jsonParser.parse(requestString);
+			log.debug("jsonObj : {}", jsonObj);
+			JSONObject jsonResponse = (JSONObject) jsonObj.get("response");
+			log.debug("jsonResponse : {}", jsonResponse);
 	
 		}catch(Exception e){
 			e.printStackTrace();
