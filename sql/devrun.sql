@@ -1245,7 +1245,6 @@ CREATE TABLE ORDER_LOG(
 	"MEMBER_NO"	NUMBER		NULL
 );
 ALTER TABLE ORDER_LOG ADD CONSTRAINT PK_ORDER_LOG_ORDER_LOG_UID PRIMARY KEY(ORDER_LOG_UID);
-ALTER TABLE ORDER_LOG ADD CONSTRAINT FK_ORDER_LOG_REASON_CODE FOREIGN KEY(REASON_CODE) REFERENCES REASON_CATEGORY(REASON_CODE);
 ALTER TABLE ORDER_LOG ADD CONSTRAINT FK_ORDER_LOG_MERCHANT_UID FOREIGN KEY(MERCHANT_UID) REFERENCES "MERCHANT"(MERCHANT_UID);
 ALTER TABLE ORDER_LOG ADD CONSTRAINT CK_ORDER_LOG_COST_STATUS CHECK(COST_STATUS IN ('Y','N'));
 ALTER TABLE ORDER_LOG ADD CONSTRAINT CK_ORDER_LOG_SC_STATUS CHECK(CS_STATUS IN ('COM','REF','EXC','RET','CAN','FNI'));
@@ -1658,6 +1657,7 @@ COMMENT ON COLUMN sms_waitinglist.phone IS '전화번호';
 COMMENT ON COLUMN sms_waitinglist.reg_date IS '알림신청일';
 COMMENT ON COLUMN sms_waitinglist.status IS '메세지발송여부';
 
+
 --재입고 문자 보낸 뒤 삭제된 대기 목록 
 create table delete_sms_waitinglist(
     waitinglist_no number not null,
@@ -1667,10 +1667,21 @@ create table delete_sms_waitinglist(
     detail_no number not null,
     phone varchar2(11) not null,
     reg_date Date not null,
-    complete_date Date default current_date,
+    complete_date Date default current_date not null,
     status char(1) default 'Y' not null
 );
 
+
+-- delete_sms_waitinglist 코멘트 추가
+COMMENT ON COLUMN delete_sms_waitinglist.waitinglist_no IS '대기목록번호';
+COMMENT ON COLUMN delete_sms_waitinglist.member_no IS '회원 번호';
+COMMENT ON COLUMN delete_sms_waitinglist.id IS '회원 아이디';
+COMMENT ON COLUMN delete_sms_waitinglist.product_code IS '상품코드';
+COMMENT ON COLUMN delete_sms_waitinglist.detail_no IS '상품옵션코드';
+COMMENT ON COLUMN delete_sms_waitinglist.phone IS '전화번호';
+COMMENT ON COLUMN delete_sms_waitinglist.reg_date IS '알림신청일';
+COMMENT ON COLUMN delete_sms_waitinglist.complete_date IS '재입고 문자 발송 처리날';
+COMMENT ON COLUMN delete_sms_waitinglist.status IS '메세지발송여부';
 
 
 create or replace trigger trg_sms_waitinglist

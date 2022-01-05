@@ -9,6 +9,7 @@ import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
+import com.kh.devrun.order.model.vo.OrderLog;
 import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.shop.model.vo.Cart;
@@ -52,6 +53,8 @@ public interface OrderDao {
 	List<Merchant> selectSomeMerchant(String str);
 
 	int insertShipment(List<Map<String, Object>> shipmentArr);
+
+	int insertOrderLog(OrderLog orderLog);
 
 
 

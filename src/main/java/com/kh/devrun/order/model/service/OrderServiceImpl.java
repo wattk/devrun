@@ -16,6 +16,7 @@ import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
+import com.kh.devrun.order.model.vo.OrderLog;
 import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.shop.model.vo.Cart;
@@ -168,10 +169,35 @@ public class OrderServiceImpl implements OrderService {
 			rollbackFor = Exception.class
 	)
 	public int insertShipment(Map<String, Object> shipmentArr) {
-		shipmentArr.put("orderStatus", "SS");
+		shipmentArr.put("keyword", "order_status");
+		shipmentArr.put("value", "SS");
 		int result = orderDao.insertShipment((List<Map<String, Object>>)shipmentArr.get("shipmentArr"));
 		result = orderDao.updateMerchant(shipmentArr);
 		return result;
+	}
+
+	@Override
+	@Transactional(
+			propagation = Propagation.REQUIRED, 
+			isolation = Isolation.READ_COMMITTED, 
+			rollbackFor = Exception.class
+	)
+	public int insertOrderLog(OrderLog orderLog) {
+		Map<String, Object> param = new HashMap<>();
+		String[] merchantUid = new String[1];
+		merchantUid[0] = orderLog.getMerchantUid();
+		param.put("keyword", "cs_status");
+		param.put("value", orderLog.getCsStatus());
+		param.put("merchantUid", merchantUid);
+		
+		int result = orderDao.insertOrderLog(orderLog);
+		result = orderDao.updateMerchant(param);
+		return result;
+	}
+
+	@Override
+	public Imp selectOneImp(String merchantUid) {
+		return orderDao.selectOneImp(merchantUid);
 	}
 
 	

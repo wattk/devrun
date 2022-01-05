@@ -498,14 +498,11 @@ public class MypageController {
 	 * 혜진 교환/환불/취소 시작
 	 */
 	
-	@GetMapping("/changeOrder.do")
-	public void changeOrder(@RequestParam String merchantUid, Model model, Authentication authentication){
+	@GetMapping("/changeOrder")
+	public void changeOrder(@RequestParam String merchantUid, Model model){
 		log.debug("merchantUid = {}", merchantUid);
 
-		Member member = (Member)authentication.getPrincipal();
-		List<Address> addressList = memberService.selectAddressListByMemberNo(member.getMemberNo());
 		Map<String, Object> map = orderService.selectOneMerchant(merchantUid);
-		model.addAttribute("addressList", map.get("addressList"));
 		model.addAttribute("merchant", map.get("merchant"));
 		model.addAttribute("productList", map.get("list"));
 		model.addAttribute("imp", map.get("imp"));

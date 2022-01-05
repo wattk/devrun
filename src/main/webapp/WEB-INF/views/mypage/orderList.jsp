@@ -48,7 +48,9 @@
 	       						<table class="mt-3">
 	       							<tr>
 	       								<td rowspan="4" class="col-2">
-	       									<img src="${pageContext.request.contextPath}/resources/upload/product/${item.thumbnail}" alt="" class="w-100 h-100"/>
+		       								<div class="cart-item-img">
+		       									<img src="${pageContext.request.contextPath}/resources/upload/product/${item.thumbnail}" alt="" class="img-thumbnail shop-img w-100 h-100"/>
+		       								</div>
 	       								</td>
 	       							</tr>
 	       							<tr>

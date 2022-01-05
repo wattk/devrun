@@ -36,7 +36,7 @@
   	  <a href="#" class="col-md-3 p-5">
         <div class="card-box-d">
           <div class="card-img-d shop-item-img position-relative">
-            <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
+            <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="shop-img img-d img-fluid">
             <i class="shop-like-icon fas fa-heart position-absolute"></i>
             <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
           </div>

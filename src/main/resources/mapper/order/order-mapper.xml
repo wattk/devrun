@@ -249,7 +249,7 @@
   
   <update id="updateMerchant">
   	update merchant set
-  		order_status = #{orderStatus}
+  		${keyword} = #{value}
   	where
   		merchant_uid in
   		<foreach collection="merchantUid" item="merchantUid" open="(" separator="," close=")">
@@ -316,5 +316,24 @@
 		null,
 		default
 	)
+  </insert>
+  
+  <insert id="insertOrderLog">
+  	insert into order_log
+  	values(
+  		#{orderLogUid},
+  		#{reasonCode},
+  		#{merchantUid},
+  		#{prevDetailNo},
+  		#{currDetailNo},
+  		#{csStatus},
+  		sysdate,
+  		null,
+  		null,
+  		'N',
+  		#{cost},
+  		#{reasonDetail},
+  		#{memberNo}
+  	)
   </insert>
 </mapper>
