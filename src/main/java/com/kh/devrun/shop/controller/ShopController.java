@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -46,9 +47,7 @@ import com.kh.devrun.shop.model.vo.Wishlist;
 import com.kh.devrun.shop.model.vo.WishlistProduct;
 
 import lombok.extern.slf4j.Slf4j;
-import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import net.nurigo.java_sdk.api.Message;
-import org.json.simple.JSONObject;
 
 @Controller
 @Slf4j
@@ -81,6 +80,102 @@ public class ShopController {
 	Message message;
 
 //--------------------주입-------------------------------------	
+
+	// 상세페이지를 이동 시
+	@GetMapping("/itemDetail/{productCode}")
+	public String selectOneItem(@PathVariable String productCode, Model model, Authentication authentication,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		// 상품 조회
+		ProductEx product = productService.selectOneItem(productCode);
+		model.addAttribute("product", product);
+
+		// 상품 옵션도 조회
+		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
+		model.addAttribute("pDetail", pDetail);
+
+		// 소분류 카테고리 추출
+		String childCate = productCode.substring(3, 6);
+
+		Map<String, Object> param = new HashMap<>();
+		param.put("childCate", childCate);
+		param.put("productCode", productCode);
+
+		// 소분류로 리스트 가져오기
+		List<Product> recommendation = shopService.selectRecommendation(param);
+		log.debug("recommendation 몇 개? :{}", recommendation.size());
+
+		Collections.shuffle(recommendation);
+		model.addAttribute("recommendation", recommendation);
+
+		// 품절상품 정보
+		List<ProductDetail> outOfStock = productService.selectOutOfStock(productCode);
+		model.addAttribute("outOfStock", outOfStock);
+		log.debug("품절 : {}", outOfStock);
+
+		// 장바구니 좋아요 여부
+
+		if (authentication != null) {
+
+			int memberNo = ((Member) authentication.getPrincipal()).getMemberNo();
+			Map<String, Object> cartParam = new HashMap<>();
+			cartParam.put("memberNo", memberNo);
+			cartParam.put("productCode", productCode);
+
+			List<Integer> cartValidList = productService.selectCartValidList(cartParam);
+			String cartValid = "";
+			for (int i : cartValidList) {
+				cartValid += i + ",";
+			}
+			model.addAttribute("cartValid", cartValid);
+		}
+
+		// 조회수 처리 시작
+
+		// 일단 쿠키 가져오기
+		Cookie[] cookies = request.getCookies();
+
+		// 읽음여부 확인(cookie)
+		boolean hasRead = false;
+		String productValue = "";
+
+		if (cookies != null) {
+			for (Cookie c : cookies) {
+				String name = c.getName();
+				String value = c.getValue();
+				log.debug("쿠키 이름 : {}", name);
+				log.debug("쿠키 값 : {}", value);
+
+				if ("productCode".equals(name)) {
+					productValue = value;
+
+					if (value.contains("|" + productCode + "|")) {
+						hasRead = true;
+						log.debug("조회수를 증가시키지 않습니다.");
+					}
+					break;
+				}
+			}
+
+		}
+
+		// 기존 쿠키 없을 시 새 쿠키!
+		if (!hasRead) {
+			Cookie cookie = new Cookie("productCode", "|" + productCode + "|");
+			cookie.setMaxAge(24 * 60 * 60);
+			// 쿠키의 경로는 지정한 경로 포함 이하는 다 처리된다. '/' 경로 구분자이다.
+			cookie.setPath(request.getContextPath() + "/shop/itemDetail");
+			response.addCookie(cookie);
+
+			// 조회수 증가
+			log.debug("조회수를 1 증가시킵니다.");
+			int result = shopService.updateViewCount(productCode);
+			ProductEx product2 = productService.selectOneItem(productCode);
+			log.debug("조회수 증가 후 조회수는 : {}", product2.getViewCount());
+		}
+
+		return "shop/itemDetail";
+	}
 
 	// 헤더에서 Shop 눌렀을 시
 	@GetMapping("/shopMain.do")
@@ -186,58 +281,6 @@ public class ShopController {
 		map.put("wishCheckYn", wishCheckYn);
 
 		return map;
-	}
-
-	// 상세페이지를 이동 시
-	@GetMapping("/itemDetail/{productCode}")
-	public String selectOneItem(@PathVariable String productCode, Model model, Authentication authentication) {
-
-		// 상품 조회
-		ProductEx product = productService.selectOneItem(productCode);
-		model.addAttribute("product", product);
-
-		// 상품 옵션도 조회
-		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
-		model.addAttribute("pDetail", pDetail);
-		log.debug("재고 : {}", pDetail);
-
-		// 소분류 카테고리 추출
-		String childCate = productCode.substring(3, 6);
-
-		Map<String, Object> param = new HashMap<>();
-		param.put("childCate", childCate);
-		param.put("productCode", productCode);
-
-		// 소분류로 리스트 가져오기
-		List<Product> recommendation = shopService.selectRecommendation(param);
-		log.debug("recommendation 몇 개? :{}", recommendation.size());
-
-		Collections.shuffle(recommendation);
-		model.addAttribute("recommendation", recommendation);
-
-		// 품절상품 정보
-		List<ProductDetail> outOfStock = productService.selectOutOfStock(productCode);
-		model.addAttribute("outOfStock", outOfStock);
-		log.debug("품절 : {}", outOfStock);
-
-		// 장바구니 좋아요 여부
-
-		if (authentication != null) {
-
-			int memberNo = ((Member) authentication.getPrincipal()).getMemberNo();
-			Map<String, Object> cartParam = new HashMap<>();
-			cartParam.put("memberNo", memberNo);
-			cartParam.put("productCode", productCode);
-
-			List<Integer> cartValidList = productService.selectCartValidList(cartParam);
-			String cartValid = "";
-			for (int i : cartValidList) {
-				cartValid += i + ",";
-			}
-			model.addAttribute("cartValid", cartValid);
-		}
-
-		return "shop/itemDetail";
 	}
 
 	// 리뷰 삭제하기
@@ -387,16 +430,21 @@ public class ShopController {
 	@ResponseBody
 	@PostMapping("/restock")
 	public int sms(@RequestParam String phoneNumber, @RequestParam int detailNo, @RequestParam String productName,
-			Authentication authentication) {
+			@RequestParam String productCode, Authentication authentication) {
 		int result = 0;
-		String memberName = "";
+		String memberName = null;
+		int memberNo = -1;
+		String id = "nonMember";
+
 		if (authentication != null) {
 			Member member = (Member) authentication.getPrincipal();
 			memberName = member.getName();
+			memberNo = member.getMemberNo();
+			id = member.getId();
 		}
+
 		// 메세지를 위한 디테일 불러오기
 		ProductDetail pDetail = shopService.selectOneProductDetail(detailNo);
-		log.debug("손님이 재입고 원한 상품 디테일 : {}", pDetail);
 
 		String option1 = pDetail.getOptionNo();
 		String option2 = pDetail.getOptionContent();
@@ -410,15 +458,25 @@ public class ShopController {
 
 		log.debug("옵션 정보는? : {}", sb.toString());
 
-//		// 4 params(to, from, type, text) are mandatory. must be filled
-//		HashMap<String, String> params = new HashMap<String, String>();
+		StringBuilder smsContent = new StringBuilder();
+		smsContent.append(System.lineSeparator() + "(DevRun 알림)" + System.lineSeparator() + System.lineSeparator());
+		if (memberName != null) {
+			smsContent.append(memberName + " ");
+		}
+		smsContent.append("고객님 <" + productName + "> 상품의 <" + sb.toString() + "> 옵션의 재입고 시 문자로 알려드리겠습니다."
+				+ System.lineSeparator() + System.lineSeparator() + "쇼핑몰을 이용해주셔서 감사합니다.");
+		
+		//문자 내용 확인해보기
+		log.debug("-----------------------------------------------------------");
+		log.debug(smsContent.toString());
+		log.debug("-----------------------------------------------------------");
+
+		// 주석 풀지 말 것 - 문자 제한 때문에 주석 처리 해놓음 - 다현 -
+		HashMap<String, String> params = new HashMap<String, String>();
 //		params.put("to", phoneNumber);
 //		params.put("from", "01074003717");
 //		params.put("type", "LMS");
-//		params.put("text",
-//				System.lineSeparator() + "(DevRun 알림)" + System.lineSeparator() + System.lineSeparator() + memberName
-//						+ " 고객님 <" + productName + "> 상품의 <" + sb.toString() + "> 옵션의 재입고 시 문자로 알려드리겠습니다."
-//						+ System.lineSeparator() + System.lineSeparator() + "쇼핑몰을 이용해주셔서 감사합니다.");
+//		params.put("text", smsContent.toString());
 //		params.put("app_version", "test app 1.2"); // application name and version
 //
 //		try {
@@ -429,6 +487,19 @@ public class ShopController {
 //			System.out.println(e.getMessage());
 //			System.out.println(e.getCode());
 //		}
+
+		result = 1;
+		// 대기목록테이블에 insert
+		if (result > 0) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("memberNo", memberNo);
+			param.put("id", id);
+			param.put("productCode", productCode);
+			param.put("detailNo", detailNo);
+			param.put("phone", phoneNumber);
+			int insertYn = shopService.insertSmsWatinglist(param);
+			log.debug("waitinglist 잘 insert? : {}", insertYn);
+		}
 
 		return 1;
 	}

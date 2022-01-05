@@ -145,7 +145,11 @@
 			<hr />
 			<div class="row" >
 				<div class="col-md-12 row justify-content-end"> 
-					<button type="button" class="btn btn-danger" id="reportButton">신고하기</button>
+					
+					<jsp:include page="/WEB-INF/views/community/common/reportModal.jsp">
+						<jsp:param value="" name="title"/>
+					</jsp:include>
+					
 					<button type="button" class="btn btn-primary" id="likeButton" 
 						data-community-no = "${communityEntity.communityNo}"
 						data-member-no = "${communityEntity.memberNo}"
