@@ -386,13 +386,13 @@ public class ShopController {
 	// SMS api 핸들러
 	@ResponseBody
 	@PostMapping("/restock")
-	public int sms(@RequestParam String phoneNumber, @RequestParam int detailNo, @RequestParam String productName) {
+	public int sms(@RequestParam String phoneNumber, @RequestParam int detailNo, @RequestParam String productName, Authentication authentication) {
 		int result = 0;
-		
-		log.debug("phoneNumber : {}", phoneNumber);
-		log.debug("detailNo : {}", detailNo);
-		log.debug("productName : {}", productName);
-
+		String memberName = " ";
+		if(authentication != null) {
+			Member member = (Member) authentication.getPrincipal();
+			memberName = member.getName();
+		}
 		// 메세지를 위한 디테일 불러오기
 		ProductDetail pDetail = shopService.selectOneProductDetail(detailNo);
 		log.debug("손님이 재입고 원한 상품 디테일 : {}", pDetail);
@@ -415,7 +415,7 @@ public class ShopController {
 		params.put("to", phoneNumber);
 		params.put("from", "01074003717");
 		params.put("type", "LMS");
-		params.put("text", "(devRun 알림) 고객님 <" + productName + "> 상품의 <" + sb.toString() + "> 옵션의 재입고 시 문자로 알려드리겠습니다. 쇼핑몰을 이용해주셔서 감사합니다:)" );
+		params.put("text", "(DevRun 알림)"+ memberName +" 고객님 <" + productName + "> 상품의 <" + sb.toString() + "> 옵션의 재입고 시 문자로 알려드리겠습니다. 쇼핑몰을 이용해주셔서 감사합니다." );
 		params.put("app_version", "test app 1.2"); // application name and version
 
 		try {
@@ -427,7 +427,7 @@ public class ShopController {
 			System.out.println(e.getCode());
 		}
 		
-		return result;
+		return 1;
 	}
 
 //----------------------------------------------------------구분선---------------------------------------------------------------
