@@ -539,8 +539,7 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") int cPage,
 			HttpServletRequest request
 			) {
-		
-		
+	
 		// 1.페이징 처리 : 페이지 설정
 		int limit = 5;
 		int offset = (cPage - 1) * limit;
@@ -670,6 +669,8 @@ public class AdminController {
 				@RequestParam String searchType,
 				@RequestParam String searchKeyword,
 				@RequestParam(defaultValue = "1") int cPage,
+				@RequestParam(required = false) String startDate,
+				@RequestParam(required = false) String endDate,
 				HttpServletRequest request
 				){
 			// 검색 타입이 없을 때 searchType에 all 대입하여 오류 방
@@ -686,6 +687,9 @@ public class AdminController {
 			log.debug("searchType = {}",searchType);
 			log.debug("searchKeyword = {}",searchKeyword);
 			log.debug("cPage = {}",cPage);
+			log.debug("startDate = {}",startDate);
+			log.debug("endDate = {}",endDate);
+			
 			Map<String,Object>param = new HashMap<>();
 			
 			if(searchKeyword.contains(",")) {
@@ -698,6 +702,9 @@ public class AdminController {
 			param.put("searchType", searchType);
 			param.put("searchKeyword", searchKeyword);
 			
+			param.put("startDate", startDate);
+			param.put("endDate", endDate);
+			
 			// 1.조회한 리스트 가져오기
 			String url = request.getRequestURI()+"?searchType="+searchType+"&searchKeyword="+searchKeyword;
 			log.debug("url = {}", url);
@@ -709,12 +716,10 @@ public class AdminController {
 			log.debug("questionStr = {}",questionStr);
 			
 			
-			// 2.조회한 게시물 수
-			int totalContent = 0;
-			totalContent = questionProductService.searchQuestionListCount(param);
-			// 답변 여부는 따로 처리
-			totalContent = questionProductService.searchQuestionListByAnswerYnCount(param);
-			
+			// 2.조회한 게시물 수					
+			int totalContent = questionProductService.searchQuestionListCount(param);				
+					
+				
 			// 3.페이지 바
 			log.debug("pagebarUrl = {}",url);
 			String pagebar = QuestionProductUtils.getPagebarQuestion(cPage, limit, totalContent, url);
@@ -730,9 +735,7 @@ public class AdminController {
 		}
 	
 	
-		
-		
-		
+				
 		
 
 	//--------------------태영 끝-----------------------------

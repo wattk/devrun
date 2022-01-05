@@ -83,19 +83,19 @@
 	</div>
 </div>
 
-<!-- modal end -->
+
+<!--------------------------------------------- modal end -------------------------------------------------->
+
 
 <div class="report-container">
 	<h3 class="m-5">회원 문의 관리</h3>
 </div>
 
-
-
 <div class="report-search-container mt-3 ml-5">
 	<strong class="pr-3">날짜 선택</strong>
-	<input type="date" name="" id="" class=" bg-light border-0 small"/>
+	<input type="date" id="startDate" class=" bg-light border-0 small"/>
 	<span>~</span>
-	<input type="date" name="" id="" class="bg-light border-0 small"/>
+	<input type="date" id="endDate" class="bg-light border-0 small"/>
 	<span class="badge badge-primary">오늘</span>
 	<span class="badge badge-secondary">이번주</span>
 	<span class="badge badge-secondary">이번달</span>
@@ -117,21 +117,30 @@
 	            <form class="search-frm">
 	                <input type="hidden" name="searchType" value="all"/>
 	                <input type="hidden" name="searchKeyword"  size="25" placeholder="" value="all"/>
-	                <button type="button"id="searchBymemberAll" class="btn-blue search-btn">검색</button>			
+	                <input type="hidden" name="startDate" class="start-date"/>	
+	                <input type="hidden" name="endDate" class="end-date" />
+	                	
+	                <button type="button"id="searchBymemberAll" class="btn-blue search-btn">검색</button>		
 	            </form>	
 	        </div>
 	        <div id="searchMemberNo" class="search-type other">
 	            <form class="search-frm">
 	                <input type="hidden" name="searchType" value="member_no"/>
 	                <input type="text" name="searchKeyword"  size="25" placeholder="검색할 회원 번호를 입력하세요." value=""/>
-	                <button type="button"id="searchBymemberNo" class="btn-blue search-btn">검색</button>			
+	                <input type="hidden" name="startDate" class="start-date"/>	
+	                <input type="hidden" name="endDate" class="end-date" />
+	                			
+	                <button type="button"id="searchBymemberNo" class="btn-blue search-btn">검색</button>	
 	            </form>	
 	        </div>
 	        <div id="searchProductCode" class="search-type other">
 	            <form class="search-frm">
 	                <input type="hidden" name="searchType" value="product_code"/>
 	                <input type="text" name="searchKeyword" size="25" placeholder="검색할 상품 코드를 입력하세요" value=""/>
-	                <button type="button" class="btn-blue search-btn">검색</button>			
+	                <input type="hidden" name="startDate" class="start-date"/>	
+	                <input type="hidden" name="endDate" class="end-date" />		
+	                
+	                <button type="button" class="btn-blue search-btn">검색</button>               		
 	            </form>	
 	        </div>
 	        
@@ -145,6 +154,9 @@
 					<input type="radio" class="btn-check" name="searchKeyword" id="N" value="N" >
 					<label class="btn btn-success" for="N">미답변</label>
 					
+					<input type="hidden" name="startDate" class="start-date"/>	
+	                <input type="hidden" name="endDate" class="end-date" />		
+					
 	                <button type="button" class="btn-blue search-btn">검색</button>
 	            </form>
 	        </div>        
@@ -157,6 +169,10 @@
 					
 					<input type="radio" class="btn-check" name="searchKeyword" id="private" value='N' >
 					<label class="btn btn-success" for="private">비공개</label>
+					
+					<input type="hidden" name="startDate" class="start-date"/>	
+	                <input type="hidden" name="endDate" class="end-date" />		
+	                
 	                <button type="button" class="btn-blue search-btn">검색</button>		
 	            </form>	
 	        </div>
@@ -166,7 +182,6 @@
        
 	</div>
 </div>
-
 
 <br /><hr class="w-100"/><br />
 		
@@ -218,7 +233,24 @@
 </form:form>
 
 <script>
+	// 날짜 - 전역변수 사용
+	var startDate;
+	var endDate;
+	
+	/* 시작 날짜 선택  */
+	$("#startDate,#endDate").change(e=>{
+		console.log("시작 날짜 선택");
+		startDate = $("#startDate").val();
+		endDate = $("#endDate").val();
 		
+		$(".start-date").val(startDate);
+		$(".end-date").val(endDate);
+		
+		console.log("시작 날짜 = ",startDate);
+		console.log("종료 날짜 = ",endDate);		
+	});
+		
+	
 	/* 답변 버튼 클릭 이벤트  */
 	$(document).on("click",".answer-btn",e=>{
 		
@@ -354,8 +386,7 @@
 	
 	
 	/* 전역 변수 */
-	
-	var selectType = "";
+	var selectType = "All";
 	/* $searchType은 form안의 input=name값 */
 	var $searchType = "";
 	var $searchKeyword = "";
@@ -375,6 +406,8 @@
 		
 		
 		const search = {
+			"startDate" : startDate,
+			"endDate" : endDate,
 			"searchType" : $searchType,
 			"searchKeyword" : $searchKeyword,
 			"cPage" : cPage
