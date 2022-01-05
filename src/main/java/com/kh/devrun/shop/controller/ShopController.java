@@ -430,16 +430,21 @@ public class ShopController {
 	@ResponseBody
 	@PostMapping("/restock")
 	public int sms(@RequestParam String phoneNumber, @RequestParam int detailNo, @RequestParam String productName,
-			Authentication authentication) {
+			@RequestParam String productCode, Authentication authentication) {
 		int result = 0;
 		String memberName = null;
+		int memberNo = -1;
+		String id = "nonMember";
+
 		if (authentication != null) {
 			Member member = (Member) authentication.getPrincipal();
 			memberName = member.getName();
+			memberNo = member.getMemberNo();
+			id = member.getId();
 		}
+
 		// 메세지를 위한 디테일 불러오기
 		ProductDetail pDetail = shopService.selectOneProductDetail(detailNo);
-		log.debug("손님이 재입고 원한 상품 디테일 : {}", pDetail);
 
 		String option1 = pDetail.getOptionNo();
 		String option2 = pDetail.getOptionContent();
@@ -460,9 +465,13 @@ public class ShopController {
 		}
 		smsContent.append("고객님 <" + productName + "> 상품의 <" + sb.toString() + "> 옵션의 재입고 시 문자로 알려드리겠습니다."
 				+ System.lineSeparator() + System.lineSeparator() + "쇼핑몰을 이용해주셔서 감사합니다.");
+		
+		//문자 내용 확인해보기
+		log.debug("-----------------------------------------------------------");
 		log.debug(smsContent.toString());
+		log.debug("-----------------------------------------------------------");
 
-		// 4 params(to, from, type, text) are mandatory. must be filled
+		// 주석 풀지 말 것 - 문자 제한 때문에 주석 처리 해놓음 - 다현 -
 		HashMap<String, String> params = new HashMap<String, String>();
 //		params.put("to", phoneNumber);
 //		params.put("from", "01074003717");
@@ -478,6 +487,19 @@ public class ShopController {
 //			System.out.println(e.getMessage());
 //			System.out.println(e.getCode());
 //		}
+
+		result = 1;
+		// 대기목록테이블에 insert
+		if (result > 0) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("memberNo", memberNo);
+			param.put("id", id);
+			param.put("productCode", productCode);
+			param.put("detailNo", detailNo);
+			param.put("phone", phoneNumber);
+			int insertYn = shopService.insertSmsWatinglist(param);
+			log.debug("waitinglist 잘 insert? : {}", insertYn);
+		}
 
 		return 1;
 	}

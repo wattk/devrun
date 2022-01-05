@@ -236,4 +236,9 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.updateViewCount(productCode);
 	}
 
+	@Override
+	public int insertSmsWatinglist(Map<String, Object> param) {
+		return shopDao.insertSmsWatinglist(param);
+	}
+
 }
