@@ -10,13 +10,9 @@ import com.kh.devrun.community.model.vo.CommunityEntity;
 
 public interface CommunityService {
 
-	int insertColumn(Community community);
-
 	List<Community> selectColumnList();
 
 	List<Community> columnBestList();
-
-	int insertFreeboard(Community community);
 
 	List<CommunityEntity> selectFreeboardList(int offset, int limit);
 
@@ -47,6 +43,18 @@ public interface CommunityService {
 	int refreshCountLikes(int communityNo);
 
 	int freeboardLikeDelete(Map<String, Object> param);
+
+	int insertCommunity(CommunityEntity communityEntity);
+
+	int insertColumn(Community community);
+
+	int insertFreeboard(Community community);
+
+	int insertQna(Community community);
+
+	int insertStudy(Community community);
+
+	int insertCommunityWriteEnroll(Community community);
 
 
 

@@ -145,7 +145,90 @@ public class CommunityController {
 		
 		return "community/communityStudy";
 	}
+//--------------------------------------------------------------------------------------------------------------
 	
+	// Q&A-글등록
+	@PostMapping("/qnaEnroll.do")
+	public String qnaEnroll(Community community, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "/qnaEnroll.do 요청!");
+		log.debug("community = {}", community);
+		// img 데이터를 잘라오기 위한 Index 선언
+		int startIndex = 0;
+		int endIndex = 0;
+		String content = community.getContent();
+		// "startindex는 "<img" 전 부터를 의미한다.
+		startIndex = content.indexOf("<img");
+		
+		// 문자열은 -1이 나올 수 없다.
+		if(startIndex != -1) {
+			// endIndex는 ">" 전까지이다. \ : escaping
+			endIndex = content.substring(startIndex).indexOf("\">");
+			// ">"까지 포함해서 읽어와야 하므로 endIndex+2로 설정한다.
+			log.debug("startIndex : {} ~ endIndex : {}", startIndex, endIndex+2);
+			
+			// thumbnail에 img 데이터를 담는다.
+			String thumbnail = content.substring(startIndex, startIndex + endIndex+2);
+			log.debug("thumbnail = {}", thumbnail);
+			System.out.println(thumbnail);
+			// community에 tumbnail을 보낸다.
+			community.setThumbnail(thumbnail);
+		}
+		
+		try { 
+			int result = communityService.insertQna(community); 
+			String msg = result > 0 ? "게시글 등록 성공!" : "게시글 등록 실패!";
+			redirectAttributes.addFlashAttribute("msg", msg); 
+		} 
+		catch (Exception e) {
+			log.error("게시글 등록 오류", e); 
+			throw e; 
+		} 
+		return "redirect:communityQnAList.do";
+	}
+
+//--------------------------------------------------------------------------------------------------------------	
+	
+	// 스터디-글등록
+	@PostMapping("/studyEnroll.do")
+	public String studyEnroll(Community community, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "/studyEnroll.do 요청!");
+		log.debug("community = {}", community);
+		// img 데이터를 잘라오기 위한 Index 선언
+		int startIndex = 0;
+		int endIndex = 0;
+		String content = community.getContent();
+		// "startindex는 "<img" 전 부터를 의미한다.
+		startIndex = content.indexOf("<img");
+		
+		// 문자열은 -1이 나올 수 없다.
+		if(startIndex != -1) {
+			// endIndex는 ">" 전까지이다. \ : escaping
+			endIndex = content.substring(startIndex).indexOf("\">");
+			// ">"까지 포함해서 읽어와야 하므로 endIndex+2로 설정한다.
+			log.debug("startIndex : {} ~ endIndex : {}", startIndex, endIndex+2);
+			
+			// thumbnail에 img 데이터를 담는다.
+			String thumbnail = content.substring(startIndex, startIndex + endIndex+2);
+			log.debug("thumbnail = {}", thumbnail);
+			System.out.println(thumbnail);
+			// community에 tumbnail을 보낸다.
+			community.setThumbnail(thumbnail);
+		}
+		
+		try { 
+			int result = communityService.insertStudy(community); 
+			String msg = result > 0 ? "게시글 등록 성공!" : "게시글 등록 실패!";
+			redirectAttributes.addFlashAttribute("msg", msg); 
+		} 
+		catch (Exception e) {
+			log.error("게시글 등록 오류", e); 
+			throw e; 
+		} 
+		return "redirect:communityStudyList.do";
+	}
+
+//--------------------------------------------------------------------------------------------------------------
+
 	// 자유게시판-리스트
 	// @RequestParam int cPage : 현재 페이지 변수를 하나 받아온다.
 	// communityFreeboardList의 인자값으로 @RequestParam() 어노테이션을 넣어서 값을 받아온다.
@@ -227,13 +310,10 @@ public class CommunityController {
 		return resultMap;
 	}
 	
-	// 글쓰기
-	@GetMapping("/communityWriteForm.do")
-	public void communityWriteForm() {}
 	
 	// 자유게시판-글등록
-	@PostMapping("/communityFreeboardEnroll.do")
-	public String communityFreeboardEnroll(Community community, RedirectAttributes redirectAttributes) {
+	@PostMapping("/freeboardEnroll.do")
+	public String freeboardEnroll(Community community, RedirectAttributes redirectAttributes) {
 		log.debug("{}", "/communityFreeboardEnroll.do 요청!");
 		log.debug("community = {}", community);
 		// img 데이터를 잘라오기 위한 Index 선언
@@ -269,6 +349,8 @@ public class CommunityController {
 		  } 
 		  return "redirect:/community/communityFreeboardList.do";
 	}
+	
+		
 	
 	// 자유게시판-상세보기
 	// @RequestParam("가져올 데이터의 이름")[데이터 타입][가져온 데이터를 담을 변수]
@@ -309,8 +391,8 @@ public class CommunityController {
 		
 		// 좋아요 여부 확인(누름 = 1, 안누름 = 0)
 		int likeYesNo = communityService.didIHitLikes(param);
-		log.debug("param = {}", param);
-		log.debug("likeYesNo = {}", likeYesNo);
+		log.debug("좋아요 여부확인, param = {}", param);
+		log.debug("좋아요 여부확인, likeYesNo = {}", likeYesNo);
 		model.addAttribute(likeYesNo);
 		
 		// 댓글
@@ -331,7 +413,7 @@ public class CommunityController {
 		param.put("memberNo", memberNo);
 
 		int result = communityService.freeboardLikeAdd(param);
-		log.debug("좋아요 추가(result) : {}", result);
+		log.debug("좋아요 추가성공(result) : {}", result);
 		
 		// 좋아요 추가하고 새로 추가된 좋아요 갯수 받아오기
 		int newCountLikes = communityService.refreshCountLikes(communityNo); 
@@ -353,10 +435,11 @@ public class CommunityController {
 		param.put("memberNo", memberNo);
 		
 		int result = communityService.freeboardLikeDelete(param);
-		log.debug("좋아요 삭제(result) : {}", result);
+		log.debug("좋아요 삭제성공(result) : {}", result);
 		
 		// 좋아요 삭제하고 새로 추가된 좋아요 갯수 받아오기
 		int newCountLikes = communityService.refreshCountLikes(communityNo);
+		log.debug("좋아요 삭제해서 0이어야함 : {}", newCountLikes);
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("result", result);
@@ -451,6 +534,46 @@ public class CommunityController {
 		return "redirect:/community/communityFreeboardDetail/" + communityNo; 
 	}
 
-	
+	// 글쓰기(Q&A, 스터디, 자유게시판)
+	@PostMapping("/communityWriteEnroll.do")
+	public String communityWriteEnroll(Community community, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "/communityWriteEnroll.do 요청!");
+		log.debug("community = {}", community);
+		
+		// img 데이터를 잘라오기 위한 Index 선언
+		int startIndex = 0;
+		int endIndex = 0;
+		String content = community.getContent();
+		// "startindex는 "<img" 전 부터를 의미한다.
+		startIndex = content.indexOf("<img");
+		
+		// 문자열은 -1이 나올 수 없다.
+		if(startIndex != -1) {
+			// endIndex는 ">" 전까지이다. \ : escaping
+			endIndex = content.substring(startIndex).indexOf("\">");
+			// ">"까지 포함해서 읽어와야 하므로 endIndex+2로 설정한다.
+			log.debug("startIndex : {} ~ endIndex : {}", startIndex, endIndex+2);
+			
+			// thumbnail에 img 데이터를 담는다.
+			String thumbnail = content.substring(startIndex, startIndex + endIndex+2);
+			log.debug("thumbnail = {}", thumbnail);
+			System.out.println(thumbnail);
+			// community에 tumbnail을 보낸다.
+			community.setThumbnail(thumbnail);
+		}
+		
+		
+		int result = communityService.insertCommunityWriteEnroll(community);
+		String msg = result > 0 ? "게시글 등록 성공!" : "게시글 등록 실패!";
+		redirectAttributes.addFlashAttribute("msg", msg);
+		
+		if(community.getPageCode() == 2) {
+			return "redirect:/community/communityQnAList.do";
+		} else if (community.getPageCode() == 3) {
+			return "redirect:/community/communityStudyList.do";
+		}
+
+		return "redirect:/community/communityFreeboardList.do";
+	}
 
 }

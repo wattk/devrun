@@ -17,10 +17,33 @@
   		default,
   		default,
   		default,
-  		default,
+  		#{hashtag},
   		#{thumbnail}
   	)
   </insert>
+  
+ <insert id="insertCommunityWriteEnroll">
+ 	insert into
+ 		community
+ 	values(
+ 		seq_community_no.nextval,
+ 		#{memberNo},
+ 		#{pageCode},
+ 		#{title},
+ 		#{content},
+ 		default,
+ 		default,
+ 		default,
+ 		default,
+ 		#{hashtag},
+ 		#{thumbnail}
+ 	)
+ </insert>
+  
+
+
+
+  
   
   <!-- 컬럼 리스트 조회 -->
   <select id="selectColumnList" resultType="community">
@@ -44,24 +67,6 @@
   		like_count desc
   </select>
   
-  <!-- 자유게시판 글쓰기 -->
-    <insert id="insertFreeboard">
-  	insert into
-  		community
-  	values(
-  		seq_community_no.nextval,
-  		#{memberNo},
-  		4,
-  		#{title},
-  		#{content},
-  		default,
-  		default,
-  		default,
-  		default,
-  		#{hashtag},
-  		#{thumbnail}
-  	)
-  </insert>
   
   <!-- 자유게시판 리스트 조회 -->
   <select id="selectFreeboardList" resultType="communityEntity">
@@ -231,6 +236,20 @@
   		community_no = #{communityNo}
   </update>
   
+  <insert id="insertMemberCommunityLike">
+  	insert into
+  		member_community_likee
+  	values (#{communityNo}, #{memberNo})
+  </insert>
+  
+  <delete id="deleteMemberCommunityLike">
+  	delete
+  		member_community_likee
+  	where
+  		community_no = #{communityNo} and
+  		member_no = #{memberNo}
+  </delete>
+  
   <select id="refreshCountLike" resultType="_int">
   	select
   		like_count
@@ -241,12 +260,14 @@
   </select>
   
   <!-- 자유게시판 좋아요 삭제 -->
-  <delete id="freeboardLikeDelete">
+  <update id="freeboardLikeDelete">
   	update
   		community
   	set
   		like_count = like_count - 1
   	where
-  		community_no = #{community_no}
-  </delete>
+  		community_no = #{communityNo}
+  </update>
+  
+
 </mapper>

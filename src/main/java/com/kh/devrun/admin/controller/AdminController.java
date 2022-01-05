@@ -308,7 +308,7 @@ public class AdminController {
 			@RequestParam String childCategoryCode,			
 			@RequestParam int[]detailNo,
 			@RequestParam (required=false)int[]deleteDetailNo, // 삭제할 detailNo
-			@RequestParam (required=false)int[]insertDetailNo, // 추가할 detailNo
+//			@RequestParam (required=false)int[]insertDetailNo, // 추가할 detailNo
 			@RequestParam (required=false)String[]insertOption, // 추가할 option
 			@RequestParam (required=false)String[]insertOptionContent, // 추가할 optionContent
 			@RequestParam (required=false)int[]insertQuantity, // 추가할 quantity			
@@ -325,12 +325,14 @@ public class AdminController {
 		List<ProductDetail>insertProductDetailList = new ArrayList<>();
 		
 		if(insertOption != null) {			
-			for(int i = 0; i < insertDetailNo.length; i++) {
+			for(int i = 0; i < insertOption.length; i++) {
 				ProductDetail insertProductDetail = new ProductDetail();
 				insertProductDetail.setProductCode(productCode);
-				insertProductDetail.setDetailNo(insertDetailNo[i]);
+//				insertProductDetail.setDetailNo(insertDetailNo[i]);
 				insertProductDetail.setOptionNo(insertOption[i]);
-				insertProductDetail.setOptionContent(insertOptionContent[i]);
+				if(!ArrayUtils.isEmpty(insertOptionContent)) {
+					insertProductDetail.setOptionContent(insertOptionContent[i]);
+				}
 				insertProductDetail.setQuantity(insertQuantity[i]) ;
 							
 				insertProductDetailList.add(insertProductDetail);
