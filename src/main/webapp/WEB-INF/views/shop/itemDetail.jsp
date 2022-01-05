@@ -58,7 +58,7 @@
 			      	 	<select style="height: 35px;" class="col-8" name="smsOption" id="smsOption" required>
 			      	 		<option value="" selected disabled >옵션 선택</option>
 			      	 		<c:forEach items="${outOfStock}" var="s">
-				      	 		<option value="${s.detailNo}">${s.optionNo}
+				      	 		<option value="${s.detailNo}"> ${s.optionNo}
 				      	 			<c:if test="${pd.optionContent != null}">
 										, ${pd.optionContent}
 									</c:if> 
@@ -896,20 +896,20 @@ $(phoneSms).keyup((e)=>{
 				if(data ==1){
 					$(smsBody).html('');
 					$(smsBody).append(msg);
+					$('.modal-footer').html('');
+					$('.modal-footer').append('<button type="button" id="smsCloseBtn" class="btn btn-secondary" data-dismiss="modal" onclick="reloadSms()">닫기</button>');
 					
 				}
 			},
-			error :console.log
-			
+			error :console.log	
 		});
-		
-		
-		
 	}
-	
- 
  })
  /*sms 문자보내기 비동기 처리*/
+ 
+ function reloadSms(){
+	location.reload();
+}
 //-------------------------------------------------------구분선-------------------------------------------------------------
 
 

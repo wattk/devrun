@@ -410,24 +410,24 @@ public class ShopController {
 		
 		log.debug("옵션 정보는? : {}",sb.toString());
 
-		// 4 params(to, from, type, text) are mandatory. must be filled
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("to", phoneNumber);
-		params.put("from", "01074003717");
-		params.put("type", "LMS");
-		params.put("text", "(devRun 알림) 고객님 <" + productName + "> 상품의 <" + sb.toString() + "> 옵션의 재입고 시 문자로 알려드리겠습니다. 쇼핑몰을 이용해주셔서 감사합니다:)" );
-		params.put("app_version", "test app 1.2"); // application name and version
-
-		try {
-			JSONObject obj = (JSONObject) message.send(params);
-			System.out.println(obj.toString());
-			result = 1;
-		} catch (CoolsmsException e) {
-			System.out.println(e.getMessage());
-			System.out.println(e.getCode());
-		}
+//		// 4 params(to, from, type, text) are mandatory. must be filled
+//		HashMap<String, String> params = new HashMap<String, String>();
+//		params.put("to", phoneNumber);
+//		params.put("from", "01074003717");
+//		params.put("type", "LMS");
+//		params.put("text", "(devRun 알림) 고객님 <" + productName + "> 상품의 <" + sb.toString() + "> 옵션의 재입고 시 문자로 알려드리겠습니다. 쇼핑몰을 이용해주셔서 감사합니다:)" );
+//		params.put("app_version", "test app 1.2"); // application name and version
+//
+//		try {
+//			JSONObject obj = (JSONObject) message.send(params);
+//			System.out.println(obj.toString());
+//			result = 1;
+//		} catch (CoolsmsException e) {
+//			System.out.println(e.getMessage());
+//			System.out.println(e.getCode());
+//		}
 		
-		return result;
+		return 1;
 	}
 
 //----------------------------------------------------------구분선---------------------------------------------------------------
