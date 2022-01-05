@@ -59,8 +59,8 @@
 			      	 		<option value="" selected disabled >옵션 선택</option>
 			      	 		<c:forEach items="${outOfStock}" var="s">
 				      	 		<option value="${s.detailNo}"> ${s.optionNo}
-				      	 			<c:if test="${pd.optionContent != null}">
-										, ${pd.optionContent}
+				      	 			<c:if test="${s.optionContent != null}">
+										, ${s.optionContent}
 									</c:if> 
 				      	 		</option>
 			      	 		</c:forEach>
