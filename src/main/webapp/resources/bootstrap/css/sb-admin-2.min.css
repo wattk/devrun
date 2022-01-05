@@ -75,7 +75,11 @@
 #imgContainer{width:100%; height:100%}
 #infoTable td{text-align: inherit;}
 
+
+
+
 .bold{font-weight:bold}
+.fw500{font-weight:500}
 .fw600{font-weight:600}
 .fw700{font-weight:700}
 .br{border-radius:8px;}
@@ -145,6 +149,8 @@
 /* 회원 문의  */
 #searchType{margin-right:30px}
 .pagebar{margin-top: 40px;}
+.badge{font-size:14px}
+.text-center{text-align:center}
 
 /* 답변 모달 */
 #insertQuestionFrm .modal-content{min-width:400px;width:40vw;height: 85vh;}
@@ -176,11 +182,13 @@
 #inquiryListTbl th:nth-child(8){width: 10%;}
 #command{width: 94%;margin: auto;}
 
-
-
-
-
-
+/* 상품 카테고리  */
+#productCategoryContainer{width:100%;height:100%;margin:50px 50px 50px 130px; padding:30px}
+#categoryContainer{display:flex}
+.select-category{width:470px;height:470px;border:1px solid black;}
+.large-category, .small-category{background-color:pink;}
+.small-category-title{width:50%}
+.category-box-sub{display:flex}
 
 
  
