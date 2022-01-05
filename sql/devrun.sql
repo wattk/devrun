@@ -1627,3 +1627,31 @@ from
         on cm.chat_id = cl.chat_id
 where
     cm.end_date < TO_TIMESTAMP('1970-01-01 09:00:00.0','YYYY-MM-DD HH24:MI:SS.FF') + NUMTODSINTERVAL(cl.log_time/1000, 'SECOND') or cm.end_date is null;
+    
+    
+    
+--김다현 sms 기록 테이블
+create table sms_waitinglist(
+    waitinglist_no number,
+    member_no number default -1,
+    product_code varchar2(100) not null,
+    detail_no number not null,
+    phone varchar2(11) not null,
+    reg_date Date default current_date not null,
+    status char(1) default 'N' not null,
+    constraint pk_waitinglist_no primary key(waitinglist_no),
+    constraint fk_waitinglist_product_code foreign key(product_code) references product(product_code),
+    constraint fk_waitinglist_detail_no foreign key(detail_no) references product_detail(detail_no)
+);
+
+create sequence seq_sms_waitinglist_no;    
+
+-- sms_waitinglist 코멘트 추가
+COMMENT ON COLUMN sms_waitinglist.waitinglist_no IS '대기목록번호';
+COMMENT ON COLUMN sms_waitinglist.member_no IS '회원 번호';
+COMMENT ON COLUMN sms_waitinglist.product_code IS '상품코드';
+COMMENT ON COLUMN sms_waitinglist.detail_no IS '상품옵션코드';
+COMMENT ON COLUMN sms_waitinglist.phone IS '전화번호';
+COMMENT ON COLUMN sms_waitinglist.reg_date IS '알림신청일';
+COMMENT ON COLUMN sms_waitinglist.status IS '메세지발송여부';
+

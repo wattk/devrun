@@ -93,7 +93,6 @@ public class ShopController {
 		// 상품 옵션도 조회
 		List<ProductDetail> pDetail = productService.selectProductDetail(productCode);
 		model.addAttribute("pDetail", pDetail);
-		log.debug("재고 : {}", pDetail);
 
 		// 소분류 카테고리 추출
 		String childCate = productCode.substring(3, 6);
@@ -135,7 +134,6 @@ public class ShopController {
 
 		// 일단 쿠키 가져오기
 		Cookie[] cookies = request.getCookies();
-		log.debug("쿠키 가져오기 : {}", cookies);
 
 		// 읽음여부 확인(cookie)
 		boolean hasRead = false;
@@ -168,7 +166,6 @@ public class ShopController {
 			// 쿠키의 경로는 지정한 경로 포함 이하는 다 처리된다. '/' 경로 구분자이다.
 			cookie.setPath(request.getContextPath() + "/shop/itemDetail");
 			response.addCookie(cookie);
-
 
 			// 조회수 증가
 			log.debug("조회수를 1 증가시킵니다.");
