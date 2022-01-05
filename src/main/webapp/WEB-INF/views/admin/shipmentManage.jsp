@@ -10,6 +10,36 @@
 	<jsp:param value="배송관리" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
+<!-- 배송 조회 모달 -->
+<div class="modal fade" id="shipmentModal" tabindex="-1" role="dialog" aria-labelledby="shipmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalProductTitle">배송 조회</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalProductList">
+        <div class="shipment-info mx-auto text-center">
+        	<span class="tracking-no-badge badge badge-pill badge-light">운송장 번호</span>
+        	<h5 id="modalTrackingNo"></h5>
+        	<i class="tracking-icon fas fa-shipping-fast"></i>
+        	<br />
+        	<span id="trackingStatus"></span>
+        </div>
+        <hr />
+       	<ul id="tracking-info" class="list-group ">
+		</ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 배송 관리 본문 시작 -->
 <div class="shipment-container">
 	<h3 class="m-5">배송내역</h3>
 </div>
@@ -64,7 +94,7 @@
 	  		<c:forEach items="${shipmentList}" var="s" varStatus="vs">
 			    <tr>
 			      <td>${s.shipmentNo}</td>
-			      <td>${s.trackingNo}</td>
+			      <td><span id="${s.trackingNo}" class="tracking-no" data-toggle="modal" data-target="#shipmentModal" >${s.trackingNo}</span></td>
 			      <td>${s.merchantUid}</td>
 			      <td><fmt:formatDate value="${s.shipmentDate}" pattern="yy-MM-dd"/> </td>
 			    </tr>
@@ -264,6 +294,36 @@ $("#shipmentSaveBtn").click((e)=>{
 					$(`#\${merchantUid[i]}`).detach();
 				}
 			}
+		},
+		error : console.log
+	});
+});
+$(".tracking-no").click((e)=>{
+	const trackingNo = $(e.target).attr("id");
+	
+	$.ajax({
+		url : "https://apis.tracker.delivery/carriers/kr.cjlogistics/tracks/"+trackingNo,
+		method : "GET",
+		success(data){
+			console.log(data);
+			$("#modalTrackingNo").text(trackingNo);
+			$("#trackingStatus").text(data.state.text);
+			
+			$("#tracking-info").html('');
+			(data.progresses).forEach((progress, index)=>{
+				console.log(progress);
+				console.log(progress.time);
+				var today = new Date(progress.time); 
+				today.setHours(today.getHours() + 9); 
+				today = today.toISOString().replace('T', ' ').substring(0, 19);
+
+				$("#tracking-info")
+					.prepend(`<li class="list-group-item">
+					<strong class="tracking-location">\${progress.location.name}</strong><span>\${progress.status.text}</span>
+					<br />
+					<span class="tracking-date">\${today}</span>
+				</li>`);
+			});
 		},
 		error : console.log
 	});

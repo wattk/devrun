@@ -834,6 +834,28 @@ COMMENT ON COLUMN "DELETE_NOTICE"."VIEW_COUNT" IS '조회수';
 COMMENT ON COLUMN "DELETE_NOTICE"."DELETE_DATE" IS '삭제일';
 COMMENT ON COLUMN "DELETE_NOTICE"."NOTICE_CODE" IS '공지 N, 자주묻는질문 - 쇼핑몰 S, 커뮤니티 C, 기타 E';
 
+
+-- 공지사항 테이블 delete trigger 생성
+create or replace trigger trg_delete_notice
+    after
+    delete on notice
+    for each row
+begin
+    insert into
+        delete_notice
+    values(
+        :old.notice_no,
+		:old.member_no,
+		:old.title,
+		:old.content,
+		:old.enroll_date,
+		:old.view_count,
+		default,
+		:old.notice_code
+    );
+end;
+/
+
 -- 상품 대분류 카테고리 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_PRODUCT_PARENT_CATEGORY_NO;
 
@@ -1519,6 +1541,7 @@ from(
 --    i.name,
 --    i.amount,
 --    p.product_code,
+--    p.thumbnail,
 --    pd.detail_no,
 --    pd.option_no,
 --    pd.option_content,
