@@ -389,7 +389,7 @@ public class ShopController {
 	public int sms(@RequestParam String phoneNumber, @RequestParam int detailNo, @RequestParam String productName,
 			Authentication authentication) {
 		int result = 0;
-		String memberName = "";
+		String memberName = null;
 		if (authentication != null) {
 			Member member = (Member) authentication.getPrincipal();
 			memberName = member.getName();
@@ -410,15 +410,21 @@ public class ShopController {
 
 		log.debug("옵션 정보는? : {}", sb.toString());
 
-//		// 4 params(to, from, type, text) are mandatory. must be filled
-//		HashMap<String, String> params = new HashMap<String, String>();
+		StringBuilder smsContent = new StringBuilder();
+		smsContent.append(System.lineSeparator() + "(DevRun 알림)" + System.lineSeparator() + System.lineSeparator());
+		if (memberName != null) {
+			smsContent.append(memberName+ " ");
+		}
+		smsContent.append("고객님 <" + productName + "> 상품의 <" + sb.toString() + "> 옵션의 재입고 시 문자로 알려드리겠습니다."
+				+ System.lineSeparator() + System.lineSeparator() + "쇼핑몰을 이용해주셔서 감사합니다.");
+		log.debug(smsContent.toString());
+
+		// 4 params(to, from, type, text) are mandatory. must be filled
+		HashMap<String, String> params = new HashMap<String, String>();
 //		params.put("to", phoneNumber);
 //		params.put("from", "01074003717");
 //		params.put("type", "LMS");
-//		params.put("text",
-//				System.lineSeparator() + "(DevRun 알림)" + System.lineSeparator() + System.lineSeparator() + memberName
-//						+ " 고객님 <" + productName + "> 상품의 <" + sb.toString() + "> 옵션의 재입고 시 문자로 알려드리겠습니다."
-//						+ System.lineSeparator() + System.lineSeparator() + "쇼핑몰을 이용해주셔서 감사합니다.");
+//		params.put("text", smsContent.toString());
 //		params.put("app_version", "test app 1.2"); // application name and version
 //
 //		try {
