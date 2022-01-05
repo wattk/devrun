@@ -111,6 +111,31 @@
 		member
 </select>
 
+<!-- 비동기 전체검색  -->
+<select id="selectSearchAllMember" resultMap="memberMap">
+	select
+	    m.member_no,
+	    m.id,
+	    m.name,
+	    m.nickname,
+	    m.enroll_date,
+	    authority
+	from
+	    member m join authorities a on
+	    m.member_no = a.member_no
+</select>
+
+<!-- 비동기 전체검색 수  -->
+<select id="searchMemberListCountByAll" resultType="_int">
+	select
+	   count(*)
+	from
+	    member m join authorities a on
+	    m.member_no = a.member_no
+</select>
+
+
+
 <!-- 멤버 권한 수정  -->
 
 <update id="updateAuthority">

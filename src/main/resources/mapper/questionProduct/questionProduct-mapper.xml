@@ -71,10 +71,6 @@
 
 </update>
 
-
-
-
-
 <!-- 문의 번호를 참조번호로 하는 게시물 조회  -->
 <select id="selectQuestionByRefNo" resultType="QuestionProduct">
 	select
@@ -85,6 +81,116 @@
 		question_ref_no = #{questionNo}
 
 </select>
+
+<!-- 상품 문의 답변 수정  -->
+<update id="updateAnswer">
+	update
+		question_product
+	set
+		content = #{updateAnswer}
+	where
+		question_no = #{questionRefNo}
+
+</update>
+
+<!-- 상품 문의 갯수(답변 제외)  -->
+<select id="selectTotalQuestionCount" resultType="_int">
+	select
+		count(*)
+	from
+		question_product
+	where
+		question_level = 1
+</select>
+
+<!-- 비동기 검색(텍스트 입력받는 검색만)  -->
+<select id="searchQuestionList" resultType="QuestionProduct">
+	select
+		*
+	from
+		question_product
+	where
+		<choose>
+			<when test="searchType.equals('member_no')"> 
+				${searchType} like '%'|| ${searchKeyword} ||'%'	and question_level=1
+			</when>
+			<when test="searchType.equals('product_code')"> 
+				${searchType} like '%'|| #{searchKeyword} ||'%'	and question_level=1
+			</when>			
+			<when test="searchType.equals('all')"> 
+				question_level=1
+			</when>		
+			<when test="searchType.equals('private_yn')"> 
+				${searchType} = #{searchKeyword} and question_level=1
+			</when>			
+			
+		</choose>
+		
+</select>
+
+<!-- 비동기 검색 결과 수(답변 여부 제외한 검색) -->
+<select id="searchQuestionListCount" resultType="_int">
+	select
+		count(*)
+	from
+		question_product
+	where
+		<choose>
+			<when test="searchType.equals('member_no')"> 
+				${searchType} like '%'|| ${searchKeyword} ||'%'	and question_level=1
+			</when>
+			<when test="searchType.equals('product_code')"> 
+				${searchType} like '%'|| #{searchKeyword} ||'%'	and question_level=1
+			</when>			
+			<when test="searchType.equals('all')"> 
+				question_level=1
+			</when>			
+			<when test="searchType.equals('private_yn')"> 
+				${searchType} = #{searchKeyword} and question_level=1
+			</when>			
+		</choose>
+
+</select>
+
+<!-- 비동기 검색(답변 여부)  -->
+<select id="searchQuestionListByAnswerYn" resultType="QuestionProduct">
+	select
+		*
+	from
+		question_product
+	where
+		<choose>
+			<when test='searchKeyword == "Y"'> 
+				nvl(question_ref_no,0) != 0 and question_level=1
+			</when>
+			<when test='searchKeyword == "N"'> 
+				nvl(question_ref_no,0) = 0 and question_level=1
+			</when>					
+		</choose>
+		
+</select>
+
+<!-- 비동기 검색 게시물 수(답변 여부)  -->
+<select id="searchQuestionListByAnswerYnCount" resultType="_int">
+	select
+		count(*)
+	from
+		question_product
+	where
+	<choose>
+		<when test='searchKeyword == "Y"'> 
+			nvl(question_ref_no,0) != 0 and question_level=1
+		</when>
+		<when test='searchKeyword == "N"'> 
+			nvl(question_ref_no,0) = 0 and question_level=1
+		</when>					
+	</choose>
+		
+</select>
+
+
+
+
 
 
 

@@ -20,6 +20,7 @@ public class MemberManageDaoImpl implements MemberManageDao {
 	@Autowired
 	private SqlSession session;
 
+	// 이름,번호,별명,검색
 	@Override
 	public List<Member> searchMemberList(Map<String, Object> param) {
 		int limit = (int)param.get("limit");
@@ -55,6 +56,16 @@ public class MemberManageDaoImpl implements MemberManageDao {
 		
 		return session.selectList("memberManage.seachMemberListByAuthority",param,rowBounds);
 	}
+	
+	// 비동기 전체 조회
+	@Override
+	public List<Member> selectSearchAllMember(Map<String, Object> param) {
+		int limit = (int)param.get("limit");
+		int offset = (int)param.get("offset");
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		return session.selectList("memberManage.selectSearchAllMember",param,rowBounds);
+	}
 
 	// 전체 회원 수 검색
 	@Override
@@ -73,13 +84,21 @@ public class MemberManageDaoImpl implements MemberManageDao {
 	public int searchMemberListCountByAuthority(Map<String, Object> param) {		
 		return session.selectOne("memberManage.searchMemberListCountByAuthority", param);
 	}
-
+	
+	// 비동기로 전체 검색한 회원 수
+	@Override
+	public int searchMemberListCountByAll(Map<String, Object> param) {
+		return session.selectOne("memberManage.searchMemberListCountByAll",param);
+	}
 	
 	// 멤버 권한 수정
 	@Override
 	public int updateAuthority(Map<String, Object> param) {		
 		return session.update("memberManage.updateAuthority",param);
 	}
+
+
+
 
 	
 }

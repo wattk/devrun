@@ -3,7 +3,6 @@ package com.kh.devrun.admin.controller;
 import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +14,6 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -50,6 +48,7 @@ import com.kh.devrun.promotion.model.vo.Promotion;
 import com.kh.devrun.questionProduct.model.service.QuestionProductService;
 import com.kh.devrun.questionProduct.model.vo.QuestionProduct;
 import com.kh.devrun.questionProduct.model.vo.QuestionProductEx;
+import com.kh.devrun.questionProduct.utils.QuestionProductUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -446,16 +445,7 @@ public class AdminController {
 		model.addAttribute("memberList",memberList);
 	};
 	
-	
-	// 회원 문의 내역
-	@GetMapping("/memberManage/questionProduct.do")
-	public void memberInquiry(Model model) {
-		List<QuestionProduct> list = questionProductService.selectAllQuestionList();
-		
-		model.addAttribute("questionList",list);
-	};
-	
-	
+
 	// 검색결과 페이징처리
 	@ResponseBody
 	@GetMapping("/memberManage/searchMember.do")
@@ -465,6 +455,10 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") int cPage,
 			HttpServletRequest request
 			){
+		// 검색 타입이 없을 때 searchType에 all 대입하여 오류 방
+		if(searchType == "" || searchType == null) {
+			searchType = "all";
+		}
 		
 		Map<String,Object>map = new HashMap<>();
 		
@@ -528,41 +522,59 @@ public class AdminController {
 		return "redirect:/admin/memberManage/memberLevel.do";
 	}
 	
-	// 문의 정보 & 상품 정보 비동기로 가져옥
-	@ResponseBody
-	@GetMapping("/questionProduct/selectQuestion.do")
-	public Map<String,Object>selectQuestionProductInfo(
-				@RequestParam int questionNo,
-				@RequestParam String productCode
+	//=======================================================
+	
+	// 회원 문의 내역
+	@GetMapping("/memberManage/questionProduct.do")
+	public void memberInquiry(
+			Model model,
+			@RequestParam(defaultValue = "1") int cPage,
+			HttpServletRequest request
+			) {
+		
+		
+		// 1.페이징 처리 : 페이지 설정
+		int limit = 5;
+		int offset = (cPage - 1) * limit;
+		
+		// 게시물 리스트 가져오기
+		List<QuestionProduct> questionList = questionProductService.selectAllQuestionList(limit,offset);
+		log.debug("questionList = {}" ,questionList);	
+
+		
+		// 2. 전체게시물수 totalContent(답변은 제외)
+		int totalQuestionCount =  questionProductService.selectTotalQuestionCount();
+		log.debug("totalContent = {}", totalQuestionCount);
+		model.addAttribute("totalQuestionCount", totalQuestionCount);
+		
+		// 3. pagebar
+		String url = request.getRequestURI(); 
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalQuestionCount, url);
 				
-			){		
-		Map<String,Object> map = new HashMap<>();
-		log.debug("productCode={}",productCode);
-		log.debug("questionNo = {}",questionNo);
-		Map<String,Object> param = new HashMap<>();
-		param.put("productCode", productCode);
-		param.put("questionNo", questionNo);
+		log.debug("pagebar = {}", pagebar);
 		
-		// 선택한 문의와 상품 정보 가져오기
-		QuestionProductEx questionProductInfo = questionProductService.selectOneQuestionProductInfo(param);
-		log.debug("questionProductInfo = {}",questionProductInfo);
 		
-		// 선택한 문의 번호에 대한 참조 문의 번호가 존재한다면 가져오기
-		QuestionProduct questionProduct = questionProductService.selectQuestionByRefNo(questionNo);
+		model.addAttribute("pagebar", pagebar);		
+		model.addAttribute("questionList",questionList);
+	};	
+	
+	// 상품 문의 답변 수정하기
+	@PostMapping("/questionProduct/updateQuestionProduct.do")
+	public String updateQuestionProduct(
+				@RequestParam int questionRefNo,
+				@RequestParam String updateAnswer,
+				RedirectAttributes redirectAttr
+			) {
 		
-		String answer = "no";
+		log.debug("updateAnswer  ={}",updateAnswer);
+		Map<String,Object>param = new HashMap<>();
+		param.put("questionRefNo", questionRefNo);
+		param.put("updateAnswer", updateAnswer);
 		
-		if(questionProduct != null) {
-			answer = questionProduct.getContent();
-			log.debug("답변이 있습니다~~~~~");
-		}
-		else {
-			log.debug("답변이 없습니다.");
-		}
-				
-		map.put("answer",answer);
-		map.put("questionProductInfo",questionProductInfo);
-		return map;	
+		int result = questionProductService.updateAnswer(param);		
+		
+		redirectAttr.addFlashAttribute("msg","답변 수정 완료.");
+		return "redirect:/admin/memberManage/questionProduct.do";
 	}
 	
 	// 문의사항 답변 추가하기
@@ -606,20 +618,120 @@ public class AdminController {
 		return "redirect:/admin/memberManage/questionProduct.do";
 	}
 	
+		// 문의 정보 & 상품 정보 비동기로 가져옥
+		@ResponseBody
+		@GetMapping("/questionProduct/selectQuestion.do")
+		public Map<String,Object>selectQuestionProductInfo(
+					@RequestParam int questionNo,
+					@RequestParam String productCode
+					
+				){		
+			Map<String,Object> map = new HashMap<>();
+			log.debug("productCode={}",productCode);
+			log.debug("questionNo = {}",questionNo);
+			Map<String,Object> param = new HashMap<>();
+			param.put("productCode", productCode);
+			param.put("questionNo", questionNo);
+			
+			// 선택한 문의와 상품 정보 가져오기
+			QuestionProductEx questionProductInfo = questionProductService.selectOneQuestionProductInfo(param);
+			log.debug("questionProductInfo = {}",questionProductInfo);
+			
+			// 선택한 문의 번호에 대한 참조 문의 번호가 존재한다면 가져오기
+			QuestionProduct questionProduct = questionProductService.selectQuestionByRefNo(questionNo);
+			
+			String answer = "no";
+			
+			if(questionProduct != null) {
+				answer = questionProduct.getContent();
+				log.debug("답변이 있습니다~~~~~");
+			}
+			else {
+				log.debug("답변이 없습니다.");
+			}
+					
+			map.put("answer",answer);
+			map.put("questionProductInfo",questionProductInfo);
+			return map;	
+		}
+		
+		// 비동기 검색 & 페이징 처리
+		@ResponseBody
+		@GetMapping("/qustionProduct/searchQuestion.do")
+		public Map<String,Object> searchQuestionProduct(
+				@RequestParam String searchType,
+				@RequestParam String searchKeyword,
+				@RequestParam(defaultValue = "1") int cPage,
+				HttpServletRequest request
+				){
+			// 검색 타입이 없을 때 searchType에 all 대입하여 오류 방
+			if(searchType == "" || searchType == null) {
+				searchType = "all";
+			}
 
+			Map<String,Object>map = new HashMap<>();
+			
+			int limit = 5;
+			int offset = (cPage - 1) * limit;
+			
+			
+			log.debug("searchType = {}",searchType);
+			log.debug("searchKeyword = {}",searchKeyword);
+			log.debug("cPage = {}",cPage);
+			Map<String,Object>param = new HashMap<>();
+			
+			if(searchKeyword.contains(",")) {
+				log.debug(searchKeyword);
+			}
+			
+			param.put("limit",limit);
+			param.put("offset",offset);
+			
+			param.put("searchType", searchType);
+			param.put("searchKeyword", searchKeyword);
+			
+			// 1.조회한 리스트 가져오기
+			String url = request.getRequestURI()+"?searchType="+searchType+"&searchKeyword="+searchKeyword;
+			log.debug("url = {}", url);
+			
+			List<QuestionProduct>questionList = questionProductService.searchQuestionList(param);
+			log.debug("questionList  = {}",questionList );
+			
+			String questionStr = QuestionProductUtils.getQuestionList(questionList);
+			log.debug("questionStr = {}",questionStr);
+			
+			
+			// 2.조회한 게시물 수
+			int totalContent = 0;
+			totalContent = questionProductService.searchQuestionListCount(param);
+			// 답변 여부는 따로 처리
+			totalContent = questionProductService.searchQuestionListByAnswerYnCount(param);
+			
+			// 3.페이지 바
+			log.debug("pagebarUrl = {}",url);
+			String pagebar = QuestionProductUtils.getPagebarQuestion(cPage, limit, totalContent, url);
+			log.debug("pagebar = {}", pagebar);
+					
+			
+			map.put("questionList",questionList);
+			map.put("totalContent",totalContent);
+			map.put("pagebar",pagebar);
+			map.put("questionStr",questionStr);
+			
+			return map;
+		}
 	
 	
-	
-	
-	
-	
-	
-	
-	
+		
+		
+		
+		
 
 	//--------------------태영 끝-----------------------------
 
 	
+		
+		
 
 
 	/**

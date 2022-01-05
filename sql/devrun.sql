@@ -1349,6 +1349,16 @@ select seq_question_product_no.currval from dual;
 select * from product;
 
 insert into question_product
+
+	select
+		*
+	from
+		question_product
+	where
+        null != question_ref_no and question_level=1;
+
+
+
 values(
 
     seq_question_product_no.nextval,
