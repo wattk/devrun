@@ -72,9 +72,12 @@
 			    <div class="modal-footer">
 			    	<span id="answerBtns">
 			    	</span>
-			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-			        
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>			        
 		    	</div>
+	        </form>
+	        <form name ="updateQuestionFrm" id="updateQuestionFrm" method="post" action="${pageContext.request.contextPath}/admin/questionProduct/updateQuestionProduct.do">
+	        	<input type="hidden" id="updateTaget" name="questionRefNo" value="" />
+	        	<input type="hidden" id="updateAnswer" name="updateAnswer" value="" />      	
 	        </form>
 	    </div>
 	</div>
@@ -85,6 +88,7 @@
 <div class="report-container">
 	<h3 class="m-5">회원 문의 관리</h3>
 </div>
+
 
 
 <div class="report-search-container mt-3 ml-5">
@@ -110,69 +114,53 @@
 		
 	 	<div id = "searchKeywordContainer">
     		<div id="searchAll" class="search-type">
-	            <form>
+	            <form class="search-frm">
 	                <input type="hidden" name="searchType" value="all"/>
 	                <input type="hidden" name="searchKeyword"  size="25" placeholder="" value="all"/>
-	                <button type="submit"id="searchBymemberAll" class="btn-blue search-btn">검색</button>			
+	                <button type="button"id="searchBymemberAll" class="btn-blue search-btn">검색</button>			
 	            </form>	
 	        </div>
 	        <div id="searchMemberNo" class="search-type other">
-	            <form>
+	            <form class="search-frm">
 	                <input type="hidden" name="searchType" value="member_no"/>
 	                <input type="text" name="searchKeyword"  size="25" placeholder="검색할 회원 번호를 입력하세요." value=""/>
-	                <button type="submit"id="searchBymemberNo" class="btn-blue search-btn">검색</button>			
+	                <button type="button"id="searchBymemberNo" class="btn-blue search-btn">검색</button>			
 	            </form>	
 	        </div>
 	        <div id="searchProductCode" class="search-type other">
-	            <form>
+	            <form class="search-frm">
 	                <input type="hidden" name="searchType" value="product_code"/>
-	                <input type="text" name="searchKeyword" size="25" placeholder="검색할 회원 아이디를 입력하세요" value=""/>
-	                <button type="submit" class="btn-blue search-btn">검색</button>			
+	                <input type="text" name="searchKeyword" size="25" placeholder="검색할 상품 코드를 입력하세요" value=""/>
+	                <button type="button" class="btn-blue search-btn">검색</button>			
 	            </form>	
 	        </div>
 	        
 	        <div id="searchAnswerYn" class="search-type other">
-	             <form>
-	            	<input type="hidden" name="searchType" value="authority"/>
+	             <form class="search-frm">
+	            	<input type="hidden" name="searchType" value="answer_yn"/>
 	    				
-					<input type="checkbox" class="btn-check" name="searchKeyword" id="answer1" value="ROLE_M1" >
-					<label class="btn btn-success" for="answer1">답변</label>
+					<input type="radio" class="btn-check" name="searchKeyword" id="Y" value="Y" >
+					<label class="btn btn-success" for="Y">답변</label>
 					
-					<input type="checkbox" class="btn-check" name="searchKeyword" id="answer2" value="ROLE_M2" >
-					<label class="btn btn-success" for="answer2">미답변</label>
+					<input type="radio" class="btn-check" name="searchKeyword" id="N" value="N" >
+					<label class="btn btn-success" for="N">미답변</label>
 					
-	                <button type="submit" class="btn-blue search-btn">검색</button>
+	                <button type="button" class="btn-blue search-btn">검색</button>
 	            </form>
-	        </div>
-	        
+	        </div>        
 	        <div id="searchPrivateYn" class="search-type other">
-	            <form action="<%=request.getContextPath()%>/admin/memberFinder">
-	            	<input type="hidden" name="searchType" value="authority"/>
+	            <form class="search-frm">
+	            	<input type="hidden" name="searchType" value="private_yn"/>
 	    				
-					<input type="checkbox" class="btn-check" name="searchKeyword" id="private1" value="ROLE_M1" >
-					<label class="btn btn-success" for="private1">공개</label>
+					<input type="radio" class="btn-check" name="searchKeyword" id="public" value='Y' >
+					<label class="btn btn-success" for="public">공개</label>
 					
-					<input type="checkbox" class="btn-check" name="searchKeyword" id="private2" value="ROLE_M2" >
-					<label class="btn btn-success" for="private2">비공개</label>
-	                <button type="submit" class="btn-blue search-btn">검색</button>		
+					<input type="radio" class="btn-check" name="searchKeyword" id="private" value='N' >
+					<label class="btn btn-success" for="private">비공개</label>
+	                <button type="button" class="btn-blue search-btn">검색</button>		
 	            </form>	
 	        </div>
 	        
-	        <div id="searchMemberRole" class="search-type other">
-	            <form action="<%=request.getContextPath()%>/admin/memberFinder">
-	            	<input type="hidden" name="searchType" value="authority"/>
-	            	
-			        <input type="checkbox" class="btn-check" name="searchKeyword" id="admin" value="ROLE_AM">
-					<label class="btn btn-success" for="admin">관리자</label>
-					
-					<input type="checkbox" class="btn-check" name="searchKeyword" id="member1" value="ROLE_M1" >
-					<label class="btn btn-success" for="member1">지식인</label>
-					
-					<input type="checkbox" class="btn-check" name="searchKeyword" id="member2" value="ROLE_M2" >
-					<label class="btn btn-success" for="member2">일반회원</label>
-	                <button type="submit" class="btn-blue search-btn">검색</button>
-	            </form>
-	        </div>
 		</div>
        
        
@@ -181,9 +169,11 @@
 
 
 <br /><hr class="w-100"/><br />
+		
 <form:form>
 	<div class="review-list">
-		<div><strong class="table-title" >회원 문의 내역</strong></div>
+		<div><strong class="table-title" >회원 문의 내역</strong></div><br />
+	<div id="totalCountContainer"></div>
 		<table id="inquiryListTbl" class="admin-tbl table mx-auto mt-3">
 		    <thead>
 				<tr>
@@ -197,7 +187,7 @@
 					<th scope="col" >답변</th>
 			    </tr>
 		    </thead>
-		    <tbody>
+		    <tbody id="tbody">
 		    	<c:forEach items ="${questionList}" var="qu">
 				<c:if test="${qu.questionLevel == 1 }">
 			    	<tr>
@@ -224,23 +214,14 @@
 		  </tbody>
 		</table>
 	</div>
+	${pagebar}
 </form:form>
 
 <script>
-
-	/* 검색 */
-	$(searchType).change(function(){
-		var searchTypeVal = $(this).val();
-		console.log("searchTypeVal = ",searchTypeVal);
-		$(".search-type")
-			.hide()
-			.filter("#search" +searchTypeVal)
-			.css("display", "inline-block");
-	});
-	
-	
+		
 	/* 답변 버튼 클릭 이벤트  */
-	$(".answer-btn").click(e=>{
+	$(document).on("click",".answer-btn",e=>{
+		
 		var questionNo = $(e.target).parents("tr").children().first().html();
 		var productCode  = $(e.target).parents("tr").children().eq(2).html();
 		
@@ -303,44 +284,163 @@
 			 	}else{			 		
 			        $(answerBtns).html(`<button type="button" id="updateAnswer"class="btn btn-primary">수정 하기</button>`); 	  		 		
 			 	}
+			 	
+			 	/* 수정할 답변의 번호 */
+			 	if(questionProductInfo.questionRefNo != 0){
+				 	$(updateTaget).val(questionProductInfo.questionRefNo);		 		
+			 	}
 
 			},
 			error:console.log
 			
 		}); 
 	 	
-	 	/* 수정하기 클릭 이벤트 */
-		$(document).on("click","#answerBtns button",e=>{
-			var url = "<%=request.getContextPath()%>/admin/questionProduct/updateQuestionProduct.do"
-			var key = "qestionRefNo";
-			var value = $("input[name=questionRefNo]").val();
-			
-			
-			sendPost(url,key,value);
-					
-		});
+	});
+ 	/* 수정하기 클릭 이벤트 */
+	$(document).on("click","#updateAnswer",e=>{
+		/* 수정한 답변 내용 넣어주기 */
+		$(updateAnswer).val($(answer).val());
+		$("#updateQuestionFrm").submit();
+	});
+ 	
+	/*  호버 이벤트 */
+	$("#inquiryListTbl tbody tr").hover(
+		e=>{
+			$(e.target).parent("tr").css("background","#0d6efd36");
+		},
+		e=>{
+			$(e.target).parent("tr").css("background","white");
+		}
+	)
+
+	// 검색 & 검색결과 페이징
+	
+	/* 검색창 변경 */
+	$(searchType).change(function(e){		
+		// 검색타입 바뀔 때 마다 값 초기화
+		selectType = $("#searchType").val();
+		
+		$searchType = "";
+		$searchKeyword = "";
+		
+		var searchTypeVal = $(this).val();
+		console.log("searchTypeVal = ",searchTypeVal);
+		$(".search-type")
+			.hide()
+			.filter("#search" +searchTypeVal)
+			.css("display", "inline-block");
 	});
 	
-	function sendPost(url,key,value){	
 
-		var form = document.createElement("form");
-		form.setAttribute('method','post');
-		form.setAttribute('action',url);
-		document.charset = "utf-8";
+	
+	/* search 입력값 전역변수에 대입  */
+	$("input[name=searchKeyword]").change(e=>{		
+		console.log($(e.target).parent().children("input[name=searchType]").val());
+		console.log($(e.target).val()); 
+		
+		$searchType = $(e.target).parent().children("input[name=searchType]").val();
+	 	$searchKeyword = $(e.target).val() ;
+	});
+	
+	/* search 변경시 전역 변수에 대입 */
+	$(searchType).change(e=>{
+		console.log($(e.target));		
+		var target = "search"+$(e.target).val();
+		
+		
+		$searchType= $("#"+target+"").find("input[name=searchType]").val();
+		$searchKeyword = $("#"+target+"").find("input[name=searchKeyword]").val();
+	});
+	
+	
+	/* 전역 변수 */
+	
+	var selectType = "";
+	/* $searchType은 form안의 input=name값 */
+	var $searchType = "";
+	var $searchKeyword = "";
+	var cPage;
+	
+	function getPage(cPage){
+	
+		
+		searchType = $searchType;
+		searchKeyword =  $searchKeyword;
+		var cPage;
+		
+		
+		
+		console.log(searchType);
+		console.log(searchKeyword);
+		
+		
+		const search = {
+			"searchType" : $searchType,
+			"searchKeyword" : $searchKeyword,
+			"cPage" : cPage
+		};
+		
 
+		console.log(search);
+		
+		$.ajax({
+			url:`${pageContext.request.contextPath}/admin/qustionProduct/searchQuestion.do`,
+			data:search,
+			contentType:"application/json; charset=utf-8",
+			success(data){
+							
+				$("#tbody").html(data["questionStr"]);
+				$(".pagebar").detach();
+				$("#inquiryListTbl").after(data["pagebar"]);
+				$(totalCountContainer).html(`<span class="countTitle">검색된 회원 수 : </span> <span class="countContent">\${data["totalContent"]}</span>`)			
+			},
+			error:console.log			
+		});
+	}
+		
+	// 비동기 요청 실행 및 유효성 검사
+	$(".search-btn").click(e=>{
+	
+		const target = $(e.target).parent().children("input[name=searchKeyword]").val();
+		console.log("target =",target);
+		
+		console.log("selectType =",selectType);
+		
+		/* 검사 pass */
+		if(selectType == "All" || selectType == "PrivateYn" || selectType == "AnswerYn"){
+			getPage();
+		}
+				
+		/* 회원 번호로 검색할 때 */
+		if(selectType == "MemberNo"){
+			console.log("번호로 검색~");
 			
-		var hiddenField = document.createElement("input");
-		hiddenField.setAttribute("type","hidden");
-		hiddenField.setAttribute("name",key);
-		hiddenField.setAttribute("value",value);
+			if(!/[0-9]/.test(target)){
+				alert("회원 번호를 확인하세요.");
+			}else{
+				getPage();
+			}
+			
+		}
 		
-		
-		form.appendChild(hiddenField);
+		/* 상품 코드로 검색할 때 */
+		if(selectType == "ProductCode"){
+			console.log("상품 코드로 검색.");
+			console.log("target =",target);
+						
+			if(!/^[a-zA-Z0-9]/.test(target)){
+				alert("상품 코드를 확인하세요.");
+			}else{
+				getPage();
+			}
+		}
 
-		document.body.appendChild(form);
-	 	form.submit(); 
 		
-	}	
+	});
+	
+	
+	
+	
 </script>
 
 

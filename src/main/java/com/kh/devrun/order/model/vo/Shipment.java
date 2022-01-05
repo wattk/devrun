@@ -18,7 +18,7 @@ public class Shipment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int shipmentNo;
 	private String merchantUid;
-	private int trackingNo;
+	private String trackingNo;
 	private int orderLogNo;
 	private Date shipmentDate;
 }
