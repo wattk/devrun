@@ -15,20 +15,16 @@ import com.kh.devrun.community.model.vo.CommunityComment;
 import com.kh.devrun.community.model.vo.CommunityCommentEntity;
 import com.kh.devrun.community.model.vo.CommunityEntity;
 
+import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+@Log4j
 // 빈의 이름을 정할 수 있다. (가져다 쓰는 쪽에서 참조할 수 있도록)
 @Service("communityService")
 public class CommunityServiceImpl implements CommunityService {
 
 	@Autowired
 	private CommunityDao communityDao;
-
-	@Override
-	public int insertColumn(Community community) {
-		return communityDao.insertColumn(community);
-	}
 
 	@Override
 	public List<Community> selectColumnList() {
@@ -38,11 +34,6 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public List<Community> columnBestList() {
 		return communityDao.columnBestList();
-	}
-
-	@Override
-	public int insertFreeboard(Community community) {
-		return communityDao.insertFreeboard(community);
 	}
 
 	@Override
@@ -108,7 +99,17 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
 	public int freeboardLikeAdd(Map<String, Object> param) {
-		return communityDao.freeboardLikeAdd(param);
+		int result = 0;
+		int result2 = 0;
+		
+		try {
+			result = communityDao.insertMemberCommunityLike(param);
+			result2 = communityDao.freeboardLikeAdd(param);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+		return result2;
 	}
 
 	@Override
@@ -117,8 +118,50 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
 	public int freeboardLikeDelete(Map<String, Object> param) {
-		return communityDao.freeboardLikeDelete(param);
+		int result = 0;
+		int result2 = 0;
+		
+		try {
+			result = communityDao.deleteMemberCommunityLike(param);
+			result2 = communityDao.freeboardLikeDelete(param);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw e;
+		}
+		
+		return result2;
+	}
+
+	@Override
+	public int insertCommunity(CommunityEntity communityEntity) {
+		return communityDao.insertCommunity(communityEntity);
+	}
+
+	@Override
+	public int insertColumn(Community community) {
+		return communityDao.insertColumn(community);
+	}
+
+	@Override
+	public int insertFreeboard(Community community) {
+		return communityDao.insertFreeboard(community);
+	}
+
+	@Override
+	public int insertQna(Community community) {
+		return communityDao.insertQna(community);
+	}
+
+	@Override
+	public int insertStudy(Community community) {
+		return communityDao.insertStudy(community);
+	}
+
+	@Override
+	public int insertCommunityWriteEnroll(Community community) {
+		return communityDao.insertCommunityWriteEnroll(community);
 	}
 
 

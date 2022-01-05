@@ -48,6 +48,18 @@ public interface CommunityDao {
 
 	int freeboardLikeDelete(Map<String, Object> param);
 
+	int insertCommunity(CommunityEntity communityEntity);
+
+	int insertQna(Community community);
+
+	int insertStudy(Community community);
+
+	int insertMemberCommunityLike(Map<String, Object> param);
+
+	int deleteMemberCommunityLike(Map<String, Object> param);
+
+	int insertCommunityWriteEnroll(Community community);
+
 
 
 
