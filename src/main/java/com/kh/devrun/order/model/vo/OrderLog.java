@@ -16,11 +16,11 @@ public class OrderLog implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int orderLogNo;
+	private String orderLogUid;
 	private String reasonCode;
 	private String merchantUid;
-	private int prevOptionNo;
-	private int currOptionNo;
+	private String prevDetailNo;
+	private String currDetailNo;
 	private String csStatus;
 	private Date reqDate;
 	private Date processDate;

@@ -34,7 +34,9 @@
 	      	<input type="checkbox" class="cart-checkbox ml-3" name="" id="" checked/>
 		  </td>
 	      <td rowspan="2" class="col-3">
-	      	<img src="${pageContext.request.contextPath}/resources/upload/product/${cart.product.thumbnail}" alt="" class=" img-b w-75" >
+	      	<div class="cart-item-img">
+		      	<img src="${pageContext.request.contextPath}/resources/upload/product/${cart.product.thumbnail}" alt="" class="img-thumbnail shop-img  img-b" >
+	      	</div>
 		  </td>
 	      <td class="col-5 align-middle ">${cart.product.name}</td>
 	      <td class="col-3 align-middle " >
