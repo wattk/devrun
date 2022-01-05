@@ -28,6 +28,7 @@ import com.kh.devrun.community.model.vo.CommunityComment;
 import com.kh.devrun.community.model.vo.CommunityCommentEntity;
 import com.kh.devrun.community.model.vo.CommunityEntity;
 import com.kh.devrun.member.model.vo.Member;
+import com.kh.devrun.report.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -570,6 +571,25 @@ public class CommunityController {
 		if(community.getPageCode() == 2) {
 			return "redirect:/community/communityQnAList.do";
 		} else if (community.getPageCode() == 3) {
+			return "redirect:/community/communityStudyList.do";
+		}
+
+		return "redirect:/community/communityFreeboardList.do";
+	}
+	
+	// 신고하기
+	@PostMapping("/insertCommunityReport.do")
+	public String insertCommunityReport(Report report, @RequestParam int pageCode, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "/insertCommunityReport.do 요청!");
+		log.debug("report = {}", report);
+		
+		int result = communityService.insertCommunityReport(report);
+		String msg = result > 0 ? "게시글 신고 성공!" : "게시글 신고 실패!";
+		redirectAttributes.addFlashAttribute("msg", msg);
+		
+		if(pageCode == 2) {
+			return "redirect:/community/communityQnAList.do";
+		} else if (pageCode == 3) {
 			return "redirect:/community/communityStudyList.do";
 		}
 
