@@ -7,7 +7,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="claim" name="title"/>
+	<jsp:param value="changeOrder" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/shop/order.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath }/resources/js/shop/order.js"></script>
@@ -18,7 +18,7 @@
 		  <div class="card-header d-flex justify-content-center">
 		  	<div class="claim-text pr-2">
 			  	<span class="badge badge-primary">1</span>
-			  	<span>상품 선택</span>
+			  	<span>주문 선택</span>
 		  	</div>
 		  	<span class="pr-2 my-auto">─</span>
 		  	<div class="claim-text pr-2">
@@ -32,7 +32,7 @@
 		  	</div>
 		  </div>
 		  <div class="card-body m-4">
-		  	<h5>상품을 선택해 주세요</h5>
+		  	<h5>주문을 확인해 주세요</h5>
 	  	  	<table class="claim-table table m-3 pr-3">
 			  <tbody>
 			    <tr class="text-center">
@@ -40,6 +40,7 @@
 			    	<th class="col-3">주문번호/주문일</th>
 			    	<th class="col-7">상품 상세</th>
 			    </tr>
+			    <c:forEach items="${productList}" var="product" varStatus="vs">
 			    <tr>
 			      <td>
 			      	<input type="checkbox" class="ml-3" name="" id="" />
@@ -54,34 +55,7 @@
 			      	<span class="align-middle pl-3">제품명 옵션명 어쩌구 저쩌구</span>
 				  </td>
 			    </tr>
-			    <tr>
-			      <td>
-			      	<input type="checkbox" class="ml-3" name="" id="" />
-				  </td>
-				  <td class="text-center">
-				  	[202112200909]
-				  	<br />
-				  	2021.12.09
-				  </td>
-			      <td class="col-3">
-			      	<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-25 img-thumbnail">
-			      	<span class="align-middle pl-3">제품명 옵션명 어쩌구 저쩌구</span>
-				  </td>
-			    </tr>
-			    <tr>
-			      <td>
-			      	<input type="checkbox" class="ml-3" name="" id="" />
-				  </td>
-				  <td class="text-center">
-				  	[202112200909]
-				  	<br />
-				  	2021.12.09
-				  </td>
-			      <td class="col-3">
-			      	<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-25 img-thumbnail">
-			      	<span class="align-middle pl-3">제품명 옵션명 어쩌구 저쩌구</span>
-				  </td>
-			    </tr>
+			    </c:forEach>
 			    <tr>
 			    	<td colspan="3">
 					 	<button 
