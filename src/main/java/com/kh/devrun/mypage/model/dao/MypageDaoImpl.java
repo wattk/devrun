@@ -1,6 +1,7 @@
 package com.kh.devrun.mypage.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
@@ -24,6 +25,11 @@ public class MypageDaoImpl implements MypageDao {
 		return session.selectOne("mypage.selectMessageTotalCount", memberNo2);
 	}
 
+	@Override
+	public int updateMainAddress(int memberNo) {
+		return session.update("mypage.updateMainAddress", memberNo);
+	}
+	
 	@Override
 	public int insertAddress(Address address) {
 		return session.insert("mypage.insertAddress", address);
@@ -53,6 +59,11 @@ public class MypageDaoImpl implements MypageDao {
 	@Override
 	public Address selectOneAddress(int addressNo) {
 		return session.selectOne("mypage.selectOneAddress", addressNo);
+	}
+
+	@Override
+	public Address selectOneAddressByTitle(Map<String, Object> param) {
+		return session.selectOne("mypage.selectOneAddressByTitle", param);
 	}
 
 	/**

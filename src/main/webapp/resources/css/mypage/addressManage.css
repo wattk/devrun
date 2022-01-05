@@ -11,9 +11,13 @@
 #breadcrumb a:hover {color:#1A81FF;}
 
 /* address list */
+.guide {display:none; font-size:smaller;}
+.guide-box {height:0px; width:230px;}
+
 #addressList {margin-bottom:50px;}
 
 #addressList table {border:1px solid rgba(0,0,0,.125);}
+#addressList tr:nth-of-type(2) td {color:#1A81FF;}
 #addressList tr:not(:last-of-type) {border-bottom:1px solid rgba(0,0,0,.125);}
 #addressList td, #addressList th {padding:15px; border:0; vertical-align:middle; text-align:center;}
 #addressList td {cursor:pointer;}
@@ -26,15 +30,15 @@
 .page-link {padding:7px 14px;}
 
 /* address detail */
-#adressDetail h5 {color:#1A81FF; padding:5px;}
+#addressDetail h5 {color:#1A81FF; padding:5px;}
 
-#adressDetail table {border:1px solid rgba(0,0,0,.125);}
-#adressDetail tr:not(:last-of-type) {border-bottom:1px solid rgba(0,0,0,.125);}
-#adressDetail td, #adressDetail th {padding:10px; border:0; vertical-align:middle;}
-#adressDetail th {text-align:center;}
-#adressDetail label {margin:0 auto; color:#000000;}
-#adressDetail input {border-radius:4px;}
-#adressDetail td button {margin-left:10px; border-radius:4px; font-size:16px;}
+#addressDetail table {border:1px solid rgba(0,0,0,.125);}
+#addressDetail tr:not(:last-of-type) {border-bottom:1px solid rgba(0,0,0,.125);}
+#addressDetail td, #addressDetail th {padding:10px; border:0; vertical-align:middle;}
+#addressDetail th {text-align:center;}
+#addressDetail label {margin:0 auto; color:#000000;}
+#addressDetail input {border-radius:4px;}
+#addressDetail td button {margin-left:10px; border-radius:4px; font-size:16px;}
 
-#adressDetail #btns {margin:35px 35px 20px 35px; flex-wrap:nowrap; justify-content:center;}
-#adressDetail #btns button {margin:0 25px;}
+#addressDetail #btns {margin:35px 35px 20px 35px; flex-wrap:nowrap; justify-content:center;}
+#addressDetail #btns button {margin:0 25px;}
