@@ -59,7 +59,7 @@
 		<c:forEach items="${productList}" var="product" varStatus="vs">
 	        <div class="card-box-d col-md-3 p-5">
 	          <div class="card-img-d shop-item-img position-relative">
-	            <img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="img-d img-fluid">
+	            <img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="img-thumbnail shop-img img-d img-fluid">
 	            <i class="shop-like-icon fas fa-heart position-absolute"></i>
 	          </div>
 		  	  <a href="${pageContext.request.contextPath}/shop/itemDetail/${product.productCode}">

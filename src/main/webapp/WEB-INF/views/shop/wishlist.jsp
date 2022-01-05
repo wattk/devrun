@@ -31,7 +31,7 @@
 		      <td class="col-4">
 		      	<img 
 		      	src="${pageContext.request.contextPath}/resources/upload/product/${wl.thumbnail}"
-		      	alt="" class="img-b w-75">
+		      	alt="" class="shop-img img-b w-75">
 			  </td>
 		      <td class="col-4 align-middle">${wl.name}</td>
 		      <td class="col-3 align-middle">

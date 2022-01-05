@@ -343,6 +343,17 @@
        right : 5%;
        font-size : 30px;
    }
+   .shop-item-img{
+	   	width: 200px;
+	    height: 200px;
+	    overflow: hidden;
+	    margin: 0 auto;
+   }
+   .shop-img {
+   	    width: 100%;
+	    height: 100%;
+	    object-fit: cover;
+   }
    /*혜진상품끝*/
    #shopHeaderBarDiv{
    
