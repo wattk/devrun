@@ -191,7 +191,7 @@
 		insert into
 			product_detail
 		values(
-			#{detailNo},
+			seq_product_detail_no.nextval,
 			#{productCode},
 			#{optionNo},
 			#{optionContent},

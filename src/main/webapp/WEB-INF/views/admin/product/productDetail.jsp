@@ -107,7 +107,7 @@
 					<tr><th>옵션 추가</th><td><button class="btn btn-primary option-add-btn" type="button"><i class="fas fa-plus-square"></i></button></td></tr>
 					<c:forEach items="${productDetail }" var="pd">
 					<tr>
-					
+						<td class="option">DN</td><td><input class="detailNo" name="detailNo" type="text" value="${pd.detailNo}" readonly /></td>
 						<td class="option">색상</td><td><input class="option" name="option" type="text" value="${pd.optionNo}" /></td>
 						<td class="option">옵션내용</td><td><input class="optionContent"name="optionContent" type="text" value="${pd.optionContent}" /></td>
 						<td class="option">재고</td><td><input class="quantity" name="quantity" type="number" value="${pd.quantity}" /></td>
@@ -215,19 +215,6 @@ $(imgInput).on("change", (e)=>{
 	$("#fileName").hide();
 });
 
-
-/* 썸머노트 */
-$(document).ready(function() {
-	//여기 아래 부분
-	$('#summernote').summernote({
-		  height: 300,                 // 에디터 높이
-		  minHeight: null,             // 최소 높이
-		  maxHeight: null,             // 최대 높이
-		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
-		  lang: "ko-KR",					// 한글 설정
-		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
-	});
-});
 
 
 $("#smallCategory").change(e=>{

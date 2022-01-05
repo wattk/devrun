@@ -306,7 +306,7 @@ public class AdminController {
 			@RequestParam String productCode, // 상품 리스트에서 넘어온 productCode
 			@RequestParam String parentCategoryCode,
 			@RequestParam String childCategoryCode,			
-			@RequestParam int[]detailNo,
+			@RequestParam (required=false)int[]detailNo,
 			@RequestParam (required=false)int[]deleteDetailNo, // 삭제할 detailNo
 //			@RequestParam (required=false)int[]insertDetailNo, // 추가할 detailNo
 			@RequestParam (required=false)String[]insertOption, // 추가할 option
