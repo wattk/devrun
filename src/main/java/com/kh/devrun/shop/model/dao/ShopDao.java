@@ -70,4 +70,6 @@ public interface ShopDao {
 
 	int updateViewCount(String productCode);
 
+	int insertSmsWatinglist(Map<String, Object> param);
+
 }

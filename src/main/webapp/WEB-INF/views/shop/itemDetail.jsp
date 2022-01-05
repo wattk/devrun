@@ -890,7 +890,8 @@ $(phoneSms).keyup((e)=>{
 			data :{
 				detailNo : detailNo,
 				phoneNumber : phoneNumber,
-				productName: '${product.name}'
+				productName: '${product.name}',
+				productCode: '${product.productCode}'
 			},
 			success(data){
 				if(data ==1){

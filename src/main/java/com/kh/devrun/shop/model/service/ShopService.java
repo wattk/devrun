@@ -58,4 +58,6 @@ public interface ShopService {
 
 	int updateViewCount(String productCode);
 
+	int insertSmsWatinglist(Map<String, Object> param);
+
 }
