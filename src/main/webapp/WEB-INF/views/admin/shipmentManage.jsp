@@ -302,6 +302,7 @@ $(".tracking-no").click((e)=>{
 	const trackingNo = $(e.target).attr("id");
 	
 	$.ajax({
+		//배송 추적 api로 송장번호 전달
 		url : "https://apis.tracker.delivery/carriers/kr.cjlogistics/tracks/"+trackingNo,
 		method : "GET",
 		success(data){
@@ -313,7 +314,8 @@ $(".tracking-no").click((e)=>{
 			(data.progresses).forEach((progress, index)=>{
 				console.log(progress);
 				console.log(progress.time);
-				var today = new Date(progress.time); 
+				//날짜 포맷 yyyy-MM-dd HH:mm:ss로 변경
+				let today = new Date(progress.time); 
 				today.setHours(today.getHours() + 9); 
 				today = today.toISOString().replace('T', ' ').substring(0, 19);
 
@@ -325,7 +327,15 @@ $(".tracking-no").click((e)=>{
 				</li>`);
 			});
 		},
-		error : console.log
+		error(){
+			$("#modalTrackingNo").text(trackingNo);
+			$("#tracking-info").html('');
+			
+			$("#tracking-info")
+				.prepend(`<li class="list-group-item text-center">
+				<strong class="tracking-location">존재하지 않는 송장번호입니다.</strong>
+			</li>`);
+		}
 	});
 });
 </script>

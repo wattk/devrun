@@ -56,4 +56,6 @@ public interface ShopService {
 
 	ProductDetail selectOneProductDetail(int detailNo);
 
+	int updateViewCount(String productCode);
+
 }

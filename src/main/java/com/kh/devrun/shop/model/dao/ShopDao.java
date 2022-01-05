@@ -68,4 +68,6 @@ public interface ShopDao {
 
 	ProductDetail selectOneProductDetail(int detailNo);
 
+	int updateViewCount(String productCode);
+
 }
