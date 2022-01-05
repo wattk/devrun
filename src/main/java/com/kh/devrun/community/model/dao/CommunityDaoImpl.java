@@ -118,12 +118,36 @@ public class CommunityDaoImpl implements CommunityDao {
 		return session.update("community.freeboardLikeDelete", param);
 	}
 
+	@Override
+	public int insertCommunity(CommunityEntity communityEntity) {
+		return session.insert("community.insertCommunity", communityEntity);
+	}
+
+	@Override
+	public int insertQna(Community community) {
+		return session.insert("community.insertQna", community);
+	}
+
+	@Override
+	public int insertStudy(Community community) {
+		return session.insert("community.insertStudy", community);
+	}
+
+	@Override
+	public int insertMemberCommunityLike(Map<String, Object> param) {
+		return session.insert("community.insertMemberCommunityLike", param);
+	}
+
+	@Override
+	public int deleteMemberCommunityLike(Map<String, Object> param) {
+		return session.delete("community.deleteMemberCommunityLike", param);
+	}
+
+	@Override
+	public int insertCommunityWriteEnroll(Community community) {
+		return session.insert("community.insertCommunityWriteEnroll", community);
+	}
 
 
 
-
-
-	
-
-	
 }

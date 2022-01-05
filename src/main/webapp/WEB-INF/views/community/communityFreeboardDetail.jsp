@@ -404,12 +404,11 @@ $(document).on('click', '#likeButton', function(e) {
 					$(e.target).data("likeYesNo", 1);
 					console.log($(e.target).data("likeYesNo"));
 					
-					$(e.target).text(newCountLikes);
+					//$(e.target).text(newCountLikes);
 					console.log("newCountLikes = " + newCountLikes);
-					
-					$.ajax({
-						url : "${pageContext.request.contextPath}/community/communityFreeboardList.do"
-					})
+					console.log("좋아요 등록!");
+					alert("좋아요를 등록했습니다.");
+						
 				}
 			},
 			error : function(xhr, status, err){
@@ -417,6 +416,7 @@ $(document).on('click', '#likeButton', function(e) {
 					alert("로그인 후 이용이 가능합니다.");
 			}
 		});
+	// 좋아요를 이미 눌렀을 경우
 	}else{
 		
 		$.ajax({
@@ -436,7 +436,10 @@ $(document).on('click', '#likeButton', function(e) {
 					$(e.target).data("likeYesNo", 0);
 					console.log($(e.target).data("likeYesNo"));
 					
-					$(e.target).text(newCountLikes);
+					//$(e.target).text(newCountLikes);
+					console.log("newCountLikes = " + newCountLikes);
+					console.log("좋아요 취소!");
+					alert("좋아요를 취소했습니다.");
 				}
 			},
 			error : console.log
