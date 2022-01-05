@@ -229,6 +229,14 @@
 		where
 			detail_no = #{detailNo}
 	</select>
+	<update id="updateViewCount">
+		update 
+			product
+		set 
+			view_count = view_count +1
+		where 
+			product_code = #{productCode}
+	</update>
 	
 	
 
