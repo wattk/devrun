@@ -107,7 +107,7 @@
 					<tr><th>옵션 추가</th><td><button class="btn btn-primary option-add-btn" type="button"><i class="fas fa-plus-square"></i></button></td></tr>
 					<c:forEach items="${productDetail }" var="pd">
 					<tr>
-						<td class="option">DN</td><td><input class="detailNo" name="detailNo" type="text" value="${pd.detailNo}" readonly /></td>
+						<td class="option">DN</td><td><input class="detailNo" name="detailNo" type="hidden" value="${pd.detailNo}" readonly /></td>
 						<td class="option">색상</td><td><input class="option" name="option" type="text" value="${pd.optionNo}" /></td>
 						<td class="option">옵션내용</td><td><input class="optionContent"name="optionContent" type="text" value="${pd.optionContent}" /></td>
 						<td class="option">재고</td><td><input class="quantity" name="quantity" type="number" value="${pd.quantity}" /></td>
@@ -138,7 +138,7 @@ $(".option-add-btn").click(e=>{
 	
 	if(trCnt < 6){		
 		$(optionTable).append(`<tr>
-				<td class="option">DN</td><td> <input class="detailNo" name="insertDetailNo" type="text" value="" /> </td>
+				<td class="option">DN</td><td> <input class="detailNo" name="insertDetailNo" type="hidden" value="" /> </td>
 				<td class="option">색상</td><td><input class="option" name="insertOption" type="text" value="red" /></td>
 				<td class="option">옵션내용</td><td><input class="optionContent" name="insertOptionContent" type="text" value="" /></td>
 				<td class="option">재고</td><td><input class="quantity" name="insertQuantity" type="text" value="1" /></td>
