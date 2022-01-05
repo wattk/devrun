@@ -1,8 +1,20 @@
 package com.kh.devrun.common;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import com.kh.devrun.order.model.vo.Merchant;
 
@@ -35,6 +47,95 @@ public class AdminUtils {
 					+ "</tr>");
 		}
 		return sb.toString();
+	}
+	
+	public static String getToken(
+			HttpServletRequest request
+			,HttpServletResponse response
+			,JSONObject json
+			,String requestUrl) throws Exception{
+		// requestURL 아임포트 고유키, 시크릿 키 정보를 포함하는 url 정보 
+		String _token = "";
+		try{
+			String requestString = "";
+			URL url = new URL(requestUrl);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setDoOutput(true); 				
+			connection.setInstanceFollowRedirects(false);  
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Content-Type", "application/json");
+			OutputStream os= connection.getOutputStream();
+			os.write(json.toString().getBytes());
+			connection.connect();
+			StringBuilder sb = new StringBuilder(); 
+			if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
+				String line = null;  
+				while ((line = br.readLine()) != null) {  
+					sb.append(line + "\n");  
+				}
+				br.close();
+				requestString = sb.toString();
+			}
+			os.flush();
+			connection.disconnect();
+
+			JSONParser jsonParser = new JSONParser();
+			JSONObject jsonObj = (JSONObject) jsonParser.parse(requestString);
+
+			if((Long)jsonObj.get("code")  == 0){
+				JSONObject getToken = (JSONObject) jsonObj.get("response");
+				log.debug("getToken : {}", getToken.get("access_token") );
+				_token = (String)getToken.get("access_token");
+			}
+
+		}catch(Exception e){
+			e.printStackTrace();
+			_token = "";
+
+		}
+
+		return _token;
+
+	}
+
+	public static String getRefund(
+			HttpServletRequest request, 
+			HttpServletResponse response, 
+			JSONObject json,
+			String _token) {
+		
+		String requestString = "";
+		try {
+			URL url = new URL("https://api.iamport.kr/payments/cancel");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			connection.setDoOutput(true); 				
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Content-Type", "application/json");
+			connection.setRequestProperty("Authorization", _token);
+			OutputStream os= connection.getOutputStream();
+			os.write(json.toString().getBytes("UTF-8"));
+			os.flush();
+			StringBuilder sb = new StringBuilder(); 
+			if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
+				String line = null;  
+				while ((line = br.readLine()) != null) {  
+					sb.append(line + "\n");
+					log.debug("line = {}",line);
+				}
+				br.close();
+				requestString = sb.toString();
+			}
+			connection.disconnect();
+			log.debug("result : {}", requestString);
+	
+		}catch(Exception e){
+			e.printStackTrace();
+	
+		}
+	
+		return requestString;
 	}
 
 }

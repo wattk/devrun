@@ -11,6 +11,9 @@
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/shop/order.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath }/resources/js/shop/order.js"></script>
+<form:form name="orderLogFrm" method="POST" action="${pageContext.request.contextPath}/order/orderLogEnroll">
+<input type="hidden" name="merchantUid" value="${merchant.merchantUid }" />
+<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
 <div class="claim-container p-5 position-relative">
 	<h3>교환/환불/취소 신청</h3>
 	<div class="card-container ">
@@ -32,29 +35,23 @@
 		  	</div>
 		  </div>
 		  <div class="card-body m-4">
-		  	<h5>주문을 확인해 주세요</h5>
+		  	<span>${merchant.merchantUid}</span>
+		  	<h5>${imp.name }</h5>
+		  	<span><fmt:formatDate value="${merchant.orderDate}" pattern="yy-MM-dd"/></span>
 	  	  	<table class="claim-table table m-3 pr-3">
 			  <tbody>
-			    <tr class="text-center">
-			    	<th class="col-1">선택</th>
-			    	<th class="col-3">주문번호/주문일</th>
-			    	<th class="col-7">상품 상세</th>
-			    </tr>
 			    <c:forEach items="${productList}" var="product" varStatus="vs">
-			    <tr>
-			      <td>
-			      	<input type="checkbox" class="ml-3" name="" id="" />
-				  </td>
-				  <td class="text-center">
-				  	[202112200909]
-				  	<br />
-				  	2021.12.09
-				  </td>
-			      <td class="col-3">
-			      	<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b w-25 img-thumbnail">
-			      	<span class="align-middle pl-3">제품명 옵션명 어쩌구 저쩌구</span>
-				  </td>
-			    </tr>
+				    <tr class="ml-3 mr-3">
+				      <td rowspan="" class="col-1">
+				      	<img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class=" img-b w-75" >
+					  </td>
+				      <td class="col-4 align-middle ">
+				      	<strong class="pl-2 align-middle">${product.name}</strong><span class="align-middle pl-3">${product.productDetail.optionNo} ${product.productDetail.optionContent}</span>
+				      </td>
+				      <td class="col-1">
+				      	${product.buyCount}개 구매
+				      </td>
+				    </tr>
 			    </c:forEach>
 			    <tr>
 			    	<td colspan="3">
@@ -75,7 +72,7 @@
 		  <div class="card-header d-flex justify-content-center">
 		  	<div class="claim-text pr-2">
 			  	<span class="badge badge-dark">1</span>
-			  	<span>상품 선택</span>
+			  	<span>주문 선택</span>
 		  	</div>
 		  	<span class="pr-2 my-auto">─</span>
 		  	<div class="claim-text pr-2">
@@ -95,48 +92,31 @@
 			  	<strong>단순 변심</strong>
 			  </li>
 			  <li class="list-group-item">
-			  	<input type="radio" name="reasonCode" id="reason1" />
+			  	<input type="radio" name="reasonCode" id="reason1" value="C"/>
 			  	<label for="reason1">상품이 마음에 들지 않음</label>
 			  	<div class="claim-detail text-center">
-			  		<textarea name="" id="" cols="75" rows="5" placeholder="*필수입력"></textarea>
 			  	</div>
 			  </li>
 			  <li class="list-group-item">
 			  	<strong>상품 문제</strong>
 			  </li>
 			  <li class="list-group-item">
-			  	<input type="radio" name="reasonCode" id="reason2" />
+			  	<input type="radio" name="reasonCode" id="reason2" value="P"/>
 			  	<label for="reason2">상품이 구성품/부속품이 들어가 있지 않음</label>
 			  	<div class="claim-detail text-center">
-			  		<textarea name="" id="" cols="75" rows="5" placeholder="*필수입력"></textarea>
 			  	</div>
 			  </li>
 			  <li class="list-group-item">
-			  	<input type="radio" name="reasonCode" id="reason3" />
+			  	<input type="radio" name="reasonCode" id="reason3" value="D"/>
 			  	<label for="reason3">상품이 설명과 다름</label>
 			  	<div class="claim-detail text-center">
-			  		<textarea name="" id="" cols="75" rows="5" placeholder="*필수입력"></textarea>
 			  	</div>
 			  </li>
+			  
 			  <li class="list-group-item">
-			  	<input type="radio" name="reasonCode" id="reason4" />
-			  	<label for="reason4">다른 상품이 배송됨</label>
+			  	<input type="radio" name="reasonCode" id="reason4" value="P"/>
+			  	<label for="reason4">상품이 파손됨/기능 오동작</label>
 			  	<div class="claim-detail text-center">
-			  		<textarea name="" id="" cols="75" rows="5" placeholder="*필수입력"></textarea>
-			  	</div>
-			  </li>
-			  <li class="list-group-item">
-			  	<input type="radio" name="reasonCode" id="reason5" />
-			  	<label for="reason5">상품이 파손됨/기능 오동작</label>
-			  	<div class="claim-detail text-center">
-			  		<textarea name="" id="" cols="75" rows="5" placeholder="*필수입력"></textarea>
-			  	</div>
-			  </li>
-			  <li class="list-group-item">
-			  	<input type="radio" name="reasonCode" id="reason6" />
-			  	<label for="reason6">판매자로부터 품절 안내 받음</label>
-			  	<div class="claim-detail text-center">
-			  		<textarea name="" id="" cols="75" rows="5" placeholder="*필수입력"></textarea>
 			  	</div>
 			  </li>
 			</ul>
@@ -163,7 +143,7 @@
 		  <div class="card-header d-flex justify-content-center">
 		  	<div class="claim-text pr-2">
 			  	<span class="badge badge-dark">1</span>
-			  	<span>상품 선택</span>
+			  	<span>주문 선택</span>
 		  	</div>
 		  	<span class="pr-2 my-auto">─</span>
 		  	<div class="claim-text pr-2">
@@ -178,49 +158,38 @@
 		  </div>
 		  <div class="card-body m-4">
 		  	<div>
-		  		<strong>선택한 상품 1건</strong>
+		  		<strong>선택한 주문</strong>
 		  		<div>
-		  			<img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b img-thumbnail w-25">
-			      	<span class="align-middle pl-3">제품명 옵션명 어쩌구 저쩌구</span>
+		  			<img src="${pageContext.request.contextPath }/resources/upload/product/${productList[0].thumbnail}" alt="" class="img-b img-thumbnail w-25">
+			      	<span class="align-middle pl-3">${imp.name }</span>
 		  		</div>
 		  		<hr />
 		  		<strong>선택한 사유</strong>
-		  		<p>상품의 구성품/부속품이 들어가 있지 않음</p>
+		  		<p id="selectReason"></p>
 		  	</div>
 		  	<hr />
 		  	<h5 class="pt-2">어떤 해결 방법을 원하세요?</h5>
+	  	  <c:if test="${merchant.orderStatus eq 'OR' or merchant.orderStatus eq 'PP' }">
 		  	<ul class="list-group">
 		  	  <li class="list-group-item">
-			  	<input type="radio" name="claimCode" id="exchange" />
+			  	<input type="radio" name="csStatus" id="cancel" value="CAN"/>
+			  	<label for="exchange" class="m-0">주문취소</label>
+			  </li>
+			 </ul>
+	  	  </c:if>
+	  	  <c:if test="${merchant.orderStatus eq 'SS' or merchant.orderStatus eq 'OC' }">
+	  	    <ul class="list-group">
+		  	  <li class="list-group-item">
+			  	<input type="radio" name="csStatus" id="exchange" value="EXC"/>
 			  	<label for="exchange" class="m-0">교환</label>
 			  </li>
 		  	  <li class="list-group-item">
-			  	<input type="radio" name="claimCode" id="refund" />
+			  	<input type="radio" name="csStatus" id="refund" value="RET"/>
 			  	<label for="refund" class="m-0">반품 후 환불</label>
 			  </li>
 		  	</ul>
-		  	<hr class="w-100"/>
-		  	<h5 class="pt-4">배송, 회수 정보를 확인해 주세요</h5>
-		  	<div>
-		  		<strong>상품 배송지</strong>
-		  		<p>어쩌구시 어쩌구동 저쩌구</p>
-		  	</div>
-		  	<ul class="list-group">
-		  	  <li class="list-group-item">
-			  	<input type="radio" name="returnCode" id="return1" />
-			  	<label for="return1" class="m-0">회수 요청</label>
-			  </li>
-		  	  <li class="list-group-item">
-			  	<input type="radio" name="returnCode" id="return2" />
-			  	<label for="return2" class="m-0">이미 발송함</label>
-			  </li>
-		  	</ul>
-		  	<div class="pt-2">
-		  		<strong>상품 회수지</strong>
-		  		<p>어쩌구시 어쩌구동 저쩌구</p>
-		  		<hr />
-		  	</div>
-		  				<div class="d-flex">
+		  </c:if>
+			<div class="d-flex">
 				<button 
 			  	  type="button" 
 			  	  id="" 
@@ -230,7 +199,7 @@
 			    </button>
 				<button 
 			  	  type="button" 
-			  	  id="" 
+			  	  id="orderLogEnrollBtn" 
 			  	  class="claim-submit-btn btn btn-primary w-50 mt-2 m-2 order-btn">
 			  	  신청
 			    </button>
@@ -239,4 +208,35 @@
 		</div>
 	</div>
 </div>
+</form:form>
+<script>
+$("#orderLogEnrollBtn").click((e)=>{
+	const orderLogUid = 'ORLG_' + new Date().getTime();
+	const data = new FormData(document.orderLogFrm);
+	data.append("orderLogUid", orderLogUid);
+	const obj = {};
+	
+	for(const [k,v] of data){
+		obj[k] = v;
+	}
+	const jsonStr = JSON.stringify(obj);
+	console.log(jsonStr);
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/order/orderLogEnroll",
+		data : jsonStr,
+		dataType : "json",
+		method : "POST",
+		contentType : "application/json; charset=utf-8",
+		success(data){
+			console.log(data);
+			if(data.token != null){
+				
+			}
+		},
+		error : console.log
+		
+	});
+})
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
