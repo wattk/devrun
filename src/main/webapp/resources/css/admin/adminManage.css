@@ -35,7 +35,33 @@
 .shipment-alert{
 	display : none;
 }
-
+.tracking-no:hover{
+	cursor : pointer;
+	color : #1A81FF;
+}
+.tracking-no-badge{
+	border : 1px solid #9E9E9E;
+	color : #9E9E9E;
+}
+.tracking-location{
+	border-right : 1px solid #9E9E9E;
+	padding-right: 0.5rem;
+    margin-right: 0.5rem;
+}
+.tracking-date{
+	color : #9E9E9E;
+	font-size : x-small;
+}
+.tracking-icon{
+	color : #1A81FF;
+	padding: 0.5rem;
+    background-color: aliceblue;
+    font-size: 2rem;
+    border-radius: 2rem;
+    width: 60px;
+    height: 60px;
+    line-height: 40px;
+}
 /*리뷰 신고*/
 .report-save-btn{
 	margin-right : 5%;
