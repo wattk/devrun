@@ -26,4 +26,10 @@ public interface MemberManageDao {
 	// 권한으로 검색한 회원의 총 갯수
 	int searchMemberListCountByAuthority(Map<String, Object> param);
 
+	// 전체 검색
+	List<Member> selectSearchAllMember(Map<String, Object> param);
+
+	// 비동기로 전체 검색한 회원 수
+	int searchMemberListCountByAll(Map<String, Object> param);
+
 }

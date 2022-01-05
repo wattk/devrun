@@ -39,12 +39,11 @@ $(".order-btn").click((e)=>{
 
 
 //주소 검색창 띄우기
-let postcode = '';
 $("#addInputBtn").click((e)=>{
 	new daum.Postcode({
         oncomplete(data){ //선택시 입력값 세팅
         	console.log(data);
-        	postcode = data.zonecode;
+        	$("[name=postcode]").val(data.zonecode);
             $(".add-input").text(data.address);
             $("#addInput").val(data.address);
             $(".add-detail-input").text('');

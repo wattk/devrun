@@ -16,11 +16,11 @@ public interface ProductDao {
 	int insertProduct(ProductEntity product);
 
 	int insertProducCategory(ProductCategory productCategory);
-	
+
 	int insertProductDetail(ProductDetail productDetail);
-	
-	List<ProductEntity>selectAllProductList(int offset, int limit);
-	
+
+	List<ProductEntity> selectAllProductList(int offset, int limit);
+
 	int selectTotalBoardCount();
 
 	// 상품삭제
@@ -30,11 +30,11 @@ public interface ProductDao {
 	ProductEx selectProductOne(String productCode);
 
 	// 상품 디테일 정보 가져오기
-	List<ProductDetail> selectProductDetail(String productCode); 
+	List<ProductDetail> selectProductDetail(String productCode);
 
 	// 상품 정보 업데이트
 	int updateProduct(ProductEntity product);
-	
+
 	// nextval 번호까지 붙은 thumbnail 값 가져오기 (최근 등록된)
 	String selectRealProductImg();
 
@@ -46,22 +46,22 @@ public interface ProductDao {
 
 	// productOption 추가
 	int insertOption(ProductDetail productDetail);
-	
-	//다현 - 상세 페이지 뿌리기 위한 item 받아오기
+
+	// 다현 - 상세 페이지 뿌리기 위한 item 받아오기
 	ProductEx selectOneItem(String productCode);
+
+	// 다현 - 품절만 가져오기
+	List<ProductDetail> selectOutOfStock(String productCode);
 
 	/**
 	 * 혜진 상품 + 상품 상세(옵션) 조회
+	 * 
 	 * @param detailNo
 	 * @return
 	 */
 	List<Product> selectProductByDetailNo(int[] detailNo);
-	
+
 	List<Integer> selectCartValidList(Map<String, Object> cartParam);
-	/* 혜진 끝*/
+	/* 혜진 끝 */
 
-
-	
-	
-	
 }

@@ -785,8 +785,8 @@ COMMENT ON COLUMN "DELETE_COMMUNITY_COMMENT"."COMMENT_NO2" IS 'SEQ';
 
 
 -- 공지사항 테이블 생성
-CREATE TABLE "NOTICE_BOARD" (
-	"NOTICE_BOARD_NO"	NUMBER NOT NULL,
+CREATE TABLE "NOTICE" (
+	"NOTICE_NO"	NUMBER NOT NULL,
 	"MEMBER_NO"	NUMBER NOT NULL,
 	"TITLE"	VARCHAR2(100) NULL,
 	"CONTENT"	CLOB NULL,
@@ -795,21 +795,26 @@ CREATE TABLE "NOTICE_BOARD" (
 	"NOTICE_CODE"	CHAR(1) NULL
 );
 
+--공지테이블 NOTICE_NO PK 제약조건 추가
+ALTER TABLE "NOTICE" ADD CONSTRAINT "PK_NOTICE_NOTICE_NO" PRIMARY KEY (
+	"NOTICE_NO"
+);
+
 -- 공지사항 테이블 시퀀스 생성
-create sequence SEQ_NOTICE_BOARD_NO;
+create sequence SEQ_NOTICE_NO;
 
 -- 공지사항 테이블 코멘트 추가
-COMMENT ON COLUMN "NOTICE_BOARD"."NOTICE_BOARD_NO" IS '공지번호';
-COMMENT ON COLUMN "NOTICE_BOARD"."MEMBER_NO" IS '작성자';
-COMMENT ON COLUMN "NOTICE_BOARD"."TITLE" IS '공지명';
-COMMENT ON COLUMN "NOTICE_BOARD"."CONTENT" IS '공지내용';
-COMMENT ON COLUMN "NOTICE_BOARD"."ENROLL_DATE" IS '작성일';
-COMMENT ON COLUMN "NOTICE_BOARD"."VIEW_COUNT" IS '조회수';
-COMMENT ON COLUMN "NOTICE_BOARD"."NOTICE_CODE" IS '공지 N, 자주묻는질문 - 쇼핑몰 S, 커뮤니티 C, 기타 E';
+COMMENT ON COLUMN "NOTICE"."NOTICE_NO" IS '공지번호';
+COMMENT ON COLUMN "NOTICE"."MEMBER_NO" IS '작성자';
+COMMENT ON COLUMN "NOTICE"."TITLE" IS '공지명';
+COMMENT ON COLUMN "NOTICE"."CONTENT" IS '공지내용';
+COMMENT ON COLUMN "NOTICE"."ENROLL_DATE" IS '작성일';
+COMMENT ON COLUMN "NOTICE"."VIEW_COUNT" IS '조회수';
+COMMENT ON COLUMN "NOTICE"."NOTICE_CODE" IS '공지 N, 자주묻는질문 - 쇼핑몰 S, 커뮤니티 C, 기타 E';
 
 -- 삭제된 공지사항 테이블 생성
-CREATE TABLE "DELETE_NOTICE_BOARD" (
-	"NOTICE_BOARD_NO"	NUMBER NOT NULL,
+CREATE TABLE "DELETE_NOTICE" (
+	"NOTICE_NO"	NUMBER NOT NULL,
 	"MEMBER_NO"	NUMBER NOT NULL,
 	"TITLE"	VARCHAR2(100) NULL,
 	"CONTENT"	CLOB NULL,
@@ -820,14 +825,36 @@ CREATE TABLE "DELETE_NOTICE_BOARD" (
 );
 
 -- 삭제된 공지사항 테이블 코멘트 추가
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."NOTICE_BOARD_NO" IS '공지번호';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."MEMBER_NO" IS '작성자';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."TITLE" IS '공지명';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."CONTENT" IS '공지내용';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."ENROLL_DATE" IS '작성일';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."VIEW_COUNT" IS '조회수';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."DELETE_DATE" IS '삭제일';
-COMMENT ON COLUMN "DELETE_NOTICE_BOARD"."NOTICE_CODE" IS '공지 N, 자주묻는질문 - 쇼핑몰 S, 커뮤니티 C, 기타 E';
+COMMENT ON COLUMN "DELETE_NOTICE"."NOTICE_NO" IS '공지번호';
+COMMENT ON COLUMN "DELETE_NOTICE"."MEMBER_NO" IS '작성자';
+COMMENT ON COLUMN "DELETE_NOTICE"."TITLE" IS '공지명';
+COMMENT ON COLUMN "DELETE_NOTICE"."CONTENT" IS '공지내용';
+COMMENT ON COLUMN "DELETE_NOTICE"."ENROLL_DATE" IS '작성일';
+COMMENT ON COLUMN "DELETE_NOTICE"."VIEW_COUNT" IS '조회수';
+COMMENT ON COLUMN "DELETE_NOTICE"."DELETE_DATE" IS '삭제일';
+COMMENT ON COLUMN "DELETE_NOTICE"."NOTICE_CODE" IS '공지 N, 자주묻는질문 - 쇼핑몰 S, 커뮤니티 C, 기타 E';
+
+
+-- 공지사항 테이블 delete trigger 생성
+create or replace trigger trg_delete_notice
+    after
+    delete on notice
+    for each row
+begin
+    insert into
+        delete_notice
+    values(
+        :old.notice_no,
+		:old.member_no,
+		:old.title,
+		:old.content,
+		:old.enroll_date,
+		:old.view_count,
+		default,
+		:old.notice_code
+    );
+end;
+/
 
 -- 상품 대분류 카테고리 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_PRODUCT_PARENT_CATEGORY_NO;
@@ -1001,10 +1028,10 @@ REFERENCES MERCHANT (
 --===========================
 CREATE TABLE "SHIPMENT" (
 	"SHIPMENT_NO"	NUMBER		NOT NULL,
-	"TRACKING_NUMBER"	NUMBER		NULL,
+	"TRACKING_NO"	CHAR(12)		NULL,
 	"MERCHANT_UID"	VARCHAR2(50)		NOT NULL,
-	"ORDER_LOG_NO"	NUMBER		NOT NULL,
-	"SHIPMENT_DATE"	DATE		NULL,
+	"ORDER_LOG_NO"	NUMBER		NULL,
+	"SHIPMENT_DATE"	DATE		default sysdate,
 	CONSTRAINT PK_SHIPMENT_SHIPMENT_NO PRIMARY KEY(SHIPMENT_NO),
 	CONSTRAINT FK_SHIPMENT_MERCHANT_UID FOREIGN KEY(MERCHANT_UID) REFERENCES MERCHANT(MERCHANT_UID),
 	CONSTRAINT FK_SHIPMENT_ORDER_LOG_NO FOREIGN KEY(ORDER_LOG_NO) REFERENCES ORDER_LOG(ORDER_LOG_NO)
@@ -1387,6 +1414,16 @@ select seq_question_product_no.currval from dual;
 select * from product;
 
 insert into question_product
+
+	select
+		*
+	from
+		question_product
+	where
+        null != question_ref_no and question_level=1;
+
+
+
 values(
 
     seq_question_product_no.nextval,
@@ -1503,7 +1540,14 @@ from(
 --    m.order_status,
 --    i.name,
 --    i.amount,
---    p.thumbnail
+--    p.product_code,
+--    p.thumbnail,
+--    pd.detail_no,
+--    pd.option_no,
+--    pd.option_content,
+--    pd.quantity,
+--    md.buy_count,
+--    m.total_price
 --from
 --    merchant m left join imp i
 --        on m.merchant_uid = i.merchant_uid

@@ -53,7 +53,7 @@
     		<div id="searchMemberAll" class="search-type">
 	            <form>
 	                <input type="hidden" name="searchType" value="all"/>
-	                <input type="hidden" name="searchKeyword"  size="25" placeholder="검색할 회원 번호를 입력하세요." value="all"/>
+	                <input type="hidden" name="searchKeyword" value="all"/>
 	                <button type="submit"id="searchBymemberAll" class="btn-blue search-btn">검색</button>			
 	            </form>	
 	        </div>
@@ -73,7 +73,7 @@
 	        </div>
 	        
 	        <div id="searchMemberName" class="search-type other">
-	            <form action="<%=request.getContextPath()%>/admin/memberFinder">
+	            <form>
 	                <input type="hidden" name="searchType" value="name"/>
 	                <input type="text" name="searchKeyword" size="25" placeholder="검색할 이름을 입력하세요." value=""/>
 	                <button type="submit" class="btn-blue search-btn">검색</button>			
@@ -158,11 +158,9 @@
 		console.log( $(document.memberRoleUpdateFrm).find("[name=memberNo]").val()   );
 		console.log( $(document.memberRoleUpdateFrm).find("[name=authority]").val()   );
 		
-		$(memberRoleUpdateFrm).submit()
-		;
-		
+		$(memberRoleUpdateFrm).submit();
+				
 	});
-
 	var preVal;
 	var afterVal;
 	
@@ -223,6 +221,11 @@
 	)
 	
 	$(searchType).change(function(){
+		
+		// 검색타입 바뀔 때 마다 값 초기화
+		$searchType = "";
+		$searchKeyword = "";
+		
 		var searchTypeVal = $(this).val();
 		$(".search-type")
 			.hide()
@@ -233,7 +236,7 @@
 	/* search 입력값 대입  */
 	$("input[name=searchKeyword]").change(e=>{		
 		console.log($(e.target).parent().children("input[name=searchType]").val());
-		/* console.log($(e.target).val()); */
+		console.log($(e.target).val()); 
 		
 		$searchType = $(e.target).parent().children("input[name=searchType]").val();
 	 	$searchKeyword = $(e.target).val() ;

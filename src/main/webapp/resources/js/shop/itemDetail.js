@@ -67,6 +67,15 @@ $(document).on('click', '#deleteReporBtn', function(e) {
 })
 /*신고 취소시 다 날리게 끝*/ 
 
+/*재입고 알림 신청 취소 시 다 날리게 시작 */
+$(document).on('click', '#smsCloseBtn', function(e) {
+	$('#smsOption').prop('selectedIndex',0);
+	$(phoneSms).val('');
+	$('#checkPhone').text('');
+    $('#checkPhone').attr("data-vaild","N");
+})
+/*재입고 알림 신청 취소 시 다 날리게 끝 */
+
 /*리뷰 글자수 세기 시작 */
 $('#reportText').keydown((e) =>{
 	

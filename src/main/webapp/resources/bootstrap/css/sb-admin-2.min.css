@@ -144,6 +144,7 @@
 
 /* 회원 문의  */
 #searchType{margin-right:30px}
+.pagebar{margin-top: 40px;}
 
 /* 답변 모달 */
 #insertQuestionFrm .modal-content{min-width:400px;width:40vw;height: 85vh;}

@@ -3,6 +3,7 @@ package com.kh.devrun.order.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
+import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.shop.model.vo.Cart;
 
@@ -87,4 +89,41 @@ public class OrderDaoImpl implements OrderDao {
 		return session.selectList("order.selectMerchantList", param);
 	}
 
+	@Override
+	public int updateMerchant(Map<String, Object> param) {
+		return session.update("order.updateMerchant", param);
+	}
+
+	@Override
+	public int updateProductQuantity(List<Map<String, Object>> detailList) {
+		return session.update("order.updateProductQuantity", detailList);
+	}
+
+	@Override
+	public Map<String, Object> countMerchant(Map<String, Object> param) {
+		return session.selectOne("order.countMerchant", param);
+	}
+
+	@Override
+	public List<Shipment> selectAllShipment() {
+		return session.selectList("order.selectAllShipment");
+	}
+
+	@Override
+	public List<Merchant> selectSomeMerchant(String str) {
+		return session.selectList("order.selectSomeMerchant", str);
+	}
+
+	@Override
+	public int insertShipment(List<Map<String, Object>> shipmentArr) {
+		int result = 0;
+		for(Map<String, Object> m : shipmentArr) {
+			result = session.insert("order.insertShipment", m);
+		}
+		return result;
+	}
+
+
+	
+	
 }

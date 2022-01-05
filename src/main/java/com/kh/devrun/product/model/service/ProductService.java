@@ -13,7 +13,7 @@ import com.kh.devrun.product.model.vo.ProductEx;
 public interface ProductService {
 	List<ProductChildCategory> selectChildCategory(Map<String, Object> param);
 
-	int insertProduct(Map<String,Object> param);
+	int insertProduct(Map<String, Object> param);
 
 	int insertProducCategory(ProductCategory productCategory);
 
@@ -21,12 +21,12 @@ public interface ProductService {
 
 	// 상품 리스트 조회
 	List<ProductEntity> selectAllProductList(int offset, int limit);
-	
+
 	int selectTotalBoardCount();
 
 	// 상품삭제
 	int deleteProduct(String productCode);
-	
+
 	// 상품 정보 하나 가져오기
 	ProductEx selectProductOne(String productCode);
 
@@ -42,24 +42,21 @@ public interface ProductService {
 	// 상품 옵션 업데이트
 	int updateOption(ProductDetail productDetail, Map<String, Object> param);
 
-	//다현 - 상세 페이지 뿌리기 위한 item 받아오기
+	// 다현 - 상세 페이지 뿌리기 위한 item 받아오기
 	ProductEx selectOneItem(String productCode);
+
+	// 다현 - 품절만 가져오기
+	List<ProductDetail> selectOutOfStock(String productCode);
 
 	/**
 	 * 혜진 상품 + 상품 상세(옵션) 조회
+	 * 
 	 * @param detailNo
 	 * @return
 	 */
 	List<Product> selectProductByDetailNo(int[] detailNo);
-	
+
 	List<Integer> selectCartValidList(Map<String, Object> cartParam);
-	/* 혜진 끝*/
+	/* 혜진 끝 */
 
-
-
-
-
-
-	
-	
 }

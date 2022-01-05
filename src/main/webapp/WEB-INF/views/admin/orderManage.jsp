@@ -10,6 +10,39 @@
 	<jsp:param value="주문관리" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
+<!-- 주문 확인 모달 -->
+<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalProductTitle">주문 상세</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalOrderList">
+      	<span id="orderModalUid"></span>
+			<h5 id="orderModalName" class="pb-2"></h5>
+			<ul class="list-group list-group-flush">
+			  <li class="list-group-item">
+				<table id="orderDetailTbl" class="table mt-3 w-100">
+				
+				</table>
+			  </li>
+			  <li class="list-group-item text-right">
+			 	 <strong>총 주문 가격</strong><span id="orderModalTotal" class="pl-2"></span>
+			  </li>
+			</ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="osChangeBtn" class="btn btn-primary" data-dismiss="modal">주문 접수</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 주문 관리 시작 -->
 <div class="order-container">
 	<h3 class="m-5">주문내역</h3>
 </div>
@@ -59,20 +92,20 @@
 		<span class="date-badge badge badge-primary" data-target="all">전체</span>
 	</div>
 	<div class="order-search-container mt-3 ml-5">
-	      <div class="input-group w-50">
+	   <div class="input-group w-50">
 		 <select name="searchType" id="orderSearch" class=" bg-light border-0 small">
 		 	<option value="all" selected>모든 주문 조회</option>
 		 	<option value="orderNo">주문번호로 검색</option>
 		 	<option value="memberNo">회원번호로 검색</option>
 		 </select>
-	        <input type="text" name="searchKeyword" class="form-control bg-light border-0 small" placeholder="검색어를 입력하세요." value=""
-	            aria-label="Search" aria-describedby="basic-addon2">
-	        <div class="input-group-append">
-	            <button id="orderSearchBtn" class="btn btn-primary" type="button">
-	                <i class="fas fa-search fa-sm"></i>
-	            </button>
-	        </div>
-	      </div>
+        <input type="text" name="searchKeyword" class="form-control bg-light border-0 small" placeholder="검색어를 입력하세요." value=""
+            aria-label="Search" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button id="orderSearchBtn" class="btn btn-primary" type="button">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+	   </div>
 	</div>
 </div>
 <hr class="w-100"/>
@@ -93,7 +126,7 @@
 	      <th scope="col">요청사항</th>
 	    </tr>
 	  </thead>
-	  <tbody>
+	  <tbody id="orderBody">
 	  	<c:forEach items="${list}" var="m" varStatus="vs">
 	    <tr>
 	      <td>${m.merchantUid}</td>
@@ -112,41 +145,39 @@
 	</table>
 </div>
 <div class="order-list">
-	<strong class="m-5">처리할 주문</strong>
+	<strong class="m-5">주문 처리 대기</strong>
 	<table class="admin-tbl table table-hover mx-auto mt-3">
 	  <thead>
 	    <tr>
-	      <th scope="col" class="col-3">상태 변경</th>
-	      <th scope="col" class="col-5">건수</th>
-	      <th scope="col" class="col-5">금액</th>
+	      <th scope="col">주문 번호</th>
+	      <th scope="col">회원 번호</th>
+	      <th scope="col">주문 일자</th>
+	      <th scope="col">주문 확인</th>
 	    </tr>
 	  </thead>
-	  <tbody>
-	    <tr>
-	      <th scope="row">주문 → 상품 준비중</th>
-	      <td>0</td>
-	      <td>0</td>
-	    </tr>
-	    <tr>
-	      <th scope="row">상품 준비중 → 배송 시작</th>
-	      <td>0</td>
-	      <td>0</td>
-	    </tr>
-	    <tr>
-	      <th scope="row">배송 시작 → 배송중</th>
-	      <td>0</td>
-	      <td>0</td>
-	    </tr>
-	    <tr>
-	      <th scope="row">배송중 → 배송 완료</th>
-	      <td>0</td>
-	      <td>0</td>
-	    </tr>
-	    <tr>
-	      <th scope="row">배송 완료 → 구매 확정</th>
-	      <td>0</td>
-	      <td>0</td>
-	    </tr>
+	  <tbody id="orderBody">
+	  	<c:if test="${empty orList}">
+	  		<tr class="mx-auto">
+	  			<td colspan="4">처리 대기 중인 주문이 없습니다.</td>
+	  		</tr>
+	  	</c:if>
+	  	<c:forEach items="${orList}" var="m" varStatus="vs">
+		    <tr id="${m.merchantUid}">
+		      <td>${m.merchantUid}</td>
+		      <td>${m.memberNo}</td>
+		      <td><fmt:formatDate value="${m.orderDate}" pattern="yy-MM-dd"/></td>
+		      <td>
+		      	<button 
+		      		type="button" 
+		      		class="order-modal-btn btn btn-secondary" 
+		      		data-toggle="modal" 
+		      		data-target="#orderModal"
+		      		data-merchant="${m.merchantUid}">
+		      		주문 확인
+		      	</button>
+		      </td>
+		    </tr>
+	    </c:forEach>
 	  </tbody>
 	</table>
 </div>
@@ -164,39 +195,39 @@
 	  <tbody>
 	    <tr>
 	      <th scope="row">의자</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["CH"]}건</td>
+	      <td>${weekCnt["CH"]}건</td>
+	      <td>${monthCnt["CH"]}건</td>
 	    </tr>
 	    <tr>
 	      <th scope="row">책상</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["DE"]}건</td>
+	      <td>${weekCnt["DE"]}건</td>
+	      <td>${monthCnt["DE"]}건</td>
 	    </tr>
 	    <tr>
 	      <th scope="row">모니터</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["MN"]}건</td>
+	      <td>${weekCnt["MN"]}건</td>
+	      <td>${monthCnt["MN"]}건</td>
 	    </tr>
 	    <tr>
 	      <th scope="row">키보드</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["KE"]}건</td>
+	      <td>${weekCnt["KE"]}건</td>
+	      <td>${monthCnt["KE"]}건</td>
 	    </tr>
 	    <tr>
 	      <th scope="row">마우스</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["MO"]}건</td>
+	      <td>${weekCnt["MO"]}건</td>
+	      <td>${monthCnt["MO"]}건</td>
 	    </tr>
 	    <tr>
 	      <th scope="row">기타용품</th>
-	      <td>0</td>
-	      <td>0</td>
-	      <td>0</td>
+	      <td>${todayCnt["OT"]}건</td>
+	      <td>${weekCnt["OT"]}건</td>
+	      <td>${monthCnt["OT"]}건</td>
 	    </tr>
 	  </tbody>
 	</table>
@@ -287,9 +318,96 @@ $("#orderSearchBtn").click((e)=>{
 		},
 		success(data){
 			console.log(data);
+			$("#orderBody").html(data.merchantStr);
 		},
 		error : console.log
 	});
 });
+
+//주문 상세 모달창에 정보 띄우기
+$(".order-modal-btn").click((e)=>{
+	const merchantUid = $(e.target).data("merchant");
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/admin/findMerchantDetail",
+		method : "GET",
+		data : {
+			merchantUid : merchantUid
+		},
+		success(data){
+			console.log(data);
+			$("#orderModalTotal").html("&#8361;"+data.merchant.totalPrice.toLocaleString());
+			$("#orderModalName").text(data.imp.name);
+			$("#orderModalUid").text(data.merchant.merchantUid);
+			$("#orderDetailTbl").html('');
+			
+			for(let i = 0; i < data.list.length; i++){
+				const item = data.list[i];
+				$("#orderDetailTbl").append(`<tr>
+					<td rowspan="2" class="orderModalImg ">
+						<img src="${pageContext.request.contextPath}/resources/upload/product/\${item.thumbnail}" alt=""class=" img-thumbnail"/>
+					</td>
+				</tr>
+				<tr>
+					<td class=" text-left">
+						<strong 
+							class="detail-title pl-2" 
+							data-detail-no="\${item.productDetail.detailNo}"
+							data-buy-count="\${item.buyCount}">
+							[\${item.name}]
+						</strong>
+						<br />
+						<span class="pl-2"></span>
+						<br />
+						<span class="pl-2">\${item.buyCount}개 구매</span>
+					</td>
+				</tr>
+				<tr>
+				<td class=" text-right" colspan="2">
+					<span class="pl-2">현재 재고 : \${item.productDetail.quantity}개</span>
+				</td>
+			</tr>`);
+			}
+		},
+		error : console.log
+	});
+});
+
+//주문 접수 클릭 시 주문 상태 업데이트, 상품 재고 -1
+$("#osChangeBtn").click((e)=>{
+	const merchantUid = [$("#orderModalUid").text()];
+	let detailList = [];
+	const $detailTitle = $(".detail-title");
+	const length = $detailTitle.length;
+	
+	for(let i = 0; i < length; i++){
+		detailList[i] = {
+				detailNo : $detailTitle.eq(i).data("detailNo"),
+				buyCount : $detailTitle.eq(i).data("buyCount")
+		}
+	}
+	
+	console.log(detailList);
+	console.log(merchantUid, typeof merchantUid);
+	const data = {
+			merchantUid : merchantUid,
+			orderStatus : 'PP',
+			detailList : detailList
+		};
+	$.ajax({
+		url : "${pageContext.request.contextPath}/admin/orderUpdate",
+		method : "POST",
+		dataType : "json",
+		contentType : "application/json; charset=utf-8",
+		data : JSON.stringify(data),
+		success(data){
+			alert("주문이 정상적으로 접수되었습니다.");
+			$(`#\${merchantUid}`).detach();
+		},
+		error : console.log
+	});
+	
+});
+			
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>

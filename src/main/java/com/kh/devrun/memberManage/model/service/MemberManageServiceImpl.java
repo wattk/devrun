@@ -28,8 +28,8 @@ public class MemberManageServiceImpl implements MemberManageService {
 		
 		// searchType, searchKeyword가 a면 전체 검색으로 분기
 		if("m.all".equals(param.get("searchType"))) {
-			searchMemberList = memberManageDao.selectAllMember(offset, limit);
-			log.debug("aaaaaaaa");
+			searchMemberList = memberManageDao.selectSearchAllMember(param);
+			log.debug("searchAll------");
 		}
 			
 		// 권한 검색일 경우 분기처리한다.
@@ -64,8 +64,7 @@ public class MemberManageServiceImpl implements MemberManageService {
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			throw new AuthorityUpdateException("권한 업데이트 오류",e);
-		}
-		
+		}		
 		return result;
 	}
 
@@ -74,10 +73,13 @@ public class MemberManageServiceImpl implements MemberManageService {
 	public int searchMemberListCount(Map<String, Object> param) {
 		int result = 0;
 		
-		// 권한 검색일 경우 분기처리한다.
+		// 전체 검색,권한 검색일 경우 분기처리한다.
 		if("m.authority".equals(param.get("searchType"))) {
 			log.debug("권한 검색");
 			result = memberManageDao.searchMemberListCountByAuthority(param);
+		}
+		else if("m.all".equals(param.get("searchType"))){
+			result = memberManageDao.searchMemberListCountByAll(param);
 		}
 		else {
 			result = memberManageDao.searchMemberListCount(param);

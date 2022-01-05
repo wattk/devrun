@@ -1,4 +1,4 @@
-package com.kh.devrun.common;
+package com.kh.devrun.questionProduct.utils;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -10,20 +10,15 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.kh.devrun.member.model.service.MemberService;
+import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.questionProduct.model.vo.QuestionProduct;
-import com.kh.devrun.shop.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
 
-
 @Slf4j
-public class DevrunUtils {
+public class QuestionProductUtils {
 
 	
 	/**
@@ -181,31 +176,7 @@ public class DevrunUtils {
 		return sb.toString();
 	}
 
-	/**
-	 * 상품 정렬 후 다시 띄우기
-	 * 
-	 * @param productList
-	 * @param url
-	 * @returnL
-	 */
-	public static String getProductList(List<ProductEntity> productList, String url) {
-		DecimalFormat fmt = new DecimalFormat("###,###");
-		StringBuilder sb = new StringBuilder();
 
-		for (ProductEntity product : productList) {
-			sb.append("<div class=\"card-box-d col-md-3 p-5\">\n"
-					+ "<div class=\"card-img-d shop-item-img position-relative\">\r\n" + "<img src=\"" + url
-					+ "/resources/upload/product/" + product.getThumbnail()
-					+ "\" alt=\"\" class=\"img-d img-fluid\">\r\n"
-					+ "<i class=\"shop-like-icon fas fa-heart position-absolute\"></i>\r\n" + "</div>\r\n"
-					+ "<a href=\"" + url + "/shop/itemDetail/" + product.getProductCode() + "\">\r\n" + "<div>\r\n"
-					+ "<p class=\"m-0\">" + product.getName() + "</p>\r\n" + "<strong>&#8361;"
-					+ fmt.format(product.getPrice()) + "</strong>\r\n" + "</div>\r\n" + "</a>" + "</div>");
-		}
-
-		return sb.toString();
-
-	}
 
 	/**
 	 * 게시글 읽음 여부 확인
@@ -353,10 +324,125 @@ public class DevrunUtils {
 		return pagebar.toString();
 	}
 
-	public static String getQuestionList(List<QuestionProduct> qestionList) {
-		// TODO Auto-generated method stub
-		return null;
+	public static String getQuestionList(List<QuestionProduct> questionList) {
+		StringBuilder sb = new StringBuilder();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		for (QuestionProduct questionProduct : questionList) {
+		
+			sb.append(
+					"<tr> \n"
+							+"<td>"+questionProduct.getQuestionNo()+"</td>\n"
+							+"<td>"+questionProduct.getMemberNo() +"</td>\n"
+							+"<td>"+questionProduct.getProductCode()+"</td>\n"
+							+"<td>"+questionProduct.getTitle()+"</td>\n"						
+							+"<td>"+questionProduct.getContent()+"</td>\n"						
+							+"<td>"+sdf.format(questionProduct.getEnrollDate())+"</td>\n"
+							+"<td>"+questionProduct.getPrivateYn()+"</td>\n"						
+						
+							+"</td>\n"
+					);
+			if(questionProduct.getQuestionRefNo() == 0) {
+				sb.append("<td><button type=\"button\" class=\"btn btn-warning answer-btn\" data-bs-toggle=\"modal\" data-bs-target=\"#questionModal\">답변 대기</button></td></tr>");
+			}
+			else {
+				sb.append("<td><button type=\"button\" class=\"btn btn-primary answer-btn\" data-bs-toggle=\"modal\" data-bs-target=\"#questionModal\">답변 완료</button></td></tr>");				
+			}
+		}		
+		return sb.toString();
 	}
+
+	public static String getPagebarQuestion(int cPage, int numPerPage, int totalContent, String url) {
+		StringBuilder pagebar = new StringBuilder();
+
+		// 전체페이지수
+		int totalPage = (int) Math.ceil((double) totalContent / numPerPage);
+
+		// 페이지번호를 클릭했을때 링크
+		String delimeter = url.contains("?") ? "&" : "?";
+		url = url + delimeter + "cPage="; // /spring/board/boardList.do?cPage=
+		log.debug("Utils URL = {}",url);
+		// 페이지바크기
+		int pagebarSize = 5;
+
+		/*
+		 * 1 2 3 4 5 >>
+		 * 
+		 * << 6 7 8 9 10 >>
+		 * 
+		 * << 11 12
+		 * 
+		 * pageStart : 시작하는 pageNo - cPage와 pagebarSize에 의해 결정
+		 */
+		int pageStart = (cPage - 1) / pagebarSize * pagebarSize + 1;
+		int pageEnd = pageStart + pagebarSize - 1;
+
+		int pageNo = pageStart;
+
+		pagebar.append("<nav class=\"pagebar\" aria-label=\"Page navigation example\">\n"
+				+ "		  <ul class=\"pagination justify-content-center\">\n");
+
+		// 1.이전
+		if (pageNo == 1) {
+			pagebar.append("<li class=\"page-item disabled\">\r\n"
+					+ "		      <a class=\"page-link\" href=\"#\" aria-label=\"Previous\" tabindex=\"-1\">\r\n"
+					+ "		        <span aria-hidden=\"true\">&laquo;</span>\r\n"
+					+ "		        <span class=\"sr-only\">Previous</span>\r\n" + "		      </a>\r\n"
+					+ "		    </li>\n");
+		} else {
+			pagebar.append(
+					"<li class=\"page-item \">\r\n" + "		      <a class=\"page-link\" href=\"javascript:getPage("
+							+ (pageNo - 1) + ")\" aria-label=\"Previous\" >\r\n"
+							+ "		        <span aria-hidden=\"true\">&laquo;</span>\r\n"
+							+ "		        <span class=\"sr-only\">Previous</span>\r\n" + "		      </a>\r\n"
+							+ "		    </li>\n");
+		}
+
+		// 2.pageNo
+		while (pageNo <= pageEnd && pageNo <= totalPage) {
+			if (pageNo == cPage) {
+				// 현재페이지인 경우 링크 제공안함.
+				pagebar.append("<li class=\"page-item active\"><a class=\"page-link\" href=\"#\">" + pageNo
+						+ "<span class=\"sr-only\">(current)</span></a></li>\n");
+			} else {
+				// 현재페이지가 아닌 경우 링크를 제공.
+				pagebar.append("<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:getPage(" + pageNo
+						+ ")\">" + pageNo + "</a></li>\n");
+			}
+
+			pageNo++;
+		}
+
+		// 3.다음
+		if (pageNo > totalPage) {
+			pagebar.append("<li class=\"page-item disabled\">\r\n"
+					+ "		      <a class=\"page-link\" href=\"#\" tabindex=\"-1\" aria-label=\"Next\">\r\n"
+					+ "		        <span aria-hidden=\"true\">&raquo;</span>\r\n"
+					+ "		        <span class=\"sr-only\">Next</span>\r\n" + "		      </a>\r\n"
+					+ "		    </li>\n");
+		} else {
+			pagebar.append("<li class=\"page-item\">\r\n"
+					+ "		      <a class=\"page-link\" href=\"javascript:getPage(" + pageNo
+					+ ")\" aria-label=\"Next\">\r\n" + "		        <span aria-hidden=\"true\">&raquo;</span>\r\n"
+					+ "		        <span class=\"sr-only\">Next</span>\r\n" + "		      </a>\r\n"
+					+ "		    </li>\n");
+		}
+
+		pagebar.append(" </ul>\r\n" + "</nav>\r\n" );
+
+		return pagebar.toString();
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
