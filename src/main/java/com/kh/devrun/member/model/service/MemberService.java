@@ -3,7 +3,7 @@ package com.kh.devrun.member.model.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.Address;
+import com.kh.devrun.address.model.vo.Address;
 
 import com.kh.devrun.member.model.vo.Member;
 

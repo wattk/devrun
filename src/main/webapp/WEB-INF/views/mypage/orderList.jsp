@@ -53,7 +53,7 @@
 	       							</tr>
 	       							<tr>
 	       								<td class="col-5">
-	       									<span>주문번호</span>&nbsp;<strong>${item.merchantUid }</strong>
+	       									<span>주문번호</span>&nbsp;<strong>${item.merchantUid}</strong>
 			       							<br />
 			       							<span>결제금액</span>&nbsp;<strong><fmt:formatNumber type="currency">${item.imp.amount}</fmt:formatNumber></strong>
 			       							<br />
@@ -65,21 +65,21 @@
 	       								<td rowspan="4" class="col-2">
 	       								<c:choose>
 		       								<c:when test="${item.orderStatus eq 'OR' or item.orderStatus eq 'PP'}">
-		       									<button type="button" class="order-btn btn btn-outline-primary">주문취소</button>
+		       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary">주문취소</button>
 		       								</c:when>
 		       								<c:when test="${item.orderStatus eq 'SC'}">
-		       									<button type="button" class="order-btn btn btn-outline-primary">반품/교환</button>
-		       									<button type="button" class="order-btn btn btn-outline-primary">배송조회</button>
-		       									<button type="button" class="order-btn btn btn-outline-primary active" data-toggle="modal" data-target="#exampleModal3">구매확정</button>
+		       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary">반품/교환</button>
+		       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary">배송조회</button>
+		       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary active" data-toggle="modal" data-target="#exampleModal3">구매확정</button>
 		       								</c:when>
 		       								<c:when test="${item.orderStatus eq 'OC'}">
-		       									<button type="button" class="order-btn btn btn-outline-primary">반품/교환</button>
-		       									<button type="button" class="order-btn btn btn-outline-primary">배송조회</button>
-		       									<button type="button" class="order-btn btn btn-outline-primary active" data-toggle="modal" data-target="#exampleModal3">후기쓰기</button>
+		       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary">반품/교환</button>
+		       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary">배송조회</button>
+		       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary active" data-toggle="modal" data-target="#exampleModal3">후기쓰기</button>
 		       								</c:when>
 		       								<c:otherwise>
-		       									<button type="button" class="order-btn btn btn-outline-primary">반품/교환</button>
-		       									<button type="button" class="order-btn btn btn-outline-primary">배송조회</button>
+		       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary">반품/교환</button>
+		       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary">배송조회</button>
 		       								</c:otherwise>
 	       								</c:choose>
 	       								</td>
@@ -151,5 +151,12 @@ enctype="multipart/form-data">
 	</div>
 </form:form>
 <!--리뷰작성모달 끝-->
+
+<script>
+	$(".order-btn").click((e)=>{
+		const merchantUid = $(e.target).data("target");
+		location.href = `${pageContext.request.contextPath}/mypage/changeOrder?merchantUid=\${merchantUid}`;
+	})
+</script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/itemDetail.js" ></script>
 <jsp:include page="/WEB-INF/views/mypage/common/footer.jsp"></jsp:include>

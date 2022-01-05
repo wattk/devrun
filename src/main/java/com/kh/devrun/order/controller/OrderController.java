@@ -2,7 +2,7 @@ package com.kh.devrun.order.controller;
 
 import java.util.List;
 
-import javax.mail.Address;
+import com.kh.devrun.address.model.vo.Address;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.devrun.member.model.service.MemberService;
@@ -20,8 +19,6 @@ import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
-import com.kh.devrun.product.model.service.ProductService;
-import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.shop.model.vo.Cart;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/order")
 public class OrderController {
 	
-	@Autowired
-	private ProductService productService;
 	
 	@Autowired
 	private MemberService memberService;
@@ -52,16 +47,10 @@ public class OrderController {
 	
 	@GetMapping("/order")
 	public String order(Model model, Authentication authentication) {
-		//@RequestParam(value="detailNo") int[] detailNo,@RequestParam(value="amount") int[] amount, 
-		//log.debug("productCode = {}", detailNo);
 		Member member = (Member)authentication.getPrincipal();
-		//List<Product> productList = productService.selectProductByDetailNo(detailNo);
 		List<Address> addressList = memberService.selectAddressListByMemberNo(member.getMemberNo());
-		//log.debug("product = {}", productList);
-		//model.addAttribute("productList", productList);
 		log.debug("addresssList = {}", addressList);
 		model.addAttribute("addressList", addressList);
-		//model.addAttribute("detailNo", detailNo);
 		
 		return "/order/order";
 	}

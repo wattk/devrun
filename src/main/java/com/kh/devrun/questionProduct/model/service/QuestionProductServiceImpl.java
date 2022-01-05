@@ -115,13 +115,24 @@ public class QuestionProductServiceImpl implements QuestionProductService {
 	// 검색 검색 결과 수(답변 여부 제외)
 	@Override
 	public int searchQuestionListCount(Map<String, Object> param) {
-		return questionProductDao.searchQuestionListCount(param);
+		String searhchType = (String) param.get("searchType");
+		int result = 0;
+		// 답변 여부 갯수는 따로 처리
+		if(searhchType.equals("answer_yn")){
+			result = questionProductDao.searchQuestionListByAnswerYnCount(param);
+		}
+		else {
+			result = questionProductDao.searchQuestionListCount(param);			
+		}
+			
+		
+		return result;
 	}
 
-	// 답변 여부 검색 결과 수
 	@Override
 	public int searchQuestionListByAnswerYnCount(Map<String, Object> param) {
 		return questionProductDao.searchQuestionListByAnswerYnCount(param);
 	}
+
 	
 }
