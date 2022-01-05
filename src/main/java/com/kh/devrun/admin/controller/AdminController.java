@@ -34,8 +34,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.common.AdminUtils;
@@ -57,8 +55,6 @@ import com.kh.devrun.questionProduct.model.vo.QuestionProductEx;
 import com.kh.devrun.questionProduct.utils.QuestionProductUtils;
 
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller
 @Slf4j
@@ -83,11 +79,12 @@ public class AdminController {
 	@Autowired
 	QuestionProductService questionProductService;
 	
+	
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
 
 	
-	@GetMapping("/productMain.do")
+	@GetMapping("/product/productMain.do")
 	public String productManage(
 			Model model,
 			@RequestParam(defaultValue = "1") int cPage,
@@ -414,6 +411,17 @@ public class AdminController {
 		redirectAttr.addFlashAttribute("msg",msg);
 		return "redirect:/admin/productMain.do";
 	}
+	
+	// 상품 카테고리 관리
+	@GetMapping("/product/productCategory.do")
+	public void productCategory() {
+		
+	}
+	
+	
+	
+	
+	
 	
 	
 	/**
