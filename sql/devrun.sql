@@ -1519,6 +1519,7 @@ from(
 --    i.name,
 --    i.amount,
 --    p.product_code,
+--    p.thumbnail,
 --    pd.detail_no,
 --    pd.option_no,
 --    pd.option_content,
