@@ -229,6 +229,29 @@
 		where
 			detail_no = #{detailNo}
 	</select>
+	<update id="updateViewCount">
+		update 
+			product
+		set 
+			view_count = view_count +1
+		where 
+			product_code = #{productCode}
+	</update>
+	
+	<insert id="insertSmsWatinglist">
+		insert into
+			sms_waitinglist
+		values
+			(seq_sms_waitinglist_no.nextval,
+			#{memberNo},
+			#{id},
+			#{productCode},
+			#{detailNo},
+			#{phone},
+			default,
+			default
+			)
+	</insert>
 	
 	
 

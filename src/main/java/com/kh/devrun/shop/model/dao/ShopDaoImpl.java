@@ -158,4 +158,14 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectOne("shop.selectOneProductDetail", detailNo);
 	}
 
+	@Override
+	public int updateViewCount(String productCode) {
+		return session.update("shop.updateViewCount", productCode);
+	}
+
+	@Override
+	public int insertSmsWatinglist(Map<String, Object> param) {
+		return session.insert("shop.insertSmsWatinglist", param);
+	}
+
 }

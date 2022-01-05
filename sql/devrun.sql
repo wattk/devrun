@@ -1626,3 +1626,82 @@ from
         on cm.chat_id = cl.chat_id
 where
     cm.end_date < TO_TIMESTAMP('1970-01-01 09:00:00.0','YYYY-MM-DD HH24:MI:SS.FF') + NUMTODSINTERVAL(cl.log_time/1000, 'SECOND') or cm.end_date is null;
+    
+    
+    
+--김다현 sms 기록 테이블 시작 --
+create table sms_waitinglist(
+    waitinglist_no number,
+    member_no number default -1,
+    id varchar2(50) default 'nonMember',
+    product_code varchar2(100) not null,
+    detail_no number not null,
+    phone varchar2(11) not null,
+    reg_date Date default current_date not null,
+    status char(1) default 'N' not null,
+    constraint pk_waitinglist_no primary key(waitinglist_no),
+    constraint fk_waitinglist_product_code foreign key(product_code) references product(product_code),
+    constraint fk_waitinglist_detail_no foreign key(detail_no) references product_detail(detail_no)
+);
+
+create sequence seq_sms_waitinglist_no;
+
+
+-- sms_waitinglist 코멘트 추가
+COMMENT ON COLUMN sms_waitinglist.waitinglist_no IS '대기목록번호';
+COMMENT ON COLUMN sms_waitinglist.member_no IS '회원 번호';
+COMMENT ON COLUMN sms_waitinglist.id IS '회원 아이디';
+COMMENT ON COLUMN sms_waitinglist.product_code IS '상품코드';
+COMMENT ON COLUMN sms_waitinglist.detail_no IS '상품옵션코드';
+COMMENT ON COLUMN sms_waitinglist.phone IS '전화번호';
+COMMENT ON COLUMN sms_waitinglist.reg_date IS '알림신청일';
+COMMENT ON COLUMN sms_waitinglist.status IS '메세지발송여부';
+
+
+--재입고 문자 보낸 뒤 삭제된 대기 목록 
+create table delete_sms_waitinglist(
+    waitinglist_no number not null,
+    member_no number not null,
+    id varchar2(50) not null,
+    product_code varchar2(100) not null,
+    detail_no number not null,
+    phone varchar2(11) not null,
+    reg_date Date not null,
+    complete_date Date default current_date not null,
+    status char(1) default 'Y' not null
+);
+
+
+-- delete_sms_waitinglist 코멘트 추가
+COMMENT ON COLUMN delete_sms_waitinglist.waitinglist_no IS '대기목록번호';
+COMMENT ON COLUMN delete_sms_waitinglist.member_no IS '회원 번호';
+COMMENT ON COLUMN delete_sms_waitinglist.id IS '회원 아이디';
+COMMENT ON COLUMN delete_sms_waitinglist.product_code IS '상품코드';
+COMMENT ON COLUMN delete_sms_waitinglist.detail_no IS '상품옵션코드';
+COMMENT ON COLUMN delete_sms_waitinglist.phone IS '전화번호';
+COMMENT ON COLUMN delete_sms_waitinglist.reg_date IS '알림신청일';
+COMMENT ON COLUMN delete_sms_waitinglist.complete_date IS '재입고 문자 발송 처리날';
+COMMENT ON COLUMN delete_sms_waitinglist.status IS '메세지발송여부';
+
+
+create or replace trigger trg_sms_waitinglist
+    after
+    delete on sms_waitinglist
+    for each row
+begin
+    insert into
+        delete_sms_waitinglist
+    values(
+        :old.waitinglist_no,
+		:old.member_no,
+        :old.id,
+		:old.product_code,
+		:old.detail_no,
+		:old.phone,
+		:old.reg_date,
+		default,
+		default
+    );
+end;
+
+--김다현 sms 기록 테이블 끝 --

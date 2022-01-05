@@ -4,11 +4,14 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="questionProduct">
 
+<!-- 답변을 제외한 문의 내역만 가져오기 위해 level=1만 조회  -->
 <select id="selectAllQuestionList" resultType="QuestionProduct">
 	select
 		*
 	from
 		question_product
+	where
+		question_level = 1
 	order by
 		enroll_date desc
 </select>
@@ -117,8 +120,13 @@
 			<when test="searchType.equals('product_code')"> 
 				${searchType} like '%'|| #{searchKeyword} ||'%'	and question_level=1
 			</when>			
-			<when test="searchType.equals('all')"> 
-				question_level=1
+			<when test="searchType.equals('all')">
+				<if test='startDate == null or startDate == " " '>
+					question_level=1
+				</if>
+				 <if test='startDate != null'>
+					question_level=1 and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD') )
+				</if>
 			</when>		
 			<when test="searchType.equals('private_yn')"> 
 				${searchType} = #{searchKeyword} and question_level=1
@@ -142,9 +150,14 @@
 			<when test="searchType.equals('product_code')"> 
 				${searchType} like '%'|| #{searchKeyword} ||'%'	and question_level=1
 			</when>			
-			<when test="searchType.equals('all')"> 
-				question_level=1
-			</when>			
+			<when test="searchType.equals('all')">
+				<if test='startDate == null or startDate == " " '>
+					question_level=1
+				</if>
+				 <if test='startDate != null'>
+					question_level=1 and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD') )
+				</if>
+			</when>		
 			<when test="searchType.equals('private_yn')"> 
 				${searchType} = #{searchKeyword} and question_level=1
 			</when>			

@@ -34,8 +34,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.common.AdminUtils;
@@ -57,8 +55,6 @@ import com.kh.devrun.questionProduct.model.vo.QuestionProductEx;
 import com.kh.devrun.questionProduct.utils.QuestionProductUtils;
 
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller
 @Slf4j
@@ -83,11 +79,12 @@ public class AdminController {
 	@Autowired
 	QuestionProductService questionProductService;
 	
+	
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
 
 	
-	@GetMapping("/productMain.do")
+	@GetMapping("/product/productMain.do")
 	public String productManage(
 			Model model,
 			@RequestParam(defaultValue = "1") int cPage,
@@ -306,7 +303,7 @@ public class AdminController {
 			@RequestParam String productCode, // 상품 리스트에서 넘어온 productCode
 			@RequestParam String parentCategoryCode,
 			@RequestParam String childCategoryCode,			
-			@RequestParam int[]detailNo,
+			@RequestParam (required=false)int[]detailNo,
 			@RequestParam (required=false)int[]deleteDetailNo, // 삭제할 detailNo
 //			@RequestParam (required=false)int[]insertDetailNo, // 추가할 detailNo
 			@RequestParam (required=false)String[]insertOption, // 추가할 option
@@ -414,6 +411,17 @@ public class AdminController {
 		redirectAttr.addFlashAttribute("msg",msg);
 		return "redirect:/admin/productMain.do";
 	}
+	
+	// 상품 카테고리 관리
+	@GetMapping("/product/productCategory.do")
+	public void productCategory() {
+		
+	}
+	
+	
+	
+	
+	
 	
 	
 	/**
@@ -541,8 +549,7 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") int cPage,
 			HttpServletRequest request
 			) {
-		
-		
+	
 		// 1.페이징 처리 : 페이지 설정
 		int limit = 5;
 		int offset = (cPage - 1) * limit;
@@ -672,6 +679,8 @@ public class AdminController {
 				@RequestParam String searchType,
 				@RequestParam String searchKeyword,
 				@RequestParam(defaultValue = "1") int cPage,
+				@RequestParam(required = false) String startDate,
+				@RequestParam(required = false) String endDate,
 				HttpServletRequest request
 				){
 			// 검색 타입이 없을 때 searchType에 all 대입하여 오류 방
@@ -688,6 +697,9 @@ public class AdminController {
 			log.debug("searchType = {}",searchType);
 			log.debug("searchKeyword = {}",searchKeyword);
 			log.debug("cPage = {}",cPage);
+			log.debug("startDate = {}",startDate);
+			log.debug("endDate = {}",endDate);
+			
 			Map<String,Object>param = new HashMap<>();
 			
 			if(searchKeyword.contains(",")) {
@@ -700,6 +712,9 @@ public class AdminController {
 			param.put("searchType", searchType);
 			param.put("searchKeyword", searchKeyword);
 			
+			param.put("startDate", startDate);
+			param.put("endDate", endDate);
+			
 			// 1.조회한 리스트 가져오기
 			String url = request.getRequestURI()+"?searchType="+searchType+"&searchKeyword="+searchKeyword;
 			log.debug("url = {}", url);
@@ -711,12 +726,10 @@ public class AdminController {
 			log.debug("questionStr = {}",questionStr);
 			
 			
-			// 2.조회한 게시물 수
-			int totalContent = 0;
-			totalContent = questionProductService.searchQuestionListCount(param);
-			// 답변 여부는 따로 처리
-			totalContent = questionProductService.searchQuestionListByAnswerYnCount(param);
-			
+			// 2.조회한 게시물 수					
+			int totalContent = questionProductService.searchQuestionListCount(param);				
+					
+				
 			// 3.페이지 바
 			log.debug("pagebarUrl = {}",url);
 			String pagebar = QuestionProductUtils.getPagebarQuestion(cPage, limit, totalContent, url);
@@ -732,9 +745,7 @@ public class AdminController {
 		}
 	
 	
-		
-		
-		
+				
 		
 
 	//--------------------태영 끝-----------------------------

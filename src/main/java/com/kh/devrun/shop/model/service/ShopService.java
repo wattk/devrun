@@ -56,4 +56,8 @@ public interface ShopService {
 
 	ProductDetail selectOneProductDetail(int detailNo);
 
+	int updateViewCount(String productCode);
+
+	int insertSmsWatinglist(Map<String, Object> param);
+
 }

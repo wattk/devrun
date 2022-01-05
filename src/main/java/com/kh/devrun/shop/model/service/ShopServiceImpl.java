@@ -28,38 +28,36 @@ public class ShopServiceImpl implements ShopService {
 
 	@Autowired
 	private ShopDao shopDao;
-	
-	
-	
+
 //--------------------------------------------------------구분선---------------------------------------------------------
 
-		/* 혜진 장바구니 시작 */
-		@Override
-		@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
-		public int insertCart(Cart cart) {
-			int result = 0;
+	/* 혜진 장바구니 시작 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public int insertCart(Cart cart) {
+		int result = 0;
 
-			try {
-				result = shopDao.insertCart(cart);
-				result = shopDao.insertMemberCart(cart);
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw e;
-			}
-
-			return result;
+		try {
+			result = shopDao.insertCart(cart);
+			result = shopDao.insertMemberCart(cart);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
 
-		@Override
-		public int deleteCart(List<Integer> cartNoArr) {
-			int result = shopDao.deleteCart(cartNoArr);
-			
-			return result;
-			
-		}
+		return result;
+	}
 
-		/* 혜진 장바구니 끝 */
-	
+	@Override
+	public int deleteCart(List<Integer> cartNoArr) {
+		int result = shopDao.deleteCart(cartNoArr);
+
+		return result;
+
+	}
+
+	/* 혜진 장바구니 끝 */
+
 //--------------------------------------------------------구분선---------------------------------------------------------
 
 	@Override
@@ -203,9 +201,7 @@ public class ShopServiceImpl implements ShopService {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
 	public int wishlistDelete(Map<String, Object> param) {
 		int result = 0;
-		
-		log.debug("param이 null 이라고? : {}", param);
-		
+
 		try {
 			// wishlistNo조회
 			int wishlistNo = shopDao.findWishlistNo(param);
@@ -219,12 +215,12 @@ public class ShopServiceImpl implements ShopService {
 
 		return result;
 	}
-	
+
 	@Override
 	public int didIHitWishlist(Map<String, Object> param) {
 		return shopDao.didIHitWishlist(param);
 	}
-	
+
 	@Override
 	public List<WishlistProduct> selectAllWishlist(int memberNo) {
 		return shopDao.selectAllWishlist(memberNo);
@@ -235,6 +231,14 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.selectOneProductDetail(detailNo);
 	}
 
+	@Override
+	public int updateViewCount(String productCode) {
+		return shopDao.updateViewCount(productCode);
+	}
 
+	@Override
+	public int insertSmsWatinglist(Map<String, Object> param) {
+		return shopDao.insertSmsWatinglist(param);
+	}
 
 }

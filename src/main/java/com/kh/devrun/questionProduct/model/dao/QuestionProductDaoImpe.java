@@ -94,7 +94,6 @@ public class QuestionProductDaoImpe implements QuestionProductDao {
 	}
 	
 	// 검색 결과 수(답변 여부)
-
 	@Override
 	public int searchQuestionListByAnswerYnCount(Map<String, Object> param) {
 		return session.selectOne("questionProduct.searchQuestionListByAnswerYnCount",param);
