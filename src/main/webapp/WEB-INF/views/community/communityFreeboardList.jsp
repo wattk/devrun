@@ -37,9 +37,6 @@ div#search-content {
 div#search-nickname {
 	display: none;
 }
-
-
-
 </style>
 
 <script>

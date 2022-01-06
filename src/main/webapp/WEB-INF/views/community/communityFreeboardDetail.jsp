@@ -145,7 +145,8 @@
 			<hr />
 			<div class="row" >
 				<div class="col-md-12 row justify-content-end"> 
-					
+				
+					<button style="margin-right: 10px;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" id="reportButton">신고하기</button>
 					<jsp:include page="/WEB-INF/views/community/common/reportModal.jsp">
 						<jsp:param value="" name="title"/>
 					</jsp:include>
@@ -189,7 +190,7 @@
 		</div>
 		<div class="card-body">
 			<ul class="list-group list-group-flush">
-			    <li class="list-group-item">
+			    <li class="list-group-item" id="comment-li">
 				<div class="form-inline mb-2">
 					<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
 				</div>
@@ -238,13 +239,14 @@
 								<sec:authorize access="hasAnyRole('M1', 'M2')">
 									<!-- 회원이고 글쓴이 본인일 경우 -->
 									<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
-										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>&nbsp;
 									</c:if>
 								</sec:authorize>
 								<!-- 관리자일 경우 -->
 								<sec:authorize access="hasRole('AM')">
-									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>&nbsp;
 								</sec:authorize>
+									<button type="button" class="btn btn-dark mt-3 float-right" data-toggle="modal" data-target="#exampleModal">신고</button>&nbsp;
 								</div>
 							</sec:authorize>
 						    </li>
@@ -258,17 +260,20 @@
 									&nbsp;&nbsp;<fmt:formatDate value="${communityCommentEntity.regDate}" pattern="yyyy-MM-dd HH:mm"/>
 								</div>
 								<textarea class="form-control" id="exampleFormControlTextarea1" rows="1" readonly="readonly">${communityCommentEntity.content}</textarea>
+								<div class="row float-right">
 								<!-- 회원일 경우 -->
 								<sec:authorize access="hasAnyRole('M1', 'M2')">
 									<!-- 회원이고 글쓴이 본인일 경우 -->
 									<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
-										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>&nbsp;
 									</c:if>
 								</sec:authorize>
 								<!-- 관리자일 경우 -->
 								<sec:authorize access="hasRole('AM')">
-									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>&nbsp;
 								</sec:authorize>
+									<button type="button" class="btn btn-dark mt-3 float-right" data-toggle="modal" data-target="#exampleModal">신고</button>&nbsp;
+								</div>
 							    </li>
 							</ul>
 						</c:otherwise>
@@ -304,33 +309,40 @@ function freeboardCommentValidate(){
 
 // 답글(대댓글) 클릭 시 댓글 번호 참조 
 $(".btnReComment").click((e) => {
+	console.log("ddddd");
+	$("#ii").show();
 	console.log("클릭 이벤트 발생!");
 	//console.log($(e.target).val());
 	const commentRefNo = $(e.target).val();
 	const div = `
-		<div class="card-body" style="padding-left: 100px">
-			<ul class="list-group list-group-flush">
-			    <li class="list-group-item">
-				<div class="form-inline mb-2">
-					<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
-				</div>
-				<form:form
-					name="freeboardReCommentForm"
-					action="${pageContext.request.contextPath}/community/communityFreeboardCommentEnroll.do"
-					method="POST">
-					<textarea class="form-control" name="content" id="reComment" rows="1"></textarea>
-					<button type="button" class="btn btn-dark mt-3 float-right" onclick="freeboardReCommentValidate()">등록</button>
-					
-					<input type="hidden" name="commentLevel" value="2"/>
-					<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
-					<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
-					<input type="hidden" name="commentRefNo" value= "\${commentRefNo}" />
-					 
-				</form:form>
-			    </li>
-			</ul>
-		</div>`;
-		
+	<div id="ii">
+		<ul class="list-group list-group-flush" id="level2">
+			<div class="card-body" style="padding-left: 100px;">
+				<ul class="list-group list-group-flush">
+				    <li class="list-group-item" style="border: solid; background-color: white;">
+					<div class="form-inline mb-2">
+						<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
+					</div>
+					<form:form
+						name="freeboardReCommentForm"
+						action="${pageContext.request.contextPath}/community/communityFreeboardCommentEnroll.do"
+						method="POST">
+						<textarea class="form-control" name="content" id="reComment" rows="1"></textarea>
+						<div class="row float-right">
+							<button type="button" class="btn btn-dark mt-3 float-right" onclick="freeboardReCommentValidate()">등록</button>&nbsp;
+							<button type="button" class="btn btn-dark mt-3 float-right" onclick="closeDiv()">취소</button>
+						</div>
+						
+						<input type="hidden" name="commentLevel" value="2"/>
+						<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
+						<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
+						<input type="hidden" name="commentRefNo" value= "\${commentRefNo}" /> 
+					</form:form>
+				    </li>
+				</ul>
+			</div>
+		</ul>
+	</div>`;
 	console.log(div);
 	
 	// e.target 의 부모의 부모 div (등록 전체 div를 지칭)
@@ -339,8 +351,12 @@ $(".btnReComment").click((e) => {
 	$divOfBtn.after(div);
 	// 현재 버튼의 handler 제거
 	$(e.target).off('click');
-	
 });
+
+function closeDiv(){
+	console.log("도착꾸?");
+	$("#ii").hide();
+}
 
 // 댓글 유효성 검사
 function freeboardReCommentValidate(){
