@@ -10,7 +10,7 @@
 
 <!-- Header 임포트 -->
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="shopMain" name="title" />
+	<jsp:param value="상세페이지" name="title" />
 </jsp:include>
 
 
