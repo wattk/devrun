@@ -415,16 +415,22 @@
 		$(updateAnswer).val($(answer).val());
 		$("#updateQuestionFrm").submit();
 	});
- 	
 	/*  호버 이벤트 */
-	$("#inquiryListTbl tbody tr").hover(
-		e=>{
-			$(e.target).parent("tr").css("background","#0d6efd36");
-		},
-		e=>{
-			$(e.target).parent("tr").css("background","white");
-		}
-	)
+	$(document).ready(function(){
+
+	    $(document).on({
+	        mouseenter: function (e) {
+	        	$(e.target).parent("tr").css("background","#0d6efd36");
+	    		$(e.target).parent("tr").css("cursor","pointer");
+
+	        },
+	        mouseleave: function (e) {
+	    		$(e.target).parent("tr").css("background","white");
+	        }
+
+	    },"#inquiryListTbl tbody tr");
+
+	});
 
 	// 검색 & 검색결과 페이징
 	

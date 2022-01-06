@@ -258,7 +258,7 @@ public class AdminController {
 		}
 		
 		redirectAttr.addFlashAttribute("msg","선택하신 상품을 삭제했습니다");	
-		return "redirect:/admin/productMain.do";
+		return "redirect:/admin/product/productMain.do";
 	}
 	
 	
@@ -413,19 +413,26 @@ public class AdminController {
 		
 		String msg = "상품 수정 성공 !!";
 		redirectAttr.addFlashAttribute("msg",msg);
-		return "redirect:/admin/productMain.do";
+		return "redirect:/admin/product/productMain.do";
 	}
 	
 	// 상품 카테고리 관리
 	@GetMapping("/product/productCategory.do")
 	public void productCategory(Model model) {
 		List<ProductParentCategory> list = productCategoryService.selectAllParentCategory();
+		List<ProductChildCategory> cList = productCategoryService.selectAllChildCategory();
 		
 		log.debug("list = {}", list);
+		log.debug("cList = {}", cList);
 		
+		model.addAttribute("cList",cList);
 		model.addAttribute("list",list);
 	}
 	
+
+	
+	
+	// 비동기로 소분류 이름 & 코드 가져오기.
 	@GetMapping("/productCategory/searchChildCategory.do")
 	@ResponseBody
 	public Map<String,Object>searchChildCategory(@RequestParam String code){
@@ -438,6 +445,72 @@ public class AdminController {
 		map.put("childCategoryList", childCategoryList);
 		return map;
 	}
+	
+	// 상품 카테고리 등록
+	@PostMapping("/product/insertCategory.do")
+	public String insertCategory(
+			@RequestParam String selectCategory,
+			@RequestParam(required = false) String selectParentCategory,
+			@RequestParam String categoryTitle,
+			@RequestParam String categoryCode,
+			
+			RedirectAttributes redirectAttr
+			
+			) {
+		log.debug("selectCategory = {}",selectCategory);
+		log.debug("selectParentCategory = {}",selectParentCategory);
+		log.debug("categoryTitle = {}",categoryTitle);
+		log.debug("categoryCode = {}",categoryCode);
+		
+		Map<String,String>param = new HashMap<>();
+		param.put("selectCategory", selectCategory);
+		param.put("selectParentCategory", selectParentCategory);
+		param.put("categoryTitle", categoryTitle);
+		param.put("categoryCode", categoryCode);
+		
+		int result = productCategoryService.insertCategory(param);
+		
+		redirectAttr.addFlashAttribute("msg","상품 카테고리 등록 성공.");
+		
+		return "redirect:/admin/product/productCategory.do";
+	}
+		
+	// 비동기로 대분류 값 가져오기
+	@GetMapping("/productCategory/selectParentCategory.do")
+	@ResponseBody
+	public Map<String,Object>selectParentCategory(){
+		Map<String,Object>map = new HashMap<>();
+		List<ProductParentCategory>parentCategoryList = productCategoryService.selectParentCategory();
+		
+		log.debug("parentCategoryList = {}",parentCategoryList);
+		
+		map.put("parentCategoryList", parentCategoryList);
+		return map;
+	}
+	
+	// 상품 카테고리 삭제
+	@PostMapping("/product/deleteCategory.do")
+	public String deleteCategory(
+				@RequestParam(required = false) String deleteChildCategoryCode,
+				@RequestParam(required = false) String deleteParentCategoryCode,
+				RedirectAttributes redirectAttr
+			) {
+		
+		log.debug("deleteChildCategoryCode = {}",deleteChildCategoryCode);
+		log.debug("deleteParentCategoryCode = {}",deleteParentCategoryCode);
+		
+		Map<String,String>param = new HashMap<>();
+		param.put("deleteParentCategoryCode", deleteParentCategoryCode);
+		param.put("deleteChildCategoryCode", deleteChildCategoryCode);
+		
+		int result = productCategoryService.deleteProductCategory(param);
+		
+		redirectAttr.addFlashAttribute("msg","상품 카테고리 삭제 성공");
+		return "redirect:/admin/product/productCategory.do";
+	}
+	
+	
+	
 	
 	
 	
