@@ -41,6 +41,7 @@ import com.kh.devrun.mypage.model.service.MypageService;
 import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.order.model.vo.OrderLogExt;
+import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.report.model.service.ReportService;
 import com.kh.devrun.report.model.vo.Report;
 
@@ -572,6 +573,10 @@ public class MypageController {
 		model.addAttribute("merchant", map.get("merchant"));
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("imp", map.get("imp"));
+		if(map.get("shipment") != null) {
+			Shipment shipment = (Shipment)map.get("shipment");
+			model.addAttribute("shipment", shipment);
+		}
 		log.debug("list = {}", map.get("list"));
 		return "/mypage/orderDetail";
 	}

@@ -18,12 +18,13 @@
 
 <link href="${pageContext.request.contextPath}/resources/css/shop/order.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/js/shop/order.js"></script>
+
 <sec:authentication property="principal" var="member"/>
 
 <script>
 
 $(document).ready((e)=>{
-	
+	//localStorage에 저장되어 있는 장바구니 아이템 가져와서 뷰단에 뿌려주기
 	const item = JSON.parse(localStorage.getItem("cartItems"));
 	console.log(item);
 	
