@@ -3,6 +3,8 @@ package com.kh.devrun.admin.controller;
 import java.beans.PropertyEditor;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,8 +15,10 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.http.HttpStatus;
@@ -43,7 +47,9 @@ import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.memberManage.model.service.MemberManageService;
 import com.kh.devrun.order.model.service.OrderService;
+import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
+import com.kh.devrun.order.model.vo.OrderLog;
 import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.ProductDetail;
@@ -850,11 +856,11 @@ public class AdminController {
 	 * 혜진 시작 
 	 */
 	@GetMapping("/orderManage.do")
-	public void orderManage(Model model) {
+	public String orderManage(Model model) {
 		List<Merchant> list = orderService.selectAllMerchant();
 		List<Merchant> orList = new ArrayList<>();
 		for(Merchant m : list) {
-			if("OR".equals(m.getOrderStatus()))
+			if("OR".equals(m.getOrderStatus()) && "COM".equals(m.getCsStatus()))
 				orList.add(m);
 		}
 		
@@ -870,6 +876,8 @@ public class AdminController {
 		model.addAttribute("todayCnt", todayCnt);
 		model.addAttribute("weekCnt", weekCnt);
 		model.addAttribute("monthCnt", monthCnt);
+		
+		return "/admin/order/orderManage";
 	}
 	
 	@GetMapping("/orderSearch")
@@ -938,11 +946,15 @@ public class AdminController {
 	}
 	
 	@GetMapping("/shipmentManage.do")
-	public void shipmentManage(Model model) {
+	public String shipmentManage(Model model) {
 		List<Shipment> shipmentList = orderService.selectAllShipment();
 		List<Merchant> merchantList = orderService.selectSomeMerchant("PP");
+		List<OrderLog> orderLogList = orderService.selectSomeOrderLog("EXC");
 		model.addAttribute("shipmentList", shipmentList);
 		model.addAttribute("merchantList", merchantList);
+		model.addAttribute("orderLogList", orderLogList);
+		
+		return "/admin/order/shipmentManage";
 		
 	}
 	
@@ -964,6 +976,96 @@ public class AdminController {
 			returnVal.put("inputValid", 0);
 		}
 		return returnVal;
+	}
+	
+	@GetMapping("/orderLogManage.do")
+	public String orderLogManage(Model model) {
+		List<OrderLog> list = orderService.selectAllOrderLog();
+		log.debug("list = {}", list);
+		List<OrderLog> manageList = new ArrayList<>();
+		for(OrderLog ol : list) {
+			if("REF".equals(ol.getCsStatus())||"RET".equals(ol.getCsStatus())||"EXC".equals(ol.getCsStatus())) {
+				manageList.add(ol);
+			}
+		}
+		model.addAttribute("list", list);
+		model.addAttribute("manageList", manageList);
+		
+		return "/admin/order/orderLogManage";
+	}
+	
+	@GetMapping("/findOrderLogDetail")
+	@ResponseBody
+	public Map<String, Object> findOrderLogDetail(@RequestParam(value="orderLogUid") String orderLogUid) {
+		log.debug("orderLogUid = {}", orderLogUid);
+		Map<String, Object> orderLog = orderService.selectOneOrderLog(orderLogUid);
+		log.debug("orderLog = {}", orderLog);
+		return orderLog;
+	}
+	
+	@PostMapping("/orderLogUpdate")
+	@ResponseBody
+	public Map<String, Object> orderLogUpdate(@RequestBody String jsonStr, HttpServletRequest request, HttpServletResponse response){
+		Map<String, Object> param = new HashMap<>();
+		Map<String, Object> resultMap = new HashMap<>();
+		int result = 0;
+		try {
+			param = new ObjectMapper().readValue(jsonStr, Map.class);
+			log.debug("param = {}", param);
+			int isValid = (int)param.get("valid");
+			log.debug("valid = {}, {}", isValid);
+			Map<String, Object> imp = (Map<String, Object>) param.get("imp");
+			
+			if(isValid == 0) {
+				param.put("keyword", "PROCESS_DATE");
+				result = orderService.updateOrderLog(param);
+			}
+			else if(isValid == 1){
+				// 아임포트 토큰생성 
+				String requestUrl = "https://api.iamport.kr/users/getToken";
+				String imp_key = URLEncoder.encode("8343794553669375", "UTF-8");
+				String imp_secret = URLEncoder.encode("3ecaf2db93a1bded8267d09318b5d6ba441c1c412e19686b81ec859a6ffafc90abe92a15af22b138", "UTF-8");
+
+				JSONObject json = new JSONObject();
+				json.put("imp_key", imp_key);
+				json.put("imp_secret", imp_secret);
+				String _token = AdminUtils.getToken(request, response, json, requestUrl);
+				log.debug("token = {}", _token);
+				
+				JSONObject json2 = new JSONObject();
+				
+				String reasonDetail = (String)param.get("reasonDetail");
+				String impUid = (String)imp.get("impUid");
+				int amount = (int)imp.get("amount");
+				log.debug("reason = {}", reasonDetail);
+				log.debug("imp = {}", imp);
+				log.debug("amount = {}", amount);
+				
+				json2.put("reason", reasonDetail);
+				json2.put("imp_uid", impUid);
+				json2.put("amount", amount);
+				
+				String receipt = AdminUtils.getRefund(request, response, json2, _token);
+				log.debug("cancelResult = {}", receipt);
+				if(receipt != null) {
+					Map<String, Object> updateParam = new HashMap<>();
+					updateParam.put("keyword", "END_DATE");
+					updateParam.put("orderLogUid", param.get("orderLogUid"));
+					log.debug("updateParam = {}", updateParam);
+					result = orderService.updateOrderLog(updateParam);
+			}
+			
+			log.debug("result = {}", result);
+			
+			
+			resultMap.put("result", result);
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultMap;
 	}
 	
 	@GetMapping("/reviewReport.do")

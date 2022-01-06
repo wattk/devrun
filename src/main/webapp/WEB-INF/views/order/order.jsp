@@ -342,7 +342,7 @@ function iamport(data){
 	    buyer_email : $(".email-input").text(),
 	    buyer_name : $(".name-input").text(),
 	    buyer_tel : $(".phone-input").text(),
-	    buyer_addr : $(".add-input").text()+$(".add-detail-input").text(),
+	    buyer_addr : $(".add-input").text()+$(".add-detail-input").val(),
 	    buyer_postcode : $("[name=postcode]").val()
 	}, function(rsp) {
 		console.log(rsp);

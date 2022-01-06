@@ -61,6 +61,12 @@ public interface OrderDao {
 
 	int updateOrderLog(Map<String, Object> param);
 
+	List<OrderLog> selectAllOrderLog();
+
+	List<OrderLog> selectSomeOrderLog(String param);
+
+	OrderLog selectOneOrderLog(String orderLogUid);
+
 
 
 }
