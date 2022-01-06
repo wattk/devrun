@@ -5,9 +5,9 @@ import java.util.Map;
 
 import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
-import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.order.model.vo.OrderLog;
+import com.kh.devrun.order.model.vo.OrderLogExt;
 import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.shop.model.vo.Cart;
 
@@ -42,6 +42,10 @@ public interface OrderService {
 	int insertOrderLog(OrderLog orderLog);
 
 	Imp selectOneImp(String merchantUid);
+
+	List<OrderLogExt> selectOrderLogList(int memberNo);
+
+	int updateOrderLog(Map<String, Object> param);
 
 
 }

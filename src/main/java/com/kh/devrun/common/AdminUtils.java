@@ -106,6 +106,7 @@ public class AdminUtils {
 			String _token) {
 		
 		String requestString = "";
+		String receipt = "";
 		try {
 			URL url = new URL("https://api.iamport.kr/payments/cancel");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -136,13 +137,16 @@ public class AdminUtils {
 			log.debug("jsonObj : {}", jsonObj);
 			JSONObject jsonResponse = (JSONObject) jsonObj.get("response");
 			log.debug("jsonResponse : {}", jsonResponse);
+			//String code = (String) jsonResponse.get("code");
+			List<String> cancelReceiptUrls = (List<String>)jsonResponse.get("cancel_receipt_urls");
+			receipt = cancelReceiptUrls.get(0);
 	
 		}catch(Exception e){
 			e.printStackTrace();
 	
 		}
 	
-		return requestString;
+		return receipt;
 	}
 
 }

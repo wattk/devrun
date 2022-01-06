@@ -85,7 +85,7 @@
        			
       			<section class="cursor card justify-content-between mt-3 mb-5 align-items-center" id="myOrderLog">
        			<span class="ml-5">취소/교환/환불</span>
-       			<a href="${pageContext.request.contextPath}/mypage/claimList.do">
+       			<a href="${pageContext.request.contextPath}/mypage/changeOrderList.do">
        				<span class="mr-5">총 <span>${orderLogCnt}</span>건</span>
        			</a>
       			</section>
