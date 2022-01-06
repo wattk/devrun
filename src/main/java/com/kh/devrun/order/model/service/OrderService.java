@@ -51,5 +51,7 @@ public interface OrderService {
 
 	List<OrderLog> selectSomeOrderLog(String string);
 
+	Map<String, Object> selectOneOrderLog(String orderLogUid);
+
 
 }

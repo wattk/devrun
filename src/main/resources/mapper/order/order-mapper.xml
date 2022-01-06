@@ -411,8 +411,51 @@
   	from
   		order_log
   	where
-  		cs_status = #{value}
+  		cs_status = #{value} and process_date is not null and end_date is null
   	order by
   		req_date desc
   </select>
+  
+  <select id="selectOneOrderLog" resultMap="orderCsLogCollection">
+	select
+	    ol.*,
+	    m.order_date,
+	    m.point_value,
+	    m.product_price,
+	    m.shipping_fee,
+	    md.detail_no,
+	    md.buy_count
+	from
+	    order_log ol left join merchant m
+	        on ol.merchant_uid = m.merchant_uid
+	            left join merchant_detail md
+	                on m.merchant_uid = md.merchant_uid
+	where
+		order_log_uid = #{orderLogUid}
+  </select>
+  <resultMap type="orderLog" id="orderCsLogCollection">
+  	<id column="order_log_uid" property="orderLogUid"/>
+  	<result column="reason_code" property="reasonCode"/>
+  	<result column="merchant_uid" property="merchantUid"/>
+  	<result column="prev_detail_no" property="prevDetailNo"/>
+  	<result column="curr_detail_no" property="currDetailNo"/>
+  	<result column="cs_status" property="csStatus"/>
+  	<result column="req_date" property="reqDate"/>
+  	<result column="process_date" property="processDate"/>
+  	<result column="end_date" property="endDate"/>
+  	<result column="cost_status" property="costStatus"/>
+  	<result column="cost" property="cost"/>
+  	<result column="reason_detail" property="reasonDetail"/>
+  	<result column="member_no" property="memberNo"/>
+  	<association property="merchant" javaType="merchant">
+  		<result column="order_date" property="orderDate"/>
+  		<result column="point_value" property="pointValue"/>
+  		<result column="product_price" property="productPrice"/>
+  		<result column="shipping_fee" property="shippingFee"/>
+  		<collection property="merchantDetailList" ofType="merchantDetail">
+		  	<id column="detail_no" property="detailNo"/>
+	  		<result column="buy_count" property="buyCount"/>
+  		</collection>
+  	</association>
+  </resultMap>
 </mapper>

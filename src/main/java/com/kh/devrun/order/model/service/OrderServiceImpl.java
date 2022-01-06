@@ -230,6 +230,29 @@ public class OrderServiceImpl implements OrderService {
 		return orderDao.selectSomeOrderLog(param);
 	}
 
+	@Override
+	public Map<String, Object> selectOneOrderLog(String orderLogUid) {
+		Map<String, Object> map = new HashMap<>();
+		
+		OrderLog orderLog = orderDao.selectOneOrderLog(orderLogUid);
+		map.put("orderLog", orderLog);
+		
+		Imp imp = orderDao.selectOneImp(orderLog.getMerchantUid());
+		map.put("imp", imp);
+		
+		List<Integer> detailNoList = new ArrayList<>();
+		Merchant merchant = orderLog.getMerchant();
+		
+		for(MerchantDetail d : merchant.getMerchantDetailList()) {
+			detailNoList.add(d.getDetailNo());
+		}
+		
+		List<Product> list = orderDao.selectMerchantProductList(detailNoList);
+		map.put("list", list);
+		
+		return map;
+	}
+
 	
 	
 

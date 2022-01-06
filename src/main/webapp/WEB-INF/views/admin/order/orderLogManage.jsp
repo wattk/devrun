@@ -10,6 +10,44 @@
 	<jsp:param value="교환/환불/취소 관리" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
+<!-- 교환/환불 확인 모달 -->
+<div class="modal fade" id="orderLogModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalProductTitle">요청 상세</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalOrderList">
+      	<span id="orderLogModalUid"></span>
+      	<br />
+		<h5 id="orderLogModalName" class="pb-2 mr-2 d-inline"></h5>
+		<span class="order-log-badge badge badge-pill badge-primary"></span>
+		<ul class="list-group list-group-flush">
+		  <li class="list-group-item">
+			<table id="orderLogDetailTbl" class=" mt-3 w-100">
+			
+			</table>
+		  </li>
+		  <li class="list-group-item text-right">
+		 	 <strong>총 주문 가격</strong><span id="orderLogModalTotal" class="pl-2"></span>
+		  </li>
+		  <li class="list-group-item text-left">
+		 	 <strong>요청 사유</strong>
+		 	 <br />
+		 	 <span id="orderLogModalReason" class="pl-2">맘에 안들어서</span>
+		  </li>
+		</ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="osChangeBtn" class="btn btn-primary" data-dismiss="modal">요청 처리</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- 교환/환불/취소 관리 시작 -->
 <div class="order-container">
@@ -118,9 +156,9 @@
 		      <td>
 		      	<button 
 		      		type="button" 
-		      		class="order-modal-btn btn btn-secondary" 
+		      		class="order-log-modal-btn btn btn-secondary" 
 		      		data-toggle="modal" 
-		      		data-target="#orderModal"
+		      		data-target="#orderLogModal"
 		      		data-order-log="${m.orderLogUid}">
 		      		주문 확인
 		      	</button>
@@ -221,6 +259,88 @@ $("#orderSearchBtn").click((e)=>{
 	});
 });
 
+//요청 상세 모달창에 정보 띄우기
+$(".order-log-modal-btn").click((e)=>{
+	const orderLogUid = $(e.target).data("orderLog");
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/admin/findOrderLogDetail",
+		method : "GET",
+		data : {
+			orderLogUid : orderLogUid
+		},
+		success(data){
+			console.log(data);
+			const reasonCode = data.orderLog.csStatus == 'RET' ? '교환' : '반품';
+			$("#orderLogModalUid").text(data.orderLog.orderLogUid);
+			$("#orderLogModalName").text(data.imp.name);
+			$("#orderLogModalReason").text(data.orderLog.reasonDetail);
+			$("#orderLogModalTotal").html("&#8361;"+(data.orderLog.merchant.productPrice+data.orderLog.merchant.shippingFee).toLocaleString());
+			$(".order-log-badge").text(reasonCode);
+			$(".order-log-badge").attr("data-cs-status", data.orderLog.csStatus);
+			$("#orderLogDetailTbl").html('');
 			
+			for(let i = 0; i < data.list.length; i++){
+				const item = data.list[i];
+				$("#orderLogDetailTbl").append(`<tr>
+						<td rowspan="2" class="orderModalImg ">
+						<img src="${pageContext.request.contextPath}/resources/upload/product/\${item.thumbnail}" alt=""class=" img-thumbnail"/>
+					</td>
+				</tr>
+				<tr>
+					<td class=" text-left">
+						<strong 
+							class="detail-title pl-2" 
+							data-detail-no="\${item.productDetail.detailNo}"
+							data-buy-count="\${item.buyCount}">
+							[\${item.name}]
+						</strong>
+						<br />
+						<span class="pl-2"></span>
+						<br />
+						<span class="pl-2">\${item.buyCount}개 구매</span>
+					</td>
+				</tr>`);
+			}
+		},
+		error : console.log
+	});
+});
+
+//주문 접수 클릭 시 교환, 반품이면 진행일자 업데이트, 환불이면 완료일자 업데이트 후 결제 취소
+$("#osChangeBtn").click((e)=>{
+	const orderLogUid = [$("#orderLogModalUid").text()];
+	let detailList = [];
+	const $detailTitle = $(".detail-title");
+	const length = $detailTitle.length;
+	const csStatus = $(".order-log-badge").data("csStatus");
+	
+	for(let i = 0; i < length; i++){
+		detailList[i] = {
+				detailNo : $detailTitle.eq(i).data("detailNo"),
+				buyCount : $detailTitle.eq(i).data("buyCount")
+		}
+	}
+	
+	console.log(detailList);
+	const data = {
+			orderLogUid : orderLogUid,
+			csStatus : csStatus,
+			detailList : detailList
+		};
+	$.ajax({
+		url : "${pageContext.request.contextPath}/admin/orderLogUpdate",
+		method : "POST",
+		dataType : "json",
+		contentType : "application/json; charset=utf-8",
+		data : JSON.stringify(data),
+		success(data){
+			alert("요청이 정상적으로 처리되었습니다.");
+			$(`#\${orderLogUid}`).detach();
+		},
+		error : console.log
+	});
+	
+});
 </script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>

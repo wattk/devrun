@@ -875,6 +875,7 @@ public class AdminController {
 		List<OrderLog> orderLogList = orderService.selectSomeOrderLog("EXC");
 		model.addAttribute("shipmentList", shipmentList);
 		model.addAttribute("merchantList", merchantList);
+		model.addAttribute("orderLogList", orderLogList);
 		
 		return "/admin/order/shipmentManage";
 		
@@ -914,6 +915,15 @@ public class AdminController {
 		model.addAttribute("manageList", manageList);
 		
 		return "/admin/order/orderLogManage";
+	}
+	
+	@GetMapping("/findOrderLogDetail")
+	@ResponseBody
+	public Map<String, Object> findOrderLogDetail(@RequestParam String orderLogUid) {
+		log.debug("orderLogUid = {}", orderLogUid);
+		Map<String, Object> orderLog = orderService.selectOneOrderLog(orderLogUid);
+		log.debug("orderLog = {}", orderLog);
+		return orderLog;
 	}
 	
 	@GetMapping("/reviewReport.do")

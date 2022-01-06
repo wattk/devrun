@@ -154,7 +154,12 @@ public class OrderDaoImpl implements OrderDao {
 		return session.selectList("order.selectSomeOrderLog", param);
 	}
 
+	@Override
+	public OrderLog selectOneOrderLog(String orderLogUid) {
+		return session.selectOne("order.selectOneOrderLog", orderLogUid);
+	}
 
+	
 	
 	
 }

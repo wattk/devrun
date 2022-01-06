@@ -65,6 +65,8 @@ public interface OrderDao {
 
 	List<OrderLog> selectSomeOrderLog(String param);
 
+	OrderLog selectOneOrderLog(String orderLogUid);
+
 
 
 }
