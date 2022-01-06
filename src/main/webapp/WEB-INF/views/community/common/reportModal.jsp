@@ -14,7 +14,7 @@
 
 
 		
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" id="reportButton">신고하기</button>
+
 
 <!--신고 모달 시작 (부트스트랩)-->
 <form:form name="communityReportFrm" 

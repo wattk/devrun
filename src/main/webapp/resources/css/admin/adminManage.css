@@ -8,6 +8,26 @@
 }
 
 /*주문 내역 관리 페이지*/
+::-webkit-scrollbar { display: none; }
+table { border-collapse: collapse; width: 100%; }
+th, td { background: #fff; padding: 8px 16px; }
+
+
+.order-list{
+	height : 300px;
+	overflow : auto;
+	margin-bottom: 40px;
+}
+.order-list thead th{
+	position : sticky;
+	top : 0;
+	background-color: #fff;
+	padding: 8px 16px;
+}
+.order-list tbody{
+	top : 10px;
+	padding: 8px 16px;
+}
 .order-search-container>label{
 	margin-right : 0.5rem;
 }

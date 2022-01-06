@@ -98,10 +98,21 @@ $(".claim-btn").click((e) => {
 	const target = $(e.target).data('target');
 	
 	if(target == '#claimThree'){
+		if($("[name=reasonDetail]").val().length == 0 || $("[name=reasonCode]").val() == ''){
+			alert("사유를 입력해 주세요");
+			return;
+		}
 		$(".claim-container").css('height', '1100px');
 	}
 	$(".claim-card").removeClass('show');
 	$(target).addClass('show');
 	window.scrollTo(0,0);
+});
+
+//주문 변경 신청 시 폼 제출
+$("#orderLogEnrollBtn").click((e)=>{
+	const orderLogUid = 'ORLG_' + new Date().getTime();
+	$("[name=orderLogUid]").val(orderLogUid);
+	$(document.orderLogFrm).submit();
 });
 }

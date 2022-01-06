@@ -103,7 +103,7 @@ public class AdminUtils {
 			HttpServletRequest request, 
 			HttpServletResponse response, 
 			JSONObject json,
-			String _token) {
+			String _token) throws Exception {
 		
 		String requestString = "";
 		String receipt = "";
@@ -136,14 +136,20 @@ public class AdminUtils {
 			JSONObject jsonObj = (JSONObject) jsonParser.parse(requestString);
 			log.debug("jsonObj : {}", jsonObj);
 			JSONObject jsonResponse = (JSONObject) jsonObj.get("response");
-			log.debug("jsonResponse : {}", jsonResponse);
-			//String code = (String) jsonResponse.get("code");
-			List<String> cancelReceiptUrls = (List<String>)jsonResponse.get("cancel_receipt_urls");
-			receipt = cancelReceiptUrls.get(0);
+			Long code = (Long)jsonObj.get("code");
+			if(code == 0) {
+				
+				log.debug("jsonResponse : {}", jsonResponse);
+				List<String> cancelReceiptUrls = (List<String>)jsonResponse.get("cancel_receipt_urls");
+				receipt = cancelReceiptUrls.get(0);
+			}
+			else{
+				throw new Exception();
+			}
 	
 		}catch(Exception e){
 			e.printStackTrace();
-	
+			throw e;
 		}
 	
 		return receipt;
