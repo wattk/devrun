@@ -39,7 +39,7 @@
 		</div>
 	</div>
 	<div class="item-sort-container d-flex 	justify-content-between">
-		<div class="p-4">총 465개</div>
+		<div class="p-4">총 ${total}개</div>
 		<div class="p-4" id="">
 			<span class="pr-2 pl-2 shop-sort">추천순</span>
 			<span class="pr-2 pl-2 shop-sort">신상품순</span>

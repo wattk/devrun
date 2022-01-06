@@ -111,7 +111,7 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public List<ProductEntity> CategoryItemAll(String parentCate) {
+	public List<ProductEx> CategoryItemAll(String parentCate) {
 		return shopDao.CategoryItemAll(parentCate);
 	}
 
@@ -245,6 +245,16 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public List<ProductEx> selectItemsByChildCate(String childCategoryCode) {
 		return shopDao.selectItemsByChildCate(childCategoryCode);
+	}
+
+	@Override
+	public int countItemsByParentCode(String parentCate) {
+		return shopDao.countItemsByParentCode(parentCate);
+	}
+
+	@Override
+	public int countItemsByChildCode(String childCategoryCode) {
+		return shopDao.countItemsByChildCode(childCategoryCode);
 	}
 
 }

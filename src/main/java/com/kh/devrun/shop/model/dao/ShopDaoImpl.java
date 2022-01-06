@@ -90,7 +90,7 @@ public class ShopDaoImpl implements ShopDao {
 	}
 
 	@Override
-	public List<ProductEntity> CategoryItemAll(String parentCate) {
+	public List<ProductEx> CategoryItemAll(String parentCate) {
 		return session.selectList("shop.CategoryItemAll", parentCate);
 	}
 
@@ -172,6 +172,16 @@ public class ShopDaoImpl implements ShopDao {
 	@Override
 	public List<ProductEx> selectItemsByChildCate(String childCategoryCode) {
 		return session.selectList("shop.selectItemsByChildCate", childCategoryCode);
+	}
+
+	@Override
+	public int countItemsByParentCode(String parentCate) {
+		return session.selectOne("shop.countItemsByParentCode",parentCate);
+	}
+
+	@Override
+	public int countItemsByChildCode(String childCategoryCode) {
+		return session.selectOne("shop.countItemsByChildCode",childCategoryCode);
 	}
 
 }

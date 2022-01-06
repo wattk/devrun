@@ -33,7 +33,7 @@ public interface ShopService {
 
 	List<Review> picReviewOnly(String productCode);
 
-	List<ProductEntity> CategoryItemAll(String parentCate);
+	List<ProductEx> CategoryItemAll(String parentCate);
 
 	Attachment selectOneAttach(int reviewNo);
 
@@ -62,5 +62,9 @@ public interface ShopService {
 	int insertSmsWatinglist(Map<String, Object> param);
 
 	List<ProductEx> selectItemsByChildCate(String childCategoryCode);
+
+	int countItemsByParentCode(String parentCate);
+
+	int countItemsByChildCode(String childCategoryCode);
 
 }

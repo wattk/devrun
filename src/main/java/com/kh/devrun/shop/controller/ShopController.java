@@ -206,9 +206,13 @@ public class ShopController {
 	@GetMapping("/categoryItemAll")
 	public String categoryItemAll(@RequestParam String parentCate, Model model) {
 
-		List<ProductEntity> itemList = shopService.CategoryItemAll(parentCate);
+		List<ProductEx> itemList = shopService.CategoryItemAll(parentCate);
 		model.addAttribute("itemList", itemList);
-
+		
+		//갯수세기
+		int total = shopService.countItemsByParentCode(parentCate);
+		model.addAttribute("total", total);
+		
 		return "shop/shopCategory";
 	}
 	
@@ -219,6 +223,11 @@ public class ShopController {
 		List<ProductEx>itemList = shopService.selectItemsByChildCate(childCategoryCode);
 		log.debug("소분류 상품 확인: {}",itemList);
 		model.addAttribute("itemList", itemList);
+		
+		//갯수세기
+		int total = shopService.countItemsByChildCode(childCategoryCode);
+		model.addAttribute("total", total);
+		
 		
 		return "shop/shopChildCate";
 	}
