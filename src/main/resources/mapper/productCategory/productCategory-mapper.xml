@@ -11,6 +11,13 @@
 		product_parent_category
 </select>
 		
+<select id="selectAllChildCategory" resultType="ProductChildCategory">
+	select
+		*
+	from
+		product_child_category
+</select>		
+		
 <select id="searchChildCategory" resultType="ProductChildCategory">
 	select
 		*
@@ -19,9 +26,53 @@
 	where
 		parent_category_code = #{code}
 </select>
+
+<!-- 대분류 카테고리 등록  -->	
+<insert id="insertParentCategory">
+insert into
+	product_parent_category
+values(
+	#{categoryCode},
+	#{categoryTitle}
+)
+</insert>
+
+<!-- 소분류 카테고리 등록  -->	
+<insert id="insertChildCategory">
+insert into
+	product_child_category
+values(
+	#{categoryCode},
+	#{selectParentCategory},
+	#{categoryTitle}
+)
+</insert>
 		
-				
+<select id="selectParentCategory" resultType="ProductParentCategory">
+	select
+		*
+	from
+		product_parent_category
+</select>						
 		
+<!-- 상품 대분류 카테고리 삭제 -->
+<delete id="deleteProductCategory">
+	delete
+		product_parent_category
+	where
+		parent_category_code = #{deleteParentCategoryCode}
+</delete>
+
+
+<!-- 상품 소분류 카테고리 삭제 -->
+<delete id="deleteChildProductCategory">
+	delete
+		product_child_category
+	where
+		child_category_code = #{deleteChildCategoryCode}
+</delete>
+
+
 		
 		
 		

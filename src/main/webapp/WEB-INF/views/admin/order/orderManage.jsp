@@ -109,9 +109,9 @@
 	</div>
 </div>
 <hr class="w-100"/>
+<strong class="m-5">주문 목록</strong>
 <div class="order-list">
-	<strong class="m-5">주문 목록</strong>
-	<table class="admin-tbl table table-hover mx-auto mt-3">
+	<table class="admin-tbl table table-hover mx-auto">
 	  <thead>
 	    <tr>
 	      <th scope="col">주문 번호</th>
@@ -123,10 +123,9 @@
 	      <th scope="col">총 상품 금액</th>
 	      <th scope="col">배송비</th>
 	      <th scope="col">총 주문 금액</th>
-	      <th scope="col">요청사항</th>
 	    </tr>
 	  </thead>
-	  <tbody id="orderBody">
+	  <tbody class="order-body" style="-ms-overflow-style: none;">
 	  	<c:forEach items="${list}" var="m" varStatus="vs">
 	    <tr>
 	      <td>${m.merchantUid}</td>
@@ -138,15 +137,15 @@
 	      <td><fmt:formatNumber type="currency">${m.productPrice}</fmt:formatNumber></td>
 	      <td><fmt:formatNumber type="currency">${m.shippingFee}</fmt:formatNumber></td>
 	      <td><fmt:formatNumber type="currency">${m.totalPrice}</fmt:formatNumber></td>
-	      <td>${m.shippingReq}</td>
 	    </tr>
 	    </c:forEach>
 	  </tbody>
 	</table>
 </div>
-<div class="order-list">
-	<strong class="m-5">주문 처리 대기</strong>
-	<table class="admin-tbl table table-hover mx-auto mt-3">
+
+<strong class="m-5">주문 처리 대기</strong>
+<div class="${orList.size() > 5 ? 'order-list':'' } mb-5">
+	<table class="admin-tbl table table-hover mx-auto">
 	  <thead>
 	    <tr>
 	      <th scope="col">주문 번호</th>
@@ -155,7 +154,7 @@
 	      <th scope="col">주문 확인</th>
 	    </tr>
 	  </thead>
-	  <tbody id="orderBody">
+	  <tbody class="order-body" style="-ms-overflow-style: none;">
 	  	<c:if test="${empty orList}">
 	  		<tr class="mx-auto">
 	  			<td colspan="4">처리 대기 중인 주문이 없습니다.</td>
@@ -181,8 +180,8 @@
 	  </tbody>
 	</table>
 </div>
-<div class="order-list">
-	<strong class="m-5">주문 판매량</strong>
+<strong class="m-5">주문 판매량</strong>
+<div class="order-sell-container">
 	<table class="admin-tbl table table-hover mx-auto mt-3">
 	  <thead>
 	    <tr>
@@ -233,6 +232,7 @@
 	</table>
 </div>
 <script>
+
 //주문 검색 날짜 배지 클릭에 따른 날짜 지정
 $(".date-badge").click((e)=>{
 	const $startDate = $("[name=startDate]"); 
@@ -390,9 +390,11 @@ $("#osChangeBtn").click((e)=>{
 	console.log(detailList);
 	console.log(merchantUid, typeof merchantUid);
 	const data = {
-			merchantUid : merchantUid,
-			orderStatus : 'PP',
-			detailList : detailList
+			uidArr : merchantUid,
+			keyword : 'order_status',
+			value : 'PP',
+			detailList : detailList,
+			target : 'merchantUid'
 		};
 	$.ajax({
 		url : "${pageContext.request.contextPath}/admin/orderUpdate",

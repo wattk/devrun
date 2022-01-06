@@ -3,13 +3,13 @@ package com.kh.devrun.shop.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
-import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
@@ -90,8 +90,15 @@ public class ShopDaoImpl implements ShopDao {
 	}
 
 	@Override
-	public List<ProductEx> CategoryItemAll(String parentCate) {
-		return session.selectList("shop.CategoryItemAll", parentCate);
+	public List<ProductEx> CategoryItemAll(int offset, int limit, String parentCate) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("shop.CategoryItemAll", parentCate, rowBounds);
+	}
+
+	@Override
+	public List<ProductEx> selectItemsByChildCate(int offset, int limit, String childCategoryCode) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("shop.selectItemsByChildCate", childCategoryCode, rowBounds);
 	}
 
 	@Override
@@ -170,18 +177,13 @@ public class ShopDaoImpl implements ShopDao {
 	}
 
 	@Override
-	public List<ProductEx> selectItemsByChildCate(String childCategoryCode) {
-		return session.selectList("shop.selectItemsByChildCate", childCategoryCode);
-	}
-
-	@Override
 	public int countItemsByParentCode(String parentCate) {
-		return session.selectOne("shop.countItemsByParentCode",parentCate);
+		return session.selectOne("shop.countItemsByParentCode", parentCate);
 	}
 
 	@Override
 	public int countItemsByChildCode(String childCategoryCode) {
-		return session.selectOne("shop.countItemsByChildCode",childCategoryCode);
+		return session.selectOne("shop.countItemsByChildCode", childCategoryCode);
 	}
 
 }

@@ -319,6 +319,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="${pageContext.request.contextPath}/admin/orderManage.do">주문 관리</a>
                         <a class="collapse-item" href="${pageContext.request.contextPath}/admin/shipmentManage.do">배송 관리</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/orderLogManage.do">교환/환불/취소 관리</a>
                     </div>
                 </div>
             </li>

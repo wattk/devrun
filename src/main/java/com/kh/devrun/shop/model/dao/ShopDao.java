@@ -37,7 +37,7 @@ public interface ShopDao {
 
 	List<Review> picReviewOnly(String productCode);
 
-	List<ProductEx> CategoryItemAll(String parentCate);
+	List<ProductEx> CategoryItemAll(int offset, int limit, String parentCate);
 
 	Attachment selectOneAttach(int reviewNo);
 
@@ -73,7 +73,7 @@ public interface ShopDao {
 
 	int insertSmsWatinglist(Map<String, Object> param);
 
-	List<ProductEx> selectItemsByChildCate(String childCategoryCode);
+	List<ProductEx> selectItemsByChildCate(int offset, int limit, String childCategoryCode);
 
 	int countItemsByParentCode(String parentCate);
 

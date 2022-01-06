@@ -47,7 +47,7 @@
 				    <tr class="ml-3 mr-3">
 				      <td rowspan="" class="col-1">
 					      <div class="cart-item-img">
-					      		<img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="shop-img img-b" >
+					      		<img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="shop-img img-thumbnail img-b" >
 					      </div>
 					  </td>
 				      <td class="col-4 align-middle ">
@@ -170,7 +170,7 @@
 				    <tr class="ml-3 mr-3">
 				      <td rowspan="" class="col-1">
 					      <div class="cart-item-img">
-					      		<img src="${pageContext.request.contextPath}/resources/upload/product/${productList[0].thumbnail}" alt="" class="shop-img img-b" >
+					      		<img src="${pageContext.request.contextPath}/resources/upload/product/${productList[0].thumbnail}" alt="" class="shop-img img-thumbnail img-b" >
 					      </div>
 					  </td>
 				      <td class="col-4 align-middle ">
@@ -192,7 +192,7 @@
 		  	<ul class="list-group">
 		  	  <li class="list-group-item">
 			  	<input type="radio" name="csStatus" id="cancel" value="CAN"/>
-			  	<label for="exchange" class="m-0">주문취소</label>
+			  	<label for="cancel" class="m-0">주문취소</label>
 			  </li>
 			 </ul>
 	  	  </c:if>
@@ -228,40 +228,4 @@
 	</div>
 </div>
 </form:form>
-<script>
-$("#orderLogEnrollBtn").click((e)=>{
-	const orderLogUid = 'ORLG_' + new Date().getTime();
-	$("[name=orderLogUid]").val(orderLogUid);
-	$(document.orderLogFrm).submit();
-	/* const data = new FormData(document.orderLogFrm);
-	data.append("orderLogUid", orderLogUid);
-	const obj = {};
-	
-	for(const [k,v] of data){
-		obj[k] = v;
-	}
-	const jsonStr = JSON.stringify(obj);
-	console.log(jsonStr);
-	
-	$.ajax({
-		url : "${pageContext.request.contextPath}/order/orderLogEnroll",
-		data : jsonStr,
-		dataType : "json",
-		method : "POST",
-		contentType : "application/json; charset=utf-8",
-		success(data){
-			console.log(data);
-			if(data.result != null){
-				const result = JSON.parse(data.result);
-				console.log(result);
-				if(result.code == 0){
-					alert("주문 취소가 완료되었습니다.");
-				}
-			}
-		},
-		error : console.log
-		
-	}); */
-})
-</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
