@@ -17,6 +17,7 @@ import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.order.model.vo.OrderLog;
+import com.kh.devrun.order.model.vo.OrderLogExt;
 import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.shop.model.vo.Cart;
@@ -192,12 +193,31 @@ public class OrderServiceImpl implements OrderService {
 		
 		int result = orderDao.insertOrderLog(orderLog);
 		result = orderDao.updateMerchant(param);
+		
 		return result;
 	}
 
 	@Override
 	public Imp selectOneImp(String merchantUid) {
 		return orderDao.selectOneImp(merchantUid);
+	}
+
+	@Override
+	public List<OrderLogExt> selectOrderLogList(int memberNo) {
+		return orderDao.selectOrderLogList(memberNo);
+	}
+
+	@Override
+	@Transactional(
+			propagation = Propagation.REQUIRED, 
+			isolation = Isolation.READ_COMMITTED, 
+			rollbackFor = Exception.class
+	)
+	public int updateOrderLog(Map<String, Object> param) {
+		int result = 0;
+		result = orderDao.updateOrderLog(param);
+		result = orderDao.updateImp((String)param.get("receipt_url"));
+		return 0;
 	}
 
 	
