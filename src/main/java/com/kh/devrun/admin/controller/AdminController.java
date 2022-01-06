@@ -44,6 +44,8 @@ import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.memberManage.model.service.MemberManageService;
 import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.Merchant;
+import com.kh.devrun.order.model.vo.OrderLog;
+import com.kh.devrun.order.model.vo.OrderLogExt;
 import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.product.model.vo.ProductDetail;
@@ -777,11 +779,11 @@ public class AdminController {
 	 * 혜진 시작 
 	 */
 	@GetMapping("/orderManage.do")
-	public void orderManage(Model model) {
+	public String orderManage(Model model) {
 		List<Merchant> list = orderService.selectAllMerchant();
 		List<Merchant> orList = new ArrayList<>();
 		for(Merchant m : list) {
-			if("OR".equals(m.getOrderStatus()))
+			if("OR".equals(m.getOrderStatus()) && "COM".equals(m.getCsStatus()))
 				orList.add(m);
 		}
 		
@@ -797,6 +799,8 @@ public class AdminController {
 		model.addAttribute("todayCnt", todayCnt);
 		model.addAttribute("weekCnt", weekCnt);
 		model.addAttribute("monthCnt", monthCnt);
+		
+		return "/admin/order/orderManage";
 	}
 	
 	@GetMapping("/orderSearch")
@@ -865,11 +869,14 @@ public class AdminController {
 	}
 	
 	@GetMapping("/shipmentManage.do")
-	public void shipmentManage(Model model) {
+	public String shipmentManage(Model model) {
 		List<Shipment> shipmentList = orderService.selectAllShipment();
 		List<Merchant> merchantList = orderService.selectSomeMerchant("PP");
+		List<OrderLog> orderLogList = orderService.selectSomeOrderLog("EXC");
 		model.addAttribute("shipmentList", shipmentList);
 		model.addAttribute("merchantList", merchantList);
+		
+		return "/admin/order/shipmentManage";
 		
 	}
 	
@@ -891,6 +898,22 @@ public class AdminController {
 			returnVal.put("inputValid", 0);
 		}
 		return returnVal;
+	}
+	
+	@GetMapping("/orderLogManage.do")
+	public String orderLogManage(Model model) {
+		List<OrderLog> list = orderService.selectAllOrderLog();
+		log.debug("list = {}", list);
+		List<OrderLog> manageList = new ArrayList<>();
+		for(OrderLog ol : list) {
+			if("REF".equals(ol.getCsStatus())||"RET".equals(ol.getCsStatus())||"EXC".equals(ol.getCsStatus())) {
+				manageList.add(ol);
+			}
+		}
+		model.addAttribute("list", list);
+		model.addAttribute("manageList", manageList);
+		
+		return "/admin/order/orderLogManage";
 	}
 	
 	@GetMapping("/reviewReport.do")

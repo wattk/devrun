@@ -220,6 +220,16 @@ public class OrderServiceImpl implements OrderService {
 		return 0;
 	}
 
+	@Override
+	public List<OrderLog> selectAllOrderLog() {
+		return orderDao.selectAllOrderLog();
+	}
+
+	@Override
+	public List<OrderLog> selectSomeOrderLog(String param) {
+		return orderDao.selectSomeOrderLog(param);
+	}
+
 	
 	
 

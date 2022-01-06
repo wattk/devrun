@@ -395,4 +395,24 @@
   	update order_log set
   		${keyword} = current_date
   </update>
+  
+  <select id="selectAllOrderLog" resultType="orderLog">
+  	select
+  		*
+  	from
+  		order_log
+  	order by
+  		req_date desc
+  </select>
+  
+  <select id="selectSomeOrderLog" resultType="orderLog">
+  	select
+  		*
+  	from
+  		order_log
+  	where
+  		cs_status = #{value}
+  	order by
+  		req_date desc
+  </select>
 </mapper>

@@ -80,7 +80,7 @@
 	    <tr>
 	      <th scope="col">배송 번호</th>
 	      <th scope="col">송장 번호</th>
-	      <th scope="col">주문 번호/변동 기록 번호</th>
+	      <th scope="col">주문 번호</th>
 	      <th scope="col">발송 일자</th>
 	    </tr>
 	  </thead>
@@ -104,11 +104,11 @@
 	</table>
 </div>
 <div class="shipment-list">
-	<strong class="ml-5 mr-2">송장 번호 입력</strong>
+	<strong class="ml-5 mr-2">주문 송장 번호 입력</strong>
 	<table class="admin-tbl table table-hover mx-auto mt-3">
 	  <thead>
 	    <tr>
-	      <th scope="col" class="col-3">주문 번호/변동 기록 번호</th>
+	      <th scope="col" class="col-3">주문 번호</th>
 	      <th scope="col" class="col-2">회원 번호</th>
 	      <th scope="col" class="col-2">주문 일자</th>
 	      <th scope="col" class="col-5">송장 번호 입력</th>
@@ -140,9 +140,53 @@
 	</table>
 	<div class="text-right">
 		<button
-			id="shipmentSaveBtn"
+			data-target="merchant"
 	   		type="button" 
-	   		class="btn btn-secondary mr-5"> 
+	   		class="shipmentSaveBtn btn btn-secondary mr-5"> 
+	   		저장
+	   	</button>
+	</div>
+</div>
+<div class="shipment-list">
+	<strong class="ml-5 mr-2">교환 송장 번호 입력</strong>
+	<table class="admin-tbl table table-hover mx-auto mt-3">
+	  <thead>
+	    <tr>
+	      <th scope="col" class="col-3">변동 기록 번호</th>
+	      <th scope="col" class="col-2">회원 번호</th>
+	      <th scope="col" class="col-2">요청 일자</th>
+	      <th scope="col" class="col-5">송장 번호 입력</th>
+	    </tr>
+	  </thead>
+	  <tbody id="orderBody">
+	  	<c:if test="${empty orderLogList}">
+	  		<tr class="mx-auto">
+	  			<td colspan="4">처리 대기 중인 교환이 없습니다.</td>
+	  		</tr>
+	  	</c:if>
+	  	<c:forEach items="${orderLogList}" var="m" varStatus="vs">
+		    <tr id="${m.orderLogUid}">
+		      <td>${m.orderLogUid}</td>
+		      <td>${m.memberNo}</td>
+		      <td><fmt:formatDate value="${m.reqDate}" pattern="yy-MM-dd"/></td>
+		      <td class="text-left">
+		      	<input 
+		      		type="text" 
+		      		name="shipmentNo" 
+		      		id="${m.orderLogUid}" 
+		      		class="form-control bg-light border-0 small" 
+		      		placeholder="송장번호를 입력하세요"/>
+		      	<span class="shipment-alert text-danger">운송장 번호는 10자리 또는 12자리입니다.</span>
+		      </td>
+		    </tr>
+	    </c:forEach>
+	  </tbody>
+	</table>
+	<div class="text-right">
+		<button
+			data-target="orderLog"
+	   		type="button"
+	   		class="shipmentSaveBtn btn btn-secondary mr-5"> 
 	   		저장
 	   	</button>
 	</div>
@@ -255,10 +299,11 @@ $("[name=shipmentNo]").on('change keyup paste',(e)=>{
 });
 
 //송장번호 등록 메소드
-$("#shipmentSaveBtn").click((e)=>{
-	const $shipmentNos = $("[name=shipmentNo]");
+$(".shipmentSaveBtn").click((e)=>{
+	const $shipmentNos = $(e.target, "[name=shipmentNo]");
 	const shipmentArr = new Array();
-	const merchantUid = new Array();
+	const uidArr = new Array();
+	const target = $(e.target).data("target");
 	
 	for(let i = 0; i < $shipmentNos.length; i++){
 		const value = $shipmentNos.eq(i).val();
@@ -266,7 +311,7 @@ $("#shipmentSaveBtn").click((e)=>{
 			continue;
 		}
 		
-		merchantUid.push($shipmentNos.eq(i).attr("id"));
+		uidArr.push($shipmentNos.eq(i).attr("id"));
 		shipmentArr.push({
 			merchantUid : $shipmentNos.eq(i).attr("id"),
 			shipmentNo : value
@@ -274,8 +319,9 @@ $("#shipmentSaveBtn").click((e)=>{
 	}
 	
 	const data = {
-			merchantUid : merchantUid,
-			shipmentArr : shipmentArr
+			uidArr : uidArr,
+			shipmentArr : shipmentArr,
+			target : target
 	};
 	
 	console.log(shipmentArr);
@@ -290,8 +336,15 @@ $("#shipmentSaveBtn").click((e)=>{
 			console.log(data);
 			if(data.inputValid == 1){
 				alert(data.msg);
-				for(let i = 0; i < merchantUid.length; i++){
-					$(`#\${merchantUid[i]}`).detach();
+				if(target == 'merchant'){
+					for(let i = 0; i < uidArr.length; i++){
+						$(`#\${merchantUid[i]}`).detach();
+					}
+				}
+				else{
+					for(let i = 0; i < uidArr.length; i++){
+						$(`#\${orderLogUid[i]}`).detach();
+					}
 				}
 			}
 		},

@@ -144,6 +144,16 @@ public class OrderDaoImpl implements OrderDao {
 		return session.update("order.updateOrderLog", param);
 	}
 
+	@Override
+	public List<OrderLog> selectAllOrderLog() {
+		return session.selectList("order.selectAllOrderLog");
+	}
+
+	@Override
+	public List<OrderLog> selectSomeOrderLog(String param) {
+		return session.selectList("order.selectSomeOrderLog", param);
+	}
+
 
 	
 	

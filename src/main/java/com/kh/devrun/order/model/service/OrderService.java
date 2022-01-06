@@ -47,5 +47,9 @@ public interface OrderService {
 
 	int updateOrderLog(Map<String, Object> param);
 
+	List<OrderLog> selectAllOrderLog();
+
+	List<OrderLog> selectSomeOrderLog(String string);
+
 
 }
