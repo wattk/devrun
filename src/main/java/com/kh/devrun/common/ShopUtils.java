@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class shopUtils {
+public class ShopUtils {
 
 	@Autowired
 	private ShopService shopService;

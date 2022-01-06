@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.common.DevrunUtils;
-import com.kh.devrun.common.shopUtils;
+import com.kh.devrun.common.ShopUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.product.model.service.ProductService;
@@ -73,7 +73,7 @@ public class ShopController {
 	ReportService reportService;
 
 	@Autowired
-	shopUtils shopUtils;
+	ShopUtils shopUtils;
 
 	// SMS api 주입
 	@Autowired
@@ -204,31 +204,43 @@ public class ShopController {
 
 	// 상품 사이드 메뉴에서 전체보기 클릭 시
 	@GetMapping("/categoryItemAll")
-	public String categoryItemAll(@RequestParam String parentCate, Model model) {
+	public String categoryItemAll(@RequestParam String parentCate, Model model,
+			@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request) {
 
-		List<ProductEx> itemList = shopService.CategoryItemAll(parentCate);
+		// 페이징 처리
+		log.debug("cPage : {} ", cPage);
+		int limit = 12;
+		int offset = (cPage - 1) * limit;
+
+		List<ProductEx> itemList = shopService.CategoryItemAll(offset, limit, parentCate);
 		model.addAttribute("itemList", itemList);
-		
-		//갯수세기
+
+		// 갯수세기
 		int total = shopService.countItemsByParentCode(parentCate);
 		model.addAttribute("total", total);
 		
+		//3.pagebar
+		String url = request.getRequestURI();
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, total, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
+
+
 		return "shop/shopCategory";
 	}
-	
+
 	// 상품 사이드 메뉴에서 소분류 카테고리 클릭 시
 	@GetMapping("shopChildCate")
-	public String shopChildCate (@RequestParam String childCategoryCode, Model model) {
-		
-		List<ProductEx>itemList = shopService.selectItemsByChildCate(childCategoryCode);
-		log.debug("소분류 상품 확인: {}",itemList);
+	public String shopChildCate(@RequestParam String childCategoryCode, Model model) {
+
+		List<ProductEx> itemList = shopService.selectItemsByChildCate(childCategoryCode);
+		log.debug("소분류 상품 확인: {}", itemList);
 		model.addAttribute("itemList", itemList);
-		
-		//갯수세기
+
+		// 갯수세기
 		int total = shopService.countItemsByChildCode(childCategoryCode);
 		model.addAttribute("total", total);
-		
-		
+
 		return "shop/shopChildCate";
 	}
 
@@ -485,8 +497,8 @@ public class ShopController {
 		}
 		smsContent.append("고객님 <" + productName + "> 상품의 <" + sb.toString() + "> 옵션의 재입고 시 문자로 알려드리겠습니다."
 				+ System.lineSeparator() + System.lineSeparator() + "쇼핑몰을 이용해주셔서 감사합니다.");
-		
-		//문자 내용 확인해보기
+
+		// 문자 내용 확인해보기
 		log.debug("-----------------------------------------------------------");
 		log.debug(smsContent.toString());
 		log.debug("-----------------------------------------------------------");

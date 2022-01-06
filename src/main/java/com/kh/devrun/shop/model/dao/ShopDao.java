@@ -37,7 +37,7 @@ public interface ShopDao {
 
 	List<Review> picReviewOnly(String productCode);
 
-	List<ProductEx> CategoryItemAll(String parentCate);
+	List<ProductEx> CategoryItemAll(int offset, int limit, String parentCate);
 
 	Attachment selectOneAttach(int reviewNo);
 

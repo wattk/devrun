@@ -111,11 +111,6 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public List<ProductEx> CategoryItemAll(String parentCate) {
-		return shopDao.CategoryItemAll(parentCate);
-	}
-
-	@Override
 	public Attachment selectOneAttach(int reviewNo) {
 		return shopDao.selectOneAttach(reviewNo);
 	}
@@ -255,6 +250,11 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public int countItemsByChildCode(String childCategoryCode) {
 		return shopDao.countItemsByChildCode(childCategoryCode);
+	}
+
+	@Override
+	public List<ProductEx> CategoryItemAll(int offset, int limit, String parentCate) {
+		return shopDao.CategoryItemAll(offset, limit, parentCate);
 	}
 
 }
