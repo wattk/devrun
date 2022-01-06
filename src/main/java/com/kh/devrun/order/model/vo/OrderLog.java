@@ -31,5 +31,5 @@ public class OrderLog implements Serializable {
 	private String reasonDetail;
 	private int memberNo;
 	
-	private List<MerchantDetail> merchantDetailList;
+	private Merchant merchant;
 }

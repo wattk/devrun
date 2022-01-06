@@ -172,6 +172,7 @@ public class OrderServiceImpl implements OrderService {
 	public int insertShipment(Map<String, Object> shipmentArr) {
 		shipmentArr.put("keyword", "order_status");
 		shipmentArr.put("value", "SS");
+		log.debug("shipmentArr = {}", shipmentArr);
 		int result = orderDao.insertShipment((List<Map<String, Object>>)shipmentArr.get("shipmentArr"));
 		result = orderDao.updateMerchant(shipmentArr);
 		return result;
@@ -218,6 +219,39 @@ public class OrderServiceImpl implements OrderService {
 		result = orderDao.updateOrderLog(param);
 		result = orderDao.updateImp((String)param.get("receipt_url"));
 		return 0;
+	}
+
+	@Override
+	public List<OrderLog> selectAllOrderLog() {
+		return orderDao.selectAllOrderLog();
+	}
+
+	@Override
+	public List<OrderLog> selectSomeOrderLog(String param) {
+		return orderDao.selectSomeOrderLog(param);
+	}
+
+	@Override
+	public Map<String, Object> selectOneOrderLog(String orderLogUid) {
+		Map<String, Object> map = new HashMap<>();
+		
+		OrderLog orderLog = orderDao.selectOneOrderLog(orderLogUid);
+		map.put("orderLog", orderLog);
+		
+		Imp imp = orderDao.selectOneImp(orderLog.getMerchantUid());
+		map.put("imp", imp);
+		
+		List<Integer> detailNoList = new ArrayList<>();
+		Merchant merchant = orderLog.getMerchant();
+		
+		for(MerchantDetail d : merchant.getMerchantDetailList()) {
+			detailNoList.add(d.getDetailNo());
+		}
+		
+		List<Product> list = orderDao.selectMerchantProductList(detailNoList);
+		map.put("list", list);
+		
+		return map;
 	}
 
 	

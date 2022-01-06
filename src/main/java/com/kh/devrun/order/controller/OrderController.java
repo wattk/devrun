@@ -114,7 +114,7 @@ public class OrderController {
 						log.debug("cancelResult = {}", receipt);
 						if(receipt != null) {
 							Map<String, Object> param = new HashMap<>();
-							param.put("keyword", "endDate");
+							param.put("keyword", "END_DATE");
 							param.put("orderLogUid", orderLog.getOrderLogUid());
 							result = orderService.updateOrderLog(param);
 						}
