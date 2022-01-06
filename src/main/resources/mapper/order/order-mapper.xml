@@ -254,11 +254,25 @@
   <update id="updateMerchant">
   	update merchant set
   		${keyword} = #{value}
-  	where
-  		merchant_uid in
-  		<foreach collection="merchantUid" item="merchantUid" open="(" separator="," close=")">
-	  		 #{merchantUid}
-  		</foreach>
+  	<where>
+  		<choose>
+	  		<when test="target eq 'orderLogUid'">
+		  		order_log_uid in
+		  		<foreach collection="uidArr" item="uid" open="(" separator="," close=")">
+			  		 #{uid}
+		  		</foreach>
+	  		</when>
+	  		<when test="target eq 'merchantUid'">
+		  		merchant_uid in
+		  		<foreach collection="uidArr" item="uid" open="(" separator="," close=")">
+			  		 #{uid}
+		  		</foreach>
+	  		</when>
+	  		<otherwise>
+		  		member_no = #{memberNo}
+	  		</otherwise>
+  		</choose>
+  	</where>
   </update>
   
   <update id="updateProductQuantity">
@@ -394,6 +408,11 @@
   <update id="updateOrderLog">
   	update order_log set
   		${keyword} = current_date
+  	where
+  		order_log_uid in
+   		<foreach collection="orderLogUid" item="uid" open="(" separator="," close=")">
+	  		 #{uid}
+  		</foreach>
   </update>
   
   <select id="selectAllOrderLog" resultType="orderLog">

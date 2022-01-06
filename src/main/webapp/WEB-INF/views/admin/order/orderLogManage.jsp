@@ -25,6 +25,8 @@
       	<br />
 		<h5 id="orderLogModalName" class="pb-2 mr-2 d-inline"></h5>
 		<span class="order-log-badge badge badge-pill badge-primary"></span>
+      	<br />
+        <span id="orderLogModalReqDate"></span>
 		<ul class="list-group list-group-flush">
 		  <li class="list-group-item">
 			<table id="orderLogDetailTbl" class=" mt-3 w-100">
@@ -35,6 +37,7 @@
 		 	 <strong>총 주문 가격</strong><span id="orderLogModalTotal" class="pl-2"></span>
 		  </li>
 		  <li class="list-group-item text-left">
+		  	 
 		 	 <strong>요청 사유</strong>
 		 	 <br />
 		 	 <span id="orderLogModalReason" class="pl-2">맘에 안들어서</span>
@@ -262,6 +265,7 @@ $("#orderSearchBtn").click((e)=>{
 //요청 상세 모달창에 정보 띄우기
 $(".order-log-modal-btn").click((e)=>{
 	const orderLogUid = $(e.target).data("orderLog");
+	console.log(orderLogUid);
 	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/admin/findOrderLogDetail",
@@ -271,13 +275,41 @@ $(".order-log-modal-btn").click((e)=>{
 		},
 		success(data){
 			console.log(data);
-			const reasonCode = data.orderLog.csStatus == 'RET' ? '교환' : '반품';
+			let reasonCode = "";
+			
+			let reqDate = new Date(data.orderLog.reqDate); 
+			reqDate = reqDate.toISOString().substring(0, 10);
+			
+			if(data.orderLog.csStatus == 'EXC'){
+				if(data.orderLog.processDate == null){
+					reasonCode = '교환접수';
+				}
+				else{
+					reasonCode = '교환진행중';
+				}
+			}
+			else if(data.orderLog.csStatus == 'RET'){
+				if(data.orderLog.processDate == null){
+					reasonCode = '반품접수';
+				}
+				else{
+					reasonCode = '반품진행중';
+				}
+			}
+			
 			$("#orderLogModalUid").text(data.orderLog.orderLogUid);
+			$("#orderLogModalUid")
+				.attr("data-imp-uid", data.imp.impUid)
+				.attr("data-amount", data.imp.amount);
+				
 			$("#orderLogModalName").text(data.imp.name);
 			$("#orderLogModalReason").text(data.orderLog.reasonDetail);
 			$("#orderLogModalTotal").html("&#8361;"+(data.orderLog.merchant.productPrice+data.orderLog.merchant.shippingFee).toLocaleString());
 			$(".order-log-badge").text(reasonCode);
-			$(".order-log-badge").attr("data-cs-status", data.orderLog.csStatus);
+			$(".order-log-badge")
+				.attr("data-cs-status", data.orderLog.csStatus)
+				.attr("data-valid", data.orderLog.processDate == null? 0 : 1 );
+			$("#orderLogModalReqDate").text(reqDate);
 			$("#orderLogDetailTbl").html('');
 			
 			for(let i = 0; i < data.list.length; i++){
@@ -310,10 +342,14 @@ $(".order-log-modal-btn").click((e)=>{
 //주문 접수 클릭 시 교환, 반품이면 진행일자 업데이트, 환불이면 완료일자 업데이트 후 결제 취소
 $("#osChangeBtn").click((e)=>{
 	const orderLogUid = [$("#orderLogModalUid").text()];
+	const impUid = $("#orderLogModalUid").data("impUid");
+	const amount = $("#orderLogModalUid").data("amount");
 	let detailList = [];
 	const $detailTitle = $(".detail-title");
 	const length = $detailTitle.length;
 	const csStatus = $(".order-log-badge").data("csStatus");
+	const valid = $(".order-log-badge").data("valid");
+	const reasonDetail = $("#orderLogModalReason").text();
 	
 	for(let i = 0; i < length; i++){
 		detailList[i] = {
@@ -322,11 +358,19 @@ $("#osChangeBtn").click((e)=>{
 		}
 	}
 	
+	const imp = {
+		impUid : impUid,
+		amount : amount
+	};
+	
 	console.log(detailList);
 	const data = {
 			orderLogUid : orderLogUid,
+			imp : imp,
 			csStatus : csStatus,
-			detailList : detailList
+			valid : valid,
+			detailList : detailList,
+			reasonDetail : reasonDetail
 		};
 	$.ajax({
 		url : "${pageContext.request.contextPath}/admin/orderLogUpdate",
@@ -336,7 +380,9 @@ $("#osChangeBtn").click((e)=>{
 		data : JSON.stringify(data),
 		success(data){
 			alert("요청이 정상적으로 처리되었습니다.");
-			$(`#\${orderLogUid}`).detach();
+			if(valid == 1){
+				$(`#\${orderLogUid}`).detach();
+			}
 		},
 		error : console.log
 	});

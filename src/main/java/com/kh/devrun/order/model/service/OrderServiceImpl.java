@@ -172,6 +172,7 @@ public class OrderServiceImpl implements OrderService {
 	public int insertShipment(Map<String, Object> shipmentArr) {
 		shipmentArr.put("keyword", "order_status");
 		shipmentArr.put("value", "SS");
+		log.debug("shipmentArr = {}", shipmentArr);
 		int result = orderDao.insertShipment((List<Map<String, Object>>)shipmentArr.get("shipmentArr"));
 		result = orderDao.updateMerchant(shipmentArr);
 		return result;

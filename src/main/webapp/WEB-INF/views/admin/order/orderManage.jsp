@@ -390,9 +390,11 @@ $("#osChangeBtn").click((e)=>{
 	console.log(detailList);
 	console.log(merchantUid, typeof merchantUid);
 	const data = {
-			merchantUid : merchantUid,
-			orderStatus : 'PP',
-			detailList : detailList
+			uidArr : merchantUid,
+			keyword : 'order_status',
+			value : 'PP',
+			detailList : detailList,
+			target : 'merchantUid'
 		};
 	$.ajax({
 		url : "${pageContext.request.contextPath}/admin/orderUpdate",

@@ -114,7 +114,7 @@
 	      <th scope="col" class="col-5">송장 번호 입력</th>
 	    </tr>
 	  </thead>
-	  <tbody id="orderBody">
+	  <tbody id="merchantShipment" class="order-body" >
 	  	<c:if test="${empty merchantList}">
 	  		<tr class="mx-auto">
 	  			<td colspan="4">처리 대기 중인 주문이 없습니다.</td>
@@ -140,7 +140,7 @@
 	</table>
 	<div class="text-right">
 		<button
-			data-target="merchant"
+			data-target="merchantUid"
 	   		type="button" 
 	   		class="shipmentSaveBtn btn btn-secondary mr-5"> 
 	   		저장
@@ -158,7 +158,7 @@
 	      <th scope="col" class="col-5">송장 번호 입력</th>
 	    </tr>
 	  </thead>
-	  <tbody id="orderBody">
+	  <tbody id="orderLogShipment" class="order-body">
 	  	<c:if test="${empty orderLogList}">
 	  		<tr class="mx-auto">
 	  			<td colspan="4">처리 대기 중인 교환이 없습니다.</td>
@@ -184,7 +184,7 @@
 	</table>
 	<div class="text-right">
 		<button
-			data-target="orderLog"
+			data-target="orderLogUid"
 	   		type="button"
 	   		class="shipmentSaveBtn btn btn-secondary mr-5"> 
 	   		저장
@@ -300,10 +300,11 @@ $("[name=shipmentNo]").on('change keyup paste',(e)=>{
 
 //송장번호 등록 메소드
 $(".shipmentSaveBtn").click((e)=>{
-	const $shipmentNos = $(e.target, "[name=shipmentNo]");
+	const target = $(e.target).data("target");
+	const $shipmentNos = $(`#\${target},[name=shipmentNo]`);
 	const shipmentArr = new Array();
 	const uidArr = new Array();
-	const target = $(e.target).data("target");
+	console.log($shipmentNos);
 	
 	for(let i = 0; i < $shipmentNos.length; i++){
 		const value = $shipmentNos.eq(i).val();
@@ -317,6 +318,8 @@ $(".shipmentSaveBtn").click((e)=>{
 			shipmentNo : value
 		});
 	}
+	console.log(shipmentArr);
+	console.log(uidArr);
 	
 	const data = {
 			uidArr : uidArr,
@@ -324,7 +327,6 @@ $(".shipmentSaveBtn").click((e)=>{
 			target : target
 	};
 	
-	console.log(shipmentArr);
 	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/admin/enrollShipmentNo",
@@ -336,15 +338,8 @@ $(".shipmentSaveBtn").click((e)=>{
 			console.log(data);
 			if(data.inputValid == 1){
 				alert(data.msg);
-				if(target == 'merchant'){
-					for(let i = 0; i < uidArr.length; i++){
-						$(`#\${merchantUid[i]}`).detach();
-					}
-				}
-				else{
-					for(let i = 0; i < uidArr.length; i++){
-						$(`#\${orderLogUid[i]}`).detach();
-					}
+				for(let i = 0; i < uidArr.length; i++){
+					$(`#\${uidArr[i]}`).detach();
 				}
 			}
 		},
