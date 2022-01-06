@@ -65,6 +65,22 @@ public class OrderServiceImpl implements OrderService {
 		Merchant merchant = orderDao.selectOneMerchant(merchantUid);
 		map.put("merchant", merchant);
 		
+		if("SS".equals(merchant.getOrderStatus()) || "OC".equals(merchant.getOrderStatus())) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("value", merchant.getMerchantUid());
+			
+			if("COM".equals(merchant.getCsStatus())) {
+				param.put("target", "merchant");
+			}
+			else {
+				param.put("target", "orderLog");
+				
+			}
+			
+			Shipment shipment = orderDao.selectOneShipment(param);
+			map.put("shipment", shipment);
+		}
+		
 		Imp imp = orderDao.selectOneImp(merchantUid);
 		map.put("imp", imp);
 		

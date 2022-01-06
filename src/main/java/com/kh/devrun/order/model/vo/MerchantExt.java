@@ -19,6 +19,7 @@ public class MerchantExt extends Merchant implements Serializable {
 	private Imp imp;
 	private String productCode;
 	private String thumbnail;
+	private String trackingNo;
 	public MerchantExt(String merchantUid, int memberNo, Date orderDate, String orderStatus, String csStatus,
 			int pointValue, int productPrice, int shippingFee, int totalPrice, String shippingReq,
 			List<MerchantDetail> merchantDetailList) {

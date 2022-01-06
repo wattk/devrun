@@ -158,7 +158,8 @@
 	    cs_status,
 	    name,
 	    amount,
-	    thumbnail
+	    thumbnail,
+	    tracking_no
 	from
 	    view_merchant_imp
 	where
@@ -173,6 +174,7 @@
   	<result column="order_status" property="orderStatus"/>
   	<result column="cs_status" property="csStatus"/>
   	<result column="thumbnail" property="thumbnail"/>
+  	<result column="tracking_no" property="trackingNo"/>
   	<association property="imp" javaType ="imp">
 	  	<result column="name" property="name"/>
 	  	<result column="amount" property="amount"/>
@@ -477,4 +479,20 @@
   		</collection>
   	</association>
   </resultMap>
+  
+  <select id="selectOneShipment" resultType="shipment">
+  	select
+  		*
+  	from
+  		shipment
+  	<where>
+  		<if test="target eq 'merchant'">
+	  		merchant_uid = #{value}
+	  			and order_log_uid is null
+  		</if>
+  		<if test="target eq 'orderLog'">
+	  		order_log_uid = #{value}
+  		</if>
+  	</where>
+  </select>
 </mapper>
