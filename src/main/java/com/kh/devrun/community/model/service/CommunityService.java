@@ -59,6 +59,10 @@ public interface CommunityService {
 
 	int insertCommunityReport(Report report);
 
+	List<CommunityEntity> selectLikeBoardList(Map<String, Object> param, int offset, int limit);
+
+	List<CommunityEntity> selectCommentBoardList(Map<String, Object> param, int offset, int limit);
+
 
 
 

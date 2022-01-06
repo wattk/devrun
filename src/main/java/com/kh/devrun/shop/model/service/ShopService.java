@@ -6,6 +6,7 @@ import java.util.Map;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEntity;
+import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
@@ -13,10 +14,10 @@ import com.kh.devrun.shop.model.vo.Wishlist;
 import com.kh.devrun.shop.model.vo.WishlistProduct;
 
 public interface ShopService {
-	
+
 	/* 혜진 장바구니 시작 */
 	int insertCart(Cart cart);
-	
+
 	int deleteCart(List<Integer> cartNoArr);
 	/* 혜진 장바구니 끝 */
 
@@ -32,7 +33,7 @@ public interface ShopService {
 
 	List<Review> picReviewOnly(String productCode);
 
-	List<ProductEntity> CategoryItemAll(String parentCate);
+	List<ProductEx> CategoryItemAll(int offset, int limit, String parentCate);
 
 	Attachment selectOneAttach(int reviewNo);
 
@@ -51,7 +52,7 @@ public interface ShopService {
 	int wishlistDelete(Map<String, Object> param);
 
 	List<WishlistProduct> selectAllWishlist(int memberNo);
-	
+
 	int didIHitWishlist(Map<String, Object> param);
 
 	ProductDetail selectOneProductDetail(int detailNo);
@@ -59,5 +60,11 @@ public interface ShopService {
 	int updateViewCount(String productCode);
 
 	int insertSmsWatinglist(Map<String, Object> param);
+
+	List<ProductEx> selectItemsByChildCate(int offset, int limit, String childCategoryCode);
+
+	int countItemsByParentCode(String parentCate);
+
+	int countItemsByChildCode(String childCategoryCode);
 
 }

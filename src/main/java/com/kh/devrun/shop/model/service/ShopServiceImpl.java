@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEntity;
+import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.shop.model.dao.ShopDao;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
@@ -107,11 +108,6 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public List<Review> picReviewOnly(String productCode) {
 		return shopDao.picReviewOnly(productCode);
-	}
-
-	@Override
-	public List<ProductEntity> CategoryItemAll(String parentCate) {
-		return shopDao.CategoryItemAll(parentCate);
 	}
 
 	@Override
@@ -239,6 +235,26 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public int insertSmsWatinglist(Map<String, Object> param) {
 		return shopDao.insertSmsWatinglist(param);
+	}
+
+	@Override
+	public List<ProductEx> selectItemsByChildCate(int offset, int limit, String childCategoryCode) {
+		return shopDao.selectItemsByChildCate(offset, limit, childCategoryCode);
+	}
+
+	@Override
+	public int countItemsByParentCode(String parentCate) {
+		return shopDao.countItemsByParentCode(parentCate);
+	}
+
+	@Override
+	public int countItemsByChildCode(String childCategoryCode) {
+		return shopDao.countItemsByChildCode(childCategoryCode);
+	}
+
+	@Override
+	public List<ProductEx> CategoryItemAll(int offset, int limit, String parentCate) {
+		return shopDao.CategoryItemAll(offset, limit, parentCate);
 	}
 
 }

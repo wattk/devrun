@@ -73,7 +73,8 @@
 			count(*)
 		from 
 			review
-		where product_code = #{countAllList}
+		where 
+			product_code = #{countAllList}
 	</select>
 	
 	<select id="countPicReviewList" resultType="int">
@@ -81,12 +82,16 @@
 		    count(*) 
 		from 
 		    review r join review_attachment a
-		    on r.review_no = a.review_no
-		    where product_code = #{productCode}
+		    	on r.review_no = a.review_no
+		where 
+			product_code = #{productCode}
 	</select>
 	
 	<delete id="reviewDelete">
-		delete from review where review_no = #{reviewNo}
+		delete 
+		from 
+			review 
+		where review_no = #{reviewNo}
 	</delete>
 	
 	<select id="picReviewOnly" resultMap="review">
@@ -101,13 +106,31 @@
 		order by 
 			r.reg_date desc  	
 	</select>
-	<select id="CategoryItemAll" resultType="product">
+	
+	<select id="CategoryItemAll" resultType="productEx">
 		select 
 			* 
-		from view_product_parent_category 
-		where status ='Y' and 
-		parent_category_code = #{parentCate}
-	</select>	
+		from 
+			view_product_parent_category 
+		where 
+			status ='Y' and 
+			parent_category_code = #{parentCate}
+		order by 
+			reg_date desc	
+	</select>
+	
+	<select id="selectItemsByChildCate" resultType="productEx">
+		select 
+			* 
+		from 
+			view_product_parent_category 
+		where 
+			status ='Y' and 
+			child_category_code = #{childCategoryCode}
+		order by 
+			reg_date desc	
+	</select>
+	
 	<select id="selectOneAttach" resultType="attachment">
 		select 
 			*
@@ -125,6 +148,7 @@
 		where 
 			child_Category_code = #{childCate}
 			and product_code != #{productCode}
+			and status = 'Y'
 	</select>
 	
 	
@@ -136,7 +160,8 @@
 			member_no = #{loginMemberNo} and
 			review_no = #{reviewNo}
 	</select>
-		<update id="reviewLikeAdd">
+	
+	<update id="reviewLikeAdd">
 		update 
 			review 
 		set like_count = like_count +1
@@ -200,8 +225,9 @@
 			wishlist_no
 		from 
 			wishlistInfo
-		where member_no = #{memberNo}
-		and product_code = #{productCode}
+		where 
+			member_no = #{memberNo}
+			and product_code = #{productCode}
 	</select>
 	
 	<delete id="wishlistDelete">
@@ -219,6 +245,7 @@
 			wishProduct
 		where 
 			member_no = #{memberNo}
+			status ='Y'
 	</select>
 	
 	<select id="selectOneProductDetail" resultType="productDetail">
@@ -229,6 +256,7 @@
 		where
 			detail_no = #{detailNo}
 	</select>
+	
 	<update id="updateViewCount">
 		update 
 			product
@@ -252,6 +280,27 @@
 			default
 			)
 	</insert>
+	
+	<select id="countItemsByParentCode" resultType="_int">
+		select 
+			count(*) 
+		from 
+			view_product_parent_category 
+		where 
+			status ='Y' and 
+			parent_category_code = #{parentCate}
+	</select>
+	
+	<select id="countItemsByChildCode" resultType="_int">
+		select 
+			count(*) 
+		from 
+			view_product_parent_category 
+		where 
+			status ='Y' and 
+			child_category_code = #{childCategoryCode}
+	</select>
+	
 	
 	
 
