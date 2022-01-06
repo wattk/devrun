@@ -46,6 +46,7 @@ alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 	.simple-login{width:50px; margin-top:40px; margin-right:20px;}
 	
 </style>
+
 	<div id="login-container">
 		<img src="${pageContext.request.contextPath }/resources/images/logo-devrun.png" id="title" />
 		<form:form 
@@ -69,12 +70,6 @@ alert("아이디 또는 비밀번호가 일치하지 않습니다.");
 	<div>간편 로그인</div>
 	<img src="${pageContext.request.contextPath }/resources/images/kakao.jpg" class="simple-login">
 	<img src="${pageContext.request.contextPath }/resources/images/naver.jpg" class="simple-login">
-	
-<script>
-$("#login-btn").click(e=>{
-	location.href="${pageContext.request.contextPath}/member/memberLogin.do"
-});
-</script>
 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

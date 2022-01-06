@@ -117,9 +117,12 @@ $(() => {
 			</div>
 			<!-- 검색창 끝 -->
 			
+			<div id="totalCountContainer">
+			  
+			</div>
+			
 			<!-- 상단 탭 시작 -->	
 			<nav>
-			  <p>총<span id="freeboardSize">${totalContent}</span>개의 게시물이 있습니다.</p>
 			  <div class="nav nav-tabs" id="nav-tab" role="tablist">
 			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">최신순</a>
 			    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">댓글 많은 순</a>
@@ -182,7 +185,8 @@ $(() => {
 
 <script>
 
-//타입별 검색
+
+
 /**
  * searchType별 change 이벤트 핸들러를 이용해서 해당 div만 보여주고 나머지는 감춘다.
  */
@@ -190,6 +194,10 @@ $("#searchType").change(function(e){
 	// e.target 이벤트 발생객체 -> #searchtype
 	const type = $(e.target).val();
 	console.log(type);
+	
+	// 검색타입 바뀔 때 마다 값 초기화
+	$searchType = "";
+	$searchKeyword = "";
 	
 	// 1. .search-type 감추기 --> 해당 div 세개가 모두 감춰진다.
 	$(".search-type").hide();
@@ -201,8 +209,62 @@ $("#searchType").change(function(e){
 	$(`#search-\${type}`).css("display", "inline-block");
 });
 
+ 
+/* serach 입력값 대입 */
+$("input[name=searchKeyword]").change(e => {
+	//console.log("searchType = " + $(e.target).parent().children("input[name=searchType]").val());
+	//console.log("searchKeyword = " + $(e.target).val());
+	
+	$searchType = $(e.target).parent().children("input[name=searchType]").val();
+	$searchKeyword = $(e.target).val();
+});
 
-$(".search-btn").click((e) => {
+/* 전역 변수*/
+var $searchType = "";
+var $searchKeyword = "";
+
+function getPage(cPage){
+	const $btn = (".search-btn");
+	
+	searchType = $searchType;
+	searchKeyword = $searchKeyword;
+	var cPage;
+	
+	console.log("searchType = " + searchType);
+	console.log("searchKeyword = " + searchKeyword);
+	
+	const search = {
+			"searchType" : $searchType,
+			"searchKeyword" : $searchKeyword,
+			"cPage" : cPage
+	};
+	
+	console.log(search);
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/community/communityFreeboardFinder.do",
+		data : search,
+		constentType : "application/json; charset=utf-8",
+		success(data){
+			console.log(data);
+			
+			$("#tbody").html(data["freeboardStr"]);
+			$(".pagebar").detach();
+			$("#freeboardContainer").after(data["pagebar"]);
+			$("#totalCountContainer").html(`<span class="countTitle">검색된 회원 수 : </span> <span class"countContent">\${data["totalContent"]}</span>`)
+		},
+		error:console.log
+	});
+	
+}
+
+$(".search-btn").click(e => {
+	e.preventDefault();
+	getPage();
+});
+
+
+/* $(".search-btn").click((e) => {
 	//console.log(".search-btn 되나요");
 	//console.log($(e.target));
 	//e.target = .searh-btn
@@ -235,7 +297,7 @@ $(".search-btn").click((e) => {
 		},
 		error: console.log
 	});
-});
+}); */
 
 </script>
 
