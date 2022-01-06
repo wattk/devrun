@@ -38,67 +38,62 @@
 				    </div>
    					<hr />
 	       			<section class="order-list " id="myOrder">
-	       				<div class="order-box mt-3">
-	       					<sup class="d-box mb-2 ml-2">2021.12.24</sup>
-	       					<div class=" card p-3">
-		       					<div class="order-title d-flex justify-content-between">
-			       					<h5>ㅇㅇ키보드 외 1건</h5><i class="fas fa-chevron-right"></i>
-		       					</div>
-	       						<table class="mt-3">
-	       							<tr>
-	       								<td rowspan="4" class="col-2">
-	       									<img src="${pageContext.request.contextPath}/resources/images/80x80.jpg" alt="" class="img-thumbnail"/>
-	       								</td>
-	       							</tr>
-	       							<tr>
-	       								<td class="col-5">
-	       									<span>주문번호</span>
-	       									<br />
-	       									<span>결제금액</span>
-	       									<br />
-	       									<span>처리상태</span>
-	       								</td>
-	       								<td rowspan="4" class="col-2">
-	       									<button type="button" id="" class="question-btn order-btn btn btn-outline-light">문의하기</button>
-	       								</td>
-	       								<td rowspan="4" class="col-2">
-	       									<button type="button" class="order-btn btn btn-outline-primary">반품/교환 취소</button>
-	       								</td>
-	       							</tr>
-	       						</table>
-	       					</div>
-	       				</div>
-	       				<div class="order-box mt-3">
-	       					<sup class="d-box mb-2 ml-2">2021.12.24</sup>
-	       					<div class=" card p-3">
-		       					<div class="order-title d-flex justify-content-between">
-			       					<h5>ㅇㅇ키보드 외 1건</h5><i class="fas fa-chevron-right"></i>
-		       					</div>
-	       						<table class="mt-3">
-	       							<tr>
-	       								<td rowspan="4" class="col-2">
-	       									<img src="${pageContext.request.contextPath}/resources/images/80x80.jpg" alt="" class="img-thumbnail"/>
-	       								</td>
-	       							</tr>
-	       							<tr>
-	       								<td class="col-5">
-	       									<span>주문번호</span>
-	       									<br />
-	       									<span>결제금액</span>
-	       									<br />
-	       									<span>처리상태</span>
-	       								</td>
-	       								<td rowspan="4" class="col-2">
-	       									<button type="button" id="" class="question-btn order-btn btn btn-outline-light">문의하기</button>
-	       								</td>
-	       								<td rowspan="4" class="col-2">
-	       									<button type="button" class="order-btn btn btn-outline-primary">배송조회</button>
-	       									<button type="button" class="order-btn btn btn-outline-primary">교환확인</button>
-	       								</td>
-	       							</tr>
-	       						</table>
-	       					</div>
-	       				</div>
+	       				<c:if test="${not empty list }">
+	       					<c:forEach items="${list}" var="log" varStatus="vs">
+			       				<div class="order-box mt-3">
+			       					<sup class="d-box mb-2 ml-2"><fmt:formatDate value="${log.reqDate}" pattern="yy-MM-dd"/> </sup>
+			       					<div class=" card p-3">
+				       					<div class="order-title d-flex justify-content-between">
+					       					<h5>${log.imp.name}</h5><i class="fas fa-chevron-right"></i>
+				       					</div>
+			       						<table class="mt-3">
+			       							<tr>
+			       								<td rowspan="4" class="col-2">
+				       								<div class="cart-item-img">
+				       									<img src="${pageContext.request.contextPath}/resources/upload/product/${log.thumbnail}" alt="" class="shop-img img-thumbnail"/>
+			       									</div>
+			       								</td>
+			       							</tr>
+			       							<tr>
+			       								<td class="col-5">
+			       									<span class="mr-2">주문번호</span>
+			       									<strong>${log.orderLogUid}</strong>
+			       									<br />
+			       									<span class="mr-2">결제금액</span>
+			       									<span><fmt:formatNumber type="currency">${log.imp.amount}</fmt:formatNumber> </span>
+			       									<br />
+			       									<span class="mr-2">처리상태</span>
+			       									<span>
+			       										${log.csStatus eq 'CAN'?'주문취소': log.csStatus eq 'REF'?'환불':log.csStatus eq 'EXC'?'교환':'반품'}
+			       									</span>
+			       								</td>
+			       								<td rowspan="4" class="col-2">
+			       									<button type="button" id="" class="question-btn order-btn btn btn-outline-light">문의하기</button>
+			       								</td>
+			       								<c:if test="${log.endDate eq null}">
+				       								<c:if test="${log.csStatus ne 'CAN' and log.csStatus ne 'REF'}">
+					       								<td rowspan="4" class="col-2">
+					       									<button type="button" class="order-btn btn btn-outline-primary">반품/교환 취소</button>
+					       								</td>
+				       								</c:if>
+				       								<c:if test="${log.csStatus eq 'CAN' or log.csStatus eq 'REF'}">
+					       								<td rowspan="4" class="col-2">
+					       									<button type="button" class="order-btn btn btn-outline-primary" onclick="location.href='${log.imp.receiptUrl}'">영수증 조회</button>
+					       								</td>
+				       								</c:if>
+			       								</c:if>
+			       								<c:if test="${log.endDate ne null }">
+			       									<td rowspan="4" class="col-2">처리 완료</td>
+			       								</c:if>
+			       							</tr>
+			       						</table>
+			       					</div>
+			       				</div>
+	       					</c:forEach>
+	       				</c:if>
+	       				<c:if test="${empty list }">
+	       				<div class="w-100 text-center mt-5">취소/교환/환불 내역이 없습니다.</div>
+	       				</c:if>
 	       			</section>
 		    	</article>
 			</div>

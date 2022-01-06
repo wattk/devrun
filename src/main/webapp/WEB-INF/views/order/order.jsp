@@ -29,19 +29,19 @@ $(document).ready((e)=>{
 	
 	if(item.length == 1){
 		$(".merchant-title").text(item[0].name);
-		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].productCode}.png" class="shop-img img-b w-25 p-2">`);
+		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].productCode}.png" class="shop-img img-thumbnail img-b">`);
 	}
 	else{
 		$(".merchant-title").text(item[0].name+" 외 "+(item.length - 1)+"건");
 		
 		if(item.length < 3){
 			item.forEach((i, index)=>{
-				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[index].productCode}.png" class="shop-img img-b w-25 p-2">`);
+				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[index].productCode}.png" class="shop-img img-thumbnail img-b">`);
 			});
 		}
 		else{
 			for(let i = 0; i < 3; i++){
-				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[i].productCode}.png" class="shop-img img-b w-25 p-2">`);
+				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[i].productCode}.png" class="shop-img img-thumbnail img-b">`);
 			}
 			$(".thumbnail-box").append(`<div class="img-b w-25 p-2">...</div>`);
 			
@@ -183,7 +183,7 @@ $(document).ready((e)=>{
   <div class="col-4 m-3 pl-3 pt-5 d-flex flex-column justify-content-start">
   	<strong>주문 정보</strong>
   	<span class="merchant-title"></span>
-  	<div class="thumbnail-box row d-flex justify-content-start">
+  	<div class="thumbnail-box cart-item-img m-0 row d-flex justify-content-start">
   	</div>
     <hr class="w-100"/>
 	<table class="table order-tbl">
@@ -365,7 +365,7 @@ function iamport(data){
 	        		payMethod : data.response.payMethod,
 	        		pgProvider : data.response.pgProvider,
 	        		amount : data.response.amount,
-	        		buyerAddf : data.response.buyerAddr,
+	        		buyerAddr : data.response.buyerAddr,
 	        		buyerEmail : data.response.buyerEmail,
 	        		buyerName : data.response.buyerName,
 	        		buyerPostcode : data.response.buyerPostcode,
