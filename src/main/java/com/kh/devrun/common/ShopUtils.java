@@ -120,22 +120,19 @@ public class ShopUtils {
 	
 	//쇼핑몰 페이징바 처리
 	public String getPagebar(int cPage, int numPerPage, int totalContents, String url) {
+		StringBuilder pagebar = new StringBuilder();
 
 		// request 얻기 위한 코드
 		ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpServletRequest request = sra.getRequest();
 
-		StringBuilder pagebar = new StringBuilder();
 		String extraUrl = request.getQueryString();
-
 		log.debug("extraUrl 은? : {}", extraUrl);
 		
 		// 전체페이지수
 		int totalPage = (int) Math.ceil((double) totalContents / numPerPage);
 
 		// 페이지번호를 클릭했을때 링크
-		String delimeter = url.contains("?") ? "&" : "?";
-
 		int questionIndex = extraUrl.indexOf("&");
 		log.debug("questionIndex : {}", questionIndex);
 		if (questionIndex > 0) {

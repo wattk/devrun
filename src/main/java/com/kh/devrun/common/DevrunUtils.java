@@ -10,18 +10,22 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.questionProduct.model.vo.QuestionProduct;
+import com.kh.devrun.shop.model.vo.Review;
 
 import lombok.extern.slf4j.Slf4j;
+
 
 @Slf4j
 public class DevrunUtils {
 
+	
 	/**
 	 * 페이징바 메소드
 	 * 
@@ -32,32 +36,15 @@ public class DevrunUtils {
 	 * @return
 	 */
 	public static String getPagebar(int cPage, int numPerPage, int totalContents, String url) {
-
-		// request 얻기 위한 코드
-		ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-		HttpServletRequest request = sra.getRequest();
-
 		StringBuilder pagebar = new StringBuilder();
-		String extraUrl = request.getQueryString();
 
-		log.debug("extraUrl 은? : {}", extraUrl);
-		
 		// 전체페이지수
 		int totalPage = (int) Math.ceil((double) totalContents / numPerPage);
 
 		// 페이지번호를 클릭했을때 링크
 		String delimeter = url.contains("?") ? "&" : "?";
-
-		int questionIndex = extraUrl.indexOf("&");
-		log.debug("questionIndex : {}", questionIndex);
-		if (questionIndex > 0) {
-			String x = extraUrl.substring(0, questionIndex);
-			log.debug("x 값은 : {}", x);
-			extraUrl = x;
-		}
-
-		url = url + "?" + extraUrl + "&"+ "cPage="; // /spring/board/boardList.do?cPage=
-		log.debug("Utils URL = {}", url);
+		url = url + delimeter + "cPage="; // /spring/board/boardList.do?cPage=
+		log.debug("Utils URL = {}",url);
 		// 페이지바크기
 		int pagebarSize = 5;
 
@@ -251,39 +238,40 @@ public class DevrunUtils {
 			cookie.setMaxAge(365 * 24 * 60 * 60);
 			if ("promotion".equals(param))
 				cookie.setPath(request.getContextPath() + "/shop/promotionDetail.do");// 해당 경로 요청 시에만 쿠키 전송
-
+				
 			response.addCookie(cookie);
 		}
 
 		return hasRead;
 	}
-
+	
 	/**
-	 * 회원 목록 비동기로 띄우기
-	 * 
-	 * @param url
+	 *  회원 목록 비동기로 띄우기
+	 * @param url 
 	 */
 	public static String getMemberList(List<Member> memberList) {
-		// DecimalFormat fmt = new DecimalFormat("###,###");
+		//DecimalFormat fmt = new DecimalFormat("###,###");
 		StringBuilder sb = new StringBuilder();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
+		
 		for (Member member : memberList) {
-			sb.append("<tr> \n" + "<td>" + member.getMemberNo() + "</td>\n" + "<td>" + member.getId() + "</td>\n"
-					+ "<td>" + member.getName() + "</td>\n" + "<td>" + member.getNickname() + "</td>\n" + "<td>"
-					+ sdf.format(member.getEnrollDate()) + "</td>\n" + "<td><select class=\"select-authority\">"
-					+ "<option value=\"ROLE_AM\" "
-					+ (member.getAuthorities().toString().equals("[ROLE_AM]") ? "selected " : "") + " >관리자</option>"
-					+ "<option value=\"ROLE_M1\" "
-					+ (member.getAuthorities().toString().equals("[ROLE_M1]") ? "selected " : "") + " >지식인</option>"
-					+ "<option value=\"ROLE_M2\" "
-					+ (member.getAuthorities().toString().equals("[ROLE_M2]") ? "selected " : "") + " >일반 회원</option>"
-					+ "</select></td>\n" + "</tr>");
-		}
+			sb.append(
+			"<tr> \n"
+				+"<td>"+member.getMemberNo()+"</td>\n"
+				+"<td>"+member.getId() +"</td>\n"
+				+"<td>"+member.getName()+"</td>\n"
+				+"<td>"+member.getNickname()+"</td>\n"						
+				+"<td>"+sdf.format(member.getEnrollDate())+"</td>\n"
+				+"<td><select class=\"select-authority\">"	
+				+"<option value=\"ROLE_AM\" "+(member.getAuthorities().toString().equals("[ROLE_AM]") ? "selected " : "")+" >관리자</option>"
+				+"<option value=\"ROLE_M1\" "+(member.getAuthorities().toString().equals("[ROLE_M1]") ? "selected " : "")+" >지식인</option>"
+				+"<option value=\"ROLE_M2\" "+(member.getAuthorities().toString().equals("[ROLE_M2]") ? "selected " : "")+" >일반 회원</option>"
+				+"</select></td>\n"
+					+"</tr>");
+		}		
 		return sb.toString();
 
 	}
-
 	public static String getPagebar2(int cPage, int numPerPage, int totalContents, String url) {
 		StringBuilder pagebar = new StringBuilder();
 
@@ -293,7 +281,7 @@ public class DevrunUtils {
 		// 페이지번호를 클릭했을때 링크
 		String delimeter = url.contains("?") ? "&" : "?";
 		url = url + delimeter + "cPage="; // /spring/board/boardList.do?cPage=
-		log.debug("Utils URL = {}", url);
+		log.debug("Utils URL = {}",url);
 		// 페이지바크기
 		int pagebarSize = 5;
 
@@ -360,7 +348,7 @@ public class DevrunUtils {
 					+ "		    </li>\n");
 		}
 
-		pagebar.append(" </ul>\r\n" + "</nav>\r\n");
+		pagebar.append(" </ul>\r\n" + "</nav>\r\n" );
 
 		return pagebar.toString();
 	}
@@ -369,5 +357,13 @@ public class DevrunUtils {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	
+	
+	
+	
+	
+
 
 }

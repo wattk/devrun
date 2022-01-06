@@ -246,7 +246,7 @@ public class ShopController {
 		
 		// 3.pagebar
 		String url = request.getRequestURI();
-		String pagebar = DevrunUtils.getPagebar(cPage, limit, total, url);
+		String pagebar = shopUtils.getPagebar(cPage, limit, total, url);
 		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
 
