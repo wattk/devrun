@@ -31,61 +31,60 @@
                       <h1>모니터</h1>
                       <div>
                         <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=mn">전체보기</a></h2>
-                        <a href="">표준모니터</a>
-                        <a href="">휴대용모니터</a>
-                        <a href="">게이밍모니터</a>
-                        <a href="">전문가용모니터</a>
-                        <a href="">대화면모니터</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=1mn">표준모니터</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=2mn">휴대용모니터</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=3mn">게이밍모니터</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=4mn">전문가용모니터</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=5mn">대화면모니터</a>
                       </div>
                       <h1>키보드</h1>
                       <div>
                         <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ke">전체보기</a></h2>
-                        <a href="">무접점키보드</a>
-                        <a href="">기계식키보드</a>
-                        <a href="">게이밍키보드</a>
-                        <a href="">인체공학키보드</a>
-                        <a href="">무선키보드</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=1ke">무접점키보드</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=2ke">기계식키보드</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=3ke">게이밍키보드</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=4ke">인체공학키보드</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=5ke">무선키보드</a>
                       </div>
                       <h1>마우스</h1>
                       <div>
                          <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=mo">전체보기</a></h2>
-                        <a href="">유선마우스</a>
-                        <a href="">무선마우스</a>
-                        <a href="">저소음마우스</a>
-                        <a href="">버티컬마우스</a>
-                        <a href="">인체공학마우스</a>
-                        <a href="">게이밍마우스</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=1mo">유선마우스</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=2mo">무선마우스</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=3mo">저소음마우스</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=4mo">버티컬마우스</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=5mo">인체공학마우스</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=6mo">게이밍마우스</a>
                       </div>
                       <h1>책상</h1>
                       <div>
                         <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=de">전체보기</a></h2>
-                        <a href="">높이조절책상</a>
-                        <a href="">스탠딩책상</a>
-                        <a href="">독서실책상</a>
-                        <a href="">접이형책상</a>
-                        <a href="">일반책상</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=1de">높이조절책상</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=2de">스탠딩책상</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=3de">독서실책상</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=4de">접이형책상</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode==5de">일반책상</a>
                       </div>
                       <h1>의자</h1>
                       <div>
                         <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ch">전체보기</a></h2>
-                        <a href="">게이밍의자</a>
-                        <a href="">자세보정의자</a>
-                        <a href="">컴퓨터의자</a>
-                        <a href="">책상의자</a>
-                        <a href="">접의식의자</a>
-                        <a href="">좌식의자</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=1ch">게이밍의자</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=2ch">자세보정의자</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=3ch">컴퓨터의자</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=4ch">책상의자</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=5ch">접의식의자</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=6ch">좌식의자</a>
                       </div>
                       <h1>기타상품</h1>
                       <div>
                         <h2><a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ot">전체보기</a></h2>
-                        <a href="">컴퓨터 악세사리</a>
-                        <a href="">사무용품</a>
-                        <a href="">아이디어상품</a>
-                        <a href="">수납상품</a>
-                        <a href="">기타상품</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=1ot">컴퓨터 악세사리</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=2ot">사무용품</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=3ot">아이디어상품</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=4ot">수납상품</a>
+                        <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=5ot">기타상품</a>
                       </div>
                       <h1 style="font-size:10px;">고객센터</h1>
-                      <p>'Tis not so deep as a well, nor so wide as a church-door; but 'tis enough,'twill serve: ask for me to-morrow, and you shall find me a grave man. </p>
                     </aside>
                     </div>
                   </div>  
