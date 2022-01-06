@@ -96,10 +96,10 @@
 	<input type="date" id="startDate" class=" bg-light border-0 small"/>
 	<span>~</span>
 	<input type="date" id="endDate" class="bg-light border-0 small"/>
-	<span class="badge badge-primary">오늘</span>
-	<span class="badge badge-secondary">이번주</span>
-	<span class="badge badge-secondary">이번달</span>
-	<span class="badge badge-secondary">전체</span>
+	<span id="day" class="badge badge-primary">오늘</span>
+	<span id="week" class="badge badge-secondary">이번주</span>
+	<span id="month" class="badge badge-secondary">이번달</span>
+	<span id="allDay"class="badge badge-secondary">전체</span>
 </div>
 
 <div class="report-search-container mt-3 ml-5">
@@ -233,6 +233,87 @@
 </form:form>
 
 <script>
+	
+	/*-----------------------------------*/
+	// 날짜 벳지 버튼 클릭
+
+	
+	/* '오늘' 버튼 클릭 */
+	$("#day").click(e=>{
+		/*  버튼 클릭 시 input 태크에 값을 넣어준 뒤 전역 변수로 선언 된 	var startDate,var endDate 에도 대입 */	
+		const now = new Date();
+		
+		const date = ('0' + now.getDate()).slice(-2);
+		const month = ('0' + now.getMonth()+1).slice(-2);
+		const year = now.getFullYear();
+		const startDateStr = year + '-' + month +'-'+ date;
+		
+		$("#startDate,#endDate").val(startDateStr);
+		startDate = startDateStr;
+		endDate = startDateStr;
+	});
+	/* '이번주 버튼 클릭' */
+		$("#week").click(e=>{
+
+		var currentDay = new Date();  
+		
+		var theYear = currentDay.getFullYear();
+		var theMonth = currentDay.getMonth();
+		var theDate  = currentDay.getDate();
+		var theDayOfWeek = currentDay.getDay();
+		 
+		var thisWeek = [];
+		 
+		for(var i=0; i<7; i++) {
+		  var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
+		  var yyyy = resultDay.getFullYear();
+		  var mm = Number(resultDay.getMonth()) + 1;
+		  var dd = resultDay.getDate();
+		 
+		  mm = String(mm).length === 1 ? '0' + mm : mm;
+		  dd = String(dd).length === 1 ? '0' + dd : dd;
+		 
+		  thisWeek[i] = yyyy + '-' + mm + '-' + dd;
+		}
+		const startWeek = thisWeek[0];
+		const endWeek = thisWeek[6];
+		 
+		console.log(startWeek);
+		console.log(endWeek);
+	
+		$("#startDate").val(startWeek);
+		$("#endDate").val(endWeek);
+		
+	 	startDate = startWeek;
+		endDate = endWeek; 
+				
+	});
+		/* '이번달 버튼 클릭' */
+		$("#month").click(e=>{
+			const now = new Date();	
+			const month = new Date();
+			month.setMonth(now.getMonth()+2);
+			
+			
+			const dateStr = ('0' + 1).slice(-2);
+			const monthStr = ('0' + now.getMonth()+1).slice(-2);
+			const nextMonthStr = ('0' + month.getMonth()).slice(-2);
+			const yearStr = now.getFullYear();	
+
+			
+			const startDateStr = yearStr + '-' + monthStr +'-'+ dateStr;
+			const endDateStr = yearStr + '-' + nextMonthStr +'-'+ dateStr;
+			
+			$("#startDate").val(startDateStr);
+			$("#endDate").val(endDateStr);
+			
+			startDate = startDateStr;
+			endDate = endDateStr;
+	});
+		
+			
+	/*---------------------------------------*/
+	
 	// 날짜 - 전역변수 사용
 	var startDate;
 	var endDate;
@@ -249,7 +330,7 @@
 		console.log("시작 날짜 = ",startDate);
 		console.log("종료 날짜 = ",endDate);		
 	});
-		
+
 	
 	/* 답변 버튼 클릭 이벤트  */
 	$(document).on("click",".answer-btn",e=>{

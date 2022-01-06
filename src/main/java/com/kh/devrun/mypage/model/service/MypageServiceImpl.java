@@ -1,6 +1,7 @@
 package com.kh.devrun.mypage.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,14 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public int selectMessageTotalCount(int memberNo2) {
 		return mypageDao.selectMessageTotalCount(memberNo2);
+	}
+	
+	/**
+	 * 기본 배송지 변경
+	 */
+	@Override
+	public int updateMainAddress(int memberNo) {
+		return mypageDao.updateMainAddress(memberNo);
 	}
 
 	/**
@@ -69,6 +78,14 @@ public class MypageServiceImpl implements MypageService {
 	@Override
 	public Address selectOneAddress(int addressNo) {
 		return mypageDao.selectOneAddress(addressNo);
+	}
+
+	/**
+	 * 배송지명 중복 검사
+	 */
+	@Override
+	public Address selectOneAddressByTitle(Map<String, Object> param) {
+		return mypageDao.selectOneAddressByTitle(param);
 	}
 
 	/**

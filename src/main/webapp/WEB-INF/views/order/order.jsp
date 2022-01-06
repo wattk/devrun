@@ -29,19 +29,19 @@ $(document).ready((e)=>{
 	
 	if(item.length == 1){
 		$(".merchant-title").text(item[0].name);
-		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].productCode}.png" class="img-b w-25 p-2">`);
+		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].productCode}.png" class="shop-img img-b w-25 p-2">`);
 	}
 	else{
 		$(".merchant-title").text(item[0].name+" 외 "+(item.length - 1)+"건");
 		
 		if(item.length < 3){
 			item.forEach((i, index)=>{
-				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[index].productCode}.png" class="img-b w-25 p-2">`);
+				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[index].productCode}.png" class="shop-img img-b w-25 p-2">`);
 			});
 		}
 		else{
 			for(let i = 0; i < 3; i++){
-				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[i].productCode}.png" class="img-b w-25 p-2">`);
+				$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[i].productCode}.png" class="shop-img img-b w-25 p-2">`);
 			}
 			$(".thumbnail-box").append(`<div class="img-b w-25 p-2">...</div>`);
 			

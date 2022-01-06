@@ -80,8 +80,15 @@ window.onload = function(){
 // 상세사유 입력창 이벤트
 $("[name='reasonCode']").change((e) => {
 	const $reasonDetail = $(e.target).siblings('div');
-	$('.claim-detail').slideUp();
-	$reasonDetail.slideDown();
+	$('.claim-detail')
+		.slideUp()
+		.html('');
+	$reasonDetail
+		.append(`<textarea name="reasonDetail" id="" cols="75" rows="5" class="w-100" placeholder="*필수입력"></textarea>`)
+		.slideDown();
+	const content = $(e.target).siblings("label").text();
+	console.log(content);
+	$("#selectReason").text(content);
 });
 
 //이전, 다음 버튼 클릭 시 탭 변화
