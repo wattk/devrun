@@ -1204,6 +1204,10 @@ ALTER TABLE IMP ADD CONSTRAINT PK_IMP_IMP_UID PRIMARY KEY (
 	IMP_UID
 );
 
+ALTER TABLE IMP ADD IS_CANCELED NUMBER DEFAULT 0;
+ALTER TABLE IMP ADD RECEIPT_URL VARCHAR2(100);
+ALTER TABLE IMP ADD CONSTRAINT CK_IMP_IS_CANCELED CHECK(IS_CANCELED IN (0,1));
+
 
 --===========================
 --회원-장바구니 테이블 생성
@@ -1539,6 +1543,7 @@ from(
 --    m.member_no,
 --    m.order_date,
 --    m.order_status,
+--    m.cs_status,
 --    i.name,
 --    i.amount,
 --    p.product_code,
@@ -1705,3 +1710,23 @@ begin
 end;
 
 --김다현 sms 기록 테이블 끝 --
+
+----주문 변경-상품-결제 뷰 생성(혜진)
+--create or replace view view_order_log_imp
+--as
+--select
+--    ol.*,
+--    i.imp_uid,
+--    i.name,
+--    i.amount,
+--    i.receipt_url,
+--    p.thumbnail
+--from
+--    order_log ol left join imp i
+--        on ol.merchant_uid = i.merchant_uid
+--            left join merchant_detail md
+--                on ol.merchant_uid = md.merchant_uid
+--                    left join product_detail pd
+--                        on md.detail_no = pd.detail_no
+--                            left join product p
+--                                on pd.product_code = p.product_code;

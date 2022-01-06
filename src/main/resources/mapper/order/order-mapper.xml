@@ -56,7 +56,9 @@
   		#{buyerEmail},
   		#{buyerName},
   		#{buyerPostcode},
-  		#{buyerPhone}
+  		#{buyerPhone},
+  		default,
+  		null
   	)
   </insert>
   
@@ -153,6 +155,7 @@
 	    member_no,
 	    order_date,
 	    order_status,
+	    cs_status,
 	    name,
 	    amount,
 	    thumbnail
@@ -168,6 +171,7 @@
   	<result column="member_no" property="memberNo"/>
   	<result column="order_date" property="orderDate"/>
   	<result column="order_status" property="orderStatus"/>
+  	<result column="cs_status" property="csStatus"/>
   	<result column="thumbnail" property="thumbnail"/>
   	<association property="imp" javaType ="imp">
 	  	<result column="name" property="name"/>
@@ -327,7 +331,7 @@
   		#{prevDetailNo},
   		#{currDetailNo},
   		#{csStatus},
-  		sysdate,
+  		current_date,
   		null,
   		null,
   		'N',
@@ -336,4 +340,59 @@
   		#{memberNo}
   	)
   </insert>
+  
+  <update id="updateImp">
+  	update imp set
+  		is_canceled = 1,
+  		receipt_url = #{value}
+  </update>
+  
+  <select id="selectOrderLogList" resultMap="orderLogCollection">
+  	select
+  		order_log_uid,
+  		reason_code,
+  		merchant_uid,
+  		cs_status,
+  		req_date,
+  		process_date,
+  		end_date,
+  		cost,
+  		cost_status,
+  		member_no,
+  		name,
+  		amount,
+  		imp_uid,
+  		receipt_url,
+  		thumbnail
+  	from
+  		view_order_log_imp
+  	where
+  		member_no = #{value}
+  	order by
+  		req_date desc
+  </select>
+  <resultMap type="orderLogExt" id="orderLogCollection">
+  	<id column="order_log_uid" property="orderLogUid"/>
+  	<result column="reason_code" property="reasonCode"/>
+  	<result column="merchant_uid" property="merchantUid"/>
+  	<result column="cs_status" property="csStatus"/>
+  	<result column="req_date" property="reqDate"/>
+  	<result column="process_date" property="processDate"/>
+  	<result column="end_date" property="endDate"/>
+  	<result column="cost" property="cost"/>
+  	<result column="cost_status" property="costStatus"/>
+  	<result column="member_no" property="memberNo"/>
+  	<result column="thumbnail" property="thumbnail"/>
+  	<association property="imp" javaType="imp">
+  		<id column="imp_uid" property="impUid"/>
+  		<result column="name" property="name"/>
+  		<result column="amount" property="amount"/>
+  		<result column="receipt_url" property="receiptUrl"/>
+  	</association>
+  </resultMap>
+  
+  <update id="updateOrderLog">
+  	update order_log set
+  		${keyword} = current_date
+  </update>
 </mapper>

@@ -117,30 +117,35 @@ $(() => {
 			</div>
 			<!-- 검색창 끝 -->
 			
+	
+			
+			<br />
+			
 			<!-- 상단 탭 시작 -->	
 			<nav>
-			  <p>총<span id="freeboardSize">${totalContent}</span>개의 게시물이 있습니다.</p>
 			  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">최신순</a>
-			    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">댓글 많은 순</a>
-			    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">좋아요 순</a>
+			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nac-home" role="tab" aria-controls="nav-home" aria-selected="true">최신순</a>
+			    <a class="nav-item nav-link" id="nav-comment-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" data-value="4">답변많은순</a>
+			    <a class="nav-item nav-link" id="nav-like-tab" data-toggle="tab" href="#nav-like" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="4">좋아요순</a>
 			  </div>
 			</nav>
-			<div class="tab-content" id="nav-tabContent">
-			  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">...</div>
-			  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
-			  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
-			</div>
+			
+			<br />
 			<!-- 상단 탭 끝 -->
 			
 		</div>
 	</div>
 	
+	<div id="totalCountContainer">
+	 <p>총 게시물 수 : ${totalContent}</p>			  
+	</div>
 	
+	<br />
+			
 	<!-- 리스트 시작 -->
 	<div id="freeboardContainer">
-	<table id="tbl-board" class="table table-striped table-hover">
-		<tr>
+	<table id="tbl-board" class="table table-hover">
+		<tr style="background-color: #1A81FF; color:white; ">
 			<th class="col-1">번호</th>
 			<th class="col-3">제목</th>
 			<th class="col-1">작성자</th>
@@ -158,10 +163,10 @@ $(() => {
 					<td>${communityEntity.communityNo}</td>
 					<td>${communityEntity.title}</td>
 					<td>${communityEntity.nickname}</td>
-					<td><fmt:formatDate value="${communityEntity.enrollDate}" pattern="yy-MM-dd HH:mm"/></td>
+					<td><fmt:formatDate value="${communityEntity.enrollDate}" pattern="yy-MM-dd"/></td>
 					<td><i class="fas fa-heart"></i> ${communityEntity.likeCount}</td>
 					<td>${communityEntity.viewCount}</td>
-					<td>만들어야함</td>
+					<td>${communityEntity.commentCount}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -182,7 +187,8 @@ $(() => {
 
 <script>
 
-//타입별 검색
+/* ---------------------------------------------- 타입별 검색 기능 시작 ---------------------------------------------- */
+
 /**
  * searchType별 change 이벤트 핸들러를 이용해서 해당 div만 보여주고 나머지는 감춘다.
  */
@@ -190,6 +196,10 @@ $("#searchType").change(function(e){
 	// e.target 이벤트 발생객체 -> #searchtype
 	const type = $(e.target).val();
 	console.log(type);
+	
+	// 검색타입 바뀔 때 마다 값 초기화
+	$searchType = "";
+	$searchKeyword = "";
 	
 	// 1. .search-type 감추기 --> 해당 div 세개가 모두 감춰진다.
 	$(".search-type").hide();
@@ -201,22 +211,35 @@ $("#searchType").change(function(e){
 	$(`#search-\${type}`).css("display", "inline-block");
 });
 
+ 
+/* serach 입력값 대입 */
+$("input[name=searchKeyword]").change(e => {
+	//console.log("searchType = " + $(e.target).parent().children("input[name=searchType]").val());
+	//console.log("searchKeyword = " + $(e.target).val());
+	
+	$searchType = $(e.target).parent().children("input[name=searchType]").val();
+	$searchKeyword = $(e.target).val();
+});
 
-$(".search-btn").click((e) => {
-	//console.log(".search-btn 되나요");
-	//console.log($(e.target));
-	//e.target = .searh-btn
-	e.preventDefault();
+/* 전역 변수*/
+var $searchType = "";
+var $searchKeyword = "";
+
+/* 검색 결과 페이징 */
+function getPage(cPage){
+	const $btn = (".search-btn");
 	
-	var $searchType = $(e.target).parent().children("input[name=searchType]").val();
-	var $searchKeyword = $(e.target).parent().children("input[name=searchKeyword]").val();
+	searchType = $searchType;
+	searchKeyword = $searchKeyword;
+	var cPage;
 	
-	//console.log($searchType);
-	//console.log($searchKeyword);
+	console.log("searchType = " + searchType);
+	console.log("searchKeyword = " + searchKeyword);
 	
 	const search = {
-		"searchType" : $searchType,
-		"searchKeyword" : $searchKeyword
+			"searchType" : $searchType,
+			"searchKeyword" : $searchKeyword,
+			"cPage" : cPage
 	};
 	
 	console.log(search);
@@ -224,18 +247,124 @@ $(".search-btn").click((e) => {
 	$.ajax({
 		url : "${pageContext.request.contextPath}/community/communityFreeboardFinder.do",
 		data : search,
-		method : "GET",
-		success(res){
-			console.log(res);
-			//.html() : 선택한 요소 안의 내용을 가져오거나, 다른 내용으로 바꾼다.
-		 	$("#tbody").html(res["freeboardStr"]);
-			$("#freeboardSize").text(res["totalContent"]);
+		constentType : "application/json; charset=utf-8",
+		success(data){
+			console.log("search = " + data);
+			
+			$("#tbody").html(data["freeboardStr"]);
 			$(".pagebar").detach();
-			$("#freeboardContainer").after(res["pagebar"]);
+			$("#freeboardContainer").after(data["pagebar"]);
+			$("#totalCountContainer").html(`<span class="countTitle">검색된 회원 수 : </span> <span class"countContent">\${data["totalContent"]}</span>`)
 		},
-		error: console.log
+		error:console.log
 	});
+	
+}
+
+$(".search-btn").click(e => {
+	e.preventDefault();
+	getPage();
 });
+
+/* ---------------------------------------------- 타입별 검색 기능 종료 ---------------------------------------------- */
+/* ---------------------------------------------- 타입별 페이지 기능 시작 ---------------------------------------------- */
+$("#nav-home-tab").click((e) =>{
+	console.log("도착했나요?");
+	location.href=`${pageContext.request.contextPath}/community/communityFreeboardList.do`;
+});
+/* ---------------------------------------------- 타입별 페이지 기능 종료 ---------------------------------------------- */
+/* ---------------------------------------------- 좋아요순 페이지 기능 시작 ---------------------------------------------- */
+
+/* 전역 변수 */
+var $pageCode = "";
+
+
+/* 검색 결과 페이징 */
+function likeGetPage(cPage){
+	console.log($('#nav-like-tab').data('value'));
+	const $pageCode = $('#nav-like-tab').data('value');
+	
+	pageCode = $pageCode;
+	var cPage;
+	
+	console.log("pageCode = " + pageCode);
+	
+	// 객체로 담아서 보내야한다.
+	const likeSearch = {"pageCode" : $pageCode,
+					    "cPage" : cPage
+					   };
+	
+	console.log(likeSearch);
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/community/likeBoard.do",
+		data : likeSearch,
+		contentType : "application/json; charset=utf-8",
+		success(data){
+			console.log("ajaxData = " + data);
+			
+			$("#tbody").html(data["likeBoardStr"]);
+			$(".pagebar").detach();
+			$("#freeboardContainer").after(data["pagebar"]);
+			$("#totalCountContainer").html(`<span class="countTitle">총 게시물 수 : </span> <span class"countContent">\${data["totalContent"]}</span>`)
+		},
+		error:console.log
+	});
+	
+}
+$("#nav-like-tab").click(e => {
+	e.preventDefault();
+	likeGetPage();
+});
+/* ---------------------------------------------- 좋아요순 페이지 기능 종료 ---------------------------------------------- */	
+/* ---------------------------------------------- 답변순 페이지 기능 시작 ---------------------------------------------- */
+
+/* 전역 변수 */
+var $pageCode = "";
+
+
+/* 검색 결과 페이징 */
+function commentGetPage(cPage){
+	console.log($('#nav-comment-tab').data('value'));
+	const $pageCode = $('#nav-comment-tab').data('value');
+	
+	pageCode = $pageCode;
+	var cPage;
+	
+	console.log("pageCode = " + pageCode);
+	
+	// 객체로 담아서 보내야한다.
+	const commentSearch = {"pageCode" : $pageCode,
+					       "cPage" : cPage
+					   	  };
+	
+	console.log(commentSearch);
+	console.log("commentSearch");
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/community/commentBoard.do",
+		data : commentSearch,
+		contentType : "application/json; charset=utf-8",
+		success(data){
+			console.log("ajaxData = " + data);
+			
+			$("#tbody").html(data["commentBoardStr"]);
+			$(".pagebar").detach();
+			$("#freeboardContainer").after(data["pagebar"]);
+			$("#totalCountContainer").html(`<span class="countTitle">총 게시물 수 : </span> <span class"countContent">\${data["totalContent"]}</span>`)
+		},
+		error:console.log
+	});	
+}
+$("#nav-comment-tab").click(e => {
+	e.preventDefault();
+	commentGetPage();
+});
+/* ---------------------------------------------- 답변순 페이지 기능 종료 ---------------------------------------------- */	
+
+
+	
+
 
 </script>
 

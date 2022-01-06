@@ -262,7 +262,7 @@ public class CommunityController {
 		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
-		
+
 		return "community/communityFreeboardList";
 	}
 	
@@ -279,7 +279,7 @@ public class CommunityController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		
-		int limit = 11;
+		int limit = 10;
 		int offset = (cPage - 1) * limit;
 		
 		log.debug("searchType = {}", searchType);
@@ -301,10 +301,94 @@ public class CommunityController {
 		int totalContent = communityService.selectFreeboardTotalCountByType(param);
 		
 		// 3. pagebar
-		String pagebar = CommunityUtils.getPagebar(cPage, cPage, totalContent, url);
+		String pagebar = CommunityUtils.getPagebar2(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
 		
 		resultMap.put("freeboardStr", freeboardStr);
+		resultMap.put("totalContent", totalContent);
+		resultMap.put("pagebar", pagebar);
+		
+		return resultMap;
+	}
+	
+	// 좋아요순 게시글 뽑기
+	@GetMapping("/likeBoard.do")
+	@ResponseBody
+	public Map<String, Object> likeBoard(
+			@RequestParam(defaultValue = "1") int cPage,
+			@RequestParam int pageCode,
+			HttpServletRequest request,
+			Model model){
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		log.debug("pageCode = {}", pageCode);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("pageCode", pageCode);
+		log.debug("param = {}", param);
+		
+		String url = request.getContextPath();
+		
+		List<CommunityEntity> likeBoardList = communityService.selectLikeBoardList(param, offset, limit);
+		log.debug("likeBoardList = {}", likeBoardList);
+		String likeBoardStr = CommunityUtils.getlikeBoardList(likeBoardList, url);
+		
+		// 2. 전체 게시물 수 totalContent
+		int totalContent = communityService.selectFreeboardTotalCount();
+		log.debug("selectFreeboardTotalCount = {}, list");
+		model.addAttribute("totalContent", totalContent);
+		
+		// 3. pagebar
+		String pagebar = CommunityUtils.getPagebar3(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		
+		resultMap.put("likeBoardStr", likeBoardStr);
+		resultMap.put("totalContent", totalContent);
+		resultMap.put("pagebar", pagebar);
+		
+		return resultMap;
+	}
+	
+	// 답변순 게시글 뽑기
+	@GetMapping("/commentBoard.do")
+	@ResponseBody
+	public Map<String, Object> commentBoard(
+			@RequestParam(defaultValue = "1") int cPage,
+			@RequestParam int pageCode,
+			HttpServletRequest request,
+			Model model){
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		log.debug("pageCode = {}", pageCode);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("pageCode", pageCode);
+		log.debug("param = {}", param);
+		
+		String url = request.getContextPath();
+		
+		List<CommunityEntity> commentBoardList = communityService.selectCommentBoardList(param, offset, limit);
+		log.debug("likeBoardList = {}", commentBoardList);
+		String commentBoardStr = CommunityUtils.getCommentBoardList(commentBoardList, url);
+		
+		// 2. 전체 게시물 수 totalContent
+		int totalContent = communityService.selectFreeboardTotalCount();
+		log.debug("selectFreeboardTotalCount = {}, list");
+		model.addAttribute("totalContent", totalContent);
+		
+		// 3. pagebar
+		String pagebar = CommunityUtils.getPagebar3(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		
+		resultMap.put("commentBoardStr", commentBoardStr);
 		resultMap.put("totalContent", totalContent);
 		resultMap.put("pagebar", pagebar);
 		
@@ -400,6 +484,7 @@ public class CommunityController {
 		List<CommunityCommentEntity> freeboardCommentList = communityService.selectFreeboardCommentList(communityNo);
 		log.debug("freeboardCommentList = {}", freeboardCommentList);
 		model.addAttribute("freeboardCommentList", freeboardCommentList);
+
 		
 		return "community/communityFreeboardDetail";
 	}
@@ -595,5 +680,8 @@ public class CommunityController {
 
 		return "redirect:/community/communityFreeboardList.do";
 	}
+	
+	
+
 
 }

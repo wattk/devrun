@@ -154,6 +154,17 @@ public class CommunityDaoImpl implements CommunityDao {
 		return session.insert("community.insertCommunityReport", report);
 	}
 
+	@Override
+	public List<CommunityEntity> selectLikeBoardList(Map<String, Object> param, int offset, int limit) {
+		// mybatis가 제공하는 RowBounds 객체를 하나 제공한다. -- 페이징 처리를 위해서
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectLikeBoardList", param, rowBounds);
+	}
 
-
+	@Override
+	public List<CommunityEntity> selectCommentBoardList(Map<String, Object> param, int offset, int limit) {
+		// mybatis가 제공하는 RowBounds 객체를 하나 제공한다. -- 페이징 처리를 위해서
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectCommentBoardList", param, rowBounds);
+	}
 }

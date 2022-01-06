@@ -39,7 +39,7 @@
 		</div>
 	</div>
 	<div class="item-sort-container d-flex 	justify-content-between">
-		<div class="p-4">총 465개</div>
+		<div class="p-4">총 ${total}개</div>
 		<div class="p-4" id="">
 			<span class="pr-2 pl-2 shop-sort">추천순</span>
 			<span class="pr-2 pl-2 shop-sort">신상품순</span>
@@ -56,7 +56,7 @@
 		  	  <a href="${pageContext.request.contextPath}/shop/itemDetail/${l.productCode}" class="col-md-3 p-5">
 		        <div class="card-box-d">
 		          <div class="card-img-d shop-item-img position-relative">
-		            <img src="${pageContext.request.contextPath }/resources/upload/product/${l.thumbnail}" alt="" class="img-thumbnail shop-img img-d img-fluid">
+		            <img src="${pageContext.request.contextPath}/resources/upload/product/${l.thumbnail}" alt="" class="img-thumbnail shop-img img-d img-fluid">
 		            <i class="shop-like-icon fas fa-heart position-absolute"></i>
 		            <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
 		          </div>
@@ -72,26 +72,11 @@
     </div>
     <nav aria-label="..." class="mx-auto text-center">
     <div class="banner mx-auto text-center mb-3">
+    	<img src="${pageContext.request.contextPath}/resources/upload/promotion/PROMO_0y7fZo5w789Pse8.png" alt="" />
     </div>
-	  <ul class="pagination justify-content-center">
-	    <li class="page-item">
-	      <a class="page-link" href="#" aria-label="Previous">
-	        <span aria-hidden="true">&laquo;</span>
-	        <span class="sr-only">Previous</span>
-	      </a>
-	    </li>
-	    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-	    <li class="page-item ">
-	      <a class="page-link" href="#">2</a>
-	    </li>
-	    <li class="page-item"><a class="page-link" href="#">3</a></li>
-		<li class="page-item">
-	      <a class="page-link" href="#" aria-label="Next">
-	        <span aria-hidden="true">&raquo;</span>
-	        <span class="sr-only">Next</span>
-	      </a>
-	    </li>
+	  <ul class="pagination justify-content-center mt-5">
 	  </ul>
+	  ${pagebar}
 	</nav>
 </div>
 

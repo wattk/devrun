@@ -40,6 +40,7 @@ import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.mypage.model.service.MypageService;
 import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.MerchantExt;
+import com.kh.devrun.order.model.vo.OrderLogExt;
 import com.kh.devrun.report.model.service.ReportService;
 import com.kh.devrun.report.model.vo.Report;
 
@@ -156,7 +157,7 @@ public class MypageController {
 	 * select * from member where ${checkKeyword} = #{value} and id != #{id}
 	 */
 	@ResponseBody
-	@GetMapping("/myinfo/checkUpdateDuplicate")
+	@GetMapping("/myinfo/profileUpdate/checkDuplicate")
 	public Map<String, Object> checkIdDuplicate(@RequestParam Map<String, Object> param, Authentication authentication){
 		log.debug("param = {}", param);
 		Map<String, Object> map = new HashMap<>();
@@ -361,6 +362,23 @@ public class MypageController {
 	}
 	
 	/**
+	 * 베송지명 중복 체크
+	 * select * from address where ${checkKeyword} = #{value} and id != #{id}
+	 */
+	@ResponseBody
+	@GetMapping("/myinfo/addressManage/checkDuplicate")
+	public Map<String, Object> checkDuplicate(@RequestParam Map<String, Object> param, Authentication authentication){
+		Map<String, Object> map = new HashMap<>();
+		Member principal = (Member) authentication.getPrincipal();
+		param.put("memberNo", principal.getMemberNo());
+		Address address = mypageService.selectOneAddressByTitle(param);
+		log.debug("address = {}", address);
+		map.put("available", address == null);
+		
+		return map;
+	}
+	
+	/**
 	 * 주소 등록
 	 * insert into address values(seq_address_no.nextval, #{memberNo}, #{postalCode}, #{address1}, #{address2}, #{mainYn}, #{title}, #{addressee}, #{phone})
 	 */
@@ -368,6 +386,12 @@ public class MypageController {
 	public String addressEnroll(Address address, RedirectAttributes redirectAttr) {
 		
 		try {
+			if(address.getMainYn().equals("Y")) {
+				log.debug("address.getMainYn() = {}", address.getMainYn());
+				int memberNo = address.getMemberNo();
+				int _result = mypageService.updateMainAddress(memberNo);
+				log.debug("_result = {}", _result);
+			}
 			int result = mypageService.insertAddress(address);
 			String msg = result > 0 ? "주소 등록이 완료되었습니다." : "주소 등록에 실패하였습니다.";
 			redirectAttr.addFlashAttribute("msg", msg);
@@ -386,6 +410,12 @@ public class MypageController {
 	public String addressUpdate(Address address, RedirectAttributes redirectAttr) {
 
 		try {
+			if(address.getMainYn().equals("Y")) {
+				log.debug("address.getMainYn() = {}", address.getMainYn());
+				int memberNo = address.getMemberNo();
+				int _result = mypageService.updateMainAddress(memberNo);
+				log.debug("_result = {}", _result);
+			}
 			int result = mypageService.updateAddress(address);
 			String msg = result > 0 ? "주소 수정이 완료되었습니다." : "주소 수정에 실패하였습니다.";
 			redirectAttr.addFlashAttribute("msg", msg);
@@ -488,8 +518,13 @@ public class MypageController {
 	 * 혜진 교환/환불/취소 리스트 시작
 	 */
 	
-	@GetMapping("/claimList.do")
-	public void claimList() {}
+	@GetMapping("/changeOrderList.do")
+	public void changeOrderList(Authentication authentication, Model model) {
+		Member member = (Member)authentication.getPrincipal();
+		List<OrderLogExt> list = orderService.selectOrderLogList(member.getMemberNo());
+		model.addAttribute("list", list);
+		
+	}
 	
 	/**
 	 * 혜진 교환/환불/취소 리스트 끝

@@ -41,6 +41,7 @@
 	)
   </insert>
   
+  <!-- 신고하기 -->
   <insert id="insertCommunityReport">
  	insert into
 		report
@@ -60,8 +61,68 @@
 	)
   </insert>
 
-
+  <select id="selectCommentCount" resultType="_int">
+  	select
+  		count(*)
+  	from
+  		community_comment
+  	where
+  		community_no = #{communityNo}
+  </select>
   
+  <!-- 좋아요순 리스트 -->
+  <select id="selectLikeBoardList" resultType="communityEntity">
+	select 
+        c.community_no,
+	    c.title,
+	    (select nickname from member where member_no = c.member_no) nickname,
+        c.enroll_date,
+	   	c.like_count,
+	   	c.view_count,
+	    comment_count
+	from 
+		community c 
+            left join(
+                select 
+                    community_no, 
+                    count(comment_no) as comment_count 
+                from 
+                    community_comment 
+                group by community_no) m
+	on 
+		c.community_no = m.community_no
+	where
+		page_code = #{pageCode}
+	order by
+	    like_count desc  
+  </select>
+  
+  <!-- 답변순 리스트 -->
+  <select id="selectCommentBoardList" resultType="communityEntity">
+  	select 
+        c.community_no,
+	    c.title,
+	    (select nickname from member where member_no = c.member_no) nickname,
+        c.enroll_date,
+	   	c.like_count,
+	   	c.view_count,
+	    comment_count
+	from 
+		community c 
+            left join(
+                select 
+                    community_no, 
+                    count(comment_no) as comment_count 
+                from 
+                    community_comment 
+                group by community_no) m
+	on 
+		c.community_no = m.community_no
+	where
+		page_code = #{pageCode}
+	order by
+	    comment_count asc 
+  </select>
   
   <!-- 컬럼 리스트 조회 -->
   <select id="selectColumnList" resultType="community">
@@ -88,15 +149,27 @@
   
   <!-- 자유게시판 리스트 조회 -->
   <select id="selectFreeboardList" resultType="communityEntity">
-	select
+<!-- 	select -->
+<!-- 	    c.*, -->
+<!-- 	    (select nickname from member where member_no = c.member_no) nickname -->
+<!-- 	    (select count(*) from community_comment where community_no = ) commentCount -->
+<!-- 	from -->
+<!-- 	    community c -->
+<!-- 	where -->
+<!-- 		page_code = 4 -->
+<!-- 	order by -->
+<!-- 	   community_no desc -->
+	select 
 	    c.*,
-	    (select nickname from member where member_no = c.member_no) nickname
-	from
-	    community c
-	where
-		page_code = 4
-	order by
-	   community_no desc
+	    (select nickname from member where member_no = c.member_no) nickname,
+	    m.commentCount
+	from 
+		community c left join(select community_no, count(comment_no) as commentCount from community_comment group by community_no) m
+	on 
+		c.community_no = m.community_no and
+		c.page_code = 4
+	order by 
+		c.community_no desc
   </select>
   
   <!-- 자유게시판 총 게시물 수 -->
@@ -144,6 +217,7 @@
 	where
     	community_no = #{communityNo}
   </delete>
+  
   <!-- 자유게시판 댓글 -->
   <select id="selectFreeboardCommentList" resultType="communityCommentEntity">
   	select
@@ -203,15 +277,25 @@
   <!-- 자유게시판 타입별 검색 -->
   <select id="selectFreeboardListByType" resultType="communityEntity">
   	select
-	    c.community_no,
+        c.community_no,
 	    c.title,
-	    m.nickname,
-	   	c.enroll_date,
+	    (select nickname from member where member_no = c.member_no) nickname,
+        c.enroll_date,
 	   	c.like_count,
-	   	c.view_count
-	from
-	    community c join member m on
-	    c.member_no = m.member_no
+	   	c.view_count,
+	    m.commentCount
+	from 
+		community c 
+            left join(
+                select 
+                    community_no, 
+                    count(comment_no) as commentCount 
+                from 
+                    community_comment 
+                group by community_no) m
+	on 
+		c.community_no = m.community_no and
+		c.page_code = 4 
 	where
 		page_code = 4 and
         ${searchType} like '%'|| #{searchKeyword} ||'%'	

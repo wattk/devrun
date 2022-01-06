@@ -7,67 +7,12 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 <fmt:requestEncoding value="utf-8"/>
 
-<style>
-/*신고모달 css시작*/
-.report-btn{
-	width: 58px;
-	height: 20px;
-	padding: 0 0;
-	font-size: 10px;
-}
-.modal-header{
-	background-color: #a400d9;
-	color: white;
-	border-bottom: 10px solid #e9ecef
-}
-.modal-body{
-	font-family: 'NanumSquareRound';
-}
-.m-body1 >p, .m-body2 >p{
-	font-weight: bold;
-}
-.m-body1 >div{
-	background-color: rgb(209, 209, 209);
-	padding: 10px 10px;
-	font-size: 13px;
-	height: 150px;
-	overflow-y: scroll;
-	overflow-x: hidden
-}
-#reportId{
-	font-weight: bold;
-}
-#reportHr{
-	margin-top: 6px;
-	margin-bottom: 6px;
-    border-color: white;
-}
-.checkboxReport{
-	background-color: rgb(255, 255, 255);
-	position: inherit;
-}
-#textLength{
-    position: absolute;
-    bottom: 59px;
-    left: 410px;
-    color: white;
-}
-.checkboxReport >form{
-	margin: auto;
-}
-#reportText{
-	margin-top: 10px;
-	resize: none;
-	width: 100%;
-	height: 130px;
-	border-color: white;
-	background-color:rgb(209, 209, 209);
-}
-.checkboxReport label{
-	height: 3px;
-}
-/*신고모달 css 끝*/
-</style>
+<!-- css임포트 -->
+<link
+    href="${pageContext.request.contextPath}/resources/css/shop/shopItemDetail.css"
+    rel="stylesheet">
+
+
 		
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" id="reportButton">신고하기</button>
 

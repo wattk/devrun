@@ -170,6 +170,18 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.insertCommunityReport(report);
 	}
 
+	// 좋아요순 리스트
+	@Override
+	public List<CommunityEntity> selectLikeBoardList(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectLikeBoardList(param, offset, limit);
+	}
+
+	@Override
+	public List<CommunityEntity> selectCommentBoardList(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectCommentBoardList(param, offset, limit);
+	}
+
+
 
 
 
