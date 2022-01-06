@@ -107,7 +107,19 @@
 		from view_product_parent_category 
 		where status ='Y' and 
 		parent_category_code = #{parentCate}
-	</select>	
+	</select>
+	
+	<select id="selectItemsByChildCate" resultType="productEx">
+		select 
+			* 
+		from 
+			view_product_parent_category 
+		where 
+			status ='Y' and 
+			child_category_code = #{childCategoryCode}
+	</select>
+	
+		
 	<select id="selectOneAttach" resultType="attachment">
 		select 
 			*

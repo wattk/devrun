@@ -6,6 +6,7 @@ import java.util.Map;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEntity;
+import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
@@ -71,5 +72,7 @@ public interface ShopDao {
 	int updateViewCount(String productCode);
 
 	int insertSmsWatinglist(Map<String, Object> param);
+
+	List<ProductEx> selectItemsByChildCate(String childCategoryCode);
 
 }

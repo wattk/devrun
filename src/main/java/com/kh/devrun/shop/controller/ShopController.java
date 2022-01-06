@@ -211,6 +211,17 @@ public class ShopController {
 
 		return "shop/shopCategory";
 	}
+	
+	// 상품 사이드 메뉴에서 소분류 카테고리 클릭 시
+	@GetMapping("shopChildCate")
+	public String shopChildCate (@RequestParam String childCategoryCode, Model model) {
+		
+		List<ProductEx>itemList = shopService.selectItemsByChildCate(childCategoryCode);
+		log.debug("소분류 상품 확인: {}",itemList);
+		model.addAttribute("itemList", itemList);
+		
+		return "shop/shopChildCate";
+	}
 
 	// 사진 리뷰만 모아보기 기능
 	@ResponseBody
