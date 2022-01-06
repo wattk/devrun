@@ -34,15 +34,15 @@
 		</c:forEach>
 		</div>
 	</div>
-	<div class="item-sort-container d-flex 	justify-content-between">
+	</div>
+		<div class="item-sort-container d-flex 	justify-content-between">
 		<div class="p-4">총 ${total}개</div>
 		<div class="p-4" id="">
-			<span class="pr-2 pl-2 shop-sort">추천순</span>
-			<span class="pr-2 pl-2 shop-sort">신상품순</span>
-			<span class="pr-2 pl-2 shop-sort">판매량순</span>
-			<span class="pr-2 pl-2 shop-sort">혜택순</span>
-			<span class="pr-2 pl-2 shop-sort">낮은 가격순</span>
-			<span class="pr-2 pl-2 shop-sort">높은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="sell">판매량순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="row">낮은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="high">높은 가격순</span>
 		</div>
 	</div>
 	<div class="row">
@@ -75,6 +75,58 @@
 	  ${pagebar}
 	</nav>
 </div>
+
+
+<script>
+//이벤트 상품 소분류 코드별 정렬
+$(".category-badge, .shop-sort").click((e)=>{
+	//클릭한 배지가 선택되어 있던 배지인지 아닌지 체크
+	if($(e.target).is(".badge-secondary")){
+		$(e.target)
+			.removeClass("badge-secondary")
+			.addClass("badge-primary");
+	}
+	else if($(e.target).is(".badge-primary")){
+		$(e.target)
+			.removeClass("badge-primary")
+			.addClass("badge-secondary");
+		
+	}
+	
+	let sort;
+	if($(e.target).is(".shop-sort")){
+		sort = $(e.target).data("target");
+	};
+	
+	//primary클래스를 가진 소분류 카테고리를 모아 카테고리 코드를 모은 배열 생성
+	const $badges = $(".badge-primary");
+	const data = [];
+	
+	$badges.each((i, item)=>{
+		data.push($(item).data("target"));
+	});
+	
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/shop/childCategorySearch.do",
+		data : {childCategoryCode : data,
+				promotionCode : "${promotion.promotionCode}",
+				keyword : sort},
+		method : "GET",
+		success(data){
+			console.log(data);
+			$("#productPromotionContainer").html(data["productStr"]);
+			$("#productSize").text(data["totalContent"]);
+			$(".pagebar").detach();
+			$("#productPromotionContainer").after(data["pagebar"]);
+			
+		},
+		error : console.log
+	});
+	
+});
+</script>
+
 
 <!-- shopHeader js  -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
