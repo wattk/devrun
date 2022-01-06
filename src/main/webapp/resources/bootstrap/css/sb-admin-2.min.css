@@ -194,34 +194,43 @@
 #productCategoryContainer{width:100%;height:100%;margin:25px 25px 50px 130px; padding:10px}
 #categoryContainer{display:flex}
 .select-category{width:470px;height:470px;border:1px solid black;}
-.large-category, .small-category{font-size: 19px; padding-left:40px}
-.small-category-title{width:50%}
+.parent-category, .child-category{font-size: 19px; padding-left:40px}
+.child-category-title{width:50%}
 .category-box-sub{display:flex}
 #insertCategory{width:260px; margin-right:40px}
 #selectCategory{width:100px;}
 .search-bar{margin-bottom: 30px; margin-top:45px}
-.small-category-title{font-size:20px; margin-left:40px}
+.child-category-title{font-size:20px; margin-left:40px}
+.parent-category-title{font-size:20px; margin-left:40px;width:50%}
 .category-box-content{ height: 86%;display: flex;flex-direction: column;justify-content: space-evenly;}
 .category-box-title{background: #eaecf4a6;box-shadow: 0px 1px 2px 0px; border-radius: 3px;}
 .select-category{margin-right:100px; border:1px solid #b7b9ccb5; border-radius: 6px;}
 .mmb-0{margin-bottom:8px;}
 .category-title{width:1040px;margin-top:30px; text-align:end}
 
-.category-table{width:100%; height:88%; }
+.category-table{width:100%;}
 .category-table tr{border:0px}
 .category-table td{padding-left:56px; font-size:19px; text-align:start; height:62px}
 #parentCategoryTbl td:nth-child(2){text-align:center;padding-left:70px}
 #parentCategoryTbl td:nth-child(3){text-align:center}
-#smallCategoryTbl {width:100%; height:78%}
+#childCategoryTbl {width:100%;}
+#childCategoryTbl td:nth-child(1) {width:255px;padding_left:48px;}
 
-#sctableContainer{height:372px;overflow:auto;}
+#chtableContainer{height:372px;overflow:auto;}
+#prtableContainer{height:372px;overflow:auto;}
 #sctableContainer table {white-space:nowrap;border-collapse:collapse}
 #sctableContainer table th,div table td {border:0px solid #555;}
+#selectParentCategory{width: 152px;}
 
+.ho{
+  background-color: #0d6efd36 !important;
+}
 
-
-
-
+#deleteBtnModal{visibility: hidden;}
+#updateBtnModal{visibility: hidden;}
+.category-title form{display:inline-block;}
+.update-category-code{display:flex;flex-direction: row; justify-content: space-around; margin-bottom:15px}
+.update-category-title{display:flex;flex-direction: row; justify-content: space-around;}
 
 
 
