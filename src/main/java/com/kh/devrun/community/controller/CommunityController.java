@@ -262,7 +262,7 @@ public class CommunityController {
 		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
-		
+
 		return "community/communityFreeboardList";
 	}
 	
@@ -301,7 +301,7 @@ public class CommunityController {
 		int totalContent = communityService.selectFreeboardTotalCountByType(param);
 		
 		// 3. pagebar
-		String pagebar = CommunityUtils.getPagebar(cPage, cPage, totalContent, url);
+		String pagebar = CommunityUtils.getPagebar2(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
 		
 		resultMap.put("freeboardStr", freeboardStr);
@@ -400,6 +400,7 @@ public class CommunityController {
 		List<CommunityCommentEntity> freeboardCommentList = communityService.selectFreeboardCommentList(communityNo);
 		log.debug("freeboardCommentList = {}", freeboardCommentList);
 		model.addAttribute("freeboardCommentList", freeboardCommentList);
+
 		
 		return "community/communityFreeboardDetail";
 	}
@@ -595,5 +596,6 @@ public class CommunityController {
 
 		return "redirect:/community/communityFreeboardList.do";
 	}
+	
 
 }
