@@ -11,6 +11,7 @@
 		default, default, null, null )
 	</insert>
 
+	<!-- 지원 시작 -->
 	<select id="selectAllReportByMemberNo" resultType="report">
 		select 
 			*
@@ -31,4 +32,5 @@
 		where
 			member_no = #{memberNo}
 	</select>
+	<!-- 지원 끝 -->
 </mapper>

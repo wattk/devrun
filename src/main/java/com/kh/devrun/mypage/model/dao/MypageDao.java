@@ -1,12 +1,15 @@
 package com.kh.devrun.mypage.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kh.devrun.address.model.vo.Address;
 
 public interface MypageDao {
 
-	int selectMessageTotalCount(int memberNo2);
+int selectMessageTotalCount(int memberNo2);
+	
+	int updateMainAddress(int memberNo);
 	
 	int insertAddress(Address address);
 	
@@ -19,5 +22,7 @@ public interface MypageDao {
 	int selectAddressTotalCount(int memberNo);
 	
 	Address selectOneAddress(int addressNo);
+
+	Address selectOneAddressByTitle(Map<String, Object> param);
 
 }

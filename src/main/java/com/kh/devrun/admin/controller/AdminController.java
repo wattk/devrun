@@ -34,10 +34,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kh.devrun.category.model.service.ProductCategoryService;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
+import com.kh.devrun.category.model.vo.ProductParentCategory;
 import com.kh.devrun.common.AdminUtils;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
@@ -57,8 +57,6 @@ import com.kh.devrun.questionProduct.model.vo.QuestionProductEx;
 import com.kh.devrun.questionProduct.utils.QuestionProductUtils;
 
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
 @Controller
 @Slf4j
@@ -83,11 +81,14 @@ public class AdminController {
 	@Autowired
 	QuestionProductService questionProductService;
 	
+	@Autowired
+	ProductCategoryService productCategoryService;
+	
 	@GetMapping("/adminMain.do")
 	public void adminMain() {}
 
 	
-	@GetMapping("/productMain.do")
+	@GetMapping("/product/productMain.do")
 	public String productManage(
 			Model model,
 			@RequestParam(defaultValue = "1") int cPage,
@@ -231,7 +232,7 @@ public class AdminController {
 		redirectAttr.addFlashAttribute("msg",msg);
 		
 																					
-		return "redirect:/admin/productMain.do";
+		return "redirect:/admin/product/productMain.do";
 	}
 	
 	// 상품 삭제
@@ -414,6 +415,31 @@ public class AdminController {
 		redirectAttr.addFlashAttribute("msg",msg);
 		return "redirect:/admin/productMain.do";
 	}
+	
+	// 상품 카테고리 관리
+	@GetMapping("/product/productCategory.do")
+	public void productCategory(Model model) {
+		List<ProductParentCategory> list = productCategoryService.selectAllParentCategory();
+		
+		log.debug("list = {}", list);
+		
+		model.addAttribute("list",list);
+	}
+	
+	@GetMapping("/productCategory/searchChildCategory.do")
+	@ResponseBody
+	public Map<String,Object>searchChildCategory(@RequestParam String code){
+		Map<String,Object>map = new HashMap<>();
+		log.debug("code",code);
+		List<ProductChildCategory>childCategoryList = productCategoryService.searchChildCategory(code);
+		log.debug("childCategoryList",childCategoryList);
+		
+		
+		map.put("childCategoryList", childCategoryList);
+		return map;
+	}
+	
+	
 	
 	
 	/**

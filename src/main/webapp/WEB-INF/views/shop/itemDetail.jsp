@@ -10,7 +10,7 @@
 
 <!-- Header 임포트 -->
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="shopMain" name="title" />
+	<jsp:param value="상세페이지" name="title" />
 </jsp:include>
 
 
@@ -848,7 +848,7 @@ $(document).on('click', '.likes', function(e) {
 /*좋아요 비동기 끝*/
 
 /*재입고 sms 전화번호 유효성 검사 시작*/
-$(phoneSms).keyup((e)=>{
+$("#phoneSms").keyup((e)=>{
 	const $phone = $("#phoneSms");
 	$phone.val($phone.val().replace(/[^0-9]/g, "")); //숫자아닌 문자(복수개)제거하기
 	
@@ -890,7 +890,8 @@ $(phoneSms).keyup((e)=>{
 			data :{
 				detailNo : detailNo,
 				phoneNumber : phoneNumber,
-				productName: '${product.name}'
+				productName: '${product.name}',
+				productCode: '${product.productCode}'
 			},
 			success(data){
 				if(data ==1){

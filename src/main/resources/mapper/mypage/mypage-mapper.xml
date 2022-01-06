@@ -13,6 +13,15 @@
 			member_no2 = #{member_no2} and read_chk = 'N'
 	</select>
 	
+	<update id="updateMainAddress">
+		update
+			address
+		set
+			main_yn = 'N'
+		where
+			member_no = #{memberNo}
+	</update>
+	
 	<insert id="insertAddress">
 		insert into
 			address
@@ -41,14 +50,14 @@
 			addressee = #{addressee},
 			phone = #{phone}
 		where
-			title = #{title}
+			address_no = #{addressNo}
 	</update>
 	
 	<delete id="deleteAddress">
 		delete
 	  		from address
 	  	where
-  			title = #{title}
+  			address_no = #{addressNo}
 	</delete>
 	
 	<select id="selectAllAddressByMemberNo" resultType="address">
@@ -59,7 +68,7 @@
 		where
 			member_no = #{memberNo}
 		order by
-			address_no desc
+			main_yn desc, address_no desc
 	</select>
 	
 	<select id="selectAddressTotalCount" resultType="_int">
@@ -78,6 +87,15 @@
 			address
 		where
 			address_no = #{addressNo}
+	</select>
+	
+	<select id="selectOneAddressByTitle" resultType="address">
+		select 
+			*
+		from 
+			address
+		where
+			member_no = #{memberNo} and title = #{title}
 	</select>
 	<!-- 지원 mapper 끝 -->
 </mapper>

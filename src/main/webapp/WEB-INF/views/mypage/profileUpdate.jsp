@@ -264,7 +264,7 @@ $(".duplicate-check").keyup((e) => {
 
 	//비동기 중복 검사
 	$.ajax({
-		url : `${pageContext.request.contextPath}/mypage/myinfo/checkUpdateDuplicate`,
+		url : `${pageContext.request.contextPath}/mypage/myinfo/profileUpdate/checkDuplicate`,
 		data : data,
 		contentType : "application/json ; charset=utf-8",
 		method : "GET",

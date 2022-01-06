@@ -301,9 +301,8 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/productMain.do">상품관리</a>
-                        <a class="collapse-item" href="#">상품조회</a>
-                        <a class="collapse-item" href="#">상품 카테고리</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/product/productMain.do">상품 관리</a>                 
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/product/productCategory.do">상품 카테고리 관리</a>                                        
                     </div>
                 </div>
             </li>
