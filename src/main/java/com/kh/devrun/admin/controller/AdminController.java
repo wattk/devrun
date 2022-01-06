@@ -430,8 +430,7 @@ public class AdminController {
 	}
 	
 
-	
-	
+		
 	// 비동기로 소분류 이름 & 코드 가져오기.
 	@GetMapping("/productCategory/searchChildCategory.do")
 	@ResponseBody
@@ -508,6 +507,28 @@ public class AdminController {
 		redirectAttr.addFlashAttribute("msg","상품 카테고리 삭제 성공");
 		return "redirect:/admin/product/productCategory.do";
 	}
+	
+	// 상품 카테고리 코드 중복검사
+	@GetMapping("/productCategory/checkCategoryCode.do")
+	public Map<String,Object> checkCategoryCode(
+				@RequestParam String updateCategoryCode
+			) {
+		Map<String,Object>map = new HashMap<>(); 
+		
+		// 대분류, 소분류 두 테이블을 조회한 뒤 같은 값이 있다면 true를 리턴
+		ProductParentCategory productParentCategory  = productCategoryService.selectOneParentCategoryCode(updateCategoryCode);	
+		ProductChildCategory productChildCategory  = productCategoryService.selectOneChildCategoryCode(updateCategoryCode);
+		
+		if(productParentCategory == null && productChildCategory == null) {
+			log.debug("사용가능");
+			map.put("result", true);
+		}
+		
+		
+		
+		return map;
+	};
+	
 	
 	
 	

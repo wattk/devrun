@@ -99,6 +99,17 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 		
 		return result;
 	}
+	
+	// 해당 대분류 코드에 따른 객체 하나 가져오기
+	@Override
+	public ProductParentCategory selectOneParentCategoryCode(String updateCategoryCode) {
+		return productCategoryDao.selectOneParentCategoryCode(updateCategoryCode) ;
+	}
+	// 해당 소분류 코드에 따른 객체 하나 가져오기
+	@Override
+	public ProductChildCategory selectOneChildCategoryCode(String updateCategoryCode) {
+		return productCategoryDao.selectOneChildCategoryCode(updateCategoryCode);
+	}
 
 
 	

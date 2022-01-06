@@ -22,6 +22,12 @@ public interface ProductCategoryService {
 	List<ProductParentCategory> selectParentCategory();
 
 	int deleteProductCategory(Map<String, String> param);
+	
+	// 해당 대분류 코드에 따른 객체 하나 가져오기
+	ProductParentCategory selectOneParentCategoryCode(String updateCategoryCode);
+	
+	// 해당 소분류 코드에 따른 객체 하나 가져오기
+	ProductChildCategory selectOneChildCategoryCode(String updateCategoryCode);
 
 	
 	

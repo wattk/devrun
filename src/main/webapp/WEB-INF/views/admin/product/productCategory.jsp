@@ -187,8 +187,23 @@
 <script>
 
 /* 업데이트 값 중복검사 실시 */
-$("#updateCategoryCode").keyup(e=>{
+$("#updateCategoryCode").mouseleave(e=>{
 	console.log("ㅋㅋㅋㅋㅋㅋㅋㅋ");
+	var updateCategoryCode = $(updateCategoryCode).val();
+	
+	const obj = {"updateCategoryCode" : updateCategoryCode}
+	
+	$.ajax({
+		url :`${pageContext.request.contextPath}/admin/productCategory/checkCategoryCode.do`,
+		data:obj,
+		contentType : "application/json; charset=utf-8",
+		success(data){
+			console.log(data);
+		},
+		error : console.log
+	});
+	
+		
 });
 
 /* 업데이트전의 값을 띄우는데 사용할 전역 변수  */

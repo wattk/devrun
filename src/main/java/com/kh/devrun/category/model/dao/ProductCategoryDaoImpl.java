@@ -61,6 +61,18 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 	public int deleteChildProductCategory(String deleteChildCategoryCode) {
 		return session.delete("productCategory.deleteChildProductCategory",deleteChildCategoryCode);
 	}
+	
+	// 해당 대분류 코드에 따른 객체 하나 가져오기
+	@Override
+	public ProductParentCategory selectOneParentCategoryCode(String updateCategoryCode) {
+		return session.selectOne("productCategory.selectOneParentCategoryCode",updateCategoryCode);
+	}
+		
+	// 해당 소분류 코드에 따른 객체 하나 가져오기
+	@Override
+	public ProductChildCategory selectOneChildCategoryCode(String updateCategoryCode) {		
+		return session.selectOne("productCategory.selectOneChildCategoryCode",updateCategoryCode);
+	}
 
 
 

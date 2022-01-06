@@ -72,7 +72,25 @@ values(
 		child_category_code = #{deleteChildCategoryCode}
 </delete>
 
-
+<!-- 해당 대분류 코드에 따른 객체 하나 가져오기  -->
+<select id="selectOneParentCategoryCode" resultType="ProductParentCategory">
+	select
+		*
+	from
+		product_parent_category
+	where
+		parent_category_code = #{updateCategoryCode}
+</select>
+		
+<!-- 해당 소분류 코드에 따른 객체 하나 가져오기  -->
+<select id="selectOneChildCategoryCode" resultType="ProductChildCategory">
+	select
+		*
+	from
+		product_parent_category
+	where
+		parent_category_code = #{updateCategoryCode}
+</select>
 		
 		
 		

@@ -29,6 +29,12 @@ public interface ProductCategoryDao {
 
 	// 상품 소분류 카테고리 삭제
 	int deleteChildProductCategory(String deleteChildCategoryCode);
+	
+	// 해당 대분류 코드에 따른 객체 하나 가져오기
+	ProductParentCategory selectOneParentCategoryCode(String updateCategoryCode);
+	
+	// 해당 소분류 코드에 따른 객체 하나 가져오기
+	ProductChildCategory selectOneChildCategoryCode(String updateCategoryCode);
 
 
 }
