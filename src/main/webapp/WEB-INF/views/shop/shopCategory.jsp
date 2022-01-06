@@ -29,13 +29,9 @@
 			<strong>전체보기</strong>
 		</div>
 		<div class="category-details col-8">
-			<span class="category-badge badge badge-primary">유선 마우스</span>
-			<span class="category-badge badge badge-secondary">무선 마우스</span>
-			<span class="category-badge badge badge-secondary">버티컬 마우스</span>
-			<span class="category-badge badge badge-secondary">충전식 마우스</span>
-			<span class="category-badge badge badge-secondary">블루투스 마우스</span>
-			<span class="category-badge badge badge-secondary">레이저 마우스</span>
-			<span class="category-badge badge badge-secondary">인체공학 마우스</span>
+		<c:forEach items="${ChildCateNames}" var ="c">
+			<span class="category-badge badge badge-primary">${c}</span>
+		</c:forEach>
 		</div>
 	</div>
 	<div class="item-sort-container d-flex 	justify-content-between">

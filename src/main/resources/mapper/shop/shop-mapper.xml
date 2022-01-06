@@ -300,7 +300,13 @@
 			status ='Y' and 
 			child_category_code = #{childCategoryCode}
 	</select>
-	
+	<select id="selectAllChildCateNames" resultType="String">
+		select distinct
+		    child_category_title 
+		from 
+		    view_product_parent_category
+		where parent_category_code = #{parentCate}
+	</select>
 	
 	
 
