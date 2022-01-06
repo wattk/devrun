@@ -73,7 +73,7 @@ public interface ShopDao {
 
 	int insertSmsWatinglist(Map<String, Object> param);
 
-	List<ProductEx> selectItemsByChildCate(String childCategoryCode);
+	List<ProductEx> selectItemsByChildCate(int offset, int limit, String childCategoryCode);
 
 	int countItemsByParentCode(String parentCate);
 

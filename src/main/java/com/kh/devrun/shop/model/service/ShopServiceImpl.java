@@ -238,8 +238,8 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public List<ProductEx> selectItemsByChildCate(String childCategoryCode) {
-		return shopDao.selectItemsByChildCate(childCategoryCode);
+	public List<ProductEx> selectItemsByChildCate(int offset, int limit, String childCategoryCode) {
+		return shopDao.selectItemsByChildCate(offset, limit, childCategoryCode);
 	}
 
 	@Override

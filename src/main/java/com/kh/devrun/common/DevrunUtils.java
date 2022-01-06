@@ -43,6 +43,7 @@ public class DevrunUtils {
 
 		// 페이지번호를 클릭했을때 링크
 		String delimeter = url.contains("?") ? "&" : "?";
+		log.debug("페이징바 왜 안돼? delimeter : {}",delimeter);
 		url = url + delimeter + "cPage="; // /spring/board/boardList.do?cPage=
 		log.debug("Utils URL = {}",url);
 		// 페이지바크기

@@ -114,7 +114,6 @@ public class ShopController {
 		log.debug("품절 : {}", outOfStock);
 
 		// 장바구니 좋아요 여부
-
 		if (authentication != null) {
 
 			int memberNo = ((Member) authentication.getPrincipal()).getMemberNo();
@@ -218,28 +217,38 @@ public class ShopController {
 		// 갯수세기
 		int total = shopService.countItemsByParentCode(parentCate);
 		model.addAttribute("total", total);
-		
-		//3.pagebar
+
+		// 3.pagebar
 		String url = request.getRequestURI();
 		String pagebar = DevrunUtils.getPagebar(cPage, limit, total, url);
 		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
-
 
 		return "shop/shopCategory";
 	}
 
 	// 상품 사이드 메뉴에서 소분류 카테고리 클릭 시
 	@GetMapping("shopChildCate")
-	public String shopChildCate(@RequestParam String childCategoryCode, Model model) {
+	public String shopChildCate(@RequestParam String childCategoryCode, Model model,
+			@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request) {
 
-		List<ProductEx> itemList = shopService.selectItemsByChildCate(childCategoryCode);
-		log.debug("소분류 상품 확인: {}", itemList);
+		// 페이징 처리
+		log.debug("cPage : {} ", cPage);
+		int limit = 12;
+		int offset = (cPage - 1) * limit;
+
+		List<ProductEx> itemList = shopService.selectItemsByChildCate(offset, limit, childCategoryCode);
 		model.addAttribute("itemList", itemList);
 
 		// 갯수세기
 		int total = shopService.countItemsByChildCode(childCategoryCode);
 		model.addAttribute("total", total);
+		
+		// 3.pagebar
+		String url = request.getRequestURI();
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, total, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
 
 		return "shop/shopChildCate";
 	}
