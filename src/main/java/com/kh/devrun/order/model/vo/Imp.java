@@ -27,5 +27,7 @@ public class Imp implements Serializable {
 	private String buyerName;
 	private String buyerPostcode;
 	private String buyerPhone;
+	private boolean isCanceled;
+	private String receiptUrl;
 
 }

@@ -3,7 +3,6 @@ package com.kh.devrun.order.model.dao;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.MerchantDetail;
 import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.order.model.vo.OrderLog;
+import com.kh.devrun.order.model.vo.OrderLogExt;
 import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.shop.model.vo.Cart;
@@ -127,6 +127,21 @@ public class OrderDaoImpl implements OrderDao {
 	@Override
 	public int insertOrderLog(OrderLog orderLog) {
 		return session.insert("order.insertOrderLog", orderLog);
+	}
+
+	@Override
+	public int updateImp(String receipt) {
+		return session.update("order.updateImp", receipt);
+	}
+
+	@Override
+	public List<OrderLogExt> selectOrderLogList(int memberNo) {
+		return session.selectList("order.selectOrderLogList", memberNo);
+	}
+
+	@Override
+	public int updateOrderLog(Map<String, Object> param) {
+		return session.update("order.updateOrderLog", param);
 	}
 
 

@@ -11,9 +11,12 @@
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/shop/order.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath }/resources/js/shop/order.js"></script>
+
 <form:form name="orderLogFrm" method="POST" action="${pageContext.request.contextPath}/order/orderLogEnroll">
 <input type="hidden" name="merchantUid" value="${merchant.merchantUid }" />
 <input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo"/>' />
+<input type="hidden" name="orderLogUid" />
+
 <div class="claim-container p-5 position-relative">
 	<h3>교환/환불/취소 신청</h3>
 	<div class="card-container ">
@@ -43,7 +46,9 @@
 			    <c:forEach items="${productList}" var="product" varStatus="vs">
 				    <tr class="ml-3 mr-3">
 				      <td rowspan="" class="col-1">
-				      	<img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class=" img-b w-75" >
+					      <div class="cart-item-img">
+					      		<img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="shop-img img-b" >
+					      </div>
 					  </td>
 				      <td class="col-4 align-middle ">
 				      	<strong class="pl-2 align-middle">${product.name}</strong><span class="align-middle pl-3">${product.productDetail.optionNo} ${product.productDetail.optionContent}</span>
@@ -159,10 +164,24 @@
 		  <div class="card-body m-4">
 		  	<div>
 		  		<strong>선택한 주문</strong>
-		  		<div>
-		  			<img src="${pageContext.request.contextPath }/resources/upload/product/${productList[0].thumbnail}" alt="" class="img-b img-thumbnail w-25">
-			      	<span class="align-middle pl-3">${imp.name }</span>
-		  		</div>
+		  		<br />
+		  		<table class="claim-table table m-3 pr-3">
+				  <tbody>
+				    <tr class="ml-3 mr-3">
+				      <td rowspan="" class="col-1">
+					      <div class="cart-item-img">
+					      		<img src="${pageContext.request.contextPath}/resources/upload/product/${productList[0].thumbnail}" alt="" class="shop-img img-b" >
+					      </div>
+					  </td>
+				      <td class="col-4 align-middle ">
+				      	<strong class="pl-2 align-middle">${imp.name}</strong>
+				      </td>
+				      <td class="col-1">
+				      	<fmt:formatNumber type="currency">${imp.amount }</fmt:formatNumber>
+				      </td>
+				    </tr>
+				  </tbody>
+			    </table>
 		  		<hr />
 		  		<strong>선택한 사유</strong>
 		  		<p id="selectReason"></p>
@@ -212,7 +231,9 @@
 <script>
 $("#orderLogEnrollBtn").click((e)=>{
 	const orderLogUid = 'ORLG_' + new Date().getTime();
-	const data = new FormData(document.orderLogFrm);
+	$("[name=orderLogUid]").val(orderLogUid);
+	$(document.orderLogFrm).submit();
+	/* const data = new FormData(document.orderLogFrm);
 	data.append("orderLogUid", orderLogUid);
 	const obj = {};
 	
@@ -230,15 +251,17 @@ $("#orderLogEnrollBtn").click((e)=>{
 		contentType : "application/json; charset=utf-8",
 		success(data){
 			console.log(data);
-			const result = JSON.parse(data.result);
-			console.log(result);
-			if(result.code == 0){
-				alert("주문 취소가 완료되었습니다.");
+			if(data.result != null){
+				const result = JSON.parse(data.result);
+				console.log(result);
+				if(result.code == 0){
+					alert("주문 취소가 완료되었습니다.");
+				}
 			}
 		},
 		error : console.log
 		
-	});
+	}); */
 })
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

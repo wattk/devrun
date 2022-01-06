@@ -2,6 +2,7 @@ package com.kh.devrun.order.model.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,4 +30,6 @@ public class OrderLog implements Serializable {
 	private int cost;
 	private String reasonDetail;
 	private int memberNo;
+	
+	private List<MerchantDetail> merchantDetailList;
 }

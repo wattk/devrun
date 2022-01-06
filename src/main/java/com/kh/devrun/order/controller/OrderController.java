@@ -85,10 +85,8 @@ public class OrderController {
 	}
 	
 	@PostMapping("/orderLogEnroll")
-	@ResponseBody
-	public Map<String, String> orderLogEnroll(@RequestBody OrderLog orderLog, HttpServletRequest request, HttpServletResponse response) {
+	public String orderLogEnroll(OrderLog orderLog, HttpServletRequest request, HttpServletResponse response) {
 		log.debug("orderLog = {}", orderLog);
-		Map<String, String> resultMap = new HashMap<>();
 			try {
 				int result = orderService.insertOrderLog(orderLog);
 				if(result > 0 ) {
@@ -112,18 +110,22 @@ public class OrderController {
 						json2.put("imp_uid", imp.getImpUid());
 						json2.put("amount", imp.getAmount());
 						
-						String cancelResult = AdminUtils.getRefund(request, response, json2, _token);
-						log.debug("cancelResult = {}", cancelResult);
-						resultMap.put("result", cancelResult);
+						String receipt = AdminUtils.getRefund(request, response, json2, _token);
+						log.debug("cancelResult = {}", receipt);
+						if(receipt != null) {
+							Map<String, Object> param = new HashMap<>();
+							param.put("keyword", "endDate");
+							param.put("orderLogUid", orderLog.getOrderLogUid());
+							result = orderService.updateOrderLog(param);
+						}
 					}
-					resultMap.put("msg", "접수가 완료되었습니다.");
 				}
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		return resultMap;
+		return "redirect:/mypage/changeOrderList.do";
 	}
 
 
