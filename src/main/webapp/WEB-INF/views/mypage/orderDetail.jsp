@@ -11,7 +11,6 @@
 
 <link href="${pageContext.request.contextPath}/resources/css/mypage/myshopping.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/shop/shopItemDetail.css" rel="stylesheet">
-<script src="${pageContext.request.contextPath}/resources/js/order/order.js"></script>
 <%-- EL에서 접근하기 위해 VAR속성 지정 --%>
 <sec:authentication property="principal" var="member"/>
 <%-- my shopping --%>
@@ -263,6 +262,11 @@ $(".tracking-no").click((e)=>{
 		}
 	});
 });
+
+$(".order-btn").click((e)=>{
+	const merchantUid = $(e.target).data("target");
+	location.href = `${pageContext.request.contextPath}/mypage/changeOrder?merchantUid=\${merchantUid}`;
+})	
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/itemDetail.js" ></script>
 <jsp:include page="/WEB-INF/views/mypage/common/footer.jsp"></jsp:include>
