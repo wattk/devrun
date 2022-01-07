@@ -49,6 +49,18 @@ $(function(){
 	});
 	$('#mypageTab').click();          
 }); */
+
+/* 마이페이지 - 채팅 클릭 시 함수 호출 */
+const chatList = () => {
+	
+	// 팝업요청 // url 부분 로그인 회원 받게 수정할 것
+	const url = `${pageContext.request.contextPath}/chat/chatList.do`;
+	const name = 'chatList'; // 팝업창 Window객체의 name.
+	const spec = "width=400px, height=600px";
+	open(url, name, spec);
+	
+};
+
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

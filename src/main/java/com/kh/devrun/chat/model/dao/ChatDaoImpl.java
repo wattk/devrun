@@ -71,4 +71,9 @@ public class ChatDaoImpl implements ChatDao {
 	public int exitChatRoom(Map<String, Object> param) {
 		return session.update("chat.exitChatRoom", param);
 	}
+
+	@Override
+	public int selectMessageTotalUnreadCount(int memberNo) {
+		return session.selectOne("chat.selectMessageTotalUnreadCount", memberNo);
+	}
 }
