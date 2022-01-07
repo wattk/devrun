@@ -139,13 +139,40 @@ public class CommunityController {
 		
 		return "community/communityQnAList";
 	}
+/* ---------------------------------------- 스터디 리스트 시작 ---------------------------------------- */
 	
 	// 커뮤니티-스터디
-	@GetMapping("/communityStudy.do")
-	public String communityStudy() {
+	@GetMapping("/communityStudyList.do")
+	public String communityStudy(@RequestParam(defaultValue = "1") int cPage, 
+								 Model model, 
+								 HttpServletRequest request 
+								 ) {
 		
-		return "community/communityStudy";
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		// 1. 전체 게시물 목록
+		List<CommunityEntity> list = communityService.selectStudyList(offset, limit);
+		log.debug("selectStudyList = {}", list);
+		// jsp에 전달할 수 있도록 model에 담아준다.
+		model.addAttribute("list", list);
+		
+		// 2. 전체 게시물 수
+		int totalContent = communityService.selectOneStudyCount();
+		log.debug("selectOneStudyCount = {}", totalContent);
+		model.addAttribute("totalContent", totalContent);
+		
+		// 3. pagebar
+		String url = request.getRequestURI(); // /devrun/community/communityStudyList.do
+		String pagebar = CommunityUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
+		
+		return "community/communityStudyList";
 	}
+	
+/* ---------------------------------------- 스터디 리스트 종료 ---------------------------------------- */
+/* ---------------------------------------- 스터디 종료 ---------------------------------------- */
 //--------------------------------------------------------------------------------------------------------------
 	
 	// Q&A-글등록
@@ -441,12 +468,12 @@ public class CommunityController {
 	// 자유게시판-상세보기
 	// @RequestParam("가져올 데이터의 이름")[데이터 타입][가져온 데이터를 담을 변수]
 	// 그리고 Model 객체를 이용해서, 뷰로 값을 넘겨준다.
-	@GetMapping("/communityFreeboardDetail/{communityNo}")
-	public String communityFreeboardDetail(
-									@PathVariable int communityNo, 
-									Model model, HttpServletRequest request,
-									HttpServletResponse response,
-									Authentication authentication) {
+	@GetMapping("/communityDetail/{communityNo}")
+	public String communityDetail(
+								@PathVariable int communityNo, 
+								Model model, HttpServletRequest request,
+								HttpServletResponse response,
+								Authentication authentication) {
 		log.debug("communityNo = {}", communityNo);
 		Member member = null;
 		
@@ -487,7 +514,7 @@ public class CommunityController {
 		model.addAttribute("freeboardCommentList", freeboardCommentList);
 
 		
-		return "community/communityFreeboardDetail";
+		return "community/communityDetail";
 	}
 	
 	// 자유게시판-좋아요추가
