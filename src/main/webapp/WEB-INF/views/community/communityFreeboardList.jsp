@@ -39,27 +39,6 @@ div#search-nickname {
 }
 </style>
 
-<script>
-/**
- * event boubling 기반 핸들링
- * tr 에서 핸들링 > td에서 발생 및 전파
- */
-$(() => {
-	$("tr[data-no]").click((e) => {
-		console.log(e.target);
-		console.log($(e.target).data("no"));
-		// tr 태그를 찾는 작업 --> 이벤트 타겟의 부모중의 tr태그를 찾아주세요.
-		const $tr = $(e.target).parents("tr");
-		const communityNo = $tr.data("no");
-		
-		location.href = `${pageContext.request.contextPath}/community/communityFreeboardDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
-		
-
-	});
-});
- 
-</script>
-
 
 <!-- 본문 시작 -->
 <div class="container-fluid">
@@ -81,7 +60,7 @@ $(() => {
 					
 			<!-- 검색창 시작-->
 			<div class="row py-3 border-bottom m-0 search justify-content-center" id="search-container">
-				<select id="searchType" class="custom-select" style="width:100px; float:right;">
+				<select id="searchType" class="custom-select" style="width: 100px; float: right; cursor: pointer;">
 				  	<option value="title">제목</option>
 				  	<option value="content">내용</option>
 				  	<option value="nickname">작성자</option>
@@ -142,7 +121,7 @@ $(() => {
 	<!-- 리스트 시작 -->
 	<div id="freeboardContainer">
 	<table id="tbl-board" class="table table-hover">
-		<tr style="background-color: #1A81FF; color:white; ">
+		<tr style="background-color: #1A81FF; color: white;">
 			<th class="col-1">번호</th>
 			<th class="col-3">제목</th>
 			<th class="col-1">작성자</th>
@@ -156,7 +135,7 @@ $(() => {
 		<!-- 꺼내면 cmmunityEntity니까 communityEntity라는 이름으로 사용 -->
 		<tbody id = "tbody">
 			<c:forEach items="${list}" var="communityEntity">
-				<tr data-no="${communityEntity.communityNo}">
+				<tr data-no="${communityEntity.communityNo}" style="cursor: pointer;" class="whynot">
 					<td>${communityEntity.communityNo}</td>
 					<td>${communityEntity.title}</td>
 					<td>${communityEntity.nickname}</td>
@@ -183,6 +162,36 @@ $(() => {
 </div>
 
 <script>
+
+/**
+ * event boubling 기반 핸들링
+ * tr 에서 핸들링 > td에서 발생 및 전파
+ */
+/* $("tr[data-no]").click((e) => { */
+ 
+$(document).on("click", ".whynot", function(e){ 
+	console.log(e.target);
+	console.log("해당 no = " + $(e.target).data("no"));
+	// tr 태그를 찾는 작업 --> 이벤트 타겟의 부모중의 tr태그를 찾아주세요.
+	const $tr = $(e.target).parents("tr");
+	console.log("해당 tr = " + $tr);
+	const communityNo = $tr.data("no");
+	console.log("해당 communityNo = " + communityNo);
+	
+	location.href = `${pageContext.request.contextPath}/community/communityFreeboardDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
+});
+ /* 
+$(".whynot").click((e) => {
+	e.preventDefault();
+	console.log("되나요");
+	console.log($(e.target));
+});
+ */
+function whynot(){
+	var $whynot = $(".whynot").data("no");
+	//console.log($whynot);
+};
+
 
 /* ---------------------------------------------- 타입별 검색 기능 시작 ---------------------------------------------- */
 
@@ -251,7 +260,7 @@ function getPage(cPage){
 			$("#tbody").html(data["freeboardStr"]);
 			$(".pagebar").detach();
 			$("#freeboardContainer").after(data["pagebar"]);
-			$("#totalCountContainer").html(`<span class="countTitle">검색된 회원 수 : </span> <span class"countContent">\${data["totalContent"]}</span>`)
+			$("#totalCountContainer").html(`<span class="countTitle">검색된 게시물 수 : </span> <span class"countContent">\${data["totalContent"]}</span>`)
 		},
 		error:console.log
 	});
@@ -261,6 +270,7 @@ function getPage(cPage){
 $(".search-btn").click(e => {
 	e.preventDefault();
 	getPage();
+
 });
 
 /* ---------------------------------------------- 타입별 검색 기능 종료 ---------------------------------------------- */
