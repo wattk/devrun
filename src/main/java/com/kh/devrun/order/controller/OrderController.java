@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,6 +30,7 @@ import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.OrderLog;
+import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.shop.model.vo.Cart;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +46,9 @@ public class OrderController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private ProductService productService;
 
 	@GetMapping("/cart.do")
 	public void cart(Authentication authentication, Model model) {
@@ -136,5 +141,13 @@ public class OrderController {
 		return "redirect:/mypage/changeOrderList.do";
 	}
 
+	@GetMapping("/findProductDetail")
+	@ResponseBody
+	public Map<String, Object> findProductDetail(@RequestParam(value="productArr[]") List<String> productArr){
+		log.debug("productArr = {}", productArr);
+		Map<String, Object> productDetailList = productService.selectProductDetailList(productArr);
+		log.debug("productDetailList = {}", productDetailList);
+		return productDetailList;
+	}
 
 }
