@@ -1005,7 +1005,7 @@ public class AdminController {
 	
 	@PostMapping("/orderLogUpdate")
 	@ResponseBody
-	public Map<String, Object> orderLogUpdate(@RequestBody String jsonStr, HttpServletRequest request, HttpServletResponse response){
+	public Map<String, Object> orderLogUpdate(@RequestBody String jsonStr, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttr){
 		Map<String, Object> param = new HashMap<>();
 		Map<String, Object> resultMap = new HashMap<>();
 		int result = 0;
@@ -1019,6 +1019,7 @@ public class AdminController {
 			if(isValid == 0) {
 				param.put("keyword", "PROCESS_DATE");
 				result = orderService.updateOrderLog(param);
+				resultMap.put("msg", "요청이 접수되었습니다.");
 			}
 			else if(isValid == 1){
 				// 아임포트 토큰생성 
@@ -1045,14 +1046,20 @@ public class AdminController {
 				json2.put("imp_uid", impUid);
 				json2.put("amount", amount);
 				
-				String receipt = AdminUtils.getRefund(request, response, json2, _token);
-				log.debug("cancelResult = {}", receipt);
+				Map<String, Object> map = AdminUtils.getRefund(request, response, json2, _token);
+				log.debug("cancelResult = {}", map);
+				String receipt = (String)map.get("receipt");
+				
+				resultMap.put("msg", (String)map.get("message"));
+				
 				if(receipt != null) {
 					Map<String, Object> updateParam = new HashMap<>();
 					updateParam.put("keyword", "END_DATE");
 					updateParam.put("orderLogUid", param.get("orderLogUid"));
+					updateParam.put("receiptUrl", receipt);
 					log.debug("updateParam = {}", updateParam);
 					result = orderService.updateOrderLog(updateParam);
+					resultMap.put("msg", "정상처리되었습니다");
 			}
 			
 			log.debug("result = {}", result);

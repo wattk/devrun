@@ -110,7 +110,7 @@
 </div>
 <hr class="w-100"/>
 <strong class="m-5">주문 목록</strong>
-<div class="order-list">
+<div class="${list.size() > 5 ? 'order-list':'' } mb-5">
 	<table class="admin-tbl table table-hover mx-auto">
 	  <thead>
 	    <tr>

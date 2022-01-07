@@ -297,6 +297,7 @@
 			data-price="${product.price }"
 			data-name="${product.name }"
 			data-amount="1"
+			data-thumbnail="${product.thumbnail }"
 			>
 			<div id="itemDetailNameDiv">
 				<p>${product.name}</p>
@@ -928,7 +929,8 @@ $("#orderBtn").click((e)=>{
 			detailNo : detailNo,
 			name : $itemDetailInfo.data("name"),
 			price : $itemDetailInfo.data("price"),
-			amount : $itemDetailInfo.data("amount")
+			amount : $itemDetailInfo.data("amount"),
+			thumbnail : $itemDetailInfo.data("thumbnail")
 	};
 	console.log(data);
 	cartArr.push(data);
