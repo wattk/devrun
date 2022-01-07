@@ -432,7 +432,7 @@
   	from
   		order_log
   	where
-  		cs_status = #{value} and process_date is not null and end_date is null
+  		cs_status = #{value} and end_date is null
   	order by
   		req_date desc
   </select>

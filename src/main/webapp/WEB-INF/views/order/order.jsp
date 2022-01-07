@@ -30,7 +30,7 @@ $(document).ready((e)=>{
 	
 	if(item.length == 1){
 		$(".merchant-title").text(item[0].name);
-		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].productCode}.png" class="shop-img img-thumbnail img-b">`);
+		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].thumbnail}" class="shop-img img-thumbnail img-b">`);
 	}
 	else{
 		$(".merchant-title").text(item[0].name+" 외 "+(item.length - 1)+"건");

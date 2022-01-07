@@ -198,9 +198,10 @@
 	  	  </c:if>
 	  	  <c:if test="${merchant.orderStatus eq 'SS' or merchant.orderStatus eq 'OC' }">
 	  	    <ul class="list-group">
-		  	  <li class="list-group-item">
+		  	  <li id="exchangeContainer" class="list-group-item">
 			  	<input type="radio" name="csStatus" id="exchange" value="EXC"/>
 			  	<label for="exchange" class="m-0">교환</label>
+			  	
 			  </li>
 		  	  <li class="list-group-item">
 			  	<input type="radio" name="csStatus" id="refund" value="RET"/>
@@ -228,4 +229,32 @@
 	</div>
 </div>
 </form:form>
+<script>
+/* $("[name=csStatus]").change((e)=>{
+	if($(e.target).val() != 'EXC'){
+		return;
+	}
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/order/findProductDetail",
+		method : "GET",
+		data : ,
+		success(data){
+			console.log(data);
+		},
+		error : console.log
+	});
+	
+	$("#exchangeContainer").append(`<div>
+	  		<input type="hidden" name="prevDetailNo" id="" value="${s.detailNo}"/>
+		  	<select style="height: 35px;" class="col-8" name="currDetailNo" required>
+      	 		<option value="" selected disabled >옵션 선택</option>
+	      	 		<option value="${s.detailNo}"> ${s.optionNo}
+							, ${s.optionContent}
+	      	 		</option>
+      	 	</select>
+	  	</div>`);
+	
+}); */
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

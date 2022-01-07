@@ -171,7 +171,7 @@ enctype="multipart/form-data">
        								
        								<c:if test="${item.orderStatus eq 'SS'}">
        									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary">반품/교환</button>
-       									<button type="button" id="${s.trackingNo}" data-toggle="modal" data-target="#shipmentModal" class="tracking-no btn btn-outline-primary">배송조회</button>
+       									<button type="button" id="${item.trackingNo}" data-toggle="modal" data-target="#shipmentModal" class="tracking-no btn btn-outline-primary">배송조회</button>
        									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary active">구매확정</button>
        								</c:if>
        								<c:if test="${item.orderStatus eq 'OC'}">

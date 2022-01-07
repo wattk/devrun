@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.address.model.vo.Address;
 import com.kh.devrun.common.AdminUtils;
@@ -85,7 +86,7 @@ public class OrderController {
 	}
 	
 	@PostMapping("/orderLogEnroll")
-	public String orderLogEnroll(OrderLog orderLog, HttpServletRequest request, HttpServletResponse response) {
+	public String orderLogEnroll(OrderLog orderLog, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttr) {
 		log.debug("orderLog = {}", orderLog);
 			try {
 				int result = orderService.insertOrderLog(orderLog);
@@ -110,12 +111,19 @@ public class OrderController {
 						json2.put("imp_uid", imp.getImpUid());
 						json2.put("amount", imp.getAmount());
 						
-						String receipt = AdminUtils.getRefund(request, response, json2, _token);
-						log.debug("cancelResult = {}", receipt);
+						Map<String, Object> map = AdminUtils.getRefund(request, response, json2, _token);
+						log.debug("cancelResult = {}", map.get("receipt"));
+						String receipt = (String)map.get("receipt");
+						
+						redirectAttr.addFlashAttribute("msg", (String)map.get("message"));
+						
 						if(receipt != null) {
 							Map<String, Object> param = new HashMap<>();
+							String[] uidArr = new String[1];
+							uidArr[0] = orderLog.getOrderLogUid();
 							param.put("keyword", "END_DATE");
-							param.put("orderLogUid", orderLog.getOrderLogUid());
+							param.put("orderLogUid", uidArr);
+							param.put("receiptUrl", receipt);
 							result = orderService.updateOrderLog(param);
 						}
 					}
