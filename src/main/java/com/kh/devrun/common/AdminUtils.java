@@ -1,14 +1,15 @@
 package com.kh.devrun.common;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -99,12 +100,12 @@ public class AdminUtils {
 
 	}
 
-	public static String getRefund(
+	public static Map<String, Object> getRefund(
 			HttpServletRequest request, 
 			HttpServletResponse response, 
 			JSONObject json,
 			String _token) throws Exception {
-		
+		Map<String, Object> map = new HashMap<>();
 		String requestString = "";
 		String receipt = "";
 		try {
@@ -136,15 +137,15 @@ public class AdminUtils {
 			JSONObject jsonObj = (JSONObject) jsonParser.parse(requestString);
 			log.debug("jsonObj : {}", jsonObj);
 			JSONObject jsonResponse = (JSONObject) jsonObj.get("response");
-			Long code = (Long)jsonObj.get("code");
-			if(code == 0) {
+			String message = (String)jsonObj.get("message");
+			map.put("message", message);
+			if(message == null) {
 				
 				log.debug("jsonResponse : {}", jsonResponse);
 				List<String> cancelReceiptUrls = (List<String>)jsonResponse.get("cancel_receipt_urls");
 				receipt = cancelReceiptUrls.get(0);
-			}
-			else{
-				throw new Exception();
+				map.put("receipt", receipt);
+				map.put("message", "정상 처리되었습니다.");
 			}
 	
 		}catch(Exception e){
@@ -152,7 +153,7 @@ public class AdminUtils {
 			throw e;
 		}
 	
-		return receipt;
+		return map;
 	}
 
 }

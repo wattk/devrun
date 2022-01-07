@@ -207,14 +207,14 @@
 			<hr />
 			<c:if test="${merchant.orderStatus ne 'OR' and merchant.orderStatus ne 'PP'}">
 				<div class="button-container d-flex m-2 justify-content-around">
-					<button type="button" data-target="${item.merchantUid}" class="order-btn order-detail-btn btn btn-outline-primary ">반품/교환</button>
+					<button type="button" data-target="${merchant.merchantUid}" class="order-btn order-detail-btn btn btn-outline-primary ">반품/교환</button>
 					<button type="button" id="${shipment.trackingNo}" data-toggle="modal" data-target="#shipmentModal" class="tracking-no order-detail-btn btn btn-outline-primary">배송조회</button>
-					<button type="button" data-target="${item.merchantUid}" class="order-btn order-detail-btn btn btn-outline-primary active">구매확정</button>
+					<button type="button" data-target="${merchant.merchantUid}" class="order-btn order-detail-btn btn btn-outline-primary active">구매확정</button>
 				</div>
 			</c:if>
 			<c:if test="${merchant.orderStatus eq 'OR' or merchant.orderStatus eq 'PP'}">
 				<div class="button-container d-flex m-2 justify-content-around">
-					<button type="button" data-target="${item.merchantUid}" class="order-btn order-detail-btn btn btn-outline-primary">주문취소</button>
+					<button type="button" data-target="${merchant.merchantUid}" class="order-btn order-detail-btn btn btn-outline-primary">주문취소</button>
 				</div>
 			</c:if>
 		</div>

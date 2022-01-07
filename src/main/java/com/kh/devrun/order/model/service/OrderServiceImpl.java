@@ -202,11 +202,12 @@ public class OrderServiceImpl implements OrderService {
 	)
 	public int insertOrderLog(OrderLog orderLog) {
 		Map<String, Object> param = new HashMap<>();
-		String[] merchantUid = new String[1];
-		merchantUid[0] = orderLog.getMerchantUid();
+		String[] uidArr = new String[1];
+		uidArr[0] = orderLog.getMerchantUid();
 		param.put("keyword", "cs_status");
 		param.put("value", orderLog.getCsStatus());
-		param.put("merchantUid", merchantUid);
+		param.put("target", "merchantUid");
+		param.put("uidArr", uidArr);
 		
 		int result = orderDao.insertOrderLog(orderLog);
 		result = orderDao.updateMerchant(param);
@@ -233,8 +234,11 @@ public class OrderServiceImpl implements OrderService {
 	public int updateOrderLog(Map<String, Object> param) {
 		int result = 0;
 		result = orderDao.updateOrderLog(param);
-		result = orderDao.updateImp((String)param.get("receipt_url"));
-		return 0;
+		String receiptUrl = (String)param.get("receiptUrl");
+		if(receiptUrl != null) {
+			result = orderDao.updateImp(receiptUrl);
+		}
+		return result;
 	}
 
 	@Override

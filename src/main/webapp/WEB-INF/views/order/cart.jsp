@@ -29,7 +29,8 @@
 	    	data-detail-no = "${cart.detailNo}"
 	    	data-name = "${cart.product.name }"
 	    	data-price = "${cart.product.price }"
-	    	data-amount = "${cart.amount}">
+	    	data-amount = "${cart.amount}"
+	    	data-thumbnail = "${cart.product.thumbnail }">
 	      <td rowspan="2">
 	      	<input type="checkbox" class="cart-checkbox ml-3" name="" id="" checked/>
 		  </td>
@@ -169,7 +170,8 @@ $("#cartPayBtn").click((e)=>{
 				detailNo : $cartItems.eq(i).data("detailNo"),
 				name : $cartItems.eq(i).data("name"),
 				price : $cartItems.eq(i).data("price"),
-				amount : $cartItems.eq(i).data("amount")
+				amount : $cartItems.eq(i).data("amount"),
+				thumbnail : $cartItems.eq(i).data("thumbnail")
 		};
 		console.log(data);
 		cartArr.push(data);

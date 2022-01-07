@@ -104,7 +104,7 @@
 </div>
 <hr class="w-100"/>
 <strong class="m-5">교환/환불/취소 목록</strong>
-<div class="order-list">
+<div class="${list.size() > 5 ? 'order-list':'' }">
 	<table class="admin-tbl table table-hover mx-auto">
 	  <thead>
 	    <tr>
@@ -119,18 +119,25 @@
 	    </tr>
 	  </thead>
 	  <tbody class="order-body" style="-ms-overflow-style: none;">
-	  	<c:forEach items="${list}" var="m" varStatus="vs">
-	    <tr>
-	      <td>${m.merchantUid}</td>
-	      <td>${m.memberNo}</td>
-	      <td>${m.csStatus eq 'REF'? '환불': m.csStatus eq 'EXC'?'교환':m.csStatus eq 'RET'?'반품':m.csStatus eq 'CAN'?'주문취소':'완료'}</td>
-	      <td><fmt:formatNumber type="currency">${m.cost}</fmt:formatNumber></td>
-	      <td>${m.reasonCode }</td>
-	      <td>${m.reasonDetail }</td>
-	      <td><fmt:formatDate value="${m.reqDate}" pattern="yy-MM-dd"/></td>
-	      <td><fmt:formatDate value="${m.endDate}" pattern="yy-MM-dd"/></td>
-	    </tr>
-	    </c:forEach>
+	  	<c:if test="${empty list}">
+	  		<tr class="mx-auto">
+	  			<td colspan="8">주문이 없습니다.</td>
+	  		</tr>
+	  	</c:if>
+	  	<c:if test="${not empty list}">
+		  	<c:forEach items="${list}" var="m" varStatus="vs">
+		    <tr>
+		      <td>${m.orderLogUid}</td>
+		      <td>${m.memberNo}</td>
+		      <td>${m.csStatus eq 'REF'? '환불': m.csStatus eq 'EXC'?'교환':m.csStatus eq 'RET'?'반품':m.csStatus eq 'CAN'?'주문취소':'완료'}</td>
+		      <td><fmt:formatNumber type="currency">${m.cost}</fmt:formatNumber></td>
+		      <td>${m.reasonCode }</td>
+		      <td>${m.reasonDetail }</td>
+		      <td><fmt:formatDate value="${m.reqDate}" pattern="yy-MM-dd"/></td>
+		      <td><fmt:formatDate value="${m.endDate}" pattern="yy-MM-dd"/></td>
+		    </tr>
+		    </c:forEach>
+	    </c:if>
 	  </tbody>
 	</table>
 </div>
@@ -146,7 +153,7 @@
 	      <th scope="col">요청 확인</th>
 	    </tr>
 	  </thead>
-	  <tbody class="order-body" style="-ms-overflow-style: none;">
+	  <tbody class="order-body order-change-body" style="-ms-overflow-style: none;">
 	  	<c:if test="${empty manageList}">
 	  		<tr class="mx-auto">
 	  			<td colspan="4">요청 대기 중인 주문이 없습니다.</td>
@@ -319,9 +326,15 @@ $("#osChangeBtn").click((e)=>{
 		contentType : "application/json; charset=utf-8",
 		data : JSON.stringify(data),
 		success(data){
-			alert("요청이 정상적으로 처리되었습니다.");
+			console.log(data.msg);
+			alert(data.msg);
 			if(valid == 1){
 				$(`#\${orderLogUid}`).detach();
+				if($(".order-change-body").children("tr").length == 0){
+					$(".order-change-body").append(`<tr class="mx-auto">
+				  			<td colspan="4">요청 대기 중인 주문이 없습니다.</td>
+					  		</tr>`);
+				}
 			}
 		},
 		error : console.log
