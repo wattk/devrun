@@ -407,7 +407,7 @@ $("#osChangeBtn").click((e)=>{
 			$(`#\${merchantUid}`).detach();
 			if($(".order-change-body").children("tr").length == 0){
 				$(".order-change-body").append(`<tr class="mx-auto">
-			  			<td colspan="4">처리 대기 중인 주문이 없습니다.</td>
+			  			<td colspan="4" class="text-center">처리 대기 중인 주문이 없습니다.</td>
 				  		</tr>`);
 			}
 		},

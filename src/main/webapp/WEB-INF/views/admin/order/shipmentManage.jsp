@@ -286,7 +286,7 @@ $(".shipmentSaveBtn").click((e)=>{
 				console.log($(`#\${target}Shipment`).children("tr").length);
 				if($(`#\${target}Shipment`).children("tr").length == 0){
 					$(`#\${target}Shipment`).append(`<tr class="mx-auto">
-				  			<td colspan="4">처리 대기 중인 주문이 없습니다.</td>
+				  			<td colspan="4"class="text-center">처리 대기 중인 주문이 없습니다.</td>
 					  		</tr>`);
 				}
 			}
