@@ -47,19 +47,22 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.selectFreeboardTotalCount();
 	}
 
+	// 커뮤니티 상세보기
 	@Override
-	public CommunityEntity selectOneFreeBoard(int communityNo) {
-		return communityDao.selectOneFreeBoard(communityNo);
+	public CommunityEntity selectOneCommunity(int communityNo) {
+		return communityDao.selectOneCommunity(communityNo);
 	}
 
+	// 댓글 보기
 	@Override
-	public List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo) {
-		return communityDao.selectFreeboardCommentList(communityNo);
+	public List<CommunityCommentEntity> selectCommentList(int communityNo) {
+		return communityDao.selectCommentList(communityNo);
 	}
 
+	// 댓글 등록
 	@Override
-	public int insertFreeboardCommentEnroll(CommunityComment communityComment) {
-		return communityDao.insertFreeboardComment(communityComment);
+	public int insertCommentEnroll(CommunityComment communityComment) {
+		return communityDao.insertComment(communityComment);
 	}
 
 	@Override
@@ -67,14 +70,10 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.commentDelete(commentNo);
 	}
 
+	// 커뮤니티 수정하기
 	@Override
-	public int updateFreeboard(Community community) {
-		return communityDao.updateFreeboard(community);
-	}
-
-	@Override
-	public int freeboardDelete(int communityNo) {
-		return communityDao.freeboardDelete(communityNo);
+	public int updateCommunity(CommunityEntity communityEntity) {
+		return communityDao.updateCommunity(communityEntity);
 	}
 
 	@Override
@@ -192,7 +191,33 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.selectOneStudyCount();
 	}
 
+	@Override
+	public int communityDelete(int communityNo) {
+		return communityDao.communityDelete(communityNo);
+	}
 
+	/**
+	 * 지원 서비스 시작
+	 */
+	
+	@Override
+	public List<CommunityEntity> selectAllPostOrderByLatest(int memberNo, int offset, int limit) {
+		return communityDao.selectAllPostOrderByLatest(memberNo, offset, limit);
+	}
+
+	@Override
+	public int selectPostTotalCount(int memberNo) {
+		return communityDao.selectPostTotalCount(memberNo);
+	}
+
+	@Override
+	public List<CommunityEntity> selectAllPostOrderBySelectType(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectPostTotalCount(param, offset, limit);
+	}
+
+	/**
+	 * 지원 서비스 끝
+	 */
 
 
 

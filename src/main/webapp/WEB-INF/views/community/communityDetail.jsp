@@ -16,53 +16,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" integrity="sha512-ZbehZMIlGA8CTIOtdE+M81uj3mrcgyrh6ZFeG33A4FHECakGrOsTPlPQ8ijjLkxgImrdmSVUHn1j+ApjodYZow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js" integrity="sha512-lVkQNgKabKsM1DA/qbhJRFQU8TuwkLF2vSN3iU/c7+iayKs08Y8GXqfFxxTZr1IcpMovXnf2N/ZZoMgmZep1YQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
-<script>
-	// summernote 웹 에디터 로딩
-	$(document).ready(function(){
-		$('#summernote').summernote({
-			height: 300, // 에디터 높이
-			minHeight: 300, // 최소 높이
-			maxHeight: 300, // 최대 높이
-			focus: true, // 에디터 로딩 후 포커스를 맞출 지 여부
-			lang: "ko-KR", // 한글 설정
-		});
-		
-		// 읽기 전용화 --> 비활성화 --> disable
-		$('#summernote').summernote('disable');
-	});
-	
-	
-	// 게시물 수정하기
-	$(document).on('click', '#freeboardUpdateBtn', function(e){
-		e.preventDefault();
-		console.log("업데이트 도착했나요?")
-		console.log("삭제할 게시글 번호 : ${communityEntity.communityNo}");
-		
-		if(confirm("정말로 수정하시겠습니까?")){
-			location.href=`${pageContext.request.contextPath}/community/communityFreeboardUpdate.do?communityNo=${communityEntity.communityNo}`;	
-		}else{
-			 return;
-		}  
-	});
-	
-	
-	// 게시물 삭제하기
-	$(document).on('click', '.freeboardDeleteBtn', function(e){
-		e.preventDefault();
-		console.log("삭제하기 도착했나요?");
-		console.log(e.target);
-		var communityNo = $(e.target).val();
-		console.log("삭제할 게시글 번호 : ${communityEntity.communityNo}");
-		
-		if(confirm("정말로 삭제하시겠습니까?")){
-			location.href=`${pageContext.request.contextPath}/community/freeboardDelete.do?communityNo=${communityEntity.communityNo}`;	
-		}else{
-			 return;
-		}
-	});
-	
-		
-</script>
 <style>
 	#likeButton, #reportButton {
 		width: 90px;
@@ -163,17 +116,21 @@
 				
 			<div class="row">
 				<div class="col-md-12" id="bottomButton">
-					<button type="button" class="btn btn-secondary btn-lg" id="freeboardUpdateBtn">수정하기</button>
+					<button type="button" class="btn btn-secondary btn-lg" id="communityUpdateBtn">수정하기</button>
 					<!-- 회원일 경우 -->
 					<sec:authorize access="hasAnyRole('M1', 'M2')">
 						<!-- 회원이고 글쓴이 본인일 경우 -->
-						<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
-							<button type="button" class="btn btn-secondary btn-lg freeboardDeleteBtn" value="${communityEntity.communityNo}">삭제하기</button>
+						<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">
+							<button type="button" class="btn btn-secondary btn-lg communityDeleteBtn"
+								data-community-no = "${communityEntity.communityNo}"
+								data-page-code= "${communityEntity.pageCode}">삭제하기</button>
 						</c:if>
 					</sec:authorize>
 					<!-- 관리자일 경우 -->
 					<sec:authorize access="hasRole('AM')">
-						<button type="button" class="btn btn-secondary btn-lg freeboardDeleteBtn" value="${communityEntity.communityNo}">삭제하기</button>
+						<button type="button" class="btn btn-secondary btn-lg communityDeleteBtn"
+								data-community-no = "${communityEntity.communityNo}"
+								data-page-code= "${communityEntity.pageCode}">삭제하기</button>
 					</sec:authorize>
 					<button type="button" class="btn btn-secondary btn-lg" onclick="history.go(-1)">목록보기</button>
 				</div>
@@ -197,12 +154,12 @@
 					<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
 				</div>
 				<form:form
-					name="freeboardCommentForm"
-					action="${pageContext.request.contextPath}/community/communityFreeboardCommentEnroll.do"
+					name="commentForm"
+					action="${pageContext.request.contextPath}/community/communityCommentEnroll.do"
 					method="POST"
 					>
 					<textarea class="form-control" name="content" id="comment" rows="2"></textarea>
-					<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment" onclick="freeboardCommentValidate()">등록</button>
+					<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment" onclick="commentValidate()">등록</button>
 					
 					<input type="hidden" name="commentLevel" value="1" />
 					<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
@@ -290,9 +247,59 @@
 </div>
 
 <script>
+// summernote 웹 에디터 로딩
+$(document).ready(function(){
+	$('#summernote').summernote({
+		height: 300, // 에디터 높이
+		minHeight: 300, // 최소 높이
+		maxHeight: 300, // 최대 높이
+		focus: true, // 에디터 로딩 후 포커스를 맞출 지 여부
+		lang: "ko-KR", // 한글 설정
+	});
+	
+	// 읽기 전용화 --> 비활성화 --> disable
+	$('#summernote').summernote('disable');
+});
 
+/* ---------------------------- 커뮤니티 수정하기 기능 시작 ---------------------------- */
+
+$(document).on('click', '#communityUpdateBtn', function(e){
+	e.preventDefault();
+	console.log("업데이트 도착했나요?")
+	console.log("삭제할 게시글 번호 : ${communityEntity.communityNo}");
+	
+	if(confirm("정말로 수정하시겠습니까?")){
+		location.href=`${pageContext.request.contextPath}/community/communityUpdate.do?communityNo=${communityEntity.communityNo}`;	
+	}else{
+		 return;
+	}  
+});
+
+/* ---------------------------- 커뮤니티 수정하기 기능 종료 ---------------------------- */
+
+
+/* ---------------------------- 커뮤니티 삭제하기 기능 종료 ---------------------------- */
+$(document).on('click', '.communityDeleteBtn', function(e){
+	e.preventDefault();
+	console.log("삭제하기 도착했나요?");
+	console.log(e.target);
+	const $communityNo = $(e.target).data("communityNo");
+	const $pageCode = $(e.target).data("pageCode");
+	console.log("삭제할 게시글 번호 : " + $communityNo);
+	console.log("삭제할 게시글 코드 : " + $pageCode);
+		
+	if(confirm("정말로 삭제하시겠습니까?")){
+		location.href=`${pageContext.request.contextPath}/community/communityDelete.do?communityNo=${communityEntity.communityNo}&pageCode=${communityEntity.pageCode}`;	
+	}else{
+		 return;
+	}
+});
+
+/* ---------------------------- 커뮤니티 삭제하기 기능 종료 ---------------------------- */
+
+/* ---------------------------- 커뮤니티 댓글 기능 시작 ---------------------------- */
 //댓글 유효성 검사
-function freeboardCommentValidate(){
+function commentValidate(){
 	//console.log("도착했나요오");
 	var $content = $('#comment');
 	//console.log($content, typeof $content);
@@ -306,9 +313,11 @@ function freeboardCommentValidate(){
 		alert("내용을 입력하세요");
 		return false;
 	}
-	$(document.freeboardCommentForm).submit();
+	$(document.commentForm).submit();
 }
+/* ---------------------------- 커뮤니티 댓글 기능 종료 ---------------------------- */
 
+/* ---------------------------- 커뮤니티 대댓글 기능 시작 ---------------------------- */
 // 답글(대댓글) 클릭 시 댓글 번호 참조 
 function firstReply() {
 	const commentRefNo = $(".btnReComment").val();
@@ -323,12 +332,12 @@ function firstReply() {
 							<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
 						</div>
 						<form:form
-							name="freeboardReCommentForm"
-							action="${pageContext.request.contextPath}/community/communityFreeboardCommentEnroll.do"
+							name="reCommentForm"
+							action="${pageContext.request.contextPath}/community/communityCommentEnroll.do"
 							method="POST">
 							<textarea class="form-control" name="content" id="reComment" rows="1"></textarea>
 							<div class="row float-right">
-								<button type="button" class="btn btn-dark mt-3 float-right" onclick="freeboardReCommentValidate()">등록</button>&nbsp;
+								<button type="button" class="btn btn-dark mt-3 float-right" onclick="reCommentValidate()">등록</button>&nbsp;
 								<button type="button" class="btn btn-dark mt-3 float-right" onclick="closeDiv()">취소</button>
 							</div>
 							
@@ -352,20 +361,21 @@ function firstReply() {
 		
 		
 }
-//------------------------------------------
+
 
 function aa (){
 	$("#ii").show();
 }
-//-----------------
+
 function closeDiv(){
 	console.log("도착꾸?");
 	$("#ii").undind();
 }
+/* ---------------------------- 커뮤니티 대댓글 기능 종료 ---------------------------- */
 
-
-// 댓글 유효성 검사
-function freeboardReCommentValidate(){
+/* ---------------------------- 커뮤니티 대댓글 등록 시작 ---------------------------- */
+  
+function reCommentValidate(){
 	console.log("도착했나요오");
 	var $reComment = $('#reComment');
 	//console.log($content, typeof $content);
@@ -379,8 +389,11 @@ function freeboardReCommentValidate(){
 		alert("내용을 입력하세요");
 		return false;
 	}
-	$(document.freeboardReCommentForm).submit();
+	$(document.reCommentForm).submit();
 }
+
+/* ---------------------------- 커뮤니티 대댓글 등록 종료 ---------------------------- */
+
 
 // 댓글 삭제
 $('.btnCommentDelete').click((e) => {
