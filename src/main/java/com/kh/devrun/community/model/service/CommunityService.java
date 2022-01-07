@@ -63,6 +63,12 @@ public interface CommunityService {
 
 	List<CommunityEntity> selectCommentBoardList(Map<String, Object> param, int offset, int limit);
 
+	// 스터디 리스트
+	List<CommunityEntity> selectStudyList(int offset, int limit);
+
+	// 스터디 전체 게시물 수
+	int selectOneStudyCount();
+
 
 
 

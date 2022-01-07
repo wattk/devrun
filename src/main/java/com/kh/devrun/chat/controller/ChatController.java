@@ -187,5 +187,21 @@ public class ChatController {
 		return result;
 	}
 	
+	/**
+	 * 비동기
+	 * 전체안읽음 메시지 건수 조회(헤더, 마이페이지 채팅건수 부분 사용)
+	 */
+	@ResponseBody
+	@GetMapping("/selectMessageTotalUnreadCount.do")
+	public int selectMessageTotalUnreadCount(Authentication authentication) {
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
+		
+		int totalUnreadCount = chatService.selectMessageTotalUnreadCount(memberNo);
+		log.debug("totalUnreadCount = {}", totalUnreadCount);
+		
+		return totalUnreadCount;
+	}
+	
 
 }

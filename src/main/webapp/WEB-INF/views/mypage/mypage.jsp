@@ -82,9 +82,9 @@
 			       			
 		       			<!-- member activity info : message / point -->
 		       			<section class="row cursor" id="myActivity">
-			       			<span class="col-6 row" onclick="location.href='#';">
+			       			<span class="col-6 row" onclick="chatList();">
 				       			<span class="bi bi-envelope"> &nbsp; 채팅</span>
-				       			<span>건<i class="bi bi-chevron-right"></i></span>
+				       			<span>${totalUnreadCount}건<i class="bi bi-chevron-right"></i></span>
 			       			</span>
 				       		<span class="col-6 row" onclick="location.href='#';">
 					       		<span class="bi bi-coin"> &nbsp; 포인트</span>

@@ -344,8 +344,6 @@
   		#{orderLogUid},
   		#{reasonCode},
   		#{merchantUid},
-  		#{prevDetailNo},
-  		#{currDetailNo},
   		#{csStatus},
   		current_date,
   		null,
@@ -353,7 +351,9 @@
   		'N',
   		#{cost},
   		#{reasonDetail},
-  		#{memberNo}
+  		#{memberNo},
+  		#{prevDetailNo},
+  		#{currDetailNo}
   	)
   </insert>
   
@@ -410,11 +410,15 @@
   <update id="updateOrderLog">
   	update order_log set
   		${keyword} = current_date
-  	where
+  		<if test="costStatus != null and costStatus != ''">
+  			,cost_status = #{costStatus}
+  		</if>
+  	<where>
   		order_log_uid in
    		<foreach collection="orderLogUid" item="uid" open="(" separator="," close=")">
 	  		 #{uid}
   		</foreach>
+  	</where>
   </update>
   
   <select id="selectAllOrderLog" resultType="orderLog">
@@ -495,4 +499,5 @@
   		</if>
   	</where>
   </select>
+  
 </mapper>

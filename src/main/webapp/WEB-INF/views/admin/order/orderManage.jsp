@@ -354,10 +354,10 @@ $(".order-modal-btn").click((e)=>{
 							class="detail-title pl-2" 
 							data-detail-no="\${item.productDetail.detailNo}"
 							data-buy-count="\${item.buyCount}">
-							[\${item.name}]
+							\${item.name}
 						</strong>
 						<br />
-						<span class="pl-2"></span>
+						<span class="pl-2">\${item.productDetail.optionNo} \${item.productDetail.optionContent == null? '' : item.productDetail.optionContent}</span>
 						<br />
 						<span class="pl-2">\${item.buyCount}개 구매</span>
 					</td>
@@ -407,7 +407,7 @@ $("#osChangeBtn").click((e)=>{
 			$(`#\${merchantUid}`).detach();
 			if($(".order-change-body").children("tr").length == 0){
 				$(".order-change-body").append(`<tr class="mx-auto">
-			  			<td colspan="4">처리 대기 중인 주문이 없습니다.</td>
+			  			<td colspan="4" class="text-center">처리 대기 중인 주문이 없습니다.</td>
 				  		</tr>`);
 			}
 		},

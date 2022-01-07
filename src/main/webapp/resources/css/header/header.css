@@ -4,3 +4,8 @@
 #navLoginContainer{margin-left:50px}
 .log-con{width:100px;}
 #navLogoutFrm{display:inline-block;}
+
+/* 채팅 메뉴 손가락 표시 */
+#chat{
+	cursor: pointer;
+}
