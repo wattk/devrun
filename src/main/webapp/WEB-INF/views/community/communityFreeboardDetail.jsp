@@ -69,12 +69,14 @@
 	}
 	.card-body li:hover {
 	background: lightgray;
+	cursor: pointer;
 	}
 	.card-body button#commentBtn {
 		display:none;
 	}
 	.card-body li:hover button#commentBtn {
 		display: inline;
+		cursor: pointer;
 	}
 	textarea {
 		resize: none;
@@ -346,18 +348,21 @@ function firstReply() {
 	// jQuery 객체 $divOfBtn 이 div 다음으로 들어가게끔 조치
 	$divOfBtn.after(div);
 	
-	$(".btnReComment").attr("onclick","aa()");
+	$(".btnReComment").attr("onclick", "aa()");
 		
 		
 }
+//------------------------------------------
 
 function aa (){
 	$("#ii").show();
 }
+//-----------------
 function closeDiv(){
 	console.log("도착꾸?");
 	$("#ii").undind();
 }
+
 
 // 댓글 유효성 검사
 function freeboardReCommentValidate(){
