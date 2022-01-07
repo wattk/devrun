@@ -171,10 +171,10 @@ public class CommunityController {
 		return "community/communityStudyList";
 	}
 	
-/* ---------------------------------------- 스터디 리스트 종료 ---------------------------------------- */
-/* ---------------------------------------- 스터디 종료 ---------------------------------------- */
-//--------------------------------------------------------------------------------------------------------------
-	
+	/* ---------------------------------------- 스터디 리스트 종료 ---------------------------------------- */
+
+	/* ---------------------------------------- 스터디 종료 ---------------------------------------- */
+
 	// Q&A-글등록
 	@PostMapping("/qnaEnroll.do")
 	public String qnaEnroll(Community community, RedirectAttributes redirectAttributes) {
@@ -255,9 +255,8 @@ public class CommunityController {
 		return "redirect:communityStudyList.do";
 	}
 
-//--------------------------------------------------------------------------------------------------------------
-
-	// 자유게시판-리스트
+	/* ---------------------------------------- 자유게시판 리스트 시작 ---------------------------------------- */
+	
 	// @RequestParam int cPage : 현재 페이지 변수를 하나 받아온다.
 	// communityFreeboardList의 인자값으로 @RequestParam() 어노테이션을 넣어서 값을 받아온다.
 	// @RequestParam("가져올 데이터의 이름")[데이터 타입][가져온 데이터를 담을 변수]
@@ -292,9 +291,9 @@ public class CommunityController {
 
 		return "community/communityFreeboardList";
 	}
+	/* ---------------------------------------- 자유게시판 리스트 종료 ---------------------------------------- */
 	
-	
-	// 자유게시판-타입별검색
+	/* ---------------------------------------- 자유게시판 타입별 검색 시작 ---------------------------------------- */
 	// @ResponseBody : Http 요청 body를 Java 객체로 전달받을 수 있다.
 	@GetMapping("/communityFreeboardFinder.do")
 	@ResponseBody
@@ -338,6 +337,8 @@ public class CommunityController {
 		
 		return resultMap;
 	}
+	/* ---------------------------------------- 자유게시판 타입별 검색 종료 ---------------------------------------- */
+	
 	
 	// 좋아요순 게시글 뽑기
 	@GetMapping("/likeBoard.do")
@@ -463,9 +464,8 @@ public class CommunityController {
 		  return "redirect:/community/communityFreeboardList.do";
 	}
 	
-		
+	/* ---------------------------------------- 커뮤니티 상세보기 시작 ---------------------------------------- */	
 	
-	// 자유게시판-상세보기
 	// @RequestParam("가져올 데이터의 이름")[데이터 타입][가져온 데이터를 담을 변수]
 	// 그리고 Model 객체를 이용해서, 뷰로 값을 넘겨준다.
 	@GetMapping("/communityDetail/{communityNo}")
@@ -493,7 +493,7 @@ public class CommunityController {
 		}
 			
 		// 업무로직
-		CommunityEntity communityEntity = communityService.selectOneFreeBoard(communityNo);
+		CommunityEntity communityEntity = communityService.selectOneCommunity(communityNo);
 		log.debug("communityEntity = {}", communityEntity);
 		model.addAttribute("communityEntity", communityEntity);
 		
@@ -516,6 +516,8 @@ public class CommunityController {
 		
 		return "community/communityDetail";
 	}
+	/* ---------------------------------------- 커뮤니티 상세보기 종료 ---------------------------------------- */
+	
 	
 	// 자유게시판-좋아요추가
 	@ResponseBody
@@ -562,25 +564,29 @@ public class CommunityController {
 		return map;
 	}
 	
-	// 자유게시판-상세보기-수정페이지
-	@GetMapping("/communityFreeboardUpdate.do")
-	public void communityFreeboardUpdate(@RequestParam(value="communityNo") int communityNo, Model model) {
-		log.debug("{}", "/communityFreeboardUpdate.do 요청!");
+	/* ---------------------------------------- 커뮤니티 수정하기 페이지 시작 ---------------------------------------- */
+
+	@GetMapping("/communityUpdate.do")
+	public void communityUpdate(@RequestParam(value="communityNo") int communityNo, Model model) {
+		log.debug("{}", "/communityUpdate.do 요청!");
 		log.debug("communityNo = {}", communityNo);
 		
-		CommunityEntity communityEntity = communityService.selectOneFreeBoard(communityNo);
+		CommunityEntity communityEntity = communityService.selectOneCommunity(communityNo);
 		log.debug("communityEntity", communityEntity);
 		model.addAttribute("communityEntity", communityEntity);
 	}
 	
-	// 자유게시판-상세보기-수정하기
-	@PostMapping("/freeboardUpdateEnroll.do")
-	public String freeboardUpdateEnroll(CommunityEntity community, RedirectAttributes redirectAttributes) {
-		log.debug("{}", "freeboardUpdateEnroll.do 요청!");
-		log.debug("community = {}", community);
+	/* ---------------------------------------- 커뮤니티 수정하기 페이지 종료 ---------------------------------------- */
+	
+	/* ---------------------------------------- 커뮤니티 수정하기 시작 ---------------------------------------- */
+	
+	@PostMapping("/communityUpdateEnroll.do")
+	public String communityUpdateEnroll(CommunityEntity communityEntity, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "communityUpdateEnroll.do 요청!");
+		log.debug("community = {}", communityEntity);
 		int startIndex = 0;
 		int endIndex = 0;
-		String content = community.getContent();
+		String content = communityEntity.getContent();
 		// "startindex는 "<img" 전 부터를 의미한다.
 		startIndex = content.indexOf("<img");
 		
@@ -595,29 +601,44 @@ public class CommunityController {
 			String thumbnail = content.substring(startIndex, startIndex + endIndex+2);
 			log.debug("thumbnail = {}", thumbnail);
 			System.out.println(thumbnail);
-			// community에 tumbnail을 보낸다.
-			community.setThumbnail(thumbnail);
+			// communityEntity에 tumbnail을 보낸다.
+			communityEntity.setThumbnail(thumbnail);
 		}
 		
-		int result = communityService.updateFreeboard(community);
+		int result = communityService.updateCommunity(communityEntity);
 		String msg = result > 0 ? "게시글 수정 성공!" : "게시글 수정 실패!";
 		redirectAttributes.addFlashAttribute("msg", msg);
 		
-		return "redirect:/community/communityFreeboardDetail.do?communityNo=" + community.getCommunityNo();
+		return "redirect:/community/communityDetail/" + communityEntity.getCommunityNo();
 	}
 	
-	// 자유게시판-상세보기-삭제하기
-	@GetMapping("/freeboardDelete.do")
-	public String freeboardDelete(@RequestParam int communityNo, RedirectAttributes redirectAttributes) {
-		log.debug("{}", "/freeboardDelete.do 요청!");
-		log.debug("communityNo = {}", communityNo);
+	/* ---------------------------------------- 커뮤니티 수정하기 종료 ---------------------------------------- */
+	
+	/* ---------------------------------------- 커뮤니티 삭제하기 시작 ---------------------------------------- */
+	
+	@GetMapping("/communityDelete.do")
+	public String communityDelete(@RequestParam int communityNo,
+								  @RequestParam int pageCode,
+								  RedirectAttributes redirectAttributes) {
 		
-		int result = communityService.freeboardDelete(communityNo);
+		log.debug("{}", "/communityDelete.do 요청!");
+		log.debug("communityNo = {}", communityNo);
+		log.debug("pageCode = {}", pageCode);
+		
+		int result = communityService.communityDelete(communityNo);
 		String msg = result > 0 ? "게시글 삭제 성공!" : "게시글 삭제 실패!";
 		redirectAttributes.addFlashAttribute("msg", msg);
 		
+		if(pageCode == 2) {
+			return "redirect:/community/communityQnAList.do";
+		} else if (pageCode == 3) {
+			return "redirect:/community/communityStudyList.do";
+		}
+
 		return "redirect:/community/communityFreeboardList.do";
 	}
+	
+	/* ---------------------------------------- 커뮤니티 삭제하기 시작 ---------------------------------------- */
 	
 	// 자유게시판-댓글작성
 	@PostMapping("/communityFreeboardCommentEnroll.do")

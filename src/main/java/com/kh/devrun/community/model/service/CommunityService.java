@@ -19,7 +19,8 @@ public interface CommunityService {
 
 	int selectFreeboardTotalCount();
 
-	CommunityEntity selectOneFreeBoard(int communityNo);
+	// 커뮤니티 상세보기
+	CommunityEntity selectOneCommunity(int communityNo);
 
 	List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo);
 
@@ -27,9 +28,8 @@ public interface CommunityService {
 
 	int commentDelete(int commentNo);
 
-	int updateFreeboard(Community community);
-
-	int freeboardDelete(int communityNo);
+	// 커뮤니티 수정하기
+	int updateCommunity(CommunityEntity communityEntity);
 
 	int viewCount(int communityNo);
 
@@ -68,6 +68,9 @@ public interface CommunityService {
 
 	// 스터디 전체 게시물 수
 	int selectOneStudyCount();
+
+	// 커뮤니티 게시물 삭제
+	int communityDelete(int communityNo);
 
 
 

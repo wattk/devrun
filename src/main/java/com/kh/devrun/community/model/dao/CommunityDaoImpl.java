@@ -53,8 +53,8 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public CommunityEntity selectOneFreeBoard(int communityNo) {
-		return session.selectOne("community.selectOneFreeBoard", communityNo);
+	public CommunityEntity selectOneCommunity(int communityNo) {
+		return session.selectOne("community.selectOneCommunity", communityNo);
 	}
 
 	@Override
@@ -73,13 +73,13 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public int updateFreeboard(Community community) {
-		return session.update("community.updateFreeboard", community);
+	public int updateCommunity(CommunityEntity communityEntity) {
+		return session.update("community.updateCommunity", communityEntity);
 	}
 
 	@Override
-	public int freeboardDelete(int communityNo) {
-		return session.delete("community.freeboardDelete", communityNo);
+	public int communityDelete(int communityNo) {
+		return session.delete("community.communityDelete", communityNo);
 	}
 
 	@Override

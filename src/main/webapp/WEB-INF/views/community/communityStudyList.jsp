@@ -22,13 +22,18 @@ td, th {
 	text-align: center;	
 }
 
-/* 타입별 검색 - 모집중 */
-div#search-joinStart {
+/* 타입별 검색 - 제목 */
+div#search-title {
 	display: inline-block;
 }
 
-/* 타입별 검색 - 모집완료 */
-div#search-joinEnd {
+/* 타입별 검색 - 내용 */
+div#search-content {
+	display: none;
+}
+
+/* 타입별 검색 - 작성자(별명) */
+div#search-nickname {
 	display: none;
 }
 </style>
@@ -54,27 +59,37 @@ div#search-joinEnd {
 			<!-- 검색창 시작-->
 			<div class="row py-3 border-bottom m-0 search justify-content-center" id="search-container">
 				<select id="searchType" class="custom-select" style="width: 100px; float: right; cursor: pointer;">
-				  	<option value="joinStart">모집중</option>
-				  	<option value="joinEnd">모집완료</option>
+				  	<option value="title">제목</option>
+				  	<option value="content">내용</option>
+				  	<option value="nickname">작성자</option>
 				</select>
-				<!-- 모집중 시작 -->
-				<div id="search-joinStart" class="search-type">
+				<!-- 제목검색 시작 -->
+				<div id="search-title" class="search-type">
 		            <form class="form-inline search-form"> 
 		            	<input type="hidden" name="searchType" value="title" />
 						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
 						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
 				  	</form>
 		        </div>
-		        <!-- 모집중 종료 -->
-		        <!-- 모집완료 시작 -->
-		        <div id="search-joinEnd" class="search-type">
+		        <!-- 제목검색 종료 -->
+		        <!-- 내용검색 시작 -->
+		        <div id="search-content" class="search-type">
 		            <form class="form-inline search-form"> 
 		            	<input type="hidden" name="searchType" value="content" />
 						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
 						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
 				  	</form>
 		        </div>
-		        <!-- 모집완료 시작 -->
+		        <!-- 내용검색 종료 -->
+		        <!-- 작성자검색 시작 -->
+		        <div id="search-nickname" class="search-type">
+		            <form> 
+		            	<input type="hidden" name="searchType" value="nickname" />
+						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
+						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
+				  	</form>
+		        </div>
+		        <!-- 작성자검색 종료 -->	
 			</div>
 			<!-- 검색창 끝 -->
 
@@ -84,8 +99,10 @@ div#search-joinEnd {
 			<nav>
 			  <div class="nav nav-tabs" id="nav-tab" role="tablist">
 			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nac-home" role="tab" aria-controls="nav-home" aria-selected="true">최신순</a>
-			    <a class="nav-item nav-link" id="nav-comment-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" data-value="4">답변많은순</a>
-			    <a class="nav-item nav-link" id="nav-like-tab" data-toggle="tab" href="#nav-like" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="4">좋아요순</a>
+			    <a class="nav-item nav-link" id="nav-comment-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" data-value="3">답변많은순</a>
+			    <a class="nav-item nav-link" id="nav-like-tab" data-toggle="tab" href="#nav-like" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">좋아요순</a>
+			    <a class="nav-item nav-link" id="nav-like-tab" data-toggle="tab" href="#nav-like" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">모집중</a>
+			    <a class="nav-item nav-link" id="nav-like-tab" data-toggle="tab" href="#nav-like" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">모집완료</a>
 			  </div>
 			</nav>
 			<!-- 상단 탭 끝 -->
@@ -150,8 +167,21 @@ div#search-joinEnd {
  * event boubling 기반 핸들링
  * tr 에서 핸들링 > td에서 발생 및 전파
  */
-/* $("tr[data-no]").click((e) => {  <-- 검색 후 게시물을 클릭하지 못한다. */
- 
+$("tr[data-no]").click((e) => {
+	console.log(e.target);
+	console.log("해당 no = " + $(e.target).data("no"));
+	// tr 태그를 찾는 작업 --> 이벤트 타겟의 부모중의 tr태그를 찾아주세요.
+	const $tr = $(e.target).parents("tr");
+	console.log("해당 tr = " + $tr);
+	const communityNo = $tr.data("no");
+	console.log("해당 communityNo = " + communityNo);
+	
+	location.href = `${pageContext.request.contextPath}/community/communityDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
+});
+
+/* ---------------------------------------------- 게시글 상세보기 기능 종료 ---------------------------------------------- */
+
+/* ---------------------------------------------- 검색된 게시글 상세보기 기능 시작 ---------------------------------------------- */
 $(document).on("click", ".whynot", function(e){ 
 	console.log(e.target);
 	console.log("해당 no = " + $(e.target).data("no"));
@@ -163,7 +193,7 @@ $(document).on("click", ".whynot", function(e){
 	
 	location.href = `${pageContext.request.contextPath}/community/communityDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
 });
-/* ---------------------------------------------- 게시글 상세보기 기능 종료 ---------------------------------------------- */
+/* ---------------------------------------------- 검색된 게시글 상세보기 기능 종료 ---------------------------------------------- */
 
 /* ---------------------------------------------- 타입별 검색 기능 시작 ---------------------------------------------- */
 /**

@@ -47,9 +47,10 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.selectFreeboardTotalCount();
 	}
 
+	// 커뮤니티 상세보기
 	@Override
-	public CommunityEntity selectOneFreeBoard(int communityNo) {
-		return communityDao.selectOneFreeBoard(communityNo);
+	public CommunityEntity selectOneCommunity(int communityNo) {
+		return communityDao.selectOneCommunity(communityNo);
 	}
 
 	@Override
@@ -67,14 +68,10 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.commentDelete(commentNo);
 	}
 
+	// 커뮤니티 수정하기
 	@Override
-	public int updateFreeboard(Community community) {
-		return communityDao.updateFreeboard(community);
-	}
-
-	@Override
-	public int freeboardDelete(int communityNo) {
-		return communityDao.freeboardDelete(communityNo);
+	public int updateCommunity(CommunityEntity communityEntity) {
+		return communityDao.updateCommunity(communityEntity);
 	}
 
 	@Override
@@ -190,6 +187,11 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public int selectOneStudyCount() {
 		return communityDao.selectOneStudyCount();
+	}
+
+	@Override
+	public int communityDelete(int communityNo) {
+		return communityDao.communityDelete(communityNo);
 	}
 
 
