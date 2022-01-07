@@ -354,10 +354,10 @@ $(".order-modal-btn").click((e)=>{
 							class="detail-title pl-2" 
 							data-detail-no="\${item.productDetail.detailNo}"
 							data-buy-count="\${item.buyCount}">
-							[\${item.name}]
+							\${item.name}
 						</strong>
 						<br />
-						<span class="pl-2"></span>
+						<span class="pl-2">\${item.productDetail.optionNo} \${item.productDetail.optionContent == null? '' : item.productDetail.optionContent}</span>
 						<br />
 						<span class="pl-2">\${item.buyCount}개 구매</span>
 					</td>

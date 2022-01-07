@@ -19,8 +19,8 @@ public class OrderLogExt extends OrderLog implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Imp imp;
 	private String thumbnail;
-	public OrderLogExt(String orderLogUid, String reasonCode, String merchantUid, String prevDetailNo,
-			String currDetailNo, String csStatus, Date reqDate, Date processDate, Date endDate, String costStatus,
+	public OrderLogExt(String orderLogUid, String reasonCode, String merchantUid, String[] prevDetailNo,
+			String[] currDetailNo, String csStatus, Date reqDate, Date processDate, Date endDate, String costStatus,
 			int cost, String reasonDetail, int memberNo, Merchant merchant) {
 		super(orderLogUid, reasonCode, merchantUid, prevDetailNo, currDetailNo, csStatus, reqDate, processDate, endDate,
 				costStatus, cost, reasonDetail, memberNo, merchant);
