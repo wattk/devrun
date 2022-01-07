@@ -212,8 +212,8 @@
   		page_code = 4
   </select>
   
-  <!-- 자유게시판 상세보기 -->
-  <select id="selectOneFreeBoard" resultType="communityEntity">
+  <!-- 커뮤니티 상세보기 -->
+  <select id="selectOneCommunity" resultType="communityEntity">
 	select
 	    c.*,
 	    (select nickname from member where member_no = c.member_no) nickname,
@@ -224,8 +224,8 @@
   		community_no = #{community_no}
   </select>
   
-  <!-- 자유게시판 수정하기 -->
-  <update id="updateFreeboard">
+  <!-- 커뮤니티 수정하기 -->
+  <update id="updateCommunity">
   	update
 	    community
 	set
@@ -239,7 +239,7 @@
   </update>
   
   <!-- 자유게시판 삭제하기 -->
-  <delete id="freeboardDelete">
+  <delete id="communityDelete">
   	delete from 
     	community 
 	where
