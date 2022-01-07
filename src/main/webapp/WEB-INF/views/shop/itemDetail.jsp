@@ -712,6 +712,9 @@ function reviewAll(){
 	const $v = $('#oldestToNewest');
 	var $productCode = $(productCodeV).val(); 
 	var $div = $('#reviewBefore');
+	
+	//todayItemStorage 함수 호출
+	todayItemStorage();
 
 	$.ajax({
 		
@@ -914,6 +917,23 @@ $("#phoneSms").keyup((e)=>{
  function reloadSms(){
 	location.reload();
 }
+
+
+function todayItemStorage(){
+	if(${todayItemCode != null}){
+	 const productCode = '${todayItemCode}';
+	 cosole.log("productCode");
+	 console.log(productCode);
+	}
+	console.log("todayItemStorage() 발동 잘 ?");
+	
+	
+	
+}
+
+
+
+
 //-------------------------------------------------------구분선-------------------------------------------------------------
 
 
@@ -987,6 +1007,10 @@ $("#cartBtn").click((e)=>{
 		error: console.log
 	});
 });
+
+
+
+
 
 
 //-------------------------------------------------------구분선 아래 태영----------------------------------------------------------
