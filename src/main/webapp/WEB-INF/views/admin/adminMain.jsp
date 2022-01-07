@@ -213,6 +213,7 @@
 	                </div>
             	</div>
 			</div>		
-					
+
+<script src="https://apis.google.com/js/client.js?onload=authorize"></script>				
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>
         
