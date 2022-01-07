@@ -53,14 +53,16 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.selectOneCommunity(communityNo);
 	}
 
+	// 댓글 보기
 	@Override
-	public List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo) {
-		return communityDao.selectFreeboardCommentList(communityNo);
+	public List<CommunityCommentEntity> selectCommentList(int communityNo) {
+		return communityDao.selectCommentList(communityNo);
 	}
 
+	// 댓글 등록
 	@Override
-	public int insertFreeboardCommentEnroll(CommunityComment communityComment) {
-		return communityDao.insertFreeboardComment(communityComment);
+	public int insertCommentEnroll(CommunityComment communityComment) {
+		return communityDao.insertComment(communityComment);
 	}
 
 	@Override

@@ -58,13 +58,14 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo) {
-		return session.selectList("community.selectFreeboardCommentList", communityNo);
+	public List<CommunityCommentEntity> selectCommentList(int communityNo) {
+		return session.selectList("community.selectCommentList", communityNo);
 	}
 
+	// 댓글 등록
 	@Override
-	public int insertFreeboardComment(CommunityComment communityComment) {
-		return session.insert("community.insertFreeboardComment", communityComment);
+	public int insertComment(CommunityComment communityComment) {
+		return session.insert("community.insertComment", communityComment);
 	}
 
 	@Override

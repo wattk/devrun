@@ -509,9 +509,9 @@ public class CommunityController {
 		model.addAttribute(likeYesNo);
 		
 		// 댓글
-		List<CommunityCommentEntity> freeboardCommentList = communityService.selectFreeboardCommentList(communityNo);
-		log.debug("freeboardCommentList = {}", freeboardCommentList);
-		model.addAttribute("freeboardCommentList", freeboardCommentList);
+		List<CommunityCommentEntity> commentList = communityService.selectCommentList(communityNo);
+		log.debug("freeboardCommentList = {}", commentList);
+		model.addAttribute("freeboardCommentList", commentList);
 
 		
 		return "community/communityDetail";
@@ -640,19 +640,18 @@ public class CommunityController {
 	
 	/* ---------------------------------------- 커뮤니티 삭제하기 시작 ---------------------------------------- */
 	
-	// 자유게시판-댓글작성
-	@PostMapping("/communityFreeboardCommentEnroll.do")
-	public String freeboardCommentEnroll(CommunityComment communityComment, RedirectAttributes redirectAttributes) {
-		log.debug("{}", "/communityFreeboardCommentEnroll.do 요청!");
+	/* ---------------------------------------- 커뮤니티 댓글 시작 ---------------------------------------- */
+	@PostMapping("/communityCommentEnroll.do")
+	public String commentEnroll(CommunityComment communityComment, RedirectAttributes redirectAttributes) {
+		log.debug("{}", "/communityCommentEnroll.do 요청!");
 		log.debug("communityComment = {}", communityComment);
-	
 		
 		// 업무로직
-		int result = communityService.insertFreeboardCommentEnroll(communityComment); 
+		int result = communityService.insertCommentEnroll(communityComment); 
 		String msg = result > 0 ? "댓글 등록 성공!" : "댓글 등록 실패!";
 		redirectAttributes.addFlashAttribute("msg", msg); 
 		
-		return "redirect:/community/communityFreeboardDetail/" + communityComment.getCommunityNo();
+		return "redirect:/community/communityDetail/" + communityComment.getCommunityNo();
 	}
 	
 	// 자유게시판-댓글삭제
@@ -666,7 +665,7 @@ public class CommunityController {
 		String msg = result > 0 ? "댓글 삭제 성공!" : "댓글 삭제 실패!";
 		redirectAttributes.addFlashAttribute("msg", msg); 
 		
-		return "redirect:/community/communityFreeboardDetail/" + communityNo; 
+		return "redirect:/community/communityDetail/" + communityNo; 
 	}
 
 	// 글쓰기(Q&A, 스터디, 자유게시판)

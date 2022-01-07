@@ -247,7 +247,7 @@
   </delete>
   
   <!-- 자유게시판 댓글 -->
-  <select id="selectFreeboardCommentList" resultType="communityCommentEntity">
+  <select id="selectCommentList" resultType="communityCommentEntity">
   	select
 	    c.*,
 	    (select nickname from member where member_no = c.member_no) nickname
@@ -264,7 +264,7 @@
   </select>
   
   <!-- 댓글 입력 -->
-  <insert id="insertFreeboardComment">
+  <insert id="insertComment">
   	insert into community_comment
   	values(
   		seq_community_comment_no.nextval,
