@@ -146,6 +146,34 @@
   		like_count desc
   </select>
   
+<!-- ================================= 스터디 시작 ================================= -->
+<!-- 스터디 리스트 조회 -->
+<select id="selectStudyList" resultType="communityEntity">
+	select 
+	    c.*,
+	    (select nickname from member where member_no = c.member_no) nickname,
+	    m.commentCount
+	from 
+		community c left join(select community_no, count(comment_no) as commentCount from community_comment group by community_no) m
+	on 
+		c.community_no = m.community_no and
+		c.page_code = 3
+	order by 
+		c.community_no desc
+</select>
+
+<!-- 스터디 총 게시물 수 -->
+<!-- select 태그의 resultType, 혹은 resultMap은 반드시 써준다. -->
+<!-- 기본형 int일때는 _int라는 alias를 mybatis에서 제공한다. -->
+<select id="selectStudyCount" resultType="_int">
+	select
+		count(*)
+	from
+		community
+	where
+		page_code = 3
+</select>
+<!-- ================================= 스터디 종료 ================================= -->
   
   <!-- 자유게시판 리스트 조회 -->
   <select id="selectFreeboardList" resultType="communityEntity">

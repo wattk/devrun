@@ -181,6 +181,17 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.selectCommentBoardList(param, offset, limit);
 	}
 
+	// 스터디 리스트
+	@Override
+	public List<CommunityEntity> selectStudyList(int offset, int limit) {
+		return communityDao.selectStudyList(offset, limit);
+	}
+
+	@Override
+	public int selectOneStudyCount() {
+		return communityDao.selectOneStudyCount();
+	}
+
 
 
 
