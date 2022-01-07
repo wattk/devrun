@@ -23,31 +23,18 @@
 			<h2>공지사항</h2>
 			
 			<div class="notice-header">
-				<h3 class="notice-title">데브런 점검 안내</h3>
+				<h3 class="notice-title">${notice.title}</h3>
 				<div class="notice-info">
-					<p>관리자 | 2018-04-10 | 조회수 : 1385</p>
+					<p>${notice.nickname} | <fmt:formatDate value="${notice.enrollDate}" pattern="yyyy-MM-dd"/> | 조회수 : ${notice.viewCount}</p>
 				</div>
 			</div>
 			
 			<div class="notice-content">
-				<p>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.내용입니다.<br>
-				</p>
+				<p>${notice.content}</p>
 			</div>
 			
 			<div class="text-center mt-3">
-				<a class="notice-list d-inline-block" href="">목록</a>
+				<a class="notice-list d-inline-block" href="${pageContext.request.contextPath}/customerCenter/noticeList.do?searchType=${param.searchType}&searchKeyword=${param.searchKeyword}&cPage=${param.cPage eq '' ? 1 : param.cPage}">목록</a>
 			</div>
 			
 

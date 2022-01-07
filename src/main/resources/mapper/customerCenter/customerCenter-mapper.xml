@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="customerCenter">
+	<select id="selectAllNoticeList" resultType="notice">
+		select
+		    n.*,
+		    m.nickname
+		from
+		    notice n join member m
+		        on n.member_no = m.member_no
+		<where>
+			notice_code = 'N'
+			<if test="searchType != null and searchType != '' and searchKeyword != null and searchKeyword != ''">
+				and ${searchType} like '%' || #{searchKeyword} || '%'
+			</if>
+		</where>
+		order by
+			notice_no desc
+	</select>
+	
+	<insert id="insertNotice">
+		insert into 
+	 		notice
+	 	values(
+	 		seq_notice_no.nextval, 
+	 		#{memberNo},
+	 		#{title},
+	 		#{content},
+	 		default,
+	 		default,
+	 		'N'
+	 	)
+	</insert>
+	
+	<select id="selectOneNotice" resultType="notice">
+		select
+		    n.*,
+		    m.nickname
+		from
+		    notice n join member m
+		        on n.member_no = m.member_no
+		where
+		    notice_no = #{noticeNo}
+	</select>
+	
+	<update id="updateNotice">
+		update
+		    notice
+		set
+		    title = #{title},
+		    content = #{content}
+		where
+		    notice_no = #{noticeNo}
+	</update>
+	
+	<delete id="deleteNotice">
+		delete from 
+			notice
+		<where>
+			<!-- 
+				collection = 전달받은 인자. List나 Array 형태만 가능
+				item = 전달받은 인자값을 alias 명으로 대체 
+				open = 해당 구문이 시작될때 삽입할 문자열
+				close = 해당 구문이 종료될때 삽입할 문자열
+				separator = 반복 되는 사이에 출력할 문자열
+			-->
+			<foreach collection="array" item="item" open="(" close=")" separator="or">
+				notice_no = #{item}
+			</foreach>
+		</where>
+	</delete>
+	
+	<select id="selectNoticeTotalCount" resultType="_int">
+		select
+		    count(*)
+		from
+		    notice
+		<where>
+			notice_code = 'N'
+			<if test="searchType != null and searchType != '' and searchKeyword != null and searchKeyword != ''">
+				and ${searchType} like '%' || #{searchKeyword} || '%'
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectAllFaqList" resultType="notice">
+		select
+		    n.*,
+		    m.nickname
+		from
+		    notice n join member m
+		        on n.member_no = m.member_no
+		<where>
+			notice_code != 'N'
+			<if test="noticeCode != null and noticeCode != ''">
+				and notice_code = #{noticeCode}
+			</if>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				and (title like '%' || #{searchKeyword} || '%' or content like '%' || #{searchKeyword} || '%')
+			</if>
+		</where>
+		order by
+			notice_no desc
+	</select>
+	
+	<select id="selectFaqTotalCount" resultType="_int">
+		select
+		    count(*)
+		from
+		    notice
+		<where>
+			notice_code != 'N'
+			<if test="noticeCode != null and noticeCode != ''">
+				and notice_code = #{noticeCode}
+			</if>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				and (title like '%' || #{searchKeyword} || '%' or content like '%' || #{searchKeyword} || '%')
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insertFaq">
+		insert into 
+	 		notice
+	 	values(
+	 		seq_notice_no.nextval, 
+	 		#{memberNo},
+	 		#{title},
+	 		#{content},
+	 		default,
+	 		default,
+	 		#{noticeCode}
+	 	)
+	</insert>
+	
+	<update id="updateFaq">
+		update
+		    notice
+		set
+		    title = #{title},
+		    content = #{content},
+		    notice_code = #{noticeCode}
+		where
+		    notice_no = #{noticeNo}
+	</update>
+	
+	<update id="updateViewCount">
+		update
+			notice
+		set
+			view_count = view_count + 1
+		where
+			notice_no = #{noticeNo}
+	</update>
+	
+	
+</mapper>
