@@ -154,7 +154,7 @@
 	      <th scope="col">주문 확인</th>
 	    </tr>
 	  </thead>
-	  <tbody class="order-body" style="-ms-overflow-style: none;">
+	  <tbody class="order-body order-change-body" style="-ms-overflow-style: none;">
 	  	<c:if test="${empty orList}">
 	  		<tr class="mx-auto">
 	  			<td colspan="4">처리 대기 중인 주문이 없습니다.</td>
@@ -405,6 +405,11 @@ $("#osChangeBtn").click((e)=>{
 		success(data){
 			alert("주문이 정상적으로 접수되었습니다.");
 			$(`#\${merchantUid}`).detach();
+			if($(".order-change-body").children("tr").length == 0){
+				$(".order-change-body").append(`<tr class="mx-auto">
+			  			<td colspan="4">처리 대기 중인 주문이 없습니다.</td>
+				  		</tr>`);
+			}
 		},
 		error : console.log
 	});

@@ -984,7 +984,7 @@ public class AdminController {
 		log.debug("list = {}", list);
 		List<OrderLog> manageList = new ArrayList<>();
 		for(OrderLog ol : list) {
-			if("REF".equals(ol.getCsStatus())||"RET".equals(ol.getCsStatus())||"EXC".equals(ol.getCsStatus())) {
+			if(("REF".equals(ol.getCsStatus())||"RET".equals(ol.getCsStatus())||"EXC".equals(ol.getCsStatus())) && ol.getEndDate() == null) {
 				manageList.add(ol);
 			}
 		}
