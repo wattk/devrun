@@ -423,7 +423,7 @@
 		member_no = #{memberNo}
   </select>
   
-  <select id="selectAllPostOrderByLatest" resultType="communityEntity">
+  <select id="selectAllPostOrderBySelectType" resultType="communityEntity">
   	select 
 		c.*,
 		m.commentCount
@@ -434,7 +434,15 @@
 	where
 		c.member_no = #{memberNo}
 	order by
-		c.enroll_date desc
-  </select>  
+		<if test="searchType eq 'viewCount'">
+			c.view_count desc
+		</if>
+		<if test="searchType eq 'oldest'">
+			c.like_count desc
+		</if>
+		<if test="searchType eq 'oldest'">
+			c.enroll_date asc
+		</if>
+  </select>
   <!-- 지원 mapper 끝 -->
 </mapper>
