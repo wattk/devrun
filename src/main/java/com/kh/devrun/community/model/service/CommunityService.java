@@ -22,9 +22,11 @@ public interface CommunityService {
 	// 커뮤니티 상세보기
 	CommunityEntity selectOneCommunity(int communityNo);
 
-	List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo);
+	// 댓글 보기
+	List<CommunityCommentEntity> selectCommentList(int communityNo);
 
-	int insertFreeboardCommentEnroll(CommunityComment communityComment);
+	// 댓글 등록
+	int insertCommentEnroll(CommunityComment communityComment);
 
 	int commentDelete(int commentNo);
 
