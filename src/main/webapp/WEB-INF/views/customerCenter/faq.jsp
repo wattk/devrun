@@ -10,7 +10,11 @@
 	<jsp:param value="자주 묻는 질문" name="title"/>
 </jsp:include>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/customerCenter/customerCenter.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/customerCenter/customerCenter.css" />
+
+<style>
+
+</style>
 
 <div class="container customer-center">
 	<div class="row">
@@ -24,8 +28,9 @@
 			
 			<!-- 검색 -->
 			<nav class="navbar navbar-light bg-light border">
+			  <%-- action 속성을 생략하면 해당 페이지를 요청할 때와 같은 방식으로 처리가 된다. --%>
 			  <form class="form-inline">
-			    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+			    <input id="faqSearchKeyword" class="form-control mr-sm-2" type="search" name="searchKeyword" value="${param.searchKeyword}" placeholder="질문을 입력해 주세요(제목+내용)" aria-label="Search">
 			    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">검색</button>
 			  </form>
 			</nav>
@@ -35,21 +40,21 @@
 			<!-- 전체 / 쇼핑몰 / 카테고리 / 기타 선택 -->
 			<ul class="nav nav-pills nav-fill my-4">
 			  <li class="nav-item">
-			    <a class="nav-link active" href="#">전체</a>
+			    <a class="nav-link ${param.noticeCode eq null ? 'active' : ''}" href="${pageContext.request.contextPath}/customerCenter/faq.do?searchKeyword=${param.searchKeyword}">전체</a>
 			  </li>
 			  <li class="nav-item">
-			    <a class="nav-link" href="#">쇼핑몰</a>
+			    <a class="nav-link ${param.noticeCode eq 'S' ? 'active' : ''}" href="${pageContext.request.contextPath}/customerCenter/faq.do?noticeCode=S&searchKeyword=${param.searchKeyword}">쇼핑몰</a>
 			  </li>
 			  <li class="nav-item">
-			    <a class="nav-link" href="#">커뮤니티</a>
+			    <a class="nav-link ${param.noticeCode eq 'C' ? 'active' : ''}" href="${pageContext.request.contextPath}/customerCenter/faq.do?noticeCode=C&searchKeyword=${param.searchKeyword}">커뮤니티</a>
 			  </li>
 			  <li class="nav-item">
-			    <a class="nav-link" href="#">기타</a>
+			    <a class="nav-link ${param.noticeCode eq 'E' ? 'active' : ''}" href="${pageContext.request.contextPath}/customerCenter/faq.do?noticeCode=E&searchKeyword=${param.searchKeyword}">기타</a>
 			  </li>
 			</ul>
 			<!-- 전체 / 쇼핑몰 / 카테고리 / 기타 선택 끝 -->
 			
-			<p class="text-right mt-3 mb-1">총 <span class="text-primary">00</span> 건의 자주 묻는 질문이 있습니다.</p>
+			<p class="text-right mt-3 mb-1">총 <span class="text-primary">${totalContent}</span> 건의 자주 묻는 질문이 있습니다.</p>
 			
 			<!-- 선택에 따른 값 불러오기 - 아코디언 형식 -->
 			<table class="table">
@@ -61,162 +66,32 @@
 			        </tr>
 			    </thead>
 			    <tbody>
-			    	<tr class="faq-title">
-			            <td>1</td>
-			            <td>쇼핑몰</td>
-			            <td>제목제목제목제목제목제목제목제목</td>
-			        </tr>
-			        <tr class="faq-content">
-			            <td colspan="3" class="hiddenRow">
-			            	<div class="">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			        
-			        <tr class="faq-title">
-			            <td>1</td>
-			            <td>쇼핑몰</td>
-			            <td>제목제목제목제목제목제목제목제목</td>
-			        </tr>
-			        <tr class="faq-content">
-			            <td colspan="3" class="hiddenRow">
-			            	<div class="">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			        
-			        <tr class="faq-title">
-			            <td>1</td>
-			            <td>쇼핑몰</td>
-			            <td>제목제목제목제목제목제목제목제목</td>
-			        </tr>
-			        <tr class="faq-content">
-			            <td colspan="3" class="hiddenRow">
-			            	<div class="">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			        
-			        <tr class="faq-title">
-			            <td>1</td>
-			            <td>쇼핑몰</td>
-			            <td>제목제목제목제목제목제목제목제목</td>
-			        </tr>
-			        <tr class="faq-content">
-			            <td colspan="3" class="hiddenRow">
-			            	<div class="">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			        
-			        <tr class="faq-title">
-			            <td>1</td>
-			            <td>쇼핑몰</td>
-			            <td>제목제목제목제목제목제목제목제목</td>
-			        </tr>
-			        <tr class="faq-content">
-			            <td colspan="3" class="hiddenRow">
-			            	<div class="">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			        
-			        <tr class="faq-title">
-			            <td>1</td>
-			            <td>쇼핑몰</td>
-			            <td>제목제목제목제목제목제목제목제목</td>
-			        </tr>
-			        <tr class="faq-content">
-			            <td colspan="3" class="hiddenRow">
-			            	<div class="">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			        
-			        <tr class="faq-title">
-			            <td>1</td>
-			            <td>쇼핑몰</td>
-			            <td>제목제목제목제목제목제목제목제목</td>
-			        </tr>
-			        <tr class="faq-content">
-			            <td colspan="3" class="hiddenRow">
-			            	<div class="">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			        
-			        <tr class="faq-title">
-			            <td>1</td>
-			            <td>쇼핑몰</td>
-			            <td>제목제목제목제목제목제목제목제목</td>
-			        </tr>
-			        <tr class="faq-content">
-			            <td colspan="3" class="hiddenRow">
-			            	<div class="">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			        
-			        <tr class="faq-title">
-			            <td>1</td>
-			            <td>쇼핑몰</td>
-			            <td>제목제목제목제목제목제목제목제목</td>
-			        </tr>
-			        <tr class="faq-content">
-			            <td colspan="3" class="hiddenRow">
-			            	<div class="">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
-			        
-			        <tr class="faq-title">
-			            <td>1</td>
-			            <td>쇼핑몰</td>
-			            <td>제목제목제목제목제목제목제목제목</td>
-			        </tr>
-			        <tr class="faq-content">
-			            <td colspan="3" class="hiddenRow">
-			            	<div class="">
-			            		내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다. 내용입니다.
-			            	</div>
-			            </td>
-			        </tr>
+			    	<c:if test="${not empty faqList}">
+			    		<c:forEach items="${faqList}" var="faq" varStatus="vs">
+				    		<tr class="faq-title">
+					            <td>${totalContent - (((param.cPage eq null ? 1 : param.cPage) - 1) * 10 + vs.index)}</td>
+					            <td>${faq.noticeCode eq 'S' ? '쇼핑몰' : faq.noticeCode eq 'C' ? '커뮤니티' : '기타'}</td>
+					            <td>${faq.title}</td>
+					        </tr>
+					        <tr class="faq-content">
+					            <td colspan="3" class="hiddenRow">
+					            	<div class="">${faq.content}</div>
+					            </td>
+					        </tr>
+			    		</c:forEach>   
+			    	</c:if>
+			    
+			    	<c:if test="${empty faqList}">
+						<tr>
+							<td colspan="3" class="text-center">자주 묻는 질문이 존재하지 않습니다.</td>
+						</tr>
+					</c:if>
 			    </tbody>
 		    </table>
 			<!-- 선택에 따른 값 불러오기 - 아코디언 형식 끝 -->
 			
-			<%-- 시간 된다면 페이징 까지 해보기 (필수는 아님) --%>
 			<!-- 페이징 -->
-			<nav aria-label="..." class="mx-auto text-center">
-			  <ul class="pagination justify-content-center">
-			    <li class="page-item">
-			      <a class="page-link" href="#" aria-label="Previous">
-			        <span aria-hidden="true">&laquo;</span>
-			        <span class="sr-only">Previous</span>
-			      </a>
-			    </li>
-			    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-			    <li class="page-item ">
-			      <a class="page-link" href="#">2</a>
-			    </li>
-			    <li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item">
-			      <a class="page-link" href="#" aria-label="Next">
-			        <span aria-hidden="true">&raquo;</span>
-			        <span class="sr-only">Next</span>
-			      </a>
-			    </li>
-			  </ul>
-			</nav>
+			${pagebar}
 			<!-- 페이징 끝 -->
 
 		</div>

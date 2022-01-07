@@ -382,7 +382,15 @@
                     aria-expanded="true" aria-controls="collapseBoard">
                     <i class="fas fa-receipt"></i>
                     <span>게시판 관리</span>
-                </a>             
+                </a>
+                <div id="collapseBoard" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="#">커뮤니티 관리</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/customerCenter/noticeManage.do">공지사항 관리</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/customerCenter/faqManage.do">자주묻는질문 관리</a>
+                    </div>
+                </div>        
             </li>
             
             <!-- 이벤트 관리 메뉴 -->

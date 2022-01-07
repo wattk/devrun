@@ -237,15 +237,15 @@ public class CommunityUtils {
 		
 		for (CommunityEntity freeboard : searchFreeboardList) {
 			sb.append(
-					"<tr>\n" 
+					"<tr data-no=\"" + freeboard.getCommunityNo() + "\" class=\"whynot\" value=\""+ freeboard.getCommunityNo()+"\"style=\"cursor: pointer;\">\n" 
 					+ "<td>" + freeboard.getCommunityNo() + "</td>\n"
 					+ "<td>" + freeboard.getTitle() + "</td>\n"
 					+ "<td>" + freeboard.getNickname() + "</td>\n"
 					+ "<td>" + sdf.format(freeboard.getEnrollDate()) + "</td>\n"
 					+ "<td><i class=\"fas fa-heart\"></i> " + freeboard.getLikeCount() + "</td>\n"
-					+ "<td>" + freeboard.getViewCount() + "</td>"
-					+ "<td>" + freeboard.getCommentCount() + "</td>"
-					+ "/<tr>"
+					+ "<td>" + freeboard.getViewCount() + "</td>\n"
+					+ "<td>" + freeboard.getCommentCount() + "</td>\n"
+					+ "</tr>"
 					);
 		}
 

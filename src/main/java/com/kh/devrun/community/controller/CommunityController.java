@@ -295,6 +295,7 @@ public class CommunityController {
 		
 		List<CommunityEntity> freeboardList = communityService.selectFreeboardListByType(param, offset, limit);
 		String freeboardStr = CommunityUtils.getFreeboardList(freeboardList, url);
+		log.debug("freeboard = {}", freeboardStr);
 		
 		// 2. 전체 게시물 수 totalCount
 		url = request.getRequestURI();
