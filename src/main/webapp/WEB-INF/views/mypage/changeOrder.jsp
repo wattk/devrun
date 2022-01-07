@@ -287,9 +287,6 @@ $("[name=csStatus]").change((e)=>{
 					<option value="" selected >옵션 선택</option>`);
 			 	
 				for(let j = 0; j < item.length; j++){
-					if(itemArr[i].prevDetailNo == item[j].detailNo){
-						continue;
-					}
 				 	$(`#\${itemArr[i].productCode}[name=currDetailNo]`).append(`
 			      	 		<option value="\${item[j].detailNo}"> \${item[j].optionNo}
 							 \${item[j].optionContent == null? '' : item[j].optionContent}
