@@ -196,7 +196,28 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.communityDelete(communityNo);
 	}
 
+	/**
+	 * 지원 서비스 시작
+	 */
+	
+	@Override
+	public List<CommunityEntity> selectAllPostOrderByLatest(int memberNo, int offset, int limit) {
+		return communityDao.selectAllPostOrderByLatest(memberNo, offset, limit);
+	}
 
+	@Override
+	public int selectPostTotalCount(int memberNo) {
+		return communityDao.selectPostTotalCount(memberNo);
+	}
+
+	@Override
+	public List<CommunityEntity> selectAllPostOrderBySelectType(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectPostTotalCount(param, offset, limit);
+	}
+
+	/**
+	 * 지원 서비스 끝
+	 */
 
 
 

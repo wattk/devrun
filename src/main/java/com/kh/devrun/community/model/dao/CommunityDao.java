@@ -77,6 +77,12 @@ public interface CommunityDao {
 
 	int communityDelete(int CommunityNo);
 
+	//나의 커뮤니티
+	List<CommunityEntity> selectAllPostOrderByLatest(int memberNo, int offset, int limit);
+
+	int selectPostTotalCount(int memberNo);
+
+	List<CommunityEntity> selectPostTotalCount(Map<String, Object> param, int offset, int limit);
 
 
 
