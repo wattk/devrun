@@ -186,4 +186,9 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectOne("shop.countItemsByChildCode", childCategoryCode);
 	}
 
+	@Override
+	public List<String> selectAllChildCateNames(String parentCate) {
+		return session.selectList("shop.selectAllChildCateNames", parentCate);
+	}
+
 }

@@ -234,7 +234,7 @@
 							<!-- 회원일때만 답글 버튼이 나타나도록 처리 -->
 							<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
 								<div class="row float-right">
-								<button type="button" class="btn btn-dark mt-3 float-right btnReComment" value="${communityCommentEntity.commentNo}">답글</button>&nbsp;
+								<button type="button" onclick="firstReply()" class="btn btn-dark mt-3 float-right btnReComment" value="${communityCommentEntity.commentNo}">답글</button>&nbsp;
 								<!-- 회원일 경우 -->
 								<sec:authorize access="hasAnyRole('M1', 'M2')">
 									<!-- 회원이고 글쓴이 본인일 경우 -->
@@ -308,51 +308,52 @@ function freeboardCommentValidate(){
 }
 
 // 답글(대댓글) 클릭 시 댓글 번호 참조 
-$(".btnReComment").click((e) => {
-	console.log("ddddd");
-	$("#ii").show();
-	console.log("클릭 이벤트 발생!");
-	//console.log($(e.target).val());
-	const commentRefNo = $(e.target).val();
-	const div = `
-	<div id="ii">
-		<ul class="list-group list-group-flush" id="level2">
-			<div class="card-body" style="padding-left: 100px;">
-				<ul class="list-group list-group-flush">
-				    <li class="list-group-item" style="border: solid; background-color: white;">
-					<div class="form-inline mb-2">
-						<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
-					</div>
-					<form:form
-						name="freeboardReCommentForm"
-						action="${pageContext.request.contextPath}/community/communityFreeboardCommentEnroll.do"
-						method="POST">
-						<textarea class="form-control" name="content" id="reComment" rows="1"></textarea>
-						<div class="row float-right">
-							<button type="button" class="btn btn-dark mt-3 float-right" onclick="freeboardReCommentValidate()">등록</button>&nbsp;
-							<button type="button" class="btn btn-dark mt-3 float-right" onclick="closeDiv()">취소</button>
-						</div>
-						
-						<input type="hidden" name="commentLevel" value="2"/>
-						<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
-						<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
-						<input type="hidden" name="commentRefNo" value= "\${commentRefNo}" /> 
-					</form:form>
-				    </li>
-				</ul>
-			</div>
-		</ul>
-	</div>`;
-	console.log(div);
+function firstReply() {
+	const commentRefNo = $(".btnReComment").val();
 	
+	const div = `
+		<div id="ii">
+			<ul class="list-group list-group-flush" id="level2">
+				<div class="card-body" style="padding-left: 100px;">
+					<ul class="list-group list-group-flush">
+					    <li class="list-group-item" style="border: solid; background-color: white;">
+						<div class="form-inline mb-2">
+							<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
+						</div>
+						<form:form
+							name="freeboardReCommentForm"
+							action="${pageContext.request.contextPath}/community/communityFreeboardCommentEnroll.do"
+							method="POST">
+							<textarea class="form-control" name="content" id="reComment" rows="1"></textarea>
+							<div class="row float-right">
+								<button type="button" class="btn btn-dark mt-3 float-right" onclick="freeboardReCommentValidate()">등록</button>&nbsp;
+								<button type="button" class="btn btn-dark mt-3 float-right" onclick="closeDiv()">취소</button>
+							</div>
+							
+							<input type="hidden" name="commentLevel" value="2"/>
+							<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
+							<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
+							<input type="hidden" name="commentRefNo" value= "\${commentRefNo}" /> 
+						</form:form>
+					    </li>
+					</ul>
+				</div>
+			</ul>
+		</div>`;
+		
 	// e.target 의 부모의 부모 div (등록 전체 div를 지칭)
-	const $divOfBtn = $(e.target).parent();
+	const $divOfBtn = $(".btnReComment").parent();
 	// jQuery 객체 $divOfBtn 이 div 다음으로 들어가게끔 조치
 	$divOfBtn.after(div);
-	// 현재 버튼의 handler 제거
-	$(e.target).off('click');
-});
+	
+	$(".btnReComment").attr("onclick","aa()");
+		
+		
+}
 
+function aa (){
+	$("#ii").show();
+}
 function closeDiv(){
 	console.log("도착꾸?");
 	$("#ii").undind();
