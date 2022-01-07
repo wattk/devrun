@@ -924,9 +924,7 @@ function todayItemStorage(){
     	    productCode: productCode,
     	    regDate: Date.now()
     	};
-    
-    console.dir(aViewdItem);
-        
+      
     var check = 0;
     var now = Date.now();
     
@@ -937,29 +935,18 @@ function todayItemStorage(){
         //객체배열 순회
         $.each(todayViewitems, function(i, aViewdItem){  
         	if(aViewdItem != null){
-        		 
 	        	
         		//24시간 지난 건 삭제 때리기
 	        	var timeCal = now - aViewdItem.regDate;
-	        	
-	        	console.log(`now 값은? : \${now}`);
-	        	console.log(`aViewdItem.regDate 값은? : \${aViewdItem.regDate}`);
-	        	console.log(`timeCal 값은? : \${timeCal}`);
-	        	
 	        	if(timeCal > 86400000){
-	
 	        	 	todayViewitems.splice(i,1); 
-	        		
 	        	}
 	        	
         		//중복된 건 저장 안 되게 처리
 	        	if(aViewdItem.productCode == productCode){
 	        		check = 1;
 	        	}  
-	        	
         	}
-        		
-        	
         });
     }
   	
@@ -975,8 +962,6 @@ function todayItemStorage(){
     //localStorage에 저장
     localStorage.setItem("todayViewitems", jsonTodayViewitems);
     
-    
-
 }
 
 
