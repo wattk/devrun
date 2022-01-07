@@ -912,7 +912,7 @@ $("#phoneSms").keyup((e)=>{
 	location.reload();
 }
 
-
+//오늘본상품시작
 function todayItemStorage(){
 	 const productCode = '${todayItemCode}';
 	 console.log(`todayItemCode : \${productCode}`);
@@ -963,7 +963,7 @@ function todayItemStorage(){
     localStorage.setItem("todayViewitems", jsonTodayViewitems);
     
 }
-
+//오늘본상품끝
 
 
 
