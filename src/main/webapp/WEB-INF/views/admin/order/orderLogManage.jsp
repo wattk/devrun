@@ -255,7 +255,7 @@ $(".order-log-modal-btn").click((e)=>{
 			$(".order-log-badge").text(reasonCode);
 			$(".order-log-badge")
 				.attr("data-cs-status", data.orderLog.csStatus)
-				.attr("data-valid", data.orderLog.processDate == null? 0 : 1 );
+				.data("valid", data.orderLog.processDate == null? 0 : 1 );
 			$("#orderLogModalReqDate").text(reqDate);
 			$("#orderLogDetailTbl").html('');
 			
@@ -331,7 +331,7 @@ $("#osChangeBtn").click((e)=>{
 			if(valid == 1){
 				$(`#\${orderLogUid}`).detach();
 				if($(".order-change-body").children("tr").length == 0){
-					$(".order-change-body").append(`<tr class="mx-auto">
+					$(".order-change-body").append(`<tr class="mx-auto text-center">
 				  			<td colspan="4">요청 대기 중인 주문이 없습니다.</td>
 					  		</tr>`);
 				}

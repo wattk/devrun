@@ -410,11 +410,15 @@
   <update id="updateOrderLog">
   	update order_log set
   		${keyword} = current_date
-  	where
+  		<if test="costStatus != null and costStatus != ''">
+  			,cost_status = #{costStatus}
+  		</if>
+  	<where>
   		order_log_uid in
    		<foreach collection="orderLogUid" item="uid" open="(" separator="," close=")">
 	  		 #{uid}
   		</foreach>
+  	</where>
   </update>
   
   <select id="selectAllOrderLog" resultType="orderLog">

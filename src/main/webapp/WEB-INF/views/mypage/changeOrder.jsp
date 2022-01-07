@@ -39,10 +39,11 @@
 		  </div>
 		  <div class="card-body m-4">
 		  	<span>${merchant.merchantUid}</span>
-		  	<h5>${imp.name }</h5>
+		  	<h5>${imp.name}</h5>
 		  	<span><fmt:formatDate value="${merchant.orderDate}" pattern="yy-MM-dd"/></span>
 	  	  	<table class="claim-table table m-3 pr-3">
 			  <tbody>
+			  <c:set var="sum" value="0" />
 			    <c:forEach items="${productList}" var="product" varStatus="vs">
 				    <tr 
 				    	class="one-product ml-3 mr-3"
@@ -64,6 +65,7 @@
 				      	${product.buyCount}개 구매
 				      </td>
 				    </tr>
+				    <c:set var="sum" value="${sum + (product.price * product.buyCount)}" />
 			    </c:forEach>
 			    <tr>
 			    	<td colspan="3">
@@ -243,6 +245,12 @@ $("[name=csStatus]").change((e)=>{
 	if($(e.target).val() != 'EXC'){
 		return;
 	}
+	
+	//교환이나 반품인 경우 배송비 3000원 input 추가
+	if($(e.target).val() == 'EXC' or $(e.target).val() == 'RET'){
+		$(document.orderLogFrm).prepend(`<input type="hidden" name="cost" value="${merchant.shippingFee}" />`);
+	}
+	
 	const productArr = [];
 	const itemArr = [];
 	const $products = $(".one-product");
