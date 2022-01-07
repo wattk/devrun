@@ -6,12 +6,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <fmt:requestEncoding value="utf-8"/>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="" name="title"/>
-</jsp:include>
-<jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
-	<jsp:param value="" name="title"/>
-</jsp:include>
+<!-- header include -->
+<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+<!-- sidebar include -->
+<jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp"></jsp:include>
+<!-- css -->
 <link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
 <!-- 폰트어썸 CDN -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
@@ -178,7 +177,7 @@ $(document).on("click", ".whynot", function(e){
 	const communityNo = $tr.data("no");
 	console.log("해당 communityNo = " + communityNo);
 	
-	location.href = `${pageContext.request.contextPath}/community/communityFreeboardDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
+	location.href = `${pageContext.request.contextPath}/community/communityDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
 });
  /* 
 $(".whynot").click((e) => {
