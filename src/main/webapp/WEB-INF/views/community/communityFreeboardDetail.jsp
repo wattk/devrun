@@ -355,7 +355,7 @@ $(".btnReComment").click((e) => {
 
 function closeDiv(){
 	console.log("도착꾸?");
-	$("#ii").hide();
+	$("#ii").undind();
 }
 
 // 댓글 유효성 검사
