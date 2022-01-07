@@ -39,50 +39,51 @@
 <div id="shopItemDetailOuterDiv">
 	<div id="itemDetailDisplayDiv" class="row">
 		<!-- sms 모달 시작-->
-		<form:form
-			name="smsFrm"
-			method="POST"
-			action="#">
+		<form:form name="smsFrm" method="POST" action="#">
 			<div class="modal" id="exampleModal4" tabindex="-1" role="dialog">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <h5 class="modal-title">재입고 SMS 알람 신청</h5>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			          <span aria-hidden="true">&times;</span>
-			        </button>
-			      </div>
-			      <div class="modal-body" id="smsBody">
-			      	<c:if test="${!empty outOfStock}">
-			      	 	<p>재입고 알림을 받을 상품 옵션을 선택해주세요. </p>
-			      	 	<select style="height: 35px;" class="col-8" name="smsOption" id="smsOption" required>
-			      	 		<option value="" selected disabled >옵션 선택</option>
-			      	 		<c:forEach items="${outOfStock}" var="s">
-				      	 		<option value="${s.detailNo}"> ${s.optionNo}
-				      	 			<c:if test="${s.optionContent != null}">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title">재입고 SMS 알람 신청</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body" id="smsBody">
+							<c:if test="${!empty outOfStock}">
+								<p>재입고 알림을 받을 상품 옵션을 선택해주세요.</p>
+								<select style="height: 35px;" class="col-8" name="smsOption"
+									id="smsOption" required>
+									<option value="" selected disabled>옵션 선택</option>
+									<c:forEach items="${outOfStock}" var="s">
+										<option value="${s.detailNo}">${s.optionNo}
+											<c:if test="${s.optionContent != null}">
 										, ${s.optionContent}
-									</c:if> 
-				      	 		</option>
-			      	 		</c:forEach>
-			      	 	</select>
-			      	 	<hr />
-			      	 	<p>문자 메세지를 받을 전화번호를 입력해주세요.[숫자만 입력]</p>
-			      	 	<input style="height: 35px;" class="col-8" id="phoneSms" name="phoneSms" type="tel" required/>
-			      	 	<p id="checkPhone" data-vaild="N"></p>
-			      	</c:if>
-			      	<c:if test="${empty outOfStock}">
-			      	 	<p>모든 옵션이 재고가 있습니다.</p>
-			      	</c:if>
-			      </div>
-			      <div class="modal-footer text-center">
-			      	<c:if test="${!empty outOfStock}">
-			        	<button type="submit" class="btn btn-primary">신청하기</button>
-			      	</c:if>
-			        <button type="button" id="smsCloseBtn" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>		
+									</c:if>
+										</option>
+									</c:forEach>
+								</select>
+								<hr />
+								<p>문자 메세지를 받을 전화번호를 입력해주세요.[숫자만 입력]</p>
+								<input style="height: 35px;" class="col-8" id="phoneSms"
+									name="phoneSms" type="tel" required />
+								<p id="checkPhone" data-vaild="N"></p>
+							</c:if>
+							<c:if test="${empty outOfStock}">
+								<p>모든 옵션이 재고가 있습니다.</p>
+							</c:if>
+						</div>
+						<div class="modal-footer text-center">
+							<c:if test="${!empty outOfStock}">
+								<button type="submit" class="btn btn-primary">신청하기</button>
+							</c:if>
+							<button type="button" id="smsCloseBtn" class="btn btn-secondary"
+								data-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</form:form>
 		<!-- sms 모달 끝 -->
 		<!--리뷰작성모달 시작(부트스트랩)-->
@@ -291,32 +292,29 @@
 					alt="">
 			</div>
 		</div>
-		<div 
-			id="itemDetailInfoDiv"
+		<div id="itemDetailInfoDiv"
 			data-product-code="${product.productCode }"
-			data-price="${product.price }"
-			data-name="${product.name }"
-			data-amount="1"
-			data-thumbnail="${product.thumbnail }"
-			>
+			data-price="${product.price }" data-name="${product.name }"
+			data-amount="1" data-thumbnail="${product.thumbnail }">
 			<div id="itemDetailNameDiv">
 				<p>${product.name}</p>
 			</div>
 			<div id="itemDetailOptionDiv">
-				<span id="price" ><fmt:formatNumber
-						value="${product.price}" pattern="#,###,###" /></span> 원 <br>
-				<span>혜택 : </span><span style="color: pink;"><fmt:formatNumber
+				<span id="price"><fmt:formatNumber value="${product.price}"
+						pattern="#,###,###" /></span> 원 <br> <span>혜택 : </span><span
+					style="color: pink;"><fmt:formatNumber
 						value="${product.price / 200}" pattern="#,###,### P" /> </span>적립 <br>
 				<span>배송 : </span><span>3,000원</span> <br>
 				<div id="jeju">
-					<span>제주도/도서산간 지역 4,000원 추가</span> <i id="wishlistBtn" class="far fa-heart wishBtn"
-						data-wishyn="N"></i>
+					<span>제주도/도서산간 지역 4,000원 추가</span> <i id="wishlistBtn"
+						class="far fa-heart wishBtn" data-wishyn="N"></i>
 				</div>
 				<hr>
 				<div id="restockDiv">
-					<button id="restockModalBtn" type="button" data-toggle="modal" data-target="#exampleModal4">
-						<i class="far fa-envelope" id="restock">
-							<span id="restockSpan"> &nbsp; 재입고 시 sms 알림</span>
+					<button id="restockModalBtn" type="button" data-toggle="modal"
+						data-target="#exampleModal4">
+						<i class="far fa-envelope" id="restock"> <span
+							id="restockSpan"> &nbsp; 재입고 시 sms 알림</span>
 						</i>
 					</button>
 				</div>
@@ -326,17 +324,16 @@
 					<c:if test="${cartValid ne null }">
 						<c:forEach items="${pDetail}" var="pd">
 							<option value="${pd.detailNo}"
-								data-cart-valid="${fn:contains(cartValid, pd.detailNo)? 1 : 0}" 
+								data-cart-valid="${fn:contains(cartValid, pd.detailNo)? 1 : 0}"
 								<c:if test="${pd.quantity <1}">
 									disabled
-								</c:if>
-								>${pd.optionNo}
+								</c:if>>${pd.optionNo}
 								<c:if test="${pd.optionContent != null}">
 									, ${pd.optionContent}
-								</c:if> 
+								</c:if>
 								<sec:authorize access="hasRole('AM')">
 									<span style="font-size: 10px;"> [재고 : ${pd.quantity}]</span>
-								</sec:authorize> 
+								</sec:authorize>
 								<c:if test="${pd.quantity <1}">
 									[품절된 상품입니다]
 								</c:if>
@@ -348,8 +345,7 @@
 							<option value="${pd.detailNo}"
 								<c:if test="${pd.quantity <1}">
 									disabled
-								</c:if>
-							>${pd.optionNo} 
+								</c:if>>${pd.optionNo}
 								<c:if test="${pd.optionContent != null}">
 									 , ${pd.optionContent}
 								</c:if>
@@ -566,10 +562,8 @@
 												alt="추천상품이미지">
 											<div class="mt-2 forFont2">
 												<span style="font-weight: bold; color: midnightblue;">${r.name}</span>
-												<br>
-												<span><fmt:formatNumber value="${r.price}"
-														pattern="#,###,### 원" /></span> <br>
-												<span></span>
+												<br> <span><fmt:formatNumber value="${r.price}"
+														pattern="#,###,### 원" /></span> <br> <span></span>
 											</div>
 										</div>
 										<!-- 상품추천 1건 끝 -->
@@ -590,7 +584,7 @@
 
 <!-- 위시리스트 로그인 했을 시 비동기 시작 -->
 <sec:authorize access="isAuthenticated()">
-<script>
+	<script>
 $(document).on('click', '.wishBtn', function(e) {
 	
 	const $memberNo = ${member.memberNo};
@@ -920,12 +914,35 @@ $("#phoneSms").keyup((e)=>{
 
 
 function todayItemStorage(){
-	if(${todayItemCode != null}){
 	 const productCode = '${todayItemCode}';
-	 cosole.log("productCode");
-	 console.log(productCode);
-	}
-	console.log("todayItemStorage() 발동 잘 ?");
+	 console.log(`todayItemCode : \${productCode}`);
+	 
+	 if(productCode == '' || productCode == null || productCode == undefined)
+	 	return;
+	
+    const aViewdItem = {
+    	    productCode: productCode,
+    	    regDate: Date.now()
+    	};
+    
+    console.dir(aViewdItem);
+    
+    
+  /*   const todayViewitems = []; */
+    
+    // 1. localStorage에 저장
+    const todayViewitems = JSON.parse(localStorage.getItem('todayViewitems')) || [];
+    todayViewitems.push(aViewdItem);
+    
+    //entries배열을 JSON으로 변환
+    var jsonTodayViewitems = JSON.stringify(todayViewitems);
+
+    //localStorage에 저장
+    localStorage.setItem("todayViewitems", jsonTodayViewitems);
+
+
+
+
 	
 	
 	
