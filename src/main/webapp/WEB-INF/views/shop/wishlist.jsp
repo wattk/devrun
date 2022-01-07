@@ -14,58 +14,46 @@
 <style>
 .wishDeleteBtn:hover{
 	cursor: pointer;
+	color : #66ABFF;
+}
+.shop-item-info{
+	width : 12rem;
+	margin : 0 auto;
 }
 </style>
 
-<div class="row p-5 d-flex justify-content-around order-container">
-  <div class="col-7">
+<sec:authentication property="principal" var="loginMember"/>
+
+<div class=" p-5 order-container">
   	<h4>위시리스트</h4>
-  	<table class="table m-3 pr-3">
-	  <tbody>
-	  <c:forEach items="${wishlist}" var="wl" varStatus="vs">
-		  <!-- 위시리스트 한 건 시작 -->
-		    <tr>
-		      <td>
-		      	<input type="checkbox" class="ml-3" name="" id="" />
-			  </td>
-		      <td class="col-4">
-		      	<img 
-		      	src="${pageContext.request.contextPath}/resources/upload/product/${wl.thumbnail}"
-		      	alt="" class="shop-img img-b w-75">
-			  </td>
-		      <td class="col-4 align-middle">${wl.name}</td>
-		      <td class="col-3 align-middle">
-		      	<span class="wishPrice" data-price="${wl.price}">
-		      		<fmt:formatNumber value="${wl.price}" pattern="#,###,### 원" />
-		      	</span>
-		     </td>
-		      <td colspan="" class="align-middle">
-		      	<i class="wish-icon fas fa-cart-plus pr-3"></i>
-		      </td>
-		      <td colspan="" class="align-middle ">
-		      	<i class="wish-icon fas fa-trash-alt wishDeleteBtn"></i>
-		      </td>
-		      <input type="hidden" id= "productCode" name="productCode" value="${wl.productCode}" />
-		      <input type="hidden" id="wishlistNo" name="wishlistNo" value="${wl.wishlistNo}" />
-		    </tr>
-		  <!-- 위시리스트 한 건 끝 -->
-	  </c:forEach>
-	  </tbody>
-	</table>
-  </div>
-  <div class="col-4 m-3 pl-3 pt-5 d-flex flex-column justify-content-start">
-	  <strong>위시리스트 요약</strong>
-	  <hr class="w-100"/>
-	  <strong>정가</strong>
+	<div class="row">
+		<!-- 아이템 나열 시작 -->
+		<c:if test = "${wishlist != null}">
+			<c:forEach items="${wishlist}" var="l">
+		        <div class="card-box-d p-5">
+			  	  <a href="${pageContext.request.contextPath}/shop/itemDetail/${l.productCode}" class="col-md-3 ">
+		          <div class="card-img-d shop-item-img position-relative">
+		            <img src="${pageContext.request.contextPath}/resources/upload/product/${l.thumbnail}" alt="" class="img-thumbnail shop-img img-d img-fluid">
+		          </div>
+			      </a>
+		          <div class="shop-item-info">
+		          	<p class="m-0">${l.name}</p>
+		          	<div class="d-flex justify-content-between">
+		          	<strong class="wishPrice" data-price="${l.price}"><fmt:formatNumber value="${l.price}" pattern="#,###,### 원" /></strong>
+			      	<i class="wish-icon fas fa-trash-alt wishDeleteBtn" data-product-code="${l.productCode}"></i>
+		          	</div>
+		          </div>
+		        </div>
+			</c:forEach>
+		</c:if>
+      <!-- 아이템 나열 끝 -->
+    </div>
+  <hr class="w-100"/>
+  <div class=" m-3 pl-3 pt-5 text-right">
+	  <strong class="wishlist-summary pl-2 mb-2">위시리스트 요약</strong>
+	  <hr class="w-25" align="right"/>
+	  <strong class="">정가</strong>
 	  <h4 class="text-right" id="wishTotalPrice"></h4>
-	  <button 
-	  	type="button" 
-	  	id="wishCartBtn" 
-	  	class="btn btn-primary w-100 h-25 mt-5"
-	  	onclick="location.href='${pageContext.request.contextPath}/order/cart.do'">
-	  	선택 제품 장바구니에 추가하기 <i class="fas fa-chevron-circle-right"></i>
-	  </button>
-	  <hr class="w-100"/>
   </div>
 </div>	
 
@@ -96,7 +84,7 @@ function numberWithCommas(x) {
 // 위시리스트 삭제 비동기 시작
 $(document).on('click', '.wishDeleteBtn', function(e) {
 	const memberNo = ${loginMember.memberNo};
-	const productCode = $('#productCode').val();
+	const productCode = $(e.target).data("productCode");
 	
 	console.log(productCode);
 	if(confirm("위시리스트를 삭제하시겠습니까?")){
@@ -123,6 +111,7 @@ $(document).on('click', '.wishDeleteBtn', function(e) {
 	
 })
 // 위시리스트 삭제 비동기 끝
+
 </script>
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
