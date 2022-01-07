@@ -246,6 +246,44 @@ public class DevrunUtils {
 	}
 	
 	/**
+	 * 게시글 읽음 여부 확인 - 세 번째 위치 매개변수 int
+	 */
+	public static boolean hasRead(HttpServletRequest request, HttpServletResponse response, int no, String param) {
+
+		Cookie[] cookies = request.getCookies();
+		boolean hasRead = false;
+		String boardValue = "";
+
+		if (cookies != null) {
+			for (Cookie c : cookies) {
+				String name = c.getName();
+				String value = c.getValue();
+
+				if (param.equals(name)) {
+					boardValue = value;
+
+					if (value.contains("|" + no + "|")) {
+						hasRead = true;
+					}
+					break;
+				}
+			}
+		}
+
+		if (!hasRead) {
+			Cookie cookie = new Cookie(param, boardValue + "|" + no + "|");// 그냥 숫자만 쓰면 혼동이 올 수 있으므로 no에 대한 padding문자
+																				// 추가
+			cookie.setMaxAge(365 * 24 * 60 * 60);
+			if ("notice".equals(param))
+				cookie.setPath(request.getContextPath() + "/customerCenter/noticeDetail.do");// 해당 경로 요청 시에만 쿠키 전송
+				
+			response.addCookie(cookie);
+		}
+
+		return hasRead;
+	}
+	
+	/**
 	 *  회원 목록 비동기로 띄우기
 	 * @param url 
 	 */
