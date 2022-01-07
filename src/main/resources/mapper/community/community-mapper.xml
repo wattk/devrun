@@ -212,8 +212,8 @@
   		page_code = 4
   </select>
   
-  <!-- 자유게시판 상세보기 -->
-  <select id="selectOneFreeBoard" resultType="communityEntity">
+  <!-- 커뮤니티 상세보기 -->
+  <select id="selectOneCommunity" resultType="communityEntity">
 	select
 	    c.*,
 	    (select nickname from member where member_no = c.member_no) nickname,
@@ -224,8 +224,8 @@
   		community_no = #{community_no}
   </select>
   
-  <!-- 자유게시판 수정하기 -->
-  <update id="updateFreeboard">
+  <!-- 커뮤니티 수정하기 -->
+  <update id="updateCommunity">
   	update
 	    community
 	set
@@ -239,7 +239,7 @@
   </update>
   
   <!-- 자유게시판 삭제하기 -->
-  <delete id="freeboardDelete">
+  <delete id="communityDelete">
   	delete from 
     	community 
 	where
@@ -247,7 +247,7 @@
   </delete>
   
   <!-- 자유게시판 댓글 -->
-  <select id="selectFreeboardCommentList" resultType="communityCommentEntity">
+  <select id="selectCommentList" resultType="communityCommentEntity">
   	select
 	    c.*,
 	    (select nickname from member where member_no = c.member_no) nickname
@@ -264,7 +264,7 @@
   </select>
   
   <!-- 댓글 입력 -->
-  <insert id="insertFreeboardComment">
+  <insert id="insertComment">
   	insert into community_comment
   	values(
   		seq_community_comment_no.nextval,
@@ -399,5 +399,50 @@
   		community_no = #{communityNo}
   </update>
   
-
+  <!-- 지원 mapper 시작 -->
+  <select id="selectAllPostOrderByLatest" resultType="communityEntity">
+  	select 
+		c.*,
+		m.commentCount
+	from 
+		community c left join(select community_no, count(comment_no) as commentCount from community_comment group by community_no) m
+	on 
+		c.community_no = m.community_no
+	where
+		c.member_no = #{memberNo}
+	order by
+		c.enroll_date desc
+  </select>
+	
+  <select id="selectPostTotalCount" resultType="_int">
+    select 
+		count(*)
+	from 
+		community
+	where
+		member_no = #{memberNo}
+  </select>
+  
+  <select id="selectAllPostOrderBySelectType" resultType="communityEntity">
+  	select 
+		c.*,
+		m.commentCount
+	from 
+		community c left join(select community_no, count(comment_no) as commentCount from community_comment group by community_no) m
+	on 
+		c.community_no = m.community_no
+	where
+		c.member_no = #{memberNo}
+	order by
+		<if test="searchType eq 'viewCount'">
+			c.view_count desc
+		</if>
+		<if test="searchType eq 'oldest'">
+			c.like_count desc
+		</if>
+		<if test="searchType eq 'oldest'">
+			c.enroll_date asc
+		</if>
+  </select>
+  <!-- 지원 mapper 끝 -->
 </mapper>

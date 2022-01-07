@@ -53,18 +53,19 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public CommunityEntity selectOneFreeBoard(int communityNo) {
-		return session.selectOne("community.selectOneFreeBoard", communityNo);
+	public CommunityEntity selectOneCommunity(int communityNo) {
+		return session.selectOne("community.selectOneCommunity", communityNo);
 	}
 
 	@Override
-	public List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo) {
-		return session.selectList("community.selectFreeboardCommentList", communityNo);
+	public List<CommunityCommentEntity> selectCommentList(int communityNo) {
+		return session.selectList("community.selectCommentList", communityNo);
 	}
 
+	// 댓글 등록
 	@Override
-	public int insertFreeboardComment(CommunityComment communityComment) {
-		return session.insert("community.insertFreeboardComment", communityComment);
+	public int insertComment(CommunityComment communityComment) {
+		return session.insert("community.insertComment", communityComment);
 	}
 
 	@Override
@@ -73,13 +74,13 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public int updateFreeboard(Community community) {
-		return session.update("community.updateFreeboard", community);
+	public int updateCommunity(CommunityEntity communityEntity) {
+		return session.update("community.updateCommunity", communityEntity);
 	}
 
 	@Override
-	public int freeboardDelete(int communityNo) {
-		return session.delete("community.freeboardDelete", communityNo);
+	public int communityDelete(int communityNo) {
+		return session.delete("community.communityDelete", communityNo);
 	}
 
 	@Override
@@ -181,4 +182,28 @@ public class CommunityDaoImpl implements CommunityDao {
 		return session.selectOne("community.selectStudyCount");
 	}
 	
+	/**
+	 * 지원 dao 시작
+	 */
+	
+	@Override
+	public List<CommunityEntity> selectAllPostOrderByLatest(int memberNo, int offset, int limit) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectAllPostOrderByLatest", memberNo, rowBounds);
+	}
+
+	@Override
+	public int selectPostTotalCount(int memberNo) {
+		return session.selectOne("community.selectPostTotalCount", memberNo);
+	}
+
+	@Override
+	public List<CommunityEntity> selectPostTotalCount(Map<String, Object> param, int offset, int limit) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectPostTotalCount", param, rowBounds);
+	}
+
+	/**
+	 * 지원 dao 끝
+	 */
 }

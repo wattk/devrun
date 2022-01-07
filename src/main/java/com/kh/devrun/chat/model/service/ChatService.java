@@ -31,4 +31,6 @@ public interface ChatService {
 
 	int exitChatRoom(Map<String, Object> param);
 
+	int selectMessageTotalUnreadCount(int memberNo);
+
 }

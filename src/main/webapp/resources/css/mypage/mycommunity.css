@@ -6,18 +6,32 @@
 
 
 /** my community **/
+
+/* tab menu */
 #mycommunityTab {padding:0;}
 #mycommunityTab .bi::before {vertical-align:unset;}
 #mycommunityTab .nav-tabs {border:0;}
 #mycommunityTab .nav-item {margin:0 auto; text-align:center; padding:0;}
-#mycommunityTab .nav-link {border:0; color:#9E9E9E; padding:15px 0; border-bottom:5px solid #F7F7F7;}
+#mycommunityTab .nav-link {border:0; color:#9E9E9E; padding:15px 0; border-bottom:5px solid #F7F7F7; margin-bottom:30px;}
 #mycommunityTab .nav-link.active {color:#000000; border-color:#000000;}
 
-#communityList {margin:0 auto;}
-#communityList table td {border:0; border-bottom:1px solid #DEE2E6; padding:25px 5px;}
-#communityList table td:nth-of-type(2) {text-align:right; color:#9E9E9E;}
-#communityList table td div:first-of-type {color:#9E9E9E; font-size:14px; padding-bottom:10px;}
-#communityList table td #postTitle {font-weight:bold;}
-#communityList table td .bi {font-size:14px;}
-#likeList .bi.bi-heart-fill {color:#1A81FF;}
+/* tab container */
+#selectType {margin:0 auto; justify-content:flex-end;}
+#selectType select {
+	border:1px solid #ced4da; width:120px; height:32px; padding:0 12px;
+	background:url('https://i.ibb.co/HxwX9Pj/down.png') no-repeat 95% 50%; /* 네이티브 화살표 대체 이미지와 위치 */
+	background-size:15px; font-size:15px;
+	-webkit-appearance:none; -moz-appearance:none; appearance:none; /* select태그 네이티브 화살표 감추기 */
+}
+#selectType select:focus {box-shadow:none;}
 
+#communityList {margin:0 auto; padding:0 15px;}
+#communityList table {margin-bottom:50px;}
+#communityList tr#noList td {height:500px; border:0; text-align:center; vertical-align: middle;}
+#communityList td {border:0; border-bottom:1px solid #DEE2E6; padding:25px 5px;}
+#communityList td:nth-of-type(2) {text-align:right; color:#9E9E9E;}
+#communityList td div:first-of-type {color:#9E9E9E; font-size:14px; padding-bottom:10px;}
+#communityList td #postTitle {font-weight:bold;}
+#communityList td p {margin:0 auto;}
+#communityList td .bi {font-size:14px;}
+#likeList .bi.bi-heart-fill {color:#1A81FF;}
