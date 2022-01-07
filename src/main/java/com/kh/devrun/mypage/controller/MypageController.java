@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.address.model.vo.Address;
+import com.kh.devrun.chat.model.service.ChatService;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
@@ -70,6 +71,9 @@ public class MypageController {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private ChatService chatService;
+	
 	
 	/**
 	 * 지원 시작
@@ -79,28 +83,17 @@ public class MypageController {
 	 * 지원 마이페이지 메인 시작
 	 */
 	@GetMapping("/mypage.do")
-	public String mypage() {
-//		Member principal = (Member) authentication.getPrincipal();
-//		String id = principal.getId();
-//		Object credentials = authentication.getCredentials();
-//		log.debug("[credentials] credentials = {}", credentials);
-//		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//		log.debug("[authorities] authorities = {}", authorities);		
+	public String mypage(Authentication authentication, Model model) {
+
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
 		
-		//읽지 않은 총 쪽지 개수 totalMessage
-//		if(member != null) {
-//			int memberNo2 = member.getMemberNo();
-//			int totalMessage = mypageService.selectMessageTotalCount(memberNo2);
-//			log.debug("totalMessage = {}", totalMessage);
-//			model.addAttribute("totalMessage", totalMessage);
-//			return "mypage/mypage";
-//		} else {
-//			return "redirect:error.do";
-//		}
-//		Member member = memberService.selectOneMemberById(id);
-//		log.debug("member = {}", member);
-//		model.addAttribute("member", member);
-		//mypageMember(model, authentication);
+		/* 전체안읽음 메시지 건수 조회 */
+		int totalUnreadCount = chatService.selectMessageTotalUnreadCount(memberNo);
+		log.debug("totalUnreadCount = {}", totalUnreadCount);
+		
+		model.addAttribute("totalUnreadCount", totalUnreadCount);
+		/* 전체안읽음 메시지 건수 조회 끝 */
 		
 		return "mypage/mypage";
 	}

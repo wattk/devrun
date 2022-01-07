@@ -184,4 +184,19 @@
 	    chat_id = #{chatId} and
 	    member_no = #{memberNo}
   </update>
+  
+  <select id="selectMessageTotalUnreadCount" resultType="_int">
+  	select
+	    count(*)
+	from
+	    chat_member cm join chat_log cl
+	        on cm.chat_id = cl.chat_id
+	where
+	    cm.member_no = #{memberNo} 
+	    and 
+	    cl.member_no != #{memberNo}
+	    and
+	    last_check <![CDATA[ < ]]> log_time
+  </select>
+  
 </mapper>

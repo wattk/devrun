@@ -165,9 +165,9 @@ public class AdminCustomerCenterController {
 			HttpServletRequest request) throws Exception {
 		log.debug("noticeNo = {}", noticeNo);
 		
-		// searchKeyword ?? 로 나옴 - 한글깨짐현상 해결 https://m.blog.naver.com/software705/220645774923 참고
 		
 		try {
+			// searchKeyword ?? 로 나옴 - 한글깨짐현상 해결 https://m.blog.naver.com/software705/220645774923 참고
 			log.debug("searchKeyword 어떻게 넘어옵니까? {}", searchKeyword);
 			searchKeyword= URLEncoder.encode(searchKeyword, "UTF-8");
 			log.debug("searchKeyword 인코딩됩니까? {}", searchKeyword);
