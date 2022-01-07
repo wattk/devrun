@@ -344,8 +344,6 @@
   		#{orderLogUid},
   		#{reasonCode},
   		#{merchantUid},
-  		#{prevDetailNo},
-  		#{currDetailNo},
   		#{csStatus},
   		current_date,
   		null,
@@ -353,7 +351,9 @@
   		'N',
   		#{cost},
   		#{reasonDetail},
-  		#{memberNo}
+  		#{memberNo},
+  		#{prevDetailNo},
+  		#{currDetailNo}
   	)
   </insert>
   

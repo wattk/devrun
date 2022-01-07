@@ -247,7 +247,7 @@ $("[name=csStatus]").change((e)=>{
 	}
 	
 	//교환이나 반품인 경우 배송비 3000원 input 추가
-	if($(e.target).val() == 'EXC' or $(e.target).val() == 'RET'){
+	if($(e.target).val() == 'EXC' || $(e.target).val() == 'RET'){
 		$(document.orderLogFrm).prepend(`<input type="hidden" name="cost" value="${merchant.shippingFee}" />`);
 	}
 	

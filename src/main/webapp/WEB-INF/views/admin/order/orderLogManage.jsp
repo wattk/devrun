@@ -291,17 +291,18 @@ $("#osChangeBtn").click((e)=>{
 	const orderLogUid = [$("#orderLogModalUid").text()];
 	const impUid = $("#orderLogModalUid").data("impUid");
 	const amount = $("#orderLogModalUid").data("amount");
-	let detailList = [];
-	const $detailTitle = $(".detail-title");
-	const length = $detailTitle.length;
 	const csStatus = $(".order-log-badge").data("csStatus");
 	const valid = $(".order-log-badge").data("valid");
 	const reasonDetail = $("#orderLogModalReason").text();
+
+	let detailList = [];
+	const $detailTitle = $(".detail-title");
+	const length = $detailTitle.length;
 	
 	for(let i = 0; i < length; i++){
 		detailList[i] = {
 				detailNo : $detailTitle.eq(i).data("detailNo"),
-				buyCount : $detailTitle.eq(i).data("buyCount")
+				buyCount : $detailTitle.eq(i).data("buyCount")*(-1)
 		}
 	}
 	

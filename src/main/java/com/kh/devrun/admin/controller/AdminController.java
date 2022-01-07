@@ -1061,6 +1061,7 @@ public class AdminController {
 						updateParam.put("orderLogUid", param.get("orderLogUid"));
 						updateParam.put("receiptUrl", receipt);
 						updateParam.put("costStatus", "Y");
+						updateParam.put("detailList", (List<Map<String, Object>>)param.get("detailList"));
 						log.debug("updateParam = {}", updateParam);
 						result = orderService.updateOrderLog(updateParam);
 						resultMap.put("msg", "정상처리되었습니다");
@@ -1071,6 +1072,7 @@ public class AdminController {
 					exchangeParam.put("keyword", "END_DATE");
 					exchangeParam.put("orderLogUid", param.get("orderLogUid"));
 					exchangeParam.put("costStatus", "Y");
+					exchangeParam.put("detailList", (List<Map<String, Object>>)param.get("detailList"));
 					log.debug("updateParam = {}", exchangeParam);
 					result = orderService.updateOrderLog(exchangeParam);
 					resultMap.put("msg", "정상처리되었습니다");

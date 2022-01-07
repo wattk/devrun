@@ -238,6 +238,7 @@ public class OrderServiceImpl implements OrderService {
 		if(receiptUrl != null) {
 			result = orderDao.updateImp(receiptUrl);
 		}
+		result = orderDao.updateProductQuantity((List<Map<String, Object>>)param.get("detailList"));
 		return result;
 	}
 
