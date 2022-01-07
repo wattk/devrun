@@ -257,4 +257,9 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.CategoryItemAll(offset, limit, parentCate);
 	}
 
+	@Override
+	public List<String> selectAllChildCateNames(String parentCate) {
+		return shopDao.selectAllChildCateNames(parentCate);
+	}
+
 }

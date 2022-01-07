@@ -132,7 +132,7 @@ public class ShopUtils {
 		// 전체페이지수
 		int totalPage = (int) Math.ceil((double) totalContents / numPerPage);
 
-		log.debug("커밋을위한로그");
+		
 		
 		// 페이지번호를 클릭했을때 링크
 		int questionIndex = extraUrl.indexOf("&");

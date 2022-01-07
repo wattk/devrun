@@ -67,4 +67,6 @@ public interface ShopService {
 
 	int countItemsByChildCode(String childCategoryCode);
 
+	List<String> selectAllChildCateNames(String parentCate);
+
 }
