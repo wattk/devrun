@@ -77,4 +77,9 @@ public class ChatServiceImpl implements ChatService {
 	public int exitChatRoom(Map<String, Object> param) {
 		return chatDao.exitChatRoom(param);
 	}
+
+	@Override
+	public int selectMessageTotalUnreadCount(int memberNo) {
+		return chatDao.selectMessageTotalUnreadCount(memberNo);
+	}
 }

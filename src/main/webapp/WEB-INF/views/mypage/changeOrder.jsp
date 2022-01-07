@@ -39,12 +39,20 @@
 		  </div>
 		  <div class="card-body m-4">
 		  	<span>${merchant.merchantUid}</span>
-		  	<h5>${imp.name }</h5>
+		  	<h5>${imp.name}</h5>
 		  	<span><fmt:formatDate value="${merchant.orderDate}" pattern="yy-MM-dd"/></span>
 	  	  	<table class="claim-table table m-3 pr-3">
 			  <tbody>
+			  <c:set var="sum" value="0" />
 			    <c:forEach items="${productList}" var="product" varStatus="vs">
-				    <tr class="ml-3 mr-3">
+				    <tr 
+				    	class="one-product ml-3 mr-3"
+				    	data-product-code="${product.productCode}"
+				    	data-product-name="${product.name}"
+				    	data-option-no="${product.productDetail.optionNo}"
+				    	data-option-content="${product.productDetail.optionContent}"
+				    	data-prev-detail-no="${product.productDetail.detailNo}"
+				    	data-buy-count="${product.buyCount}">
 				      <td rowspan="" class="col-1">
 					      <div class="cart-item-img">
 					      		<img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="shop-img img-thumbnail img-b" >
@@ -57,6 +65,7 @@
 				      	${product.buyCount}개 구매
 				      </td>
 				    </tr>
+				    <c:set var="sum" value="${sum + (product.price * product.buyCount)}" />
 			    </c:forEach>
 			    <tr>
 			    	<td colspan="3">
@@ -177,7 +186,7 @@
 				      	<strong class="pl-2 align-middle">${imp.name}</strong>
 				      </td>
 				      <td class="col-1">
-				      	<fmt:formatNumber type="currency">${imp.amount }</fmt:formatNumber>
+				      	<fmt:formatNumber type="currency">${imp.amount}</fmt:formatNumber>
 				      </td>
 				    </tr>
 				  </tbody>
@@ -230,31 +239,73 @@
 </div>
 </form:form>
 <script>
-/* $("[name=csStatus]").change((e)=>{
+//교환 요청 시 교환할 수 있는 옵션값 띄워주기
+$("[name=csStatus]").change((e)=>{
+	//교환이 아니면 리턴
 	if($(e.target).val() != 'EXC'){
 		return;
+	}
+	
+	//교환이나 반품인 경우 배송비 3000원 input 추가
+	if($(e.target).val() == 'EXC' || $(e.target).val() == 'RET'){
+		$(document.orderLogFrm).prepend(`<input type="hidden" name="cost" value="${merchant.shippingFee}" />`);
+	}
+	
+	const productArr = [];
+	const itemArr = [];
+	const $products = $(".one-product");
+	
+	for(let i = 0; i < $products.length; i++){
+		productArr[i] = $products.eq(i).data("productCode");
+		itemArr[i] = {
+				productCode : $products.eq(i).data("productCode"),
+				name : $products.eq(i).data("productName"),
+				prevDetailNo : $products.eq(i).data("prevDetailNo"),
+				optionNo : $products.eq(i).data("optionNo"),
+				optionContent : $products.eq(i).data("optionContent"),
+		}
 	}
 	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/order/findProductDetail",
 		method : "GET",
-		data : ,
+		data : {
+			productArr : productArr
+		},	
 		success(data){
 			console.log(data);
+			
+			for(let i = 0; i < itemArr.length; i++){
+				const item = data[`\${itemArr[i].productCode}`];
+				console.log(item);
+				
+			 	$("#exchangeContainer").append(`<div class="ml-2">
+			 		<strong class="mr-2">\${itemArr[i].name}</strong>
+			 		<span>\${itemArr[i].optionNo} \${itemArr[i].optionContent}</span>
+			 		<input type="hidden" name="prevDetailNo" value="\${itemArr[i].prevDetailNo}" />
+					<select style="height: 35px;" id="\${itemArr[i].productCode}" class="ml-2 w-25  bg-light border-0 small" name="currDetailNo" required>
+					<option value="" selected >옵션 선택</option>`);
+			 	
+				for(let j = 0; j < item.length; j++){
+				 	$(`#\${itemArr[i].productCode}[name=currDetailNo]`).append(`
+			      	 		<option value="\${item[j].detailNo}"> \${item[j].optionNo}
+							 \${item[j].optionContent == null? '' : item[j].optionContent}
+	      	 		</option>`);
+				}
+				
+			
+			 	$(`#\${itemArr[i].productCode} [name=currDetailNo]`).append(`</select>
+					  	</div>`);
+			 	
+				
+			};
+			
+				  	
+		      	 		
 		},
 		error : console.log
 	});
 	
-	$("#exchangeContainer").append(`<div>
-	  		<input type="hidden" name="prevDetailNo" id="" value="${s.detailNo}"/>
-		  	<select style="height: 35px;" class="col-8" name="currDetailNo" required>
-      	 		<option value="" selected disabled >옵션 선택</option>
-	      	 		<option value="${s.detailNo}"> ${s.optionNo}
-							, ${s.optionContent}
-	      	 		</option>
-      	 	</select>
-	  	</div>`);
-	
-}); */
+}); 
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
