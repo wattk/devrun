@@ -182,4 +182,28 @@ public class CommunityDaoImpl implements CommunityDao {
 		return session.selectOne("community.selectStudyCount");
 	}
 	
+	/**
+	 * 지원 dao 시작
+	 */
+	
+	@Override
+	public List<CommunityEntity> selectAllPostOrderByLatest(int memberNo, int offset, int limit) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectAllPostOrderByLatest", memberNo, rowBounds);
+	}
+
+	@Override
+	public int selectPostTotalCount(int memberNo) {
+		return session.selectOne("community.selectPostTotalCount", memberNo);
+	}
+
+	@Override
+	public List<CommunityEntity> selectPostTotalCount(Map<String, Object> param, int offset, int limit) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectPostTotalCount", param, rowBounds);
+	}
+
+	/**
+	 * 지원 dao 끝
+	 */
 }

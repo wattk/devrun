@@ -74,7 +74,12 @@ public interface CommunityService {
 	// 커뮤니티 게시물 삭제
 	int communityDelete(int communityNo);
 
+	//나의 커뮤니티
+	List<CommunityEntity> selectAllPostOrderByLatest(int memberNo, int offset, int limit);
 
+	int selectPostTotalCount(int memberNo);
+
+	List<CommunityEntity> selectAllPostOrderBySelectType(Map<String, Object> param, int offset, int limit);
 
 
 

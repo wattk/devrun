@@ -399,5 +399,42 @@
   		community_no = #{communityNo}
   </update>
   
-
+  <!-- 지원 mapper 시작 -->
+  <select id="selectAllPostOrderByLatest" resultType="communityEntity">
+  	select 
+		c.*,
+		m.commentCount
+	from 
+		community c left join(select community_no, count(comment_no) as commentCount from community_comment group by community_no) m
+	on 
+		c.community_no = m.community_no
+	where
+		c.member_no = #{memberNo}
+	order by
+		c.enroll_date desc
+  </select>
+	
+  <select id="selectPostTotalCount" resultType="_int">
+    select 
+		count(*)
+	from 
+		community
+	where
+		member_no = #{memberNo}
+  </select>
+  
+  <select id="selectAllPostOrderByLatest" resultType="communityEntity">
+  	select 
+		c.*,
+		m.commentCount
+	from 
+		community c left join(select community_no, count(comment_no) as commentCount from community_comment group by community_no) m
+	on 
+		c.community_no = m.community_no
+	where
+		c.member_no = #{memberNo}
+	order by
+		c.enroll_date desc
+  </select>  
+  <!-- 지원 mapper 끝 -->
 </mapper>

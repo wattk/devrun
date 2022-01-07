@@ -5,6 +5,11 @@ main {height:auto; background:linear-gradient(to bottom, #1A81FF 350px, #FFFFFF 
 
 /** 공통 적용 style **/
 .back-to-top {z-index:9999;}
+
+.page-item:focus-visible, .page-link:focus-visible {outline:none;}
+.page-link:focus {box-shadow:none;}
+.page-link {padding:7px 14px;}
+
 main .bi {font-size:20px; vertical-align:middle;}
 main .bi::before {vertical-align:baseline;}
 main .bi.bi-chevron-right {color:#A1A1A1; font-size:16px; vertical-align:middle;}
