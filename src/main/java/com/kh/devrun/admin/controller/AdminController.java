@@ -357,7 +357,8 @@ public class AdminController {
 		// 상품 List에 뿌려준 productCode를 상품detail 페이지로 넘긴 뒤 update 페이지까지 넘겨줌
 		product.setProductCode(productCode);
 		// thumbnail set
-		product.setThumbnail(productCode +".png");
+		String productImg = productCode+".png";
+		product.setThumbnail(productImg);
 		
 		// 상품상세 객체로 묶어 전달		
 		List<ProductDetail> productDetailList = new ArrayList<>();
@@ -394,17 +395,14 @@ public class AdminController {
 				File delFile = new File(fileDirectory);
 				boolean fileDelete = delFile.delete();
 				log.debug("fileDelete = {}", fileDelete);
-
-				
+		
 				// 서버 컴퓨터 저장
-				log.debug("첨부파일 있음~~~~~~~");
-				newProductImg = productCode+"-1.png";
-				File dest = new File(saveDirectory, newProductImg);
+				File dest = new File(saveDirectory, productImg);
 				upFile.transferTo(dest);			
 				
 				// 바뀐 이미지 파일 명 set한 뒤 update
 				// 상품 정보 수정(첨부파일도 같이 수정)
-				product.setThumbnail(newProductImg);
+				product.setThumbnail(productImg);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
