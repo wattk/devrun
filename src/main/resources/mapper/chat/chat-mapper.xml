@@ -32,10 +32,13 @@
   </insert>
   
   <insert id="insertChatLog">
+  	<selectKey keyProperty="no" resultType="int" order="BEFORE">			   
+  		select seq_chat_log_no.nextval from dual
+    </selectKey>
   	insert into
   		chat_log(no, chat_id, member_no, msg, log_time)
   	values(
-  		seq_chat_log_no.nextval,
+  		#{no},
   		#{chatId},
   		#{memberNo},
   		#{msg},
