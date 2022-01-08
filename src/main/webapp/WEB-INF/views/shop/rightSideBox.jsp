@@ -7,42 +7,133 @@
                    <p class="text-center">최근 본 상품 </p><p></p>
                </div>
                <div id="sideboxBody">
+				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+				  <div class="carousel-inner">
+				      <div class="carousel-item active firstS">
+					    </div>
+					    <div class="carousel-item secondS">
+					    </div>
+				  </div>
+				</div>
                </div>
-               <div id="sideboxFooter">
-                   <div id="todayViewErrow">
-                       <img class="errow-img"src="https://i.ibb.co/TwyPKry/errow2.png" alt="">
-                       <img class="errow-img"src="https://i.ibb.co/ZTyXx9q/errow.png" alt="" style="margin-left: 30px">
-                   </div>
-               </div>
-               <hr>
-               <div id="chatbox">
-                 <a href=""><i class="fas fa-comment-dots" style="font-size: 70px;"></i></a>
-                 <button type="button" class="btn btn-warning">1:1문의하기</button>
+               <div id="sideBoxFooter" class="ml-2 mr-2">
+				  <button class="slide-btn" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+				    <img src="https://i.ibb.co/TwyPKry/errow2.png" alt="" />
+				  </button>
+				  <button class="slide-btn"  type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+				    <img src="https://i.ibb.co/ZTyXx9q/errow.png" alt="" />
+				  </button>
                </div>
            </div>
-
+<style>
+.carousel-inner{
+	height: 330px;
+}
+.slide-btn > img {
+	width: 20px;
+	height: 20px;
+}
+#sideBoxFooter{
+	display: flex;
+    justify-content: space-between;
+}
+#sideBoxFooter >button {
+	border: 0px;
+}
+</style>
 <script>
-window.onload = todayViewBox;
+ window.onload = todayViewBox;
 
 function todayViewBox () {
 	const todayViewitems = JSON.parse(localStorage.getItem('todayViewitems')) || [];
-	console.log("오늘본상품박스");
-	console.log(todayViewitems);
 	
-	const $box = $(sideboxBody);
+	//뒤집기 가장 먼저 본 상품이 가장 처음으로 오게 - 확인 완료
+	const rTodayViewitems = todayViewitems.reverse();
 	
-	if(todayViewitems != null){
-		todayViewitems.forEach((el, i) => {
-			const productCode = el.productCode;
-			console.log(`productCode 로컬에서 잘 받? : \${productCode}`);
-			const a = `                   <div class=\"todayView1\">
-                <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png\">
-                </div>`;
-			$box.append(a);
-		})
-	}
+	const $box = $('.carousel-inner');
+	
+	if(rTodayViewitems != null){
+		const length = rTodayViewitems.length; 
+		console.log(`오늘본상품갯수: \${length}`);
+		
+		if(length<=3){
+			$('.secondS').remove();
+		}
+		
+		//div분기 처리 끝
+		
+		if(length>3){
+			const $firstSlide = $('.firstS');
+			const $secondSlide = $('.secondS');
+			
+			for (var i = 0; i < rTodayViewitems.length; i++){
+				if(i<3){
+					const productCode = rTodayViewitems[i]["productCode"];
+					const a = `<a href="${pageContext.request.contextPath}/shop/itemDetail/\${productCode}"> <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png \" style = \"width: 100px; height: 100px;\"></a>`;
+					$firstSlide.append(a);
 
+				}
+				if(i>=3 && i<6){
+					const productCode = rTodayViewitems[i]["productCode"];
+					const a = `<a href="${pageContext.request.contextPath}/shop/itemDetail/\${productCode}"> <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png \" style = \"width: 100px; height: 100px;\"></a>`;
+					$secondSlide.append(a);
+					
+				}
+				if(i>=6){
+					return;
+				}
+				
+			}
+		}
+		
+		
+
+		
+	}	
 	
-}
+}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+		/* 	if(length <4) {
+					const $firstSlide = $('.firstS');
+				console.log("여기 찍힘?");
+				for (var i = 0; i < rTodayViewitems.length; i++){
+					
+					const productCode = rTodayViewitems[i]["productCode"];
+					console.log(`productCode : \${productCode}`);
+					const a = `<a href="${pageContext.request.contextPath}/shop/itemDetail/\${productCode}"> <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png \" style = \"width: 100px; height: 100px;\"></a>`;
+					$firstSlide.append(a);
+					
+					
+				}
+			if(length > 3 && length <7){
+		        const second = `				    <div class="carousel-item secondS">
+				    </div>`;
+				$box.prepend(second);
+				const $secondSlide = $('.secondS');
+				
+				for (var i = 3; i < rTodayViewitems.length; i++) {
+					const productCode = rTodayViewitems[i]["productCode"];
+					console.log(`productCode : \${productCode}`);
+					const a = `<a href="${pageContext.request.contextPath}/shop/itemDetail/\${productCode}"> <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png \" style = \"width: 100px; height: 100px;\"></a>`;
+					$secondSlide.append(a);
+				}
+				
+				
+			}
+			if(length > 6 && length <10){
+				
+			} */
+			
+
+ 
 
 </script>           
