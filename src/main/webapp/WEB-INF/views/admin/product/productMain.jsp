@@ -168,11 +168,7 @@ $(()=>{
 		console.log(checkedProduct);
 		$("#productDelteFrm").append(`<input type="hidden" name="productCodes" value="\${checkedProduct}" />`)
 		
-		
-		
-				
-		
-		
+
 	});
 	
 });
