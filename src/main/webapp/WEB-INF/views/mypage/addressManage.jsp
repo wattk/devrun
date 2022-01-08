@@ -189,6 +189,7 @@ $(".duplicate-check").keyup((e) => {
 	
 	if($target.val() == ''){
 		$(".guide").hide();
+		$(".title.guide-box").css({"height":"0px", "transition":".3s"});
 		return;
 	}
 	

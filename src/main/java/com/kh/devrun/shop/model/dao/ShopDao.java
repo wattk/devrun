@@ -79,4 +79,6 @@ public interface ShopDao {
 
 	int countItemsByChildCode(String childCategoryCode);
 
+	List<String> selectAllChildCateNames(String parentCate);
+
 }

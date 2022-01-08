@@ -32,10 +32,13 @@
   </insert>
   
   <insert id="insertChatLog">
+  	<selectKey keyProperty="no" resultType="int" order="BEFORE">			   
+  		select seq_chat_log_no.nextval from dual
+    </selectKey>
   	insert into
   		chat_log(no, chat_id, member_no, msg, log_time)
   	values(
-  		seq_chat_log_no.nextval,
+  		#{no},
   		#{chatId},
   		#{memberNo},
   		#{msg},
@@ -184,4 +187,19 @@
 	    chat_id = #{chatId} and
 	    member_no = #{memberNo}
   </update>
+  
+  <select id="selectMessageTotalUnreadCount" resultType="_int">
+  	select
+	    count(*)
+	from
+	    chat_member cm join chat_log cl
+	        on cm.chat_id = cl.chat_id
+	where
+	    cm.member_no = #{memberNo} 
+	    and 
+	    cl.member_no != #{memberNo}
+	    and
+	    last_check <![CDATA[ < ]]> log_time
+  </select>
+  
 </mapper>

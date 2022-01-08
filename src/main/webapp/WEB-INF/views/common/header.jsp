@@ -103,7 +103,7 @@
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityMain.do">전체</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityColumnList.do">칼럼</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityQnAList.do">Q&A</a>
-              <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityStudy.do">스터디</a>
+              <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityStudyList.do">스터디</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityFreeboardList.do">자유게시판</a>
             </div>
           </li>
@@ -195,6 +195,30 @@
 		open(url, name, spec);
 
 	});
+  	
+	// 로그인 후
+	<sec:authorize access="isAuthenticated()">  	
+	  	// 비동기 - 전체안읽음 메시지 건수 조회해서 존재할 시 #chat 자식 태그로 
+	  	
+	  	const $target = $('#chat').parent().prev();
+	  	
+	  	$target.click((e) => {
+	  		$.ajax({
+	  			url : `${pageContext.request.contextPath}/chat/selectMessageTotalUnreadCount.do`,
+	  			method : "GET", // GET방식 생략 가능
+	  			success(data) { // 이 안에 들어가는 data는 변수명이다. 다른 이름으로 사용해도 된다. 위의 data : 에서 사용한 부분과 헷갈리지 말자
+	  				//console.log(data);
+	  				// 1건 이상 조회될 시 뱃지 추가
+	  				if(data > 0) {
+	  					// 자식노드 있을 경우 대비(이전에 추가된 경우)
+	  					$("#chat").children().remove();
+	  					$("#chat").append(`<span class="badge badge-pill badge-danger">\${data}</span>`);
+	  				}
+	  			},
+	  			error : console.log
+	  		});
+		});
+  	</sec:authorize>
   </script>
   <!--/ Nav End /-->
   <section style="margin-top:115px;">

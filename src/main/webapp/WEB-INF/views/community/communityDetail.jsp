@@ -16,65 +16,20 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" integrity="sha512-ZbehZMIlGA8CTIOtdE+M81uj3mrcgyrh6ZFeG33A4FHECakGrOsTPlPQ8ijjLkxgImrdmSVUHn1j+ApjodYZow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js" integrity="sha512-lVkQNgKabKsM1DA/qbhJRFQU8TuwkLF2vSN3iU/c7+iayKs08Y8GXqfFxxTZr1IcpMovXnf2N/ZZoMgmZep1YQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="${pageContext.request.contextPath}/resources/js/summernote/lang/summernote-ko-KR.js"></script>
-<script>
-	// summernote 웹 에디터 로딩
-	$(document).ready(function(){
-		$('#summernote').summernote({
-			height: 300, // 에디터 높이
-			minHeight: 300, // 최소 높이
-			maxHeight: 300, // 최대 높이
-			focus: true, // 에디터 로딩 후 포커스를 맞출 지 여부
-			lang: "ko-KR", // 한글 설정
-		});
-		
-		// 읽기 전용화 --> 비활성화 --> disable
-		$('#summernote').summernote('disable');
-	});
-	
-	
-	// 게시물 수정하기
-	$(document).on('click', '#freeboardUpdateBtn', function(e){
-		e.preventDefault();
-		console.log("업데이트 도착했나요?")
-		console.log("삭제할 게시글 번호 : ${communityEntity.communityNo}");
-		
-		if(confirm("정말로 수정하시겠습니까?")){
-			location.href=`${pageContext.request.contextPath}/community/communityFreeboardUpdate.do?communityNo=${communityEntity.communityNo}`;	
-		}else{
-			 return;
-		}  
-	});
-	
-	
-	// 게시물 삭제하기
-	$(document).on('click', '.freeboardDeleteBtn', function(e){
-		e.preventDefault();
-		console.log("삭제하기 도착했나요?");
-		console.log(e.target);
-		var communityNo = $(e.target).val();
-		console.log("삭제할 게시글 번호 : ${communityEntity.communityNo}");
-		
-		if(confirm("정말로 삭제하시겠습니까?")){
-			location.href=`${pageContext.request.contextPath}/community/freeboardDelete.do?communityNo=${communityEntity.communityNo}`;	
-		}else{
-			 return;
-		}
-	});
-	
-		
-</script>
 <style>
 	#likeButton, #reportButton {
 		width: 90px;
 	}
 	.card-body li:hover {
 	background: lightgray;
+	cursor: pointer;
 	}
 	.card-body button#commentBtn {
 		display:none;
 	}
 	.card-body li:hover button#commentBtn {
 		display: inline;
+		cursor: pointer;
 	}
 	textarea {
 		resize: none;
@@ -145,7 +100,8 @@
 			<hr />
 			<div class="row" >
 				<div class="col-md-12 row justify-content-end"> 
-					
+				
+					<button style="margin-right: 10px;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" id="reportButton">신고하기</button>
 					<jsp:include page="/WEB-INF/views/community/common/reportModal.jsp">
 						<jsp:param value="" name="title"/>
 					</jsp:include>
@@ -160,17 +116,21 @@
 				
 			<div class="row">
 				<div class="col-md-12" id="bottomButton">
-					<button type="button" class="btn btn-secondary btn-lg" id="freeboardUpdateBtn">수정하기</button>
+					<button type="button" class="btn btn-secondary btn-lg" id="communityUpdateBtn">수정하기</button>
 					<!-- 회원일 경우 -->
 					<sec:authorize access="hasAnyRole('M1', 'M2')">
 						<!-- 회원이고 글쓴이 본인일 경우 -->
-						<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
-							<button type="button" class="btn btn-secondary btn-lg freeboardDeleteBtn" value="${communityEntity.communityNo}">삭제하기</button>
+						<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">
+							<button type="button" class="btn btn-secondary btn-lg communityDeleteBtn"
+								data-community-no = "${communityEntity.communityNo}"
+								data-page-code= "${communityEntity.pageCode}">삭제하기</button>
 						</c:if>
 					</sec:authorize>
 					<!-- 관리자일 경우 -->
 					<sec:authorize access="hasRole('AM')">
-						<button type="button" class="btn btn-secondary btn-lg freeboardDeleteBtn" value="${communityEntity.communityNo}">삭제하기</button>
+						<button type="button" class="btn btn-secondary btn-lg communityDeleteBtn"
+								data-community-no = "${communityEntity.communityNo}"
+								data-page-code= "${communityEntity.pageCode}">삭제하기</button>
 					</sec:authorize>
 					<button type="button" class="btn btn-secondary btn-lg" onclick="history.go(-1)">목록보기</button>
 				</div>
@@ -189,17 +149,17 @@
 		</div>
 		<div class="card-body">
 			<ul class="list-group list-group-flush">
-			    <li class="list-group-item">
+			    <li class="list-group-item" id="comment-li">
 				<div class="form-inline mb-2">
 					<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
 				</div>
 				<form:form
-					name="freeboardCommentForm"
-					action="${pageContext.request.contextPath}/community/communityFreeboardCommentEnroll.do"
+					name="commentForm"
+					action="${pageContext.request.contextPath}/community/communityCommentEnroll.do"
 					method="POST"
 					>
 					<textarea class="form-control" name="content" id="comment" rows="2"></textarea>
-					<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment" onclick="freeboardCommentValidate()">등록</button>
+					<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment" onclick="commentValidate()">등록</button>
 					
 					<input type="hidden" name="commentLevel" value="1" />
 					<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
@@ -233,18 +193,19 @@
 							<!-- 회원일때만 답글 버튼이 나타나도록 처리 -->
 							<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
 								<div class="row float-right">
-								<button type="button" class="btn btn-dark mt-3 float-right btnReComment" value="${communityCommentEntity.commentNo}">답글</button>&nbsp;
+								<button type="button" onclick="firstReply()" class="btn btn-dark mt-3 float-right btnReComment" value="${communityCommentEntity.commentNo}">답글</button>&nbsp;
 								<!-- 회원일 경우 -->
 								<sec:authorize access="hasAnyRole('M1', 'M2')">
 									<!-- 회원이고 글쓴이 본인일 경우 -->
 									<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
-										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>&nbsp;
 									</c:if>
 								</sec:authorize>
 								<!-- 관리자일 경우 -->
 								<sec:authorize access="hasRole('AM')">
-									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>&nbsp;
 								</sec:authorize>
+									<button type="button" class="btn btn-dark mt-3 float-right" data-toggle="modal" data-target="#exampleModal">신고</button>&nbsp;
 								</div>
 							</sec:authorize>
 						    </li>
@@ -258,17 +219,20 @@
 									&nbsp;&nbsp;<fmt:formatDate value="${communityCommentEntity.regDate}" pattern="yyyy-MM-dd HH:mm"/>
 								</div>
 								<textarea class="form-control" id="exampleFormControlTextarea1" rows="1" readonly="readonly">${communityCommentEntity.content}</textarea>
+								<div class="row float-right">
 								<!-- 회원일 경우 -->
 								<sec:authorize access="hasAnyRole('M1', 'M2')">
 									<!-- 회원이고 글쓴이 본인일 경우 -->
 									<c:if test="${communityCommentEntity.memberNo eq member.memberNo}">				
-										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+										<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>&nbsp;
 									</c:if>
 								</sec:authorize>
 								<!-- 관리자일 경우 -->
 								<sec:authorize access="hasRole('AM')">
-									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>
+									<button type="button" class="btn btn-dark mt-3 float-right btnCommentDelete" value="${communityCommentEntity.commentNo}">삭제</button>&nbsp;
 								</sec:authorize>
+									<button type="button" class="btn btn-dark mt-3 float-right" data-toggle="modal" data-target="#exampleModal">신고</button>&nbsp;
+								</div>
 							    </li>
 							</ul>
 						</c:otherwise>
@@ -283,9 +247,59 @@
 </div>
 
 <script>
+// summernote 웹 에디터 로딩
+$(document).ready(function(){
+	$('#summernote').summernote({
+		height: 300, // 에디터 높이
+		minHeight: 300, // 최소 높이
+		maxHeight: 300, // 최대 높이
+		focus: true, // 에디터 로딩 후 포커스를 맞출 지 여부
+		lang: "ko-KR", // 한글 설정
+	});
+	
+	// 읽기 전용화 --> 비활성화 --> disable
+	$('#summernote').summernote('disable');
+});
 
+/* ---------------------------- 커뮤니티 수정하기 기능 시작 ---------------------------- */
+
+$(document).on('click', '#communityUpdateBtn', function(e){
+	e.preventDefault();
+	console.log("업데이트 도착했나요?")
+	console.log("삭제할 게시글 번호 : ${communityEntity.communityNo}");
+	
+	if(confirm("정말로 수정하시겠습니까?")){
+		location.href=`${pageContext.request.contextPath}/community/communityUpdate.do?communityNo=${communityEntity.communityNo}`;	
+	}else{
+		 return;
+	}  
+});
+
+/* ---------------------------- 커뮤니티 수정하기 기능 종료 ---------------------------- */
+
+
+/* ---------------------------- 커뮤니티 삭제하기 기능 종료 ---------------------------- */
+$(document).on('click', '.communityDeleteBtn', function(e){
+	e.preventDefault();
+	console.log("삭제하기 도착했나요?");
+	console.log(e.target);
+	const $communityNo = $(e.target).data("communityNo");
+	const $pageCode = $(e.target).data("pageCode");
+	console.log("삭제할 게시글 번호 : " + $communityNo);
+	console.log("삭제할 게시글 코드 : " + $pageCode);
+		
+	if(confirm("정말로 삭제하시겠습니까?")){
+		location.href=`${pageContext.request.contextPath}/community/communityDelete.do?communityNo=${communityEntity.communityNo}&pageCode=${communityEntity.pageCode}`;	
+	}else{
+		 return;
+	}
+});
+
+/* ---------------------------- 커뮤니티 삭제하기 기능 종료 ---------------------------- */
+
+/* ---------------------------- 커뮤니티 댓글 기능 시작 ---------------------------- */
 //댓글 유효성 검사
-function freeboardCommentValidate(){
+function commentValidate(){
 	//console.log("도착했나요오");
 	var $content = $('#comment');
 	//console.log($content, typeof $content);
@@ -299,51 +313,69 @@ function freeboardCommentValidate(){
 		alert("내용을 입력하세요");
 		return false;
 	}
-	$(document.freeboardCommentForm).submit();
+	$(document.commentForm).submit();
 }
+/* ---------------------------- 커뮤니티 댓글 기능 종료 ---------------------------- */
 
+/* ---------------------------- 커뮤니티 대댓글 기능 시작 ---------------------------- */
 // 답글(대댓글) 클릭 시 댓글 번호 참조 
-$(".btnReComment").click((e) => {
-	console.log("클릭 이벤트 발생!");
-	//console.log($(e.target).val());
-	const commentRefNo = $(e.target).val();
+function firstReply() {
+	const commentRefNo = $(".btnReComment").val();
+	
 	const div = `
-		<div class="card-body" style="padding-left: 100px">
-			<ul class="list-group list-group-flush">
-			    <li class="list-group-item">
-				<div class="form-inline mb-2">
-					<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
+		<div id="ii">
+			<ul class="list-group list-group-flush" id="level2">
+				<div class="card-body" style="padding-left: 100px;">
+					<ul class="list-group list-group-flush">
+					    <li class="list-group-item" style="border: solid; background-color: white;">
+						<div class="form-inline mb-2">
+							<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
+						</div>
+						<form:form
+							name="reCommentForm"
+							action="${pageContext.request.contextPath}/community/communityCommentEnroll.do"
+							method="POST">
+							<textarea class="form-control" name="content" id="reComment" rows="1"></textarea>
+							<div class="row float-right">
+								<button type="button" class="btn btn-dark mt-3 float-right" onclick="reCommentValidate()">등록</button>&nbsp;
+								<button type="button" class="btn btn-dark mt-3 float-right" onclick="closeDiv()">취소</button>
+							</div>
+							
+							<input type="hidden" name="commentLevel" value="2"/>
+							<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
+							<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
+							<input type="hidden" name="commentRefNo" value= "\${commentRefNo}" /> 
+						</form:form>
+					    </li>
+					</ul>
 				</div>
-				<form:form
-					name="freeboardReCommentForm"
-					action="${pageContext.request.contextPath}/community/communityFreeboardCommentEnroll.do"
-					method="POST">
-					<textarea class="form-control" name="content" id="reComment" rows="1"></textarea>
-					<button type="button" class="btn btn-dark mt-3 float-right" onclick="freeboardReCommentValidate()">등록</button>
-					
-					<input type="hidden" name="commentLevel" value="2"/>
-					<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
-					<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
-					<input type="hidden" name="commentRefNo" value= "\${commentRefNo}" />
-					 
-				</form:form>
-			    </li>
 			</ul>
 		</div>`;
 		
-	console.log(div);
-	
 	// e.target 의 부모의 부모 div (등록 전체 div를 지칭)
-	const $divOfBtn = $(e.target).parent();
+	const $divOfBtn = $(".btnReComment").parent();
 	// jQuery 객체 $divOfBtn 이 div 다음으로 들어가게끔 조치
 	$divOfBtn.after(div);
-	// 현재 버튼의 handler 제거
-	$(e.target).off('click');
 	
-});
+	$(".btnReComment").attr("onclick", "aa()");
+		
+		
+}
 
-// 댓글 유효성 검사
-function freeboardReCommentValidate(){
+
+function aa (){
+	$("#ii").show();
+}
+
+function closeDiv(){
+	console.log("도착꾸?");
+	$("#ii").undind();
+}
+/* ---------------------------- 커뮤니티 대댓글 기능 종료 ---------------------------- */
+
+/* ---------------------------- 커뮤니티 대댓글 등록 시작 ---------------------------- */
+  
+function reCommentValidate(){
 	console.log("도착했나요오");
 	var $reComment = $('#reComment');
 	//console.log($content, typeof $content);
@@ -357,8 +389,11 @@ function freeboardReCommentValidate(){
 		alert("내용을 입력하세요");
 		return false;
 	}
-	$(document.freeboardReCommentForm).submit();
+	$(document.reCommentForm).submit();
 }
+
+/* ---------------------------- 커뮤니티 대댓글 등록 종료 ---------------------------- */
+
 
 // 댓글 삭제
 $('.btnCommentDelete').click((e) => {

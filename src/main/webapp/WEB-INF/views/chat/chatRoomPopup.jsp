@@ -30,6 +30,12 @@
 <!-- stomp.js 추가 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js" integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+<c:if test="${not empty msg}">
+<script>
+	alert("${msg}");
+</script>
+</c:if>
+
 <style>
 .chat-room-body {
 	overflow-y: hidden;
@@ -508,7 +514,7 @@
 													<i class="fas fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 													
 													<div class="dropdown-menu report-dropdown-menu">
-														<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal">메시지 신고하기</a>
+														<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal" onclick="messageReport('${chatLog.msg}', ${chatLog.no});">메시지 신고하기</a>
 													</div>
 													
 													<span class="msg-time">${logTime}</span>
@@ -635,25 +641,30 @@
 	</div>
 	<!-- 상대방 프로필 사진 클릭 시 Modal 끝 -->
 
-	<div>
+	<form:form name="messageReportFrm" method="POST" action="${pageContext.request.contextPath}/chat/insertReport.do">
         <!--메시지 신고 모달 시작 (부트스트랩)-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">신고하기</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeReport">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
                 <div class="modal-body">
                     <div class="m-body1">
                         <p>신고대상 ID 및 내용</p>
+                        <input type="hidden" name="reportRootCate" value="MM"/>
+                        <input type="hidden" name="memberNo" value="${loginMember.memberNo}"/>
+                        <input type="hidden" name="id" value="${loginMember.id}"/>
+                        <input type="hidden" name="targetPkNo" value=""/>
+                        <input type="hidden" name="reportContent" value=""/>
                         <div>
-                            <span id="reportId">해당 ID : </span> watt0930
+                            <span id="reportId">해당 ID : </span> ${receiver.id}
                             <hr id="reportHr">
                             <p style="font-weight: bold;">신고 대상 글  </p>
-                            <span>그지같은깽깽이야 이삐리리삐리리 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum mollitia quo dolorum nobis ut unde commodi blanditiis! Distinctio adipisci quidem, repellendus eum cupiditate at sunt ab iste, voluptates, aperiam alias!</span>
+                            <span id="reportMsg"></span>
                         </div>
                     </div>
                     <div class="m-body2 mt-3">
@@ -663,67 +674,72 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <input type="radio" id="check1" name="chch">
+                                            <input type="radio" id="check1" name="reasonCate" value="1" required>
                                             <label for="check1">욕설/비방 &emsp;&emsp;&emsp;&emsp;</label>
                                         </td>
                                         <td>
-                                            <input type="radio" id="check2" name="chch">
+                                            <input type="radio" id="check2" name="reasonCate" value="2">
                                             <label for="check2">광고/홍보글</label>
                                         </td>
                                         <td>
-                                            <input type="radio" id="check3" name="chch">
+                                            <input type="radio" id="check3" name="reasonCate" value="3">
                                             <label for="check3">음란/선정성</label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input type="radio" id="check4" name="chch">
+                                            <input type="radio" id="check4" name="reasonCate" value="4">
                                             <label for="check4">게시글도배</label>
                                         </td>
                                         <td>
-                                            <input type="radio" id="check5" name="chch">
+                                            <input type="radio" id="check5" name="reasonCate" value="5">
                                             <label for="check5">관련없는이미지/내용 &emsp;&nbsp; &nbsp; </label>
                                         </td>
                                         <td>													
-                                            <input type="radio" id="check6" name="chch">
+                                            <input type="radio" id="check6" name="reasonCate" value="6">
                                             <label for="check6">기타</label>
                                         </td>
                                     </tr>
                                 </table>
-                                <textarea name="" id="reportText" cols="30" rows="10"></textarea>
+                                <textarea name="sideNote" id="reportText" cols="30" rows="10" maxlength='195' placeholder="상세내용을 기입해주세요(선택)"></textarea>
                             </form>
                             <p style="font-size: 12px;">ⓘ 신고해주신 내용은 관리자 검토 후 내부정책에 의거 조치가 진행됩니다.</p>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-primary col-4">신고하기</button>
-                <button type="button" class="btn btn-secondary col-4" data-dismiss="modal">취소하기</button>
+                <button type="submit" class="btn btn-primary col-4">신고하기</button>
+                <button type="button" class="btn btn-secondary col-4" data-dismiss="modal" id="deleteReportBtn">취소하기</button>
                 </div>
             </div>
             </div>
         </div>
 		<!--메시지 신고 모달 끝 (부트스트랩)-->
-    </div>
+    </form:form>
     
     
     
-    <div>
+    <form:form name="memberReportFrm" method="POST" action="${pageContext.request.contextPath}/chat/insertReport.do">
         <!--회원 신고 모달 시작 (부트스트랩)-->
         <div class="modal fade" id="memberReportModal" tabindex="-1" role="dialog" aria-labelledby="memberReportModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                 <h5 class="modal-title" id="memberReportModalLabel">신고하기</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeReport">
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
                 <div class="modal-body">
                     <div class="m-body1">
                         <p>신고대상 ID</p>
+                        <input type="hidden" name="reportRootCate" value="MB"/>
+                        <input type="hidden" name="memberNo" value="${loginMember.memberNo}"/>
+                        <input type="hidden" name="id" value="${loginMember.id}"/>
+                        <input type="hidden" name="targetPkNo" value="${receiver.memberNo}"/>
+
                         <div>
-                            <span id="reportId">해당 ID : </span> watt0930
+                            <span id="reportId">해당 ID : </span> ${receiver.id}
                         </div>
                     </div>
                     <div class="m-body2 mt-3">
@@ -733,48 +749,48 @@
                                 <table>
                                     <tr>
                                         <td>
-                                            <input type="radio" id="check1" name="chch">
+                                            <input type="radio" id="check1" name="reasonCate" value="1" required>
                                             <label for="check1">욕설/비방 &emsp;&emsp;&emsp;&emsp;</label>
                                         </td>
                                         <td>
-                                            <input type="radio" id="check2" name="chch">
+                                            <input type="radio" id="check2" name="reasonCate" value="2">
                                             <label for="check2">광고/홍보글</label>
                                         </td>
                                         <td>
-                                            <input type="radio" id="check3" name="chch">
+                                            <input type="radio" id="check3" name="reasonCate" value="3">
                                             <label for="check3">음란/선정성</label>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input type="radio" id="check4" name="chch">
+                                            <input type="radio" id="check4" name="reasonCate" value="4">
                                             <label for="check4">게시글도배</label>
                                         </td>
                                         <td>
-                                            <input type="radio" id="check5" name="chch">
+                                            <input type="radio" id="check5" name="reasonCate" value="5">
                                             <label for="check5">관련없는이미지/내용 &emsp;&nbsp; &nbsp; </label>
                                         </td>
                                         <td>													
-                                            <input type="radio" id="check6" name="chch">
+                                            <input type="radio" id="check6" name="reasonCate" value="6">
                                             <label for="check6">기타</label>
                                         </td>
                                     </tr>
                                 </table>
-                                <textarea name="" id="reportText" cols="30" rows="10"></textarea>
+                                <textarea name="sideNote" id="reportText" cols="30" rows="10" maxlength='195' placeholder="상세내용을 기입해주세요(선택)"></textarea>
                             </form>
                             <p style="font-size: 12px;">ⓘ 신고해주신 내용은 관리자 검토 후 내부정책에 의거 조치가 진행됩니다.</p>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-primary col-4">신고하기</button>
-                <button type="button" class="btn btn-secondary col-4" data-dismiss="modal">취소하기</button>
+                <button type="submit" class="btn btn-primary col-4">신고하기</button>
+                <button type="button" class="btn btn-secondary col-4" data-dismiss="modal" id="deleteReportBtn">취소하기</button>
                 </div>
             </div>
             </div>
         </div>
 		<!--회원 신고 모달 끝 (부트스트랩)-->
-    </div>
+    </form:form>
 
 <script>
 
@@ -802,8 +818,8 @@ stompClient.connect({}, (frame) => {
 		const obj = JSON.parse(message.body);
 		console.log("obj = ", obj);
 		
-		var {memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, lastCheck} = obj;
-
+		var {no, memberNo, member: {id : id, nickname : nickname, proPhoto : proPhoto}, msg, logTime, lastCheck} = obj;
+		//console.log("seq값을 받았나요?",no);
 		// 타임스탬프 날짜 변환 // 채팅 보낸 시간은 당일이므로 시간만 전달 ex) 15:00
 		const date = new Date(logTime);
 		//const year = date.getFullYear().toString().slice(-2); //년도 뒤에 두자리
@@ -861,7 +877,7 @@ stompClient.connect({}, (frame) => {
 <!-- 메시지 신고하기 - 클릭 시 옆으로 드롭다운 만들기 -->
 <i class="fas fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
 <div class="dropdown-menu report-dropdown-menu">
-<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal">메시지 신고하기</a>
+<a href="#" class="report-msg d-block text-center" data-toggle="modal" data-target="#exampleModal" onclick="messageReport('\${msg}', \${no});">메시지 신고하기</a>
 </div>
 <span class="msg-time">\${returnDate}</span>
 </div>
@@ -1005,6 +1021,28 @@ $('.exit').click((e) => {
 	}
 	
 });
+
+// 메시지 신고하기 클릭 시 넘어온 메시지로 모달 안의 내용 부분 넣을 것
+const messageReport = (msg, no) => {
+	//console.log(no);
+	//console.log(msg);
+	$('#reportMsg').text(msg);
+	$('input[name=targetPkNo]').val(no);
+	$('input[name=reportContent]').val(msg);
+};
+
+/* 신고 모달 닫을 시 신고사유 & 상세내용 날리기 */
+$(document).on('click', '#closeReport', function(e) {
+	$("input:radio[name='reasonCate']").removeAttr("checked"); 
+	$(reportText).val('');
+})
+
+
+/* 신고 취소시 신고사유 & 상세내용 날리기 */
+$(document).on('click', '#deleteReportBtn', function(e) {
+	$("input:radio[name='reasonCate']").removeAttr("checked"); 
+	$(reportText).val('');
+})
 
 </script>
 

@@ -1,5 +1,6 @@
 package com.kh.devrun.product.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -204,6 +205,20 @@ public class ProductServiceImpl implements ProductService {
 	public List<Integer> selectCartValidList(Map<String, Object> cartParam) {
 		return productDao.selectCartValidList(cartParam);
 	}
+
+	@Override
+	public Map<String, Object> selectProductDetailList(List<String> productArr) {
+		Map<String,Object> productDetailList = new HashMap<>();
+		for(int i = 0; i < productArr.size(); i++) {
+			String productCode = productArr.get(i);
+			List<ProductDetail> list = productDao.selectProductDetail(productCode);
+			productDetailList.put(productCode, list);
+		}
+		
+		return productDetailList;
+	}
+	
+	
 
 	/* 혜진 끝 */
 

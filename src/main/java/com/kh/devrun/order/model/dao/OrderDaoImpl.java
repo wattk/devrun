@@ -159,6 +159,12 @@ public class OrderDaoImpl implements OrderDao {
 		return session.selectOne("order.selectOneOrderLog", orderLogUid);
 	}
 
+	@Override
+	public Shipment selectOneShipment(Map<String, Object> param) {
+		return session.selectOne("order.selectOneShipment", param);
+	}
+
+
 	
 	
 	

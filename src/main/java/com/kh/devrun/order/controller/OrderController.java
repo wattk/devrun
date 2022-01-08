@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.address.model.vo.Address;
 import com.kh.devrun.common.AdminUtils;
@@ -28,6 +30,7 @@ import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.OrderLog;
+import com.kh.devrun.product.model.service.ProductService;
 import com.kh.devrun.shop.model.vo.Cart;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +46,9 @@ public class OrderController {
 	
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private ProductService productService;
 
 	@GetMapping("/cart.do")
 	public void cart(Authentication authentication, Model model) {
@@ -85,7 +91,7 @@ public class OrderController {
 	}
 	
 	@PostMapping("/orderLogEnroll")
-	public String orderLogEnroll(OrderLog orderLog, HttpServletRequest request, HttpServletResponse response) {
+	public String orderLogEnroll(OrderLog orderLog, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttr) {
 		log.debug("orderLog = {}", orderLog);
 			try {
 				int result = orderService.insertOrderLog(orderLog);
@@ -110,12 +116,19 @@ public class OrderController {
 						json2.put("imp_uid", imp.getImpUid());
 						json2.put("amount", imp.getAmount());
 						
-						String receipt = AdminUtils.getRefund(request, response, json2, _token);
-						log.debug("cancelResult = {}", receipt);
+						Map<String, Object> map = AdminUtils.getRefund(request, response, json2, _token);
+						log.debug("cancelResult = {}", map.get("receipt"));
+						String receipt = (String)map.get("receipt");
+						
+						redirectAttr.addFlashAttribute("msg", (String)map.get("message"));
+						
 						if(receipt != null) {
 							Map<String, Object> param = new HashMap<>();
+							String[] uidArr = new String[1];
+							uidArr[0] = orderLog.getOrderLogUid();
 							param.put("keyword", "END_DATE");
-							param.put("orderLogUid", orderLog.getOrderLogUid());
+							param.put("orderLogUid", uidArr);
+							param.put("receiptUrl", receipt);
 							result = orderService.updateOrderLog(param);
 						}
 					}
@@ -128,5 +141,13 @@ public class OrderController {
 		return "redirect:/mypage/changeOrderList.do";
 	}
 
+	@GetMapping("/findProductDetail")
+	@ResponseBody
+	public Map<String, Object> findProductDetail(@RequestParam(value="productArr[]") List<String> productArr){
+		log.debug("productArr = {}", productArr);
+		Map<String, Object> productDetailList = productService.selectProductDetailList(productArr);
+		log.debug("productDetailList = {}", productDetailList);
+		return productDetailList;
+	}
 
 }

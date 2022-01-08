@@ -19,17 +19,19 @@ public interface CommunityService {
 
 	int selectFreeboardTotalCount();
 
-	CommunityEntity selectOneFreeBoard(int communityNo);
+	// 커뮤니티 상세보기
+	CommunityEntity selectOneCommunity(int communityNo);
 
-	List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo);
+	// 댓글 보기
+	List<CommunityCommentEntity> selectCommentList(int communityNo);
 
-	int insertFreeboardCommentEnroll(CommunityComment communityComment);
+	// 댓글 등록
+	int insertCommentEnroll(CommunityComment communityComment);
 
 	int commentDelete(int commentNo);
 
-	int updateFreeboard(Community community);
-
-	int freeboardDelete(int communityNo);
+	// 커뮤니티 수정하기
+	int updateCommunity(CommunityEntity communityEntity);
 
 	int viewCount(int communityNo);
 
@@ -63,7 +65,21 @@ public interface CommunityService {
 
 	List<CommunityEntity> selectCommentBoardList(Map<String, Object> param, int offset, int limit);
 
+	// 스터디 리스트
+	List<CommunityEntity> selectStudyList(int offset, int limit);
 
+	// 스터디 전체 게시물 수
+	int selectOneStudyCount();
+
+	// 커뮤니티 게시물 삭제
+	int communityDelete(int communityNo);
+
+	//나의 커뮤니티
+	List<CommunityEntity> selectAllPostOrderByLatest(int memberNo, int offset, int limit);
+
+	int selectPostTotalCount(int memberNo);
+
+	List<CommunityEntity> selectAllPostOrderBySelectType(Map<String, Object> param, int offset, int limit);
 
 
 

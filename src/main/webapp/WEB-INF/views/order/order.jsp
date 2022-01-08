@@ -18,18 +18,19 @@
 
 <link href="${pageContext.request.contextPath}/resources/css/shop/order.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/resources/js/shop/order.js"></script>
+
 <sec:authentication property="principal" var="member"/>
 
 <script>
 
 $(document).ready((e)=>{
-	
+	//localStorage에 저장되어 있는 장바구니 아이템 가져와서 뷰단에 뿌려주기
 	const item = JSON.parse(localStorage.getItem("cartItems"));
 	console.log(item);
 	
 	if(item.length == 1){
 		$(".merchant-title").text(item[0].name);
-		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].productCode}.png" class="shop-img img-thumbnail img-b">`);
+		$(".thumbnail-box").append(`<img src="${pageContext.request.contextPath }/resources/upload/product/\${item[0].thumbnail}" class="shop-img img-thumbnail img-b">`);
 	}
 	else{
 		$(".merchant-title").text(item[0].name+" 외 "+(item.length - 1)+"건");

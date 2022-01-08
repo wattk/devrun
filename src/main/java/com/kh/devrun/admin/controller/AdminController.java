@@ -1080,7 +1080,7 @@ public class AdminController {
 		log.debug("list = {}", list);
 		List<OrderLog> manageList = new ArrayList<>();
 		for(OrderLog ol : list) {
-			if("REF".equals(ol.getCsStatus())||"RET".equals(ol.getCsStatus())||"EXC".equals(ol.getCsStatus())) {
+			if(("REF".equals(ol.getCsStatus())||"RET".equals(ol.getCsStatus())||"EXC".equals(ol.getCsStatus())) && ol.getEndDate() == null) {
 				manageList.add(ol);
 			}
 		}
@@ -1101,7 +1101,7 @@ public class AdminController {
 	
 	@PostMapping("/orderLogUpdate")
 	@ResponseBody
-	public Map<String, Object> orderLogUpdate(@RequestBody String jsonStr, HttpServletRequest request, HttpServletResponse response){
+	public Map<String, Object> orderLogUpdate(@RequestBody String jsonStr, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttr){
 		Map<String, Object> param = new HashMap<>();
 		Map<String, Object> resultMap = new HashMap<>();
 		int result = 0;
@@ -1115,41 +1115,64 @@ public class AdminController {
 			if(isValid == 0) {
 				param.put("keyword", "PROCESS_DATE");
 				result = orderService.updateOrderLog(param);
+				resultMap.put("msg", "요청이 접수되었습니다.");
 			}
 			else if(isValid == 1){
-				// 아임포트 토큰생성 
-				String requestUrl = "https://api.iamport.kr/users/getToken";
-				String imp_key = URLEncoder.encode("8343794553669375", "UTF-8");
-				String imp_secret = URLEncoder.encode("3ecaf2db93a1bded8267d09318b5d6ba441c1c412e19686b81ec859a6ffafc90abe92a15af22b138", "UTF-8");
-
-				JSONObject json = new JSONObject();
-				json.put("imp_key", imp_key);
-				json.put("imp_secret", imp_secret);
-				String _token = AdminUtils.getToken(request, response, json, requestUrl);
-				log.debug("token = {}", _token);
 				
-				JSONObject json2 = new JSONObject();
-				
-				String reasonDetail = (String)param.get("reasonDetail");
-				String impUid = (String)imp.get("impUid");
-				int amount = (int)imp.get("amount");
-				log.debug("reason = {}", reasonDetail);
-				log.debug("imp = {}", imp);
-				log.debug("amount = {}", amount);
-				
-				json2.put("reason", reasonDetail);
-				json2.put("imp_uid", impUid);
-				json2.put("amount", amount);
-				
-				String receipt = AdminUtils.getRefund(request, response, json2, _token);
-				log.debug("cancelResult = {}", receipt);
-				if(receipt != null) {
-					Map<String, Object> updateParam = new HashMap<>();
-					updateParam.put("keyword", "END_DATE");
-					updateParam.put("orderLogUid", param.get("orderLogUid"));
-					log.debug("updateParam = {}", updateParam);
-					result = orderService.updateOrderLog(updateParam);
-			}
+				if(!"EXC".equals((String)param.get("csStatus"))) {
+					
+					// 아임포트 토큰생성 
+					String requestUrl = "https://api.iamport.kr/users/getToken";
+					String imp_key = URLEncoder.encode("8343794553669375", "UTF-8");
+					String imp_secret = URLEncoder.encode("3ecaf2db93a1bded8267d09318b5d6ba441c1c412e19686b81ec859a6ffafc90abe92a15af22b138", "UTF-8");
+					
+					JSONObject json = new JSONObject();
+					json.put("imp_key", imp_key);
+					json.put("imp_secret", imp_secret);
+					String _token = AdminUtils.getToken(request, response, json, requestUrl);
+					log.debug("token = {}", _token);
+					
+					JSONObject json2 = new JSONObject();
+					
+					String reasonDetail = (String)param.get("reasonDetail");
+					String impUid = (String)imp.get("impUid");
+					int amount = (int)imp.get("amount");
+					log.debug("reason = {}", reasonDetail);
+					log.debug("imp = {}", imp);
+					log.debug("amount = {}", amount);
+					
+					json2.put("reason", reasonDetail);
+					json2.put("imp_uid", impUid);
+					json2.put("amount", amount);
+					
+					Map<String, Object> map = AdminUtils.getRefund(request, response, json2, _token);
+					log.debug("cancelResult = {}", map);
+					String receipt = (String)map.get("receipt");
+					
+					resultMap.put("msg", (String)map.get("message"));
+					
+					if(receipt != null) {
+						Map<String, Object> updateParam = new HashMap<>();
+						updateParam.put("keyword", "END_DATE");
+						updateParam.put("orderLogUid", param.get("orderLogUid"));
+						updateParam.put("receiptUrl", receipt);
+						updateParam.put("costStatus", "Y");
+						updateParam.put("detailList", (List<Map<String, Object>>)param.get("detailList"));
+						log.debug("updateParam = {}", updateParam);
+						result = orderService.updateOrderLog(updateParam);
+						resultMap.put("msg", "정상처리되었습니다");
+					}
+						
+				}else {
+					Map<String, Object> exchangeParam = new HashMap<>();
+					exchangeParam.put("keyword", "END_DATE");
+					exchangeParam.put("orderLogUid", param.get("orderLogUid"));
+					exchangeParam.put("costStatus", "Y");
+					exchangeParam.put("detailList", (List<Map<String, Object>>)param.get("detailList"));
+					log.debug("updateParam = {}", exchangeParam);
+					result = orderService.updateOrderLog(exchangeParam);
+					resultMap.put("msg", "정상처리되었습니다");
+				}
 			
 			log.debug("result = {}", result);
 			

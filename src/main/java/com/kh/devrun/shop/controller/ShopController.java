@@ -113,6 +113,10 @@ public class ShopController {
 		model.addAttribute("outOfStock", outOfStock);
 		log.debug("품절 : {}", outOfStock);
 
+		// 오늘본상품
+		model.addAttribute("todayItemCode", productCode);
+		log.debug("자바단에서 todayItemCode : {}", productCode);
+
 		// 장바구니 좋아요 여부
 		if (authentication != null) {
 
@@ -127,6 +131,7 @@ public class ShopController {
 				cartValid += i + ",";
 			}
 			model.addAttribute("cartValid", cartValid);
+
 		}
 
 		// 조회수 처리 시작
@@ -194,7 +199,6 @@ public class ShopController {
 
 		// 위시리스트 조회해오기
 		List<WishlistProduct> wishlist = shopService.selectAllWishlist(memberNo);
-		log.debug("whislist 잘 받앗? : {}", wishlist);
 
 		model.addAttribute("wishlist", wishlist);
 		model.addAttribute("loginMember", loginMember);
@@ -205,6 +209,11 @@ public class ShopController {
 	@GetMapping("/categoryItemAll")
 	public String categoryItemAll(@RequestParam String parentCate, Model model,
 			@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request) {
+
+		// 소분류 카테고리 이름 불러오기
+		List<String> ChildCateNames = shopService.selectAllChildCateNames(parentCate);
+		log.debug("ChildCateNames : {}", ChildCateNames);
+		model.addAttribute("ChildCateNames", ChildCateNames);
 
 		// 페이징 처리
 		log.debug("cPage : {} ", cPage);
@@ -232,6 +241,12 @@ public class ShopController {
 	public String shopChildCate(@RequestParam String childCategoryCode, Model model,
 			@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request) {
 
+		// 소분류 카테고리 이름 불러오기
+		String parentCate = childCategoryCode.substring(1);
+		List<String> ChildCateNames = shopService.selectAllChildCateNames(parentCate);
+		log.debug("ChildCateNames : {}", ChildCateNames);
+		model.addAttribute("ChildCateNames", ChildCateNames);
+
 		// 페이징 처리
 		log.debug("cPage : {} ", cPage);
 		int limit = 12;
@@ -243,7 +258,7 @@ public class ShopController {
 		// 갯수세기
 		int total = shopService.countItemsByChildCode(childCategoryCode);
 		model.addAttribute("total", total);
-		
+
 		// 3.pagebar
 		String url = request.getRequestURI();
 		String pagebar = shopUtils.getPagebar(cPage, limit, total, url);

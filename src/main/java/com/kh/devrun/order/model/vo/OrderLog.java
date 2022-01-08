@@ -20,8 +20,8 @@ public class OrderLog implements Serializable {
 	private String orderLogUid;
 	private String reasonCode;
 	private String merchantUid;
-	private String prevDetailNo;
-	private String currDetailNo;
+	private String[] prevDetailNo;
+	private String[] currDetailNo;
 	private String csStatus;
 	private Date reqDate;
 	private Date processDate;

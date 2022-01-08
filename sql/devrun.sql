@@ -1204,8 +1204,10 @@ ALTER TABLE IMP ADD CONSTRAINT PK_IMP_IMP_UID PRIMARY KEY (
 	IMP_UID
 );
 
+ALTER TABLE IMP MODIFY BUYER_ADDR VARCHAR2(500);
 ALTER TABLE IMP ADD IS_CANCELED NUMBER DEFAULT 0;
 ALTER TABLE IMP ADD RECEIPT_URL VARCHAR2(100);
+ALTER TABLE IMP MODIFY RECEIPT_URL VARCHAR2(500);
 ALTER TABLE IMP ADD CONSTRAINT CK_IMP_IS_CANCELED CHECK(IS_CANCELED IN (0,1));
 
 
@@ -1510,7 +1512,8 @@ from(
 --    pd.option_content,
 --    pd.quantity,
 --    md.buy_count,
---    m.total_price
+--    m.total_price,
+--    (select tracking_no from shipment s where order_log_uid is null and s.merchant_uid = md.merchant_uid) tracking_no
 --from
 --    merchant m left join imp i
 --        on m.merchant_uid = i.merchant_uid
@@ -1669,6 +1672,7 @@ end;
 --김다현 sms 기록 테이블 끝 --
 
 ----주문 변경-상품-결제 뷰 생성(혜진)
+<<<<<<< HEAD
 --create or replace view view_order_log_imp
 --as
 --select
@@ -1692,3 +1696,25 @@ end;
 
 
 
+=======
+create or replace view view_order_log_imp
+as
+select
+    ol.*,
+    i.imp_uid,
+    i.name,
+    i.amount,
+    i.receipt_url,
+    p.thumbnail
+from
+    order_log ol left join imp i
+        on ol.merchant_uid = i.merchant_uid
+            left join merchant m
+                on ol.merchant_uid = m.merchant_uid
+                    left join merchant_detail md
+                        on ol.merchant_uid = md.merchant_uid
+                            left join product_detail pd
+                                on md.detail_no = pd.detail_no
+                                    left join product p
+                                        on pd.product_code = p.product_code;
+>>>>>>> branch 'master' of https://github.com/wattk/devrun.git

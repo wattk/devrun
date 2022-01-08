@@ -10,6 +10,8 @@
 #breadcrumb a {color:#9E9E9E;}
 #breadcrumb a:hover {color:#1A81FF;}
 
+
+
 /* address list */
 .guide {display:none; font-size:smaller;}
 .guide-box {height:0px; width:230px;}
@@ -25,9 +27,7 @@
 
 #addressList tr#noList td {text-align:center;}
 
-.page-item:focus-visible, .page-link:focus-visible {outline:none;}
-.page-link:focus {box-shadow:none;}
-.page-link {padding:7px 14px;}
+
 
 /* address detail */
 #addressDetail h5 {color:#1A81FF; padding:5px;}

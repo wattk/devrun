@@ -10,6 +10,7 @@
 	<jsp:param value="교환/환불/취소 관리" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
+<script src="${pageContext.request.contextPath}/resources/js/admin/orderManage.js"></script>
 <!-- 교환/환불 확인 모달 -->
 <div class="modal fade" id="orderLogModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -103,7 +104,7 @@
 </div>
 <hr class="w-100"/>
 <strong class="m-5">교환/환불/취소 목록</strong>
-<div class="order-list">
+<div class="${list.size() > 5 ? 'order-list':'' }">
 	<table class="admin-tbl table table-hover mx-auto">
 	  <thead>
 	    <tr>
@@ -118,18 +119,25 @@
 	    </tr>
 	  </thead>
 	  <tbody class="order-body" style="-ms-overflow-style: none;">
-	  	<c:forEach items="${list}" var="m" varStatus="vs">
-	    <tr>
-	      <td>${m.merchantUid}</td>
-	      <td>${m.memberNo}</td>
-	      <td>${m.csStatus eq 'REF'? '환불': m.csStatus eq 'EXC'?'교환':m.csStatus eq 'RET'?'반품':m.csStatus eq 'CAN'?'주문취소':'완료'}</td>
-	      <td><fmt:formatNumber type="currency">${m.cost}</fmt:formatNumber></td>
-	      <td>${m.reasonCode }</td>
-	      <td>${m.reasonDetail }</td>
-	      <td><fmt:formatDate value="${m.reqDate}" pattern="yy-MM-dd"/></td>
-	      <td><fmt:formatDate value="${m.endDate}" pattern="yy-MM-dd"/></td>
-	    </tr>
-	    </c:forEach>
+	  	<c:if test="${empty list}">
+	  		<tr class="mx-auto">
+	  			<td colspan="8">주문이 없습니다.</td>
+	  		</tr>
+	  	</c:if>
+	  	<c:if test="${not empty list}">
+		  	<c:forEach items="${list}" var="m" varStatus="vs">
+		    <tr>
+		      <td>${m.orderLogUid}</td>
+		      <td>${m.memberNo}</td>
+		      <td>${m.csStatus eq 'REF'? '환불': m.csStatus eq 'EXC'?'교환':m.csStatus eq 'RET'?'반품':m.csStatus eq 'CAN'?'주문취소':'완료'}</td>
+		      <td><fmt:formatNumber type="currency">${m.cost}</fmt:formatNumber></td>
+		      <td>${m.reasonCode }</td>
+		      <td>${m.reasonDetail }</td>
+		      <td><fmt:formatDate value="${m.reqDate}" pattern="yy-MM-dd"/></td>
+		      <td><fmt:formatDate value="${m.endDate}" pattern="yy-MM-dd"/></td>
+		    </tr>
+		    </c:forEach>
+	    </c:if>
 	  </tbody>
 	</table>
 </div>
@@ -145,7 +153,7 @@
 	      <th scope="col">요청 확인</th>
 	    </tr>
 	  </thead>
-	  <tbody class="order-body" style="-ms-overflow-style: none;">
+	  <tbody class="order-body order-change-body" style="-ms-overflow-style: none;">
 	  	<c:if test="${empty manageList}">
 	  		<tr class="mx-auto">
 	  			<td colspan="4">요청 대기 중인 주문이 없습니다.</td>
@@ -172,67 +180,6 @@
 	</table>
 </div>
 <script>
-
-//주문 검색 날짜 배지 클릭에 따른 날짜 지정
-$(".date-badge").click((e)=>{
-	const $startDate = $("[name=startDate]"); 
-	const $endDate = $("[name=endDate]"); 
-	$(".date-badge")
-		.removeClass("badge-primary")
-		.addClass("badge-secondary");
-	$(e.target)
-		.removeClass("badge-secondary")
-		.addClass("badge-primary");
-	
-	if($(e.target).data("target") == 'today'){
-		let now = new Date();
-        let nowDay = now.getDate(); 
-        let nowMonth = now.getMonth(); 
-        let nowYear = now.getYear(); 
-        nowYear += (nowYear < 2000) ? 1900 : 0; 
-		$startDate.val(formatDate(now));
-        $endDate.val(formatDate(new Date(nowYear, nowMonth, nowDay, 11, 59, 59)));
-	}
-	else if($(e.target).data("target") == 'week'){
-		let now = new Date(); 
-        let nowDayOfWeek = now.getDay(); 
-        let nowDay = now.getDate(); 
-        let nowMonth = now.getMonth(); 
-        let nowYear = now.getYear(); 
-        nowYear += (nowYear < 2000) ? 1900 : 0; 
-        let weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek); 
-        let weekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek), 11, 59, 59);
-        $startDate.val(formatDate(weekStartDate));
-        $endDate.val(formatDate(weekEndDate));
-	}
-	else if($(e.target).data("target") == 'month'){
-		let now = new Date();
-	    let nowYear = now.getYear();
-	    nowYear += (nowYear < 2000) ? 1900 : 0; 
-	    let firstDate = new Date(nowYear,now.getMonth(), 1);
-	    let lastDate = new Date(nowYear,now.getMonth()+1, 0, 11, 59, 59);
-        $startDate.val(formatDate(firstDate));
-        $endDate.val(formatDate(lastDate));
-	}
-	else if($(e.target).data("target") == 'all'){
-		$startDate.val('');
-        $endDate.val('');
-	}
-});
-
-function formatDate(date) {
-    let d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    return [year, month, day].join('-');
-}
 
 //주문 통합검색
 $("#orderSearchBtn").click((e)=>{
@@ -308,7 +255,7 @@ $(".order-log-modal-btn").click((e)=>{
 			$(".order-log-badge").text(reasonCode);
 			$(".order-log-badge")
 				.attr("data-cs-status", data.orderLog.csStatus)
-				.attr("data-valid", data.orderLog.processDate == null? 0 : 1 );
+				.data("valid", data.orderLog.processDate == null? 0 : 1 );
 			$("#orderLogModalReqDate").text(reqDate);
 			$("#orderLogDetailTbl").html('');
 			
@@ -344,17 +291,18 @@ $("#osChangeBtn").click((e)=>{
 	const orderLogUid = [$("#orderLogModalUid").text()];
 	const impUid = $("#orderLogModalUid").data("impUid");
 	const amount = $("#orderLogModalUid").data("amount");
-	let detailList = [];
-	const $detailTitle = $(".detail-title");
-	const length = $detailTitle.length;
 	const csStatus = $(".order-log-badge").data("csStatus");
 	const valid = $(".order-log-badge").data("valid");
 	const reasonDetail = $("#orderLogModalReason").text();
+
+	let detailList = [];
+	const $detailTitle = $(".detail-title");
+	const length = $detailTitle.length;
 	
 	for(let i = 0; i < length; i++){
 		detailList[i] = {
 				detailNo : $detailTitle.eq(i).data("detailNo"),
-				buyCount : $detailTitle.eq(i).data("buyCount")
+				buyCount : $detailTitle.eq(i).data("buyCount")*(-1)
 		}
 	}
 	
@@ -379,9 +327,15 @@ $("#osChangeBtn").click((e)=>{
 		contentType : "application/json; charset=utf-8",
 		data : JSON.stringify(data),
 		success(data){
-			alert("요청이 정상적으로 처리되었습니다.");
+			console.log(data.msg);
+			alert(data.msg);
 			if(valid == 1){
 				$(`#\${orderLogUid}`).detach();
+				if($(".order-change-body").children("tr").length == 0){
+					$(".order-change-body").append(`<tr class="mx-auto">
+				  			<td colspan="4" class="text-center">요청 대기 중인 주문이 없습니다.</td>
+					  		</tr>`);
+				}
 			}
 		},
 		error : console.log

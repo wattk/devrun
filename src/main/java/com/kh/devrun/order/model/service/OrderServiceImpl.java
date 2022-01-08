@@ -65,6 +65,22 @@ public class OrderServiceImpl implements OrderService {
 		Merchant merchant = orderDao.selectOneMerchant(merchantUid);
 		map.put("merchant", merchant);
 		
+		if("SS".equals(merchant.getOrderStatus()) || "OC".equals(merchant.getOrderStatus())) {
+			Map<String, Object> param = new HashMap<>();
+			param.put("value", merchant.getMerchantUid());
+			
+			if("COM".equals(merchant.getCsStatus())) {
+				param.put("target", "merchant");
+			}
+			else {
+				param.put("target", "orderLog");
+				
+			}
+			
+			Shipment shipment = orderDao.selectOneShipment(param);
+			map.put("shipment", shipment);
+		}
+		
 		Imp imp = orderDao.selectOneImp(merchantUid);
 		map.put("imp", imp);
 		
@@ -186,11 +202,12 @@ public class OrderServiceImpl implements OrderService {
 	)
 	public int insertOrderLog(OrderLog orderLog) {
 		Map<String, Object> param = new HashMap<>();
-		String[] merchantUid = new String[1];
-		merchantUid[0] = orderLog.getMerchantUid();
+		String[] uidArr = new String[1];
+		uidArr[0] = orderLog.getMerchantUid();
 		param.put("keyword", "cs_status");
 		param.put("value", orderLog.getCsStatus());
-		param.put("merchantUid", merchantUid);
+		param.put("target", "merchantUid");
+		param.put("uidArr", uidArr);
 		
 		int result = orderDao.insertOrderLog(orderLog);
 		result = orderDao.updateMerchant(param);
@@ -217,8 +234,12 @@ public class OrderServiceImpl implements OrderService {
 	public int updateOrderLog(Map<String, Object> param) {
 		int result = 0;
 		result = orderDao.updateOrderLog(param);
-		result = orderDao.updateImp((String)param.get("receipt_url"));
-		return 0;
+		String receiptUrl = (String)param.get("receiptUrl");
+		if(receiptUrl != null) {
+			result = orderDao.updateImp(receiptUrl);
+		}
+		result = orderDao.updateProductQuantity((List<Map<String, Object>>)param.get("detailList"));
+		return result;
 	}
 
 	@Override

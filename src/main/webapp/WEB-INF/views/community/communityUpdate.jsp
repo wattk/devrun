@@ -73,7 +73,7 @@ function freeboardUpdateValidate(){
 	
 		<form:form 
 			name="freeboardUpdateForm" 
-			action="${pageContext.request.contextPath}/community/freeboardUpdateEnroll.do"
+			action="${pageContext.request.contextPath}/community/communityUpdateEnroll.do"
 			method="POST">
 				<div class="mb-3">
 					<label for="title"><strong>제목</strong></label>

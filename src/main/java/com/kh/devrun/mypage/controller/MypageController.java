@@ -34,13 +34,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.address.model.vo.Address;
+import com.kh.devrun.chat.model.service.ChatService;
 import com.kh.devrun.common.DevrunUtils;
+import com.kh.devrun.community.model.service.CommunityService;
+import com.kh.devrun.community.model.vo.CommunityEntity;
 import com.kh.devrun.member.model.service.MemberService;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.mypage.model.service.MypageService;
 import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.order.model.vo.OrderLogExt;
+import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.report.model.service.ReportService;
 import com.kh.devrun.report.model.vo.Report;
 
@@ -64,10 +68,16 @@ public class MypageController {
 	private ReportService reportService;
 	
 	@Autowired
+	private CommunityService communityService;
+	
+	@Autowired
 	ServletContext application;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private ChatService chatService;
 	
 	
 	/**
@@ -78,28 +88,17 @@ public class MypageController {
 	 * 지원 마이페이지 메인 시작
 	 */
 	@GetMapping("/mypage.do")
-	public String mypage() {
-//		Member principal = (Member) authentication.getPrincipal();
-//		String id = principal.getId();
-//		Object credentials = authentication.getCredentials();
-//		log.debug("[credentials] credentials = {}", credentials);
-//		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//		log.debug("[authorities] authorities = {}", authorities);		
+	public String mypage(Authentication authentication, Model model) {
+
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
 		
-		//읽지 않은 총 쪽지 개수 totalMessage
-//		if(member != null) {
-//			int memberNo2 = member.getMemberNo();
-//			int totalMessage = mypageService.selectMessageTotalCount(memberNo2);
-//			log.debug("totalMessage = {}", totalMessage);
-//			model.addAttribute("totalMessage", totalMessage);
-//			return "mypage/mypage";
-//		} else {
-//			return "redirect:error.do";
-//		}
-//		Member member = memberService.selectOneMemberById(id);
-//		log.debug("member = {}", member);
-//		model.addAttribute("member", member);
-		//mypageMember(model, authentication);
+		/* 전체안읽음 메시지 건수 조회 */
+		int totalUnreadCount = chatService.selectMessageTotalUnreadCount(memberNo);
+		log.debug("totalUnreadCount = {}", totalUnreadCount);
+		
+		model.addAttribute("totalUnreadCount", totalUnreadCount);
+		/* 전체안읽음 메시지 건수 조회 끝 */
 		
 		return "mypage/mypage";
 	}
@@ -118,19 +117,7 @@ public class MypageController {
 	/**
 	 * 지원 나의 정보 메인 끝
 	 */
-	
-	/**
-	 * 지원 나의 커뮤니티 메인 시작
-	 */
-	@GetMapping("/mycommunity.do")
-	public String mycommunity() {
-		
-		return "mypage/mycommunity";
-	}
-	/**
-	 * 지원 나의 커뮤니티 메인 끝
-	 */
-	
+
 	/**
 	 * 지원 나의 정보 > 활동 배지 시작
 	 */
@@ -150,6 +137,7 @@ public class MypageController {
 	public String profileUpdate() {
 		
 		return "mypage/profileUpdate";
+		
 	}
 	
 	/**
@@ -180,89 +168,86 @@ public class MypageController {
 			RedirectAttributes redirectAttr,
 			Authentication authentication) throws Exception {
 			
-			String id = member.getId();
-			String pro_Photo = member.getProPhoto();
-			String password = member.getPassword();
-			log.debug("password = {}", password);
-			Member principal = (Member) authentication.getPrincipal();
-			log.debug("principal = {}", principal);
-			/**
-			 * 비밀번호 확인
-			 * - BCryptPasswordEncoder의 matches()함수로 사용자가 입력한 비밀번호와 DB의 암호화된 비밀번호 값을 비교
-			 * - 입력값이 일치하면 프로필 수정 진행
-			 * - 입력값이 불일치하면 알림창 띄운 후 return
-			 */
-			if(passwordEncoder.matches(password, principal.getPassword())) {
-				try {
-					/**
-					 * 첨부파일 등록
-					 * - 기존 첨부파일이 있다면 삭제후 새 첨부파일 등록
-					 * - 기존 첨부파일이 없다면 새 첨부파일 등록
-					 */
+		String id = member.getId();
+		String pro_Photo = member.getProPhoto();
+		String password = member.getPassword();
+		log.debug("password = {}", password);
+		Member principal = (Member) authentication.getPrincipal();
+		log.debug("principal = {}", principal);
+		/**
+		 * 비밀번호 확인
+		 * - BCryptPasswordEncoder의 matches()함수로 사용자가 입력한 비밀번호와 DB의 암호화된 비밀번호 값을 비교
+		 * - 입력값이 일치하면 프로필 수정 진행
+		 * - 입력값이 불일치하면 알림창 띄운 후 return
+		 */
+		if(passwordEncoder.matches(password, principal.getPassword())) {
+			try {
+				/**
+				 * 첨부파일 등록
+				 * - 기존 첨부파일이 있다면 삭제후 새 첨부파일 등록
+				 * - 기존 첨부파일이 없다면 새 첨부파일 등록
+				 */
+				
+				//파일 저장 : 절대경로 /resources/upload/profilePhoto
+				//application객체(ServletContext)
+				String saveDirectory = application.getRealPath("/resources/upload/profilePhoto");
+				log.debug("saveDirectory = {}", saveDirectory);
+				
+				//proPhoto가 null이라면
+				if(pro_Photo == null) {
+					File proPhoto = new File(saveDirectory + "/" + id + ".png");
+					log.debug("proPhoto = {}", proPhoto);
+					if(proPhoto.exists()) proPhoto.delete();
+				}
+				
+				if(!upFile.isEmpty() && upFile.getSize() != 0) { //파일이 업로드 되었는지 확인
+					log.debug("upFile = {}", upFile);
+					log.debug("upFile.name = {}", upFile.getOriginalFilename());
+					log.debug("upFile.size = {}", upFile.getSize());
 					
-					//파일 저장 : 절대경로 /resources/upload/profilePhoto
-					//application객체(ServletContext)
-					String saveDirectory = application.getRealPath("/resources/upload/profilePhoto");
-					log.debug("saveDirectory = {}", saveDirectory);
-					
-					//proPhoto가 null이라면
-					if(pro_Photo == null) {
+					if(member.getProPhoto() != null) { //이미 프로필 사진이 있을 경우
 						File proPhoto = new File(saveDirectory + "/" + id + ".png");
-						log.debug("proPhoto = {}", proPhoto);
 						if(proPhoto.exists()) proPhoto.delete();
 					}
-					
-					if(!upFile.isEmpty() && upFile.getSize() != 0) { //파일이 업로드 되었는지 확인
+					String proPhoto = id + ".png";
+					member.setProPhoto(proPhoto);
 						
-						log.debug("upFile = {}", upFile);
-						log.debug("upFile.name = {}", upFile.getOriginalFilename());
-						log.debug("upFile.size = {}", upFile.getSize());
-						
-						if(member.getProPhoto() != null) { //이미 프로필 사진이 있을 경우
-							File proPhoto = new File(saveDirectory + "/" + id + ".png");
-							if(proPhoto.exists()) proPhoto.delete();
-						}
-						
-						String proPhoto = id + ".png";
-						member.setProPhoto(proPhoto);
-							
-						//서버컴퓨터에 저장
-						File dest = new File(saveDirectory, proPhoto);
-						log.debug("dest = {}", dest);
-						upFile.transferTo(dest);
-						
-					}
-					
-					String rawPassword = member.getPassword();
-					String encryptedPassword = passwordEncoder.encode(rawPassword);
-					member.setPassword(encryptedPassword);
-					
-					int result = memberService.updateMemberProfile(member);
-					String msg = result > 0 ? "프로필 수정이 완료되었습니다." : "프로필 수정에 실패하였습니다.";
-					redirectAttr.addFlashAttribute("msg", msg);
-					
-					//Authentication객체 갱신
-					Member updateMember = memberService.selectOneMemberById(id);
-					Authentication newAuthentication = 
-						new UsernamePasswordAuthenticationToken(
-							updateMember,
-							authentication.getCredentials(),
-							authentication.getAuthorities()
-						);
-					SecurityContextHolder.getContext().setAuthentication(newAuthentication);
-					log.debug("newAuthentication = {}", newAuthentication);
-				
-				} catch (Exception e) {
-					log.error("프로필 수정 오류", e);
-					throw e;
+					//서버컴퓨터에 저장
+					File dest = new File(saveDirectory, proPhoto);
+					log.debug("dest = {}", dest);
+					upFile.transferTo(dest);
 				}
-				return "redirect:/mypage/myinfo.do";
-			}
-			else {
-				redirectAttr.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
-				return "redirect:/mypage/myinfo/profileUpdate.do";
-			}
+				
+				String rawPassword = member.getPassword();
+				String encryptedPassword = passwordEncoder.encode(rawPassword);
+				member.setPassword(encryptedPassword);
+				
+				int result = memberService.updateMemberProfile(member);
+				String msg = result > 0 ? "프로필 수정이 완료되었습니다." : "프로필 수정에 실패하였습니다.";
+				redirectAttr.addFlashAttribute("msg", msg);
+				
+				//Authentication객체 갱신
+				Member updateMember = memberService.selectOneMemberById(id);
+				Authentication newAuthentication = 
+					new UsernamePasswordAuthenticationToken(
+						updateMember,
+						authentication.getCredentials(),
+						authentication.getAuthorities()
+					);
+				SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+				log.debug("newAuthentication = {}", newAuthentication);
 			
+			} catch (Exception e) {
+				log.error("프로필 수정 오류", e);
+				throw e;
+			}
+			return "redirect:/mypage/myinfo.do";
+		}
+		else {
+			redirectAttr.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
+			return "redirect:/mypage/myinfo/profileUpdate.do";
+		}
+		
 	}
 			
 	@InitBinder
@@ -486,14 +471,86 @@ public class MypageController {
 	/**
 	 * 지원 나의 정보 > 신고 내역 끝
 	 */
+
+	/**
+	 * 지원 나의 커뮤니티 메인 시작
+	 */
+	@GetMapping("/mycommunity.do")
+	public String mycommunity(@RequestParam(defaultValue = "1") int cPage, Authentication authentication,
+			HttpServletRequest request, Model model) {
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		try {
+			Member member = (Member) authentication.getPrincipal();
+			int memberNo = member.getMemberNo();
+		
+			//1. 커뮤니티 포스팅 내역
+			List<CommunityEntity> postList = communityService.selectAllPostOrderByLatest(memberNo, offset, limit);
+			model.addAttribute("postList", postList);
+			log.debug("postList = {}", postList);
+			
+			//2. 전체 포스팅 수 totalContent
+			int totalContent = communityService.selectPostTotalCount(memberNo);
+			model.addAttribute("totalContent", totalContent);
+			
+			//3. pagebar
+			String url = request.getRequestURI(); // /spring/board/boardList.do
+			String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+			log.debug("pagebar = {}", pagebar);
+			model.addAttribute("pagebar", pagebar);
+		
+		} catch (Exception e) {
+			log.error("커뮤니티 포스팅 내역 조회 오류", e);
+			throw e;
+		}
+		return "mypage/mycommunity";
+	}
+	/**
+	 * 지원 나의 커뮤니티 메인 끝
+	 */
 	
-//	private void mypageMember(Model model, Authentication authentication) {
-//		Member principal = (Member) authentication.getPrincipal();
-//		String id = principal.getId();
-//		Member member = memberService.selectOneMemberById(id);
-//		log.debug("member = {}", member);
-//		model.addAttribute("member", member);
-//	}
+	/**
+	 * 지원 포스팅 타입별 정렬 시작
+	 */
+	@ResponseBody
+	@GetMapping("/mycommunity/selectType")
+	public Map<String, Object> selectType(@RequestParam Map<String, Object> param, @RequestParam(defaultValue = "1") int cPage, Authentication authentication,
+			HttpServletRequest request, Model model){
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		Member member = (Member) authentication.getPrincipal();
+		int memberNo = member.getMemberNo();
+		param.put("memberNo", memberNo);
+		
+		Map<String, Object> map = new HashMap<>();
+		log.debug("param = {}", param);
+		
+		//1. 커뮤니티 포스팅 내역
+		List<CommunityEntity> postListOrderBySelectType = communityService.selectAllPostOrderBySelectType(param, offset, limit);
+		model.addAttribute("postListOrderBySelectType", postListOrderBySelectType);
+		log.debug("postListOrderBySelectType = {}", postListOrderBySelectType);
+			
+		//2. 전체 포스팅 수 totalContent
+		int totalContent = communityService.selectPostTotalCount(memberNo);
+		model.addAttribute("totalContent", totalContent);
+			
+		//3. pagebar
+		String url = request.getRequestURI(); // /spring/board/boardList.do
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
+		
+		map.put("postListOrderBySelectType", postListOrderBySelectType);
+		map.put("totalContent", totalContent);
+		map.put("pagebar", pagebar);
+			
+		return map;
+	}
+	/**
+	 * 지원 포스팅 타입별 정렬 끝
+	 */
 	
 	/**
 	 * 지원 끝
@@ -572,6 +629,10 @@ public class MypageController {
 		model.addAttribute("merchant", map.get("merchant"));
 		model.addAttribute("list", map.get("list"));
 		model.addAttribute("imp", map.get("imp"));
+		if(map.get("shipment") != null) {
+			Shipment shipment = (Shipment)map.get("shipment");
+			model.addAttribute("shipment", shipment);
+		}
 		log.debug("list = {}", map.get("list"));
 		return "/mypage/orderDetail";
 	}

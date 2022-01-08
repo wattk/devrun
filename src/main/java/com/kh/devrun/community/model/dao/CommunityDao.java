@@ -22,18 +22,20 @@ public interface CommunityDao {
 	List<CommunityEntity> selectFreeboardList(int offset, int limit);
 
 	int selectFreeboardTotalCount();
+	
+	// 커뮤니티 상세보기
+	CommunityEntity selectOneCommunity(int communityNo);
 
-	CommunityEntity selectOneFreeBoard(int communityNo);
+	// 댓글 보기
+	List<CommunityCommentEntity> selectCommentList(int communityNo);
 
-	List<CommunityCommentEntity> selectFreeboardCommentList(int communityNo);
-
-	int insertFreeboardComment(CommunityComment communityComment);
+	// 댓글 등록
+	int insertComment(CommunityComment communityComment);
 
 	int commentDelete(int commentNo);
 
-	int updateFreeboard(Community community);
-
-	int freeboardDelete(int communityNo);
+	// 커뮤니티 수정하기
+	int updateCommunity(CommunityEntity communityEntity);
 
 	int viewCount(int communityNo);
 
@@ -67,6 +69,20 @@ public interface CommunityDao {
 
 	List<CommunityEntity> selectCommentBoardList(Map<String, Object> param, int offset, int limit);
 
+	// 스터디 리스트
+	List<CommunityEntity> selectStudyList(int offset, int limit);
+	
+	// 스터디 전체 게시물 수 
+	int selectOneStudyCount();
+
+	int communityDelete(int CommunityNo);
+
+	//나의 커뮤니티
+	List<CommunityEntity> selectAllPostOrderByLatest(int memberNo, int offset, int limit);
+
+	int selectPostTotalCount(int memberNo);
+
+	List<CommunityEntity> selectPostTotalCount(Map<String, Object> param, int offset, int limit);
 
 
 

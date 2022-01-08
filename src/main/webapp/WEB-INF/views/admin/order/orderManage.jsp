@@ -110,7 +110,7 @@
 </div>
 <hr class="w-100"/>
 <strong class="m-5">주문 목록</strong>
-<div class="order-list">
+<div class="${list.size() > 5 ? 'order-list':'' } mb-5">
 	<table class="admin-tbl table table-hover mx-auto">
 	  <thead>
 	    <tr>
@@ -154,7 +154,7 @@
 	      <th scope="col">주문 확인</th>
 	    </tr>
 	  </thead>
-	  <tbody class="order-body" style="-ms-overflow-style: none;">
+	  <tbody class="order-body order-change-body" style="-ms-overflow-style: none;">
 	  	<c:if test="${empty orList}">
 	  		<tr class="mx-auto">
 	  			<td colspan="4">처리 대기 중인 주문이 없습니다.</td>
@@ -354,10 +354,10 @@ $(".order-modal-btn").click((e)=>{
 							class="detail-title pl-2" 
 							data-detail-no="\${item.productDetail.detailNo}"
 							data-buy-count="\${item.buyCount}">
-							[\${item.name}]
+							\${item.name}
 						</strong>
 						<br />
-						<span class="pl-2"></span>
+						<span class="pl-2">\${item.productDetail.optionNo} \${item.productDetail.optionContent == null? '' : item.productDetail.optionContent}</span>
 						<br />
 						<span class="pl-2">\${item.buyCount}개 구매</span>
 					</td>
@@ -405,6 +405,11 @@ $("#osChangeBtn").click((e)=>{
 		success(data){
 			alert("주문이 정상적으로 접수되었습니다.");
 			$(`#\${merchantUid}`).detach();
+			if($(".order-change-body").children("tr").length == 0){
+				$(".order-change-body").append(`<tr class="mx-auto">
+			  			<td colspan="4" class="text-center">처리 대기 중인 주문이 없습니다.</td>
+				  		</tr>`);
+			}
 		},
 		error : console.log
 	});
