@@ -36,7 +36,7 @@
 #contentMid1{display:flex;}
 #contentMid2{display:flex;}
 
-#memberCount{display:flex; flex-direction:column; justify-content:space-around;}
+#memberCount{display:flex; flex-direction:column; justify-content:space-around;} 
 #memberCount h3{font-weight:bolder;} 
 .content{margin:30px}
 
