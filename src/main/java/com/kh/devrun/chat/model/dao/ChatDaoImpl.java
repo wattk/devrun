@@ -76,4 +76,19 @@ public class ChatDaoImpl implements ChatDao {
 	public int selectMessageTotalUnreadCount(int memberNo) {
 		return session.selectOne("chat.selectMessageTotalUnreadCount", memberNo);
 	}
+
+	@Override
+	public int blockExitChatRoom(Map<String, Object> param) {
+		return session.update("chat.blockExitChatRoom", param);
+	}
+
+	@Override
+	public List<Member> selectChatBlockMemberList(int memberNo) {
+		return session.selectList("chat.selectChatBlockMemberList", memberNo);
+	}
+
+	@Override
+	public int unblockChatMember(Map<String, Object> param) {
+		return session.update("chat.unblockChatMember", param);
+	}
 }

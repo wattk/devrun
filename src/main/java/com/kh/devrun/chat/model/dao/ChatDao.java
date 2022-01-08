@@ -33,4 +33,10 @@ public interface ChatDao {
 
 	int selectMessageTotalUnreadCount(int memberNo);
 
+	int blockExitChatRoom(Map<String, Object> param);
+
+	List<Member> selectChatBlockMemberList(int memberNo);
+
+	int unblockChatMember(Map<String, Object> param);
+
 }
