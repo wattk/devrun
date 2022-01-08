@@ -67,6 +67,17 @@ function todayViewBox () {
 		}
 		
 	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 		/* 	if(length <4) {
 					const $firstSlide = $('.firstS');
