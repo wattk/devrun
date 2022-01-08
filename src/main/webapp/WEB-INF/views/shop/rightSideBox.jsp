@@ -9,12 +9,6 @@
                <div id="sideboxBody">
 				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
 				  <div class="carousel-inner">
-				    <div class="carousel-item active firstS">
-				    </div>
-				    <div class="carousel-item">
-				    </div>
-				    <div class="carousel-item">
-				    </div>
 				  </div>
 				</div>
                </div>
@@ -51,17 +45,70 @@ function todayViewBox () {
 	console.log("오늘본상품박스");
 	console.log(todayViewitems);
 	
-	const $box = $('.firstS');
+	//뒤집기 가장 먼저 본 상품이 가장 처음으로 오게 - 확인 완료
+	const rTodayViewitems = todayViewitems.reverse();
 	
-	if(todayViewitems != null){
-		todayViewitems.forEach((el, i) => {
+	const $box = $('.carousel-inner');
+	
+	if(rTodayViewitems != null){
+		console.log(rTodayViewitems.length);
+		
+		if(rTodayViewitems.length> 0){
+	        const first = `				    <div class="carousel-item active firstS">
+			    </div>`;
+			$box.append(first);
+			
+			for (var i = 0; i < rTodayViewitems.length; i++){
+				const $firstSlide = $('.firstS');
+				
+				const productCode = rTodayViewitems[i]["productCode"];
+				console.log(`productCode : \${productCode}`);
+				const a = `<a href="${pageContext.request.contextPath}/shop/itemDetail/\${productCode}"> <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png \" style = \"width: 100px; height: 100px;\"></a>`;
+				$firstSlide.append(a);
+			}
+			
+		}
+		
+		/* if(rTodayViewitems.length)
+		
+		
+	    for (var i = 0; i < rTodayViewitems.length; i++) {
+	    	const aviewItem = rTodayViewitems[i];
+	        console.log(aviewItem["productCode"]);
+	       
+	        const fist = `				    <div class="carousel-item active firstS">
+			    </div>`;
+			$box.append(fist);
+			
+			const $firstSlide = $('.firstS'); 
+	        img
+	        
+	        if(i>=3){
+	        	
+	        
+	        	if(i>=6){
+	        		
+	        	}
+	        }
+	        
+	        if(i>=9) return;
+	        
+	      } */
+
+		
+		
+		
+		
+/* 		rTodayViewitems.forEach((el, i) => {
 			const productCode = el.productCode;
 			console.log(`productCode 로컬에서 잘 받? : \${productCode}`);
 			const a = `                   <div class=\"todayView1\">
                 <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png\">
                 </div>`;
 			$box.append(a);
-		})
+		}) */
+
+	
 	}
 
 	
