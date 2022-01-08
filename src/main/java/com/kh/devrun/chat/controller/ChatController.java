@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -16,12 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.devrun.chat.model.service.ChatService;
 import com.kh.devrun.chat.model.vo.ChatLog;
 import com.kh.devrun.chat.model.vo.ChatMember;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
+import com.kh.devrun.report.model.service.ReportService;
+import com.kh.devrun.report.model.vo.Report;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,6 +37,9 @@ public class ChatController {
 	
 	@Autowired
 	private ChatService chatService;
+	
+	@Autowired
+	private ReportService reportService;
 	
 	/**
 	 * 채팅 접속 - 채팅 리스트 팝업 return
@@ -201,6 +209,29 @@ public class ChatController {
 		log.debug("totalUnreadCount = {}", totalUnreadCount);
 		
 		return totalUnreadCount;
+	}
+	
+	/**
+	 * 메시지 신고 & 회원 신고
+	 */
+	@PostMapping("/insertReport.do")
+	public String insertReport(Report report, RedirectAttributes redirectAttr, HttpServletRequest request) {
+		log.debug("report = {}", report);
+		
+		try {
+			// 신고 등록
+			int result = reportService.insertReport(report);
+			log.debug("result = {}", result);
+			
+			redirectAttr.addFlashAttribute("msg", "신고 등록 성공");
+			
+		} catch (Exception e) {
+			log.error("신고 등록 실패", e);
+			throw e;
+		}
+		
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
 	}
 	
 
