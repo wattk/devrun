@@ -13,8 +13,6 @@
 					    </div>
 					    <div class="carousel-item secondS">
 					    </div>
-					    <div class="carousel-item thirdS">
-					    </div>
 				  </div>
 				</div>
                </div>
@@ -60,15 +58,40 @@ function todayViewBox () {
 		
 		if(length<=3){
 			$('.secondS').remove();
-			$('.thirdS').remove();
 		}
-		if(length<=6){
-			$('.thirdS').remove();
+		
+		//div분기 처리 끝
+		
+		if(length>3){
+			const $firstSlide = $('.firstS');
+			const $secondSlide = $('.secondS');
+			
+			for (var i = 0; i < rTodayViewitems.length; i++){
+				if(i<3){
+					const productCode = rTodayViewitems[i]["productCode"];
+					const a = `<a href="${pageContext.request.contextPath}/shop/itemDetail/\${productCode}"> <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png \" style = \"width: 100px; height: 100px;\"></a>`;
+					$firstSlide.append(a);
+
+				}
+				if(i>=3 && i<6){
+					const productCode = rTodayViewitems[i]["productCode"];
+					const a = `<a href="${pageContext.request.contextPath}/shop/itemDetail/\${productCode}"> <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png \" style = \"width: 100px; height: 100px;\"></a>`;
+					$secondSlide.append(a);
+					
+				}
+				if(i>=6){
+					return;
+				}
+				
+			}
 		}
+		
+		
+
 		
 	}	
 	
-	
+}	
 	
 	
 	
@@ -111,7 +134,6 @@ function todayViewBox () {
 			} */
 			
 
-
-} 
+ 
 
 </script>           
