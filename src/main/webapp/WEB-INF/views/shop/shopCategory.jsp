@@ -74,7 +74,7 @@
 	  </ul>
 	  ${pagebar}
 	</nav>
-</div>
+
 
 
 <script>
