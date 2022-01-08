@@ -7,12 +7,6 @@
                    <p class="text-center">최근 본 상품 </p><p></p>
                </div>
                <div id="sideboxBody">
-                   <div id="todayView1">
-                       <img class="todayView" src="https://i.ibb.co/5KSC7pC/mouse-Item.png" alt="">
-                   </div>
-                   <div id="todayView2">
-                       <img class="todayView" src="https://i.ibb.co/bW9Mnh7/today-View.png" alt="">
-                   </div>
                </div>
                <div id="sideboxFooter">
                    <div id="todayViewErrow">
@@ -26,3 +20,29 @@
                  <button type="button" class="btn btn-warning">1:1문의하기</button>
                </div>
            </div>
+
+<script>
+window.onload = todayViewBox;
+
+function todayViewBox () {
+	const todayViewitems = JSON.parse(localStorage.getItem('todayViewitems')) || [];
+	console.log("오늘본상품박스");
+	console.log(todayViewitems);
+	
+	const $box = $(sideboxBody);
+	
+	if(todayViewitems != null){
+		todayViewitems.forEach((el, i) => {
+			const productCode = el.productCode;
+			console.log(`productCode 로컬에서 잘 받? : \${productCode}`);
+			const a = `                   <div class=\"todayView1\">
+                <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png\">
+                </div>`;
+			$box.append(a);
+		})
+	}
+
+	
+}
+
+</script>           
