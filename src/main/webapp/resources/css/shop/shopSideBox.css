@@ -1,5 +1,12 @@
 @charset "UTF-8";
 
+@font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
  /*오늘 본 상품 div 시작*/
    #sidebox { 
        text-align: center;
@@ -14,7 +21,7 @@
    #sideboxHeader{
        background-color: cornflowerblue;
    }
-   #sideboxHeader>p{
+   #sideboxHeader p{
        color: white;
        font-family: 'Nanum Pen Script', cursive;
    }
@@ -28,6 +35,9 @@
    }
    #sideboxFooter{
        margin-bottom: 10px;
+   }
+   #todayNothing{
+   font-family: 'Nanum Pen Script', cursive;
    }
    
    /*오늘 본 상품 div 끝*/

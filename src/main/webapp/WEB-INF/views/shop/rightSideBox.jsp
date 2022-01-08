@@ -4,12 +4,13 @@
 
            <div id="sidebox"> 
                <div id="sideboxHeader">
-                   <p class="text-center">최근 본 상품 </p><p></p>
+                   <p class="text-center">오늘 본 상품 </p><p></p>
                </div>
                <div id="sideboxBody">
 				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
-				  <div class="carousel-inner">
+				  <div class="carousel-inner thisHeight">
 				      <div class="carousel-item active firstS">
+				      	<p style="font-family: 'Nanum Pen Script'; font-size:20px" id="todayNothing">오늘 본 상품이 없어요 ㅠㅠ</p>
 					    </div>
 					    <div class="carousel-item secondS">
 					    </div>
@@ -26,7 +27,7 @@
                </div>
            </div>
 <style>
-.carousel-inner{
+.thisHeight{
 	height: 330px;
 }
 .slide-btn > img {
@@ -42,9 +43,10 @@
 }
 </style>
 <script>
- window.onload = todayViewBox;
+window.onload = todayViewBox;
 
 function todayViewBox () {
+	console.log("todayViewBox 함수 시작");
 	const todayViewitems = JSON.parse(localStorage.getItem('todayViewitems')) || [];
 	
 	//뒤집기 가장 먼저 본 상품이 가장 처음으로 오게 - 확인 완료
@@ -55,6 +57,13 @@ function todayViewBox () {
 	if(rTodayViewitems != null){
 		const length = rTodayViewitems.length; 
 		console.log(`오늘본상품갯수: \${length}`);
+		
+		if(length == 0){
+			$('.thisHeight').css("height", "60px");
+		}
+		if(length >0){
+			$(todayNothing).remove();
+		}
 		
 		if(length<=3){
 			$('.secondS').remove();
@@ -82,8 +91,16 @@ function todayViewBox () {
 				if(i>=6){
 					return;
 				}
-				
 			}
+		}
+		if(length>0 && length <=3){
+			const $firstSlide = $('.firstS');
+			for (var i = 0; i < rTodayViewitems.length; i++){
+				const productCode = rTodayViewitems[i]["productCode"];
+				const a = `<a href="${pageContext.request.contextPath}/shop/itemDetail/\${productCode}"> <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png \" style = \"width: 100px; height: 100px;\"></a>`;
+				$firstSlide.append(a);
+			}
+			
 		}
 		
 		
@@ -93,47 +110,4 @@ function todayViewBox () {
 	
 }	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-
-		/* 	if(length <4) {
-					const $firstSlide = $('.firstS');
-				console.log("여기 찍힘?");
-				for (var i = 0; i < rTodayViewitems.length; i++){
-					
-					const productCode = rTodayViewitems[i]["productCode"];
-					console.log(`productCode : \${productCode}`);
-					const a = `<a href="${pageContext.request.contextPath}/shop/itemDetail/\${productCode}"> <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png \" style = \"width: 100px; height: 100px;\"></a>`;
-					$firstSlide.append(a);
-					
-					
-				}
-			if(length > 3 && length <7){
-		        const second = `				    <div class="carousel-item secondS">
-				    </div>`;
-				$box.prepend(second);
-				const $secondSlide = $('.secondS');
-				
-				for (var i = 3; i < rTodayViewitems.length; i++) {
-					const productCode = rTodayViewitems[i]["productCode"];
-					console.log(`productCode : \${productCode}`);
-					const a = `<a href="${pageContext.request.contextPath}/shop/itemDetail/\${productCode}"> <img class=\"todayView\" src=\"${pageContext.request.contextPath}/resources/upload/product/\${productCode}.png \" style = \"width: 100px; height: 100px;\"></a>`;
-					$secondSlide.append(a);
-				}
-				
-				
-			}
-			if(length > 6 && length <10){
-				
-			} */
-			
-
- 
-
 </script>           
