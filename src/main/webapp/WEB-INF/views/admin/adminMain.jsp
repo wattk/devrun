@@ -7,6 +7,8 @@
 <jsp:include page="/WEB-INF/views/admin/admin-common/header.jsp">
 	<jsp:param value="admin" name="title"/>
 </jsp:include>
+<!-- 구글 차트 js import -->
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 			<!-- 내용의 윗 부분 -->
 			<div id="contentTop" class="content row">
@@ -19,7 +21,7 @@
 	                            <div class="col mr-2">
 	                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
 	                                    일매출</div>
-	                                <div class="h5 mb-0 font-weight-bold text-gray-800">0원</div>
+	                                <div class="h5 mb-0 font-weight-bold text-gray-800"><fmt:formatNumber pattern="###,###">${cntList.dailySales }</fmt:formatNumber> 원</div>
 	                            </div>
 	                            <div class="col-auto">
 	                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -36,7 +38,7 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         월매출</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">0원</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><fmt:formatNumber pattern="###,###">${cntList.monthlySales }</fmt:formatNumber> 원</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -53,7 +55,7 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         접수 대기중인 문의</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">0개</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">${cntList.questionProducts } 건</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -70,7 +72,7 @@
                                 <div class="col mr-2">
                                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         총 게시글 수</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">0개</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"><fmt:formatNumber pattern="###,###">${cntList.communities }</fmt:formatNumber> 개</div>
                                 </div>
                                 <div class="col-auto">
                                     <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -112,9 +114,18 @@
 	                    <!-- Card Body -->
 	                    <div class="card-body">
 	                        <div class="chart-area" id="memberCount">
-	                            <h3>누적 회원 수 </h3>
-	                            <h3>신규 회원 수  </h3>
-	                            <h3>차단된 회원 수  </h3>
+	                        	<div class="d-flex align-items-center">
+		                            <h3 class="pr-4">누적 회원 수 </h3>
+		                            <h4 class="text-right"><fmt:formatNumber pattern="###,###">${cntList.totalMembers }</fmt:formatNumber> 명</h4>
+	                        	</div>
+	                        	<div class="d-flex align-items-center">
+		                            <h3 class=" pr-4">신규 회원 수  </h3>
+		                            <h4 class="text-right"><fmt:formatNumber pattern="###,###">${cntList.newMembers }</fmt:formatNumber> 명</h4>
+	                        	</div>
+	                        	<div class="d-flex align-items-center">
+		                            <h3 class=" pr-4">차단된 회원 수  </h3>
+		                            <h4 class="text-right"><fmt:formatNumber pattern="###,###">${cntList.blacklistMembers }</fmt:formatNumber> 명</h4>
+	                        	</div>
 	                        </div>
 	                    </div>
 	                </div>
@@ -213,7 +224,24 @@
 	                </div>
             	</div>
 			</div>		
-
+<script>
+	google.charts.load('current', {packages: ['corechart', 'line']});
+	google.charts.setOnLoadCallback(drawCharts);
+	
+	function drawCharts(){
+		//비동기 통해 chart 관련 json data 불러오기
+		$.ajax({
+			url : "${pageContext.request.contextPath}/chart/findMainChart",
+			method : "GET",
+			success(data){
+				console.log(data);
+			},
+			error : console.log
+		});
+	}
+	
+	}
+</script>
 <script src="https://apis.google.com/js/client.js?onload=authorize"></script>				
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>
         
