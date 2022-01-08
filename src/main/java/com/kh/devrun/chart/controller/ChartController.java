@@ -23,9 +23,9 @@ public class ChartController {
 	
 	@GetMapping("/findMainChart")
 	@ResponseBody
-	public Map<String, JSONObject> findMainChart(){
+	public Map<String, Object> findMainChart(){
 		
-		Map<String, JSONObject> map = chartService.findMainChart();
+		Map<String, Object> map = chartService.findMainChart();
 		
 		return map;
 	}

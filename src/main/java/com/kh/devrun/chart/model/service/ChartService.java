@@ -6,7 +6,7 @@ import org.json.simple.JSONObject;
 
 public interface ChartService {
 
-	Map<String, JSONObject> findMainChart();
+	Map<String, Object> findMainChart();
 
 	Map<String, Integer> findMainCnt();
 

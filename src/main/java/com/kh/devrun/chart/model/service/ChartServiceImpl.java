@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.kh.devrun.chart.model.dao.ChartDao;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ChartServiceImpl implements ChartService {
 	
 	@Autowired
@@ -55,19 +58,28 @@ public class ChartServiceImpl implements ChartService {
 	}
 	
 	@Override
-	public Map<String, JSONObject> findMainChart() {
-		Map<String, JSONObject> map = new HashMap<>();
+	public Map<String, Object> findMainChart() {
+		Map<String, Object> map = new HashMap<>();
 		
 		//일별, 월별 판매량
-		Map<String, Object> dailySales = chartDao.countSalesPerDay();
-		Map<String, Object> monthlySales = chartDao.countSalesPerMonth();
+		List<Map<String, Object>> dailySales = chartDao.countSalesPerDay();
+		List<Map<String, Object>> salesProduct = chartDao.countSalesProduct();
+		log.debug("dailySales = {}", dailySales);
 		
 		//주문 통계
 		int orderCnt = chartDao.countOrderCnt();
-		Map<String, Object> orderLogCnts = chartDao.countOrderLogCnt();
+		Map<String, Integer> orderLogCnts = chartDao.countOrderLogCnt();
+		orderLogCnts.put("COM", orderCnt);
+		log.debug("orderLogCnts = {}", orderLogCnts);
 		
 		//게시판 게시글 수 통계
-		Map<String, Object> communityCnts = chartDao.countCommunityPerMonth();
+		List<Map<String, Object>> communityCnts = chartDao.countCommunityPerMonth();
+		log.debug("communityCnts = {}", communityCnts);
+		
+		map.put("dailySales", dailySales);
+		map.put("salesProduct", salesProduct);
+		map.put("orderLogCnts", orderLogCnts);
+		map.put("communityCnts", communityCnts);
 		
 		return map;
 	}

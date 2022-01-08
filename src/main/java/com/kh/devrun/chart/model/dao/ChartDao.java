@@ -1,5 +1,6 @@
 package com.kh.devrun.chart.model.dao;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ChartDao {
@@ -18,15 +19,15 @@ public interface ChartDao {
 	
 	int countCommunities();
 
-	Map<String, Object> countSalesPerDay();
+	List<Map<String, Object>> countSalesPerDay();
 
-	Map<String, Object> countSalesPerMonth();
+	List<Map<String, Object>> countSalesProduct();
 
 	int countOrderCnt();
 
-	Map<String, Object> countOrderLogCnt();
+	Map<String, Integer> countOrderLogCnt();
 
-	Map<String, Object> countCommunityPerMonth();
+	List<Map<String, Object>> countCommunityPerMonth();
 
 
 }
