@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.category.model.vo.ProductParentCategory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class ProductCategoryDaoImpl implements ProductCategoryDao {
 
@@ -62,16 +65,28 @@ public class ProductCategoryDaoImpl implements ProductCategoryDao {
 		return session.delete("productCategory.deleteChildProductCategory",deleteChildCategoryCode);
 	}
 	
-	// 해당 대분류 코드에 따른 객체 하나 가져오기
+	// 해당 코드에 따른 객체 하나 가져오기
 	@Override
-	public ProductParentCategory selectOneParentCategoryCode(String updateCategoryCode) {
-		return session.selectOne("productCategory.selectOneParentCategoryCode",updateCategoryCode);
+	public List<ProductParentCategory> selectCategoryCode(String afterUpdateCategoryCode) {
+		return session.selectList("productCategory.selectCategoryCode",afterUpdateCategoryCode);
 	}
-		
-	// 해당 소분류 코드에 따른 객체 하나 가져오기
+
+	// 해당 이름에 따른 객체 하나 가져오기
 	@Override
-	public ProductChildCategory selectOneChildCategoryCode(String updateCategoryCode) {		
-		return session.selectOne("productCategory.selectOneChildCategoryCode",updateCategoryCode);
+	public List<ProductParentCategory> selectCategoryTitle(String afterUpdateCategoryTitle) {
+		return session.selectList("productCategory.selectCategoryTitle",afterUpdateCategoryTitle);
+	}
+
+	// 상품 대분류카테고리 업데이트
+	@Override
+	public int updateCategoryToParent(Map<String, String> param) {
+		return session.update("productCategory.updateCategoryToParent",param);
+	}
+	
+	// 상품 소분류카테고리 업데이트
+	@Override
+	public int updateCategoryToChild(Map<String, String> param) {
+		return session.update("productCategory.updateCategoryToChild",param);
 	}
 
 

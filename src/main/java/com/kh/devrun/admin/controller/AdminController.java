@@ -515,25 +515,100 @@ public class AdminController {
 	}
 	
 	// 상품 카테고리 코드 중복검사
+	@ResponseBody
 	@GetMapping("/productCategory/checkCategoryCode.do")
 	public Map<String,Object> checkCategoryCode(
-				@RequestParam String updateCategoryCode
+				@RequestParam(required = false) String afterUpdateCategoryCode
 			) {
 		Map<String,Object>map = new HashMap<>(); 
 		
-		// 대분류, 소분류 두 테이블을 조회한 뒤 같은 값이 있다면 true를 리턴
-		ProductParentCategory productParentCategory  = productCategoryService.selectOneParentCategoryCode(updateCategoryCode);	
-		ProductChildCategory productChildCategory  = productCategoryService.selectOneChildCategoryCode(updateCategoryCode);
+		log.debug("afterUpdateCategoryCode = {}",afterUpdateCategoryCode);
 		
-		if(productParentCategory == null && productChildCategory == null) {
+		
+		// 대분류, 소분류 두 테이블을 조회한 뒤 같은 값이 있다면 true를 리턴
+		List<ProductParentCategory> productCategoryList  = productCategoryService.selectCategoryCode(afterUpdateCategoryCode);		
+		
+		log.debug("productCategory = {}",productCategoryList);
+		
+		if(productCategoryList.isEmpty()) {
 			log.debug("사용가능");
 			map.put("result", true);
+		}
+		else {
+			log.debug("사용 불가능-------------");
+			map.put("result", false);
+		}
+		
+		
+		map.put("afterUpdateCategoryCode", "["+afterUpdateCategoryCode+"]");
+		return map;
+	};
+	
+	// 상품 카테고리 이름 중복검사
+	@ResponseBody
+	@GetMapping("/productCategory/checkCategoryTitle.do")
+	public Map<String,Object> checkCategoryTitle(
+			@RequestParam(required = false) String afterUpdateCategoryTitle
+			) {
+		Map<String,Object>map = new HashMap<>(); 
+		
+		log.debug("afterUpdateCategoryTitle = {}",afterUpdateCategoryTitle);
+		
+		
+		// 대분류, 소분류 두 테이블을 조회한 뒤 같은 값이 있다면 true를 리턴
+		List<ProductParentCategory> productTitleList = productCategoryService.selectCategoryTitle(afterUpdateCategoryTitle);			
+		
+		
+		log.debug("productTitle = {}",productTitleList);
+
+		
+		if(productTitleList.isEmpty()) {
+			log.debug("사용가능한 이름");
+			map.put("result", true);
+		}
+		else {
+			log.debug("사용 불가능 이-------------");
+			map.put("result", false);
 		}
 		
 		
 		
+		map.put("afterUpdateCategoryTitle", "["+afterUpdateCategoryTitle+"]");
 		return map;
 	};
+	
+	// 상품 카테고리 업데이트
+	@PostMapping("/product/updateCategory.do")
+	public String updateCategory(
+				@RequestParam String updateKind,
+				@RequestParam(required = false) String beforeTitle,
+				@RequestParam(required = false) String updateCategoryTitle,
+				@RequestParam(required = false) String beforeCode,
+				@RequestParam(required = false) String updateCategoryCode,
+				RedirectAttributes redirectAttr
+			) {
+		int result = 0;
+		
+		log.debug("updateKind = {}",updateKind);
+		log.debug("beforeTitle = {}",beforeTitle);
+		log.debug("updateCategoryTitle ={}",updateCategoryTitle);
+		log.debug("beforeCode = {}",beforeCode);
+		log.debug("updateCategoryCode = {}",updateCategoryCode);
+		
+		Map<String,String>param = new HashMap<>();
+		
+		param.put("updateKind", updateKind);
+		param.put("beforeTitle", beforeTitle);
+		param.put("updateCategoryTitle", updateCategoryTitle);
+		param.put("beforeCode", beforeCode);
+		param.put("updateCategoryCode", updateCategoryCode);
+		
+		result = productCategoryService.updateCategory(param);
+		
+		redirectAttr.addFlashAttribute("msg","업데이트 완료.");
+		
+		return "redirect:/admin/product/productCategory.do";
+	}
 	
 	
 	
