@@ -7,29 +7,51 @@
                    <p class="text-center">최근 본 상품 </p><p></p>
                </div>
                <div id="sideboxBody">
+				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+				  <div class="carousel-inner">
+				    <div class="carousel-item active firstS">
+				    </div>
+				    <div class="carousel-item">
+				    </div>
+				    <div class="carousel-item">
+				    </div>
+				  </div>
+				</div>
                </div>
-               <div id="sideboxFooter">
-                   <div id="todayViewErrow">
-                       <img class="errow-img"src="https://i.ibb.co/TwyPKry/errow2.png" alt="">
-                       <img class="errow-img"src="https://i.ibb.co/ZTyXx9q/errow.png" alt="" style="margin-left: 30px">
-                   </div>
-               </div>
-               <hr>
-               <div id="chatbox">
-                 <a href=""><i class="fas fa-comment-dots" style="font-size: 70px;"></i></a>
-                 <button type="button" class="btn btn-warning">1:1문의하기</button>
+               <div id="sideBoxFooter" class="ml-2 mr-2">
+				  <button class="slide-btn" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+				    <img src="https://i.ibb.co/TwyPKry/errow2.png" alt="" />
+				  </button>
+				  <button class="slide-btn"  type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+				    <img src="https://i.ibb.co/ZTyXx9q/errow.png" alt="" />
+				  </button>
                </div>
            </div>
-
+<style>
+.carousel-inner{
+	height: 330px;
+}
+.slide-btn > img {
+	width: 20px;
+	height: 20px;
+}
+#sideBoxFooter{
+	display: flex;
+    justify-content: space-between;
+}
+#sideBoxFooter >button {
+	border: 0px;
+}
+</style>
 <script>
-window.onload = todayViewBox;
+ window.onload = todayViewBox;
 
 function todayViewBox () {
 	const todayViewitems = JSON.parse(localStorage.getItem('todayViewitems')) || [];
 	console.log("오늘본상품박스");
 	console.log(todayViewitems);
 	
-	const $box = $(sideboxBody);
+	const $box = $('.firstS');
 	
 	if(todayViewitems != null){
 		todayViewitems.forEach((el, i) => {
@@ -43,6 +65,6 @@ function todayViewBox () {
 	}
 
 	
-}
+} 
 
 </script>           
