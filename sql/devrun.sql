@@ -1378,104 +1378,61 @@ into product_child_category values('4mn', 'mn', '전문가용모니터')
 into product_child_category values('5mn', 'mn', '대화면모니터')
 select * from dual;
 
+select * from product_parent_category;
+select * from product_child_category;
 
 -- 상품- 분류
 
+--대분류 코드 업데이트 트리거 -> 소분류 테이블의 parent_category_code 업데이트
+create or replace trigger trg_category_code_update
+    after
+    update of parent_category_code on product_parent_category
+    for each row
+declare
 
+begin
+    update
+        product_child_category
+    set
+        parent_category_code =: new.parent_category_code
+    where
+        parent_category_code =:old.parent_category_code;
+        
+end;
 
--- rank() over()---
-SELECT
-   A.PRODUCT_CODE
-FROM (
-   SELECT
-      PRODUCT_CODE,
-      ROW_NUMBER() OVER(ORDER BY REG_DATE DESC) RN
-   FROM PRODUCT
-   ORDER BY REG_DATE DESC
-) A
-WHERE RN = 1;
-
-select
-    *
-from
-    product p left join product_category pc
-        on p.product_code = pc.product_code;
-
-
-select
-    m.member_no,
-    m.id,
-    m.name,
-    m.enroll_date,
-    a.authority
-from
-    member m join authorities a on
-    m.member_no = a.member_no
+update
+    product_parent_category
+set
+    parent_category_code = 'test2'
 where
-    authority in('ROLE_AM','ROLE_M1');
+    parent_category_code = 'test';
 
-select * from QUESTION_PRODUCT;
+-- 소분류 상품 코드 업데이트 트리거->상품-상세 테이블의 child_category_code 업데이트
+create or replace trigger trg_child_category_code_update
+    after
+    update of child_category_code on product_child_category
+    for each row
+declare
 
-
-select seq_question_product_no.currval from dual;
-select * from product;
-
-insert into question_product
-
-	select
-		*
-	from
-		question_product
-	where
-        null != question_ref_no and question_level=1;
-
-
-
-values(
-
-    seq_question_product_no.nextval,
-    null,
-    45,
-    'mn-4mn-175',
-    '상품 교환 문의',
-    '다른걸로 바꿀래요 ~~',
-    sysdate,
-    'N',
-    1 
-);
-    select * from QUESTION_PRODUCT order by enroll_date;
+begin
+    update
+        product_category
+    set
+        child_category_code =: new.child_category_code
+    where
+        child_category_code =:old.child_category_code;
 
 
-	SELECT
-		  question_no
-		FROM (
-		   SELECT
-		      question_no,
-		      ROW_NUMBER() OVER(ORDER BY ENROLL_DATE DESC) RN
-		   FROM QUESTION_PRODUCT
-		   ORDER BY ENROLL_DATE DESC
-		) A
-		WHERE RN = 1;
-
-
-
-
-select
-    qp.question_no,
-    qp.question_ref_no,
-    qp.title,
-    qp.content,
-    qp.private_yn,
-    p.product_code,
-    p.name,
-    p.thumbnail,
-    p.price,
-    qp.qlevel
-from
-    question_product qp join product p on
-    qp.product_code = p.product_code
+update
+    product_child_category
+set
+    child_category_code = '7ch'
 where
-   qp. question_no = 7 and p.product_code = 'mn-1mn-166';
+    child_category_code = '6ch';
+
+select * from product_category;
+
+
 
 
 
@@ -1715,6 +1672,31 @@ end;
 --김다현 sms 기록 테이블 끝 --
 
 ----주문 변경-상품-결제 뷰 생성(혜진)
+<<<<<<< HEAD
+--create or replace view view_order_log_imp
+--as
+--select
+--    ol.*,
+--    i.imp_uid,
+--    i.name,
+--    i.amount,
+--    i.receipt_url,
+--    p.thumbnail
+--from
+--    order_log ol left join imp i
+--        on ol.merchant_uid = i.merchant_uid
+--            left join merchant_detail md
+--                on ol.merchant_uid = md.merchant_uid
+--                    left join product_detail pd
+--                        on md.detail_no = pd.detail_no
+--                            left join product p
+--                                on pd.product_code = p.product_code;
+
+
+
+
+
+=======
 create or replace view view_order_log_imp
 as
 select
@@ -1735,3 +1717,4 @@ from
                                 on md.detail_no = pd.detail_no
                                     left join product p
                                         on pd.product_code = p.product_code;
+>>>>>>> branch 'master' of https://github.com/wattk/devrun.git

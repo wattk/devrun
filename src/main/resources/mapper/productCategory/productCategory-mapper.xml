@@ -72,7 +72,70 @@ values(
 		child_category_code = #{deleteChildCategoryCode}
 </delete>
 
+<!-- 해당  코드에 따른 객체 하나 가져오기  -->
+<select id="selectCategoryCode" resultType="ProductParentCategory">
+	select
+	    *   
+	from
+	    product_parent_category pc  join product_child_category cc
+	    on  pc.parent_category_code = cc.parent_category_code
+	where
+	    pc.parent_category_code = #{afterUpdateCategoryCode} or cc.child_category_code = #{afterUpdateCategoryCode}
+</select>
 
+
+<!-- 해당 이름에 따른 객체 하나 가져오기  -->
+<select id="selectCategoryTitle" resultType="ProductParentCategory">
+	select
+	    *   
+	from
+	    product_parent_category pc  join product_child_category cc
+	    on  pc.parent_category_code = cc.parent_category_code
+	where
+	    pc.parent_category_title = #{afterUpdateCategoryTitle} or cc.child_category_title = #{afterUpdateCategoryTitle}
+</select>
+
+<!-- 대분류 카테고리 업데이트  -->
+<update id="updateCategoryToParent">
+update
+	product_parent_category
+set
+	<choose>
+		<when test="updateKind.equals('updateTitle')">
+				parent_category_title = #{updateCategoryTitle}
+			where
+				parent_category_title = #{beforeTitle}
+		</when>
+		<when test="updateKind.equals('updateCode')">
+				parent_category_code = #{updateCategoryCode}
+			where
+				parent_category_code = #{beforeCode}
+		</when>
+	</choose>	
+
+</update>
+
+<!-- 소분류 카테고리 업데이트  -->
+<update id="updateCategoryToChild">
+update
+	product_child_category
+set
+	<choose>
+		<when test="updateKind.equals('updateTitle')">
+				child_category_title = #{updateCategoryTitle}
+			where
+				child_category_title = #{beforeTitle}
+		</when>
+		<when test="updateKind.equals('updateCode')">
+				child_category_code = #{updateCategoryCode}
+			where
+				child_category_code = #{beforeCode}
+		</when>
+	</choose>	
+	
+</update>
+		
+		
 		
 		
 		
