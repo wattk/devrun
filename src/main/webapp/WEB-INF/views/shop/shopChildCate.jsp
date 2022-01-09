@@ -39,8 +39,14 @@
 	background-color: beige;
 }
 .shop-item-img img {
-width:200px;
-height:200px;
+	width:200px;
+	height:200px;
+	padding: 0.25rem;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    max-width: 100%;
+
 }
 </style>
 
@@ -92,7 +98,9 @@ height:200px;
     </div>
 	  <ul class="pagination justify-content-center mt-5">
 	  </ul>
-	  ${pagebar}
+	  <div id="pageBar">
+		  ${pagebar}
+	  </div>
 	</nav>
 </div>
 
@@ -115,11 +123,13 @@ $(".shop-sort").click((e)=>{
 		method : "GET",
 		data : {
 				childCateCode : "${childCategoryCode}",
-				keyword : sort
+				keyword : sort,
+				total : ${total}
 				},
 		success(data){
 				console.log(data);
 				$("#productSortContainer").html(data["productStr"]);
+				$(pageBar).html(data["pageBar"]);
 			
 		},
 		error : console.log

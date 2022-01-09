@@ -198,8 +198,9 @@ public class ShopDaoImpl implements ShopDao {
 	}
 
 	@Override
-	public List<ProductEntity> selectItemsByChildCateBySort(Map<String, Object> param) {
-		return session.selectList("shop.selectItemsByChildCateBySort", param);
+	public List<ProductEntity> selectItemsByChildCateBySort(int offset, int limit, Map<String, Object> param) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("shop.selectItemsByChildCateBySort", param, rowBounds);
 	}
 
 }
