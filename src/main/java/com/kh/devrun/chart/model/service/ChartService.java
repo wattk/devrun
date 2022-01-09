@@ -12,4 +12,6 @@ public interface ChartService {
 
 	Map<String, Object> findHomeMain();
 
+	Map<String, Object> findUnifiedSearch(String searchKeyword);
+
 }
