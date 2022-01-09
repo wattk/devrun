@@ -100,7 +100,7 @@ public class ShopController {
 
 		List<ProductEntity> sortItemList = shopService.selectItemsByChildCateBySort(offset, limit, param);
 		log.debug("sortItemList : {}", sortItemList);
-		// sort에 따라 잘 받아옴.
+		// sort에 따라 잘 받아옴d.
 
 		String url = request.getContextPath();
 		String productStr = DevrunUtils.getProductList(sortItemList, url);	
