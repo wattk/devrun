@@ -32,21 +32,6 @@
       font-weight: normal;
       font-style: normal;
   }
-
-.category-container{
-	border :0px;
-	background-color: beige;
-}
-.shop-item-img img{
-	width:200px;
-	height:200px;
-	padding: 0.25rem;
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 0.25rem;
-    max-width: 100%;
-
-}
 </style>
 
 <div class="shop-container">

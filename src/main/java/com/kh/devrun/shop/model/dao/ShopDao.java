@@ -85,4 +85,8 @@ public interface ShopDao {
 
 	List<ProductEntity> selectItemsByChildCateBySort(int offset, int limit, Map<String, Object> param);
 
+	List<ProductEntity> shopSearch(int offset, int limit, String searchKeyword);
+
+	int countShopSearch(String searchKeyword);
+
 }

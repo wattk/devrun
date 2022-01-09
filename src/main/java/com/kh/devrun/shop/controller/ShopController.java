@@ -81,6 +81,42 @@ public class ShopController {
 
 //--------------------주입-------------------------------------	
 
+	// 검색 페이지로 이동
+	@PostMapping("/shopSearch")
+	public String shopSearch(@RequestParam String searchKeyword, @RequestParam(defaultValue = "1") int cPage,
+			Model model, HttpServletRequest request) {
+		log.debug("searchKeyword : {}", searchKeyword);
+
+		int limit = 12;
+		int offset = (cPage - 1) * limit;
+
+		List<ProductEntity> searchList = shopService.shopSearch(offset, limit, searchKeyword);
+		log.debug("searchList : {}", searchList);
+		model.addAttribute("searchList", searchList);
+
+		// count
+		int total = shopService.countShopSearch(searchKeyword);
+		log.debug("total : {}", total);
+		model.addAttribute("total", total);
+		
+		
+
+		// 3. pagebar
+		String url = request.getRequestURI(); // /spring/board/boardList.do
+		
+		if (searchKeyword != null) {
+			url += "&searchKeyword=" + searchKeyword;
+		}
+		
+		
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, total, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
+
+		return "/shop/shopSearch";
+
+	}
+
 	// 소분류카테고리정렬
 	@ResponseBody
 	@GetMapping("/childCatePageSort")
@@ -103,10 +139,9 @@ public class ShopController {
 		// sort에 따라 잘 받아옴dd.
 
 		String url = request.getContextPath();
-		String productStr = DevrunUtils.getProductList(sortItemList, url);	
-		
+		String productStr = DevrunUtils.getProductList(sortItemList, url);
+
 		log.debug("productStr : {}", productStr);
-		
 
 		resultMap.put("productStr", productStr);
 		return resultMap;
@@ -215,11 +250,6 @@ public class ShopController {
 	// 헤더에서 Shop 눌렀을 시
 	@GetMapping("/shopMain.do")
 	public void shopMain() {
-	}
-
-	// 검색 페이지로 이동
-	@GetMapping("/shopSearch.do")
-	public void shopSearch() {
 	}
 
 	@GetMapping("wishlist")
