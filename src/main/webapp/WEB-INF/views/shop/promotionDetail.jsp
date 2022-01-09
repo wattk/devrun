@@ -48,11 +48,11 @@
 	<div class="item-sort-container d-flex 	justify-content-between">
 		<div class="p-4">총 <span id="productSize">${totalContent}</span>개</div>
 		<div class="p-4" id="">
-			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="sell">판매량순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="row">낮은 가격순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="high">높은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="recommend" data-valid="0">추천순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="new" data-valid="0">신상품순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="sell" data-valid="0">판매량순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="row" data-valid="0">낮은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="high" data-valid="0">높은 가격순</span>
 		</div>
 	</div>
 	<div id="productPromotionContainer" class="row">
@@ -74,8 +74,9 @@
     ${pagebar}
 </div>
 <script>
+let cPage = 1;
 //이벤트 상품 소분류 코드별 정렬
-$(".category-badge, .shop-sort").click((e)=>{
+$(document).on("click", ".category-badge, .shop-sort, .page-link", (e)=>{
 	//클릭한 배지가 선택되어 있던 배지인지 아닌지 체크
 	if($(e.target).is(".badge-secondary")){
 		$(e.target)
@@ -91,7 +92,18 @@ $(".category-badge, .shop-sort").click((e)=>{
 	
 	let sort;
 	if($(e.target).is(".shop-sort")){
+		$(".shop-sort").data("valid", 0);
 		sort = $(e.target).data("target");
+		$(e.target).data("valid", 1);
+	};
+	if($(e.target).is(".page-link")){
+		const $sortList = $(".shop-sort");
+		cPage = $(e.target).data("cPage");
+		$sortList.each((i, item)=>{
+			if($(item).data("valid") == 1){
+				sort = $(item).data("target");
+			}
+		});
 	};
 	
 	//primary클래스를 가진 소분류 카테고리를 모아 카테고리 코드를 모은 배열 생성
@@ -104,10 +116,11 @@ $(".category-badge, .shop-sort").click((e)=>{
 	
 	
 	$.ajax({
-		url : "${pageContext.request.contextPath}/shop/childCategorySearch.do",
+		url : "${pageContext.request.contextPath}/shop/childCategorySearchFromPromotion.do",
 		data : {childCategoryCode : data,
 				promotionCode : "${promotion.promotionCode}",
-				keyword : sort},
+				keyword : sort,
+				cPage, cPage},
 		method : "GET",
 		success(data){
 			console.log(data);
