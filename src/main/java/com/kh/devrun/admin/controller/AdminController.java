@@ -187,6 +187,7 @@ public class AdminController {
 		String productStr = DevrunUtils.getProductListByAdmin(productList,request);
 		
 		// 2.조회한 게시물 수
+
 		int totalContent = productService.searchProductListCount(param);
 		
 		// 3.페이지 바

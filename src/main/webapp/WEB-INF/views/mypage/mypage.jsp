@@ -24,7 +24,7 @@
 						<!-- profile image : 프로필 이미지가 null일 경우, 기본 이미지 출력 -->
 					    <section>
 				   			<c:if test="${member.proPhoto eq null}"><img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="" id="profileImg"/></c:if>
-							<c:if test="${member.proPhoto ne null}"><img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png" alt="" id="profileImg"/></c:if>
+							<c:if test="${member.proPhoto ne null}"><img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.proPhoto}" alt="" id="profileImg"/></c:if>
 					       	<p class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo.do';">${member.nickname}님<i class="bi bi-chevron-right"></i></p>
 					       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';"/>
 					    	<img src="https://i.ibb.co/S7TZCYh/coding.png" alt="" id="badge" class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/activityBadge.do';"/>
@@ -49,7 +49,7 @@
 					        </p>
 					        <!-- 개인 웹 주소 -->
 					        <c:if test="${member.url eq null}"><button id="url">아직 개인주소가 없습니다.</button></c:if>
-					        <c:if test="${member.url ne null}"><button id="url" onclick="location.href='${member.url}';">${member.url}</button></c:if>
+					        <c:if test="${member.url ne null}"><button id="url" class="cursor" onclick="location.href='${member.url}';">${member.url}</button></c:if>
 				        </section>
 				        <hr/>
 				       	<!-- logout button -->
@@ -127,7 +127,12 @@
 		       			</section>
 		       			<!-- event : 최근 이벤트 한개 불러오기 -->
 		    	  		<section id="eventBanner" class="row">
-		      				<img src="${pageContext.request.contextPath}/resources/upload/promotion/${promotion.promotionCode}.png" alt="" id="profileImg" class="col-12"/>
+		      				<img
+		      					src="${pageContext.request.contextPath}/resources/upload/promotion/${promotion.banner}"
+		      					alt="" 
+		      					onclick="location.href='${pageContext.request.contextPath}/shop/promotionDetail/${promotion.promotionCode}'"
+		      					id="profileImg"
+		      					class="col-12"/>
 			       		</section>
 			    	</article>
 			    	
