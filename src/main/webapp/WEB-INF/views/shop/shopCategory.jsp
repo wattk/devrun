@@ -26,7 +26,13 @@
 	margin: 0 10% 0 10%;
 }
 
-<!--->
+@font-face {
+      font-family: 'SANJUGotgam';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/SANJUGotgam.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+  }
+
 .category-container{
 	border :0px;
 	background-color: beige;
@@ -49,7 +55,7 @@
 	</div>
 	<div class="category-container d-flex justify-content-center align-items-center w-100">
 		<div class="category-all col-2">
-			<strong id="thisCateName" >전체보기</strong>
+			<strong id="thisCateName" style="font-family: 'SANJUGotgam';" >전체보기</strong>
 		</div>
 		<div class="category-details col-8">
 		<c:forEach items="${ChildCateNames}" var ="c">
