@@ -106,6 +106,14 @@ public class ProductDaoImpl implements ProductDao {
 	public int insertOption(ProductDetail productDetail) {
 		return session.insert("product.insertOption", productDetail);
 	}
+	// 상품 검색 결과 가져오기
+	@Override
+	public List<ProductEntity> searchProductList(Map<String, Object> param) {
+		return session.selectList("product.searchProductList",param);
+	}
+
+	
+	
 
 	// 다현 - 상세 페이지 뿌리기 위한 item 받아오기
 	@Override
@@ -134,6 +142,7 @@ public class ProductDaoImpl implements ProductDao {
 	public List<Integer> selectCartValidList(Map<String, Object> cartParam) {
 		return session.selectList("product.selectCartValidList", cartParam);
 	}
+
 
 	/* 혜진 끝 */
 

@@ -99,7 +99,6 @@
 	<span id="day" class="badge badge-primary">오늘</span>
 	<span id="week" class="badge badge-secondary">이번주</span>
 	<span id="month" class="badge badge-secondary">이번달</span>
-	<span id="allDay"class="badge badge-secondary">전체</span>
 </div>
 
 <div class="report-search-container mt-3 ml-5">
@@ -126,7 +125,7 @@
 	        <div id="searchMemberNo" class="search-type other">
 	            <form class="search-frm">
 	                <input type="hidden" name="searchType" value="member_no"/>
-	                <input type="text" name="searchKeyword"  size="25" placeholder="검색할 회원 번호를 입력하세요." value=""/>
+	                <input type="text" name="searchKeyword" class="t-input" size="25" placeholder="검색할 회원 번호를 입력하세요." value=""/>
 	                <input type="hidden" name="startDate" class="start-date"/>	
 	                <input type="hidden" name="endDate" class="end-date" />
 	                			
@@ -136,7 +135,7 @@
 	        <div id="searchProductCode" class="search-type other">
 	            <form class="search-frm">
 	                <input type="hidden" name="searchType" value="product_code"/>
-	                <input type="text" name="searchKeyword" size="25" placeholder="검색할 상품 코드를 입력하세요" value=""/>
+	                <input type="text" name="searchKeyword" class="t-input" size="25" placeholder="검색할 상품 코드를 입력하세요" value=""/>
 	                <input type="hidden" name="startDate" class="start-date"/>	
 	                <input type="hidden" name="endDate" class="end-date" />		
 	                
@@ -234,10 +233,13 @@
 
 <script>
 	
-	/*-----------------------------------*/
-	// 날짜 벳지 버튼 클릭
-
-	
+/*-----------------------------------*/
+	// 날짜 벳지 버튼 클릭	
+	$(".badge").click(e=>{
+		$(".badge").removeClass("badge-primary").addClass("badge-secondary"); 
+		$(e.target).addClass("badge-primary").removeClass("badge-secondary");
+	});
+		
 	/* '오늘' 버튼 클릭 */
 	$("#day").click(e=>{
 		/*  버튼 클릭 시 input 태크에 값을 넣어준 뒤 전역 변수로 선언 된 	var startDate,var endDate 에도 대입 */	
@@ -465,8 +467,7 @@
 	$(searchType).change(e=>{
 		console.log($(e.target));		
 		var target = "search"+$(e.target).val();
-		
-		
+				
 		$searchType= $("#"+target+"").find("input[name=searchType]").val();
 		$searchKeyword = $("#"+target+"").find("input[name=searchKeyword]").val();
 	});
