@@ -9,13 +9,23 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="promotion" name="title"/>
 </jsp:include>
+
+<!-- 오늘 본 상품 -->
+<jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp">
+	<jsp:param value="" name=""/>
+</jsp:include>
+<!-- 오늘 본 상품 -->
+
+<!--쇼핑몰 헤더-->
+<jsp:include page="/WEB-INF/views/shop/shopHeader.jsp">
+	<jsp:param value="" name=""/>
+</jsp:include>
+<!--쇼핑몰 헤더부분-->
 <!-- 오늘 본 상품 -->
 <!-- shopHeader 관련 임포트 -->
-<jsp:include page="/WEB-INF/views/shop/shopHeader.jsp"/>
 <link href="${pageContext.request.contextPath}/resources/css/shop/shopMain.css" rel="stylesheet">
 
 <!-- shopSideBox 관련 임포트 -->
-<jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
 
 <style>
@@ -68,7 +78,7 @@
 	  	<ul class="list-group list-group-flush">
 	  	<c:forEach items="${endPromotionList}" var="promotion" varStatus="vs">
 		  <li class="list-group-item">
-		  <a href="${pageContext.request.contextPath}/shop/promotionDetail.do?promotionCode=${promotion.promotionCode}">
+		  <a href="${pageContext.request.contextPath}/shop/promotionDetail/${promotion.promotionCode}">
 			  	<div class="promotion-title">
 			  		${promotion.name}	
 			  	</div>
@@ -90,4 +100,5 @@
 	  </div>
 	</div>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
