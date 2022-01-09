@@ -180,11 +180,7 @@ $("#bs-example-modal-lg").on("hide.bs.modal",
       	function (e) {  
 		console.log("닫기 이벤트 시작");
 		if(confirm("정말 나가시겠습니까?")){
-			const $pagecode = $("[name=pagecode]");
-			
-			$pagecode.each((i, item)=>{
-				$(item).prop("checked", false);
-			});
+			$("input[type=radio]:checked").prop('checked', false);
 			
 			$(".form-control").val('');
 			$("#summernote").summernote('reset');
