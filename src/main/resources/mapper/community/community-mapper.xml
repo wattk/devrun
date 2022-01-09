@@ -273,6 +273,35 @@
 
 <!-- ================================= 스터디 종료 ================================= -->
   
+  <!-- Q&A 리스트 조회 -->
+  <select id="selectQnAList" resultType="communityEntity">
+  	select 
+        c.community_no,
+	    c.title,
+	    (select nickname from member where member_no = c.member_no) nickname,
+        c.enroll_date,
+	   	c.like_count,
+	   	c.view_count,
+	    m.comment_count
+	from 
+		community c 
+            left join(
+                select 
+                    community_no, 
+                    count(comment_no) as comment_count 
+                from 
+                    community_comment 
+                group by community_no) m
+	on 
+		c.community_no = m.community_no
+    where
+        page_code = 2
+	order by 
+		community_no desc
+  
+  </select>
+  
+  
   <!-- 자유게시판 리스트 조회 -->
   <select id="selectFreeboardList" resultType="communityEntity">
 	select 
@@ -298,6 +327,16 @@
         page_code = 4
 	order by 
 		community_no desc
+  </select>
+  
+  <!-- QnA 게시판 총 게시물 수 -->
+  <select id="selectOneQnACount" resultType="_int">
+  	select
+  		count(*)
+  	from
+  		community
+  	where
+  		page_code = 2
   </select>
   
   <!-- 자유게시판 총 게시물 수 -->

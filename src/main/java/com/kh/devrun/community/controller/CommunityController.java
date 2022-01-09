@@ -132,16 +132,40 @@ public class CommunityController {
 	  return "redirect:/community/communityColumnList.do";
 		 
 	}
+
+	/* ---------------------------------------- Q&A 리스트 시작 ---------------------------------------- */
 	
 	// 커뮤니티 - Q&A
 	@GetMapping("/communityQnAList.do")
-	public String communityQnAList() {
+	public String communityQnAList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+		
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		// 1. 전체 게시물 목록
+		List<CommunityEntity> list = communityService.selectQnAList(offset, limit);
+		log.debug("selectStudyList = {}", list);
+		// jsp에 전달할 수 있도록 model에 담아준다.
+		model.addAttribute("list", list);
+		
+		// 2. 스터디리스트 전체 게시물 수
+		int totalContent = communityService.selectOneQnACount();
+		log.debug("selectOneStudyCount = {}", totalContent);
+		model.addAttribute("totalContent", totalContent);
+		
+		// 3. pagebar
+		String url = request.getRequestURI(); // /devrun/community/communityStudyList.do
+		String pagebar = CommunityUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
 		
 		return "community/communityQnAList";
 	}
-/* ---------------------------------------- 스터디 리스트 시작 ---------------------------------------- */
 	
-	// 커뮤니티-스터디
+	/* ---------------------------------------- Q&A 리스트 종료 ---------------------------------------- */
+	
+	/* ---------------------------------------- 스터디 리스트 시작 ---------------------------------------- */
+	
 	@GetMapping("/communityStudyList.do")
 	public String communityStudy(@RequestParam(defaultValue = "1") int cPage, 
 								 Model model, 

@@ -113,6 +113,12 @@ public interface CommunityDao {
 	// 회원 모집완료 게시물 수
 	int selectOneStudyJoinEndCount();
 
+	// Q&A 리스트
+	List<CommunityEntity> selectQnAList(int offset, int limit);
+
+	// QnA 전체 게시물 수 
+	int selectOneQnACount();
+
 
 
 
