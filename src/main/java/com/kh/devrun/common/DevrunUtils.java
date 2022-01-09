@@ -402,15 +402,15 @@ public class DevrunUtils {
 			"<tr> \n"
 				+"<td><input type=\"checkbox\"id=\"select\" class=\"box\"/> </td>\n"
 				+"<td><img id=\"thumbnail\" src=\""+context+"/resources/upload/product/"+ product.getThumbnail() + "\"/></td>\n"
-				+"<td>"+product.getProductCode() +"</td>\n"
+				+"<td><a href=\" "+context+"/admin/productDetail.do?productCode="+product.getProductCode()+"\"> "+product.getProductCode()+"</a></td>\n"
 				+"<td>"+product.getName()+"</td>\n"
 				+"	<td>\r\n"
 				+ "		<button type=\"button\" class=\"option-modal-btn btn btn-light\"\r\n"
-				+ "		data-toggle=\"modal\" data-target=\"#promotionModal\" data-code=\"${pro.productCode}\">확인</button>\r\n"
+				+ "		data-toggle=\"modal\" data-target=\"#promotionModal\" data-code=\""+product.getProductCode()+"\">확인</button>\r\n"
 				+ "	</td>\n"
 				+"<td>"+product.getStatus()+"</td>\n"						
 				+"<td>"+sdf.format(product.getRegDate())+"</td>\n"	
-				+"<td>"+product.getOrderCount()+"</td>\n"						
+				+"<td>"+product.getViewCount()+"</td>\n"						
 
 			+"</tr>");
 		}		

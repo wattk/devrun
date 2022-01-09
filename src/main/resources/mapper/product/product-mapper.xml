@@ -147,10 +147,28 @@
 			product
 		where
 			<choose>
+				<when test="searchType.equals('all')"> 
+					<if test='startDate != null'>
+						 (status ='Y' or  status ='N') and (reg_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD'))
+					</if>
+					<if test="startDate == null or startDate.equals('')" >
+						 status ='Y' or  status ='N'
+					</if>
+				</when>
 				<when test="searchType.equals('product_code')"> 
-					${searchType} like '%'|| #{searchKeyword} ||'%'
+					<if test='startDate != null'>
+						 (${searchType} like '%'|| #{searchKeyword} ||'%') and (reg_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD'))
+					</if>
+					<if test="startDate == null or startDate.equals('')" >
+						${searchType} like '%'|| #{searchKeyword} ||'%'
+					</if>
 				</when>			
+				<when test="searchType.equals('name')"> 
+					${searchType} like '%'|| #{searchKeyword} ||'%'
+				</when>		
 				<when test="searchType.equals('status')"> 
+					<if test="startDate == null or startDate.equals('')" >
+					</if>
 					${searchType} = #{searchKeyword}
 				</when>	
 			</choose>
@@ -164,9 +182,20 @@
 			product
 		where
 			<choose>
+				<when test="searchType.equals('all')"> 
+					<if test='startDate != null'>
+						 (status ='Y' or  status ='N') and(reg_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD'))
+					</if>
+					<if test="startDate == null or startDate.equals('')" >
+						 status ='Y' or  status ='N'
+					</if>
+				</when>	
 				<when test="searchType.equals('product_code')"> 
 					${searchType} like '%'|| #{searchKeyword} ||'%'
-				</when>			
+				</when>	
+				<when test="searchType.equals('name')"> 
+					${searchType} like '%'|| #{searchKeyword} ||'%'
+				</when>				
 				<when test="searchType.equals('status')"> 
 					${searchType} = #{searchKeyword}
 				</when>	
