@@ -182,7 +182,11 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductEntity> searchProductList(Map<String, Object> param) {
 		return productDao.searchProductList(param);
 	}
-	
+	// 상품 검색 결과 갯수 가져오기
+	@Override
+	public int searchProductListCount(Map<String, Object> param) {
+		return productDao.searchProductListCount(param);
+	}
 	
 	
 
@@ -226,6 +230,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		return productDetailList;
 	}
+
 
 
 	
