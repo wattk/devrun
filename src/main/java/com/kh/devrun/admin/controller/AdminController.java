@@ -956,6 +956,12 @@ public class AdminController {
 			if(searchType == "" || searchType == null) {
 				searchType = "all";
 			}
+			
+			// jsp에서 날짜 초기화 undefind가 아닌 공백이 들어갈 경우 mapper에서 오류가 나 공백을 경우 null을 대입 
+			if(startDate == "" || startDate == "") {
+				startDate = null;
+				endDate = null;
+			}
 
 			Map<String,Object>map = new HashMap<>();
 			
