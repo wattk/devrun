@@ -123,7 +123,7 @@
                </div>
                <div id="shopSerachDiv">
                    <nav class="navbar navbar-light bg-light">
-                       <form:form method="POST" class="form-inline" action="${pageContext.request.contextPath}/shop/shopSearch"> 
+                       <form:form method="GET" class="form-inline" action="${pageContext.request.contextPath}/shop/shopSearch"> 
                          <input name="searchKeyword" class="form-control mr-sm-2" type="search" placeholder="검색어를 입력하세요" aria-label="Search" required>
                          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                        </form:form>
