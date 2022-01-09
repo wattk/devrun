@@ -21,7 +21,7 @@
 		enctype="multipart/form-data"
 		id="productFrm" 
 		action="${pageContext.request.contextPath}/admin/updateProduct.do"
-		onsubmit="return checkFrm"
+		onsubmit="return checkFrm()"
 		method="POST">
 		<hr /><br />
 	
@@ -249,6 +249,13 @@ $("#largeCategory").change((e)=>{
 
 /* 상품 등록 유효성 검사  */
 function checkFrm(){
+	var noteContent = $(".note-editable").html();
+	
+	if(noteContent.length == 11){
+		alert("상품 내용을 입력해주세요.");	
+		$(".note-editable").focus();
+		return false;
+	}
 	
 	if($("#imgInput").val() == "") {
 		alert("상품 이미지를 선택해주세요");

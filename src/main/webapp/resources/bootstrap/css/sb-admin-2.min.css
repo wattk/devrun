@@ -36,7 +36,7 @@
 #contentMid1{display:flex;}
 #contentMid2{display:flex;}
 
-#memberCount{display:flex; flex-direction:column; justify-content:space-around;}
+#memberCount{display:flex; flex-direction:column; justify-content:space-around;} 
 #memberCount h3{font-weight:bolder;} 
 .content{margin:30px}
 
@@ -230,7 +230,30 @@
 #updateBtnModal{visibility: hidden;}
 .category-title form{display:inline-block;}
 .update-category-code{display:flex;flex-direction: row; justify-content: space-around; margin-bottom:15px}
-.update-category-title{display:flex;flex-direction: row; justify-content: space-around;}
+.update-category-title{display:flex;flex-direction: row; justify-content: space-around;  margin-bottom:15px}
+
+#categoryUpdateModalBody{height:190px}
+#selectCategoryKind{width: 150px; margin: 0px 0px 15px 16px;}
+#updateCodeContainer{display:none}
+#updateModal form{width: 100%;display: flex;justify-content: space-evenly;}
+
+#warningText{text-align:center}
+.posible{color:blue}
+.imposible{color:red}
+#categoryModalContent{width:610px}
+#checkCodeBtn{width:82px}
+#checkTitleBtn{width:82px}
+
+#insertCategoryBtn{width:86px}
+#insertCategoryBtnModal{display:none}
+.insert-modal-body{height: 85px;}
+.modal-insert-container{display:flex; justify-content: space-evenly; margin:21px 0px 15px 0px}
+.modal-insert-input{margin-right: 13px;width: 225px;}
+#modalInsertCodeContainer{display:none}
+.useBtn{width:90px;}
+#insertWarning{text-align:center}
+
+
 
 
 

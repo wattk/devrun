@@ -42,12 +42,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.devrun.category.model.service.ProductCategoryService;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.category.model.vo.ProductParentCategory;
+import com.kh.devrun.chart.model.service.ChartService;
 import com.kh.devrun.common.AdminUtils;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.memberManage.model.service.MemberManageService;
 import com.kh.devrun.order.model.service.OrderService;
-import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.OrderLog;
 import com.kh.devrun.order.model.vo.Shipment;
@@ -90,8 +90,18 @@ public class AdminController {
 	@Autowired
 	ProductCategoryService productCategoryService;
 	
+	@Autowired
+	ChartService chartService;
+	
 	@GetMapping("/adminMain.do")
-	public void adminMain() {}
+	public void adminMain(Model model) {
+		
+		//매출 cnt값 가져오기
+		Map<String, Integer> cntList = chartService.findMainCnt();
+		log.debug("cntList={}", cntList);
+		
+		model.addAttribute("cntList", cntList);
+	}
 
 	
 	@GetMapping("/product/productMain.do")
@@ -357,7 +367,8 @@ public class AdminController {
 		// 상품 List에 뿌려준 productCode를 상품detail 페이지로 넘긴 뒤 update 페이지까지 넘겨줌
 		product.setProductCode(productCode);
 		// thumbnail set
-		product.setThumbnail(productCode +".png");
+		String productImg = productCode+".png";
+		product.setThumbnail(productImg);
 		
 		// 상품상세 객체로 묶어 전달		
 		List<ProductDetail> productDetailList = new ArrayList<>();
@@ -394,17 +405,14 @@ public class AdminController {
 				File delFile = new File(fileDirectory);
 				boolean fileDelete = delFile.delete();
 				log.debug("fileDelete = {}", fileDelete);
-
-				
+		
 				// 서버 컴퓨터 저장
-				log.debug("첨부파일 있음~~~~~~~");
-				newProductImg = productCode+"-1.png";
-				File dest = new File(saveDirectory, newProductImg);
+				File dest = new File(saveDirectory, productImg);
 				upFile.transferTo(dest);			
 				
 				// 바뀐 이미지 파일 명 set한 뒤 update
 				// 상품 정보 수정(첨부파일도 같이 수정)
-				product.setThumbnail(newProductImg);
+				product.setThumbnail(productImg);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -436,8 +444,7 @@ public class AdminController {
 	}
 	
 
-	
-	
+		
 	// 비동기로 소분류 이름 & 코드 가져오기.
 	@GetMapping("/productCategory/searchChildCategory.do")
 	@ResponseBody
@@ -514,6 +521,103 @@ public class AdminController {
 		redirectAttr.addFlashAttribute("msg","상품 카테고리 삭제 성공");
 		return "redirect:/admin/product/productCategory.do";
 	}
+	
+	// 상품 카테고리 코드 중복검사
+	@ResponseBody
+	@GetMapping("/productCategory/checkCategoryCode.do")
+	public Map<String,Object> checkCategoryCode(
+				@RequestParam(required = false) String afterUpdateCategoryCode
+			) {
+		Map<String,Object>map = new HashMap<>(); 
+		
+		log.debug("afterUpdateCategoryCode = {}",afterUpdateCategoryCode);
+		
+		
+		// 대분류, 소분류 두 테이블을 조회한 뒤 같은 값이 있다면 true를 리턴
+		List<ProductParentCategory> productCategoryList  = productCategoryService.selectCategoryCode(afterUpdateCategoryCode);		
+		
+		log.debug("productCategory = {}",productCategoryList);
+		
+		if(productCategoryList.isEmpty()) {
+			log.debug("사용가능");
+			map.put("result", true);
+		}
+		else {
+			log.debug("사용 불가능-------------");
+			map.put("result", false);
+		}
+		
+		
+		map.put("afterUpdateCategoryCode", "["+afterUpdateCategoryCode+"]");
+		return map;
+	};
+	
+	// 상품 카테고리 이름 중복검사
+	@ResponseBody
+	@GetMapping("/productCategory/checkCategoryTitle.do")
+	public Map<String,Object> checkCategoryTitle(
+			@RequestParam(required = false) String afterUpdateCategoryTitle
+			) {
+		Map<String,Object>map = new HashMap<>(); 
+		
+		log.debug("afterUpdateCategoryTitle = {}",afterUpdateCategoryTitle);
+		
+		
+		// 대분류, 소분류 두 테이블을 조회한 뒤 같은 값이 있다면 true를 리턴
+		List<ProductParentCategory> productTitleList = productCategoryService.selectCategoryTitle(afterUpdateCategoryTitle);			
+		
+		
+		log.debug("productTitle = {}",productTitleList);
+
+		
+		if(productTitleList.isEmpty()) {
+			log.debug("사용가능한 이름");
+			map.put("result", true);
+		}
+		else {
+			log.debug("사용 불가능 이-------------");
+			map.put("result", false);
+		}
+		
+		
+		
+		map.put("afterUpdateCategoryTitle", "["+afterUpdateCategoryTitle+"]");
+		return map;
+	};
+	
+	// 상품 카테고리 업데이트
+	@PostMapping("/product/updateCategory.do")
+	public String updateCategory(
+				@RequestParam String updateKind,
+				@RequestParam(required = false) String beforeTitle,
+				@RequestParam(required = false) String updateCategoryTitle,
+				@RequestParam(required = false) String beforeCode,
+				@RequestParam(required = false) String updateCategoryCode,
+				RedirectAttributes redirectAttr
+			) {
+		int result = 0;
+		
+		log.debug("updateKind = {}",updateKind);
+		log.debug("beforeTitle = {}",beforeTitle);
+		log.debug("updateCategoryTitle ={}",updateCategoryTitle);
+		log.debug("beforeCode = {}",beforeCode);
+		log.debug("updateCategoryCode = {}",updateCategoryCode);
+		
+		Map<String,String>param = new HashMap<>();
+		
+		param.put("updateKind", updateKind);
+		param.put("beforeTitle", beforeTitle);
+		param.put("updateCategoryTitle", updateCategoryTitle);
+		param.put("beforeCode", beforeCode);
+		param.put("updateCategoryCode", updateCategoryCode);
+		
+		result = productCategoryService.updateCategory(param);
+		
+		redirectAttr.addFlashAttribute("msg","업데이트 완료.");
+		
+		return "redirect:/admin/product/productCategory.do";
+	}
+	
 	
 	
 	
