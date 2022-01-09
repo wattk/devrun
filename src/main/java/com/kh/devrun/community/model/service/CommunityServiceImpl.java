@@ -241,10 +241,35 @@ public class CommunityServiceImpl implements CommunityService {
 	public List<CommunityEntity> selectAllLikeOrderBySelectType(Map<String, Object> param, int offset, int limit) {
 		return communityDao.selectAllLikeOrderBySelectType(param, offset, limit);
 	}
-	
+
 	/**
 	 * 지원 서비스 끝
 	 */
+	
+	// 모집진행 순 리스트
+	@Override
+	public List<CommunityEntity> selectJoinStartBoardList(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectJoinStartBoardList(param, offset, limit);
+	}
+
+	// 모집진행 게시물 수
+	@Override
+	public int selectOneStudyJoinStartCount() {
+		return communityDao.selectOneStudyJoinStartCount();
+	}
+
+	// 모집완료 순 리스트
+	@Override
+	public List<CommunityEntity> selectJoinEndBoardList(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectJoinEndBoardList(param, offset, limit);
+	}
+
+	// 모집완료 게시물 수
+	@Override
+	public int selectOneStudyJoinEndCount() {
+		return communityDao.selectOneStudyJoinEndCount();
+	}
+	
 
 
 
