@@ -16,8 +16,9 @@
 #profile #edit {position:absolute; top:19%; right:31%; width:30px; height:30px;}
 #profile #badge {position:absolute; top:1%; left:28%; width:40px; height:40px; background-color:#2ECC71; border:5px solid #2ECC71; border-radius:50%; box-shadow:2px 2px 2px hsl(0deg 0% 0% / 0.38);}
 #profile section:nth-of-type(2) p span:first-of-type {color:#1A81FF;}
-#profile #url {padding:5px 10px; font-size:16px;}
-#profile hr {margin:20px 0;}
+#profile #url {padding:5px 11px; border-radius:1rem; color:#1A81FF; background-color:rgb(26, 129, 255, 0.2); border:0; font-size:16px; line-height:17px;}
+#profile #url:hover {color:#FFFFFF; background-color:#1A81FF;}
+#profile hr {margin:25px 0;}
 
 /* member grade info */
 #myGrade {padding:30px 0; margin-bottom:20px; border-radius:10px;}
