@@ -140,48 +140,67 @@ public class AdminController {
 	public Map<String,Object> searchProduct(
 				@RequestParam String searchType,
 				@RequestParam String searchKeyword,
+				@RequestParam(required = false) String startDate,
+				@RequestParam(required = false) String endDate,
 				@RequestParam(defaultValue = "1") int cPage,
 				HttpServletRequest request
 			) {
+		// 검색 타입이 없을 때 searchType에 all 대입하여 오류 방
+		if(searchType == "" || searchType == null) {
+			searchType = "all";
+		}
+		
+		log.debug("searchType = {}",searchType);
+		log.debug("searchKeyword ={}",searchKeyword);
+		log.debug("시작날짜 = {}",startDate);
+		log.debug("종료날짜 = {}",endDate);
+		
+		// jsp에서 날짜 초기화 undefind가 아닌 공백이 들어갈 경우 mapper에서 오류가 나 공백을 경우 null을 대입 
+		if(startDate == "" || startDate == "") {
+			startDate = null;
+			endDate = null;
+		}
+
 		
 		Map<String,Object> map = new HashMap<>();
 
 		int limit = 10;
 		int offset = (cPage - 1) * limit;
 		
-		
-		log.debug("searchType = {}",searchType);
-		log.debug("searchKeyword = {}",searchKeyword);
-		log.debug("cPage = {}",cPage);
+
 		Map<String,Object>param = new HashMap<>();
+		
 		
 		
 		param.put("limit",limit);
 		param.put("offset",offset);
-		
+		param.put("startDate",startDate);
+		param.put("endDate",endDate);		
 		param.put("searchType",searchType);
 		param.put("searchKeyword", searchKeyword);
+		
 		
 		// 1.조회한 리스트 가져오기
 		String url = request.getRequestURI()+"?searchType="+searchType+"&searchKeyword="+searchKeyword;
 		
 		List<ProductEntity>productList = productService.searchProductList(param);
 		String productStr = DevrunUtils.getProductListByAdmin(productList,request);
-		log.debug("productStr = {}",productStr);
 		
 		// 2.조회한 게시물 수
-//		int totalContent = productService.searchProductListCount(param);
+
+		int totalContent = productService.searchProductListCount(param);
+		
 		// 3.페이지 바
 
-//		log.debug("pagebarUrl = {}",url);
-//		String pagebar = DevrunUtils.getPagebar2(cPage, limit, totalContent, url);
-//		log.debug("pagebar = {}", pagebar);
-//				
-//		
-//		map.put("productList",productList);
-//		map.put("totalContent",totalContent);
-//		map.put("pagebar",pagebar);
-//		map.put("productStr",productStr);
+		log.debug("pagebarUrl = {}",url);
+		String pagebar = DevrunUtils.getPagebar2(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+				
+	
+		map.put("productList",productList);
+		map.put("totalContent",totalContent);
+		map.put("pagebar",pagebar);
+		map.put("productStr",productStr);
 
 		
 		return map;
@@ -734,7 +753,7 @@ public class AdminController {
 		
 		Map<String,Object>map = new HashMap<>();
 		
-		int limit = 5;
+		int limit = 10;
 		int offset = (cPage - 1) * limit;
 		
 		
@@ -743,9 +762,6 @@ public class AdminController {
 		log.debug("cPage = {}",cPage);
 		Map<String,Object>param = new HashMap<>();
 		
-		if(searchKeyword.contains(",")) {
-			log.debug(searchKeyword);
-		}
 		
 		param.put("limit",limit);
 		param.put("offset",offset);

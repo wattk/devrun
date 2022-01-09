@@ -30,5 +30,6 @@ public class Community implements Serializable {
 	private String answerYn;
 	private String hashtag;
 	private String thumbnail;
+	private String studyJoinYn;
 
 }

@@ -10,6 +10,12 @@ import com.kh.devrun.community.model.vo.CommunityEntity;
 import com.kh.devrun.report.model.vo.Report;
 
 public interface CommunityDao {
+	
+	// 모집중에서 모집완료로 변경
+	int updateJoinNo(Map<String, Object> param);
+
+	// 모집완료에서 모집중으로 변경
+	int updateJoinYes(Map<String, Object> param);
 
 	int insertColumn(Community community);
 

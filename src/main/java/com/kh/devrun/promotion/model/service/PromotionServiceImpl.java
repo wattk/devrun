@@ -151,6 +151,16 @@ public class PromotionServiceImpl implements PromotionService {
 		return promotionDao.selectProductTotalCount(param);
 	}
 
+	/**
+	 * 지원 service 시작
+	 */
+	@Override
+	public Promotion selectOneLatestPromotionBanner() {
+		return promotionDao.selectOneLatestPromotionBanner();
+	}
+	/**
+	 * 지원 service 끝
+	 */
 	
 	
 }
