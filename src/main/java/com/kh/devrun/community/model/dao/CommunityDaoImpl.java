@@ -20,6 +20,18 @@ public class CommunityDaoImpl implements CommunityDao {
 	@Autowired
 	private SqlSession session;
 	
+	// 모집중에서 모집완료로 변경
+	@Override
+	public int updateJoinNo(Map<String, Object> param) {
+		return session.update("community.updateJoinNo", param);
+	}
+
+	// 모집완료에서 모집중으로 변경
+	@Override
+	public int updateJoinYes(Map<String, Object> param) {
+		return session.update("community.updateJoinYes", param);
+	}
+	
 	@Override
 	public int insertColumn(Community community) {
 		return session.insert("community.insertColumn", community);

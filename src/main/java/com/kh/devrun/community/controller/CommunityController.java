@@ -638,7 +638,49 @@ public class CommunityController {
 		return "redirect:/community/communityFreeboardList.do";
 	}
 	
-	/* ---------------------------------------- 커뮤니티 삭제하기 시작 ---------------------------------------- */
+	/* ---------------------------------------- 커뮤니티 삭제하기 종료 ---------------------------------------- */
+	
+	// 모집중 --> 모집완료
+		@ResponseBody
+		@GetMapping("/joinNo.do")
+		public Map<String, Object> joinNo(
+					@RequestParam int communityNo, 
+					@RequestParam String studyJoinYn
+					){
+			
+			Map<String, Object> param = new HashMap<>();
+			param.put("studyJoinYn", studyJoinYn);
+			param.put("communityNo", communityNo);
+			
+			int result = communityService.updateJoinNo(param);
+			log.debug("모집중에서 모집완료로 변경 = {}", result);
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("result", result);
+			
+			return map;
+		}
+		
+		// 모집완료 --> 모집중
+		@ResponseBody
+		@GetMapping("/joinYes.do")
+		public Map<String, Object> joinYes(
+					@RequestParam int communityNo,
+					@RequestParam String studyJoinYn
+					){
+			
+			Map<String, Object> param = new HashMap<>();
+			param.put("studyJoinYn", studyJoinYn);
+			param.put("communityNo", communityNo);
+			
+			int result = communityService.updateJoinYes(param);
+			log.debug("모집완료에서 모집중로 변경 = {}", result);
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("result", result);
+			
+			return map;
+		}
 	
 	/* ---------------------------------------- 커뮤니티 댓글 시작 ---------------------------------------- */
 	@PostMapping("/communityCommentEnroll.do")

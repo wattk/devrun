@@ -36,6 +36,7 @@ div#search-content {
 div#search-nickname {
 	display: none;
 }
+
 </style>
 
 <!-- 본문 시작 -->
@@ -67,8 +68,9 @@ div#search-nickname {
 				<div id="search-title" class="search-type">
 		            <form class="form-inline search-form"> 
 		            	<input type="hidden" name="searchType" value="title" />
-						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
-						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
+						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search">
+						<input type="hidden" name="pageCode" value="3" />
+						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit" >검색</button>
 				  	</form>
 		        </div>
 		        <!-- 제목검색 종료 -->
@@ -76,17 +78,19 @@ div#search-nickname {
 		        <div id="search-content" class="search-type">
 		            <form class="form-inline search-form"> 
 		            	<input type="hidden" name="searchType" value="content" />
-						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
-						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
+						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search">
+						<input type="hidden" name="pageCode" value="3" />
+						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit" >검색</button>
 				  	</form>
 		        </div>
 		        <!-- 내용검색 종료 -->
 		        <!-- 작성자검색 시작 -->
 		        <div id="search-nickname" class="search-type">
-		            <form> 
+		            <form class="form-inline search-form"> 
 		            	<input type="hidden" name="searchType" value="nickname" />
-						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
-						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
+						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search">
+						<input type="hidden" name="pageCode" value="3" />
+						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit" >검색</button>
 				  	</form>
 		        </div>
 		        <!-- 작성자검색 종료 -->	
@@ -101,8 +105,8 @@ div#search-nickname {
 			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nac-home" role="tab" aria-controls="nav-home" aria-selected="true">최신순</a>
 			    <a class="nav-item nav-link" id="nav-comment-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" data-value="3">답변많은순</a>
 			    <a class="nav-item nav-link" id="nav-like-tab" data-toggle="tab" href="#nav-like" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">좋아요순</a>
-			    <a class="nav-item nav-link" id="nav-like-tab" data-toggle="tab" href="#nav-like" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">모집중</a>
-			    <a class="nav-item nav-link" id="nav-like-tab" data-toggle="tab" href="#nav-like" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">모집완료</a>
+			    <a class="nav-item nav-link" id="nav-joinSatrt-tab" data-toggle="tab" href="#nav-joinStart" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">모집중</a>
+			    <a class="nav-item nav-link" id="nav-joinEnd-tab" data-toggle="tab" href="#nav-joinEnd" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">모집완료</a>
 			  </div>
 			</nav>
 			<!-- 상단 탭 끝 -->
@@ -137,7 +141,8 @@ div#search-nickname {
 			<c:forEach items="${list}" var="communityEntity">
 				<tr data-no="${communityEntity.communityNo}" style="cursor: pointer;" class="whynot">
 					<td>${communityEntity.communityNo}</td>
-					<td>${communityEntity.title}</td>
+					<!-- 모집중 or 모집완료 'N':모집완료 / 'Y':모집중-->
+					<td id="studyCheck" data-study-join-yn="${communityEntity.studyJoinYn}"><span class="badge bg-primary" style="color: white;" id="closeJoinYn"></span>&nbsp;${communityEntity.title}</td>
 					<td>${communityEntity.nickname}</td>
 					<td><fmt:formatDate value="${communityEntity.enrollDate}" pattern="yy-MM-dd"/></td>
 					<td><i class="fas fa-heart"></i> ${communityEntity.likeCount}</td>
@@ -154,7 +159,7 @@ div#search-nickname {
 	<!-- 글쓰기 모달 종료 -->
 	
 	<!-- 페이징 시작 -->
-	<div>
+	<div class="pagebar">
 		${pagebar}
 	</div>
 	<!-- 페이징 끝 -->
@@ -162,12 +167,32 @@ div#search-nickname {
 </div>
 </div>
 <script>
+/* ---------------------------------------------- 모집 기능 시작 ---------------------------------------------- */
+
+$(document).ready(function(){
+	
+	// Detail에서 변경된 데이터 확인
+	var $studyCheck = $('#studyCheck').data('study-join-yn');
+	console.log("모집중:Y/모집완료:N --> ", $studyCheck);
+	
+	// Y or N에 따라 뱃지명 변경
+	if($studyCheck=="Y"){
+		$("#closeJoinYn").html("모집중");
+	}else {
+		$("#closeJoinYn").html("모집완료");
+	}
+		
+});
+
+/* ---------------------------------------------- 모집 기능 종료 ---------------------------------------------- */
+
 /* ---------------------------------------------- 게시글 상세보기 기능 시작 ---------------------------------------------- */
 /**
  * event boubling 기반 핸들링
  * tr 에서 핸들링 > td에서 발생 및 전파
  */
 $("tr[data-no]").click((e) => {
+	e.preventDefault();
 	console.log(e.target);
 	console.log("해당 no = " + $(e.target).data("no"));
 	// tr 태그를 찾는 작업 --> 이벤트 타겟의 부모중의 tr태그를 찾아주세요.
@@ -182,6 +207,7 @@ $("tr[data-no]").click((e) => {
 /* ---------------------------------------------- 게시글 상세보기 기능 종료 ---------------------------------------------- */
 
 /* ---------------------------------------------- 검색된 게시글 상세보기 기능 시작 ---------------------------------------------- */
+
 $(document).on("click", ".whynot", function(e){ 
 	console.log(e.target);
 	console.log("해당 no = " + $(e.target).data("no"));
@@ -190,9 +216,11 @@ $(document).on("click", ".whynot", function(e){
 	console.log("해당 tr = " + $tr);
 	const communityNo = $tr.data("no");
 	console.log("해당 communityNo = " + communityNo);
-	
+
 	location.href = `${pageContext.request.contextPath}/community/communityDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
 });
+
+
 /* ---------------------------------------------- 검색된 게시글 상세보기 기능 종료 ---------------------------------------------- */
 
 /* ---------------------------------------------- 타입별 검색 기능 시작 ---------------------------------------------- */
@@ -225,6 +253,7 @@ $("input[name=searchKeyword]").change(e => {
 	//console.log("searchKeyword = " + $(e.target).val());
 	
 	$searchType = $(e.target).parent().children("input[name=searchType]").val();
+	$pageCode = $(e.target).parent().children("input[name=pageCode]").val();
 	$searchKeyword = $(e.target).val();
 });
 
@@ -232,19 +261,23 @@ $("input[name=searchKeyword]").change(e => {
 var $searchType = "";
 var $searchKeyword = "";
 
+
 /* 검색 결과 페이징 */
 function getPage(cPage){
 	const $btn = (".search-btn");
-	
+		
 	searchType = $searchType;
+	pageCode = $pageCode;
 	searchKeyword = $searchKeyword;
 	var cPage;
 	
 	console.log("searchType = " + searchType);
+	console.log("pageCode = " + pageCode);
 	console.log("searchKeyword = " + searchKeyword);
 	
 	const search = {
 			"searchType" : $searchType,
+			"pageCode" : $pageCode,
 			"searchKeyword" : $searchKeyword,
 			"cPage" : cPage
 	};
@@ -252,7 +285,7 @@ function getPage(cPage){
 	console.log(search);
 	
 	$.ajax({
-		url : "${pageContext.request.contextPath}/community/communityStudyFinder.do",
+		url : "${pageContext.request.contextPath}/community/communityFinder.do",
 		data : search,
 		constentType : "application/json; charset=utf-8",
 		success(data){
