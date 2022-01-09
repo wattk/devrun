@@ -1,5 +1,15 @@
+<%@page import="java.util.List"%>
+<%@page import="com.kh.devrun.product.model.vo.Product"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
+<fmt:requestEncoding value="utf-8"/>
+
+<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 
 <!-- js 임포트 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script>
@@ -113,10 +123,10 @@
                </div>
                <div id="shopSerachDiv">
                    <nav class="navbar navbar-light bg-light">
-                       <form class="form-inline" action="${pageContext.request.contextPath}/shop/shopSearch.do"> 
-                         <input class="form-control mr-sm-2" type="search" placeholder="검색어를 입력하세요" aria-label="Search">
+                       <form:form method="POST" class="form-inline" action="${pageContext.request.contextPath}/shop/shopSearch"> 
+                         <input name="searchKeyword" class="form-control mr-sm-2" type="search" placeholder="검색어를 입력하세요" aria-label="Search" required>
                          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                       </form>
+                       </form:form>
                      </nav>
                </div>
                <div id="shopMainEventBtnDiv">

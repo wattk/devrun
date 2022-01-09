@@ -203,4 +203,15 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectList("shop.selectItemsByChildCateBySort", param, rowBounds);
 	}
 
+	@Override
+	public List<ProductEntity> shopSearch(int offset, int limit, String searchKeyword) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("shop.shopSearch", searchKeyword, rowBounds);
+	}
+
+	@Override
+	public int countShopSearch(String searchKeyword) {
+		return session.selectOne("shop.countShopSearch", searchKeyword);
+	}
+
 }
