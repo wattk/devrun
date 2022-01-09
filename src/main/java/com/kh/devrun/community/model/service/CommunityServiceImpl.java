@@ -26,6 +26,18 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Autowired
 	private CommunityDao communityDao;
+	
+
+	// 모집중에서 모집완료로 변경
+	@Override
+	public int updateJoinNo(Map<String, Object> param) {
+		return communityDao.updateJoinNo(param);
+	}
+
+	@Override
+	public int updateJoinYes(Map<String, Object> param) {
+		return communityDao.updateJoinYes(param);
+	}
 
 	@Override
 	public List<Community> selectColumnList() {

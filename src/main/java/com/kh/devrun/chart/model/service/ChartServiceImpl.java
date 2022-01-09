@@ -4,11 +4,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.devrun.chart.model.dao.ChartDao;
+import com.kh.devrun.community.model.dao.CommunityDao;
+import com.kh.devrun.community.model.vo.Community;
+import com.kh.devrun.community.model.vo.CommunityEntity;
+import com.kh.devrun.product.model.dao.ProductDao;
+import com.kh.devrun.product.model.vo.ProductEntity;
+import com.kh.devrun.promotion.model.dao.PromotionDao;
+import com.kh.devrun.promotion.model.vo.Promotion;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,6 +24,12 @@ public class ChartServiceImpl implements ChartService {
 	
 	@Autowired
 	private ChartDao chartDao;
+	@Autowired
+	private ProductDao productDao;
+	@Autowired
+	private CommunityDao communityDao;
+	@Autowired
+	private PromotionDao promotionDao;
 
 
 	@Override
@@ -80,6 +92,31 @@ public class ChartServiceImpl implements ChartService {
 		map.put("salesProduct", salesProduct);
 		map.put("orderLogCnts", orderLogCnts);
 		map.put("communityCnts", communityCnts);
+		
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> findHomeMain() {
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		List<Map<String, Object>> likeCommunityList = chartDao.selectBestCommunity();
+		List<CommunityEntity> freeboardList = chartDao.selectFreeboardList();
+		List<Map<String, Object>> qnaList = chartDao.selectQnaList();
+		List<Community> columnList = chartDao.selectColumnList();
+		
+		List<ProductEntity> likeProductList = chartDao.selectLikeProduct();
+		
+		List<Promotion> promotionList = chartDao.selectCurrentPromotionList();
+		
+		map.put("likeCommunityList", likeCommunityList);
+		map.put("freeboardList", freeboardList);
+		map.put("qnaList", qnaList);
+		map.put("columnList", columnList);
+		map.put("likeProductList", likeProductList);
+		map.put("promotionList", promotionList);
+		
 		
 		return map;
 	}
