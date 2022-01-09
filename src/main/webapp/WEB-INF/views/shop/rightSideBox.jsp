@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<link href="${pageContext.request.contextPath }/resources/css/shop/shopSideBox.css" rel="stylesheet"> 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
+
+
 
            <div id="sidebox"> 
                <div id="sideboxHeader">
@@ -26,24 +30,11 @@
 				  </button>
                </div>
            </div>
-<style>
-.thisHeight{
-	height: 330px;
-}
-.slide-btn > img {
-	width: 20px;
-	height: 20px;
-}
-#sideBoxFooter{
-	display: flex;
-    justify-content: space-between;
-}
-#sideBoxFooter >button {
-	border: 0px;
-}
-</style>
+
 <script>
+/** 오늘본상품시작*/
 window.onload = todayViewBox;
+
 
 function todayViewBox () {
 	console.log("todayViewBox 함수 시작");
@@ -61,8 +52,8 @@ function todayViewBox () {
 		if(length == 0){
 			$('.thisHeight').css("height", "60px");
 		}
-		if(length >0){
-			$(todayNothing).remove();
+		if(length >0) {
+			$('#todayNothing').remove();
 		}
 		
 		if(length<=3){
@@ -108,6 +99,8 @@ function todayViewBox () {
 		
 	}	
 	
-}	
-	
-</script>           
+}
+/** 오늘본상품끝*/
+
+
+</script>

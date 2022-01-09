@@ -42,3 +42,20 @@
    
    /*오늘 본 상품 div 끝*/
    
+   /*추가*/
+
+	.thisHeight{
+		height: 330px;
+	}
+	.slide-btn > img {
+		width: 20px;
+		height: 20px;
+	}
+	#sideBoxFooter{
+		display: flex;
+	    justify-content: space-between;
+	}
+	#sideBoxFooter >button {
+		border: 0px;
+	}
+  

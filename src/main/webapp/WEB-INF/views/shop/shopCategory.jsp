@@ -17,7 +17,6 @@
 
 <!-- shopSideBox 관련 임포트 -->
 <jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
 
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
 <div class="shop-container">
@@ -127,6 +126,8 @@ $(".category-badge, .shop-sort").click((e)=>{
 });
 </script>
 
+<!-- shopSideBox 관련 임포트 -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
 
 <!-- shopHeader js  -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
