@@ -115,12 +115,48 @@ div#search-nickname {
 		</div>
 	</div>
 	
-	<!-- 총 게시물 수 시작 -->
-	<div id="totalCountContainer">
-	 <p>총 게시물 수 : ${totalContent}</p>			  
+	<div id="totalCountContainer row" >
+		총 게시물 수 : ${totalContent}			  
+		<button class="btn btn-secondary float-right" data-toggle="modal" data-target="#bs-example-modal-lg"><i class="fas fa-question-circle"></i>&nbsp;&nbsp;스터디 가이드</button>
 	</div>
-	<!-- 총 게시물 수 종료 -->
 	
+	<!-- 스터디 가이드 모달 시작 -->
+	<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title" id="myLargeModalLabel"><strong>스터디 가이드</strong></h4>
+	      </div>
+	      <br />
+	      <div class="modal-body">
+	      <p><strong>스터디 모집글에 아래 양식을 참고해 작성해주세요.</strong></p>
+	      <p><strong>꼼꼼히 작성하면 멋진 스터디 팀원을 만나실 수 있을거에요.</strong></p>
+	      <hr />
+			<div class="input-group flex-nowrap">
+
+ <textarea rows="13" cols="100" readonly="readonly">
+ 
+ [개발 스터디 모집 내용 예시]
+  
+ ● 스터디 주제 : 
+ ● 예상 스터디 일정(횟수) : 
+ ● 예상 커리큘럼 간략히 :
+ ● 예상 모집인원 : 
+ ● 스터디 소개와 개설 이유 :  
+ ● 스터디 관련 주의사항 : 
+ ● 스터디에 지원할 수 있는 방법을 남겨주세요. (이메일, 카카오 오픈채팅방, 구글폼 등.)	 
+ </textarea>
+			</div>
+		  <hr />	
+	      </div>
+	      <div class="modal-footer justify-content-center">
+			<button type="button" class="btn btn-secondary col-4" data-dismiss="modal" id="deleteReporBtn">확인</button>
+		  </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 스터디 가이드 모달 종료 -->
+
 	<br />
 			
 	<!-- 리스트 시작 -->
