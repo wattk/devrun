@@ -49,4 +49,6 @@ public interface PromotionService {
 
 	int selectProductTotalCount(Map<String, Object> param);
 
+	Promotion selectOneLatestPromotionBanner();
+
 }

@@ -173,7 +173,6 @@ public class AdminController {
 //		int totalContent = productService.searchProductListCount(param);
 		
 		// 3.페이지 바
-
 //		log.debug("pagebarUrl = {}",url);
 //		String pagebar = DevrunUtils.getPagebar2(cPage, limit, totalContent, url);
 //		log.debug("pagebar = {}", pagebar);
