@@ -194,13 +194,13 @@ public class DevrunUtils {
 
 		for (ProductEntity product : productList) {
 			sb.append("<div class=\"card-box-d col-md-3 p-5\">\n"
-					+ "<div class=\"card-img-d shop-item-img position-relative\">\r\n" + "<img src=\"" + url
+					+ "<div class=\"card-img-d shop-item-img position-relative\">\r\n"+ "<a href=\"" + url + "/shop/itemDetail/" + product.getProductCode() + "\">\r\n"  + "<img src=\"" + url
 					+ "/resources/upload/product/" + product.getThumbnail()
-					+ "\" alt=\"\" class=\"img-d img-fluid\">\r\n"
-					+ "<i class=\"shop-like-icon fas fa-heart position-absolute\"></i>\r\n" + "</div>\r\n"
-					+ "<a href=\"" + url + "/shop/itemDetail/" + product.getProductCode() + "\">\r\n" + "<div>\r\n"
-					+ "<p class=\"m-0\">" + product.getName() + "</p>\r\n" + "<strong>&#8361;"
-					+ fmt.format(product.getPrice()) + "</strong>\r\n" + "</div>\r\n" + "</a>" + "</div>");
+					+ "\" alt=\"\" class=\"img-d img-fluid\">\r\n"+ "</a>"
+					+ "<i class=\"shop-like-icon far fa-heart position-absolute\"></i>\r\n" + "</div>\r\n"
+					+ "<div>\r\n"
+					+ "<p class=\"m-0 ml-2\">" + product.getName() + "</p>\r\n" + "<strong class=\"ml-2\">&#8361;"
+					+ fmt.format(product.getPrice()) + "</strong>\r\n" + "</div>\r\n" + "</div>");
 		}
 
 		return sb.toString();
@@ -402,15 +402,15 @@ public class DevrunUtils {
 			"<tr> \n"
 				+"<td><input type=\"checkbox\"id=\"select\" class=\"box\"/> </td>\n"
 				+"<td><img id=\"thumbnail\" src=\""+context+"/resources/upload/product/"+ product.getThumbnail() + "\"/></td>\n"
-				+"<td>"+product.getProductCode() +"</td>\n"
+				+"<td><a href=\" "+context+"/admin/productDetail.do?productCode="+product.getProductCode()+"\"> "+product.getProductCode()+"</a></td>\n"
 				+"<td>"+product.getName()+"</td>\n"
 				+"	<td>\r\n"
 				+ "		<button type=\"button\" class=\"option-modal-btn btn btn-light\"\r\n"
-				+ "		data-toggle=\"modal\" data-target=\"#promotionModal\" data-code=\"${pro.productCode}\">확인</button>\r\n"
+				+ "		data-toggle=\"modal\" data-target=\"#promotionModal\" data-code=\""+product.getProductCode()+"\">확인</button>\r\n"
 				+ "	</td>\n"
 				+"<td>"+product.getStatus()+"</td>\n"						
 				+"<td>"+sdf.format(product.getRegDate())+"</td>\n"	
-				+"<td>"+product.getOrderCount()+"</td>\n"						
+				+"<td>"+product.getViewCount()+"</td>\n"						
 
 			+"</tr>");
 		}		

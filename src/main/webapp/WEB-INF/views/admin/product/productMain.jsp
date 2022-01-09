@@ -41,6 +41,7 @@
 		<span id="day" class="badge badge-secondary">오늘</span>
 		<span id="week" class="badge badge-secondary">이번주</span>
 		<span id="month" class="badge badge-secondary">이번달</span>
+		<span id="allDay" class="badge badge-secondary">전체</span>
 	</div>
 	
 	<div class="report-search-container mt-3">
@@ -175,6 +176,16 @@
 
 <script>
 
+// enter 동기 전송 막기
+$('input[type="text"]').keydown(function(e) {
+	if (event.keyCode === 13) {
+		event.preventDefault();
+
+	};
+  
+});
+
+
 
 /* ================  검색 날짜 선택  ================== */
 
@@ -202,9 +213,18 @@ $(".badge").click(e=>{
 	$(e.target).addClass("badge-primary").removeClass("badge-secondary");
 });
 
-//badge-secondary
+// 날짜 뱃지 호버
+$(".badge").hover(e=>{
+	$(e.target).css("cursor","pointer");
+});
 
-
+/* 전체 클릭 시 날짜 초기화 && 전역변수에 담긴 날짜값도 초기화 */
+$("#allDay").click(e=>{
+	$("#startDate, #endDate").val('');
+	startDate = "";
+	endDate = "";
+	
+});
 
 /* '오늘' 버튼 클릭 */
 $("#day").click(e=>{
@@ -309,7 +329,6 @@ var cPage;
 
 // 비동기 요청 실행 및 유효성 검사
 $(".search-btn").click(e=>{
-
 	const target = $(e.target).parent().children("input[name=searchKeyword]").val();
 	console.log("target =",target);
 	
@@ -401,8 +420,6 @@ function getPage(cPage){
 		error:console.log			
 	});
 }
-
-
 
 
 

@@ -147,13 +147,34 @@
 			product
 		where
 			<choose>
-				<when test="searchType.equals('product_code')"> 
-					${searchType} like '%'|| #{searchKeyword} ||'%'
+				<when test="searchType.equals('all')"> 
+					<if test='startDate != null'>
+						 (status ='Y' or  status ='N') and (reg_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD'))
+					</if>
+					<if test="startDate == null or startDate.equals('')" >
+						 status ='Y' or  status ='N'
+					</if>
+				</when>
+				<when test="searchType.equals('product_code') or searchType.equals('name')"> 
+					<if test='startDate != null'>
+						 (${searchType} like '%'|| #{searchKeyword} ||'%') and (reg_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD'))
+					</if>
+					<if test="startDate == null or startDate.equals('')" >
+						${searchType} like '%'|| #{searchKeyword} ||'%'
+					</if>
 				</when>			
+
 				<when test="searchType.equals('status')"> 
-					${searchType} = #{searchKeyword}
+					<if test='startDate != null'>
+						 (${searchType} = #{searchKeyword}) and (reg_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD'))
+					</if>
+					<if test="startDate == null or startDate.equals('')" >
+						${searchType} = #{searchKeyword}
+					</if>
 				</when>	
 			</choose>
+			order by
+				reg_date desc
 	</select>
 	
 	<!-- 삼품 검색 목록 갯수 가져오기  -->
@@ -164,11 +185,30 @@
 			product
 		where
 			<choose>
-				<when test="searchType.equals('product_code')"> 
-					${searchType} like '%'|| #{searchKeyword} ||'%'
+				<when test="searchType.equals('all')"> 
+					<if test='startDate != null'>
+						 (status ='Y' or  status ='N') and (reg_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD'))
+					</if>
+					<if test="startDate == null or startDate.equals('')" >
+						 status ='Y' or  status ='N'
+					</if>
+				</when>
+				<when test="searchType.equals('product_code') or searchType.equals('name')"> 
+					<if test='startDate != null'>
+						 (${searchType} like '%'|| #{searchKeyword} ||'%') and (reg_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD'))
+					</if>
+					<if test="startDate == null or startDate.equals('')" >
+						${searchType} like '%'|| #{searchKeyword} ||'%'
+					</if>
 				</when>			
+
 				<when test="searchType.equals('status')"> 
-					${searchType} = #{searchKeyword}
+					<if test='startDate != null'>
+						 (${searchType} = #{searchKeyword}) and (reg_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD'))
+					</if>
+					<if test="startDate == null or startDate.equals('')" >
+						${searchType} = #{searchKeyword}
+					</if>
 				</when>	
 			</choose>
 	</select>
@@ -324,6 +364,33 @@
 			product
 		order by
 			view_count desc
+	</select>
+	
+	<select id="findProductSearch" resultType="product">
+	  	select
+	  		product_code,
+	  		name,
+	  		price,
+	  		reg_date,
+	  		thumbnail
+	  	from
+	  		product
+	  	where
+	  		name like '%'||#{searchKeyword}||'%'
+	  			or price like '%'||#{searchKeyword}||'%'
+	  				or content like '%'||#{searchKeyword}||'%'
+	  	order by
+	  		reg_date desc
+	</select>
+	<select id="findProductCnt" resultType="_int">
+	  	select
+	  		nvl(count(*),0)
+	  	from
+	  		product
+	  	where
+	  		name like '%'||#{searchKeyword}||'%'
+	  			or price like '%'||#{searchKeyword}||'%'
+	  				or content like '%'||#{searchKeyword}||'%'
 	</select>
 	<!-- 혜진 mapper 끝 -->
 </mapper>
