@@ -6,10 +6,15 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="데브런" name="title"/>
 </jsp:include>
+<style>
+.product-title{
+	word-break : keep-all;
+}
+</style>
   <!--/ Carousel Star /-->
   <div class="intro intro-carousel">
     <div id="carousel" class="owl-carousel owl-theme">
-      <div class="carousel-item-a intro-item bg-image" style="background-image: url(#)">
+      <div class="carousel-item-a intro-item bg-image" style="background-image: url(${pageContext.request.contextPath}/resources/images/main2.jpg)">
         <div class="overlay overlay-a"></div>
         <div class="intro-content display-table">
           <div class="table-cell">
@@ -23,7 +28,7 @@
                       Dev <span class="color-b">Run </span>
                       <br>For a better life as a developer</h1>
                     <p class="intro-subtitle intro-price">
-                      <a href="#"><span class="price-a">About DevRun</span></a>
+                      <a href="${pageContext.request.contextPath}/about.do"><span class="price-a">About DevRun</span></a>
                     </p>
                   </div>
                 </div>
@@ -32,7 +37,7 @@
           </div>
         </div>
       </div>
-      <div class="carousel-item-a intro-item bg-image" style="background-image: url(#)">
+      <div class="carousel-item-a intro-item bg-image" style="background-image: url(${pageContext.request.contextPath}/resources/images/main3.jpg)">
         <div class="overlay overlay-a"></div>
         <div class="intro-content display-table">
           <div class="table-cell">
@@ -40,13 +45,13 @@
               <div class="row">
                 <div class="col-lg-8">
                   <div class="intro-body">
-                    <p class="intro-title-top">Doral, Florida
-                      <br> 78345</p>
+                    <p class="intro-title-top">Developer Comprehensive Platform
+                      <br>devrun.com</p>
                     <h1 class="intro-title mb-4">
-                      <span class="color-b">204 </span> Rino
-                      <br> Venda Road Five</h1>
+                      Find Your 
+                      <br> <span class="color-b">Best </span> Product</h1>
                     <p class="intro-subtitle intro-price">
-                      <a href="#"><span class="price-a">rent | $ 12.000</span></a>
+                      <a href="${pageContext.request.contextPath}/shop/shopMain.do"><span class="price-a">just click here</span></a>
                     </p>
                   </div>
                 </div>
@@ -55,7 +60,7 @@
           </div>
         </div>
       </div>
-      <div class="carousel-item-a intro-item bg-image" style="background-image: url(#)">
+      <div class="carousel-item-a intro-item bg-image" style="background-image: url(${pageContext.request.contextPath}/resources/images/main1.jpg)">
         <div class="overlay overlay-a"></div>
         <div class="intro-content display-table">
           <div class="table-cell">
@@ -63,13 +68,13 @@
               <div class="row">
                 <div class="col-lg-8">
                   <div class="intro-body">
-                    <p class="intro-title-top">Doral, Florida
-                      <br> 78345</p>
+                    <p class="intro-title-top">Developer Comprehensive Platform
+                      <br>devrun.com</p>
                     <h1 class="intro-title mb-4">
-                      <span class="color-b">204 </span> Alira
-                      <br> Roan Road One</h1>
+                      The Only <span class="color-b">One </span>
+                      <br> Developer Community</h1>
                     <p class="intro-subtitle intro-price">
-                      <a href="#"><span class="price-a">rent | $ 12.000</span></a>
+                      <a href="${pageContext.request.contextPath}/community/communityMain.do"><span class="price-a">be productive</span></a>
                     </p>
                   </div>
                 </div>
@@ -92,7 +97,7 @@
               <h2 class="title-a">커뮤니티</h2>
             </div>
             <div class="title-link">
-              <a href="agents-grid.html">더보기
+              <a href="${pageContext.request.contextPath}/community/communityMain.do">더보기
                 <span class="ion-ios-arrow-forward"></span>
               </a>
             </div>
@@ -109,21 +114,25 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr>
-			      <th scope="row">1</th>
-			      <td>Mark</td>
-			      <td>Otto</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">2</th>
-			      <td>Jacob</td>
-			      <td>Thornton</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">3</th>
-			      <td>Larry</td>
-			      <td>the Bird</td>
-			    </tr>
+			  	<c:if test="${not empty map.likeCommunityList }">
+			  		<c:forEach items="${map.likeCommunityList}" var="c" varStatus="vs">
+					    <tr>
+					      <th scope="row">${vs.count}</th>
+					      <td>
+					      	<a href="#">
+					      		<span>${c["PAGECODE"] eq 1?'[칼럼]': c["PAGECODE"] eq 2?'[QnA]':c["PAGECODE"] eq 3?'[스터디]':'[자유게시판]' }</span>
+					      		${c["TITLE"]}
+					      	</a>
+					      </td>
+					      <td>${c["NICKNAME"]}</td>
+					    </tr>
+			  		</c:forEach>
+			  	</c:if>
+			  	<c:if test="${empty map.likeCommunityList }">
+				    <tr>
+				      <th scope="row" colspan="3" class="text-center">글이 없습니다.</th>
+				    </tr>
+			  	</c:if>
 			  </tbody>
 			</table>
           </div>
@@ -137,21 +146,20 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr>
-			      <th scope="row">1</th>
-			      <td>Mark</td>
-			      <td>Otto</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">2</th>
-			      <td>Jacob</td>
-			      <td>Thornton</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">3</th>
-			      <td>Larry</td>
-			      <td>the Bird</td>
-			    </tr>
+			    <c:if test="${not empty map.freeboardList}">
+			  		<c:forEach items="${map.freeboardList}" var="c" varStatus="vs">
+					    <tr>
+					      <th scope="row">${vs.count}</th>
+					      <td>${c.title}</td>
+					      <td>${c.nickname}</td>
+					    </tr>
+			  		</c:forEach>
+			  	</c:if>
+			  	<c:if test="${empty map.freeboardList}">
+				    <tr>
+				      <th scope="row" colspan="3" class="text-center">글이 없습니다.</th>
+				    </tr>
+			  	</c:if>
 			  </tbody>
 			</table>
           </div>
@@ -165,21 +173,20 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr>
-			      <th scope="row">1</th>
-			      <td>Mark</td>
-			      <td>Otto</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">2</th>
-			      <td>Jacob</td>
-			      <td>Thornton</td>
-			    </tr>
-			    <tr>
-			      <th scope="row">3</th>
-			      <td>Larry</td>
-			      <td>the Bird</td>
-			    </tr>
+			    <c:if test="${not empty map.qnaList}">
+			  		<c:forEach items="${map.qnaList}" var="c" varStatus="vs">
+					    <tr>
+					      <th scope="row">${vs.count}</th>
+					      <td>${c["TITLE"]}</td>
+					      <td>${c["NICKNAME"]}</td>
+					    </tr>
+			  		</c:forEach>
+			  	</c:if>
+			  	<c:if test="${empty map.qnaList}">
+				    <tr>
+				      <th scope="row" colspan="3" class="text-center">글이 없습니다.</th>
+				    </tr>
+			  	</c:if>
 			  </tbody>
 			</table>
           </div>
@@ -199,7 +206,7 @@
               <h2 class="title-a">베스트셀러</h2>
             </div>
             <div class="title-link">
-              <a href="agents-grid.html">더보기
+              <a href="${pageContext.request.contextPath}/shop/shopMain.do">더보기
                 <span class="ion-ios-arrow-forward"></span>
               </a>
             </div>
@@ -207,90 +214,38 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-4">
-          <div class="card-box-d">
-            <div class="card-img-d">
-              <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
-            </div>
-            <div class="card-overlay card-overlay-hover">
-              <div class="card-header-d">
-                <div class="card-title-d align-self-center">
-                  <h3 class="title-d">
-                    <a href="agent-single.html" class="link-two">상품명
-                      <br> Escala</a>
-                  </h3>
-                </div>
-              </div>
-              <div class="card-body-d">
-                <p class="content-d color-text-a">
-                  Sed porttitor lectus nibh, Cras ultricies ligula sed magna dictum porta two.
-                </p>
-                <div class="info-agents color-a">
-                  <p>
-                    <strong>Phone: </strong> +54 356 945234</p>
-                  <p>
-                    <strong>Email: </strong> agents@example.com</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card-box-d">
-            <div class="card-img-d">
-              <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
-            </div>
-            <div class="card-overlay card-overlay-hover">
-              <div class="card-header-d">
-                <div class="card-title-d align-self-center">
-                  <h3 class="title-d">
-                    <a href="agent-single.html" class="link-two">상품명
-                      <br> Darw</a>
-                  </h3>
-                </div>
-              </div>
-              <div class="card-body-d">
-                <p class="content-d color-text-a">
-                  Sed porttitor lectus nibh, Cras ultricies ligula sed magna dictum porta two.
-                </p>
-                <div class="info-agents color-a">
-                  <p>
-                    <strong>Phone: </strong> +54 356 945234</p>
-                  <p>
-                    <strong>Email: </strong> agents@example.com</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card-box-d">
-            <div class="card-img-d">
-              <img src="${pageContext.request.contextPath }/resources/images/800x896.jpg" alt="" class="img-d img-fluid">
-            </div>
-            <div class="card-overlay card-overlay-hover">
-              <div class="card-header-d">
-                <div class="card-title-d align-self-center">
-                  <h3 class="title-d">
-                    <a href="agent-single.html" class="link-two">상품명
-                      <br> Cascada</a>
-                  </h3>
-                </div>
-              </div>
-              <div class="card-body-d">
-                <p class="content-d color-text-a">
-                  Sed porttitor lectus nibh, Cras ultricies ligula sed magna dictum porta two.
-                </p>
-                <div class="info-agents color-a">
-                  <p>
-                    <strong>Phone: </strong> +54 356 945234</p>
-                  <p>
-                    <strong>Email: </strong> agents@example.com</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      	<c:if test="${not empty map.likeProductList}">
+      		<c:forEach items="${map.likeProductList}" var="p" varStatus="vs">
+      			<div class="col-md-4">
+		          <div class="card-box-d">
+		            <div class="card-img-d">
+		              <img src="${pageContext.request.contextPath }/resources/upload/product/${p.thumbnail}" alt="" class="img-d img-fluid">
+		            </div>
+		            <div class="card-overlay card-overlay-hover">
+		              <div class="card-header-d">
+		                <div class="card-title-d align-self-center">
+		                  <h3 class="product-title title-d">
+		                    <a href="${pageContext.request.contextPath}/shop/itemDetail/${p.productCode}" class="link-two">${p.name}</a>
+		                  </h3>
+		                </div>
+		              </div>
+		              <div class="card-body-d">
+		                <p class="content-d text-white">
+		                	${fn:substring(p.productCode,0,2) eq 'ke'?'키보드':fn:substring(p.productCode,0,2) eq 'ot'?'기타':fn:substring(p.productCode,0,2) eq 'mn'?'모니터':fn:substring(p.productCode,0,2) eq 'mo'?'마우스':fn:substring(p.productCode,0,2) eq 'ch'?'의자':'책상' }
+		                </p>
+		                <div class="info-agents color-a">
+		                  <p>
+		                    <strong><fmt:formatNumber type="currency">${p.price}</fmt:formatNumber> </strong>
+		                  </p>
+		                </div>
+		              </div>
+		            </div>
+		          </div>
+		        </div>
+      		</c:forEach>
+      	</c:if>
+      	<c:if test="${empty map.likeProductList}">
+      	</c:if>
       </div>
     </div>
   </section>
@@ -305,82 +260,59 @@
             <div class="title-box">
               <h2 class="title-a">칼럼</h2>
             </div>
+            <div class="title-link">
+              <a href="${pageContext.request.contextPath}/community/communityColumnMain.do">더보기
+                <span class="ion-ios-arrow-forward"></span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
       <div class="row">
-        <div class="col-md-4">
-          <div class="card-box-c foo">
-            <div class="card-header-c d-flex">
-              <div class="card-box-ico">
-                <span class="fa fa-gamepad"></span>
-              </div>
-              <div class="card-title-c align-self-center">
-                <h2 class="title-c">Lifestyle</h2>
-              </div>
-            </div>
-            <div class="card-body-c">
-              <p class="content-c">
-                Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Praesent sapien massa,
-                convallis a pellentesque
-                nec, egestas non nisi.
-              </p>
-            </div>
-            <div class="card-footer-c">
-              <a href="#" class="link-c link-icon">Read more
-                <span class="ion-ios-arrow-forward"></span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card-box-c foo">
-            <div class="card-header-c d-flex">
-              <div class="card-box-ico">
-                <span class="fa fa-usd"></span>
-              </div>
-              <div class="card-title-c align-self-center">
-                <h2 class="title-c">Loans</h2>
-              </div>
-            </div>
-            <div class="card-body-c">
-              <p class="content-c">
-                Nulla porttitor accumsan tincidunt. Curabitur aliquet quam id dui posuere blandit. Mauris blandit
-                aliquet elit, eget tincidunt
-                nibh pulvinar a.
-              </p>
-            </div>
-            <div class="card-footer-c">
-              <a href="#" class="link-c link-icon">Read more
-                <span class="ion-ios-arrow-forward"></span>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card-box-c foo">
-            <div class="card-header-c d-flex">
-              <div class="card-box-ico">
-                <span class="fa fa-home"></span>
-              </div>
-              <div class="card-title-c align-self-center">
-                <h2 class="title-c">Sell</h2>
-              </div>
-            </div>
-            <div class="card-body-c">
-              <p class="content-c">
-                Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Praesent sapien massa,
-                convallis a pellentesque
-                nec, egestas non nisi.
-              </p>
-            </div>
-            <div class="card-footer-c">
-              <a href="#" class="link-c link-icon">Read more
-                <span class="ion-ios-arrow-forward"></span>
-              </a>
-            </div>
-          </div>
-        </div>
+      	<c:if test="${not empty map.columnList}">
+	  		<c:forEach items="${map.columnList}" var="c" varStatus="vs">
+			    <%-- <div class="col-md-4">
+		          <div class="card-box-c foo">
+		            <div class="card-header-c d-flex">
+		              <div class="card-box-ico">
+		                <span class="fa fa-gamepad"></span>
+		              </div>
+		              <div class="card-title-c align-self-center">
+		                <h2 class="title-c">${c.title}</h2>
+		              </div>
+		            </div>
+		            <div class="card-body-c">
+		              <p class="content-c">
+		                ${fn:substring(c.content,0,30)}...
+		              </p>
+		            </div>
+		            <div class="card-footer-c">
+		              <a href="#" class="link-c link-icon">Read more
+		                <span class="ion-ios-arrow-forward"></span>
+		              </a>
+		            </div>
+		          </div>
+		        </div> --%>
+		        <div class="col-md-4">
+					<div class="card" style="height:330px;">
+						<img class="card-img-top" alt="Bootstrap Thumbnail First" src="https://www.layoutit.com/img/people-q-c-600-200-1.jpg">
+						<div class="card-block p-3">
+							<h3 class="card-title">
+								${c.title}
+							</h3>
+							<p class="card-text">
+								${fn:substring(c.content,0,30)}...
+							</p>
+						</div>
+					</div>
+				</div>
+	  		</c:forEach>
+	  	</c:if>
+	  	<c:if test="${empty map.columnList}">
+		    <div class="mx-auto text-align">
+		    	<h4>등록된 칼럼이 없습니다.</h4>
+		    </div>
+	  	</c:if>
       </div>
     </div>
   </section>
@@ -402,100 +334,15 @@
           </div>
         </div>
       </div>
-      <div id="new-carousel" class="owl-carousel owl-theme">
-        <div class="carousel-item-c">
-          <div class="card-box-b card-shadow news-box">
-            <div class="img-box-b">
-              <img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b img-fluid">
-            </div>
-            <div class="card-overlay">
-              <div class="card-header-b">
-                <div class="card-category-b">
-                  <a href="#" class="category-b">House</a>
-                </div>
-                <div class="card-title-b">
-                  <h2 class="title-2">
-                    <a href="blog-single.html">House is comming
-                      <br> new</a>
-                  </h2>
-                </div>
-                <div class="card-date">
-                  <span class="date-b">18 Sep. 2017</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item-c">
-          <div class="card-box-b card-shadow news-box">
-            <div class="img-box-b">
-              <img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b img-fluid">
-            </div>
-            <div class="card-overlay">
-              <div class="card-header-b">
-                <div class="card-category-b">
-                  <a href="#" class="category-b">Travel</a>
-                </div>
-                <div class="card-title-b">
-                  <h2 class="title-2">
-                    <a href="blog-single.html">Travel is comming
-                      <br> new</a>
-                  </h2>
-                </div>
-                <div class="card-date">
-                  <span class="date-b">18 Sep. 2017</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item-c">
-          <div class="card-box-b card-shadow news-box">
-            <div class="img-box-b">
-              <img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b img-fluid">
-            </div>
-            <div class="card-overlay">
-              <div class="card-header-b">
-                <div class="card-category-b">
-                  <a href="#" class="category-b">Park</a>
-                </div>
-                <div class="card-title-b">
-                  <h2 class="title-2">
-                    <a href="blog-single.html">Park is comming
-                      <br> new</a>
-                  </h2>
-                </div>
-                <div class="card-date">
-                  <span class="date-b">18 Sep. 2017</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="carousel-item-c">
-          <div class="card-box-b card-shadow news-box">
-            <div class="img-box-b">
-              <img src="${pageContext.request.contextPath }/resources/images/500x500.jpg" alt="" class="img-b img-fluid">
-            </div>
-            <div class="card-overlay">
-              <div class="card-header-b">
-                <div class="card-category-b">
-                  <a href="#" class="category-b">Travel</a>
-                </div>
-                <div class="card-title-b">
-                  <h2 class="title-2">
-                    <a href="#">Travel is comming
-                      <br> new</a>
-                  </h2>
-                </div>
-                <div class="card-date">
-                  <span class="date-b">18 Sep. 2017</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+	    <div class="mx-auto text-center col-md-12" id="currentPromotion" >
+		  	<c:forEach items="${map.promotionList}" var="promotion" varStatus="vs">
+			  <a href="${pageContext.request.contextPath}/shop/promotionDetail/${promotion.promotionCode}" class="m-3">
+			  	<div class="promotion-banner" >
+			  		<img src="${pageContext.request.contextPath}/resources/upload/promotion/${promotion.banner}" alt="" class="img-thumbnail" />
+			  	</div>
+		      </a>
+	       </c:forEach>
+	    </div>
     </div>
   </section>
   <!--/ News End /-->
