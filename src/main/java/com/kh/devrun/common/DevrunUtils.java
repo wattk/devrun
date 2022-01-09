@@ -194,11 +194,11 @@ public class DevrunUtils {
 
 		for (ProductEntity product : productList) {
 			sb.append("<div class=\"card-box-d col-md-3 p-5\">\n"
-					+ "<div class=\"card-img-d shop-item-img position-relative\">\r\n" + "<img src=\"" + url
+					+ "<div class=\"card-img-d shop-item-img position-relative\">\r\n"+ "<a href=\"" + url + "/shop/itemDetail/" + product.getProductCode() + "\">\r\n"  + "<img src=\"" + url
 					+ "/resources/upload/product/" + product.getThumbnail()
 					+ "\" alt=\"\" class=\"img-d img-fluid\">\r\n"
 					+ "<i class=\"shop-like-icon fas fa-heart position-absolute\"></i>\r\n" + "</div>\r\n"
-					+ "<a href=\"" + url + "/shop/itemDetail/" + product.getProductCode() + "\">\r\n" + "<div>\r\n"
+					+ "<div>\r\n"
 					+ "<p class=\"m-0\">" + product.getName() + "</p>\r\n" + "<strong>&#8361;"
 					+ fmt.format(product.getPrice()) + "</strong>\r\n" + "</div>\r\n" + "</a>" + "</div>");
 		}
