@@ -269,6 +269,18 @@ public class CommunityServiceImpl implements CommunityService {
 	public int selectOneStudyJoinEndCount() {
 		return communityDao.selectOneStudyJoinEndCount();
 	}
+
+	// Q&A 리스트
+	@Override
+	public List<CommunityEntity> selectQnAList(int offset, int limit) {
+		return communityDao.selectQnAList(offset, limit);
+	}
+
+	// QnA 전체 게시물 수
+	@Override
+	public int selectOneQnACount() {
+		return communityDao.selectOneQnACount();
+	}
 	
 
 
