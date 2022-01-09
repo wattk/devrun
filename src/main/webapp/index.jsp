@@ -271,37 +271,15 @@
       <div class="row">
       	<c:if test="${not empty map.columnList}">
 	  		<c:forEach items="${map.columnList}" var="c" varStatus="vs">
-			    <%-- <div class="col-md-4">
-		          <div class="card-box-c foo">
-		            <div class="card-header-c d-flex">
-		              <div class="card-box-ico">
-		                <span class="fa fa-gamepad"></span>
-		              </div>
-		              <div class="card-title-c align-self-center">
-		                <h2 class="title-c">${c.title}</h2>
-		              </div>
-		            </div>
-		            <div class="card-body-c">
-		              <p class="content-c">
-		                ${fn:substring(c.content,0,30)}...
-		              </p>
-		            </div>
-		            <div class="card-footer-c">
-		              <a href="#" class="link-c link-icon">Read more
-		                <span class="ion-ios-arrow-forward"></span>
-		              </a>
-		            </div>
-		          </div>
-		        </div> --%>
 		        <div class="col-md-4">
 					<div class="card" style="height:330px;">
 						<img class="card-img-top" alt="Bootstrap Thumbnail First" src="https://www.layoutit.com/img/people-q-c-600-200-1.jpg">
 						<div class="card-block p-3">
 							<h3 class="card-title">
-								${c.title}
+								<a href="${pageContext.request.contextPath}/community/communityColumnDetail.do?communityNo=${c.communityNo}">${c.title}</a>
 							</h3>
 							<p class="card-text">
-								${fn:substring(c.content,0,30)}...
+								<span>${fn:substring(c.content,0,30)}</span>
 							</p>
 						</div>
 					</div>

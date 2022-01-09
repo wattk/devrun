@@ -24,12 +24,6 @@ public class ChartServiceImpl implements ChartService {
 	
 	@Autowired
 	private ChartDao chartDao;
-	@Autowired
-	private ProductDao productDao;
-	@Autowired
-	private CommunityDao communityDao;
-	@Autowired
-	private PromotionDao promotionDao;
 
 
 	@Override
