@@ -101,6 +101,18 @@ public interface CommunityDao {
 	//나의 커뮤니티 좋아요 내역(옵션순)
 	List<CommunityEntity> selectAllLikeOrderBySelectType(Map<String, Object> param, int offset, int limit);
 
+	// 회원 모집진행 순 리스트
+	List<CommunityEntity> selectJoinStartBoardList(Map<String, Object> param, int offset, int limit);
+
+	// 회원 모집진행 게시물 수 
+	int selectOneStudyJoinStartCount();
+
+	// 회원 모집완료 순 리스트
+	List<CommunityEntity> selectJoinEndBoardList(Map<String, Object> param, int offset, int limit);
+
+	// 회원 모집완료 게시물 수
+	int selectOneStudyJoinEndCount();
+
 
 
 

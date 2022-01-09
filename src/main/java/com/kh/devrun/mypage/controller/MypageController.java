@@ -649,6 +649,24 @@ public class MypageController {
 	 * 혜진 교환/환불/취소 리스트 끝
 	 */
 	/**
+	 * 혜진 구매확정 리스트 시작
+	 */
+	
+	@GetMapping("/clearOrder.do")
+	public String clearOrder(@RequestParam String merchantUid, RedirectAttributes redirectAttr){
+		log.debug("merchantUid = {}", merchantUid);
+
+		int result = orderService.clearOneMerchant(merchantUid);
+		
+		redirectAttr.addFlashAttribute("msg", "구매 확정이 완료되었습니다.");
+		
+		return "redirect:/mypage/orderList.do";
+	}
+	
+	/**
+	 * 혜진 구매확정 리스트 끝
+	 */
+	/**
 	 * 혜진 교환/환불/취소 시작
 	 */
 	
