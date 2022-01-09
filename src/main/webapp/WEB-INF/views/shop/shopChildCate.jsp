@@ -34,6 +34,10 @@
 	font-family: 'SANJUGotgam';
 	font-size: 23px;
 }
+.category-container{
+	border :0px;
+	background-color: beige;
+}
 </style>
 
 
