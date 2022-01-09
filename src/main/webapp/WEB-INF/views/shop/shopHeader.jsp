@@ -83,7 +83,7 @@
                         <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=4ot">수납상품</a>
                         <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=5ot">기타상품</a>
                       </div>
-                      <h1 style="font-size:10px;">고객센터</h1>
+                      <h1  id ="serviceCenter" style="font-size:10px;">고객센터</h1>
                     </aside>
                     </div>
                   </div>  
@@ -123,4 +123,9 @@
                    <button type="button" class="btn btn-warning" id= "shopMainEventBtn" style="width: 200px" onclick="location.href='${pageContext.request.contextPath}/shop/promotion.do'">이벤트보러가기</button>
                </div>
            </div>
-                   
+
+<script>
+$(serviceCenter).click((e) => {
+	   location.href = "${pageContext.request.contextPath}/customerCenter/noticeList.do";
+})
+</script>                   

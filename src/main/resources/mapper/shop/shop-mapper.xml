@@ -315,7 +315,32 @@
 		where 
 			CHILD_CATEGORY_CODE = #{childCategoryCode}
 	</select>
-	
+	<select id="selectItemsByChildCateBySort" resultType="productEntity">
+		select 
+			* 
+		from 
+			view_product_parent_category 
+		where 
+			status ='Y' and 
+			child_category_code = #{childCateCode}
+	    <if test="keyword != null">
+	    	<choose>
+	    		<when test="keyword eq 'new'">
+	    			order by reg_date desc
+	    		</when>
+	    		<when test="keyword eq 'recommend'">
+	    			order by view_count desc
+	    		</when>
+	    		<when test="keyword eq 'row'">
+	    			order by price
+	    		</when>
+	    		<when test="keyword eq 'high'">
+	    			order by price desc
+	    		</when>
+	    	</choose>
+	    </if>
+
+	</select>
 
 <!-- =================================================구분선 ================================================= -->
 	

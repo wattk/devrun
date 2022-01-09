@@ -38,6 +38,10 @@
 	border :0px;
 	background-color: beige;
 }
+.shop-item-img img {
+width:200px;
+height:200px;
+}
 </style>
 
 
@@ -55,13 +59,13 @@
 	<div class="item-sort-container d-flex 	justify-content-between">
 		<div class="p-4">총 ${total}개</div>
 		<div class="p-4" id="">
-			<span class="pr-2 pl-2 shop-sort">추천순</span>
-			<span class="pr-2 pl-2 shop-sort">신상품순</span>
-			<span class="pr-2 pl-2 shop-sort">낮은 가격순</span>
-			<span class="pr-2 pl-2 shop-sort">높은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="row">낮은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="high">높은 가격순</span>
 		</div>
 	</div>
-	<div class="row">
+	<div id = "productSortContainer" class="row">
 		<!-- 아이템 나열 시작 -->
 		<c:if test = "${itemList != null}">
 			<c:forEach items="${itemList}" var="l">
@@ -92,6 +96,39 @@
 	</nav>
 </div>
 
+
+
+<script>
+//혜진코드 시작
+//이벤트 상품 소분류 코드별 정렬
+$(".shop-sort").click((e)=>{
+	
+	let sort;
+	
+	if($(e.target).is(".shop-sort")){
+		sort = $(e.target).data("target");
+	};
+	
+
+	$.ajax({
+		url : "${pageContext.request.contextPath}/shop/childCatePageSort",
+		method : "GET",
+		data : {
+				childCateCode : "${childCategoryCode}",
+				keyword : sort
+				},
+		success(data){
+				console.log(data);
+				$("#productSortContainer").html(data["productStr"]);
+			
+		},
+		error : console.log
+	});
+	
+});
+//혜진코드 끝
+
+</script>
 <!-- shopHeader js  -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

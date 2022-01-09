@@ -267,4 +267,9 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.thisCateName(childCategoryCode);
 	}
 
+	@Override
+	public List<ProductEntity> selectItemsByChildCateBySort(Map<String, Object> param) {
+		return shopDao.selectItemsByChildCateBySort(param);
+	}
+
 }
