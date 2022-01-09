@@ -10,4 +10,6 @@ public interface ChartService {
 
 	Map<String, Integer> findMainCnt();
 
+	Map<String, Object> findHomeMain();
+
 }

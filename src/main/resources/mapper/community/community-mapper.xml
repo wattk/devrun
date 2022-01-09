@@ -445,4 +445,30 @@
 		</if>
   </select>
   <!-- 지원 mapper 끝 -->
+  <!-- 혜진 mapper 시작 -->
+  <select id="selectBestCommunity" resultType="map">
+  	select
+  		c.page_code pagecode,
+  		c.title title,
+  		m.nickname nickname
+  	from
+  		community c left join member m
+  			on c.member_no = m.member_no
+  	order by
+  		c.like_count desc
+  </select>
+  <select id="selectQnaList" resultType="map">
+  	select
+  		c.title title,
+  		m.nickname nickname
+  	from
+  		community c left join member m
+  			on c.member_no = m.member_no
+  	where
+  		c.page_code = 2
+  	order by
+  		c.enroll_date desc
+  		
+  </select>
+  <!-- 혜진 mapper 끝 -->
 </mapper>

@@ -279,6 +279,15 @@
 		    c.detail_no in (select detail_no from product_detail pd where pd.product_code = #{productCode})
 		    and member_no = #{memberNo}
 	</select>
+	
+	<select id="selectLikeProduct" resultType="productEntity">
+		select
+			*
+		from
+			product
+		order by
+			view_count desc
+	</select>
 	<!-- 혜진 mapper 끝 -->
 </mapper>
 
