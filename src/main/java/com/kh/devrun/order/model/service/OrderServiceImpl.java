@@ -275,6 +275,18 @@ public class OrderServiceImpl implements OrderService {
 		return map;
 	}
 
+	@Override
+	public int clearOneMerchant(String merchantUid) {
+		Map<String, Object> param = new HashMap<>();
+		String[] uidArr = new String[1];
+		uidArr[0] = merchantUid;
+		param.put("keyword", "order_status");
+		param.put("value", "OC");
+		param.put("target", "merchantUid");
+		param.put("uidArr", uidArr);
+		return orderDao.updateMerchant(param);
+	}
+
 	
 	
 
