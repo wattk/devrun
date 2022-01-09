@@ -36,12 +36,14 @@
 	</div>
 	<hr />
 	<div class="mx-auto text-right p-4" id="">
-		<span class="pr-2 pl-2 shop-sort">추천순</span>
-		<span class="pr-2 pl-2 shop-sort">신상품순</span>
-		<span class="pr-2 pl-2 shop-sort">낮은 가격순</span>
-		<span class="pr-2 pl-2 shop-sort">높은 가격순</span>
+		<div class="p-4" id="">
+			<span class="pr-2 pl-2 shop-sort" data-target="recommend" data-valid="0">추천순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="new" data-valid="0">신상품순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="row" data-valid="0">낮은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="high" data-valid="0">높은 가격순</span>
+		</div>
 	</div>
-	<div class="row">
+	<div id = "productSortContainer" class="row">
 		<c:if test = "${searchList != null}">
 			<c:forEach items="${searchList}" var="l">
 		        <div class="card-box-d col-md-3 p-5">
@@ -63,6 +65,52 @@
     	${pagebar}
     </div>
 </div>
+
+<script>
+$(document).on("click", ".shop-sort, .page-link", (e)=>{
+	let cPage = 1;
+	
+	let sort;
+	if($(e.target).is(".shop-sort")){
+		$(".shop-sort").data("valid", 0);
+		sort = $(e.target).data("target");
+		$(e.target).data("valid", 1);
+	};
+	if($(e.target).is(".page-link")){
+		const $sortList = $(".shop-sort");
+		cPage = $(e.target).data("cPage");
+		$sortList.each((i, item)=>{
+			if($(item).data("valid") == 1){
+				sort = $(item).data("target");
+			}
+		});
+	};
+	console.log(cPage);
+	console.log(sort);
+	
+
+	$.ajax({
+		url : "${pageContext.request.contextPath}/shop/shopSearchSort",
+		method : "GET",
+		data : {
+				searchKeyword : "${searchKeyword}",
+				keyword : sort,
+				total : ${total},
+				cPage : cPage
+				},
+		success(data){
+				console.log(data);
+				$("#productSortContainer").html(data["productStr"]);
+				$(".pagebar").detach();
+				$("#pageBar").html(data["pagebar"]);
+			
+		},
+		error : console.log
+	});
+	
+});
+
+</script>
 <!-- shopHeader js  -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
