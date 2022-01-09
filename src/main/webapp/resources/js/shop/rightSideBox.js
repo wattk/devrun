@@ -8,6 +8,9 @@
                     .animate({"top":position+currentPosition+"px"},1000); 
    });
    /*오늘 본 상품 div 끝*/
-	
-	}
+   
+	todayViewBox();	
+
+}
+ 
  

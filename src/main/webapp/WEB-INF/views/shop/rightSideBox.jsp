@@ -35,7 +35,6 @@
 /** 오늘본상품시작*/
 window.onload = todayViewBox;
 
-
 function todayViewBox () {
 	console.log("todayViewBox 함수 시작");
 	const todayViewitems = JSON.parse(localStorage.getItem('todayViewitems')) || [];
