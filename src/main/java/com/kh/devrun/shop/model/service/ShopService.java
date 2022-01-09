@@ -19,6 +19,10 @@ public interface ShopService {
 	int insertCart(Cart cart);
 
 	int deleteCart(List<Integer> cartNoArr);
+	
+	List<ProductEntity> selectProductListByChildCategory(Map<String, Object> param, int offset, int limit);
+	
+	int selectProductTotalCount(Map<String, Object> param);
 	/* 혜진 장바구니 끝 */
 
 	int insertReview(Review review);
@@ -67,7 +71,7 @@ public interface ShopService {
 
 	int countItemsByChildCode(String childCategoryCode);
 
-	List<String> selectAllChildCateNames(String parentCate);
+	List<Map<String, String>> selectAllChildCateNames(String parentCate);
 
 	String thisCateName(String childCategoryCode);
 

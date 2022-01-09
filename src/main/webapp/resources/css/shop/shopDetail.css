@@ -41,7 +41,7 @@
 .banner{
 	width : 1300px;
 	height : 170px;
-	background-color: lime;
+	padding-bottom : 200px;
 }
 
 /* 이벤트 상품 상세 페이지 */
