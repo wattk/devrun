@@ -53,6 +53,8 @@ public interface OrderService {
 
 	Map<String, Object> selectOneOrderLog(String orderLogUid);
 
+	int clearOneMerchant(String merchantUid);
+
 
 
 }
