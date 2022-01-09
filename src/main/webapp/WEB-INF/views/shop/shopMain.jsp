@@ -60,12 +60,12 @@
                </div>
                <div id="shopIconCategoryDiv">
                    <div id="iconBoxDiv" class="row space-evenly">
-                       <a href="#"><img class="icon" src="https://i.ibb.co/7zcnV7J/monitor.png" alt=""></a>
-                       <a href="#"><img class="icon" src="https://i.ibb.co/vvXdtzx/keyboard.png" alt=""></a>
-                       <a href="#"><img class="icon" src="https://i.ibb.co/WxvDnGD/mouse.png" alt=""></a>
-                       <a href="#"><img class="icon" src="https://i.ibb.co/z4n9ZXF/desk.png" alt=""></a>
-                       <a href="#"><img class="icon" src="https://i.ibb.co/HGP3PCL/chair.png" alt=""></a>
-                       <a href="#"><img class="icon" src="https://i.ibb.co/N386GVd/gitf.png" alt=""></a>
+                       <a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=mn"><img class="icon" src="https://i.ibb.co/7zcnV7J/monitor.png" alt=""></a>
+                       <a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ke"><img class="icon" src="https://i.ibb.co/vvXdtzx/keyboard.png" alt=""></a>
+                       <a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=mo"><img class="icon" src="https://i.ibb.co/WxvDnGD/mouse.png" alt=""></a>
+                       <a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=de"><img class="icon" src="https://i.ibb.co/z4n9ZXF/desk.png" alt=""></a>
+                       <a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ch"><img class="icon" src="https://i.ibb.co/HGP3PCL/chair.png" alt=""></a>
+                       <a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ot"><img class="icon" src="https://i.ibb.co/N386GVd/gitf.png" alt=""></a>
                    </div>
                </div>
                <div id="shopDisplayDiv">

@@ -19,6 +19,14 @@
 <jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
 
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
+
+<style>
+
+.item-sort-container, .itembox{
+	margin: 0 10% 0 10%;
+}
+</style>
+
 <div class="shop-container">
 	<div class="mx-auto text-center p-5">
 		<h4>마우스</h4>
@@ -44,7 +52,7 @@
 			<span class="pr-2 pl-2 shop-sort" data-target="high">높은 가격순</span>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row itembox">
 		<!-- 아이템 나열 시작 -->
 		<c:if test = "${itemList != null}">
 			<c:forEach items="${itemList}" var="l">
