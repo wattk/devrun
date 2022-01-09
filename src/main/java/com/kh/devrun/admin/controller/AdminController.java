@@ -1270,23 +1270,6 @@ public class AdminController {
 		return resultMap;
 	}
 	
-	@GetMapping("/reviewReport.do")
-	public String reviewReport() {
-		
-		return "/admin/report/reviewReport";
-	}
-	
-	@GetMapping("/boardReport.do")
-	public String boardReport() {
-		
-		return "/admin/report/boardReport";
-	}
-	
-	@GetMapping("/blacklistReport.do")
-	public String blacklistReport() {
-		
-		return "/admin/report/blacklistReport";
-	}
 	
 	//이벤트 메인 페이지 관련 메소드
 	@GetMapping("/promotionManage.do")
