@@ -38,7 +38,7 @@
 	border :0px;
 	background-color: beige;
 }
-.shop-item-img img {
+.shop-item-img img{
 	width:200px;
 	height:200px;
 	padding: 0.25rem;
@@ -78,7 +78,7 @@
 		  	  <a href="${pageContext.request.contextPath}/shop/itemDetail/${l.productCode}" class="col-md-3 p-5">
 		        <div class="card-box-d">
 		          <div class="card-img-d shop-item-img position-relative">
-		            <img src="${pageContext.request.contextPath }/resources/upload/product/${l.thumbnail}" alt="" class="img-thumbnail shop-img img-d img-fluid">
+		            <img src="${pageContext.request.contextPath }/resources/upload/product/${l.thumbnail}" alt="" class="img-d img-fluid">
 		            <i class="shop-like-icon fas fa-heart position-absolute"></i>
 		            <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
 		          </div>
