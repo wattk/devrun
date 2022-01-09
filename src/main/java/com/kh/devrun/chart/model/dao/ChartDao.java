@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.kh.devrun.community.model.vo.Community;
 import com.kh.devrun.community.model.vo.CommunityEntity;
+import com.kh.devrun.customerCenter.model.vo.Notice;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
@@ -45,6 +47,12 @@ public interface ChartDao {
 	List<ProductEntity> selectLikeProduct();
 
 	List<Promotion> selectCurrentPromotionList();
+
+	List<CommunityEntity> findComminitySearch(String searchKeyword);
+
+	List<Product> findProductSearch(String searchKeyword);
+
+	List<Notice> findNoticeSearch(String searchKeyword);
 
 
 }

@@ -8,12 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.devrun.chart.model.dao.ChartDao;
-import com.kh.devrun.community.model.dao.CommunityDao;
 import com.kh.devrun.community.model.vo.Community;
 import com.kh.devrun.community.model.vo.CommunityEntity;
-import com.kh.devrun.product.model.dao.ProductDao;
+import com.kh.devrun.customerCenter.model.vo.Notice;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductEntity;
-import com.kh.devrun.promotion.model.dao.PromotionDao;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
 import lombok.extern.slf4j.Slf4j;
@@ -113,6 +112,22 @@ public class ChartServiceImpl implements ChartService {
 		
 		
 		return map;
+	}
+
+	@Override
+	public Map<String, Object> findUnifiedSearch(String searchKeyword) {
+		Map<String, Object> map = new HashMap<>();
+		
+		//커뮤니티
+		List<CommunityEntity> communityList = chartDao.findComminitySearch(searchKeyword);
+		
+		//상품
+		List<Product> productList = chartDao.findProductSearch(searchKeyword);
+		
+		//공지사항
+		List<Notice> noticeList = chartDao.findNoticeSearch(searchKeyword);
+		
+		return null;
 	}
 
 	
