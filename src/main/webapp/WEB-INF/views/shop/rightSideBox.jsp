@@ -55,6 +55,13 @@ function todayViewBox () {
 			$('#todayNothing').remove();
 		}
 		
+		if(length == 1) {
+			$('.thisHeight').css("height","114px");
+		}
+		if(length == 2) {
+			$('.thisHeight').css("height","219px");
+		}
+		
 		if(length<=3){
 			$('.secondS').remove();
 		}

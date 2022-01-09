@@ -57,8 +57,6 @@
 		<div class="p-4" id="">
 			<span class="pr-2 pl-2 shop-sort">추천순</span>
 			<span class="pr-2 pl-2 shop-sort">신상품순</span>
-			<span class="pr-2 pl-2 shop-sort">판매량순</span>
-			<span class="pr-2 pl-2 shop-sort">혜택순</span>
 			<span class="pr-2 pl-2 shop-sort">낮은 가격순</span>
 			<span class="pr-2 pl-2 shop-sort">높은 가격순</span>
 		</div>
