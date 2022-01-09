@@ -121,7 +121,8 @@ $(".shop-sort").click((e)=>{
 		method : "GET",
 		data : {
 				childCateCode : "${childCategoryCode}",
-				keyword : sort
+				keyword : sort,
+				total : ${total}
 				},
 		success(data){
 				console.log(data);
