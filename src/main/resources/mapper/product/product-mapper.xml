@@ -139,6 +139,12 @@
 			product_code = #{productCode}
 	</select>
 	
+	<!-- 삼품 검색 목록 가져오기  -->
+	
+	
+	
+	
+	
 	<!-- 품절된 상품 정보만 가져오기 -다현- -->
 	<select id="selectOutOfStock" resultType="productDetail">
 		select

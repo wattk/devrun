@@ -26,10 +26,10 @@
 	rel="stylesheet">
 
 
-<!-- shopSideBox 관련 임포트 -->
+<%-- <!-- shopSideBox 관련 임포트 -->
 <jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp" />
 <script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
+	src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script> --%>
 
 
 <!-- body 영역 시작 -->

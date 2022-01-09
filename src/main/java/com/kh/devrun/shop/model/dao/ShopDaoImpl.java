@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
@@ -189,6 +190,16 @@ public class ShopDaoImpl implements ShopDao {
 	@Override
 	public List<String> selectAllChildCateNames(String parentCate) {
 		return session.selectList("shop.selectAllChildCateNames", parentCate);
+	}
+
+	@Override
+	public String thisCateName(String childCategoryCode) {
+		return session.selectOne("shop.thisCateName", childCategoryCode);
+	}
+
+	@Override
+	public List<ProductEntity> selectItemsByChildCateBySort(Map<String, Object> param) {
+		return session.selectList("shop.selectItemsByChildCateBySort", param);
 	}
 
 }

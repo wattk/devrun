@@ -81,6 +81,33 @@ public class ShopController {
 
 //--------------------주입-------------------------------------	
 
+	// 소분류카테고리정렬
+	@ResponseBody
+	@GetMapping("/childCatePageSort")
+	public Map<String, Object> childCatePageSort(@RequestParam String childCateCode, @RequestParam String keyword,
+			HttpServletRequest request) {
+		log.debug("keyword : {}", keyword);
+
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		
+		// sort에 따른 리스트 불러오기
+		Map<String, Object> param = new HashMap<>();
+		param.put("keyword", keyword);
+		param.put("childCateCode", childCateCode);
+
+		List<ProductEntity> sortItemList = shopService.selectItemsByChildCateBySort(param);
+		log.debug("sortItemList : {}", sortItemList);
+		// sort에 따라 잘 받아옴.
+
+		String url = request.getContextPath();
+		String productStr = DevrunUtils.getProductList(sortItemList, url);
+		log.debug("productStr : {}", productStr);
+
+		resultMap.put("productStr", productStr);
+		return resultMap;
+	}
+
 	// 상세페이지를 이동 시
 	@GetMapping("/itemDetail/{productCode}")
 	public String selectOneItem(@PathVariable String productCode, Model model, Authentication authentication,
@@ -241,11 +268,18 @@ public class ShopController {
 	public String shopChildCate(@RequestParam String childCategoryCode, Model model,
 			@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request) {
 
+		//
+		String thisCateName = shopService.thisCateName(childCategoryCode);
+		model.addAttribute("thisCateName", thisCateName);
+		model.addAttribute("childCategoryCode", childCategoryCode);
+
 		// 소분류 카테고리 이름 불러오기
-		String parentCate = childCategoryCode.substring(1);
-		List<String> ChildCateNames = shopService.selectAllChildCateNames(parentCate);
-		log.debug("ChildCateNames : {}", ChildCateNames);
-		model.addAttribute("ChildCateNames", ChildCateNames);
+		/*
+		 * String parentCate = childCategoryCode.substring(1); List<String>
+		 * ChildCateNames = shopService.selectAllChildCateNames(parentCate);
+		 * log.debug("ChildCateNames : {}", ChildCateNames);
+		 * model.addAttribute("ChildCateNames", ChildCateNames);
+		 */
 
 		// 페이징 처리
 		log.debug("cPage : {} ", cPage);

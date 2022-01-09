@@ -391,9 +391,27 @@ public class DevrunUtils {
 		return pagebar.toString();
 	}
 
-	public static String getQuestionList(List<QuestionProduct> qestionList) {
-		// TODO Auto-generated method stub
-		return null;
+	public static String getProductList(List<ProductEntity> productList) {
+		StringBuilder sb = new StringBuilder();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		for (ProductEntity product : productList) {
+			sb.append(
+			"<tr> \n"
+				+"<td>"+product.getThumbnail()+"</td>\n"
+				+"<td>"+product.getProductCode() +"</td>\n"
+				+"<td>"+product.getName()+"</td>\n"
+				+"	<td>\r\n"
+				+ "		<button type=\"button\" class=\"option-modal-btn btn btn-light\"\r\n"
+				+ "		data-toggle=\"modal\" data-target=\"#promotionModal\" data-code=\"${pro.productCode}\">확인</button>\r\n"
+				+ "	</td>\n"
+				+"<td>"+product.getStatus()+"</td>\n"						
+				+"<td>"+sdf.format(product.getRegDate())+"</td>\n"	
+				+"<td>"+product.getOrderCount()+"</td>\n"						
+
+			+"</tr>");
+		}		
+		return sb.toString();
 	}
 	
 	

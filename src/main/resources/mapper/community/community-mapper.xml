@@ -413,7 +413,7 @@
 	order by
 		c.enroll_date desc
   </select>
-	
+  
   <select id="selectPostTotalCount" resultType="_int">
     select 
 		count(*)
@@ -434,15 +434,78 @@
 	where
 		c.member_no = #{memberNo}
 	order by
-		<if test="searchType eq 'viewCount'">
-			c.view_count desc
-		</if>
-		<if test="searchType eq 'oldest'">
-			c.like_count desc
-		</if>
-		<if test="searchType eq 'oldest'">
-			c.enroll_date asc
-		</if>
+		<!-- 옵션에 따라 정렬하도록 choose when으로 분기 -->
+		<choose>
+			<when test="selectType != null and selectType eq 'latest'">
+				c.enroll_date desc
+			</when>
+			<when test="selectType != null and selectType eq 'commentCount'">
+				m.commentCount desc nulls last
+			</when>
+			<when test="selectType != null and selectType eq 'viewCount'">
+				c.view_count desc
+			</when>
+			<when test="selectType != null and selectType eq 'likeCount'">
+				c.like_count desc
+			</when>
+			<when test="selectType != null and selectType eq 'oldest'">
+				c.enroll_date
+			</when>
+		</choose>
+  </select>
+  
+  <select id="selectAllLikeOrderByLatest" resultType="communityEntity">
+  	select 
+		c.*,
+		m.commentCount
+	from 
+		community c left join(select community_no, count(comment_no) as commentCount from community_comment group by community_no) m
+	on 
+		c.community_no = m.community_no
+	where
+		c.community_no in (select community_no from member_community_likee where member_no = #{memberNo})
+	order by
+		c.enroll_date desc
+  </select>
+  
+  <select id="selectLikeTotalCount" resultType="_int">
+    select 
+		count(*)
+	from 
+		member_community_likee
+	where
+		member_no = #{memberNo}
+  </select>
+  
+  <select id="selectAllLikeOrderBySelectType" resultType="communityEntity">
+  	select 
+		c.*,
+		m.commentCount
+	from 
+		community c left join(select community_no, count(comment_no) as commentCount from community_comment group by community_no) m
+	on 
+		c.community_no = m.community_no
+	where
+		c.community_no in (select community_no from member_community_likee where member_no = #{memberNo})
+	order by
+		<!-- 옵션에 따라 정렬하도록 choose when으로 분기 -->
+		<choose>
+			<when test="selectType != null and selectType eq 'latest'">
+				c.enroll_date desc
+			</when>
+			<when test="selectType != null and selectType eq 'commentCount'">
+				m.commentCount desc nulls last
+			</when>
+			<when test="selectType != null and selectType eq 'viewCount'">
+				c.view_count desc
+			</when>
+			<when test="selectType != null and selectType eq 'likeCount'">
+				c.like_count desc
+			</when>
+			<when test="selectType != null and selectType eq 'oldest'">
+				c.enroll_date
+			</when>
+		</choose>
   </select>
   <!-- 지원 mapper 끝 -->
   <!-- 혜진 mapper 시작 -->

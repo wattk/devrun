@@ -36,6 +36,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kh.devrun.address.model.vo.Address;
 import com.kh.devrun.chat.model.service.ChatService;
 import com.kh.devrun.common.DevrunUtils;
+import com.kh.devrun.community.common.CommunityUtils;
 import com.kh.devrun.community.model.service.CommunityService;
 import com.kh.devrun.community.model.vo.CommunityEntity;
 import com.kh.devrun.member.model.service.MemberService;
@@ -473,10 +474,10 @@ public class MypageController {
 	 */
 
 	/**
-	 * 지원 나의 커뮤니티 메인 시작
+	 * 지원 나의 커뮤니티 > 내가 쓴 글 시작
 	 */
-	@GetMapping("/mycommunity.do")
-	public String mycommunity(@RequestParam(defaultValue = "1") int cPage, Authentication authentication,
+	@GetMapping("/mycommunity/postList.do")
+	public String postList(@RequestParam(defaultValue = "1") int cPage, Authentication authentication,
 			HttpServletRequest request, Model model) {
 		int limit = 10;
 		int offset = (cPage - 1) * limit;
@@ -485,7 +486,8 @@ public class MypageController {
 			Member member = (Member) authentication.getPrincipal();
 			int memberNo = member.getMemberNo();
 		
-			//1. 커뮤니티 포스팅 내역
+			/* 커뮤니티 내가 쓴 글 */
+			//1. 포스팅 내역
 			List<CommunityEntity> postList = communityService.selectAllPostOrderByLatest(memberNo, offset, limit);
 			model.addAttribute("postList", postList);
 			log.debug("postList = {}", postList);
@@ -504,52 +506,102 @@ public class MypageController {
 			log.error("커뮤니티 포스팅 내역 조회 오류", e);
 			throw e;
 		}
-		return "mypage/mycommunity";
+		return "mypage/postlist";
 	}
-	/**
-	 * 지원 나의 커뮤니티 메인 끝
-	 */
 	
 	/**
-	 * 지원 포스팅 타입별 정렬 시작
+	 * 포스팅 내역 옵션별 정렬
 	 */
 	@ResponseBody
-	@GetMapping("/mycommunity/selectType")
-	public Map<String, Object> selectType(@RequestParam Map<String, Object> param, @RequestParam(defaultValue = "1") int cPage, Authentication authentication,
-			HttpServletRequest request, Model model){
+	@GetMapping("/mycommunity/selectPostList/{selectType}")
+	public Map<String, Object> postListOrderBySelectType(@PathVariable String selectType, @RequestParam(defaultValue = "1") int cPage,
+			Authentication authentication, HttpServletRequest request){
 		int limit = 10;
 		int offset = (cPage - 1) * limit;
 		
-		Member member = (Member) authentication.getPrincipal();
-		int memberNo = member.getMemberNo();
-		param.put("memberNo", memberNo);
-		
+		Map<String, Object> param = new HashMap<>();
 		Map<String, Object> map = new HashMap<>();
+		
+		Member member = (Member) authentication.getPrincipal();
+		param.put("memberNo", member.getMemberNo());
+		param.put("selectType", selectType);
 		log.debug("param = {}", param);
 		
-		//1. 커뮤니티 포스팅 내역
 		List<CommunityEntity> postListOrderBySelectType = communityService.selectAllPostOrderBySelectType(param, offset, limit);
-		model.addAttribute("postListOrderBySelectType", postListOrderBySelectType);
-		log.debug("postListOrderBySelectType = {}", postListOrderBySelectType);
-			
-		//2. 전체 포스팅 수 totalContent
-		int totalContent = communityService.selectPostTotalCount(memberNo);
-		model.addAttribute("totalContent", totalContent);
-			
-		//3. pagebar
-		String url = request.getRequestURI(); // /spring/board/boardList.do
-		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
-		log.debug("pagebar = {}", pagebar);
-		model.addAttribute("pagebar", pagebar);
 		
-		map.put("postListOrderBySelectType", postListOrderBySelectType);
-		map.put("totalContent", totalContent);
-		map.put("pagebar", pagebar);
-			
+		String url = request.getRequestURI();
+		String postListStr = CommunityUtils.getPostListOrderBySelectType(postListOrderBySelectType, url);
+		map.put("postListStr", postListStr);
+		
 		return map;
 	}
 	/**
-	 * 지원 포스팅 타입별 정렬 끝
+	 * 지원 나의 커뮤니티 > 내가 쓴 글 끝
+	 */
+	
+	/**
+	 * 지원 나의 커뮤니티 > 좋아요 시작
+	 */
+	@GetMapping("/mycommunity/likeList.do")
+	public String likeList(@RequestParam(defaultValue = "1") int cPage, Authentication authentication,
+			HttpServletRequest request, Model model) {
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		try {
+			Member member = (Member) authentication.getPrincipal();
+			int memberNo = member.getMemberNo();
+			
+			//1. 커뮤니티 좋아요 내역
+			List<CommunityEntity> likeList = communityService.selectAllLikeOrderByLatest(memberNo, offset, limit);
+			model.addAttribute("likeList", likeList);
+			log.debug("likeList = {}", likeList);
+			
+			//2. 전체 좋아요 수 totalContent
+			int totalContent = communityService.selectLikeTotalCount(memberNo);
+			model.addAttribute("totalContent", totalContent);
+			
+			//3. pagebar
+			String url = request.getRequestURI();
+			String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+			log.debug("pagebar = {}", pagebar);
+			model.addAttribute("pagebar", pagebar);
+		
+		} catch (Exception e) {
+			log.error("커뮤니티 좋아요 내역 조회 오류", e);
+			throw e;
+		}
+		return "mypage/likelist";
+	}
+	
+	/**
+	 * 좋아요 내역 옵션별 정렬
+	 */
+	@ResponseBody
+	@GetMapping("/mycommunity/selectLikeList/{selectType}")
+	public Map<String, Object> likeListOrderBySelectType(@PathVariable String selectType, @RequestParam(defaultValue = "1") int cPage,
+			Authentication authentication, HttpServletRequest request){
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		Map<String, Object> param = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
+		
+		Member member = (Member) authentication.getPrincipal();
+		param.put("memberNo", member.getMemberNo());
+		param.put("selectType", selectType);
+		log.debug("param = {}", param);
+		
+		List<CommunityEntity> likeListOrderBySelectType = communityService.selectAllLikeOrderBySelectType(param, offset, limit);
+		
+		String url = request.getRequestURI();
+		String likeListStr = CommunityUtils.getLikeListOrderBySelectType(likeListOrderBySelectType, url);
+		map.put("likeListStr", likeListStr);
+		
+		return map;
+	}
+	/**
+	 * 지원 나의 커뮤니티 > 좋아요 끝
 	 */
 	
 	/**

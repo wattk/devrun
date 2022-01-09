@@ -243,21 +243,10 @@
 		      <!-- modal header 끝 -->
 		      
 		      <!-- modal body -->
-		      <div class="modal-body">
+		      <div class="modal-body block-modal-body">
 				<!-- 채팅 차단 유저 있을 시. 없다면 '1:1 채팅을 차단한 멤버가 없습니다.' 문구 나타난다. -->
-				<ul class="list-group">
-				  <li class="list-group-item position-relative">
-					<!-- 회원 닉네임 -->
-					<p class="mb-0">길동이<span>(hong**)</span></p>
-					<!-- 차단 해제 -->
-					<a href="#" class="unblock">차단해제</a>
-				  </li>
-				  <li class="list-group-item position-relative">
-					<!-- 회원 닉네임 -->
-					<p class="mb-0">길동이<span>(hong**)</span></p>
-					<!-- 차단 해제 -->
-					<a href="#" class="unblock">차단해제</a>
-				  </li>
+				<ul class="list-group block-list-group">
+
 				</ul>
 				<!-- 닉네임 검색 결과 끝 -->
 				
@@ -624,6 +613,80 @@ $('.chat-list li').click((e) => {
 	open(url, name, spec);
 });
 
+
+// 채팅 차단 관리 아이콘 클릭 시 나오는 모달 내용 변경(클릭 시 마다 변화되는 값 모달로 띄우기 위해 비동기 처리)
+$('.block-icon').click((e) => {
+
+	$.ajax({
+		url : `${pageContext.request.contextPath}/chat/selectChatBlockMemberList.do`,
+		method : "GET", // GET방식 생략 가능
+		success(data) { // 이 안에 들어가는 data는 변수명이다. 다른 이름으로 사용해도 된다. 위의 data : 에서 사용한 부분과 헷갈리지 말자
+			//console.log(data);
+		
+			// 기존 데이터 남아있는 경우 대비 제거
+			$(".block-list-group").children().remove();
+			
+			if(Object.keys(data).length == 0) {
+				// 1:1 채팅을 차단한 멤버가 없습니다. 출력, 
+				$(".block-list-group").append(`<p class="text-center text-secondary not-exist my-5">1:1 채팅을 차단한 멤버가 없습니다.</p>`);
+			} else {
+				// 채팅 차단 회원 검색 결과 뿌리기
+				$(data).each((i, member) => {
+					console.log(member);
+					
+					const {memberNo, id, nickname} = member; // 구조분해할당은 객체나 배열의 내용을 쉽게 변수에 옮겨담는 것
+					const privateId = id.substring(0, 4).padEnd(id.length, "*");
+					
+					$(".block-list-group").append(`<li class="list-group-item position-relative block-list">
+<!-- 회원 닉네임 -->
+<p class="mb-0">\${nickname}<span>(\${privateId})</span></p>
+<!-- 차단 해제 -->
+<a href="#" class="unblock" data-member-no="\${memberNo}">차단해제</a>
+</li>`);
+				});
+			}
+		},
+		error : console.log
+	});
+});
+
+// 차단 해제 클릭 시 이벤트 발생
+$(document).on("click", ".unblock", function(e){
+	const $target = $(e.target);
+
+	// 해제할 대상인 memberNo2
+	const memberNo2 = $target.data("memberNo"); // getter camelcasing으로 참조하기
+	//console.log(memberNo);
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/chat/unblockChatMember.do`,
+		method : "POST",
+		data : {
+			memberNo2 : memberNo2
+		},
+		success(data) { // 이 안에 들어가는 data는 변수명이다. 다른 이름으로 사용해도 된다. 위의 data : 에서 사용한 부분과 헷갈리지 말자
+			//console.log(data);
+		
+			// 차단 해제 성공
+			if(data == 1){
+				// 1. 타켓의 부모 remove() 하기
+				$target.parent().remove();
+				
+				// 2. remove() 한 뒤 li가 아무도 존재하지 않는 경우엔
+				// $(".block-list-group").append(`<p class="text-center text-secondary not-exist my-5">1:1 채팅을 차단한 멤버가 없습니다.</p>`);
+				// 위 코드 추가할 것
+				if($('.block-list').length == 0){
+					$(".block-list-group").append(`<p class="text-center text-secondary not-exist my-5">1:1 채팅을 차단한 멤버가 없습니다.</p>`);
+				}
+			
+			}
+		},
+		error : console.log
+	});
+	
+	
+	
+})
 </script>
 
 </body>

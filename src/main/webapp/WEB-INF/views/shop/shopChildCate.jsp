@@ -20,36 +20,52 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
 
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
+
+
+<style>
+@font-face {
+      font-family: 'SANJUGotgam';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2112@1.0/SANJUGotgam.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+  }
+
+#thisCateName{
+	font-family: 'SANJUGotgam';
+	font-size: 23px;
+}
+.category-container{
+	border :0px;
+	background-color: beige;
+}
+.shop-item-img img {
+width:200px;
+height:200px;
+}
+</style>
+
+
 <div class="shop-container">
 	<div class="mx-auto text-center p-5">
 		<h4>마우스</h4>
 	</div>
 	<div class="category-container d-flex justify-content-center align-items-center w-100">
+		<strong id="thisCateName" >${thisCateName}</strong>
 		<div class="category-all col-2">
-			<strong>전체보기</strong>
 		</div>
 		<div class="category-details col-8">
-			<span class="category-badge badge badge-primary">유선 마우스</span>
-			<span class="category-badge badge badge-secondary">무선 마우스</span>
-			<span class="category-badge badge badge-secondary">버티컬 마우스</span>
-			<span class="category-badge badge badge-secondary">충전식 마우스</span>
-			<span class="category-badge badge badge-secondary">블루투스 마우스</span>
-			<span class="category-badge badge badge-secondary">레이저 마우스</span>
-			<span class="category-badge badge badge-secondary">인체공학 마우스</span>
 		</div>
 	</div>
 	<div class="item-sort-container d-flex 	justify-content-between">
 		<div class="p-4">총 ${total}개</div>
 		<div class="p-4" id="">
-			<span class="pr-2 pl-2 shop-sort">추천순</span>
-			<span class="pr-2 pl-2 shop-sort">신상품순</span>
-			<span class="pr-2 pl-2 shop-sort">판매량순</span>
-			<span class="pr-2 pl-2 shop-sort">혜택순</span>
-			<span class="pr-2 pl-2 shop-sort">낮은 가격순</span>
-			<span class="pr-2 pl-2 shop-sort">높은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="row">낮은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="high">높은 가격순</span>
 		</div>
 	</div>
-	<div class="row">
+	<div id = "productSortContainer" class="row">
 		<!-- 아이템 나열 시작 -->
 		<c:if test = "${itemList != null}">
 			<c:forEach items="${itemList}" var="l">
@@ -80,6 +96,39 @@
 	</nav>
 </div>
 
+
+
+<script>
+//혜진코드 시작
+//이벤트 상품 소분류 코드별 정렬
+$(".shop-sort").click((e)=>{
+	
+	let sort;
+	
+	if($(e.target).is(".shop-sort")){
+		sort = $(e.target).data("target");
+	};
+	
+
+	$.ajax({
+		url : "${pageContext.request.contextPath}/shop/childCatePageSort",
+		method : "GET",
+		data : {
+				childCateCode : "${childCategoryCode}",
+				keyword : sort
+				},
+		success(data){
+				console.log(data);
+				$("#productSortContainer").html(data["productStr"]);
+			
+		},
+		error : console.log
+	});
+	
+});
+//혜진코드 끝
+
+</script>
 <!-- shopHeader js  -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

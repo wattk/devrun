@@ -10,6 +10,7 @@
 		member
 	where
 		LOWER(nickname) like LOWER('%'||#{searchNickname}||'%') and nickname != #{nickname}
+		and member_no not in (select member_no2 from chat_member where member_no = #{memberNo} and status != 'Y')
   </select>
   
   <select id="findChatMemberByMemberNo" resultType="chatMember">
@@ -115,7 +116,8 @@
 	where
 	    rnum = 1 and
 	    CM.member_no != #{memberNo} and
-	    CL.chat_id in (select chat_id from view_chat_exit_check where member_no = #{memberNo})
+	    CL.chat_id in (select chat_id from view_chat_exit_check where member_no = #{memberNo}) and
+	    CM.member_no in (select member_no2 from chat_member where member_no = #{memberNo} and status = 'Y')
 	order by
 	    log_time desc
   </select>
@@ -163,10 +165,11 @@
 	    chat_id
 	from 
 	    chat_member cm left join member m
-	        using(member_no)
+	        on cm.member_no = m.member_no
 	where 
 	    member_no2 = #{memberNo} and LOWER(nickname) like LOWER('%'||#{searchNickname}||'%') and
-	    chat_id in (select chat_id from view_chat_exit_check where member_no = #{memberNo})
+	    chat_id in (select chat_id from view_chat_exit_check where member_no = #{memberNo}) and
+	    cm.member_no in (select member_no2 from chat_member where member_no = #{memberNo} and status = 'Y')
   </select>
   
   <select id="findEndDate" resultType="_long">
@@ -200,6 +203,41 @@
 	    cl.member_no != #{memberNo}
 	    and
 	    last_check <![CDATA[ < ]]> log_time
+	    and
+    	status = 'Y'
   </select>
+  
+  <update id="blockExitChatRoom">
+  	update 
+  		chat_member
+	set
+		status = 'B',
+	    end_date = current_date
+	where
+	    chat_id = #{chatId} and
+	    member_no = #{memberNo}
+  </update>
+  
+  <select id="selectChatBlockMemberList" resultType="member">
+  	select
+	    member_no,
+	    id,
+	    nickname
+	from
+	    member
+	where
+	    member_no in (select member_no2 from chat_member where member_no = #{memberNo} and status = 'B')
+  </select>
+  
+  <update id="unblockChatMember">
+  	update
+  		chat_member
+  	set
+  		status = 'Y',
+	    end_date = current_date,
+	    last_check = #{lastCheck}
+  	where
+  		member_no = #{memberNo} and member_no2 = #{memberNo2}
+  </update>
   
 </mapper>

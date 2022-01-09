@@ -558,6 +558,54 @@ public class CommunityUtils {
 		return pagebar.toString();
 	}
 
+	/**
+	 * @param postListOrderBySelectType
+	 */
+	public static String getPostListOrderBySelectType(List<CommunityEntity> postListOrderBySelectType, String url) {
+		StringBuilder sb = new StringBuilder();
+		SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd HH:mm");
+		
+		for (CommunityEntity postList : postListOrderBySelectType) {
+			String pageCode = (1 == postList.getPageCode()) ? "칼럼" : (2 == postList.getPageCode()) ? "QnA" : (3 == postList.getPageCode()) ? "스터디" : "자유게시판";
+			sb.append("<tr class=\"cursor\" data-no=\"" + postList.getCommunityNo() + "\">\r\n"
+					+ "<td>\r\n"
+					+ "<div>" + sdf.format(postList.getEnrollDate()) + " | " + pageCode + "</div>\r\n"
+					+ "<div id=\"postTitle\">" + postList.getTitle() + "</div>\r\n"
+					+ "<div id=\"postContent\">" + postList.getContent() + "</div>\r\n"
+					+ "</td>\r\n"
+					+ "<td>\r\n"
+					+ "<span class=\"bi bi-chat-dots\"> " + postList.getCommentCount() + " </span>\r\n"
+					+ "<span class=\"bi bi-eye\"> " + postList.getViewCount() + " </span>\r\n"
+					+ "<span class=\"bi bi-heart-fill\"> " + postList.getLikeCount() + " </span>\r\n"
+					+ "</td>\r\n"
+					+ "</tr>");
+		}
+		return sb.toString();
+	}
 	
+	/**
+	 * @param likeListOrderBySelectType
+	 */
+	public static String getLikeListOrderBySelectType(List<CommunityEntity> likeListOrderBySelectType, String url) {
+		StringBuilder sb = new StringBuilder();
+		SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd HH:mm");
+		
+		for (CommunityEntity likeList : likeListOrderBySelectType) {
+			String pageCode = (1 == likeList.getPageCode()) ? "칼럼" : (2 == likeList.getPageCode()) ? "QnA" : (3 == likeList.getPageCode()) ? "스터디" : "자유게시판";
+			sb.append("<tr class=\"cursor\" data-no=\"" + likeList.getCommunityNo() + "\">\r\n"
+					+ "<td>\r\n"
+					+ "<div>" + sdf.format(likeList.getEnrollDate()) + " | " + pageCode + "</div>\r\n"
+					+ "<div id=\"postTitle\">" + likeList.getTitle() + "</div>\r\n"
+					+ "<div id=\"postContent\">" + likeList.getContent() + "</div>\r\n"
+					+ "</td>\r\n"
+					+ "<td>\r\n"
+					+ "<span class=\"bi bi-chat-dots\"> " + likeList.getCommentCount() + " </span>\r\n"
+					+ "<span class=\"bi bi-eye\"> " + likeList.getViewCount() + " </span>\r\n"
+					+ "<span class=\"bi bi-heart-fill\"> " + likeList.getLikeCount() + " </span>\r\n"
+					+ "</td>\r\n"
+					+ "</tr>");
+		}
+		return sb.toString();
+	}
 	
 }

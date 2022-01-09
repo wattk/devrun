@@ -176,6 +176,15 @@ public class ProductServiceImpl implements ProductService {
 	public int updateOption(ProductDetail productDetail, Map<String, Object> param) {
 		return productDao.updateOption(productDetail, param);
 	}
+	
+	// 상품 검색 결과 가져오기
+	@Override
+	public List<ProductEntity> searchProductList(Map<String, Object> param) {
+		return productDao.searchProductList(param);
+	}
+	
+	
+	
 
 	// 다현 - 상세 페이지 뿌리기 위한 item 받아오기
 	@Override
@@ -217,7 +226,8 @@ public class ProductServiceImpl implements ProductService {
 		
 		return productDetailList;
 	}
-	
+
+
 	
 
 	/* 혜진 끝 */

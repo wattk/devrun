@@ -17,9 +17,16 @@
 
 <!-- shopSideBox 관련 임포트 -->
 <jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
 
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
+
+<style>
+
+.item-sort-container, .itembox{
+	margin: 0 10% 0 10%;
+}
+</style>
+
 <div class="shop-container">
 	<div class="mx-auto text-center p-5">
 		<h4>마우스</h4>
@@ -40,12 +47,11 @@
 		<div class="p-4" id="">
 			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="sell">판매량순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="row">낮은 가격순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="high">높은 가격순</span>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row itembox">
 		<!-- 아이템 나열 시작 -->
 		<c:if test = "${itemList != null}">
 			<c:forEach items="${itemList}" var="l">
@@ -127,6 +133,8 @@ $(".category-badge, .shop-sort").click((e)=>{
 });
 </script>
 
+<!-- shopSideBox 관련 임포트 -->
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
 
 <!-- shopHeader js  -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
