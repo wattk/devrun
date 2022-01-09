@@ -241,11 +241,17 @@ public class ShopController {
 	public String shopChildCate(@RequestParam String childCategoryCode, Model model,
 			@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request) {
 
+		//
+		String thisCateName = shopService.thisCateName(childCategoryCode);
+		model.addAttribute("thisCateName", thisCateName);
+		
 		// 소분류 카테고리 이름 불러오기
-		String parentCate = childCategoryCode.substring(1);
-		List<String> ChildCateNames = shopService.selectAllChildCateNames(parentCate);
-		log.debug("ChildCateNames : {}", ChildCateNames);
-		model.addAttribute("ChildCateNames", ChildCateNames);
+		/*
+		 * String parentCate = childCategoryCode.substring(1); List<String>
+		 * ChildCateNames = shopService.selectAllChildCateNames(parentCate);
+		 * log.debug("ChildCateNames : {}", ChildCateNames);
+		 * model.addAttribute("ChildCateNames", ChildCateNames);
+		 */
 
 		// 페이징 처리
 		log.debug("cPage : {} ", cPage);

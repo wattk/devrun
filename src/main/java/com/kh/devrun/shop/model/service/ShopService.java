@@ -69,4 +69,6 @@ public interface ShopService {
 
 	List<String> selectAllChildCateNames(String parentCate);
 
+	String thisCateName(String childCategoryCode);
+
 }

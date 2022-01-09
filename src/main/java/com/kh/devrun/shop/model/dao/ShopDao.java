@@ -81,4 +81,6 @@ public interface ShopDao {
 
 	List<String> selectAllChildCateNames(String parentCate);
 
+	String thisCateName(String childCategoryCode);
+
 }
