@@ -104,7 +104,7 @@ $(".category-badge, .shop-sort").click((e)=>{
 	
 	
 	$.ajax({
-		url : "${pageContext.request.contextPath}/shop/childCategorySearch.do",
+		url : "${pageContext.request.contextPath}/shop/childCategorySearchFromPromotion.do",
 		data : {childCategoryCode : data,
 				promotionCode : "${promotion.promotionCode}",
 				keyword : sort},
