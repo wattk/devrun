@@ -285,4 +285,14 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.selectItemsByChildCateBySort(offset, limit, param);
 	}
 
+	@Override
+	public List<ProductEntity> shopSearch(int offset, int limit, String searchKeyword) {
+		return shopDao.shopSearch(offset, limit, searchKeyword);
+	}
+
+	@Override
+	public int countShopSearch(String searchKeyword) {
+		return shopDao.countShopSearch(searchKeyword);
+	}
+
 }

@@ -342,7 +342,32 @@
 	    		</when>
 	    	</choose>
 	    </if>
-
+	</select>
+	
+	<select id="shopSearch" resultType="productEntity">
+	select
+	    product_code,
+	    name,
+	    price,
+	    reg_date,
+	    thumbnail,
+	    view_count,
+	    status,
+	    order_count
+	from 
+		product
+	where 
+	name like '%'|| #{searchKeyword} ||'%'
+	and status = 'Y'
+	</select>
+	<select id="countShopSearch" resultType="_int">
+	select
+		count(*)
+	from 
+		product
+	where 
+	name like '%'|| #{searchKeyword} ||'%'
+	and status = 'Y'
 	</select>
 
 <!-- =================================================구분선 ================================================= -->
