@@ -11,7 +11,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.devrun.chart.model.service.ChartService;
 import com.kh.devrun.common.DevrunUtils;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -32,8 +32,6 @@ import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
 import lombok.extern.slf4j.Slf4j;
-import net.nurigo.java_sdk.api.Message;
-import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 /**
  * Handles requests for the application home page.
@@ -49,6 +47,9 @@ public class HomeController {
 	@Autowired
 	private ServletContext application;
 	
+	@Autowired
+	private ChartService chartService;
+	
 	
 	
 	public HomeController() {
@@ -57,13 +58,15 @@ public class HomeController {
 		this.api = new IamportClient("8343794553669375", "3ecaf2db93a1bded8267d09318b5d6ba441c1c412e19686b81ec859a6ffafc90abe92a15af22b138");
 	}
 
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.debug("HomeController ---- forward ----> index.jsp");
-
+		
+		//베스트 셀러, 베스트 칼럼, 게시판별 게시글, 이벤트 불러오기
+		Map<String, Object> map = chartService.findHomeMain();
+		log.debug("map = {}", map);
+		model.addAttribute("map", map);
+		
 		// welcompage를 직접가지 않고, handler를 거쳐가는 설정
 		return "forward:/index.jsp";
 	}

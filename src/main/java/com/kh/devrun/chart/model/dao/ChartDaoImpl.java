@@ -3,9 +3,15 @@ package com.kh.devrun.chart.model.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.kh.devrun.community.model.vo.Community;
+import com.kh.devrun.community.model.vo.CommunityEntity;
+import com.kh.devrun.product.model.vo.ProductEntity;
+import com.kh.devrun.promotion.model.vo.Promotion;
 
 @Repository
 public class ChartDaoImpl implements ChartDao {
@@ -72,6 +78,47 @@ public class ChartDaoImpl implements ChartDao {
 	@Override
 	public List<Map<String, Object>> countCommunityPerMonth() {
 		return session.selectList("chart.countCommunityPerMonth");
+	}
+	
+	
+	/**
+	 * 메인 페이지 관련 데이터 작업
+	 */
+
+	@Override
+	public List<Map<String, Object>> selectBestCommunity() {
+		RowBounds rowBounds = new RowBounds(0, 3);
+		return session.selectList("community.selectBestCommunity", null, rowBounds);
+	}
+
+	@Override
+	public List<CommunityEntity> selectFreeboardList() {
+		RowBounds rowBounds = new RowBounds(0, 3);
+		return session.selectList("community.selectFreeboardList", null, rowBounds);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectQnaList() {
+		RowBounds rowBounds = new RowBounds(0, 3);
+		return session.selectList("community.selectQnaList", null, rowBounds);
+	}
+
+	@Override
+	public List<Community> selectColumnList() {
+		RowBounds rowBounds = new RowBounds(0, 3);
+		return session.selectList("community.columnBestList", null, rowBounds);
+	}
+
+	@Override
+	public List<ProductEntity> selectLikeProduct() {
+		RowBounds rowBounds = new RowBounds(0, 3);
+		return session.selectList("product.selectLikeProduct", null, rowBounds);
+	}
+
+	@Override
+	public List<Promotion> selectCurrentPromotionList() {
+		RowBounds rowBounds = new RowBounds(0, 3);
+		return session.selectList("promotion.selectCurrentPromotionList", null, rowBounds);
 	}
 	
 	
