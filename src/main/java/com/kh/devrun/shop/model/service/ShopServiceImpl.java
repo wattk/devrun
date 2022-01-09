@@ -56,23 +56,20 @@ public class ShopServiceImpl implements ShopService {
 		return result;
 
 	}
-	
+
 	@Override
 	public List<ProductEntity> selectProductListByChildCategory(Map<String, Object> param, int offset, int limit) {
-		return shopDao.selectProductListByChildCategory(param,offset,limit);
+		return shopDao.selectProductListByChildCategory(param, offset, limit);
 	}
-	
+
 	@Override
 	public int selectProductTotalCount(Map<String, Object> param) {
 		return shopDao.selectProductTotalCount(param);
 	}
-	
 
 	/* 혜진 장바구니 끝 */
 
 //--------------------------------------------------------구분선---------------------------------------------------------
-
-
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
@@ -293,6 +290,11 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public int countShopSearch(String searchKeyword) {
 		return shopDao.countShopSearch(searchKeyword);
+	}
+
+	@Override
+	public List<ProductEntity> shopSearchSort(int offset, int limit, Map<String, Object> param) {
+		return shopDao.shopSearchSort(offset, limit, param);
 	}
 
 }
