@@ -300,12 +300,15 @@
 			status ='Y' and 
 			child_category_code = #{childCategoryCode}
 	</select>
-	<select id="selectAllChildCateNames" resultType="string">
-		select distinct
-		    child_category_title 
+	<select id="selectAllChildCateNames" resultType="map">
+		select 
+		    distinct(child_category_title),
+		    child_category_code
 		from 
 		    view_product_parent_category
 		where parent_category_code = #{parentCate}
+		order by
+			child_category_code
 	</select>
 	<select id="thisCateName" resultType="string">
 		select 
@@ -339,7 +342,32 @@
 	    		</when>
 	    	</choose>
 	    </if>
-
+	</select>
+	
+	<select id="shopSearch" resultType="productEntity">
+	select
+	    product_code,
+	    name,
+	    price,
+	    reg_date,
+	    thumbnail,
+	    view_count,
+	    status,
+	    order_count
+	from 
+		product
+	where 
+	name like '%'|| #{searchKeyword} ||'%'
+	and status = 'Y'
+	</select>
+	<select id="countShopSearch" resultType="_int">
+	select
+		count(*)
+	from 
+		product
+	where 
+	name like '%'|| #{searchKeyword} ||'%'
+	and status = 'Y'
 	</select>
 
 <!-- =================================================구분선 ================================================= -->
@@ -390,5 +418,59 @@
 				#{cartNo}
 			</foreach> 
 	</delete>
+	
+	<select id="selectProductListByChildCategory" resultType="productEntity">
+		select
+		    *
+		from
+		    view_product_parent_category
+		<where>
+			status = 'Y'
+		    <if test="childCategoryCode != null">
+		     and child_category_code in
+				<foreach collection="childCategoryCode" open="(" item="code" separator="," close=")">
+					#{code}
+				</foreach>
+		    </if>
+		    <if test="childCategoryCode == null">
+		    	and parent_category_code = #{parentCategoryCode}
+		    </if>
+		</where>
+	    <if test="keyword != null">
+	    	<choose>
+	    		<when test="keyword eq 'recommend'">
+	    			order by view_count desc
+	    		</when>
+	    		<when test="keyword eq 'new'">
+	    			order by reg_date desc
+	    		</when>
+	    		<when test="keyword eq 'row'">
+	    			order by price
+	    		</when>
+	    		<when test="keyword eq 'high'">
+	    			order by price desc
+	    		</when>
+	    	</choose>
+	    </if>
+	</select>
+	
+	<select id="selectProductTotalCount" resultType="_int">
+		select
+		    count(*)
+		from
+		    view_product_parent_category
+		<where>
+			status = 'Y'
+		    <if test="childCategoryCode != null">
+		     and child_category_code in
+				<foreach collection="childCategoryCode" open="(" item="code" separator="," close=")">
+					#{code}
+				</foreach>
+		    </if>
+		    <if test="childCategoryCode == null">
+		    	and parent_category_code = #{parentCategoryCode}
+		    </if>
+		</where>
+	</select>
 	<!-- 혜진 장바구니 끝 -->
 </mapper>

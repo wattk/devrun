@@ -47,33 +47,34 @@
     max-width: 100%;
 
 }
+
 </style>
 
 <div class="shop-container">
 	<div class="mx-auto text-center p-5">
-		<h4>마우스</h4>
+		<h4 id="parentTitle" data-target="${parentCategory}">마우스</h4>
 	</div>
 	<div class="category-container d-flex justify-content-center align-items-center w-100">
 		<div class="category-all col-2">
 			<strong id="thisCateName" style="font-family: 'SANJUGotgam';" >전체보기</strong>
 		</div>
 		<div class="category-details col-8">
-		<c:forEach items="${ChildCateNames}" var ="c">
-			<span class="category-badge badge badge-primary">${c}</span>
+		<c:forEach items="${childCategoryList}" var ="c">
+			<span class="category-badge badge badge-secondary" data-target="${c['CHILD_CATEGORY_CODE']}">${c["CHILD_CATEGORY_TITLE"]}</span>
 		</c:forEach>
 		</div>
 	</div>
 	</div>
 		<div class="item-sort-container d-flex 	justify-content-between">
-		<div class="p-4">총 ${total}개</div>
+		<div class="p-4">총 <span id="productSize">${total}</span>개</div>
 		<div class="p-4" id="">
-			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="row">낮은 가격순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="high">높은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="recommend" data-valid="0">추천순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="new" data-valid="0">신상품순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="row" data-valid="0">낮은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="high" data-valid="0">높은 가격순</span>
 		</div>
 	</div>
-	<div class="row itembox">
+	<div id="productContainer" class="row itembox">
 		<!-- 아이템 나열 시작 -->
 		<c:if test = "${itemList != null}">
 			<c:forEach items="${itemList}" var="l">
@@ -93,20 +94,22 @@
 		</c:if>
       <!-- 아이템 나열 끝 -->
     </div>
-    <nav aria-label="..." class="mx-auto text-center">
-    <div class="banner mx-auto text-center mb-3">
+    <!-- <nav aria-label="..." class="mx-auto text-center"> -->
+    <div class="banner mx-auto text-center">
     	<img src="${pageContext.request.contextPath}/resources/upload/promotion/PROMO_0y7fZo5w789Pse8.png" alt="" />
     </div>
-	  <ul class="pagination justify-content-center mt-5">
-	  </ul>
 	  ${pagebar}
-	</nav>
+	<!-- </nav> -->
 
 
 
 <script>
+const parentCategoryCode = $("#parentTitle").data("target");
+let cPage = 1;
+
 //이벤트 상품 소분류 코드별 정렬
-$(".category-badge, .shop-sort").click((e)=>{
+$(document).on("click", ".category-badge, .shop-sort, .page-link", (e)=>{
+	
 	//클릭한 배지가 선택되어 있던 배지인지 아닌지 체크
 	if($(e.target).is(".badge-secondary")){
 		$(e.target)
@@ -122,8 +125,21 @@ $(".category-badge, .shop-sort").click((e)=>{
 	
 	let sort;
 	if($(e.target).is(".shop-sort")){
+		$(".shop-sort").data("valid", 0);
 		sort = $(e.target).data("target");
+		$(e.target).data("valid", 1);
 	};
+	if($(e.target).is(".page-link")){
+		const $sortList = $(".shop-sort");
+		cPage = $(e.target).data("cPage");
+		$sortList.each((i, item)=>{
+			if($(item).data("valid") == 1){
+				sort = $(item).data("target");
+			}
+		});
+	};
+	console.log(cPage);
+	console.log(sort);
 	
 	//primary클래스를 가진 소분류 카테고리를 모아 카테고리 코드를 모은 배열 생성
 	const $badges = $(".badge-primary");
@@ -136,16 +152,17 @@ $(".category-badge, .shop-sort").click((e)=>{
 	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/shop/childCategorySearch.do",
-		data : {childCategoryCode : data,
-				promotionCode : "${promotion.promotionCode}",
-				keyword : sort},
+		data : {parentCategoryCode : parentCategoryCode,
+				childCategoryCode : data,
+				keyword : sort,
+				cPage : cPage},
 		method : "GET",
 		success(data){
 			console.log(data);
-			$("#productPromotionContainer").html(data["productStr"]);
+			$("#productContainer").html(data["productStr"]);
 			$("#productSize").text(data["totalContent"]);
 			$(".pagebar").detach();
-			$("#productPromotionContainer").after(data["pagebar"]);
+			$(".banner").after(data["pagebar"]);
 			
 		},
 		error : console.log

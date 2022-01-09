@@ -81,6 +81,43 @@ public class ShopController {
 
 //--------------------주입-------------------------------------	
 
+	// 검색 페이지로 이동
+	@PostMapping("/shopSearch")
+	public String shopSearch(@RequestParam String searchKeyword, @RequestParam(defaultValue = "1") int cPage,
+			Model model, HttpServletRequest request) {
+		log.debug("searchKeyword : {}", searchKeyword);
+		model.addAttribute("searchKeyword", searchKeyword);
+
+		int limit = 12;
+		int offset = (cPage - 1) * limit;
+
+		List<ProductEntity> searchList = shopService.shopSearch(offset, limit, searchKeyword);
+		log.debug("searchList : {}", searchList);
+		model.addAttribute("searchList", searchList);
+
+		// count
+		int total = shopService.countShopSearch(searchKeyword);
+		log.debug("total : {}", total);
+		model.addAttribute("total", total);
+		
+		
+
+		// 3. pagebar
+		String url = request.getRequestURI(); // /spring/board/boardList.do
+		
+		if (searchKeyword != null) {
+			url += "&searchKeyword=" + searchKeyword;
+		}
+		
+		
+		String pagebar = DevrunUtils.getPagebar(cPage, limit, total, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
+
+		return "/shop/shopSearch";
+
+	}
+
 	// 소분류카테고리정렬
 	@ResponseBody
 	@GetMapping("/childCatePageSort")
@@ -103,10 +140,9 @@ public class ShopController {
 		// sort에 따라 잘 받아옴dd.
 
 		String url = request.getContextPath();
-		String productStr = DevrunUtils.getProductList(sortItemList, url);	
-		
+		String productStr = DevrunUtils.getProductList(sortItemList, url);
+
 		log.debug("productStr : {}", productStr);
-		
 
 		resultMap.put("productStr", productStr);
 		return resultMap;
@@ -217,11 +253,6 @@ public class ShopController {
 	public void shopMain() {
 	}
 
-	// 검색 페이지로 이동
-	@GetMapping("/shopSearch.do")
-	public void shopSearch() {
-	}
-
 	@GetMapping("wishlist")
 	public String wishlist(Authentication authentication, Model model) {
 
@@ -242,9 +273,12 @@ public class ShopController {
 			@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request) {
 
 		// 소분류 카테고리 이름 불러오기
-		List<String> ChildCateNames = shopService.selectAllChildCateNames(parentCate);
-		log.debug("ChildCateNames : {}", ChildCateNames);
-		model.addAttribute("ChildCateNames", ChildCateNames);
+		//List<String> ChildCateNames = shopService.selectAllChildCateNames(parentCate);
+		List<Map<String, String>> childCategoryList = shopService
+				.selectAllChildCateNames(parentCate);
+		log.debug("ChildCateNames : {}", childCategoryList);
+		model.addAttribute("parentCategory", parentCate);
+		model.addAttribute("childCategoryList", childCategoryList);
 
 		// 페이징 처리
 		log.debug("cPage : {} ", cPage);
@@ -658,7 +692,7 @@ public class ShopController {
 		return "/shop/promotionDetail";
 	}
 
-	@GetMapping("/childCategorySearch.do")
+	@GetMapping("/childCategorySearchFromPromotion.do")
 	@ResponseBody
 	public Map<String, Object> childCategorySearch(@RequestParam(defaultValue = "1") int cPage,
 			@RequestParam(value = "childCategoryCode[]", required = false) List<String> childCategoryCode,
@@ -694,7 +728,7 @@ public class ShopController {
 			url += "&keyword=" + keyword;
 		}
 
-		if (!childCategoryCode.isEmpty()) {
+		if (childCategoryCode != null && !childCategoryCode.isEmpty()) {
 			for (String code : childCategoryCode) {
 				url += "&childCategoryCode=" + code;
 			}
@@ -703,7 +737,7 @@ public class ShopController {
 		int totalContent = promotionService.selectProductTotalCount(param);
 		log.debug("url = {}", url);
 		// 3. pagebar
-		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = DevrunUtils.getProductPagebar(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
 
 		resultMap.put("productStr", productStr);
@@ -739,6 +773,62 @@ public class ShopController {
 		}
 
 		return list;
+	}
+	
+	@GetMapping("/childCategorySearch.do")
+	@ResponseBody
+	public Map<String, Object> childCategorySearch(@RequestParam(defaultValue = "1") int cPage,
+			@RequestParam(value = "parentCategoryCode") String parentCategoryCode,
+			@RequestParam(value = "childCategoryCode[]", required = false) List<String> childCategoryCode,
+			@RequestParam(value = "keyword", required = false) String keyword,
+			HttpServletRequest request,
+			HttpServletResponse response) {
+		Map<String, Object> resultMap = new HashMap<>();
+		log.debug("cPage = {}", cPage);
+
+		int limit = 12;
+		int offset = (cPage - 1) * limit;
+
+		log.debug("{}", keyword);
+		Map<String, Object> param = new HashMap<>();
+		param.put("parentCategoryCode", parentCategoryCode);
+		param.put("childCategoryCode", childCategoryCode);
+		param.put("keyword", keyword);
+		log.debug("{}", param);
+
+		// 1. 전체 상품 목록
+		String url = request.getContextPath();
+
+		List<ProductEntity> productList = shopService.selectProductListByChildCategory(param, offset, limit);
+		String productStr = DevrunUtils.getProductList(productList, url);
+
+		// 2. 전체 게시물 수 totalContent
+//		url = request.getRequestURI();
+		url = "/devrun/shop/childCategorySearch.do";
+		
+		url += "?parentCategoryCode="+parentCategoryCode;
+		
+		if (keyword != null) {
+			url += "&keyword=" + keyword;
+		}
+
+		if (childCategoryCode != null && !childCategoryCode.isEmpty()) {
+			for (String code : childCategoryCode) {
+				url += "&childCategoryCode=" + code;
+			}
+		}
+
+		int totalContent = shopService.selectProductTotalCount(param);
+		log.debug("url = {}", url);
+		// 3. pagebar
+		String pagebar = DevrunUtils.getProductPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+
+		resultMap.put("productStr", productStr);
+		resultMap.put("totalContent", totalContent);
+		resultMap.put("pagebar", pagebar);
+
+		return resultMap;
 	}
 	/**
 	 * 혜진 작업 끝

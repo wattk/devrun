@@ -42,8 +42,22 @@ public class ShopDaoImpl implements ShopDao {
 	public int deleteCart(List<Integer> cartNoArr) {
 		return session.delete("shop.deleteCart", cartNoArr);
 	}
+	
+	@Override
+	public List<ProductEntity> selectProductListByChildCategory(Map<String, Object> param, int offset, int limit) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("shop.selectProductListByChildCategory", param, rowBounds);
+	}
+	
+	@Override
+	public int selectProductTotalCount(Map<String, Object> param) {
+		log.debug("param = {}", param);
+		return session.selectOne("shop.selectProductTotalCount", param);
+	}
+	
 
 	/* 혜진 장바구니 끝 */
+
 
 	@Override
 	public int findWishlistNo(Map<String, Object> param) {
@@ -188,7 +202,7 @@ public class ShopDaoImpl implements ShopDao {
 	}
 
 	@Override
-	public List<String> selectAllChildCateNames(String parentCate) {
+	public List<Map<String, String>> selectAllChildCateNames(String parentCate) {
 		return session.selectList("shop.selectAllChildCateNames", parentCate);
 	}
 
@@ -201,6 +215,17 @@ public class ShopDaoImpl implements ShopDao {
 	public List<ProductEntity> selectItemsByChildCateBySort(int offset, int limit, Map<String, Object> param) {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("shop.selectItemsByChildCateBySort", param, rowBounds);
+	}
+
+	@Override
+	public List<ProductEntity> shopSearch(int offset, int limit, String searchKeyword) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("shop.shopSearch", searchKeyword, rowBounds);
+	}
+
+	@Override
+	public int countShopSearch(String searchKeyword) {
+		return session.selectOne("shop.countShopSearch", searchKeyword);
 	}
 
 }
