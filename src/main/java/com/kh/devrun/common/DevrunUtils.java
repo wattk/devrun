@@ -391,14 +391,17 @@ public class DevrunUtils {
 		return pagebar.toString();
 	}
 
-	public static String getProductList(List<ProductEntity> productList) {
+	public static String getProductListByAdmin(List<ProductEntity> productList, HttpServletRequest request) {
 		StringBuilder sb = new StringBuilder();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String context = request.getContextPath();
+
 		
 		for (ProductEntity product : productList) {
 			sb.append(
 			"<tr> \n"
-				+"<td>"+product.getThumbnail()+"</td>\n"
+				+"<td><input type=\"checkbox\"id=\"select\" class=\"box\"/> </td>\n"
+				+"<td><img id=\"thumbnail\" src=\""+context+"/resources/upload/product/"+ product.getThumbnail() + "\"/></td>\n"
 				+"<td>"+product.getProductCode() +"</td>\n"
 				+"<td>"+product.getName()+"</td>\n"
 				+"	<td>\r\n"

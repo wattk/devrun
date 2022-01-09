@@ -140,7 +140,38 @@
 	</select>
 	
 	<!-- 삼품 검색 목록 가져오기  -->
+	<select id="searchProductList" resultType="ProductEntity">
+		select
+			*
+		from
+			product
+		where
+			<choose>
+				<when test="searchType.equals('product_code')"> 
+					${searchType} like '%'|| #{searchKeyword} ||'%'
+				</when>			
+				<when test="searchType.equals('status')"> 
+					${searchType} = #{searchKeyword}
+				</when>	
+			</choose>
+	</select>
 	
+	<!-- 삼품 검색 목록 갯수 가져오기  -->
+	<select id="searchProductListCount" resultType="_int">
+		select
+			count(*)
+		from
+			product
+		where
+			<choose>
+				<when test="searchType.equals('product_code')"> 
+					${searchType} like '%'|| #{searchKeyword} ||'%'
+				</when>			
+				<when test="searchType.equals('status')"> 
+					${searchType} = #{searchKeyword}
+				</when>	
+			</choose>
+	</select>
 	
 	
 	
@@ -284,6 +315,15 @@
 		where
 		    c.detail_no in (select detail_no from product_detail pd where pd.product_code = #{productCode})
 		    and member_no = #{memberNo}
+	</select>
+	
+	<select id="selectLikeProduct" resultType="productEntity">
+		select
+			*
+		from
+			product
+		order by
+			view_count desc
 	</select>
 	<!-- 혜진 mapper 끝 -->
 </mapper>
