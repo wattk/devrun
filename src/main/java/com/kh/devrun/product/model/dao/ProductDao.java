@@ -46,9 +46,12 @@ public interface ProductDao {
 
 	// productOption 추가
 	int insertOption(ProductDetail productDetail);
-	// 상품 검색 결과 가져오기
-	List<ProductEntity> searchProductList(Map<String, Object> param);
 	
+	// 상품 검색 결과 가져오기
+	List<ProductEntity> searchProductList(Map<String, Object> param);	
+	// 상품 검색 결과 갯수 가져오기
+	int searchProductListCount(Map<String, Object> param);
+
 	
 	
 	

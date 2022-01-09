@@ -140,7 +140,38 @@
 	</select>
 	
 	<!-- 삼품 검색 목록 가져오기  -->
+	<select id="searchProductList" resultType="ProductEntity">
+		select
+			*
+		from
+			product
+		where
+			<choose>
+				<when test="searchType.equals('product_code')"> 
+					${searchType} like '%'|| #{searchKeyword} ||'%'
+				</when>			
+				<when test="searchType.equals('status')"> 
+					${searchType} = #{searchKeyword}
+				</when>	
+			</choose>
+	</select>
 	
+	<!-- 삼품 검색 목록 갯수 가져오기  -->
+	<select id="searchProductListCount" resultType="_int">
+		select
+			count(*)
+		from
+			product
+		where
+			<choose>
+				<when test="searchType.equals('product_code')"> 
+					${searchType} like '%'|| #{searchKeyword} ||'%'
+				</when>			
+				<when test="searchType.equals('status')"> 
+					${searchType} = #{searchKeyword}
+				</when>	
+			</choose>
+	</select>
 	
 	
 	
