@@ -99,17 +99,30 @@
 			
 			<hr />
 			<div class="row" >
-				<div class="col-md-12 row justify-content-end"> 
-				
+				<div class="col-md-12 row justify-content-end">
+					<!-- 스터디 게시판이고 글쓴이 본인일 경우에만 노출 -->
+					<!-- 모집중 : Y(default), 모집완료 : N -->
+					<!-- 모집완료 버튼(Y일 때) -->
+					<c:if test="${communityEntity.pageCode eq 3 && communityEntity.memberNo eq member.memberNo && communityEntity.studyJoinYn eq 'Y'}"> 
+						<button type="button" class="btn btn-success" style="margin-right: 10px;" id="changeJoinYn" 
+							data-study-join-yn="${communityEntity.studyJoinYn}"
+							data-community-no="${communityEntity.communityNo}">모집완료</button>
+					</c:if>
+					<!-- 모집중 버튼(N일 때) -->
+					<c:if test="${communityEntity.pageCode eq 3 && communityEntity.memberNo eq member.memberNo && communityEntity.studyJoinYn eq 'N'}"> 
+						<button type="button" class="btn btn-success" style="margin-right: 10px;" id="changeJoinYn" 
+							data-study-join-yn="${communityEntity.studyJoinYn}"
+							data-community-no="${communityEntity.communityNo}">모집중</button>
+					</c:if>
 					<button style="margin-right: 10px;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" id="reportButton">신고하기</button>
 					<jsp:include page="/WEB-INF/views/community/common/reportModal.jsp">
 						<jsp:param value="" name="title"/>
 					</jsp:include>
 					
 					<button type="button" class="btn btn-primary" id="likeButton" 
-						data-community-no = "${communityEntity.communityNo}"
-						data-member-no = "${communityEntity.memberNo}"
-						data-like-yes-no = "${likeYesNo}">좋아요</button>
+						data-community-no="${communityEntity.communityNo}"
+						data-member-no="${communityEntity.memberNo}"
+						data-like-yes-no="${likeYesNo}">좋아요</button>
 				</div>
 			</div>
 				<hr />
@@ -132,7 +145,7 @@
 								data-community-no = "${communityEntity.communityNo}"
 								data-page-code= "${communityEntity.pageCode}">삭제하기</button>
 					</sec:authorize>
-					<button type="button" class="btn btn-secondary btn-lg" onclick="history.go(-1)">목록보기</button>
+					<button type="button" class="btn btn-secondary btn-lg" onclick="location.href = '${pageContext.request.contextPath}/community/communityStudyList.do'">목록보기</button>
 				</div>
 			</div>
 		</div>
@@ -247,6 +260,76 @@
 </div>
 
 <script>
+/* ---------------------------- 모집 기능 시작 ---------------------------- */
+// 모집중 : Y
+// 모집완료 : N
+
+$(document).on('click', '#changeJoinYn', function(e){
+	e.preventDefault();
+	console.log("모집기능 도착했나요?");
+	console.log(e.target);
+	var $studyJoinYn = $(e.target).data("studyJoinYn");
+	const $communityNo = $(e.target).data("communityNo");
+	console.log("모집중:Y,모집완료:N --> " + $studyJoinYn);
+	console.log("모집 게시글 번호 : " + $communityNo);
+		
+	// 모집중 상태일 때
+	if($studyJoinYn == 'Y'){
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/community/joinNo.do",
+			method: "GET",
+			data:{
+				studyJoinYn : $studyJoinYn,
+				communityNo : $communityNo
+			},
+			success(data){
+				const result = data["result"]
+				// 1이면 모집완료 상태로 변경
+				if(result == 1){
+					alert("모집완료 상태로 변경되었습니다.");
+					$("#changeJoinYn").html('모집중');
+					$(e.target).data("studyJoinYn", "N");
+				}
+			},
+			error:function(xhr, status, err){
+				console.log(xhr, status, err);
+					alert("로그인 후 이용이 가능합니다.");
+			}
+		});
+	} else{
+		
+		console.log("모집완료에서 모집중으로 변경");
+		$.ajax({
+			url: "${pageContext.request.contextPath}/community/joinYes.do",
+			method: "GET",
+			data: {
+				studyJoinYn : $studyJoinYn,
+				communityNo : $communityNo
+			},
+			success(data){
+				const result = data["result"]
+				// 1이면 모집중 상태로 변경 
+				if(result == 1){
+					alert("모집중 상태로 변경되었습니다.");
+					$("#changeJoinYn").html("모집완료");
+					$(e.target).data("studyJoinYn", "Y");
+					
+				}
+			},
+			error:function(xhr, status, err){
+			console.log(xhr, status, err);
+				alert("로그인 후 이용이 가능합니다.");
+			}
+		});
+	}
+});
+
+
+/* ---------------------------- 모집 기능 종료 ---------------------------- */
+
+/* ---------------------------- 썸머 노트 시작 ---------------------------- */
+
 // summernote 웹 에디터 로딩
 $(document).ready(function(){
 	$('#summernote').summernote({
@@ -256,10 +339,18 @@ $(document).ready(function(){
 		focus: true, // 에디터 로딩 후 포커스를 맞출 지 여부
 		lang: "ko-KR", // 한글 설정
 	});
+	if($("#closeJoinYn").val()=="N"){
+		$("#closeJoinYn").html('모집완료');	
+	} else {
+		$("#closeJoinYn").html('모집중');	
+	}
+	
 	
 	// 읽기 전용화 --> 비활성화 --> disable
 	$('#summernote').summernote('disable');
 });
+
+/* ---------------------------- 썸머 노트 종료 ---------------------------- */
 
 /* ---------------------------- 커뮤니티 수정하기 기능 시작 ---------------------------- */
 
@@ -278,7 +369,7 @@ $(document).on('click', '#communityUpdateBtn', function(e){
 /* ---------------------------- 커뮤니티 수정하기 기능 종료 ---------------------------- */
 
 
-/* ---------------------------- 커뮤니티 삭제하기 기능 종료 ---------------------------- */
+/* ---------------------------- 커뮤니티 삭제하기 기능 시작 ---------------------------- */
 $(document).on('click', '.communityDeleteBtn', function(e){
 	e.preventDefault();
 	console.log("삭제하기 도착했나요?");
@@ -296,6 +387,7 @@ $(document).on('click', '.communityDeleteBtn', function(e){
 });
 
 /* ---------------------------- 커뮤니티 삭제하기 기능 종료 ---------------------------- */
+
 
 /* ---------------------------- 커뮤니티 댓글 기능 시작 ---------------------------- */
 //댓글 유효성 검사

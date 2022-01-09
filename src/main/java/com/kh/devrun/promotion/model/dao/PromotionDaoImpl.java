@@ -109,7 +109,16 @@ public class PromotionDaoImpl implements PromotionDao {
 	public int selectProductTotalCount(Map<String, Object> param) {
 		return session.selectOne("promotion.selectProductTotalCount", param);
 	}
-	
-	
+
+	/**
+	 * 지원 dao 시작
+	 */
+	@Override
+	public Promotion selectOneLatestPromotionBanner() {
+		return session.selectOne("promotion.selectOneLatestPromotionBanner");
+	}
+	/**
+	 * 지원 dao 끝
+	 */
 
 }

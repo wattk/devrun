@@ -110,11 +110,17 @@ public class ProductDaoImpl implements ProductDao {
 	// 상품 검색 결과 가져오기
 	@Override
 	public List<ProductEntity> searchProductList(Map<String, Object> param) {
-		return session.selectList("product.searchProductList",param);
+		int offset = (int) param.get("offset");
+		int limit = (int) param.get("limit");
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return session.selectList("product.searchProductList",param,rowBounds);
 	}
 	// 상품 검색 결과 갯수 가져오기
 	@Override
 	public int searchProductListCount(Map<String, Object> param) {
+
 		return session.selectOne("product.searchProductListCount",param);
 	}
 	

@@ -99,6 +99,7 @@
 	<span id="day" class="badge badge-primary">오늘</span>
 	<span id="week" class="badge badge-secondary">이번주</span>
 	<span id="month" class="badge badge-secondary">이번달</span>
+	<span id="allDay" class="badge badge-secondary">전체</span>
 </div>
 
 <div class="report-search-container mt-3 ml-5">
@@ -234,10 +235,23 @@
 <script>
 	
 /*-----------------------------------*/
+	 // 날짜 뱃지 호버
+	$(".badge").hover(e=>{
+		$(e.target).css("cursor","pointer");
+	});
+
 	// 날짜 벳지 버튼 클릭	
 	$(".badge").click(e=>{
 		$(".badge").removeClass("badge-primary").addClass("badge-secondary"); 
 		$(e.target).addClass("badge-primary").removeClass("badge-secondary");
+	});
+	
+	/* 전체 클릭 시 날짜 초기화 && 전역변수에 담긴 날짜값도 초기화 */
+	$("#allDay").click(e=>{
+		$("#startDate, #endDate").val('');
+		startDate = "";
+		endDate = "";
+		
 	});
 		
 	/* '오늘' 버튼 클릭 */
@@ -481,13 +495,11 @@
 	var cPage;
 	
 	function getPage(cPage){
-	
 		
 		searchType = $searchType;
 		searchKeyword =  $searchKeyword;
 		var cPage;
-		
-		
+				
 		
 		console.log(searchType);
 		console.log(searchKeyword);
