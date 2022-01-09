@@ -1,37 +1,41 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
-<link href="${pageContext.request.contextPath }/resources/css/shop/shopSideBox.css" rel="stylesheet"> 
+<link href="${pageContext.request.contextPath }/resources/css/shop/shopSideBox.css" rel="stylesheet">
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
 
 
 
-           <div id="sidebox"> 
-               <div id="sideboxHeader">
-                   <p class="text-center">오늘 본 상품 </p>
-               </div>
-               <div id="sideboxBody">
-				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
-				  <div class="carousel-inner thisHeight">
-				      <div class="carousel-item active firstS">
-				      	<p style="font-family: 'Nanum Pen Script'; font-size:51px" id="todayNothing">텅</p>
-				      	<p id="oneAnd" class="one-and">1/1</p>
-					    </div>
-					    <div class="carousel-item secondS">
-					    <p class="one-and">2/2</p>
-					    </div>
-				  </div>
+<div id="sidebox">
+	<div id="sideboxHeader">
+		<p class="text-center">오늘 본 상품</p>
+	</div>
+	<div id="sideboxBody">
+		<div id="carouselExampleControls" class="carousel slide"
+			data-bs-ride="carousel" data-bs-interval="false">
+			<div class="carousel-inner thisHeight">
+				<div class="carousel-item active firstS">
+					<p style="font-family: 'Nanum Pen Script'; font-size: 51px"
+						id="todayNothing">텅</p>
+					<p id="oneAnd" class="one-and">1/1</p>
 				</div>
-               </div>
-               <div id="sideBoxFooter" class="ml-2 mr-2">
-				  <button class="slide-btn" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-				    <img src="https://i.ibb.co/TwyPKry/errow2.png" alt="" />
-				  </button>
-				  <button class="slide-btn"  type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-				    <img src="https://i.ibb.co/ZTyXx9q/errow.png" alt="" />
-				  </button>
-               </div>
-           </div>
+				<div class="carousel-item secondS">
+					<p class="one-and">2/2</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="sideBoxFooter" class="ml-2 mr-2">
+		<button class="slide-btn" type="button"
+			data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+			<img src="https://i.ibb.co/TwyPKry/errow2.png" alt="" />
+		</button>
+		<button class="slide-btn" type="button"
+			data-bs-target="#carouselExampleControls" data-bs-slide="next">
+			<img src="https://i.ibb.co/ZTyXx9q/errow.png" alt="" />
+		</button>
+	</div>
+</div>
 
 <script>
 /** 오늘본상품시작*/
@@ -72,6 +76,7 @@ function todayViewBox () {
 		//div분기 처리 끝
 		
 		if(length>3){
+			$('#oneAnd').text('1/2');
 			const $firstSlide = $('.firstS');
 			const $secondSlide = $('.secondS');
 			
