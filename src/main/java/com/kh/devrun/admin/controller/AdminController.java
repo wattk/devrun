@@ -169,19 +169,19 @@ public class AdminController {
 		List<ProductEntity>productList = productService.searchProductList(param);
 		String productStr = DevrunUtils.getProductList(productList);
 		
-		// 2.조회한 게시물 수
-		int totalContent = productService.searchProductListCount(param);
-		
-		// 3.페이지 바
-		log.debug("pagebarUrl = {}",url);
-		String pagebar = DevrunUtils.getPagebar2(cPage, limit, totalContent, url);
-		log.debug("pagebar = {}", pagebar);
-				
-		
-		map.put("productList",productList);
-		map.put("totalContent",totalContent);
-		map.put("pagebar",pagebar);
-		map.put("productStr",productStr);
+//		// 2.조회한 게시물 수
+//		int totalContent = productService.searchProductListCount(param);
+//		
+//		// 3.페이지 바
+//		log.debug("pagebarUrl = {}",url);
+//		String pagebar = DevrunUtils.getPagebar2(cPage, limit, totalContent, url);
+//		log.debug("pagebar = {}", pagebar);
+//				
+//		
+//		map.put("productList",productList);
+//		map.put("totalContent",totalContent);
+//		map.put("pagebar",pagebar);
+//		map.put("productStr",productStr);
 
 		return map;
 	}

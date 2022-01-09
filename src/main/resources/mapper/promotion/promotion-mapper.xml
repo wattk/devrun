@@ -217,4 +217,17 @@
 		    </if>
 		</where>
 	</select>
+	
+	<!-- 지원 mapper 시작 -->
+	<select id="selectOneLatestPromotionBanner" resultType="promotion">
+		select
+			promotion_code,
+			banner
+		from
+			promotion
+		where
+		order by
+			enroll_date desc;
+	</select>
+	<!-- 지원 mapper 끝 -->
 </mapper>

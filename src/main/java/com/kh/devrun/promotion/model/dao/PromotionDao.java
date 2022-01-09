@@ -44,4 +44,6 @@ public interface PromotionDao {
 	List<ProductEntity> selectProductListByPromotionCode(Map<String, Object> param, int offset, int limit);
 
 	int selectProductTotalCount(Map<String, Object> param);
+
+	Promotion selectOneLatestPromotionBanner();
 }

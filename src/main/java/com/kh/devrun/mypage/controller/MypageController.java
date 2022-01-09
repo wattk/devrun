@@ -46,6 +46,8 @@ import com.kh.devrun.order.model.service.OrderService;
 import com.kh.devrun.order.model.vo.MerchantExt;
 import com.kh.devrun.order.model.vo.OrderLogExt;
 import com.kh.devrun.order.model.vo.Shipment;
+import com.kh.devrun.promotion.model.service.PromotionService;
+import com.kh.devrun.promotion.model.vo.Promotion;
 import com.kh.devrun.report.model.service.ReportService;
 import com.kh.devrun.report.model.vo.Report;
 
@@ -70,6 +72,9 @@ public class MypageController {
 	
 	@Autowired
 	private CommunityService communityService;
+	
+	@Autowired
+	private PromotionService promotionService;
 	
 	@Autowired
 	ServletContext application;
@@ -100,6 +105,11 @@ public class MypageController {
 		
 		model.addAttribute("totalUnreadCount", totalUnreadCount);
 		/* 전체안읽음 메시지 건수 조회 끝 */
+		
+		/* 최근 이벤트 한개 조회 */
+		Promotion promotion = promotionService.selectOneLatestPromotionBanner();
+		log.debug("promotion = {}", promotion);
+		model.addAttribute("promotion", promotion);
 		
 		return "mypage/mypage";
 	}
