@@ -82,7 +82,7 @@ public class ShopController {
 //--------------------주입-------------------------------------	
 
 	// 검색 페이지로 이동
-	@PostMapping("/shopSearch")
+	@GetMapping("/shopSearch")
 	public String shopSearch(@RequestParam String searchKeyword, @RequestParam(defaultValue = "1") int cPage,
 			Model model, HttpServletRequest request) {
 		log.debug("searchKeyword : {}", searchKeyword);
@@ -104,11 +104,11 @@ public class ShopController {
 
 		// 3. pagebar
 		String url = request.getRequestURI(); // /spring/board/boardList.do
-		
+	
 		if (searchKeyword != null) {
-			url += "&searchKeyword=" + searchKeyword;
+			url += "?searchKeyword=" + searchKeyword;
 		}
-		
+	
 		
 		String pagebar = DevrunUtils.getPagebar(cPage, limit, total, url);
 		log.debug("pagebar = {}", pagebar);
@@ -145,6 +145,23 @@ public class ShopController {
 		log.debug("productStr : {}", productStr);
 
 		resultMap.put("productStr", productStr);
+		
+		
+		// 2. 전체 게시물 수 totalContent
+		url = "/devrun/shop/childCatePageSort";
+		
+		url += "?childCategoryCode="+childCateCode;
+		
+		if (keyword != null) {
+			url += "&keyword=" + keyword;
+		}
+		
+		// 3. pagebar
+		String pagebar = DevrunUtils.getProductPagebar(cPage, limit, total, url);
+		log.debug("pagebar = {}", pagebar);
+		resultMap.put("pagebar", pagebar);
+
+		
 		return resultMap;
 	}
 
