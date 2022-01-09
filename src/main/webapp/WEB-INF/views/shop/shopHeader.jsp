@@ -137,5 +137,5 @@
 <script>
 $(serviceCenter).click((e) => {
 	   location.href = "${pageContext.request.contextPath}/customerCenter/noticeList.do";
-})
+});
 </script>                   

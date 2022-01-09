@@ -140,4 +140,5 @@ $(".shop-like-icon").click((e)=>{
 	
 });
 </script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
