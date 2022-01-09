@@ -706,7 +706,7 @@ public class ShopController {
 		int totalContent = promotionService.selectProductTotalCount(param);
 		log.debug("url = {}", url);
 		// 3. pagebar
-		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = DevrunUtils.getProductPagebar(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
 
 		resultMap.put("productStr", productStr);
@@ -753,6 +753,7 @@ public class ShopController {
 			HttpServletRequest request,
 			HttpServletResponse response) {
 		Map<String, Object> resultMap = new HashMap<>();
+		log.debug("cPage = {}", cPage);
 
 		int limit = 12;
 		int offset = (cPage - 1) * limit;
@@ -789,7 +790,7 @@ public class ShopController {
 		int totalContent = shopService.selectProductTotalCount(param);
 		log.debug("url = {}", url);
 		// 3. pagebar
-		String pagebar = DevrunUtils.getPagebar(cPage, limit, totalContent, url);
+		String pagebar = DevrunUtils.getProductPagebar(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
 
 		resultMap.put("productStr", productStr);
