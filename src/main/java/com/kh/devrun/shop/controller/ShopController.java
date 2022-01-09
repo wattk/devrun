@@ -86,6 +86,7 @@ public class ShopController {
 	public String shopSearch(@RequestParam String searchKeyword, @RequestParam(defaultValue = "1") int cPage,
 			Model model, HttpServletRequest request) {
 		log.debug("searchKeyword : {}", searchKeyword);
+		model.addAttribute("searchKeyword", searchKeyword);
 
 		int limit = 12;
 		int offset = (cPage - 1) * limit;

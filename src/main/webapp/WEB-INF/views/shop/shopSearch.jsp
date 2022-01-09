@@ -32,7 +32,7 @@
 
 <div class="shop-container">
 	<div class="mx-auto text-left p-5" id="">
-		<h5 class="m-0"><strong>"마우스"</strong>에 대한 상품 검색 결과 : <strong>${total}개</strong></h5>
+		<h5 class="m-0"><strong>${searchKeyword}</strong>에 대한 상품 검색 결과 : <strong>${total}개</strong></h5>
 	</div>
 	<hr />
 	<div class="mx-auto text-right p-4" id="">
