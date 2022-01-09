@@ -33,8 +33,8 @@ public class CommunityEntity extends Community {
 	
 	
 	public CommunityEntity(int communityNo, int memberNo, int pageCode, String title, String content,
-			Date enrollDate, int viewCount, int likeCount, String thumbnail, String answerYn, String hashtag, String studyJoinYn,
-			String nickname, String authority, int commentCount) {
+			Date enrollDate, int viewCount, int likeCount, String thumbnail, String answerYn, String hashtag,
+			String nickname, String authority, int commentCount, String studyJoinYn) {
 		super(communityNo, memberNo, pageCode, title, content, enrollDate, viewCount, likeCount, thumbnail,
 				answerYn, hashtag, studyJoinYn);
 		this.nickname = nickname;
