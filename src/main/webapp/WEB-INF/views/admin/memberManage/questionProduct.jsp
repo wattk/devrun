@@ -234,6 +234,11 @@
 <script>
 	
 /*-----------------------------------*/
+	 // 날짜 뱃지 호버
+	$(".badge").hover(e=>{
+		$(e.target).css("cursor","pointer");
+	});
+
 	// 날짜 벳지 버튼 클릭	
 	$(".badge").click(e=>{
 		$(".badge").removeClass("badge-primary").addClass("badge-secondary"); 
@@ -481,13 +486,11 @@
 	var cPage;
 	
 	function getPage(cPage){
-	
 		
 		searchType = $searchType;
 		searchKeyword =  $searchKeyword;
 		var cPage;
-		
-		
+				
 		
 		console.log(searchType);
 		console.log(searchKeyword);

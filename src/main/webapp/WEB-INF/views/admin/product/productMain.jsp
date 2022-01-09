@@ -202,8 +202,10 @@ $(".badge").click(e=>{
 	$(e.target).addClass("badge-primary").removeClass("badge-secondary");
 });
 
-//badge-secondary
-
+// 날짜 뱃지 호버
+$(".badge").hover(e=>{
+	$(e.target).css("cursor","pointer");
+});
 
 
 /* '오늘' 버튼 클릭 */
@@ -401,8 +403,6 @@ function getPage(cPage){
 		error:console.log			
 	});
 }
-
-
 
 
 
