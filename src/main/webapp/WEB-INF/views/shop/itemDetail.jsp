@@ -557,7 +557,7 @@
 									<c:forEach items="${recommendation}" var="r" begin="1" end="3">
 										<!-- 상품추천 1건 시작 -->
 										<div class="recom-info">
-											<img
+											<img class ="recom-border"
 												src="${pageContext.request.contextPath}/resources/upload/product/${r.thumbnail}"
 												alt="추천상품이미지">
 											<div class="mt-2 forFont2">

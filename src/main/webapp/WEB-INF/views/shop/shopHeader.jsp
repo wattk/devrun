@@ -26,7 +26,6 @@
                       ================================================== -->
                     <h1 id="accordion">DevRun Shop</h1>
                     <a href="" class="subCategory"><span style="font-size: 15px;">신상품</span></a>
-                    <a href="" class="subCategory" style="padding-top: 0;"><span style="font-size: 15px;">할인상품</span></a>
                     <aside class="accordion">
                       <h1>모니터</h1>
                       <div>
