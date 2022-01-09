@@ -556,7 +556,7 @@
   		community c left join member m
   			on c.member_no = m.member_no
   	where
-  		enroll_date between 
+  		trunc(c.enroll_date, 'd') between trunc(sysdate, 'd') and trunc(sysdate, 'd')+6
   	order by
   		c.like_count desc
   </select>
