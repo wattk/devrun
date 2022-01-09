@@ -74,12 +74,23 @@ public interface CommunityService {
 	// 커뮤니티 게시물 삭제
 	int communityDelete(int communityNo);
 
-	//나의 커뮤니티
+	//나의 커뮤니티 포스팅 내역
 	List<CommunityEntity> selectAllPostOrderByLatest(int memberNo, int offset, int limit);
 
+	//나의 커뮤니티 전체 포스팅 개수
 	int selectPostTotalCount(int memberNo);
 
+	//나의 커뮤니티 포스팅 내역(옵션순)
 	List<CommunityEntity> selectAllPostOrderBySelectType(Map<String, Object> param, int offset, int limit);
+
+	//나의 커뮤니티 좋아요 내역
+	List<CommunityEntity> selectAllLikeOrderByLatest(int memberNo, int offset, int limit);
+
+	//나의 커뮤니티 전체 좋아요 개수
+	int selectLikeTotalCount(int memberNo);
+
+	//나의 커뮤니티 좋아요 내역(옵션순)
+	List<CommunityEntity> selectAllLikeOrderBySelectType(Map<String, Object> param, int offset, int limit);
 
 
 
