@@ -159,20 +159,21 @@ public class AdminController {
 		param.put("limit",limit);
 		param.put("offset",offset);
 		
-		param.put("searchType", "m."+searchType);
+		param.put("searchType",searchType);
 		param.put("searchKeyword", searchKeyword);
 		
 		// 1.조회한 리스트 가져오기
 		String url = request.getRequestURI()+"?searchType="+searchType+"&searchKeyword="+searchKeyword;
-		log.debug("url = {}", url);
 		
 		List<ProductEntity>productList = productService.searchProductList(param);
-		String productStr = DevrunUtils.getProductList(productList);
+		String productStr = DevrunUtils.getProductListByAdmin(productList,request);
+		log.debug("productStr = {}",productStr);
 		
 		// 2.조회한 게시물 수
 //		int totalContent = productService.searchProductListCount(param);
 		
 		// 3.페이지 바
+
 //		log.debug("pagebarUrl = {}",url);
 //		String pagebar = DevrunUtils.getPagebar2(cPage, limit, totalContent, url);
 //		log.debug("pagebar = {}", pagebar);
@@ -183,6 +184,7 @@ public class AdminController {
 //		map.put("pagebar",pagebar);
 //		map.put("productStr",productStr);
 
+		
 		return map;
 	}
 	
