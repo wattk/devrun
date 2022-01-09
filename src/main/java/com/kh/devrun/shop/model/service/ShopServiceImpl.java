@@ -268,8 +268,8 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public List<ProductEntity> selectItemsByChildCateBySort(Map<String, Object> param) {
-		return shopDao.selectItemsByChildCateBySort(param);
+	public List<ProductEntity> selectItemsByChildCateBySort(int offset, int limit, Map<String, Object> param) {
+		return shopDao.selectItemsByChildCateBySort(offset, limit, param);
 	}
 
 }

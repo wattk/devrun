@@ -98,7 +98,9 @@
     </div>
 	  <ul class="pagination justify-content-center mt-5">
 	  </ul>
-	  ${pagebar}
+	  <div id="pageBar">
+		  ${pagebar}
+	  </div>
 	</nav>
 </div>
 
@@ -127,6 +129,7 @@ $(".shop-sort").click((e)=>{
 		success(data){
 				console.log(data);
 				$("#productSortContainer").html(data["productStr"]);
+				$(pageBar).html(data["pageBar"]);
 			
 		},
 		error : console.log

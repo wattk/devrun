@@ -85,29 +85,30 @@ public class ShopController {
 	@ResponseBody
 	@GetMapping("/childCatePageSort")
 	public Map<String, Object> childCatePageSort(@RequestParam String childCateCode, @RequestParam String keyword,
-			HttpServletRequest request, @RequestParam int total) {
+			HttpServletRequest request, @RequestParam int total, @RequestParam(defaultValue = "1") int cPage) {
 		log.debug("keyword : {}", keyword);
-//		
-//		int limit = 12;
-//		int offset = (cPage - 1) * limit;
-		
+
+		int limit = 12;
+		int offset = (cPage - 1) * limit;
 
 		Map<String, Object> resultMap = new HashMap<>();
 
-//		// sort에 따른 리스트 불러오기
-//		Map<String, Object> param = new HashMap<>();
-//		param.put("keyword", keyword);
-//		param.put("childCateCode", childCateCode);
-//
-//		List<ProductEntity> sortItemList = shopService.selectItemsByChildCateBySort(offset, limit, param);
-//		log.debug("sortItemList : {}", sortItemList);
-//		// sort에 따라 잘 받아옴.
-//
-//		String url = request.getContextPath();
-//		String productStr = DevrunUtils.getProductList(sortItemList, url);
-//		log.debug("productStr : {}", productStr);
-//
-//		resultMap.put("productStr", productStr);
+		// sort에 따른 리스트 불러오기
+		Map<String, Object> param = new HashMap<>();
+		param.put("keyword", keyword);
+		param.put("childCateCode", childCateCode);
+
+		List<ProductEntity> sortItemList = shopService.selectItemsByChildCateBySort(offset, limit, param);
+		log.debug("sortItemList : {}", sortItemList);
+		// sort에 따라 잘 받아옴.
+
+		String url = request.getContextPath();
+		String productStr = DevrunUtils.getProductList(sortItemList, url);	
+		
+		log.debug("productStr : {}", productStr);
+		
+
+		resultMap.put("productStr", productStr);
 		return resultMap;
 	}
 
