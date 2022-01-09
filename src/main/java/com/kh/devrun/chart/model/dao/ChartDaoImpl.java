@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.devrun.community.model.vo.Community;
 import com.kh.devrun.community.model.vo.CommunityEntity;
+import com.kh.devrun.customerCenter.model.vo.Notice;
+import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.promotion.model.vo.Promotion;
 
@@ -121,6 +123,45 @@ public class ChartDaoImpl implements ChartDao {
 		return session.selectList("promotion.selectCurrentPromotionList", null, rowBounds);
 	}
 	
+	
+	/**
+	 * 메인 통합검색
+	 */
+	
+
+	@Override
+	public List<CommunityEntity> findComminitySearch(String searchKeyword) {
+		RowBounds rowBounds = new RowBounds(0, 3);
+		return session.selectList("community.findCommunitySearch", searchKeyword, rowBounds);
+	}
+
+	@Override
+	public List<Product> findProductSearch(String searchKeyword) {
+		RowBounds rowBounds = new RowBounds(0, 4);
+		return session.selectList("product.findProductSearch", searchKeyword, rowBounds);
+	}
+
+	@Override
+	public List<Notice> findNoticeSearch(String searchKeyword) {
+		RowBounds rowBounds = new RowBounds(0, 3);
+		return session.selectList("customerCenter.findNoticeSearch", searchKeyword, rowBounds);
+	}
+
+	@Override
+	public int countFindCommunity(String searchKeyword) {
+		return session.selectOne("community.findCommunityCnt", searchKeyword);
+	}
+
+	@Override
+	public int countFindProduct(String searchKeyword) {
+		return session.selectOne("product.findProductCnt", searchKeyword);
+	}
+
+	@Override
+	public int countFindNotice(String searchKeyword) {
+		return session.selectOne("customerCenter.findNoticeCnt", searchKeyword);
+	}
+
 	
 
 }

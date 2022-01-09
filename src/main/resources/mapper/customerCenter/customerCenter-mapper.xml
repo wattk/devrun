@@ -155,5 +155,34 @@
 			notice_no = #{noticeNo}
 	</update>
 	
-	
+	<!-- 혜진 mapper 시작 -->
+	<select id="findNoticeSearch" resultType="notice">
+	  	select
+	  		n.notice_no,
+	  		n.title,
+	  		n.content,
+	  		m.nickname,
+	  		n.enroll_date
+	  	from
+	  		notice n left join member m
+	  			on n.member_no = m.member_no
+	  	where
+	  		n.title like '%'||#{searchKeyword}||'%'
+	  			or n.content like '%'||#{searchKeyword}||'%'
+	  				or m.nickname like '%'||#{searchKeyword}||'%'
+	  	order by
+	  		n.enroll_date desc
+  </select>
+  <select id="findNoticeCnt" resultType="_int">
+	  	select
+	  		nvl(count(*),0)
+	  	from
+	  		notice n left join member m
+	  			on n.member_no = m.member_no
+	  	where
+	  		n.title like '%'||#{searchKeyword}||'%'
+	  			or n.content like '%'||#{searchKeyword}||'%'
+	  				or m.nickname like '%'||#{searchKeyword}||'%'
+  </select>
+	<!-- 혜진 mapper 끝 -->
 </mapper>
