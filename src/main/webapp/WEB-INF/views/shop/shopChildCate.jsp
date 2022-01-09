@@ -38,7 +38,7 @@
 	border :0px;
 	background-color: beige;
 }
-.shop-item-img img {
+.shop-item-img img{
 	width:200px;
 	height:200px;
 	padding: 0.25rem;
@@ -75,19 +75,18 @@
 		<!-- 아이템 나열 시작 -->
 		<c:if test = "${itemList != null}">
 			<c:forEach items="${itemList}" var="l">
-		  	  <a href="${pageContext.request.contextPath}/shop/itemDetail/${l.productCode}" class="col-md-3 p-5">
-		        <div class="card-box-d">
+		        <div class="card-box-d col-md-3 p-5">
 		          <div class="card-img-d shop-item-img position-relative">
-		            <img src="${pageContext.request.contextPath }/resources/upload/product/${l.thumbnail}" alt="" class="img-thumbnail shop-img img-d img-fluid">
-		            <i class="shop-like-icon fas fa-heart position-absolute"></i>
-		            <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
+		          	<a href="${pageContext.request.contextPath}/shop/itemDetail/${l.productCode}">
+		            <img src="${pageContext.request.contextPath }/resources/upload/product/${l.thumbnail}" alt="" class="img-d img-fluid">
+		            </a>
+		            <i class="shop-like-icon far fa-heart position-absolute"></i>
 		          </div>
 		          <div>
-		          	<p class="m-0">${l.name}</p>
-		          	<strong><fmt:formatNumber value="${l.price}" pattern="₩#,###,###"/></strong>
+		          	<p class="m-0 ml-2">${l.name}</p>
+		          	<strong class="ml-2"><fmt:formatNumber value="${l.price}" pattern="₩#,###,###"/></strong>
 		          </div>
 		        </div>
-		      </a>
 			</c:forEach>
 		</c:if>
       <!-- 아이템 나열 끝 -->
