@@ -120,14 +120,27 @@ public class ChartServiceImpl implements ChartService {
 		
 		//커뮤니티
 		List<CommunityEntity> communityList = chartDao.findComminitySearch(searchKeyword);
+		int communityCnt = chartDao.countFindCommunity(searchKeyword);
 		
 		//상품
 		List<Product> productList = chartDao.findProductSearch(searchKeyword);
+		int productCnt = chartDao.countFindProduct(searchKeyword);
 		
 		//공지사항
 		List<Notice> noticeList = chartDao.findNoticeSearch(searchKeyword);
+		int noticeCnt = chartDao.countFindNotice(searchKeyword);
 		
-		return null;
+		map.put("searchKeyword", searchKeyword);
+		map.put("communityList", communityList);
+		map.put("communityCnt", communityCnt);
+		map.put("productList", productList);
+		map.put("productCnt", productCnt);
+		map.put("noticeList", noticeList);
+		map.put("noticeCnt", noticeCnt);
+		map.put("totalCnt", communityCnt + productCnt + noticeCnt);
+		log.debug("map = {}", map);
+		
+		return map;
 	}
 
 	

@@ -574,5 +574,35 @@
   		c.enroll_date desc
   		
   </select>
+  <select id="findCommunitySearch" resultType="communityEntity">
+  	select
+  		c.community_no,
+  		c.title,
+  		c.content,
+  		c.enroll_date,
+  		c.page_code,
+  		m.nickname
+  	from
+  		community c left join member m
+  			on c.member_no = m.member_no
+  	where
+  		c.title like '%'||#{searchKeyword}||'%'
+  			or c.content like '%'||#{searchKeyword}||'%'
+  				or m.nickname like '%'||#{searchKeyword}||'%'
+  	order by
+  		c.enroll_date desc
+  </select>
+  <select id="findCommunityCnt" resultType="_int">
+  	select
+  		nvl(count(*),0)
+  	from
+  		community c left join member m
+  			on c.member_no = m.member_no
+  	where
+  		c.title like '%'||#{searchKeyword}||'%'
+  			or c.content like '%'||#{searchKeyword}||'%'
+  				or m.nickname like '%'||#{searchKeyword}||'%'
+  	
+  </select>
   <!-- 혜진 mapper 끝 -->
 </mapper>

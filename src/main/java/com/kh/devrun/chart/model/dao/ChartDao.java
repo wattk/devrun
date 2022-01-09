@@ -54,5 +54,11 @@ public interface ChartDao {
 
 	List<Notice> findNoticeSearch(String searchKeyword);
 
+	int countFindCommunity(String searchKeyword);
+
+	int countFindProduct(String searchKeyword);
+
+	int countFindNotice(String searchKeyword);
+
 
 }

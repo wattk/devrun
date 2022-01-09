@@ -76,10 +76,10 @@ public class HomeController {
 	
 	@RequestMapping(value = "/common/search.do", method = RequestMethod.GET)
 	public void search(@RequestParam String searchKeyword, Model model){
-		//Map<String, Object> map = chartService.findUnifiedSearch(searchKeyword);
-		//log.debug("map = {}", map);
+		Map<String, Object> map = chartService.findUnifiedSearch(searchKeyword);
+		log.debug("map = {}", map);
 		
-		//model.addAttribute("map", map);
+		model.addAttribute("map", map);
 	}
 	
 	@RequestMapping(value = "/about.do", method = RequestMethod.GET)

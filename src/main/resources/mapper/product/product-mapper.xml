@@ -365,6 +365,33 @@
 		order by
 			view_count desc
 	</select>
+	
+	<select id="findProductSearch" resultType="product">
+	  	select
+	  		product_code,
+	  		name,
+	  		price,
+	  		reg_date,
+	  		thumbnail
+	  	from
+	  		product
+	  	where
+	  		name like '%'||#{searchKeyword}||'%'
+	  			or price like '%'||#{searchKeyword}||'%'
+	  				or content like '%'||#{searchKeyword}||'%'
+	  	order by
+	  		reg_date desc
+	</select>
+	<select id="findProductCnt" resultType="_int">
+	  	select
+	  		nvl(count(*),0)
+	  	from
+	  		product
+	  	where
+	  		name like '%'||#{searchKeyword}||'%'
+	  			or price like '%'||#{searchKeyword}||'%'
+	  				or content like '%'||#{searchKeyword}||'%'
+	</select>
 	<!-- 혜진 mapper 끝 -->
 </mapper>
 
