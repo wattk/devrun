@@ -992,12 +992,28 @@ $('.close_btn i').on('click', function(){
 });
 
 
-// '차단하고 나가기' 클릭 시 이벤트 발생 - 기능 구현 추가할 것
+// '차단하고 나가기' 클릭 시 이벤트 발생
 $('.block-btn').click((e) => {
-	console.log("안녕!");
-	confirm(`대화를 차단하시겠습니까?
+	//console.log(`chatId 받아옵니까? ${chatId}`);
+	
+	if(confirm(`대화를 차단하시겠습니까?
 기존 대화 내용이 삭제되고, 
-채팅방에서 자동으로 나가게 됩니다.`);
+채팅방에서 자동으로 나가게 됩니다.`)) {
+		// 확인 누른 경우
+		$.ajax({
+			url : `${pageContext.request.contextPath}/chat/${chatId}/blockExitChatRoom.do`,
+			method : "POST",
+			success(data) { // 이 안에 들어가는 data는 변수명이다. 다른 이름으로 사용해도 된다. 위의 data : 에서 사용한 부분과 헷갈리지 말자
+				console.log(data);
+				if(data == 1){
+					// 팝업창 닫기
+					window.close();
+				}
+			},
+			error : console.log
+		});
+		
+	}
 });
 
 //'나가기' 클릭 시 이벤트 발생
@@ -1043,6 +1059,11 @@ $(document).on('click', '#deleteReportBtn', function(e) {
 	$("input:radio[name='reasonCate']").removeAttr("checked"); 
 	$(reportText).val('');
 })
+
+/* 창이 띄워지면 가장 최근 내용 볼 수 있게 스크롤 하단으로 이동 시키기 */
+$(document).ready(function() {
+	$('.chat-data-wrap').scrollTop($('.chat-data-wrap')[0].scrollHeight);
+});
 
 </script>
 

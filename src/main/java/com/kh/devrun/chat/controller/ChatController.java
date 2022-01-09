@@ -52,7 +52,7 @@ public class ChatController {
 		int memberNo = loginMember.getMemberNo();
 		
 		List<ChatLog> list = chatService.findChatLog(memberNo);
-		log.debug("list = {}", list);
+		//log.debug("list = {}", list);
 		
 		model.addAttribute("list", list);
 		
@@ -104,12 +104,16 @@ public class ChatController {
 		// required = false 하면 기본값으로 파라미터를 전달받을 때, 값이 없다면 Exception 없이 코드를 실행시킨다.
 		
 		// 본인 닉네임 제외한 리스트를 불러오기 위해 loginMember 호출
+		
 		Member loginMember = (Member) authentication.getPrincipal();
 		String nickname = loginMember.getNickname();
+		// 채팅 차단한 회원 닉네임 검색 시 조회되지 않기 위해 memberNo 이용하여 조회함
+		int memberNo = loginMember.getMemberNo();
 		
 		Map<String, Object> param = new HashMap<>();
 		param.put("searchNickname", searchNickname);
 		param.put("nickname", nickname);
+		param.put("memberNo", memberNo);
 		
 		log.debug("searchNickname = {}", searchNickname);
 		List<Member> list = chatService.selectAllMemberByNickname(param);
@@ -234,5 +238,69 @@ public class ChatController {
 		return "redirect:" + referer;
 	}
 	
+	/**
+	 * 비동기
+	 * 차단하고 채팅방 나가기
+	 */
+	@ResponseBody
+	@PostMapping("/{chatId}/blockExitChatRoom.do")
+	public int blockExitChatRoom(Authentication authentication, @PathVariable String chatId) {
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
+		param.put("chatId", chatId);
+		
+		// db chat_member table end_date & status update
+		int result = chatService.blockExitChatRoom(param);
+		
+		return result;
+	}
+	
+	/**
+	 * 비동기
+	 * 채팅 차단한 회원 목록 조회
+	 */
+	@ResponseBody
+	@GetMapping("/selectChatBlockMemberList.do")
+	public List<Member> selectChatBlockMemberList(Authentication authentication) {
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
+
+		List<Member> list = chatService.selectChatBlockMemberList(memberNo);
+		//log.debug("list = {}", list);
+		
+		return list;
+	}
+	
+	/**
+	 * 비동기
+	 * 채팅 차단 해제
+	 */
+	@ResponseBody
+	@PostMapping("/unblockChatMember.do")
+	public int unblockChatMember(Authentication authentication, @RequestParam(required = false) int memberNo2) {
+		log.debug("memberNo2 = {}", memberNo2);
+		
+		Member loginMember = (Member) authentication.getPrincipal();
+		int memberNo = loginMember.getMemberNo();
+		
+		// 유닉스 타임 얻어온다. last_check update를 위함. 
+		// 업데이트 되야 차단 당사자 채팅 상태가 차단 해제 후 읽음으로 바뀌고 차단한 사람이 새로운 채팅을 보내도 안읽음 메시지 건수가 잘 처리된다.
+		long lastCheck = System.currentTimeMillis();
+		//log.debug("lastCheck = {}", lastCheck);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberNo", memberNo);
+		param.put("memberNo2", memberNo2);
+		param.put("lastCheck", lastCheck);
+		
+		// 채팅 차단 해제
+		int result = chatService.unblockChatMember(param);
+		log.debug("result = {}", result);
+
+		return result;
+	}
 
 }
