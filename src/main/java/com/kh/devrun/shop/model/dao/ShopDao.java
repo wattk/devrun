@@ -21,9 +21,9 @@ public interface ShopDao {
 	int insertMemberCart(Cart cart);
 
 	int deleteCart(List<Integer> cartNoArr);
-	
+
 	List<ProductEntity> selectProductListByChildCategory(Map<String, Object> param, int offset, int limit);
-	
+
 	int selectProductTotalCount(Map<String, Object> param);
 	/* 혜진 장바구니 끝 */
 
@@ -92,5 +92,7 @@ public interface ShopDao {
 	List<ProductEntity> shopSearch(int offset, int limit, String searchKeyword);
 
 	int countShopSearch(String searchKeyword);
+
+	List<ProductEntity> shopSearchSort(int offset, int limit, Map<String, Object> param);
 
 }
