@@ -114,14 +114,26 @@
 		question_product
 	where
 		<choose>
-			<when test="searchType.equals('member_no')"> 
-				${searchType} like '%'|| ${searchKeyword} ||'%'	and question_level=1
-			</when>
+			<when test="searchType.equals('member_no') "> 
+				<if test='startDate != null'>
+					(${searchType} like '%'|| ${searchKeyword} ||'%'and question_level=1) and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD')) 
+				</if>
+					
+				<if test="startDate == null or startDate.equals('')" >
+					${searchType} like '%'|| ${searchKeyword} ||'%'	and question_level=1
+				</if>
+			</when>		
 			<when test="searchType.equals('product_code')"> 
-				${searchType} like '%'|| #{searchKeyword} ||'%'	and question_level=1
-			</when>			
+				<if test='startDate != null'>
+					(${searchType} like '%'|| #{searchKeyword} ||'%'and question_level=1) and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD')) 
+				</if>
+					
+				<if test="startDate == null or startDate.equals('')" >
+					${searchType} like '%'|| #{searchKeyword} ||'%'	and question_level=1
+				</if>
+			</when>		
 			<when test="searchType.equals('all')">
-				<if test='startDate == null or startDate == " " '>
+				<if test="startDate == null or startDate.equals('')" >
 					question_level=1
 				</if>
 				 <if test='startDate != null'>
@@ -129,10 +141,16 @@
 				</if>
 			</when>		
 			<when test="searchType.equals('private_yn')"> 
-				${searchType} = #{searchKeyword} and question_level=1
-			</when>			
-			
+				<if test="startDate == null or startDate.equals('')" >
+					${searchType} = #{searchKeyword} and question_level=1
+				</if>
+				<if test='startDate != null'>
+					(${searchType} = #{searchKeyword} and question_level=1) and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD') )
+				</if>
+			</when>					
 		</choose>
+	order by
+		enroll_date desc
 		
 </select>
 
@@ -143,15 +161,27 @@
 	from
 		question_product
 	where
-		<choose>
-			<when test="searchType.equals('member_no')"> 
-				${searchType} like '%'|| ${searchKeyword} ||'%'	and question_level=1
-			</when>
+	<choose>
+			<when test="searchType.equals('member_no') "> 
+				<if test='startDate != null'>
+					(${searchType} like '%'|| ${searchKeyword} ||'%'and question_level=1) and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD')) 
+				</if>
+					
+				<if test="startDate == null or startDate.equals('')" >
+					${searchType} like '%'|| ${searchKeyword} ||'%'	and question_level=1
+				</if>
+			</when>		
 			<when test="searchType.equals('product_code')"> 
-				${searchType} like '%'|| #{searchKeyword} ||'%'	and question_level=1
-			</when>			
+				<if test='startDate != null'>
+					(${searchType} like '%'|| #{searchKeyword} ||'%'and question_level=1) and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD')) 
+				</if>
+					
+				<if test="startDate == null or startDate.equals('')" >
+					${searchType} like '%'|| #{searchKeyword} ||'%'	and question_level=1
+				</if>
+			</when>		
 			<when test="searchType.equals('all')">
-				<if test='startDate == null or startDate == " " '>
+				<if test="startDate == null or startDate.equals('')" >
 					question_level=1
 				</if>
 				 <if test='startDate != null'>
@@ -159,8 +189,13 @@
 				</if>
 			</when>		
 			<when test="searchType.equals('private_yn')"> 
-				${searchType} = #{searchKeyword} and question_level=1
-			</when>			
+				<if test="startDate == null or startDate.equals('')" >
+					${searchType} = #{searchKeyword} and question_level=1
+				</if>
+				<if test='startDate != null'>
+					(${searchType} = #{searchKeyword} and question_level=1) and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD') )
+				</if>
+			</when>					
 		</choose>
 
 </select>
@@ -173,13 +208,25 @@
 		question_product
 	where
 		<choose>
-			<when test='searchKeyword == "Y"'> 
-				nvl(question_ref_no,0) != 0 and question_level=1
+			<when test='searchKeyword == "Y"'>
+				<if test='startDate != null'>
+					(nvl(question_ref_no,0) != 0 and question_level=1) and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD') )	
+				</if>
+				<if test="startDate == null or startDate.equals('')" >
+					nvl(question_ref_no,0) != 0 and question_level=1	 
+				</if>
 			</when>
 			<when test='searchKeyword == "N"'> 
-				nvl(question_ref_no,0) = 0 and question_level=1
+				<if test='startDate != null'>
+					(nvl(question_ref_no,0) = 0 and question_level=1) and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD') )
+				</if>
+				<if test="startDate == null or startDate.equals('')" >
+					nvl(question_ref_no,0) = 0 and question_level=1
+				</if>
 			</when>					
 		</choose>
+	order by
+		enroll_date desc
 		
 </select>
 
@@ -190,14 +237,24 @@
 	from
 		question_product
 	where
-	<choose>
-		<when test='searchKeyword == "Y"'> 
-			nvl(question_ref_no,0) != 0 and question_level=1
-		</when>
-		<when test='searchKeyword == "N"'> 
-			nvl(question_ref_no,0) = 0 and question_level=1
-		</when>					
-	</choose>
+		<choose>
+			<when test='searchKeyword == "Y"'>
+				<if test='startDate != null'>
+					(nvl(question_ref_no,0) != 0 and question_level=1) and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD') )	
+				</if>
+				<if test="startDate == null or startDate.equals('')" >
+					nvl(question_ref_no,0) != 0 and question_level=1	 
+				</if>
+			</when>
+			<when test='searchKeyword == "N"'> 
+				<if test='startDate != null'>
+					(nvl(question_ref_no,0) = 0 and question_level=1) and (enroll_date between to_date(#{startDate},'YYYY-MM-DD') and to_date(#{endDate},'YYYY-MM-DD') )
+				</if>
+				<if test="startDate == null or startDate.equals('')" >
+					nvl(question_ref_no,0) = 0 and question_level=1
+				</if>
+			</when>					
+		</choose>
 		
 </select>
 
