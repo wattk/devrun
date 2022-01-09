@@ -145,6 +145,23 @@ public class ShopController {
 		log.debug("productStr : {}", productStr);
 
 		resultMap.put("productStr", productStr);
+		
+		
+		// 2. 전체 게시물 수 totalContent
+		url = "/devrun/shop/childCatePageSort";
+		
+		url += "?childCategoryCode="+childCateCode;
+		
+		if (keyword != null) {
+			url += "&keyword=" + keyword;
+		}
+		
+		// 3. pagebar
+		String pagebar = DevrunUtils.getProductPagebar(cPage, limit, total, url);
+		log.debug("pagebar = {}", pagebar);
+		resultMap.put("pagebar", pagebar);
+
+		
 		return resultMap;
 	}
 

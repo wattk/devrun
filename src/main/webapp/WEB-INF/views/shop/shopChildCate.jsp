@@ -51,10 +51,10 @@
 	<div class="item-sort-container d-flex 	justify-content-between">
 		<div class="p-4">총 ${total}개</div>
 		<div class="p-4" id="">
-			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="row">낮은 가격순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="high">높은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="recommend" data-valid="0">추천순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="new" data-valid="0">신상품순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="row" data-valid="0">낮은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="high" data-valid="0">높은 가격순</span>
 		</div>
 	</div>
 	<div id = "productSortContainer" class="row">
@@ -94,13 +94,26 @@
 <script>
 //혜진코드 시작
 //이벤트 상품 소분류 코드별 정렬
-$(".shop-sort").click((e)=>{
+$(document).on("click", ".shop-sort, .page-link", (e)=>{
+	let cPage = 1;
 	
 	let sort;
-	
 	if($(e.target).is(".shop-sort")){
+		$(".shop-sort").data("valid", 0);
 		sort = $(e.target).data("target");
+		$(e.target).data("valid", 1);
 	};
+	if($(e.target).is(".page-link")){
+		const $sortList = $(".shop-sort");
+		cPage = $(e.target).data("cPage");
+		$sortList.each((i, item)=>{
+			if($(item).data("valid") == 1){
+				sort = $(item).data("target");
+			}
+		});
+	};
+	console.log(cPage);
+	console.log(sort);
 	
 
 	$.ajax({
@@ -109,12 +122,14 @@ $(".shop-sort").click((e)=>{
 		data : {
 				childCateCode : "${childCategoryCode}",
 				keyword : sort,
-				total : ${total}
+				total : ${total},
+				cPage : cPage
 				},
 		success(data){
 				console.log(data);
 				$("#productSortContainer").html(data["productStr"]);
-				$(pageBar).html(data["pageBar"]);
+				$(".pagebar").detach();
+				$(".banner").after(data["pagebar"]);
 			
 		},
 		error : console.log
