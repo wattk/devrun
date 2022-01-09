@@ -150,11 +150,22 @@ public class AdminController {
 			searchType = "all";
 		}
 		
+		log.debug("searchType = {}",searchType);
+		log.debug("searchKeyword ={}",searchKeyword);
+		log.debug("시작날짜 = {}",startDate);
+		log.debug("종료날짜 = {}",endDate);
+		
+		// jsp에서 날짜 초기화 undefind가 아닌 공백이 들어갈 경우 mapper에서 오류가 나 공백을 경우 null을 대입 
+		if(startDate == "" || startDate == "") {
+			startDate = null;
+			endDate = null;
+		}
+
+		
 		Map<String,Object> map = new HashMap<>();
 
 		int limit = 10;
 		int offset = (cPage - 1) * limit;
-		
 		
 
 		Map<String,Object>param = new HashMap<>();
@@ -176,20 +187,19 @@ public class AdminController {
 		String productStr = DevrunUtils.getProductListByAdmin(productList,request);
 		
 		// 2.조회한 게시물 수
-//		int totalContent = productService.searchProductListCount(param);
+		int totalContent = productService.searchProductListCount(param);
 		
 		// 3.페이지 바
 
-//		log.debug("pagebarUrl = {}",url);
-//		String pagebar = DevrunUtils.getPagebar2(cPage, limit, totalContent, url);
-//		log.debug("pagebar = {}", pagebar);
-//				
-//		
-//		map.put("productList",productList);
-//		map.put("totalContent",totalContent);
-//		map.put("pagebar",pagebar);
-//		map.put("productStr",productStr);
-
+		log.debug("pagebarUrl = {}",url);
+		String pagebar = DevrunUtils.getPagebar2(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+				
+	
+		map.put("productList",productList);
+		map.put("totalContent",totalContent);
+		map.put("pagebar",pagebar);
+		map.put("productStr",productStr);
 
 		
 		return map;
