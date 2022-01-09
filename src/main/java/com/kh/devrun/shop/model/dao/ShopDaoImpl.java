@@ -191,4 +191,9 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectList("shop.selectAllChildCateNames", parentCate);
 	}
 
+	@Override
+	public String thisCateName(String childCategoryCode) {
+		return session.selectOne("shop.thisCateName", childCategoryCode);
+	}
+
 }
