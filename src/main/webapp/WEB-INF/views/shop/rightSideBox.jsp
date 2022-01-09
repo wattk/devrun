@@ -8,15 +8,17 @@
 
            <div id="sidebox"> 
                <div id="sideboxHeader">
-                   <p class="text-center">오늘 본 상품 </p><p></p>
+                   <p class="text-center">오늘 본 상품 </p>
                </div>
                <div id="sideboxBody">
 				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
 				  <div class="carousel-inner thisHeight">
 				      <div class="carousel-item active firstS">
-				      	<p style="font-family: 'Nanum Pen Script'; font-size:20px" id="todayNothing">오늘 본 상품이 없어요 ㅠㅠ</p>
+				      	<p style="font-family: 'Nanum Pen Script'; font-size:51px" id="todayNothing">텅</p>
+				      	<p id="oneAnd" class="one-and">1/1</p>
 					    </div>
 					    <div class="carousel-item secondS">
+					    <p class="one-and">2/2</p>
 					    </div>
 				  </div>
 				</div>
@@ -49,17 +51,18 @@ function todayViewBox () {
 		console.log(`오늘본상품갯수: \${length}`);
 		
 		if(length == 0){
-			$('.thisHeight').css("height", "60px");
+			$('.thisHeight').css("height", "70px");
+			$('#oneAnd').remove();
 		}
 		if(length >0) {
 			$('#todayNothing').remove();
 		}
 		
 		if(length == 1) {
-			$('.thisHeight').css("height","114px");
+			$('.thisHeight').css("height","136px");
 		}
 		if(length == 2) {
-			$('.thisHeight').css("height","219px");
+			$('.thisHeight').css("height","241px");
 		}
 		
 		if(length<=3){

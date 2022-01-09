@@ -45,7 +45,10 @@
    /*추가*/
 
 	.thisHeight{
-		height: 330px;
+		height: 352px;
+	}
+	#sideboxHeader > p{
+	    margin-bottom: 2px;
 	}
 	.slide-btn > img {
 		width: 20px;
@@ -57,5 +60,8 @@
 	}
 	#sideBoxFooter >button {
 		border: 0px;
+	}
+	.one-and{
+	margin-bottom : 2px;
 	}
   
