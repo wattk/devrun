@@ -101,6 +101,7 @@
 	</div>
 	
 <script>
+let imgs = "";
 //summernote 웹 에디터 로딩
 $(document).ready(function(){
 	$('#summernote').summernote({
@@ -109,8 +110,43 @@ $(document).ready(function(){
 		maxHeight: null, // 최대 높이
 		focus: true, // 에디터 로딩 후 포커스를 맞출 지 여부
 		lang: "ko-KR", // 한글 설정
-		placeholder: "내용을 입력해 주세요"  // placeholder 설정
+		placeholder: "내용을 입력해 주세요",  // placeholder 설정
+		callbacks:{
+			onImageUpload : function(files){
+				uploadSummernoteImageFile(files[0], this);
+			},
+			onPaste : ((e)=>{
+				let clipboardData = e.originalEvent.clipboardData;
+				if(clipboardData && clipboardData.items && clipboardData.items.length){
+					let item = clipboardData.items[0];
+					if(item.kind === 'file' && item.type.indexof('image/') != -1){
+						e.preventDefault();
+					}
+				}
+			})
+		}
 	});
+	
+	function uploadSummernoteImageFile(file, editor){
+		const data = new FormData();
+		data.append("file", file);
+		data.append("keyword", "community");
+		$.ajax({
+			data : data,
+			type : "POST",
+			url : "${pageContext.request.contextPath}/uploadSummernoteImageFile",
+			contentType : false,
+			processData : false,
+			success(data){
+				console.log(data);
+				//imgs 변수 안에 /filename 추가. /는 구분자
+				imgs += "/" + data["filename"];
+				$('#summernote').summernote('insertImage', "${pageContext.request.contextPath}/resources/upload/community/"+data["filename"]);
+			},
+			error : console.log
+			
+		});
+	}
 });
 
 // 글쓰기 & 유효성검사
@@ -139,7 +175,34 @@ $('#writeBtn').click(function(){
 	
 });
 
-
+//페이지 벗어날 때 썸머노트 안의 이미지 파일을 서버 상에서 삭제
+$("#bs-example-modal-lg").on("hide.bs.modal",
+      	function (e) {  
+		console.log("닫기 이벤트 시작");
+		if(confirm("정말 나가시겠습니까?")){
+			const $pagecode = $("[name=pagecode]");
+			
+			$pagecode.each((i, item)=>{
+				$(item).prop("checked", false);
+			});
+			
+			$(".form-control").val('');
+			$("#summernote").summernote('reset');
+			
+	    	$.ajax({
+	    		url : "${pageContext.request.contextPath}/deleteSummernoteImageFile",
+	    		data : {imgs : imgs,
+	    				keyword : "community"},
+	    		method : "POST",
+	    		success(data){
+	    		console.log(data);
+	    		},
+	    		error : console.log
+	    	});
+			return;
+		};
+    	//비동기 요청을 통해 서버에 저장된 이미지 파일 삭제
+	});
 
 
 </script>
