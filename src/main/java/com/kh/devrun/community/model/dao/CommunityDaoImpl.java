@@ -264,5 +264,18 @@ public class CommunityDaoImpl implements CommunityDao {
 	public int selectOneStudyJoinEndCount() {
 		return session.selectOne("community.selectOneStudyJoinEndCount");
 	}
+
+	// Q&A 리스트
+	@Override
+	public List<CommunityEntity> selectQnAList(int offset, int limit) {
+		// mybatis가 제공하는 RowBounds 객체를 하나 제공한다. -- 페이징 처리를 위해서
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectQnAList", null, rowBounds);
+	}
+
+	@Override
+	public int selectOneQnACount() {
+		return session.selectOne("community.selectOneQnACount");
+	}
 	
 }
