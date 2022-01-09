@@ -45,6 +45,8 @@ public interface ProductService {
 	// 상품 검색 결과 리스트 가져오기
 	List<ProductEntity> searchProductList(Map<String, Object> param);
 	
+	// 상품 검색 결과 갯수 가져오기
+	int searchProductListCount(Map<String, Object> param);
 	
 	
 	// 다현 - 상세 페이지 뿌리기 위한 item 받아오기
@@ -65,6 +67,8 @@ public interface ProductService {
 	
 	Map<String, Object> selectProductDetailList(List<String> productArr);
 	/* 혜진 끝 */
+
+	
 
 
 

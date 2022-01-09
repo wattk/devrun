@@ -135,32 +135,35 @@
 		</div>
 		<!-- 상품 리스트 테이블 -->
 		<table id="productList">
-			<tr>
-				<th><input type="checkbox" id="checkAll"/></th>
-				<th>이미지</th>
-				<th>상품코드</th>
-				<th>상품명</th>
-				<th>옵션</th>
-				<th>상태</th>
-				<th>등록일</th>
-				<th>조회수</th>
-			</tr>
-			<c:forEach items="${list}" var="pro" >
-			<tr>				
-				<td><input type="checkbox"id="select" class="box"/> </td>
-				<td><img id="thumbnail" src="${pageContext.request.contextPath}/resources/upload/product/${pro.thumbnail}"/></td>
-				<td><a href="${pageContext.request.contextPath}/admin/productDetail.do?productCode=${pro.productCode}">${pro.productCode}</a></td>
-				<td>${pro.name}</td>
-				<td>
-					<button type="button" class="option-modal-btn btn btn-light"
-					 data-toggle="modal" data-target="#promotionModal" data-code="${pro.productCode}">확인</button>
-				</td>
-				<td>${pro.status}</td>
-				<td><fmt:formatDate value="${pro.regDate}" pattern="yy-MM-dd HH:mm"/></td>
-				<td>${pro.viewCount}</td>
-			</tr>
-			</c:forEach>
-			
+			<thead>
+				<tr>
+					<th><input type="checkbox" id="checkAll"/></th>
+					<th>이미지</th>
+					<th>상품코드</th>
+					<th>상품명</th>
+					<th>옵션</th>
+					<th>상태</th>
+					<th>등록일</th>
+					<th>조회수</th>
+				</tr>
+			</thead>
+			<tbody id="tbody">
+				<c:forEach items="${list}" var="pro" >
+				<tr>				
+					<td><input type="checkbox"id="select" class="box"/> </td>
+					<td><img id="thumbnail" src="${pageContext.request.contextPath}/resources/upload/product/${pro.thumbnail}"/></td>
+					<td><a href="${pageContext.request.contextPath}/admin/productDetail.do?productCode=${pro.productCode}">${pro.productCode}</a></td>
+					<td>${pro.name}</td>
+					<td>
+						<button type="button" class="option-modal-btn btn btn-light"
+						 data-toggle="modal" data-target="#promotionModal" data-code="${pro.productCode}">확인</button>
+					</td>
+					<td>${pro.status}</td>
+					<td><fmt:formatDate value="${pro.regDate}" pattern="yy-MM-dd HH:mm"/></td>
+					<td>${pro.viewCount}</td>
+				</tr>
+				</c:forEach>			
+			</tbody>
 		</table>
 		<br />
 		${pagebar}
@@ -304,6 +307,47 @@ var $searchType = "";
 var $searchKeyword = "";
 var cPage;
 
+// 비동기 요청 실행 및 유효성 검사
+$(".search-btn").click(e=>{
+
+	const target = $(e.target).parent().children("input[name=searchKeyword]").val();
+	console.log("target =",target);
+	
+	console.log("selectType =",selectType);
+	
+	/* 검사 pass */
+	if(selectType == "All" || selectType == "Status"){
+		getPage();
+	}
+			
+	/* 상품 이름로 검색할 때 */
+	if(selectType == "Name"){
+		console.log("상품 이름으로 검색~");
+		
+		if(false){
+			alert("상품 이름을 확인하세요.");
+		}else{
+			getPage();
+		}
+		
+	}
+	
+	/* 상품 코드로 검색할 때 */
+	if(selectType == "ProductCode"){
+		console.log("상품 코드로 검색.");
+		console.log("target =",target);
+					
+		if(!/^[a-zA-Z0-9]/.test(target)){
+			alert("상품 코드를 확인하세요.");
+		}else{
+			getPage();
+		}
+	}
+
+	
+});
+
+
 /* search 입력값 전역변수에 대입  */
 $("input[name=searchKeyword]").change(e=>{		
 	console.log($(e.target).parent().children("input[name=searchType]").val());
@@ -348,11 +392,11 @@ function getPage(cPage){
 		data:search,
 		contentType:"application/json; charset=utf-8",
 		success(data){
-						
-			$("#tbody").html(data["questionStr"]);
+			console.log(data);
+			$("#tbody").html(data["productStr"]);
 			$(".pagebar").detach();
-			$("#inquiryListTbl").after(data["pagebar"]);
-			$(totalCountContainer).html(`<span class="countTitle">검색된 회원 수 : </span> <span class="countContent">\${data["totalContent"]}</span>`)			
+			$("#productList").after(data["pagebar"]);
+			$(imgText).html(`<span class="countTitle">검색된 상품 수 : </span> <span class="countContent">\${data["totalContent"]}</span>`)			
 		},
 		error:console.log			
 	});
