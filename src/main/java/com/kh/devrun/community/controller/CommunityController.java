@@ -157,7 +157,7 @@ public class CommunityController {
 		// jsp에 전달할 수 있도록 model에 담아준다.
 		model.addAttribute("list", list);
 		
-		// 2. 전체 게시물 수
+		// 2. 스터디리스트 전체 게시물 수
 		int totalContent = communityService.selectOneStudyCount();
 		log.debug("selectOneStudyCount = {}", totalContent);
 		model.addAttribute("totalContent", totalContent);
@@ -337,8 +337,10 @@ public class CommunityController {
 		
 		return resultMap;
 	}
+	
 	/* ---------------------------------------- 자유게시판 타입별 검색 종료 ---------------------------------------- */
 	
+	/* ---------------------------------------- 좋아요순 리스트 시작 ---------------------------------------- */
 	
 	// 좋아요순 게시글 뽑기
 	@GetMapping("/likeBoard.do")
@@ -382,7 +384,10 @@ public class CommunityController {
 		return resultMap;
 	}
 	
-	// 답변순 게시글 뽑기
+	/* ---------------------------------------- 좋아요순 리스트 종료 ---------------------------------------- */
+	
+	/* ---------------------------------------- 답변순 리스트 시작 ---------------------------------------- */
+	
 	@GetMapping("/commentBoard.do")
 	@ResponseBody
 	public Map<String, Object> commentBoard(
@@ -424,6 +429,97 @@ public class CommunityController {
 		return resultMap;
 	}
 	
+	/* ---------------------------------------- 답변순 리스트 종료 ---------------------------------------- */
+	
+	/* ---------------------------------------- 모집진행순 리스트 시작 ---------------------------------------- */
+	
+	@GetMapping("/joinStartBoard.do")
+	@ResponseBody
+	public Map<String, Object> joinStartBoard(
+			@RequestParam(defaultValue = "1") int cPage,
+			@RequestParam int pageCode,
+			HttpServletRequest request,
+			Model model){
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		log.debug("pageCode = {}", pageCode);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("pageCode", pageCode);
+		log.debug("param = {}", param);
+		
+		String url = request.getContextPath();
+		
+		List<CommunityEntity> joinStartBoardList = communityService.selectJoinStartBoardList(param, offset, limit);
+		log.debug("likeBoardList = {}", joinStartBoardList);
+		String joinStartBoardStr = CommunityUtils.getJoinStartBoardList(joinStartBoardList, url);
+		
+		// 2. 모집진행 게시물 수
+		int totalContent = communityService.selectOneStudyJoinStartCount();
+		log.debug("selectOneStudyCount = {}", totalContent);
+		model.addAttribute("totalContent", totalContent);
+		
+		// 3. pagebar
+		String pagebar = CommunityUtils.getPagebar5(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		
+		resultMap.put("joinStartBoardStr", joinStartBoardStr);
+		resultMap.put("totalContent", totalContent);
+		resultMap.put("pagebar", pagebar);
+		
+		return resultMap;
+	}
+	
+	/* ---------------------------------------- 모집진행순 리스트 종료 ---------------------------------------- */
+	
+/* ---------------------------------------- 모집진행순 리스트 시작 ---------------------------------------- */
+	
+	@GetMapping("/joinEndBoard.do")
+	@ResponseBody
+	public Map<String, Object> joinEndBoard(
+			@RequestParam(defaultValue = "1") int cPage,
+			@RequestParam int pageCode,
+			HttpServletRequest request,
+			Model model){
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		log.debug("pageCode = {}", pageCode);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("pageCode", pageCode);
+		log.debug("param = {}", param);
+		
+		String url = request.getContextPath();
+		
+		List<CommunityEntity> joinEndBoardList = communityService.selectJoinEndBoardList(param, offset, limit);
+		log.debug("joinEndBoardList = {}", joinEndBoardList);
+		String joinEndBoardStr = CommunityUtils.getJoinEndBoardList(joinEndBoardList, url);
+		
+		// 2. 모집완료 게시물 수
+		int totalContent = communityService.selectOneStudyJoinEndCount();
+		log.debug("selectOneStudyCount = {}", totalContent);
+		model.addAttribute("totalContent", totalContent);
+		
+		// 3. pagebar
+		String pagebar = CommunityUtils.getPagebar6(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		
+		resultMap.put("joinEndBoardStr", joinEndBoardStr);
+		resultMap.put("totalContent", totalContent);
+		resultMap.put("pagebar", pagebar);
+		
+		return resultMap;
+	}
+	
+	/* ---------------------------------------- 모집진행순 리스트 종료 ---------------------------------------- */
 	
 	// 자유게시판-글등록
 	@PostMapping("/freeboardEnroll.do")
@@ -640,34 +736,34 @@ public class CommunityController {
 	
 	/* ---------------------------------------- 커뮤니티 삭제하기 종료 ---------------------------------------- */
 	
-	// 모집중 --> 모집완료
+	/* ---------------------------------------- 모집중 --> 모집완료 시작 ---------------------------------------- */
+	
 		@ResponseBody
 		@GetMapping("/joinNo.do")
-		public Map<String, Object> joinNo(
-					@RequestParam int communityNo, 
-					@RequestParam String studyJoinYn
-					){
+		public Map<String, Object> joinNo(@RequestParam int communityNo, @RequestParam String studyJoinYn){
+			log.debug("{}", "/joinNo.do 요청!");
 			
 			Map<String, Object> param = new HashMap<>();
 			param.put("studyJoinYn", studyJoinYn);
 			param.put("communityNo", communityNo);
 			
 			int result = communityService.updateJoinNo(param);
-			log.debug("모집중에서 모집완료로 변경 = {}", result);
+			log.debug("모집중에서 모집완료로 변경? = {}", result);
 			
 			Map<String, Object> map = new HashMap<>();
 			map.put("result", result);
 			
 			return map;
 		}
+	
+		/* ---------------------------------------- 모집중 --> 모집완료 종료 ---------------------------------------- */
 		
-		// 모집완료 --> 모집중
+		/* ---------------------------------------- 모집완료 --> 모집중 시작 ---------------------------------------- */
+		
 		@ResponseBody
 		@GetMapping("/joinYes.do")
-		public Map<String, Object> joinYes(
-					@RequestParam int communityNo,
-					@RequestParam String studyJoinYn
-					){
+		public Map<String, Object> joinYes(@RequestParam int communityNo, @RequestParam String studyJoinYn){
+			log.debug("{}", "/joinyes.do 요청!");
 			
 			Map<String, Object> param = new HashMap<>();
 			param.put("studyJoinYn", studyJoinYn);
@@ -681,7 +777,9 @@ public class CommunityController {
 			
 			return map;
 		}
-	
+		
+	/* ---------------------------------------- 모집완료 --> 모집중 종료 ---------------------------------------- */
+		
 	/* ---------------------------------------- 커뮤니티 댓글 시작 ---------------------------------------- */
 	@PostMapping("/communityCommentEnroll.do")
 	public String commentEnroll(CommunityComment communityComment, RedirectAttributes redirectAttributes) {

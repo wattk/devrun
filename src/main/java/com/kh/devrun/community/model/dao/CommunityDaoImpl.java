@@ -174,6 +174,7 @@ public class CommunityDaoImpl implements CommunityDao {
 		return session.selectList("community.selectLikeBoardList", param, rowBounds);
 	}
 
+	// 답변순 리스트
 	@Override
 	public List<CommunityEntity> selectCommentBoardList(Map<String, Object> param, int offset, int limit) {
 		// mybatis가 제공하는 RowBounds 객체를 하나 제공한다. -- 페이징 처리를 위해서
@@ -231,8 +232,37 @@ public class CommunityDaoImpl implements CommunityDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		return session.selectList("community.selectAllLikeOrderBySelectType", param, rowBounds);
 	}
-	
+
 	/**
 	 * 지원 dao 끝
 	 */
+	
+	// 모집중 순 리스트
+	@Override
+	public List<CommunityEntity> selectJoinStartBoardList(Map<String, Object> param, int offset, int limit) {
+		// mybatis가 제공하는 RowBounds 객체를 하나 제공한다. -- 페이징 처리를 위해서
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectjoinStartBoardList", param, rowBounds);
+	}
+
+	// 모집중 게시물 수
+	@Override
+	public int selectOneStudyJoinStartCount() {
+		return session.selectOne("community.selectOneStudyJoinStartCount");
+	}
+
+	// 모집완료 순 리스트
+	@Override
+	public List<CommunityEntity> selectJoinEndBoardList(Map<String, Object> param, int offset, int limit) {
+		// mybatis가 제공하는 RowBounds 객체를 하나 제공한다. -- 페이징 처리를 위해서
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectjoinEndBoardList", param, rowBounds);
+	}
+
+	// 모집완료 게시물 수
+	@Override
+	public int selectOneStudyJoinEndCount() {
+		return session.selectOne("community.selectOneStudyJoinEndCount");
+	}
+	
 }
