@@ -209,12 +209,27 @@ public class CommunityServiceImpl implements CommunityService {
 	public int selectPostTotalCount(int memberNo) {
 		return communityDao.selectPostTotalCount(memberNo);
 	}
-
+	
 	@Override
 	public List<CommunityEntity> selectAllPostOrderBySelectType(Map<String, Object> param, int offset, int limit) {
-		return communityDao.selectPostTotalCount(param, offset, limit);
+		return communityDao.selectAllPostOrderBySelectType(param, offset, limit);
 	}
 
+	@Override
+	public List<CommunityEntity> selectAllLikeOrderByLatest(int memberNo, int offset, int limit) {
+		return communityDao.selectAllLikeOrderByLatest(memberNo, offset, limit);
+	}
+
+	@Override
+	public int selectLikeTotalCount(int memberNo) {
+		return communityDao.selectLikeTotalCount(memberNo);
+	}
+
+	@Override
+	public List<CommunityEntity> selectAllLikeOrderBySelectType(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectAllLikeOrderBySelectType(param, offset, limit);
+	}
+	
 	/**
 	 * 지원 서비스 끝
 	 */
