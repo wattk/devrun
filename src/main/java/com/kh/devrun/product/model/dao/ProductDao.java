@@ -46,7 +46,13 @@ public interface ProductDao {
 
 	// productOption 추가
 	int insertOption(ProductDetail productDetail);
-
+	// 상품 검색 결과 가져오기
+	List<ProductEntity> searchProductList(Map<String, Object> param);
+	
+	
+	
+	
+	
 	// 다현 - 상세 페이지 뿌리기 위한 item 받아오기
 	ProductEx selectOneItem(String productCode);
 
@@ -63,5 +69,7 @@ public interface ProductDao {
 
 	List<Integer> selectCartValidList(Map<String, Object> cartParam);
 	/* 혜진 끝 */
+
+
 
 }

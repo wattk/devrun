@@ -106,7 +106,6 @@ public class AdminController {
 		int offset = (cPage - 1) * limit;
 		
 		// 게시물 리스트 가져오기
-//		List<ProductExtends> list = productService.selectAllProductList(offset,limit);
 		List<ProductEntity> list = productService.selectAllProductList(offset,limit);
 		log.debug("list = {}" ,list);	
 		model.addAttribute("list",list);
@@ -125,6 +124,60 @@ public class AdminController {
 		return "/admin/product/productMain";
 	}
 	
+	// 상품 검색 결과 처리 && 페이징
+	@ResponseBody
+	@GetMapping("/product/searchProduct.do")
+	public Map<String,Object> searchProduct(
+				@RequestParam String searchType,
+				@RequestParam String searchKeyword,
+				@RequestParam(defaultValue = "1") int cPage,
+				HttpServletRequest request
+			) {
+		
+		Map<String,Object> map = new HashMap<>();
+
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		
+		log.debug("searchType = {}",searchType);
+		log.debug("searchKeyword = {}",searchKeyword);
+		log.debug("cPage = {}",cPage);
+		Map<String,Object>param = new HashMap<>();
+		
+		
+		param.put("limit",limit);
+		param.put("offset",offset);
+		
+		param.put("searchType", "m."+searchType);
+		param.put("searchKeyword", searchKeyword);
+		
+		// 1.조회한 리스트 가져오기
+		String url = request.getRequestURI()+"?searchType="+searchType+"&searchKeyword="+searchKeyword;
+		log.debug("url = {}", url);
+		
+		List<ProductEntity>productList = productService.searchProductList(param);
+		String productStr = DevrunUtils.getProductList(productList);
+		
+		// 2.조회한 게시물 수
+		int totalContent = productService.searchProductListCount(param);
+		
+		// 3.페이지 바
+		log.debug("pagebarUrl = {}",url);
+		String pagebar = DevrunUtils.getPagebar2(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+				
+		
+		map.put("productList",productList);
+		map.put("totalContent",totalContent);
+		map.put("pagebar",pagebar);
+		map.put("productStr",productStr);
+
+		return map;
+	}
+	
+	
+
 	@ResponseBody
 	@GetMapping("/selectCategory")
 	public Map<String, Object>selectCategory(@RequestParam Map<String, Object> param){
@@ -139,8 +192,7 @@ public class AdminController {
 		
 		return map;
 	}
-	
-	
+
 	@GetMapping("/insertProduct.do")
 	public String insertProduct() {
 				

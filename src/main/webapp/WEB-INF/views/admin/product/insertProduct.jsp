@@ -14,6 +14,91 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/summernote/summernote-lite.css">
 
+<!---------------------- 검색 바 시작 ----------------------------------->
+
+<div class="report-search-container mt-3 ml-5">
+	<div class="input-group w-50">
+		<select name="search-type" id="searchType" class=" bg-light border-0 small">
+			<option value="All" selected>전체</option>
+			<option value="MemberNo">회원 번호</option>
+			<option value="ProductCode">상품 코드</option>
+			<option value="AnswerYn">담변 여부</option>
+			<option value="PrivateYn">비밀글 여부</option>
+		</select>
+		
+	 	<div id = "searchKeywordContainer">
+    		<div id="searchAll" class="search-type">
+	            <form class="search-frm">
+	                <input type="hidden" name="searchType" value="all"/>
+	                <input type="hidden" name="searchKeyword"  size="25" placeholder="" value="all"/>
+	                <input type="hidden" name="startDate" class="start-date"/>	
+	                <input type="hidden" name="endDate" class="end-date" />
+	                	
+	                <button type="button"id="searchBymemberAll" class="btn-blue search-btn">검색</button>		
+	            </form>	
+	        </div>
+	        <div id="searchMemberNo" class="search-type other">
+	            <form class="search-frm">
+	                <input type="hidden" name="searchType" value="member_no"/>
+	                <input type="text" name="searchKeyword"  size="25" placeholder="검색할 회원 번호를 입력하세요." value=""/>
+	                <input type="hidden" name="startDate" class="start-date"/>	
+	                <input type="hidden" name="endDate" class="end-date" />
+	                			
+	                <button type="button"id="searchBymemberNo" class="btn-blue search-btn">검색</button>	
+	            </form>	
+	        </div>
+	        <div id="searchProductCode" class="search-type other">
+	            <form class="search-frm">
+	                <input type="hidden" name="searchType" value="product_code"/>
+	                <input type="text" name="searchKeyword" size="25" placeholder="검색할 상품 코드를 입력하세요" value=""/>
+	                <input type="hidden" name="startDate" class="start-date"/>	
+	                <input type="hidden" name="endDate" class="end-date" />		
+	                
+	                <button type="button" class="btn-blue search-btn">검색</button>               		
+	            </form>	
+	        </div>
+	        
+	        <div id="searchAnswerYn" class="search-type other">
+	             <form class="search-frm">
+	            	<input type="hidden" name="searchType" value="answer_yn"/>
+	    				
+					<input type="radio" class="btn-check" name="searchKeyword" id="Y" value="Y" >
+					<label class="btn btn-success" for="Y">답변</label>
+					
+					<input type="radio" class="btn-check" name="searchKeyword" id="N" value="N" >
+					<label class="btn btn-success" for="N">미답변</label>
+					
+					<input type="hidden" name="startDate" class="start-date"/>	
+	                <input type="hidden" name="endDate" class="end-date" />		
+					
+	                <button type="button" class="btn-blue search-btn">검색</button>
+	            </form>
+	        </div>        
+	        <div id="searchPrivateYn" class="search-type other">
+	            <form class="search-frm">
+	            	<input type="hidden" name="searchType" value="private_yn"/>
+	    				
+					<input type="radio" class="btn-check" name="searchKeyword" id="public" value='Y' >
+					<label class="btn btn-success" for="public">공개</label>
+					
+					<input type="radio" class="btn-check" name="searchKeyword" id="private" value='N' >
+					<label class="btn btn-success" for="private">비공개</label>
+					
+					<input type="hidden" name="startDate" class="start-date"/>	
+	                <input type="hidden" name="endDate" class="end-date" />		
+	                
+	                <button type="button" class="btn-blue search-btn">검색</button>		
+	            </form>	
+	        </div>
+	        
+		</div>
+       
+       
+	</div>
+</div>
+
+<!---------------------- 검색 바 끝 ----------------------------------->
+
 
 <div id="productInsertContainer" class="productContainer">
 	<h2>상품 등록</h2><br /><hr /><br />
