@@ -71,4 +71,6 @@ public interface ShopService {
 
 	String thisCateName(String childCategoryCode);
 
+	List<ProductEntity> selectItemsByChildCateBySort(Map<String, Object> param);
+
 }
