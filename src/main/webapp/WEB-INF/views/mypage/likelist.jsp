@@ -36,21 +36,24 @@
 							<div class="row">
 							
 								<%-- select type --%>
-								<div id="selectType" class="row col-10">
-									<select class="row custom-select">
-							            <option value="latest">최신순</option>
-							            <option value="commentCount">댓글순</option>
-							            <option value="viewCount">조회순</option>
-							            <option value="likeCount">좋아요순</option>
-							            <option value="oldest">오래된순</option>
-							        </select>
-								</div>
+								<!-- 옵션순 드롭다운 메뉴 : 좋아요 내역이 있는 경우에만 제공 -->
+								<c:if test="${totalContent ne 0}">
+									<div id="selectType" class="row col-10">
+										<select class="row custom-select">
+								            <option value="latest">최신순</option>
+								            <option value="commentCount">댓글순</option>
+								            <option value="viewCount">조회순</option>
+								            <option value="likeCount">좋아요순</option>
+								            <option value="oldest">오래된순</option>
+								        </select>
+									</div>
+								</c:if>
 								
 								<article class="col-10" id="communityList">
-									<!-- 몇가지 조건에 따른 보기 제공 -->
 									<table class="table">
 					       				<c:if test="${totalContent ne 0}">
 					       					<tbody>
+					       						<%-- list --%>
 						       					<c:forEach items="${likeList}" var="community">
 							       					<tr class="cursor" data-no="${community.communityNo}">
 								       					<td>
@@ -78,7 +81,8 @@
 				       					</c:if>
 					       			</table>
 					       			
-					       			<!-- pagebar : 좋아요 내역이 있는 경우에만 제공 -->
+					       			<%-- page bar --%>
+					       			<!-- 페이징 처리 : 좋아요 내역이 있는 경우에만 제공 -->
 	       							<c:if test="${totalContent ne 0}">${pagebar}</c:if>
 					       			
 						    	</article>
