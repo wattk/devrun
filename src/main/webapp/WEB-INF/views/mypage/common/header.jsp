@@ -21,7 +21,7 @@
 		<nav id="tabBtns">
 			<ul class="nav nav-tabs">
 				<li class="nav-item">
-				   <a href="${pageContext.request.contextPath}/mypage/mycommunity.do" class="nav-link" id="mycommunityTab">나의 커뮤니티</a>
+				   <a href="${pageContext.request.contextPath}/mypage/mycommunity/postList.do" class="nav-link" id="mycommunityTab">나의 커뮤니티</a>
 				</li>
 				<li class="nav-item">
 				   <a href="${pageContext.request.contextPath}/mypage/myshopping.do" class="nav-link" id="myshoppingTab">나의 쇼핑</a>

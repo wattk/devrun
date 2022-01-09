@@ -27,7 +27,7 @@
 /*탭 시작*/
 #menu-tab {
 /*background: white;*/
-   font-family: 'trebuchet ms', geneva; 
+font-family: 'trebuchet ms', geneva; 
 font-size: 11pt;
 color:black;
 }
@@ -553,6 +553,10 @@ color: green;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.recom-border {
+border: 3px solid darkkhaki;
 }
 
 /*-----------------------------------------------구분선 아래로 태영-----------------------------------------------------------------*/

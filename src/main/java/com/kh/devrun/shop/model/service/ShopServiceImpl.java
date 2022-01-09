@@ -262,4 +262,9 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.selectAllChildCateNames(parentCate);
 	}
 
+	@Override
+	public String thisCateName(String childCategoryCode) {
+		return shopDao.thisCateName(childCategoryCode);
+	}
+
 }

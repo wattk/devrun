@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="chart">
+	<select id="countDailySales" resultType="_int">
+		select
+		    nvl(sum(i.amount),0) sum
+		from
+		    imp i left join merchant m
+		        on i.merchant_uid = m.merchant_uid
+		where
+		    i.is_canceled = 0 and
+		    trunc(m.order_date) = trunc(sysdate)
+	</select>
+	<select id="countMonthlySales" resultType="_int">
+		select
+		    nvl(sum(i.amount),0) sum
+		from
+		    imp i left join merchant m
+		        on i.merchant_uid = m.merchant_uid
+		where
+		    i.is_canceled = 0 and
+		    extract(month from m.order_date) = extract(month from sysdate)
+	</select>
+	<select id="countMembers" resultType="_int">
+		select
+		    count(*) cnt
+		from
+		    member
+	</select>
+	<select id="countTodayMembers" resultType="_int">
+		select
+		    nvl(count(*),0) cnt
+		from
+		    member
+		where
+		    trunc(enroll_date) = trunc(sysdate)
+	</select>
+	<select id="countBlacklist" resultType="_int">
+		select
+		    nvl(count(*),0) cnt
+		from
+		    member
+		where
+		    black_yn = 'Y'
+	</select>
+	<select id="countQuestionProduct" resultType="_int">
+		select
+		    count(*) cnt
+		from
+		    question_product
+		where
+		    question_ref_no is null
+	</select>
+	<select id="countCommunities" resultType="_int">
+		select
+		    count(*) cnt
+		from
+		    community
+		where
+		    extract(year from enroll_date) = extract(year from sysdate)
+	</select>
+	
+	<select id="countSalesPerDay" resultType="map">
+		select 
+		    to_char(b.dt, 'MM-DD') AS orderdate,
+		    nvl(SUM(a.sum), 0) sum
+		from
+		    (select 
+	            to_char(m.order_date, 'YYYY-MM-DD') as orderdate,
+	            sum(i.amount) sum
+	        from
+	            imp i left join merchant m on i.merchant_uid = m.merchant_uid
+	        where
+	            i.is_canceled = 0 and
+	            m.order_date 
+	                between trunc(sysdate, 'month')
+	                	and  last_day(sysdate)
+	        group by m.order_date
+	        ) a,
+	        (select 
+	            trunc(sysdate, 'month') + level - 1 as dt
+	        from
+	            dual 
+	        connect by level <![CDATA[ <=	]]> (last_day(sysdate)
+	                            - trunc(sysdate, 'month') + 1)
+	        ) b
+		where to_char(b.dt, 'YYYY-MM-DD') = a.orderdate(+)
+		group by b.dt
+		order by b.dt
+	</select>
+	<select id="countSalesProduct" resultType="map">
+		select
+		    a.product_category pc,
+		    nvl(sum(a.buy_count),0) sum
+		from
+		    (select
+		        substr(pd.product_code, 1,2) product_category,
+		        (select md.buy_count from merchant_detail md where md.detail_no = pd.detail_no) buy_count
+		from
+		    product_detail pd) a
+		group by
+		   a.product_category
+	</select>
+	<select id="countOrderCnt" resultType="_int">
+		select
+		    sum(decode(cs_status, 'COM', 1,0)) as com
+		from
+		    merchant
+		WHERE extract(month from order_date) = extract(month from sysdate)
+	</select>
+	<select id="countOrderLogCnt" resultType="map">
+		select
+		    sum(decode(cs_status,'RET',1,0)) as  ret,
+		    sum(decode(cs_status,'EXC',1,0)) as  exc,
+		    sum(decode(cs_status,'CAN',1,0)) as  can
+		from order_log 
+		where extract(month from req_date) = extract(month from sysdate)
+	</select>
+	<select id="countCommunityPerMonth" resultType="map">
+		select 
+		    b.mm as enrolldate
+		    ,nvl(count(a.cnt), 0) cnt
+		from
+		    (select 
+	            to_char(enroll_date, 'YYYY-MM') enrolldate,
+	            count(*) cnt
+		     from
+		        community
+		     where 
+		        enroll_date 
+		     		between to_date(extract(year from sysdate)||'01', 'YYYYMM')
+		               and to_date(extract(year from sysdate)||'12', 'YYYYMM') 
+		     group by enroll_date) a,
+		     (select 
+		    	to_char(add_months(to_date(extract(year from sysdate)||'01', 'YYYYMM'), level - 1), 'YYYY-MM') as mm 
+			  from 
+		    	dual
+		      connect by level <![CDATA[<=]]> 
+				months_between(to_date(extract(year from sysdate)||'12', 'YYYYMM'), to_date(extract(year from sysdate)||'01', 'YYYYMM') ) + 1) b
+		where 
+			b.mm = a.enrolldate(+)
+		group by
+			b.mm
+		order by
+			b.mm
+	</select>
+</mapper>

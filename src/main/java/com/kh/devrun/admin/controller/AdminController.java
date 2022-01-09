@@ -42,12 +42,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kh.devrun.category.model.service.ProductCategoryService;
 import com.kh.devrun.category.model.vo.ProductChildCategory;
 import com.kh.devrun.category.model.vo.ProductParentCategory;
+import com.kh.devrun.chart.model.service.ChartService;
 import com.kh.devrun.common.AdminUtils;
 import com.kh.devrun.common.DevrunUtils;
 import com.kh.devrun.member.model.vo.Member;
 import com.kh.devrun.memberManage.model.service.MemberManageService;
 import com.kh.devrun.order.model.service.OrderService;
-import com.kh.devrun.order.model.vo.Imp;
 import com.kh.devrun.order.model.vo.Merchant;
 import com.kh.devrun.order.model.vo.OrderLog;
 import com.kh.devrun.order.model.vo.Shipment;
@@ -90,8 +90,18 @@ public class AdminController {
 	@Autowired
 	ProductCategoryService productCategoryService;
 	
+	@Autowired
+	ChartService chartService;
+	
 	@GetMapping("/adminMain.do")
-	public void adminMain() {}
+	public void adminMain(Model model) {
+		
+		//매출 cnt값 가져오기
+		Map<String, Integer> cntList = chartService.findMainCnt();
+		log.debug("cntList={}", cntList);
+		
+		model.addAttribute("cntList", cntList);
+	}
 
 	
 	@GetMapping("/product/productMain.do")
