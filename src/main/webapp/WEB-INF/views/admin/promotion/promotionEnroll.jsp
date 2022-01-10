@@ -16,6 +16,7 @@
 
 <link href="${pageContext.request.contextPath}/resources/css/admin/adminManage.css" rel="stylesheet"/>
 <script src="${pageContext.request.contextPath}/resources/js/admin/promotionDetail.js"></script>
+<div class="container">
 <div class="promotion-container">
 	<h3 class="mt-5 ml-5">이벤트 관리</h3>
 	<strong class="ml-5 pl-2">이벤트 등록</strong>
@@ -90,6 +91,7 @@
         </div>
 	</div>
 </form:form>
+</div>
 <script>
 let imgs = "";
 $(document).ready(function() {
@@ -122,6 +124,7 @@ $(document).ready(function() {
 	function uploadSummernoteImageFile(file, editor){
 		const data = new FormData();
 		data.append("file", file);
+		data.append("keyword", "promotion");
 		$.ajax({
 			data : data,
 			type : "POST",
@@ -149,7 +152,8 @@ $(document).ready(function () {
     	//비동기 요청을 통해 서버에 저장된 이미지 파일 삭제
     	$.ajax({
     		url : "${pageContext.request.contextPath}/deleteSummernoteImageFile",
-    		data : {imgs : imgs},
+    		data : {imgs : imgs,
+    				keyword : "promotion"},
     		method : "POST",
     		success(data){
     		console.log(data);

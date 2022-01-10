@@ -4,472 +4,545 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="shop">
 	<insert id="insertReview">
-		insert into 
-			review
+		insert into
+		review
 		values(
-			seq_review_no.nextval,
-			#{memberNo},
-			#{id},
-			#{productCode},
-			#{content},
-			default,
-			default,
-			#{rate}
+		seq_review_no.nextval,
+		#{memberNo},
+		#{id},
+		#{productCode},
+		#{content},
+		default,
+		default,
+		#{rate}
 		)
-		<selectKey keyProperty="reviewNo" resultType="_int" order="AFTER">
+		<selectKey keyProperty="reviewNo" resultType="_int"
+			order="AFTER">
 			select
-				seq_review_no.currval
+			seq_review_no.currval
 			from
-				dual
+			dual
 		</selectKey>
 	</insert>
-	
+
 	<insert id="insertAttach">
 		insert into
-			REVIEW_ATTACHMENT
+		REVIEW_ATTACHMENT
 		values(
-			SEQ_REVIEW_ATTACHMENT_NO.nextval,
-			#{reviewNo},
-			#{originalFilename},
-			#{renamedFilename},
-			default
-		)	
+		SEQ_REVIEW_ATTACHMENT_NO.nextval,
+		#{reviewNo},
+		#{originalFilename},
+		#{renamedFilename},
+		default
+		)
 	</insert>
-	
+
 	<select id="selectAllReview" resultMap="review">
-		select 
-		    *
+		select
+		*
 		from
-		    review r left join review_attachment a
-		    	on r.review_no = a.review_no
+		review r left join review_attachment a
+		on r.review_no = a.review_no
 		where product_code = #{productCode}
-		order by 
-			r.reg_date 
+		order by
+		r.reg_date
 		<if test="orderBy == -1">
-			desc    
-		</if>		    	
+			desc
+		</if>
 	</select>
-	
+
 	<resultMap type="review" id="review">
-		<id column ="review_no" property ="reviewNo"/>
-		<result column ="member_no" property="memberNo"/>
-		<result column ="id" property="id"/>
-		<result column ="product_code" property="productCode"/>
-		<result column ="content" property="content"/>
-		<result column ="like_count" property="likeCount"/>
-		<result column ="rate" property="rate"/>
-		<result column ="reg_date" property="regDate"/>
+		<id column="review_no" property="reviewNo" />
+		<result column="member_no" property="memberNo" />
+		<result column="id" property="id" />
+		<result column="product_code" property="productCode" />
+		<result column="content" property="content" />
+		<result column="like_count" property="likeCount" />
+		<result column="rate" property="rate" />
+		<result column="reg_date" property="regDate" />
 		<collection property="attach" ofType="Attachment">
-			<id column="review_attach_no" property="reviewAttachNo"/>
-			<result column ="review_no" property="reviewNo"/>
-			<result column="ORIGINAL_FILENAME" property="originalFilename"/>
-			<result column="RENAMED_FILENAME" property="renamedFilename"/>
-			<result column ="reg_date" property="regDate"/>			
+			<id column="review_attach_no" property="reviewAttachNo" />
+			<result column="review_no" property="reviewNo" />
+			<result column="ORIGINAL_FILENAME" property="originalFilename" />
+			<result column="RENAMED_FILENAME" property="renamedFilename" />
+			<result column="reg_date" property="regDate" />
 		</collection>
 	</resultMap>
-	
+
 	<select id="countAllList" resultType="int">
-		select 
-			count(*)
-		from 
-			review
-		where 
-			product_code = #{countAllList}
+		select
+		count(*)
+		from
+		review
+		where
+		product_code = #{countAllList}
 	</select>
-	
+
 	<select id="countPicReviewList" resultType="int">
-		select 
-		    count(*) 
-		from 
-		    review r join review_attachment a
-		    	on r.review_no = a.review_no
-		where 
-			product_code = #{productCode}
+		select
+		count(*)
+		from
+		review r join review_attachment a
+		on r.review_no = a.review_no
+		where
+		product_code = #{productCode}
 	</select>
-	
+
 	<delete id="reviewDelete">
-		delete 
-		from 
-			review 
+		delete
+		from
+		review
 		where review_no = #{reviewNo}
 	</delete>
-	
+
 	<select id="picReviewOnly" resultMap="review">
-		select 
-		    *
+		select
+		*
 		from
-		    review r left join review_attachment a
-		    	on r.review_no = a.review_no
-		where 
-			review_attach_no is not null  and
-			product_code = #{productCode} 
-		order by 
-			r.reg_date desc  	
+		review r left join review_attachment a
+		on r.review_no = a.review_no
+		where
+		review_attach_no is not null and
+		product_code = #{productCode}
+		order by
+		r.reg_date desc
 	</select>
-	
+
 	<select id="CategoryItemAll" resultType="productEx">
-		select 
-			* 
-		from 
-			view_product_parent_category 
-		where 
-			status ='Y' and 
-			parent_category_code = #{parentCate}
-		order by 
-			reg_date desc	
-	</select>
-	
-	<select id="selectItemsByChildCate" resultType="productEx">
-		select 
-			* 
-		from 
-			view_product_parent_category 
-		where 
-			status ='Y' and 
-			child_category_code = #{childCategoryCode}
-		order by 
-			reg_date desc	
-	</select>
-	
-	<select id="selectOneAttach" resultType="attachment">
-		select 
-			*
+		select
+		*
 		from
-			review_attachment
-		where 
-			review_no =#{reviewNo}
+		view_product_parent_category
+		where
+		status ='Y' and
+		parent_category_code = #{parentCate}
+		order by
+		reg_date desc
 	</select>
-	
+
+	<select id="selectItemsByChildCate" resultType="productEx">
+		select
+		*
+		from
+		view_product_parent_category
+		where
+		status ='Y' and
+		child_category_code = #{childCategoryCode}
+		order by
+		reg_date desc
+	</select>
+
+	<select id="selectOneAttach" resultType="attachment">
+		select
+		*
+		from
+		review_attachment
+		where
+		review_no =#{reviewNo}
+	</select>
+
 	<select id="selectRecommendation" resultType="productEx">
 		select
-			*
-		from 
-			view_product_parent_category
-		where 
-			child_Category_code = #{childCate}
-			and product_code != #{productCode}
-			and status = 'Y'
+		*
+		from
+		view_product_parent_category
+		where
+		child_Category_code = #{childCate}
+		and product_code != #{productCode}
+		and status = 'Y'
 	</select>
-	
-	
+
+
 	<select id="didIHitLikes" resultType="_int">
 		select
-			count(*)
+		count(*)
 		from member_review_like
-		where 
-			member_no = #{loginMemberNo} and
-			review_no = #{reviewNo}
+		where
+		member_no = #{loginMemberNo} and
+		review_no = #{reviewNo}
 	</select>
-	
+
 	<update id="reviewLikeAdd">
-		update 
-			review 
+		update
+		review
 		set like_count = like_count +1
 		where review_no = #{reviewNo}
-		and product_code = #{productCode}
+		and
+		product_code = #{productCode}
 	</update>
-	
+
 	<insert id="insertMemberReviewLike">
-		insert into 
-			member_review_like
+		insert into
+		member_review_like
 		values (#{reviewNo}, #{memberNo})
 
 	</insert>
-	
+
 	<delete id="deleteMemberReviewLike">
-		delete 
-			member_review_like
+		delete
+		member_review_like
 		where review_no = #{reviewNo}
-		and  member_no = #{memberNo}	
+		and member_no = #{memberNo}
 	</delete>
-	
+
 	<update id="reviewLikeDelete">
-		update 
-			review
-		set 
-			like_count = like_count -1
+		update
+		review
+		set
+		like_count = like_count -1
 		where review_no = #{reviewNo}
-		and product_code = #{productCode} 
+		and product_code =
+		#{productCode}
 	</update>
-	
+
 	<select id="refreshCountLike" resultType="_int">
 		select
-			like_count
-		from 
-			review
+		like_count
+		from
+		review
 		where review_no = #{reviewNo}
 	</select>
 
 	<insert id="wishlistAdd">
-		insert 
-			into wishlist
+		insert
+		into wishlist
 		values
-			(seq_wishlist_no.nextval, #{productCode}, default)
-		<selectKey keyProperty="wishlistNo" resultType="_int" order="AFTER">
+		(seq_wishlist_no.nextval, #{productCode}, default)
+		<selectKey keyProperty="wishlistNo" resultType="_int"
+			order="AFTER">
 			select
-				seq_wishlist_no.currval
+			seq_wishlist_no.currval
 			from
-				dual
-		</selectKey>			
+			dual
+		</selectKey>
 	</insert>
-	
+
 	<insert id="insertMemberWishlist">
-		insert 
-			into MEMBER_WISHLIST
-		values 
-			(#{wishlistNo}, #{memberNo})
+		insert
+		into MEMBER_WISHLIST
+		values
+		(#{wishlistNo}, #{memberNo})
 	</insert>
-	
+
 	<select id="findWishlistNo" resultType="_int">
 		select
-			wishlist_no
-		from 
-			wishlistInfo
-		where 
-			member_no = #{memberNo}
-			and product_code = #{productCode}
+		wishlist_no
+		from
+		wishlistInfo
+		where
+		member_no = #{memberNo}
+		and product_code = #{productCode}
 	</select>
-	
+
 	<delete id="wishlistDelete">
 		delete
 		from
-			wishlist
-		where 
-			wishlist_no = #{wishlistNo}
+		wishlist
+		where
+		wishlist_no = #{wishlistNo}
 	</delete>
-	
+
 	<select id="selectAllWishlist" resultType="wishlistProduct">
 		select
-			*
-		from 
-			wishProduct
-		where 
-			member_no = #{memberNo} and
-			status ='Y'
-	</select>
-	
-	<select id="selectOneProductDetail" resultType="productDetail">
-		select
-			*
+		*
 		from
-			product_detail
+		wishProduct
 		where
-			detail_no = #{detailNo}
-	</select>
-	
-	<update id="updateViewCount">
-		update 
-			product
-		set 
-			view_count = view_count +1
-		where 
-			product_code = #{productCode}
-	</update>
-	
-	<insert id="insertSmsWatinglist">
-		insert into
-			sms_waitinglist
-		values
-			(seq_sms_waitinglist_no.nextval,
-			#{memberNo},
-			#{id},
-			#{productCode},
-			#{detailNo},
-			#{phone},
-			default,
-			default
-			)
-	</insert>
-	
-	<select id="countItemsByParentCode" resultType="_int">
-		select 
-			count(*) 
-		from 
-			view_product_parent_category 
-		where 
-			status ='Y' and 
-			parent_category_code = #{parentCate}
-	</select>
-	
-	<select id="countItemsByChildCode" resultType="_int">
-		select 
-			count(*) 
-		from 
-			view_product_parent_category 
-		where 
-			status ='Y' and 
-			child_category_code = #{childCategoryCode}
-	</select>
-	<select id="selectAllChildCateNames" resultType="map">
-		select 
-		    distinct(child_category_title),
-		    child_category_code
-		from 
-		    view_product_parent_category
-		where parent_category_code = #{parentCate}
-		order by
-			child_category_code
-	</select>
-	<select id="thisCateName" resultType="string">
-		select 
-			CHILD_CATEGORY_TITLE 
-		from 
-			PRODUCT_CHILD_CATEGORY
-		where 
-			CHILD_CATEGORY_CODE = #{childCategoryCode}
-	</select>
-	<select id="selectItemsByChildCateBySort" resultType="productEntity">
-		select 
-			* 
-		from 
-			view_product_parent_category 
-		where 
-			status ='Y' and 
-			child_category_code = #{childCateCode}
-	    <if test="keyword != null">
-	    	<choose>
-	    		<when test="keyword eq 'new'">
-	    			order by reg_date desc
-	    		</when>
-	    		<when test="keyword eq 'recommend'">
-	    			order by view_count desc
-	    		</when>
-	    		<when test="keyword eq 'row'">
-	    			order by price
-	    		</when>
-	    		<when test="keyword eq 'high'">
-	    			order by price desc
-	    		</when>
-	    	</choose>
-	    </if>
-	</select>
-	
-	<select id="shopSearch" resultType="productEntity">
-	select
-	    product_code,
-	    name,
-	    price,
-	    reg_date,
-	    thumbnail,
-	    view_count,
-	    status,
-	    order_count
-	from 
-		product
-	where 
-	name like '%'|| #{searchKeyword} ||'%'
-	and status = 'Y'
-	</select>
-	<select id="countShopSearch" resultType="_int">
-	select
-		count(*)
-	from 
-		product
-	where 
-	name like '%'|| #{searchKeyword} ||'%'
-	and status = 'Y'
+		member_no = #{memberNo} and
+		status ='Y'
 	</select>
 
-<!-- =================================================구분선 ================================================= -->
+	<select id="selectOneProductDetail" resultType="productDetail">
+		select
+		*
+		from
+		product_detail
+		where
+		detail_no = #{detailNo}
+	</select>
+
+	<update id="updateViewCount">
+		update
+		product
+		set
+		view_count = view_count +1
+		where
+		product_code = #{productCode}
+	</update>
+
+	<insert id="insertSmsWatinglist">
+		insert into
+		sms_waitinglist
+		values
+		(seq_sms_waitinglist_no.nextval,
+		#{memberNo},
+		#{id},
+		#{productCode},
+		#{detailNo},
+		#{phone},
+		default,
+		default
+		)
+	</insert>
+
+	<select id="countItemsByParentCode" resultType="_int">
+		select
+		count(*)
+		from
+		view_product_parent_category
+		where
+		status ='Y' and
+		parent_category_code = #{parentCate}
+	</select>
+
+	<select id="countItemsByChildCode" resultType="_int">
+		select
+		count(*)
+		from
+		view_product_parent_category
+		where
+		status ='Y' and
+		child_category_code = #{childCategoryCode}
+	</select>
+	<select id="selectAllChildCateNames" resultType="map">
+		select
+		distinct(child_category_title),
+		child_category_code
+		from
+		view_product_parent_category
+		where parent_category_code = #{parentCate}
+		order by
+		child_category_code
+	</select>
+	<select id="thisCateName" resultType="string">
+		select
+		CHILD_CATEGORY_TITLE
+		from
+		PRODUCT_CHILD_CATEGORY
+		where
+		CHILD_CATEGORY_CODE = #{childCategoryCode}
+	</select>
+	<select id="selectItemsByChildCateBySort"
+		resultType="productEntity">
+		select
+		*
+		from
+		view_product_parent_category
+		where
+		status ='Y' and
+		child_category_code = #{childCateCode}
+		<if test="keyword != null">
+			<choose>
+				<when test="keyword eq 'new'">
+					order by reg_date desc
+				</when>
+				<when test="keyword eq 'recommend'">
+					order by view_count desc
+				</when>
+				<when test="keyword eq 'row'">
+					order by price
+				</when>
+				<when test="keyword eq 'high'">
+					order by price desc
+				</when>
+			</choose>
+		</if>
+	</select>
+
+	<select id="shopSearch" resultType="productEntity">
+		select
+		product_code,
+		name,
+		price,
+		reg_date,
+		thumbnail,
+		view_count,
+		status,
+		order_count
+		from
+		product
+		where
+		name like '%'|| #{searchKeyword} ||'%'
+		and status = 'Y'
+	</select>
+
+	<select id="countShopSearch" resultType="_int">
+		select
+		count(*)
+		from
+		product
+		where
+		name like '%'|| #{searchKeyword} ||'%'
+		and status = 'Y'
+	</select>
+
+	<select id="shopSearchSort" resultType="productEntity">
+		select
+		product_code,
+		name,
+		price,
+		reg_date,
+		thumbnail,
+		view_count,
+		status,
+		order_count
+		from
+		product
+		where
+		name like '%'|| #{searchKeyword} ||'%'
+		and status = 'Y'
+		<if test="keyword != null">
+			<choose>
+				<when test="keyword eq 'new'">
+					order by reg_date desc
+				</when>
+				<when test="keyword eq 'recommend'">
+					order by view_count desc
+				</when>
+				<when test="keyword eq 'row'">
+					order by price
+				</when>
+				<when test="keyword eq 'high'">
+					order by price desc
+				</when>
+			</choose>
+		</if>
+	</select>
 	
+	<select id="topFourReview" resultMap="review">
+		select rownum
+		,rr.*
+		from
+		(select
+		    r.* 
+		from 
+		     view_reviewInfo r
+		order by 
+		    r.like_count desc)rr
+		where 
+	    	<![CDATA[ rownum >=1 and rownum<5 ]]> 
+	    	and review_attach_no is not null
+	</select>
+	<select id="topTenItems" resultType="productEntity">
+		select rownum,
+	    	pp.name,
+	    	pp.product_code
+	    from
+		    (select rownum,
+		    p.name,
+		    p.view_count,
+		    p.product_code
+		    from product p
+		    order by p.view_count desc)pp
+		    where
+		    <![CDATA[ rownum >=1 and rownum<11 ]]> 
+	</select>
+
+	<!-- =================================================구분선 ================================================= -->
+
 	<!-- 혜진 장바구니 시작 -->
 	<insert id="insertCart">
 		insert into
-			cart
+		cart
 		values(
-			seq_cart_no.nextval,
-			#{detailNo},
-			#{amount},
-			default
-			
+		seq_cart_no.nextval,
+		#{detailNo},
+		#{amount},
+		default
+
 		)
-		<selectKey keyProperty="cartNo" resultType="_int" order="AFTER">
+		<selectKey keyProperty="cartNo" resultType="_int"
+			order="AFTER">
 			select
-				seq_cart_no.currval
+			seq_cart_no.currval
 			from
-				dual
+			dual
 		</selectKey>
 	</insert>
-	
+
 	<insert id="insertMemberCart">
 		insert into
-			member_cart
+		member_cart
 		values(
-			#{memberNo},
-			#{cartNo}
+		#{memberNo},
+		#{cartNo}
 		)
 	</insert>
-	
+
 	<select id="didIHitWishlist" resultType="int">
 		select
-			count(*)
-		from 
-			wishlistInfo
-		where 
-			member_no = #{memberNo}
-			and product_code = #{productCode}
+		count(*)
+		from
+		wishlistInfo
+		where
+		member_no = #{memberNo}
+		and product_code = #{productCode}
 	</select>
-	
+
 	<delete id="deleteCart">
 		delete from cart
 		where
-			cart_no in
-			<foreach collection="list" open="(" separator="," close=")" item="cartNo">
-				#{cartNo}
-			</foreach> 
+		cart_no in
+		<foreach collection="list" open="(" separator="," close=")"
+			item="cartNo">
+			#{cartNo}
+		</foreach>
 	</delete>
-	
-	<select id="selectProductListByChildCategory" resultType="productEntity">
+
+	<select id="selectProductListByChildCategory"
+		resultType="productEntity">
 		select
-		    *
+		*
 		from
-		    view_product_parent_category
+		view_product_parent_category
 		<where>
 			status = 'Y'
-		    <if test="childCategoryCode != null">
-		     and child_category_code in
-				<foreach collection="childCategoryCode" open="(" item="code" separator="," close=")">
+			<if test="childCategoryCode != null">
+				and child_category_code in
+				<foreach collection="childCategoryCode" open="(" item="code"
+					separator="," close=")">
 					#{code}
 				</foreach>
-		    </if>
-		    <if test="childCategoryCode == null">
-		    	and parent_category_code = #{parentCategoryCode}
-		    </if>
+			</if>
+			<if test="childCategoryCode == null">
+				and parent_category_code = #{parentCategoryCode}
+			</if>
 		</where>
-	    <if test="keyword != null">
-	    	<choose>
-	    		<when test="keyword eq 'recommend'">
-	    			order by view_count desc
-	    		</when>
-	    		<when test="keyword eq 'new'">
-	    			order by reg_date desc
-	    		</when>
-	    		<when test="keyword eq 'row'">
-	    			order by price
-	    		</when>
-	    		<when test="keyword eq 'high'">
-	    			order by price desc
-	    		</when>
-	    	</choose>
-	    </if>
+		<if test="keyword != null">
+			<choose>
+				<when test="keyword eq 'recommend'">
+					order by view_count desc
+				</when>
+				<when test="keyword eq 'new'">
+					order by reg_date desc
+				</when>
+				<when test="keyword eq 'row'">
+					order by price
+				</when>
+				<when test="keyword eq 'high'">
+					order by price desc
+				</when>
+			</choose>
+		</if>
 	</select>
-	
+
 	<select id="selectProductTotalCount" resultType="_int">
 		select
-		    count(*)
+		count(*)
 		from
-		    view_product_parent_category
+		view_product_parent_category
 		<where>
 			status = 'Y'
-		    <if test="childCategoryCode != null">
-		     and child_category_code in
-				<foreach collection="childCategoryCode" open="(" item="code" separator="," close=")">
+			<if test="childCategoryCode != null">
+				and child_category_code in
+				<foreach collection="childCategoryCode" open="(" item="code"
+					separator="," close=")">
 					#{code}
 				</foreach>
-		    </if>
-		    <if test="childCategoryCode == null">
-		    	and parent_category_code = #{parentCategoryCode}
-		    </if>
+			</if>
+			<if test="childCategoryCode == null">
+				and parent_category_code = #{parentCategoryCode}
+			</if>
 		</where>
 	</select>
 	<!-- 혜진 장바구니 끝 -->

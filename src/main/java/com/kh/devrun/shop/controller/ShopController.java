@@ -81,8 +81,49 @@ public class ShopController {
 
 //--------------------주입-------------------------------------	
 
+	// 검색페이지 정렬
+	@ResponseBody
+	@GetMapping("/shopSearchSort")
+	public Map<String, Object> shopSearchSort(@RequestParam String searchKeyword, @RequestParam String keyword,
+			HttpServletRequest request, @RequestParam int total, @RequestParam(defaultValue = "1") int cPage) {
+		int limit = 12;
+		int offset = (cPage - 1) * limit;
+
+		Map<String, Object> resultMap = new HashMap<>();
+
+		// sort에 따른 리스트 불러오기
+		Map<String, Object> param = new HashMap<>();
+		param.put("keyword", keyword);
+		param.put("searchKeyword", searchKeyword);
+
+		List<ProductEntity> searchList = shopService.shopSearchSort(offset, limit, param);
+		log.debug("sortItemList : {}", searchList);
+
+		String url = request.getContextPath();
+
+		String productStr = DevrunUtils.getProductList(searchList, url);
+		resultMap.put("productStr", productStr);
+
+		// 2. 전체 게시물 수 totalContent
+		url = "/devrun/shop/shopSearch";
+
+		url += "?searchKeyword=" + searchKeyword;
+
+		if (keyword != null) {
+			url += "&keyword=" + keyword;
+		}
+
+		// 3. pagebar
+		String pagebar = DevrunUtils.getProductPagebar(cPage, limit, total, url);
+		log.debug("pagebar = {}", pagebar);
+		resultMap.put("pagebar", pagebar);
+
+		return resultMap;
+
+	}
+
 	// 검색 페이지로 이동
-	@PostMapping("/shopSearch")
+	@GetMapping("/shopSearch")
 	public String shopSearch(@RequestParam String searchKeyword, @RequestParam(defaultValue = "1") int cPage,
 			Model model, HttpServletRequest request) {
 		log.debug("searchKeyword : {}", searchKeyword);
@@ -99,21 +140,33 @@ public class ShopController {
 		int total = shopService.countShopSearch(searchKeyword);
 		log.debug("total : {}", total);
 		model.addAttribute("total", total);
-		
-		
 
 		// 3. pagebar
 		String url = request.getRequestURI(); // /spring/board/boardList.do
-		
 		if (searchKeyword != null) {
-			url += "&searchKeyword=" + searchKeyword;
+			url += "?searchKeyword=" + searchKeyword;
 		}
-		
-		
+
 		String pagebar = DevrunUtils.getPagebar(cPage, limit, total, url);
 		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
 
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 38) {
+				productName = productName.substring(0, 37);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+
+		model.addAttribute("tenArr", tenArr);
+		
 		return "/shop/shopSearch";
 
 	}
@@ -136,15 +189,25 @@ public class ShopController {
 		param.put("childCateCode", childCateCode);
 
 		List<ProductEntity> sortItemList = shopService.selectItemsByChildCateBySort(offset, limit, param);
-		log.debug("sortItemList : {}", sortItemList);
-		// sort에 따라 잘 받아옴dd.
 
 		String url = request.getContextPath();
 		String productStr = DevrunUtils.getProductList(sortItemList, url);
 
-		log.debug("productStr : {}", productStr);
-
 		resultMap.put("productStr", productStr);
+
+		// 2. 전체 게시물 수 totalContent
+		url = "/devrun/shop/childCatePageSort";
+
+		url += "?childCategoryCode=" + childCateCode;
+
+		if (keyword != null) {
+			url += "&keyword=" + keyword;
+		}
+
+		// 3. pagebar
+		String pagebar = DevrunUtils.getProductPagebar(cPage, limit, total, url);
+		resultMap.put("pagebar", pagebar);
+
 		return resultMap;
 	}
 
@@ -178,11 +241,9 @@ public class ShopController {
 		// 품절상품 정보
 		List<ProductDetail> outOfStock = productService.selectOutOfStock(productCode);
 		model.addAttribute("outOfStock", outOfStock);
-		log.debug("품절 : {}", outOfStock);
 
 		// 오늘본상품
 		model.addAttribute("todayItemCode", productCode);
-		log.debug("자바단에서 todayItemCode : {}", productCode);
 
 		// 장바구니 좋아요 여부
 		if (authentication != null) {
@@ -244,13 +305,83 @@ public class ShopController {
 			ProductEx product2 = productService.selectOneItem(productCode);
 			log.debug("조회수 증가 후 조회수는 : {}", product2.getViewCount());
 		}
+		
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 38) {
+				productName = productName.substring(0, 37);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+
+		model.addAttribute("tenArr", tenArr);
 
 		return "shop/itemDetail";
 	}
 
 	// 헤더에서 Shop 눌렀을 시
 	@GetMapping("/shopMain.do")
-	public void shopMain() {
+	public String shopMain(Model model) {
+
+		// 베스트리뷰
+		List<Review> reviewList = shopService.topFourReview();
+		model.addAttribute("reviewList", reviewList);
+
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 38) {
+				productName = productName.substring(0, 37);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+		model.addAttribute("tenArr", tenArr);
+		
+		try {
+			//카테고리별 상품 12개씩 조회(신상품, top12, 만원의 행복)
+			List<ProductEntity> latestProductList = productService.selectLatestProductList();
+			List<ProductEntity> top12ProductList = productService.selectTop12ProductList();
+			List<ProductEntity> tenThousandWonProductList = productService.selectTenThousandWonProductList();
+			
+			model.addAttribute("latestProductList", latestProductList);
+			model.addAttribute("top12ProductList", top12ProductList);
+			model.addAttribute("tenThousandWonProductList", tenThousandWonProductList);
+			
+			//이벤트 상품 조회
+			List<Promotion> currentPromotion = promotionService.selectThreeCurrentPromotion();
+			model.addAttribute("currentPromotion", currentPromotion);
+			
+			Promotion currentPromotion1 = currentPromotion.get(0);
+			Promotion currentPromotion2 = currentPromotion.get(1);
+			Promotion currentPromotion3 = currentPromotion.get(2);
+			String promotionCode1 = currentPromotion1.getPromotionCode();
+			String promotionCode2 = currentPromotion2.getPromotionCode();
+			String promotionCode3 = currentPromotion3.getPromotionCode();
+			
+			List<ProductEntity> promotionProductList1 = promotionService.selectPromotionProductList1(promotionCode1);
+			List<ProductEntity> promotionProductList2 = promotionService.selectPromotionProductList2(promotionCode2);
+			List<ProductEntity> promotionProductList3 = promotionService.selectPromotionProductList3(promotionCode3);
+			model.addAttribute("promotionProductList1", promotionProductList1);
+			model.addAttribute("promotionProductList2", promotionProductList2);
+			model.addAttribute("promotionProductList3", promotionProductList3);
+			
+			log.debug("promotionProductList1 = {}", promotionProductList1);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "shop/shopMain";
 	}
 
 	@GetMapping("wishlist")
@@ -273,10 +404,9 @@ public class ShopController {
 			@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request) {
 
 		// 소분류 카테고리 이름 불러오기
-		//List<String> ChildCateNames = shopService.selectAllChildCateNames(parentCate);
-		List<Map<String, String>> childCategoryList = shopService
-				.selectAllChildCateNames(parentCate);
-		log.debug("ChildCateNames : {}", childCategoryList);
+		// List<String> ChildCateNames =
+		// shopService.selectAllChildCateNames(parentCate);
+		List<Map<String, String>> childCategoryList = shopService.selectAllChildCateNames(parentCate);
 		model.addAttribute("parentCategory", parentCate);
 		model.addAttribute("childCategoryList", childCategoryList);
 
@@ -295,8 +425,23 @@ public class ShopController {
 		// 3.pagebar
 		String url = request.getRequestURI();
 		String pagebar = shopUtils.getPagebar(cPage, limit, total, url);
-		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
+		
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 38) {
+				productName = productName.substring(0, 37);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+
+		model.addAttribute("tenArr", tenArr);
 
 		return "shop/shopCategory";
 	}
@@ -334,8 +479,23 @@ public class ShopController {
 		// 3.pagebar
 		String url = request.getRequestURI();
 		String pagebar = shopUtils.getPagebar(cPage, limit, total, url);
-		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
+		
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 38) {
+				productName = productName.substring(0, 37);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+
+		model.addAttribute("tenArr", tenArr);
 
 		return "shop/shopChildCate";
 	}
@@ -774,14 +934,13 @@ public class ShopController {
 
 		return list;
 	}
-	
+
 	@GetMapping("/childCategorySearch.do")
 	@ResponseBody
 	public Map<String, Object> childCategorySearch(@RequestParam(defaultValue = "1") int cPage,
 			@RequestParam(value = "parentCategoryCode") String parentCategoryCode,
 			@RequestParam(value = "childCategoryCode[]", required = false) List<String> childCategoryCode,
-			@RequestParam(value = "keyword", required = false) String keyword,
-			HttpServletRequest request,
+			@RequestParam(value = "keyword", required = false) String keyword, HttpServletRequest request,
 			HttpServletResponse response) {
 		Map<String, Object> resultMap = new HashMap<>();
 		log.debug("cPage = {}", cPage);
@@ -805,9 +964,9 @@ public class ShopController {
 		// 2. 전체 게시물 수 totalContent
 //		url = request.getRequestURI();
 		url = "/devrun/shop/childCategorySearch.do";
-		
-		url += "?parentCategoryCode="+parentCategoryCode;
-		
+
+		url += "?parentCategoryCode=" + parentCategoryCode;
+
 		if (keyword != null) {
 			url += "&keyword=" + keyword;
 		}

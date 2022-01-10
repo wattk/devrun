@@ -81,4 +81,10 @@ public interface ShopService {
 
 	int countShopSearch(String searchKeyword);
 
+	List<ProductEntity> shopSearchSort(int offset, int limit, Map<String, Object> param);
+
+	List<Review> topFourReview();
+
+	List<ProductEntity> topTenItems();
+
 }

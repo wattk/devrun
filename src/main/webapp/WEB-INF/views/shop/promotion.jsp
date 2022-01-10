@@ -9,19 +9,28 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="promotion" name="title"/>
 </jsp:include>
+
+<!-- 오늘 본 상품 -->
+<jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp">
+	<jsp:param value="" name=""/>
+</jsp:include>
+<!-- 오늘 본 상품 -->
+
+<!--쇼핑몰 헤더-->
+<jsp:include page="/WEB-INF/views/shop/shopHeader.jsp">
+	<jsp:param value="" name=""/>
+</jsp:include>
+<!--쇼핑몰 헤더부분-->
 <!-- 오늘 본 상품 -->
 <!-- shopHeader 관련 임포트 -->
-<jsp:include page="/WEB-INF/views/shop/shopHeader.jsp"/>
 <link href="${pageContext.request.contextPath}/resources/css/shop/shopMain.css" rel="stylesheet">
 
 <!-- shopSideBox 관련 임포트 -->
-<jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
 
 <style>
 .promotion-container{
 	padding-top: 200px;
-	margin : 0 10% 0 10%;
 	top : 300px;
 }
 #promotionTab a{
@@ -32,7 +41,7 @@
     font-weight: 700;
 }
 </style>
-<div class="promotion-container">
+<div class="promotion-container container">
 	<nav>
 	  <div class="nav nav-tabs" id="promotionTab" role="tablist">
 	    <a class="nav-item nav-link active w-50 text-center" id="currentPromotionTab" data-toggle="tab" href="#currentPromotion" role="tab" aria-controls="currentPromotionTab" aria-selected="true">진행중인 이벤트</a>
@@ -68,9 +77,9 @@
 	  	<ul class="list-group list-group-flush">
 	  	<c:forEach items="${endPromotionList}" var="promotion" varStatus="vs">
 		  <li class="list-group-item">
-		  <a href="${pageContext.request.contextPath}/shop/promotionDetail.do?promotionCode=${promotion.promotionCode}">
+		  <a href="${pageContext.request.contextPath}/shop/promotionDetail/${promotion.promotionCode}">
 			  	<div class="promotion-title">
-			  		${promotion.name}	
+			  		${promotion.name} 
 			  	</div>
 			  	<div class="promotion-banner">
 			  		<img src="${pageContext.request.contextPath}/resources/upload/promotion/${promotion.banner}" alt="" class="img-thumbnail" />
@@ -90,4 +99,5 @@
 	  </div>
 	</div>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

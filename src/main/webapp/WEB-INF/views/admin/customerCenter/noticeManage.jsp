@@ -20,7 +20,7 @@
 	margin-left: 5%;
 }
 </style>
-
+<div class="container">
 <div class="notice-container">
 	<h3 class="m-5">공지사항 관리</h3>
 	
@@ -56,8 +56,8 @@
 		<table class="admin-tbl table table-hover mx-auto mt-3 text-center checkbox-group">
 			<thead>
 				<tr>
-					<th scope="col">
-			      		<input type="checkbox" name="" id="checkAll" class="" />
+					<th scope="col" class="text-center">
+			      		<input type="checkbox" name="" id="checkAll"  />
 			      	</th>
 			      	<th scope="col">번호</th>
 			      	<th scope="col">제목</th>
@@ -70,7 +70,7 @@
 			<c:if test="${not empty noticeList}">
 				<c:forEach items="${noticeList}" var="notice" varStatus="vs">
 				    <tr>
-				      <td>
+				      <td class="text-center">
 				      	<input type="checkbox" name="" class="notice-is-checked" data-target="${notice.noticeNo}"/>
 				      </td>
 				      <td>${totalContent - (((param.cPage eq null ? 1 : param.cPage) - 1) * 10 + vs.index)}</td>
@@ -96,6 +96,7 @@
 		${pagebar}
 	</div>
 </form:form>
+</div>
 <script>
 //검색 버튼 클릭 이벤트
 $('.search-btn').click((e) => {

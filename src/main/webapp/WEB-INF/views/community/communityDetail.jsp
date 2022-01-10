@@ -38,7 +38,7 @@
 <!-- authentication에 저장된(member) principal 객체를 member 변수에 담아서 사용한다. -->
 <sec:authentication property="principal" var="member"/>
 
-    <div class="container-fluid">
+    <div class="container-fluid container">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="page-header">
@@ -128,10 +128,12 @@
 								data-community-no="${communityEntity.communityNo}">답변완료</button>
 						</c:if>
 					</sec:authorize>
-					<button style="margin-right: 10px;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" id="reportButton">신고하기</button>
-					<jsp:include page="/WEB-INF/views/community/common/reportModal.jsp">
-						<jsp:param value="" name="title"/>
-					</jsp:include>
+					<sec:authorize access="hasAnyRole('M1','M2')">
+						<button style="margin-right: 10px;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" id="reportButton">신고하기</button>
+						<jsp:include page="/WEB-INF/views/community/common/reportModal.jsp">
+							<jsp:param value="" name="title"/>
+						</jsp:include>
+					</sec:authorize>
 					
 					<button type="button" class="btn btn-primary" id="likeButton" 
 						data-community-no="${communityEntity.communityNo}"
@@ -524,7 +526,7 @@ $(document).on('click', '.communityDeleteBtn', function(e){
 
 /* ---------------------------- 커뮤니티 삭제하기 기능 종료 ---------------------------- */
 
-
+<sec:authorize access="hasAnyRole('M1','M2','AM')">
 /* ---------------------------- 커뮤니티 댓글 기능 시작 ---------------------------- */
 //댓글 유효성 검사
 function commentValidate(){
@@ -643,6 +645,8 @@ $('.btnCommentDelete').click((e) => {
 
 /* ---------------------------- 좋아요 기능 시작 ---------------------------- */
 
+</sec:authorize>
+// 좋아요 
 $(document).on('click', '#likeButton', function(e) {
 	console.log("좋아요 도착하나요?");
 	

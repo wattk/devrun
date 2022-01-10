@@ -668,7 +668,9 @@ public class CommunityController {
 		
 		// 좋아요 클릭 유무 확인
 		Map<String, Object> param = new HashMap<>();
-		param.put("memberNo", member.getMemberNo());
+		if(authentication != null) {
+			param.put("memberNo", member.getMemberNo());
+		}
 		param.put("communityNo", communityNo);
 		
 		// 좋아요 여부 확인(누름 = 1, 안누름 = 0)

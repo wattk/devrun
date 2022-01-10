@@ -15,7 +15,7 @@
 
 
 
-    <div class="container-fluid">
+    <div class="container-fluid container">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="page-header">
