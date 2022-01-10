@@ -10,6 +10,9 @@
 	<jsp:param value="회원 신고" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
+
+<div class="mx-5">
+
 <div class="report-container">
 	<h3 class="m-5">회원 신고</h3>
 </div>
@@ -115,7 +118,7 @@
 		</table>
 
 	</div>
-	
+</div>
 	<%-- 처리상태 변경을 위한 폼 태그 --%>
 	<%-- 처리상태 처리중, 처리보류, 처리완료(PR/DR/CF)와 신고번호, 피신고자 번호(경고부여를 위함) 보낸다.--%>
 	<form:form

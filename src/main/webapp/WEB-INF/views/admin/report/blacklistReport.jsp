@@ -61,6 +61,8 @@
 </div>
 </form:form>
 
+<div class="mx-5">
+
 <div class="report-container">
 	<h3 class="m-5">블랙리스트 관리</h3>
 </div>
@@ -145,14 +147,16 @@
 		</table>
 
 	</div>
+</div>
 
 <script>
-// 해제버튼 클릭 시 해제 모달의 값 넘기기
+
+//해제버튼 클릭 시 해제 모달의 값 넘기기
 $(document).on('click', '.release-btn', function(e) {
 	const $target = $(e.target);
 	// 회원번호
-	const memberNo = $(e.target).data('memberNo');
-	const blacklistNo = $(e.target).data('blacklistNo');
+	const memberNo = $target.data('memberNo');
+	const blacklistNo = $target.data('blacklistNo');
 	
 	// 회원번호 관리자를 위한 더블체크 명시하는 부분
 	$("#memberNo").text(memberNo);
@@ -163,7 +167,7 @@ $(document).on('click', '.release-btn', function(e) {
 	$frm.find("[name=blacklistNo]").val(blacklistNo);
 });
 
-// 편집 아이콘 클릭 시 발생 - 비고 수정
+//편집 아이콘 클릭 시 발생 - 비고 수정
 $(document).on('click', '.edit-icon', function(e) {
 	const $target = $(e.target);
 	const blacklistNo = $target.parent().siblings('th').text();
