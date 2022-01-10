@@ -297,9 +297,27 @@ public class ShopController {
 	@GetMapping("/shopMain.do")
 	public String shopMain(Model model) {
 
+		// 베스트리뷰
 		List<Review> reviewList = shopService.topFourReview();
-		log.debug("reviewList : {}", reviewList);
 		model.addAttribute("reviewList", reviewList);
+
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 7) {
+				productName =  productName.substring(0, 6);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+		log.debug("tenArr : {}", tenArr);
+
+		model.addAttribute("tenArr", tenArr);
+
 		return "shop/shopMain";
 	}
 

@@ -97,4 +97,6 @@ public interface ShopDao {
 
 	List<Review> topFourReview();
 
+	List<ProductEntity> topTenItems();
+
 }

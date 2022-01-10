@@ -237,4 +237,9 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectList("shop.topFourReview");
 	}
 
+	@Override
+	public List<ProductEntity> topTenItems() {
+		return session.selectList("shop.topTenItems");
+	}
+
 }
