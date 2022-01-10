@@ -100,7 +100,7 @@
   
                    <!--반응형 사이드바 끝-->
                </div>
-               <div class = "col-md-3" id="shopTop-10Div">
+               <div class = "col-md-4" id="shopTop-10Div">
                    <div id="content">
                        <dl id="rank-list">
                            <dt>실시간 급상승 검색어</dt>
