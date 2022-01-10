@@ -153,9 +153,28 @@ public class ProductDaoImpl implements ProductDao {
 	public List<Integer> selectCartValidList(Map<String, Object> cartParam) {
 		return session.selectList("product.selectCartValidList", cartParam);
 	}
-
-
-
+	
 	/* 혜진 끝 */
 
+	/**
+	 * 지원 메인페이지 카테고리별 상품 조회
+	 */
+	@Override
+	public List<ProductEntity> selectLatestProductList() {
+		return session.selectList("product.selectLatestProductList");
+	}
+
+	@Override
+	public List<ProductEntity> selectTop12ProductList() {
+		return session.selectList("product.selectTop12ProductList");
+	}
+
+	@Override
+	public List<ProductEntity> selectTenThousandWonProductList() {
+		return session.selectList("product.selectTenThousandWonProductList");
+	}
+	/**
+	 * 지원 끝
+	 */
+	
 }
