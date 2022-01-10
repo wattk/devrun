@@ -37,9 +37,11 @@
 </style>
 
 <!-- 글쓰기 버튼 -->
-	<div style="float: right">
-	<button class="btn btn-primary" data-toggle="modal" data-target="#bs-example-modal-lg">글쓰기</button>
-	</div>
+	<sec:authorize access="hasAnyRole('M1','M2','AM')">
+		<div style="float: right">
+		<button class="btn btn-primary" data-toggle="modal" data-target="#bs-example-modal-lg">글쓰기</button>
+		</div>
+	</sec:authorize>
 	
 	<!-- 게시판 글쓰기 모달 시작 -->
 	<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -75,14 +77,18 @@
 	      <hr />
 			<div class="input-group flex-nowrap">
 			  <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요." aria-label="Username" aria-describedby="addon-wrapping">
-			  <input type="hidden" name="memberNo" id="member_no" value='<sec:authentication property="principal.memberNo"/>' />
+			  <sec:authorize access="hasAnyRole('M1','M2','AM')">
+			  	<input type="hidden" name="memberNo" id="member_no" value='<sec:authentication property="principal.memberNo"/>' />
+			  </sec:authorize>
 			</div>
 		  <br />	
 		  <p><strong>태그</strong></p>
 		  <hr />
 		  	<div class="input-group flex-nowrap">
 			  <span class="input-group-text" id="addon-wrapping">#</span>
-			  <input type="text" class="form-control" placeholder="태그를 설정해주세요." aria-label="Username" aria-describedby="addon-wrapping">
+			  <sec:authorize access="hasAnyRole('M2','AM')">
+			  	<input type="text" class="form-control" placeholder="태그를 설정해주세요." aria-label="Username" aria-describedby="addon-wrapping">
+			  </sec:authorize>
 			</div>
 		  <br />	
 		  <p><strong>내용</strong></p>

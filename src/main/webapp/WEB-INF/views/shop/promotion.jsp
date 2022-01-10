@@ -31,7 +31,6 @@
 <style>
 .promotion-container{
 	padding-top: 200px;
-	margin : 0 10% 0 10%;
 	top : 300px;
 }
 #promotionTab a{
@@ -42,7 +41,7 @@
     font-weight: 700;
 }
 </style>
-<div class="promotion-container">
+<div class="promotion-container container">
 	<nav>
 	  <div class="nav nav-tabs" id="promotionTab" role="tablist">
 	    <a class="nav-item nav-link active w-50 text-center" id="currentPromotionTab" data-toggle="tab" href="#currentPromotion" role="tab" aria-controls="currentPromotionTab" aria-selected="true">진행중인 이벤트</a>
@@ -80,7 +79,7 @@
 		  <li class="list-group-item">
 		  <a href="${pageContext.request.contextPath}/shop/promotionDetail/${promotion.promotionCode}">
 			  	<div class="promotion-title">
-			  		${promotion.name}	
+			  		${promotion.name} 
 			  	</div>
 			  	<div class="promotion-banner">
 			  		<img src="${pageContext.request.contextPath}/resources/upload/promotion/${promotion.banner}" alt="" class="img-thumbnail" />

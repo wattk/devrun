@@ -1,3 +1,4 @@
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -18,11 +19,15 @@
 <jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
 
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
+<%
+	Date today = new Date();
+	pageContext.setAttribute("today", today);
+%>
 
-
-<div class="promotion-container">
+<div class="promotion-container container">
   	<div class="promotion-title m-4">
-  		${promotion.name}	
+		<c:if test="${promotion.endDate >= today}"><span class="title-content">${promotion.name}</span></c:if>
+		<c:if test="${promotion.endDate < today}"><del class="title-content">${promotion.name}</del><span class="ml-2"> 종료된 이벤트입니다.</span></c:if>
   	</div>
 	<div class="promotion-banner">
   		<img src="${pageContext.request.contextPath}/resources/upload/promotion/${promotion.banner}" alt="" class="img-thumbnail" />

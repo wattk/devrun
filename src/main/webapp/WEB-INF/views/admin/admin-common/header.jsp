@@ -60,6 +60,8 @@
 	alert("${msg}");
 </script>
 </c:if>
+
+
 </head>
 
 <body id="pageTop">
