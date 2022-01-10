@@ -29,30 +29,31 @@
     </div>
   </div>
 </div>
+<div class="container">
 <div class="promotion-container">
 	<h3 class="m-5">이벤트 관리</h3>
 </div>
 <form:form name="promotionDeleteFrm" action="${pageContext.request.contextPath}/admin/promotionDelete.do" method="post">
 	<div class="promotion-list">
-		<span class="m-5 pl-4">[총 ${fn:length(promotionList)}개]</span>
+		<span class="">[총 ${fn:length(promotionList)}개]</span>
 		<br />
-		<strong class="ml-5 mr-2 pl-4">선택한 항목을 </strong>
+		<strong class="mr-2">선택한 항목을 </strong>
 		<button type="button" id="promotionListDeleteBtn" class="btn btn-secondary" data-dismiss="modal">삭제</button>
 		<table class="admin-tbl table table-hover mx-auto mt-3 text-center checkbox-group">
 			<thead>
 			    <tr>
-			      <th scope="col">
+			      <th scope="col" style="width : 1vw;">
 			      	<input type="checkbox" name="" id="checkAll" class="" />
 			      </th>
-			      <th scope="col">번호</th>
-			      <th scope="col">이벤트 등록일</th>
-			      <th scope="col">이벤트 이름</th>
-			      <th scope="col">이벤트 아이템</th>
-			      <th scope="col">이벤트 상태</th>
-			      <th scope="col">이벤트 시작일</th>
-			      <th scope="col">이벤트 종료일</th>
-			      <th scope="col">글쓴이</th>
-			      <th scope="col">조회수</th>
+			      <th scope="col" style="width : 3vw;">번호</th>
+			      <th scope="col" style="width : 7vw;">이벤트 등록일</th>
+			      <th scope="col" style="width : 10vw;">이벤트 이름</th>
+			      <th scope="col" style="width : 7vw;">이벤트 아이템</th>
+			      <th scope="col" style="width : 6vw;">이벤트 상태</th>
+			      <th scope="col" style="width : 7vw;">이벤트 시작일</th>
+			      <th scope="col" style="width : 7vw;">이벤트 종료일</th>
+			      <th scope="col" style="width : 6vw;">글쓴이</th>
+			      <th scope="col" style="width : 4vw;">조회수</th>
 			    </tr>
 			</thead>
 			<tbody>
@@ -63,12 +64,12 @@
 				      <td>
 				      	<input type="checkbox" name="" class="promotion-is-checked" data-target="${promotion.promotionCode}"/>
 				      </td>
-				      <td>${vs.count}</td>
+				      <td class="text-center">${vs.count}</td>
 				      <td><fmt:formatDate value="${promotion.enrollDate}" pattern="yyyy-MM-dd"/></td>
-				      <td>
+				      <td style="word-break : keep-all;">
 				      	<a href="${pageContext.request.contextPath}/admin/promotionDetail.do?promotionCode=${promotion.promotionCode}">${promotion.name}</a>
 				      </td>
-				      <td>
+				      <td class="text-center">
 				      	<button type="button" class="product-modal-btn btn btn-light" data-toggle="modal" data-target="#promotionModal" data-code="${promotion.promotionCode}">확인</button>
 				      </td>
 				      <td>${promotion.regular?"정기":"비정기"}</td>
@@ -91,6 +92,7 @@
 	</div>
 	</div>
 </form:form>
+</div>
 <script>
 $(".event-write-btn").click((e)=>{
 	location.href = `${pageContext.request.contextPath}/admin/promotionEnroll.do`;

@@ -10,20 +10,6 @@
 	<jsp:param value="통합검색" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
-<style>
-.shop-item-img{
-	width:200px;
-	height:200px;
-    max-width: 100%;
-
-}
-.shop-item-img img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
-
-}
-</style>
 <div class="mx-auto text-center p-4" id="resultText">
 	<p class="m-0">검색어 <strong>"${map.searchKeyword}"</strong>에 대한 총 <strong><fmt:formatNumber pattern="#,###,###">${map.totalCnt}</fmt:formatNumber> 건</strong>의 결과를 찾았습니다.</p>
 </div>
