@@ -350,9 +350,41 @@ public class ShopController {
 			tenArr.add(productName);
 			tenArr.add(p.getProductCode());
 		}
-
 		model.addAttribute("tenArr", tenArr);
-
+		
+		try {
+			//카테고리별 상품 12개씩 조회(신상품, top12, 만원의 행복)
+			List<ProductEntity> latestProductList = productService.selectLatestProductList();
+			List<ProductEntity> top12ProductList = productService.selectTop12ProductList();
+			List<ProductEntity> tenThousandWonProductList = productService.selectTenThousandWonProductList();
+			
+			model.addAttribute("latestProductList", latestProductList);
+			model.addAttribute("top12ProductList", top12ProductList);
+			model.addAttribute("tenThousandWonProductList", tenThousandWonProductList);
+			
+			//이벤트 상품 조회
+			List<Promotion> currentPromotion = promotionService.selectThreeCurrentPromotion();
+			model.addAttribute("currentPromotion", currentPromotion);
+			
+			Promotion currentPromotion1 = currentPromotion.get(0);
+			Promotion currentPromotion2 = currentPromotion.get(1);
+			Promotion currentPromotion3 = currentPromotion.get(2);
+			String promotionCode1 = currentPromotion1.getPromotionCode();
+			String promotionCode2 = currentPromotion2.getPromotionCode();
+			String promotionCode3 = currentPromotion3.getPromotionCode();
+			
+			List<ProductEntity> promotionProductList1 = promotionService.selectPromotionProductList1(promotionCode1);
+			List<ProductEntity> promotionProductList2 = promotionService.selectPromotionProductList2(promotionCode2);
+			List<ProductEntity> promotionProductList3 = promotionService.selectPromotionProductList3(promotionCode3);
+			model.addAttribute("promotionProductList1", promotionProductList1);
+			model.addAttribute("promotionProductList2", promotionProductList2);
+			model.addAttribute("promotionProductList3", promotionProductList3);
+			
+			log.debug("promotionProductList1 = {}", promotionProductList1);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "shop/shopMain";
 	}
 

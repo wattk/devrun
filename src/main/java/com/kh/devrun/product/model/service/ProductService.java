@@ -68,9 +68,15 @@ public interface ProductService {
 	Map<String, Object> selectProductDetailList(List<String> productArr);
 	/* 혜진 끝 */
 
-	
+	/**
+	 * 지원 메인페이지 카테고리별 상품 조회
+	 */
+	List<ProductEntity> selectLatestProductList();
 
+	List<ProductEntity> selectTop12ProductList();
 
-
-
+	List<ProductEntity> selectTenThousandWonProductList();
+	/**
+	 * 지원 끝
+	 */
 }

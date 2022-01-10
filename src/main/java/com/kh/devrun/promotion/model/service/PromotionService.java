@@ -49,6 +49,20 @@ public interface PromotionService {
 
 	int selectProductTotalCount(Map<String, Object> param);
 
+	/**
+	 * 지원 service 시작
+	 */
 	Promotion selectOneLatestPromotionBanner();
+
+	List<Promotion> selectThreeCurrentPromotion();
+
+	List<ProductEntity> selectPromotionProductList1(String promotionCode1);
+
+	List<ProductEntity> selectPromotionProductList2(String promotionCode2);
+
+	List<ProductEntity> selectPromotionProductList3(String promotionCode3);
+	/**
+	 * 지원 service 끝
+	 */
 
 }
