@@ -40,12 +40,12 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public List<Community> selectColumnList() {
-		return communityDao.selectColumnList(); // 전달할 값이 없으므로 공란
+	public List<CommunityEntity> selectColumnList(int offset, int limit) {
+		return communityDao.selectColumnList(offset, limit); // 전달할 값이 없으므로 공란
 	}
 
 	@Override
-	public List<Community> columnBestList() {
+	public List<CommunityEntity> columnBestList() {
 		return communityDao.columnBestList();
 	}
 
@@ -281,9 +281,19 @@ public class CommunityServiceImpl implements CommunityService {
 	public int selectOneQnACount() {
 		return communityDao.selectOneQnACount();
 	}
+
+
+	/**
+	 * 혜진 칼럼 시작
+	 */
+	@Override
+	public int selectColumnCount() {
+		return communityDao.selectColumnCount();
+	}
 	
-
-
+	/**
+	 * 혜진 칼럼 끝
+	 */
 
 	
 }

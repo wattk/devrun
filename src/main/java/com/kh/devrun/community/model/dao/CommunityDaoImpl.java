@@ -38,13 +38,15 @@ public class CommunityDaoImpl implements CommunityDao {
 	}
 
 	@Override
-	public List<Community> selectColumnList() {
-		return session.selectList("community.selectColumnList");
+	public List<CommunityEntity> selectColumnList(int offset, int limit) {
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectColumnList", null, rowBounds);
 	}
 
 	@Override
-	public List<Community> columnBestList() {
-		return session.selectList("community.columnBestList");
+	public List<CommunityEntity> columnBestList() {
+		RowBounds rowBounds = new RowBounds(0, 3);
+		return session.selectList("community.columnBestList", null, rowBounds);
 	}
 
 	@Override
@@ -277,5 +279,16 @@ public class CommunityDaoImpl implements CommunityDao {
 	public int selectOneQnACount() {
 		return session.selectOne("community.selectOneQnACount");
 	}
+
+	/**
+	 * 혜진 칼럼 시작
+	 */
+	@Override
+	public int selectColumnCount() {
+		return session.selectOne("community.selectColumnCount");
+	}
 	
+	/**
+	 * 혜진 칼럼 끝
+	 */
 }
