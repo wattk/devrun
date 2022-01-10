@@ -22,26 +22,27 @@
 }
 
 </style>
-
+<div class="container">
 <div class="notice-container">
 	<h3 class="my-5 ml-5">공지사항 등록</h3>
 </div>
 <form:form name="noticeEnrollFrm" action="${pageContext.request.contextPath}/admin/customerCenter/noticeEnroll.do" method="post">
 	<div class="">
 		<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo"/>'/>
-		<div class="col-md-10 mx-auto">
+		<div class="col-md-12 mx-auto">
             <input type="text" name="title" id="" class="form-control" placeholder="제목 입력" required/>
         </div>
-		<div class="col-md-10 mx-auto">
+		<div class="col-md-12 mx-auto">
             <label for="content" class="col-form-label"></label>
             <textarea id="summernote" name="content" id="content" required></textarea>
         </div>
-        <div id="" class="d-flex justify-content-center col-10 mx-auto mt-5 mb-5">
+        <div id="" class="d-flex justify-content-center col-12 mx-auto mt-5 mb-5">
         	<button type="submit" id="noticeEnrollBtn" class="notice-btn btn btn-primary mx-2">등록</button>
 	        <button type="button" id="" class="notice-btn btn btn-secondary mx-2 w-10" onclick="window.history.back();">취소</button>
         </div>
 	</div>
 </form:form>
+</div>
 <script>
 <!-- 써머노트 웹 에디터 로딩 -->
 $(document).ready(function() {

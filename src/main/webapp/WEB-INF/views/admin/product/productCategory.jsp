@@ -168,7 +168,7 @@
 
 <!-----------------------------------------  -->
 
-<div id="productCategoryContainer" class="main-container">
+<div id="productCategoryContainer" class="main-container container">
 	<div class="main-top">
 		<div class="search-title">
 			<i class="fas fa-star-of-life"></i><span class="fw-500 fs-25">카테고리</span>
@@ -227,7 +227,7 @@
 			
 		</div>
 	</div>
-	<div class="main-footer">
+	<div class="main-footer" style="margin-bottom : 10vw;">
 		<div class="category-title ">
 			<form>			
 				<button type="button"id="updateCategoryBtn" class="btn-blue w-70">수정</button>	

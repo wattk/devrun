@@ -34,7 +34,7 @@
 	margin-left: 15%;
 }
 </style>
-
+<div class="container">
 <div class="faq-container">
 	<h3 class="m-5">자주묻는질문 관리</h3>
 	
@@ -74,7 +74,7 @@
 
 
 <form:form name="faqDeleteFrm" action="${pageContext.request.contextPath}/admin/customerCenter/faqDelete.do" method="post">
-	<div class="faq-list">
+	<div class="faq-list col-md-12">
 		<span class="m-5 pl-4">[총 ${totalContent}개]</span>
 		<br />
 		<strong class="ml-5 mr-2 pl-4">선택한 항목을 </strong>
@@ -82,7 +82,7 @@
 		<table class="admin-tbl table table-hover mx-auto mt-3 text-center checkbox-group">
 			<thead>
 				<tr>
-					<th scope="col">
+					<th scope="col" class="text-center">
 			      		<input type="checkbox" name="" id="checkAll" class="" />
 			      	</th>
 			      	<th scope="col">번호</th>
@@ -96,7 +96,7 @@
 			<c:if test="${not empty faqList}">
 				<c:forEach items="${faqList}" var="faq" varStatus="vs">
 				    <tr>
-				      <td>
+				      <td class="text-center">
 				      	<input type="checkbox" name="" class="faq-is-checked" data-target="${faq.noticeNo}"/>
 				      </td>
 				      <td>${totalContent - (((param.cPage eq null ? 1 : param.cPage) - 1) * 10 + vs.index)}</td>
@@ -123,6 +123,7 @@
 		${pagebar}
 	</div>
 </form:form>
+</div>
 <script>
 
 // 자주묻는질문 등록 클릭 이벤트
