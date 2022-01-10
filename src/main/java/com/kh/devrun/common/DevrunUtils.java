@@ -173,8 +173,7 @@ public class DevrunUtils {
 						+ "<span class=\"sr-only\">(current)</span></a></li>\n");
 			} else {
 				// 현재페이지가 아닌 경우 링크를 제공.
-				pagebar.append("<li class=\"page-item\"><a class=\"page-link\" href=\"#\" data-c-page=\""+pageNo+"\"" + pageNo
-						+ ")\">" + pageNo + "</a></li>\n");
+				pagebar.append("<li class=\"page-item\"><a class=\"page-link\" href=\"#\" data-c-page=\""+pageNo+"\">" + pageNo + "</a></li>\n");
 			}
 
 			pageNo++;

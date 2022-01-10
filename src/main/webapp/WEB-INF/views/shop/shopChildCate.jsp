@@ -54,7 +54,7 @@
 	<div class="item-sort-container d-flex 	justify-content-between">
 		<div class="p-4">총 ${total}개</div>
 		<div class="p-4" id="">
-			<span class="pr-2 pl-2 shop-sort" data-target="new" data-valid="0">신상품순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="new" data-valid="1">신상품순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="recommend" data-valid="0">추천순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="row" data-valid="0">낮은 가격순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="high" data-valid="0">높은 가격순</span>
@@ -62,22 +62,6 @@
 	</div>
 	<div id = "productSortContainer" class="row">
 		<!-- 아이템 나열 시작 -->
-		<c:if test = "${itemList != null}">
-			<c:forEach items="${itemList}" var="l">
-		        <div class="card-box-d col-md-3 p-5">
-		          <div class="card-img-d shop-item-img position-relative">
-		          	<a href="${pageContext.request.contextPath}/shop/itemDetail/${l.productCode}">
-		            <img src="${pageContext.request.contextPath }/resources/upload/product/${l.thumbnail}" alt="" class="img-d img-fluid">
-		            </a>
-		            <i data-wishyn="N" data-product-code="${l.productCode}" class="shop-like-icon far fa-heart position-absolute wishBtn"></i>
-		          </div>
-		          <div>
-		          	<p class="m-0 ml-2">${l.name}</p>
-		          	<strong class="ml-2"><fmt:formatNumber value="${l.price}" pattern="₩#,###,###"/></strong>
-		          </div>
-		        </div>
-			</c:forEach>
-		</c:if>
       <!-- 아이템 나열 끝 -->
     </div>
     <nav aria-label="..." class="mx-auto text-center">
@@ -170,6 +154,33 @@ $(document).on('click', '.wishBtn', function(e) {
 
 
 <script>
+
+window.onload = basic;
+
+function basic(){
+	let cPage = 1;
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/shop/childCatePageSort",
+		method : "GET",
+		data : {
+				childCateCode : "${childCategoryCode}",
+				keyword : 'new',
+				total : ${total},
+				cPage : cPage
+				},
+		success(data){
+				console.log(data);
+				$("#productSortContainer").html(data["productStr"]);
+				$(".pagebar").detach();
+				$(".banner").after(data["pagebar"]);
+			
+		},
+		error : console.log
+	});
+	
+}
+
 
 //이벤트 상품 소분류 코드별 정렬
 $(document).on("click", ".shop-sort, .page-link", (e)=>{
