@@ -181,8 +181,14 @@ public class ShopController {
 	@ResponseBody
 	@GetMapping("/childCatePageSort")
 	public Map<String, Object> childCatePageSort(@RequestParam String childCateCode, @RequestParam String keyword,
-			HttpServletRequest request, @RequestParam int total, @RequestParam(defaultValue = "1") int cPage) {
+			HttpServletRequest request, @RequestParam int total, @RequestParam(defaultValue = "1") int cPage,
+			Authentication authentication) {
 		log.debug("keyword : {}", keyword);
+
+		Member member = null;
+		if (authentication != null) {
+			member = (Member) authentication.getPrincipal();
+		}
 
 		int limit = 12;
 		int offset = (cPage - 1) * limit;
@@ -197,7 +203,7 @@ public class ShopController {
 		List<ProductEntity> sortItemList = shopService.selectItemsByChildCateBySort(offset, limit, param);
 
 		String url = request.getContextPath();
-		String productStr = DevrunUtils.getProductList(sortItemList, url);
+		String productStr = shopUtils.getProductList(sortItemList, member, url);
 
 		resultMap.put("productStr", productStr);
 

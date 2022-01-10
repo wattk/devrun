@@ -152,9 +152,9 @@ public class ShopUtils {
 			
 			
 			if(likeYesNo == 1 ) {
-				sb.append("<i data-wishyn=\"Y\" data-product-code=\"${l.productCode}\" class=\"shop-like-icon fas fa-heart position-absolute wishBtn\"></i>\r\n");
+				sb.append("<i data-wishyn=\"Y\" data-product-code=\""+productCode+"\" class=\"shop-like-icon fas fa-heart position-absolute wishBtn\"></i>\r\n");
 			}else {
-				sb.append("<i data-wishyn=\"N\" data-product-code=\"${l.productCode}\" class=\"shop-like-icon far fa-heart position-absolute wishBtn\"></i>\r\n");
+				sb.append("<i data-wishyn=\"N\" data-product-code=\""+productCode+"\" class=\"shop-like-icon far fa-heart position-absolute wishBtn\"></i>\r\n");
 			}
 
 			sb.append("</div>\r\n"
