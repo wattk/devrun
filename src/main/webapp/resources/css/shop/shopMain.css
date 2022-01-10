@@ -1,5 +1,20 @@
 @charset "UTF-8";
 
+
+@font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/**인기키워드 사진 고정*/
+.keyword-pic{
+	width: 324px;
+	height: 148px;
+}
+
 /*상품사진들사이즈고정*/
 .category-container{
 	border :0px;
@@ -342,14 +357,16 @@
        position: relative;
    }
    .keywordSpan {
-       position: absolute;
-       top: 57px;
-       left: 89px;
-       z-index: 1;
-       color: white;
-       font-size: 23px;
-       width: 142px;
-       font-weight: bold;
+    font-family: 'NanumSquareRound';
+    position: absolute;
+    top: 56px;
+    left: 87px;
+    z-index: 1;
+    color: #c07777;
+    font-size: 30px;
+    width: 167px;
+    font-weight: bold;
+
    }
    /*인기 키워드 끝*/
    
@@ -501,3 +518,5 @@
    .hamburger:hover{
    cursor: pointer;
    }
+   
+   
