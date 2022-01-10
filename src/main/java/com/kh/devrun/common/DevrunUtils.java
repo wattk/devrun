@@ -279,7 +279,7 @@ public class DevrunUtils {
 					+ "<div class=\"card-img-d shop-item-img position-relative\">\r\n"+ "<a href=\"" + url + "/shop/itemDetail/" + product.getProductCode() + "\">\r\n"  + "<img src=\"" + url
 					+ "/resources/upload/product/" + product.getThumbnail()
 					+ "\" alt=\"\" class=\"img-d img-fluid\">\r\n"+ "</a>"
-					+ "<i data-wishyn=\"N\" data-product-code=\"${l.productCode}\" class=\"shop-like-icon far fa-heart position-absolute wishBtn\"></i>\r\n" + "</div>\r\n"
+					+ "<i class=\"shop-like-icon far fa-heart position-absolute\"></i>\r\n" + "</div>\r\n"
 					+ "<div>\r\n"
 					+ "<p class=\"m-0 ml-2\">" + product.getName() + "</p>\r\n" + "<strong class=\"ml-2\">&#8361;"
 					+ fmt.format(product.getPrice()) + "</strong>\r\n" + "</div>\r\n" + "</div>");

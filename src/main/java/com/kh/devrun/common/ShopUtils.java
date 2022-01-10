@@ -1,5 +1,6 @@
 package com.kh.devrun.common;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.kh.devrun.member.model.vo.Member;
+import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.shop.model.service.ShopService;
 import com.kh.devrun.shop.model.vo.Review;
 
@@ -117,6 +119,57 @@ public class ShopUtils {
 	
 		return reviewSb.toString();
 	}
+	
+	
+	
+	
+	public String getProductList(List<ProductEntity> productList, Member member, String url) {
+		DecimalFormat fmt = new DecimalFormat("###,###");
+		StringBuilder sb = new StringBuilder();
+
+		int memberNo = -1;
+		if (member != null) {
+			memberNo = member.getMemberNo();			
+		}
+		
+		
+		for (ProductEntity product : productList) {
+			
+			String productCode = product.getProductCode();
+			
+			Map<String, Object>param = new HashMap<>();
+			param.put("productCode", productCode);
+			param.put("memberNo", memberNo);
+			
+			int likeYesNo = shopService.didIHitWishlist(param);
+			log.debug("이게 1이면 좋아요를 눌렀던 것 : {}", likeYesNo);
+			
+			
+			sb.append("<div class=\"card-box-d col-md-3 p-5\">\n"
+					+ "<div class=\"card-img-d shop-item-img position-relative\">\r\n"+ "<a href=\"" + url + "/shop/itemDetail/" + product.getProductCode() + "\">\r\n"  + "<img src=\"" + url
+					+ "/resources/upload/product/" + product.getThumbnail()
+					+ "\" alt=\"\" class=\"img-d img-fluid\">\r\n"+ "</a>");
+			
+			
+			if(likeYesNo == 1 ) {
+				sb.append("<i data-wishyn=\"Y\" data-product-code=\"${l.productCode}\" class=\"shop-like-icon fas fa-heart position-absolute wishBtn\"></i>\r\n");
+			}else {
+				sb.append("<i data-wishyn=\"N\" data-product-code=\"${l.productCode}\" class=\"shop-like-icon far fa-heart position-absolute wishBtn\"></i>\r\n");
+			}
+
+			sb.append("</div>\r\n"
+					+ "<div>\r\n"
+					+ "<p class=\"m-0 ml-2\">" + product.getName() + "</p>\r\n" + "<strong class=\"ml-2\">&#8361;"
+					+ fmt.format(product.getPrice()) + "</strong>\r\n" + "</div>\r\n" + "</div>");
+		}
+
+		return sb.toString();
+
+	}
+	
+	
+	
+	
 	
 	//쇼핑몰 페이징바 처리
 	public String getPagebar(int cPage, int numPerPage, int totalContents, String url) {

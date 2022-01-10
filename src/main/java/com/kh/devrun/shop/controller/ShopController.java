@@ -85,7 +85,13 @@ public class ShopController {
 	@ResponseBody
 	@GetMapping("/shopSearchSort")
 	public Map<String, Object> shopSearchSort(@RequestParam String searchKeyword, @RequestParam String keyword,
-			HttpServletRequest request, @RequestParam int total, @RequestParam(defaultValue = "1") int cPage) {
+			HttpServletRequest request, @RequestParam int total, @RequestParam(defaultValue = "1") int cPage,
+			Authentication authentication) {
+		Member member = null;
+		if (authentication != null) {
+			member = (Member) authentication.getPrincipal();
+		}
+
 		int limit = 12;
 		int offset = (cPage - 1) * limit;
 
@@ -101,7 +107,7 @@ public class ShopController {
 
 		String url = request.getContextPath();
 
-		String productStr = DevrunUtils.getProductList(searchList, url);
+		String productStr = shopUtils.getProductList(searchList, member, url);
 		resultMap.put("productStr", productStr);
 
 		// 2. 전체 게시물 수 totalContent
