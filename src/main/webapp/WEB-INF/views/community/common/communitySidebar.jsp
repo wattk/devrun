@@ -7,7 +7,14 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <fmt:requestEncoding value="utf-8"/>
   <link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
-    
+<style>
+footer{
+	padding-left : 195px;
+}
+.section-footer{
+	padding-left : 210px;
+}
+</style>
   <!-- 사이드바 -->
   <div id="page-wrapper">
     <div id="sidebar-wrapper">
