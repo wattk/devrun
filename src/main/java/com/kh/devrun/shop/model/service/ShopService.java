@@ -85,4 +85,6 @@ public interface ShopService {
 
 	List<Review> topFourReview();
 
+	List<ProductEntity> topTenItems();
+
 }

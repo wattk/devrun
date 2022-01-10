@@ -302,4 +302,9 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.topFourReview();
 	}
 
+	@Override
+	public List<ProductEntity> topTenItems() {
+		return shopDao.topTenItems();
+	}
+
 }
