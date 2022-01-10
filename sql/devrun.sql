@@ -1694,3 +1694,13 @@ end;
 --                        on md.detail_no = pd.detail_no
 --                            left join product p
 --                                on pd.product_code = p.product_code;
+
+--다현 view
+    create view view_reviewInfo
+    as select 
+    r.*,
+    ra.review_attach_no,
+    ra.original_filename,
+    ra.renamed_filename
+    from review r left join review_attachment ra
+    on r.review_no = ra.review_no;
