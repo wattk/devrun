@@ -949,9 +949,7 @@ function todayItemStorage(){
         	}
         });
     }
-  	
-  	
-  	console.log(`check 값은? : \${check}`);
+
   	if(check == 0){
 	    todayViewitems.push(aViewdItem);  		
   	}
