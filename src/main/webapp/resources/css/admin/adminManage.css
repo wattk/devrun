@@ -1,7 +1,4 @@
 @charset "UTF-8";
-.admin-tbl{
-	width : 90%;
-}
 .admin-tbl th, .admin-tbl td{
 	padding: 0.5rem;
 	border: 1px solid #e3e6f0;
@@ -89,9 +86,6 @@ th, td { background: #fff; padding: 8px 16px; }
 }
 
 /*이벤트 관리*/
-.event-write-btn{
-	margin-right : 5%;
-}
 
 .promotion-btn{
 	width : 10%;

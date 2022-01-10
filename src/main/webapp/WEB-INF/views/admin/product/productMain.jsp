@@ -7,7 +7,18 @@
 <jsp:include page="/WEB-INF/views/admin/admin-common/header.jsp">
 	<jsp:param value="상품관리" name="title"/>
 </jsp:include>
-
+<style>
+.product-img-box{
+	width : 6.5rem;
+	height : 6.5rem;
+}
+.product-img{
+	width : 100%;
+	height : 100%;
+	object-fit : cover;
+	
+}
+</style>
 <!-- 모달 -->
 <div class="modal fade" id="promotionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -30,7 +41,7 @@
   </div>
 </div>
 
-<div class="product-container">
+<div class="product-container container">
 	<h2>상품 관리</h2>	
 	<!---------------------- 검색 바 시작 ----------------------------------->
 	<div class="report-search-container mt-3">
@@ -138,23 +149,27 @@
 		<table id="productList">
 			<thead>
 				<tr>
-					<th><input type="checkbox" id="checkAll"/></th>
-					<th>이미지</th>
-					<th>상품코드</th>
-					<th>상품명</th>
-					<th>옵션</th>
-					<th>상태</th>
-					<th>등록일</th>
-					<th>조회수</th>
+					<th style="width : 1vw;"><input type="checkbox" id="checkAll"/></th>
+					<th style="width : 7vw;">이미지</th>
+					<th style="width : 10vw;">상품코드</th>
+					<th style="width : 15vw;">상품명</th>
+					<th style="width : 3vw;">옵션</th>
+					<th style="width : 3vw;">상태</th>
+					<th style="width : 7vw;">등록일</th>
+					<th style="width : 4vw;">조회수</th>
 				</tr>
 			</thead>
 			<tbody id="tbody">
 				<c:forEach items="${list}" var="pro" >
 				<tr>				
 					<td><input type="checkbox"id="select" class="box"/> </td>
-					<td><img id="thumbnail" src="${pageContext.request.contextPath}/resources/upload/product/${pro.thumbnail}"/></td>
+					<td class="">
+						<div class="product-img-box mx-auto text-center">
+							<img id="" class="product-img img-thumbnail" src="${pageContext.request.contextPath}/resources/upload/product/${pro.thumbnail}"/>
+						</div>
+					</td>
 					<td><a href="${pageContext.request.contextPath}/admin/productDetail.do?productCode=${pro.productCode}">${pro.productCode}</a></td>
-					<td>${pro.name}</td>
+					<td  class="p-1" style="word-break: keep-all;">${pro.name}</td>
 					<td>
 						<button type="button" class="option-modal-btn btn btn-light"
 						 data-toggle="modal" data-target="#promotionModal" data-code="${pro.productCode}">확인</button>

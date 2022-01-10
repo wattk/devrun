@@ -54,6 +54,7 @@
 </div>
 
 <!-- 교환/환불/취소 관리 시작 -->
+<div class="m-5">
 <div class="order-container">
 	<h3 class="m-5">교환/환불/취소 내역</h3>
 </div>
@@ -178,6 +179,7 @@
 	    </c:forEach>
 	  </tbody>
 	</table>
+</div>
 </div>
 <script>
 

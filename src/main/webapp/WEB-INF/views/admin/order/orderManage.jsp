@@ -43,6 +43,7 @@
 </div>
 
 <!-- 주문 관리 시작 -->
+<div class="m-5">
 <div class="order-container">
 	<h3 class="m-5">주문내역</h3>
 </div>
@@ -230,6 +231,7 @@
 	    </tr>
 	  </tbody>
 	</table>
+</div>
 </div>
 <script>
 
