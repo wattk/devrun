@@ -37,6 +37,9 @@
 </style>
 
 
+<sec:authentication property="principal" var="member" />
+
+
 <div class="shop-container">
 	<div class="mx-auto text-center p-5">
 		<h4>마우스</h4>
@@ -66,7 +69,7 @@
 		          	<a href="${pageContext.request.contextPath}/shop/itemDetail/${l.productCode}">
 		            <img src="${pageContext.request.contextPath }/resources/upload/product/${l.thumbnail}" alt="" class="img-d img-fluid">
 		            </a>
-		            <i class="shop-like-icon far fa-heart position-absolute"></i>
+		            <i data-wishyn="N" data-product-code="${l.productCode}" class="shop-like-icon far fa-heart position-absolute wishBtn"></i>
 		          </div>
 		          <div>
 		          	<p class="m-0 ml-2">${l.name}</p>
@@ -91,8 +94,83 @@
 
 
 
+
+
+<%-- <!-- 위시리스트 로그인 했을 시 비동기 시작 -->
+<sec:authorize access="isAuthenticated()">
+	<script>
+$(document).on('click', '.wishBtn', function(e) {
+	console.log("도착?");
+	const $memberNo = ${member.memberNo};
+	const $productCode = $(e.target).data("productCode");
+
+	console.log(`$memberNo : \${$memberNo}`);
+	console.log(`$productCode : \${$productCode}`);
+	
+	const wishYn = $(e.target).data("wishyn");
+	
+	if(wishYn == 'N'){
+			$.ajax({
+				
+				url: "${pageContext.request.contextPath}/shop/wishlistAdd",
+				method: "Get",
+				data : {
+					memberNo:  $memberNo,
+					productCode : $productCode 
+					
+				},
+				success(data){
+					if(data == 1){
+						$(e.target).data('wishyn', 'Y');
+						$(e.target).attr('class', 'fas fa-heart wishBtn');							
+					}
+				},
+				error: console.log
+		});
+	}else{
+		$.ajax({
+			
+			url: "${pageContext.request.contextPath}/shop/wishlistDelete",
+			method: "Get",
+			data : {
+				memberNo:  $memberNo,
+				productCode : $productCode 
+				
+			},
+			success(data){
+				if(data == 1){
+					$(e.target).data('wishyn', 'N');
+					$(e.target).attr('class', 'far fa-heart wishBtn');							
+				}
+			},
+			error: console.log
+	});
+		
+		
+	}
+	
+})
+</script>
+</sec:authorize>
+<!-- 위시리스트 로그인 했을 시 비동기 끝 -->
+
+<!-- 위시리스트 비 로그인 시 비동기 시작 -->
+<sec:authorize access="isAnonymous()">
+	<script>
+$(document).on('click', '.wishBtn', function(e) {
+	alert("로그인 후 이용가능합니다.");
+	return;
+
+})
+
+</script>
+</sec:authorize>
+<!-- 위시리스트 비 로그인 시 비동기 끝 --> --%>
+
+
+
 <script>
-//혜진코드 시작
+
 //이벤트 상품 소분류 코드별 정렬
 $(document).on("click", ".shop-sort, .page-link", (e)=>{
 	let cPage = 1;

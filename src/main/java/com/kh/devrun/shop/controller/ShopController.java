@@ -81,6 +81,10 @@ public class ShopController {
 
 //--------------------주입-------------------------------------	
 
+	
+	
+	
+	
 	// 검색페이지 정렬
 	@ResponseBody
 	@GetMapping("/shopSearchSort")

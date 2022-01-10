@@ -42,7 +42,6 @@
 window.onload = todayViewBox;
 
 function todayViewBox () {
-	console.log("todayViewBox 함수 시작");
 	const todayViewitems = JSON.parse(localStorage.getItem('todayViewitems')) || [];
 	
 	//뒤집기 가장 먼저 본 상품이 가장 처음으로 오게 - 확인 완료
