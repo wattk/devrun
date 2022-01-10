@@ -6,11 +6,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp">
 	<jsp:param value="데브런" name="title"/>
 </jsp:include>
-<style>
-.product-title{
-	word-break : keep-all;
-}
-</style>
+<link href="${pageContext.request.contextPath }/resources/css/index.css" rel="stylesheet">
   <!--/ Carousel Star /-->
   <div class="intro intro-carousel">
     <div id="carousel" class="owl-carousel owl-theme">
@@ -119,7 +115,7 @@
 					    <tr>
 					      <th scope="row">${vs.count}</th>
 					      <td>
-					      	<a href="#">
+					      	<a href="${pageContext.request.contextPath}/community/communityDetail/${c['NO']}">
 					      		<span>${c["PAGECODE"] eq 1?'[칼럼]': c["PAGECODE"] eq 2?'[QnA]':c["PAGECODE"] eq 3?'[스터디]':'[자유게시판]' }</span>
 					      		${c["TITLE"]}
 					      	</a>
@@ -150,7 +146,7 @@
 			  		<c:forEach items="${map.freeboardList}" var="c" varStatus="vs">
 					    <tr>
 					      <th scope="row">${vs.count}</th>
-					      <td><a href="${pageContext.request.contextPath}/community/freeboardDetail.do?communityNo=${c.communityNo}">${c.title}</a></td>
+					      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${c.title}</a></td>
 					      <td>${c.nickname}</td>
 					    </tr>
 			  		</c:forEach>
@@ -177,7 +173,7 @@
 			  		<c:forEach items="${map.qnaList}" var="c" varStatus="vs">
 					    <tr>
 					      <th scope="row">${vs.count}</th>
-					      <td><a href="${pageContext.request.contextPath}/community/qnaDetail.do?communityNo=${c['NO']}">${c["TITLE"]}</a></td>
+					      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c['NO']}">${c["TITLE"]}</a></td>
 					      <td>${c["NICKNAME"]}</td>
 					    </tr>
 			  		</c:forEach>
@@ -281,7 +277,7 @@
 						</c:if>
 						<div class="card-block p-3">
 							<h3 class="card-title">
-								<a href="${pageContext.request.contextPath}/community/communityColumnDetail.do?communityNo=${c.communityNo}">${c.title}</a>
+								<a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${c.title}</a>
 							</h3>
 							<p class="card-text">
 								<span>${fn:substring(c.content,0,30)}</span>
