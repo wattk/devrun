@@ -11,9 +11,6 @@
 
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 
-<!-- js 임포트 -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script>
-
 <!-- css 임포트 -->
 <link href="${pageContext.request.contextPath}/resources/css/shop/shopMain.css" rel="stylesheet">
 
