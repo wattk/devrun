@@ -7,20 +7,27 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <fmt:requestEncoding value="utf-8"/>
   <link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
-    
+<style>
+footer{
+	padding-left : 195px;
+}
+.section-footer{
+	padding-left : 210px;
+}
+</style>
   <!-- 사이드바 -->
   <div id="page-wrapper">
     <div id="sidebar-wrapper">
       <ul class="sidebar-nav">
-        <li class="sidebar-brand">
+        <%-- <li class="sidebar-brand">
           <a href="${pageContext.request.contextPath}/community/communityMain.do">Community</a>
-        </li>
+        </li> --%>
         <li><a href="${pageContext.request.contextPath}/community/communityColumnList.do">칼럼</a></li>
         
         <!-- 관리자(AM) & 지식인(M2)에게만 권한 부여-->
-        <sec:authorize access="hasAnyRole('M2','AM')">
+        <%-- <sec:authorize access="hasAnyRole('M2','AM')">
 			<li><a href="${pageContext.request.contextPath}/community/communityColumnForm.do">&nbsp;&nbsp;&nbsp;&nbsp;칼럼 글쓰기</a></li>
-		</sec:authorize>
+		</sec:authorize> --%>
 		
         <li><a href="${pageContext.request.contextPath}/community/communityQnAList.do">Q&A</a></li>
         <li><a href="${pageContext.request.contextPath}/community/communityStudyList.do">스터디</a></li>

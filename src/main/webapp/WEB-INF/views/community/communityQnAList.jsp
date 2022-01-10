@@ -40,14 +40,14 @@ div#search-nickname {
 
 
 <!-- 본문 시작 -->
-<div class="container-fluid">
+<div class="container-fluid container">
 	<div class="row">
 		<div class="col-md-12">
 			<!-- 헤더 시작 -->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="page-header">
-						<h1>
+						<h1 class="pt-5">
 							<strong>Q&A</strong>
 						</h1>
 					</div>

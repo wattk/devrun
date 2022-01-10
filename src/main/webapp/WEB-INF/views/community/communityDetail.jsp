@@ -42,7 +42,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="page-header">
-				<h2>
+				<h2 class="pt-5">
 					<strong>${communityEntity.title}</strong>
 				</h2>
 			</div>

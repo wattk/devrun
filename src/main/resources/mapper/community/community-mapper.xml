@@ -213,11 +213,12 @@
   </select>
   
   <!-- 컬럼 리스트 조회 -->
-  <select id="selectColumnList" resultType="community">
+  <select id="selectColumnList" resultType="communityEntity">
   	select
-  		*
+  		c.*,
+  		(select nickname from member where member_no = c.member_no) nickname
   	from
-  		community
+  		community c
   	where
   		page_code = 1
   	order by
@@ -225,11 +226,14 @@
   </select>
   
   <!-- 베스트 컬럼리스트 조회 -->
-  <select id="columnBestList" resultType="community">
+  <select id="columnBestList" resultType="communityEntity">
   	select
-  		*
+  		c.*,
+  		(select nickname from member where member_no = c.member_no) nickname
   	from
-  		community
+  		community c
+  	where
+  		page_code = 1
   	order by
   		like_count desc
   </select>
@@ -821,6 +825,15 @@
   			or c.content like '%'||#{searchKeyword}||'%'
   				or m.nickname like '%'||#{searchKeyword}||'%'
   	
+  </select>
+  
+  <select id="selectColumnCount" resultType="_int">
+  	select
+  		count(*) cnt
+  	from
+  		community
+  	where
+  		page_code = 1
   </select>
   <!-- 혜진 mapper 끝 -->
 </mapper>

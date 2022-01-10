@@ -40,12 +40,12 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public List<Community> selectColumnList() {
-		return communityDao.selectColumnList(); // 전달할 값이 없으므로 공란
+	public List<CommunityEntity> selectColumnList(int offset, int limit) {
+		return communityDao.selectColumnList(offset, limit); // 전달할 값이 없으므로 공란
 	}
 
 	@Override
-	public List<Community> columnBestList() {
+	public List<CommunityEntity> columnBestList() {
 		return communityDao.columnBestList();
 	}
 
@@ -286,16 +286,15 @@ public class CommunityServiceImpl implements CommunityService {
 	public int updateAnswerNo(Map<String, Object> param) {
 		return communityDao.updateAnswerNo(param);
 	}
-
+	
 	@Override
 	public int updateAnswerYes(Map<String, Object> param) {
 		return communityDao.updateAnswerYes(param);
 	}
-
+	
 	@Override
 	public int selectCommentTotalCountByBoard(int pageCode) {
-		return communityDao.selectCommentTotalCountByBoard(pageCode);
-	}
+		return communityDao.selectCommentTotalCountByBoard(pageCode);}
 	
 	// 타입별 검색
 	@Override
@@ -315,7 +314,16 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.selectcurrentCommentBoardList(param, offset, limit);
 	}
 
-
-
+	/**
+	 * 혜진 칼럼 시작
+	 */
+	@Override
+	public int selectColumnCount() {
+		return communityDao.selectColumnCount();
+	}
+	
+	/**
+	 * 혜진 칼럼 끝
+	 */
 	
 }

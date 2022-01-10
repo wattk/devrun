@@ -49,45 +49,29 @@ public class CommunityController {
 	
 	// 커뮤니티-칼럼 
 	@GetMapping("/communityColumnList.do")
-	public String communityColumnList() {
+	public String communityColumnList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
 		// 전체 게시물 목록
 		// Community의 인자들을 List 형식으로 받아와 list에 담는다.
-		List<Community> list = communityService.selectColumnList();
+		List<CommunityEntity> list = communityService.selectColumnList(offset, limit);
+		List<CommunityEntity> bestList = communityService.columnBestList();
+		
+		model.addAttribute("list", list);
+		model.addAttribute("bestList", bestList);
+		
+		// 2. 칼럼 전체 게시물 수
+		int totalContent = communityService.selectColumnCount();
+		model.addAttribute("totalContent", totalContent);
+		
+		// 3. pagebar
+		String url = request.getRequestURI();
+		String pagebar = CommunityUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
 		return "community/communityColumnList";
 	}
 	
-	// 커뮤니티-칼럼-베스트인기글(좋아요순)
-	@GetMapping("/columnBestList.do")
-	public ModelAndView columnBestList() {
-		
-		List<Community> list = communityService.columnBestList();
-		
-		ModelAndView mav = new ModelAndView();
-		//넘길 데이터가 많기 때문에 HashMap에 저장한 후에 ModelAndView로 값을 넣고 페이지를 지정
-		Map<String, Object> map = new HashMap<>(); 
-		// map에 list(게시글 목록)을 list라는 이름의 변수로 자료를 저장함.
-		map.put("list", list);
-		// ModelAndView에 map을 저장
-		mav.addObject("map", map);
-		// 자료를 넘길 뷰의 이름
-		mav.setViewName("community/communityColumnList");
-		// 게시판 페이지로 이동
-		return mav;
-		
-	}
-	
-	
-	
-	// 칼럼 - 상세보기
-	// @RequestParam("가져올 데이터의 이름")[데이터의 타입][가져온 데이터를 담을 변수]
-	// 그리고 Model 객체를 이용해서, 뷰로 값을 넘겨준다.
-	@GetMapping("/communityColumnDetail.do")
-	public void communityColumnDetail(@RequestParam int communityNo, Model model) {
-		log.debug("communityNo = {}", communityNo);
-		
-		// 업무로직
-		
-	}
 	
 	// 칼럼-글쓰기
 	@GetMapping("/communityColumnForm.do")
@@ -121,7 +105,7 @@ public class CommunityController {
 		}
 		
 	  try { 
-		  int result = communityService.insertColumn(community); 
+		  int result = communityService.insertCommunityWriteEnroll(community); 
 		  String msg = result > 0 ? "컬럼 등록 성공!" : "컬럼 등록 실패!";
 		  redirectAttributes.addFlashAttribute("msg", msg); 
 	  } 

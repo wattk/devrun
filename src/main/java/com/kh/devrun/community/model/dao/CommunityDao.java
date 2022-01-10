@@ -19,9 +19,9 @@ public interface CommunityDao {
 
 	int insertColumn(Community community);
 
-	List<Community> selectColumnList();
+	List<CommunityEntity> selectColumnList(int offset, int limit);
 
-	List<Community> columnBestList();
+	List<CommunityEntity> columnBestList();
 
 	int insertFreeboard(Community community);
 
@@ -118,10 +118,10 @@ public interface CommunityDao {
 
 	// QnA 전체 게시물 수 
 	int selectOneQnACount();
-
+	
 	// 답변완료 --> 답변중
 	int updateAnswerNo(Map<String, Object> param);
-
+	
 	// 답변중 --> 답변완료
 	int updateAnswerYes(Map<String, Object> param);
 
@@ -137,6 +137,15 @@ public interface CommunityDao {
 	// 최근답변순 정렬
 	List<CommunityEntity> selectcurrentCommentBoardList(Map<String, Object> param, int offset, int limit);
 
+	/**
+	 * 혜진 칼럼 시작
+	 * @return
+	 */
+	int selectColumnCount();
+	/**
+	 * 혜진 칼럼 끝
+	 * @return
+	 */
 
 
 }
