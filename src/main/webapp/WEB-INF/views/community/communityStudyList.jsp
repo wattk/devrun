@@ -40,14 +40,14 @@ div#search-nickname {
 </style>
 
 <!-- 본문 시작 -->
-<div class="container-fluid">
+<div class="container-fluid container">
 	<div class="row">
 		<div class="col-md-12">
 			<!-- 헤더 시작 -->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="page-header">
-						<h1>
+						<h1 class="pt-5">
 							<strong>스터디</strong>
 						</h1>
 					</div>
@@ -117,11 +117,11 @@ div#search-nickname {
 	
 	<div id="totalCountContainer row" >
 		총 게시물 수 : ${totalContent}			  
-		<button class="btn btn-secondary float-right" data-toggle="modal" data-target="#bs-example-modal-lg"><i class="fas fa-question-circle"></i>&nbsp;&nbsp;스터디 가이드</button>
+		<button class="btn btn-secondary float-right" data-toggle="modal" data-target="#bs-example-modal-lgtv"><i class="fas fa-question-circle"></i>&nbsp;&nbsp;스터디 가이드</button>
 	</div>
 	
 	<!-- 스터디 가이드 모달 시작 -->
-	<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal fade" id="bs-example-modal-lgtv" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">

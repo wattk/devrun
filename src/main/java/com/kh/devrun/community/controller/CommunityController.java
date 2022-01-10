@@ -49,45 +49,29 @@ public class CommunityController {
 	
 	// 커뮤니티-칼럼 
 	@GetMapping("/communityColumnList.do")
-	public String communityColumnList() {
+	public String communityColumnList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
 		// 전체 게시물 목록
 		// Community의 인자들을 List 형식으로 받아와 list에 담는다.
-		List<Community> list = communityService.selectColumnList();
+		List<CommunityEntity> list = communityService.selectColumnList(offset, limit);
+		List<CommunityEntity> bestList = communityService.columnBestList();
+		
+		model.addAttribute("list", list);
+		model.addAttribute("bestList", bestList);
+		
+		// 2. 칼럼 전체 게시물 수
+		int totalContent = communityService.selectColumnCount();
+		model.addAttribute("totalContent", totalContent);
+		
+		// 3. pagebar
+		String url = request.getRequestURI();
+		String pagebar = CommunityUtils.getPagebar(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		model.addAttribute("pagebar", pagebar);
 		return "community/communityColumnList";
 	}
 	
-	// 커뮤니티-칼럼-베스트인기글(좋아요순)
-	@GetMapping("/columnBestList.do")
-	public ModelAndView columnBestList() {
-		
-		List<Community> list = communityService.columnBestList();
-		
-		ModelAndView mav = new ModelAndView();
-		//넘길 데이터가 많기 때문에 HashMap에 저장한 후에 ModelAndView로 값을 넣고 페이지를 지정
-		Map<String, Object> map = new HashMap<>(); 
-		// map에 list(게시글 목록)을 list라는 이름의 변수로 자료를 저장함.
-		map.put("list", list);
-		// ModelAndView에 map을 저장
-		mav.addObject("map", map);
-		// 자료를 넘길 뷰의 이름
-		mav.setViewName("community/communityColumnList");
-		// 게시판 페이지로 이동
-		return mav;
-		
-	}
-	
-	
-	
-	// 칼럼 - 상세보기
-	// @RequestParam("가져올 데이터의 이름")[데이터의 타입][가져온 데이터를 담을 변수]
-	// 그리고 Model 객체를 이용해서, 뷰로 값을 넘겨준다.
-	@GetMapping("/communityColumnDetail.do")
-	public void communityColumnDetail(@RequestParam int communityNo, Model model) {
-		log.debug("communityNo = {}", communityNo);
-		
-		// 업무로직
-		
-	}
 	
 	// 칼럼-글쓰기
 	@GetMapping("/communityColumnForm.do")
@@ -121,7 +105,7 @@ public class CommunityController {
 		}
 		
 	  try { 
-		  int result = communityService.insertColumn(community); 
+		  int result = communityService.insertCommunityWriteEnroll(community); 
 		  String msg = result > 0 ? "컬럼 등록 성공!" : "컬럼 등록 실패!";
 		  redirectAttributes.addFlashAttribute("msg", msg); 
 	  } 
@@ -317,15 +301,17 @@ public class CommunityController {
 	}
 	/* ---------------------------------------- 자유게시판 리스트 종료 ---------------------------------------- */
 	
-	/* ---------------------------------------- 자유게시판 타입별 검색 시작 ---------------------------------------- */
+	/* ---------------------------------------- 타입별 검색 시작 ---------------------------------------- */
 	// @ResponseBody : Http 요청 body를 Java 객체로 전달받을 수 있다.
-	@GetMapping("/communityFreeboardFinder.do")
+	@GetMapping("/communityFinder.do")
 	@ResponseBody
-	public Map<String, Object> FreeboardFinder(
+	public Map<String, Object> communityFinder(
 			@RequestParam(defaultValue = "1") int cPage,
 			@RequestParam String searchType,
+			@RequestParam int pageCode,
 			@RequestParam String searchKeyword,
 			HttpServletRequest request){
+		log.debug("{}", "타입별 검색 시작");
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		
@@ -333,23 +319,25 @@ public class CommunityController {
 		int offset = (cPage - 1) * limit;
 		
 		log.debug("searchType = {}", searchType);
+		log.debug("pageCode = {}", pageCode);
 		log.debug("searchKeyword = {}", searchKeyword);
 		
 		Map<String, Object> param = new HashMap<>();
 		param.put("searchType", searchType);
+		param.put("pageCode", pageCode);
 		param.put("searchKeyword", searchKeyword);
 		log.debug("param = {}", param);
 		
-		// 1. 전체 상품 목록
+		// 1. 전체 상품 목록채
 		String url = request.getContextPath();
 		
-		List<CommunityEntity> freeboardList = communityService.selectFreeboardListByType(param, offset, limit);
+		List<CommunityEntity> freeboardList = communityService.selectBoardListByType(param, offset, limit);
 		String freeboardStr = CommunityUtils.getFreeboardList(freeboardList, url);
 		log.debug("freeboard = {}", freeboardStr);
 		
 		// 2. 전체 게시물 수 totalCount
 		url = request.getRequestURI();
-		int totalContent = communityService.selectFreeboardTotalCountByType(param);
+		int totalContent = communityService.selectCommunityTotalCountByType(param);
 		
 		// 3. pagebar
 		String pagebar = CommunityUtils.getPagebar2(cPage, limit, totalContent, url);
@@ -361,8 +349,7 @@ public class CommunityController {
 		
 		return resultMap;
 	}
-	
-	/* ---------------------------------------- 자유게시판 타입별 검색 종료 ---------------------------------------- */
+	/* ---------------------------------------- 타입별 검색 종료 ---------------------------------------- */
 	
 	/* ---------------------------------------- 좋아요순 리스트 시작 ---------------------------------------- */
 	
@@ -392,9 +379,9 @@ public class CommunityController {
 		log.debug("likeBoardList = {}", likeBoardList);
 		String likeBoardStr = CommunityUtils.getlikeBoardList(likeBoardList, url);
 		
-		// 2. 전체 게시물 수 totalContent
-		int totalContent = communityService.selectFreeboardTotalCount();
-		log.debug("selectFreeboardTotalCount = {}, list");
+		// 2. 자유게시판 총 게시물 수 
+		int totalContent = communityService.selectCommentTotalCountByBoard(pageCode);
+		log.debug("selectCommentTotalCountByBoard = {}", totalContent);
 		model.addAttribute("totalContent", totalContent);
 		
 		// 3. pagebar
@@ -409,6 +396,51 @@ public class CommunityController {
 	}
 	
 	/* ---------------------------------------- 좋아요순 리스트 종료 ---------------------------------------- */
+	
+	/* ---------------------------------------- 최근답변순 리스트 시작 ---------------------------------------- */
+	
+	@GetMapping("/currentCommentBoard.do")
+	@ResponseBody
+	public Map<String, Object> currentCommentBoard(
+			@RequestParam(defaultValue = "1") int cPage,
+			@RequestParam int pageCode,
+			HttpServletRequest request,
+			Model model){
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		int limit = 10;
+		int offset = (cPage - 1) * limit;
+		
+		log.debug("pageCode = {}", pageCode);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("pageCode", pageCode);
+		log.debug("param = {}", param);
+		
+		String url = request.getContextPath();
+		
+		List<CommunityEntity> currentCommentBoardList = communityService.selectcurrentCommentBoardList(param, offset, limit);
+		log.debug("likeBoardList = {}", currentCommentBoardList);
+		String currentCommentBoardStr = CommunityUtils.getCurrentCommentBoardList(currentCommentBoardList, url);
+		
+		// 2. 자유게시판 총 게시물 수 
+		int totalContent = communityService.selectCommentTotalCountByBoard(pageCode);
+		log.debug("selectCommentTotalCountByBoard = {}", totalContent);
+		model.addAttribute("totalContent", totalContent);
+		
+		// 3. pagebar
+		String pagebar = CommunityUtils.getPagebar7(cPage, limit, totalContent, url);
+		log.debug("pagebar = {}", pagebar);
+		
+		resultMap.put("likeBoardStr", currentCommentBoardStr);
+		resultMap.put("totalContent", totalContent);
+		resultMap.put("pagebar", pagebar);
+		
+		return resultMap;
+	}
+	
+	/* ---------------------------------------- 최근답변순 리스트 종료 ---------------------------------------- */
 	
 	/* ---------------------------------------- 답변순 리스트 시작 ---------------------------------------- */
 	
@@ -434,16 +466,17 @@ public class CommunityController {
 		String url = request.getContextPath();
 		
 		List<CommunityEntity> commentBoardList = communityService.selectCommentBoardList(param, offset, limit);
-		log.debug("likeBoardList = {}", commentBoardList);
+		log.debug("commentBoardList = {}", commentBoardList);
 		String commentBoardStr = CommunityUtils.getCommentBoardList(commentBoardList, url);
+		log.debug("commentBoardListStr = {}", commentBoardList);
 		
-		// 2. 전체 게시물 수 totalContent
-		int totalContent = communityService.selectFreeboardTotalCount();
-		log.debug("selectFreeboardTotalCount = {}, list");
+		// 2. 자유게시판 총 게시물 수 
+		int totalContent = communityService.selectCommentTotalCountByBoard(pageCode);
+		log.debug("selectCommentTotalCountByBoard = {}", totalContent);
 		model.addAttribute("totalContent", totalContent);
 		
 		// 3. pagebar
-		String pagebar = CommunityUtils.getPagebar3(cPage, limit, totalContent, url);
+		String pagebar = CommunityUtils.getPagebar4(cPage, limit, totalContent, url);
 		log.debug("pagebar = {}", pagebar);
 		
 		resultMap.put("commentBoardStr", commentBoardStr);
@@ -760,9 +793,9 @@ public class CommunityController {
 		return "redirect:/community/communityFreeboardList.do";
 	}
 	
-	/* ---------------------------------------- 커뮤니티 삭제하기 종료 ---------------------------------------- */
+		/* ---------------------------------------- 커뮤니티 삭제하기 종료 ---------------------------------------- */
 	
-	/* ---------------------------------------- 모집중 --> 모집완료 시작 ---------------------------------------- */
+		/* ---------------------------------------- 모집중 --> 모집완료 시작 ---------------------------------------- */
 	
 		@ResponseBody
 		@GetMapping("/joinNo.do")
@@ -784,6 +817,29 @@ public class CommunityController {
 	
 		/* ---------------------------------------- 모집중 --> 모집완료 종료 ---------------------------------------- */
 		
+		/* ---------------------------------------- 답변완료 --> 답변중 시작 ---------------------------------------- */
+		
+		@ResponseBody
+		@GetMapping("/answerNo.do")
+		public Map<String, Object> answerNo(@RequestParam int communityNo, @RequestParam String answerYn){
+			log.debug("{}", "/answerNo.do 요청!");
+			
+			Map<String, Object> param = new HashMap<>();
+			param.put("studyJoinYn", answerYn);
+			param.put("communityNo", communityNo);
+			
+			int result = communityService.updateAnswerNo(param);
+			log.debug("답변완료에서 답변중으로 변경? = {}", result);
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("result", result);
+			
+			return map;
+		}
+	
+		/* ---------------------------------------- 답변완료 --> 답변중 종료 ---------------------------------------- */
+		
+		
 		/* ---------------------------------------- 모집완료 --> 모집중 시작 ---------------------------------------- */
 		
 		@ResponseBody
@@ -804,7 +860,29 @@ public class CommunityController {
 			return map;
 		}
 		
-	/* ---------------------------------------- 모집완료 --> 모집중 종료 ---------------------------------------- */
+		/* ---------------------------------------- 모집완료 --> 모집중 종료 ---------------------------------------- */
+		
+		/* ---------------------------------------- 답변중 --> 답변완료 시작 ---------------------------------------- */
+		
+		@ResponseBody
+		@GetMapping("/answerYes.do")
+		public Map<String, Object> answerYes(@RequestParam int communityNo, @RequestParam String answerYn){
+			log.debug("{}", "/answeryes.do 요청!");
+			
+			Map<String, Object> param = new HashMap<>();
+			param.put("studyJoinYn", answerYn);
+			param.put("communityNo", communityNo);
+			
+			int result = communityService.updateAnswerYes(param);
+			log.debug("모집완료에서 모집중로 변경 = {}", result);
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("result", result);
+			
+			return map;
+		}
+		
+		/* ---------------------------------------- 답변중 --> 답변완료 종료 ---------------------------------------- */
 		
 	/* ---------------------------------------- 커뮤니티 댓글 시작 ---------------------------------------- */
 	@PostMapping("/communityCommentEnroll.do")
