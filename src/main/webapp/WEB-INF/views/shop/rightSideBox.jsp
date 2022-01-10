@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopSideBox.css" rel="stylesheet">
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script> --%>
 
 
 
@@ -39,10 +39,11 @@
 
 <script>
 /** 오늘본상품시작*/
-window.onload = todayViewBox;
+/* window.onload = todayViewBox; */
 
 function todayViewBox () {
 	const todayViewitems = JSON.parse(localStorage.getItem('todayViewitems')) || [];
+	console.log(todayViewitems);
 	
 	//뒤집기 가장 먼저 본 상품이 가장 처음으로 오게 - 확인 완료
 	const rTodayViewitems = todayViewitems.reverse();
