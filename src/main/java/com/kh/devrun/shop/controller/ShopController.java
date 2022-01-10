@@ -81,10 +81,6 @@ public class ShopController {
 
 //--------------------주입-------------------------------------	
 
-	
-	
-	
-	
 	// 검색페이지 정렬
 	@ResponseBody
 	@GetMapping("/shopSearchSort")
@@ -170,7 +166,7 @@ public class ShopController {
 		}
 
 		model.addAttribute("tenArr", tenArr);
-		
+
 		return "/shop/shopSearch";
 
 	}
@@ -309,7 +305,7 @@ public class ShopController {
 			ProductEx product2 = productService.selectOneItem(productCode);
 			log.debug("조회수 증가 후 조회수는 : {}", product2.getViewCount());
 		}
-		
+
 		// 인기상품10위
 		List<ProductEntity> tenList = shopService.topTenItems();
 		List<String> tenArr = new ArrayList<String>();
@@ -351,37 +347,37 @@ public class ShopController {
 			tenArr.add(p.getProductCode());
 		}
 		model.addAttribute("tenArr", tenArr);
-		
+
 		try {
-			//카테고리별 상품 12개씩 조회(신상품, top12, 만원의 행복)
+			// 카테고리별 상품 12개씩 조회(신상품, top12, 만원의 행복)
 			List<ProductEntity> latestProductList = productService.selectLatestProductList();
 			List<ProductEntity> top12ProductList = productService.selectTop12ProductList();
 			List<ProductEntity> tenThousandWonProductList = productService.selectTenThousandWonProductList();
-			
+
 			model.addAttribute("latestProductList", latestProductList);
 			model.addAttribute("top12ProductList", top12ProductList);
 			model.addAttribute("tenThousandWonProductList", tenThousandWonProductList);
-			
-			//이벤트 상품 조회
+
+			// 이벤트 상품 조회
 			List<Promotion> currentPromotion = promotionService.selectThreeCurrentPromotion();
 			model.addAttribute("currentPromotion", currentPromotion);
-			
+
 			Promotion currentPromotion1 = currentPromotion.get(0);
 			Promotion currentPromotion2 = currentPromotion.get(1);
 			Promotion currentPromotion3 = currentPromotion.get(2);
 			String promotionCode1 = currentPromotion1.getPromotionCode();
 			String promotionCode2 = currentPromotion2.getPromotionCode();
 			String promotionCode3 = currentPromotion3.getPromotionCode();
-			
+
 			List<ProductEntity> promotionProductList1 = promotionService.selectPromotionProductList1(promotionCode1);
 			List<ProductEntity> promotionProductList2 = promotionService.selectPromotionProductList2(promotionCode2);
 			List<ProductEntity> promotionProductList3 = promotionService.selectPromotionProductList3(promotionCode3);
 			model.addAttribute("promotionProductList1", promotionProductList1);
 			model.addAttribute("promotionProductList2", promotionProductList2);
 			model.addAttribute("promotionProductList3", promotionProductList3);
-			
+
 			log.debug("promotionProductList1 = {}", promotionProductList1);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -430,7 +426,7 @@ public class ShopController {
 		String url = request.getRequestURI();
 		String pagebar = shopUtils.getPagebar(cPage, limit, total, url);
 		model.addAttribute("pagebar", pagebar);
-		
+
 		// 인기상품10위
 		List<ProductEntity> tenList = shopService.topTenItems();
 		List<String> tenArr = new ArrayList<String>();
@@ -453,7 +449,7 @@ public class ShopController {
 	// 상품 사이드 메뉴에서 소분류 카테고리 클릭 시
 	@GetMapping("shopChildCate")
 	public String shopChildCate(@RequestParam String childCategoryCode, Model model,
-			@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request) {
+			@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, Authentication authentication) {
 
 		//
 		String thisCateName = shopService.thisCateName(childCategoryCode);
@@ -484,7 +480,7 @@ public class ShopController {
 		String url = request.getRequestURI();
 		String pagebar = shopUtils.getPagebar(cPage, limit, total, url);
 		model.addAttribute("pagebar", pagebar);
-		
+
 		// 인기상품10위
 		List<ProductEntity> tenList = shopService.topTenItems();
 		List<String> tenArr = new ArrayList<String>();
