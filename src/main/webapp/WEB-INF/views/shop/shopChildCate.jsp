@@ -17,7 +17,7 @@
 
 <!-- shopSideBox 관련 임포트 -->
 <jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script> --%>
 
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
 
@@ -229,5 +229,5 @@ $(document).on("click", ".shop-sort, .page-link", (e)=>{
 
 </script>
 <!-- shopHeader js  -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script> --%>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

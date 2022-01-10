@@ -172,8 +172,8 @@ $(document).on("click", ".category-badge, .shop-sort, .page-link", (e)=>{
 </script>
 
 <!-- shopSideBox 관련 임포트 -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script> --%>
 
 <!-- shopHeader js  -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script> --%>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

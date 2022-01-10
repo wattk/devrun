@@ -26,7 +26,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/shop/shopMain.css" rel="stylesheet">
 
 <!-- shopSideBox 관련 임포트 -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script> --%>
 
 <style>
 .promotion-container{
@@ -99,5 +99,5 @@
 	  </div>
 	</div>
 </div>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script> --%>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
