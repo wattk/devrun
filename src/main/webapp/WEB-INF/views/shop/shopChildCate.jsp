@@ -96,7 +96,7 @@
 
 
 
-<%-- <!-- 위시리스트 로그인 했을 시 비동기 시작 -->
+<!-- 위시리스트 로그인 했을 시 비동기 시작 -->
 <sec:authorize access="isAuthenticated()">
 	<script>
 $(document).on('click', '.wishBtn', function(e) {
@@ -122,7 +122,7 @@ $(document).on('click', '.wishBtn', function(e) {
 				success(data){
 					if(data == 1){
 						$(e.target).data('wishyn', 'Y');
-						$(e.target).attr('class', 'fas fa-heart wishBtn');							
+						$(e.target).attr('class', 'shop-like-icon fas fa-heart position-absolute wishBtn');							
 					}
 				},
 				error: console.log
@@ -140,7 +140,7 @@ $(document).on('click', '.wishBtn', function(e) {
 			success(data){
 				if(data == 1){
 					$(e.target).data('wishyn', 'N');
-					$(e.target).attr('class', 'far fa-heart wishBtn');							
+					$(e.target).attr('class', 'shop-like-icon far fa-heart position-absolute wishBtn');							
 				}
 			},
 			error: console.log
@@ -165,7 +165,7 @@ $(document).on('click', '.wishBtn', function(e) {
 
 </script>
 </sec:authorize>
-<!-- 위시리스트 비 로그인 시 비동기 끝 --> --%>
+<!-- 위시리스트 비 로그인 시 비동기 끝 -->
 
 
 
