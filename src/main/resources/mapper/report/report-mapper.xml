@@ -33,4 +33,170 @@
 			member_no = #{memberNo}
 	</select>
 	<!-- 지원 끝 -->
+	
+	<!-- 지영 시작 -->
+	<select id="selectReviewReportList" resultType="report">
+		select
+		    r.*,
+		    c.reason_name,
+		    (select member_no from (select review_no, member_no from review union select review_no, member_no from delete_review) where review_no = r.target_pk_no) member_no3
+		from
+		    report r join report_category c
+		        on r.reason_cate = c.reason_cate
+		where
+		    report_root_cate = 'PR'
+		order by
+		    report_no desc
+	</select>
+	
+	<select id="searchProductCode" resultType="string">
+		select
+		    product_code
+		from
+		    (select review_no, product_code from review union select review_no, product_code from delete_review)
+		where
+		    review_no = #{no}
+	</select>
+	
+	<update id="reportStatusUpdate">
+		update
+			report
+		set
+			member_no2 = #{adminNo},
+			status = #{status}
+		where
+			report_no = #{reportNo}
+	</update>
+	
+	<update id="updateWarningCount">
+		update
+			member
+		set
+			warning_count = warning_count + 1
+		where
+			member_no = #{targetNo}
+	</update>
+	
+	<update id="checkMemberBlackInsert">
+		update
+		    member
+		set
+		    black_yn = 'Y'
+		where
+		    warning_count = 3 and
+		    member_no = #{targetNo} and
+		    black_yn = 'N'
+	</update>
+	
+	<insert id="blacklistEnroll">
+		insert into
+		    blacklist
+		values(SEQ_BLACKLIST_NO.nextval, #{targetNo}, default, null, '경고누적', #{adminNo})
+	</insert>
+	
+	<select id="selectMessageReportList" resultType="report">
+		select
+		    r.*,
+		    c.reason_name,
+		    (select member_no from chat_log where no = r.target_pk_no) member_no3
+		from
+		    report r join report_category c
+		        on r.reason_cate = c.reason_cate
+		where
+		    report_root_cate = 'MM'
+		order by
+		    report_no desc
+	</select>
+	
+	<select id="selectBoardReportList" resultType="report">
+		select
+		    r.*,
+		    c.reason_name,
+		    (select member_no from (select community_no, member_no from community union select community_no, member_no from delete_community) where community_no = r.target_pk_no) member_no3
+		from
+		    report r join report_category c
+		        on r.reason_cate = c.reason_cate
+		where
+		    report_root_cate = 'CB'
+		order by
+		    report_no desc
+	</select>
+	
+	<select id="selectCommentReportList" resultType="report">
+		select
+		    r.*,
+		    c.reason_name,
+		    (select member_no from (select comment_no, member_no from community_comment union select comment_no, member_no from delete_community_comment) where comment_no = r.target_pk_no) member_no3
+		from
+		    report r join report_category c
+		        on r.reason_cate = c.reason_cate
+		where
+		    report_root_cate = 'CR'
+		order by
+		    report_no desc
+	</select>
+	
+	<select id="searchCommunityNo" resultType="_int">
+		select
+		    community_no
+		from
+		    (select comment_no, community_no from community_comment union select comment_no, community_no from delete_community_comment)
+		where
+		    comment_no = #{no}
+	</select>
+	
+	<select id="selectMemberReportList" resultType="report">
+		select
+		    r.*,
+		    c.reason_name,
+		    (select member_no from (select member_no from member union select member_no from delete_member) where member_no = r.target_pk_no) member_no3
+		from
+		    report r join report_category c
+		        on r.reason_cate = c.reason_cate
+		where
+		    report_root_cate = 'MB'
+		order by
+		    report_no desc
+	</select>
+	
+	<select id="selectAllBlacklist" resultType="blacklist">
+		select
+			*
+		from
+			blacklist
+		order by
+			blacklist_no desc
+	</select>
+	
+	<update id="blacklistReleaseUpdate">
+		update
+			blacklist
+		set
+			release_date = current_date,
+			member_no2 = #{adminNo}
+		where
+			blacklist_no = #{blacklistNo}
+	</update>
+	
+	<update id="blacklistRelease">
+		update
+			member
+		set
+			warning_count = 0,
+			black_yn = 'N'
+		where
+			member_no = #{memberNo}
+	</update>
+	
+	<update id="noteUpdate">
+		update
+			blacklist
+		set
+			note = #{note},
+			member_no2 = #{adminNo}
+		where
+			blacklist_no = #{blacklistNo}
+	</update>
+	
+	<!-- 지영 끝 -->
 </mapper>
