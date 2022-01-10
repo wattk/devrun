@@ -456,8 +456,7 @@ commit;
 
 
 select * from community;
-alter table community drop column thumnail;
-alter table community add (thumbnail clob);
+
 commit;
 
 CREATE TABLE "MEMBER_REVIEW_LIKE" (
@@ -506,7 +505,9 @@ CREATE TABLE "COMMUNITY" (
     CONSTRAINT FK_COMMUNITY_MEMBER_NO FOREIGN KEY (MEMBER_NO) REFERENCES MEMBER (MEMBER_NO),
     CONSTRAINT CK_COMMUNITY_ANSWER_YN CHECK(ANSWER_YN IN ('Y', 'N'))
 );
-
+alter table community drop column answer_yn;
+alter table community add (answer_yn char(1) default 'N' not null);
+commit;
 
 ALTER TABLE  community DROP CONSTRAINT fk_community_member_no;
 ALTER TABLE  community DROP CONSTRAINT ck_community_answer_yn;

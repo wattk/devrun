@@ -277,5 +277,45 @@ public class CommunityDaoImpl implements CommunityDao {
 	public int selectOneQnACount() {
 		return session.selectOne("community.selectOneQnACount");
 	}
+
+	// 답변완료 --> 답변중
+	@Override
+	public int updateAnswerNo(Map<String, Object> param) {
+		return session.update("community.updateAnswerNo", param);
+	}
+
+	// 답변중 --> 답변완료
+	@Override
+	public int updateAnswerYes(Map<String, Object> param) {
+		return session.update("community.updateAnswerYes", param);
+	}
+
+	@Override
+	public int selectCommentTotalCountByBoard(int pageCode) {
+		return session.selectOne("community.selectCommentTotalCountByBoard", pageCode);
+	}
+	
+
+	// 타입별 검색
+	@Override
+	public List<CommunityEntity> selectBoardListByType(Map<String, Object> param, int offset, int limit) {
+		// mybatis가 제공하는 RowBounds 객체를 하나 제공한다. -- 페이징 처리를 위해서
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectBoardListByType", param, rowBounds);
+	}
+
+	// 타입별 검색 총 게시물 수
+	@Override
+	public int selectCommunityTotalCountByType(Map<String, Object> param) {
+		return session.selectOne("community.selectCommunityTotalCountByType", param);
+	}
+
+	// 최근답변순 정렬
+	@Override
+	public List<CommunityEntity> selectcurrentCommentBoardList(Map<String, Object> param, int offset, int limit) {
+		// mybatis가 제공하는 RowBounds 객체를 하나 제공한다. -- 페이징 처리를 위해서
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return session.selectList("community.selectcurrentCommentBoardList", null, rowBounds);
+	}
 	
 }

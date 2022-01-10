@@ -119,8 +119,23 @@ public interface CommunityDao {
 	// QnA 전체 게시물 수 
 	int selectOneQnACount();
 
+	// 답변완료 --> 답변중
+	int updateAnswerNo(Map<String, Object> param);
 
+	// 답변중 --> 답변완료
+	int updateAnswerYes(Map<String, Object> param);
 
+	// 답변 많은 순 전체 게시물 수 
+	int selectCommentTotalCountByBoard(int pageCode);
+
+	// 타입별 검색
+	List<CommunityEntity> selectBoardListByType(Map<String, Object> param, int offset, int limit);
+
+	// 타입별 검색 총 게시물 수
+	int selectCommunityTotalCountByType(Map<String, Object> param);
+
+	// 최근답변순 정렬
+	List<CommunityEntity> selectcurrentCommentBoardList(Map<String, Object> param, int offset, int limit);
 
 
 

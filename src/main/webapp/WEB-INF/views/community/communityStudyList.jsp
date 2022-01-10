@@ -117,11 +117,11 @@ div#search-nickname {
 	
 	<div id="totalCountContainer row" >
 		총 게시물 수 : ${totalContent}			  
-		<button class="btn btn-secondary float-right" data-toggle="modal" data-target="#bs-example-modal-lg"><i class="fas fa-question-circle"></i>&nbsp;&nbsp;스터디 가이드</button>
+		<button class="btn btn-secondary float-right" data-toggle="modal" data-target="#bs-example-modal-lgtv"><i class="fas fa-question-circle"></i>&nbsp;&nbsp;스터디 가이드</button>
 	</div>
 	
 	<!-- 스터디 가이드 모달 시작 -->
-	<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal fade" id="bs-example-modal-lgtv" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg">
 	    <div class="modal-content">
 	      <div class="modal-header">
