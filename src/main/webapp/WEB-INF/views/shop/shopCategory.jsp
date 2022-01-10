@@ -50,6 +50,8 @@
 
 </style>
 
+<sec:authentication property="principal" var="member" />
+
 <div class="shop-container">
 	<div class="mx-auto text-center p-5">
 		<h4 id="parentTitle" data-target="${parentCategory}">마우스</h4>
@@ -67,45 +69,138 @@
 	</div>
 		<div class="item-sort-container d-flex 	justify-content-between">
 		<div class="p-4">총 <span id="productSize">${total}</span>개</div>
-		<div class="p-4" id="">
+		<div class="p-4">
+			<span class="pr-2 pl-2 shop-sort" data-target="new" data-valid="1">신상품순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="recommend" data-valid="0">추천순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="new" data-valid="0">신상품순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="row" data-valid="0">낮은 가격순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="high" data-valid="0">높은 가격순</span>
 		</div>
 	</div>
 	<div id="productContainer" class="row itembox">
 		<!-- 아이템 나열 시작 -->
-		<c:if test = "${itemList != null}">
-			<c:forEach items="${itemList}" var="l">
-		        <div class="card-box-d col-md-3 p-5">
-		          <div class="card-img-d shop-item-img position-relative">
-		          	<a href="${pageContext.request.contextPath}/shop/itemDetail/${l.productCode}">
-		            <img src="${pageContext.request.contextPath }/resources/upload/product/${l.thumbnail}" alt="" class="img-d img-fluid">
-		            </a>
-		            <i class="shop-like-icon far fa-heart position-absolute"></i>
-		          </div>
-		          <div>
-		          	<p class="m-0 ml-2">${l.name}</p>
-		          	<strong class="ml-2"><fmt:formatNumber value="${l.price}" pattern="₩#,###,###"/></strong>
-		          </div>
-		        </div>
-			</c:forEach>
-		</c:if>
       <!-- 아이템 나열 끝 -->
     </div>
     <!-- <nav aria-label="..." class="mx-auto text-center"> -->
     <div class="banner mx-auto text-center">
     	<img src="${pageContext.request.contextPath}/resources/upload/promotion/PROMO_0y7fZo5w789Pse8.png" alt="" />
     </div>
-	  ${pagebar}
-	<!-- </nav> -->
+    <ul class="pagination justify-content-center mt-5">
+	</ul>
+	<div id="pageBar">
+	</div>
+
+
+
+
+<!-- 위시리스트 로그인 했을 시 비동기 시작 -->
+<sec:authorize access="isAuthenticated()">
+	<script>
+$(document).on('click', '.wishBtn', function(e) {
+	console.log("도착?");
+	const $memberNo = ${member.memberNo};
+	const $productCode = $(e.target).data("productCode");
+
+	console.log(`$memberNo : \${$memberNo}`);
+	console.log(`$productCode : \${$productCode}`);
+	
+	const wishYn = $(e.target).data("wishyn");
+	
+	if(wishYn == 'N'){
+			$.ajax({
+				
+				url: "${pageContext.request.contextPath}/shop/wishlistAdd",
+				method: "Get",
+				data : {
+					memberNo:  $memberNo,
+					productCode : $productCode 
+					
+				},
+				success(data){
+					if(data == 1){
+						$(e.target).data('wishyn', 'Y');
+						$(e.target).attr('class', 'shop-like-icon fas fa-heart position-absolute wishBtn');							
+					}
+				},
+				error: console.log
+		});
+	}else{
+		$.ajax({
+			
+			url: "${pageContext.request.contextPath}/shop/wishlistDelete",
+			method: "Get",
+			data : {
+				memberNo:  $memberNo,
+				productCode : $productCode 
+				
+			},
+			success(data){
+				if(data == 1){
+					$(e.target).data('wishyn', 'N');
+					$(e.target).attr('class', 'shop-like-icon far fa-heart position-absolute wishBtn');							
+				}
+			},
+			error: console.log
+	});
+		
+		
+	}
+	
+})
+</script>
+</sec:authorize>
+<!-- 위시리스트 로그인 했을 시 비동기 끝 -->
+
+<!-- 위시리스트 비 로그인 시 비동기 시작 -->
+<sec:authorize access="isAnonymous()">
+	<script>
+$(document).on('click', '.wishBtn', function(e) {
+	alert("로그인 후 이용가능합니다.");
+	return;
+
+})
+
+</script>
+</sec:authorize>
+<!-- 위시리스트 비 로그인 시 비동기 끝 -->
+
+
+
+
 
 
 
 <script>
+
+
+window.onload = basic;
+
 const parentCategoryCode = $("#parentTitle").data("target");
 let cPage = 1;
+
+function basic(){
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/shop/childCategorySearch.do",
+		data : {
+				
+				parentCategoryCode : '${parentCategoryCode}',
+				keyword : 'new',
+				cPage : cPage},
+		method : "GET",
+		success(data){
+			console.log(data);
+			$("#productContainer").html(data["productStr"]);
+			$("#productSize").text(data["totalContent"]);
+			$(".pagebar").detach();
+			$("#pageBar").after(data["pagebar"]);
+			
+		},
+		error : console.log
+	});
+	
+}
+
+
 
 //이벤트 상품 소분류 코드별 정렬
 $(document).on("click", ".category-badge, .shop-sort, .page-link", (e)=>{
@@ -162,7 +257,7 @@ $(document).on("click", ".category-badge, .shop-sort, .page-link", (e)=>{
 			$("#productContainer").html(data["productStr"]);
 			$("#productSize").text(data["totalContent"]);
 			$(".pagebar").detach();
-			$(".banner").after(data["pagebar"]);
+			$("#pageBar").after(data["pagebar"]);
 			
 		},
 		error : console.log

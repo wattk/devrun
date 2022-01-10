@@ -452,7 +452,7 @@ public class ShopController {
 			tenArr.add(productName);
 			tenArr.add(p.getProductCode());
 		}
-
+		model.addAttribute("parentCategoryCode", parentCate);
 		model.addAttribute("tenArr", tenArr);
 
 		return "shop/shopCategory";
@@ -460,10 +460,8 @@ public class ShopController {
 
 	// 상품 사이드 메뉴에서 소분류 카테고리 클릭 시
 	@GetMapping("shopChildCate")
-	public String shopChildCate(@RequestParam String childCategoryCode, Model model,
-			@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, Authentication authentication) {
+	public String shopChildCate(@RequestParam String childCategoryCode, Model model, Authentication authentication) {
 
-		//
 		String thisCateName = shopService.thisCateName(childCategoryCode);
 		model.addAttribute("thisCateName", thisCateName);
 		model.addAttribute("childCategoryCode", childCategoryCode);
@@ -476,22 +474,9 @@ public class ShopController {
 		 * model.addAttribute("ChildCateNames", ChildCateNames);
 		 */
 
-		// 페이징 처리
-		log.debug("cPage : {} ", cPage);
-		int limit = 12;
-		int offset = (cPage - 1) * limit;
-
-		List<ProductEx> itemList = shopService.selectItemsByChildCate(offset, limit, childCategoryCode);
-		model.addAttribute("itemList", itemList);
-
 		// 갯수세기
 		int total = shopService.countItemsByChildCode(childCategoryCode);
 		model.addAttribute("total", total);
-
-		// 3.pagebar
-		String url = request.getRequestURI();
-		String pagebar = shopUtils.getPagebar(cPage, limit, total, url);
-		model.addAttribute("pagebar", pagebar);
 
 		// 인기상품10위
 		List<ProductEntity> tenList = shopService.topTenItems();
@@ -577,7 +562,6 @@ public class ShopController {
 		param2.put("memberNo", memberNo);
 
 		wishCheckYn = shopService.didIHitWishlist(param2);
-		log.debug("wishCheckYn 이게 1이면 위시리스트에 담겼다는 것 : {}", wishCheckYn);
 		map.put("wishCheckYn", wishCheckYn);
 
 		return map;
@@ -611,7 +595,6 @@ public class ShopController {
 	@PostMapping("/insertReview")
 	public String review(Review review, MultipartFile upFile, RedirectAttributes redirectAttr,
 			HttpServletRequest request) throws IllegalStateException, IOException {
-		log.debug("리뷰를 봅시다. : {}", review);
 
 		String saveDirectory = application.getRealPath("/resources/upload/review");
 
@@ -642,7 +625,6 @@ public class ShopController {
 	// 리뷰 신고 등록
 	@PostMapping("/insertReport")
 	public String insertReport(Report report, RedirectAttributes redirectAttr, HttpServletRequest request) {
-		log.debug("report 8개 받았니? : {}", report);
 
 		int result = reportService.insertReport(report);
 		log.debug("신고가 잘 등록? : {}", result);
@@ -953,7 +935,12 @@ public class ShopController {
 			@RequestParam(value = "parentCategoryCode") String parentCategoryCode,
 			@RequestParam(value = "childCategoryCode[]", required = false) List<String> childCategoryCode,
 			@RequestParam(value = "keyword", required = false) String keyword, HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response, Authentication authentication) {
+		Member member = null;
+		if (authentication != null) {
+			member = (Member) authentication.getPrincipal();
+		}
+
 		Map<String, Object> resultMap = new HashMap<>();
 		log.debug("cPage = {}", cPage);
 
@@ -971,7 +958,7 @@ public class ShopController {
 		String url = request.getContextPath();
 
 		List<ProductEntity> productList = shopService.selectProductListByChildCategory(param, offset, limit);
-		String productStr = DevrunUtils.getProductList(productList, url);
+		String productStr = shopUtils.getProductList(productList, member, url);
 
 		// 2. 전체 게시물 수 totalContent
 //		url = request.getRequestURI();
