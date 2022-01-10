@@ -297,4 +297,9 @@ public class ShopServiceImpl implements ShopService {
 		return shopDao.shopSearchSort(offset, limit, param);
 	}
 
+	@Override
+	public List<Review> topFourReview() {
+		return shopDao.topFourReview();
+	}
+
 }

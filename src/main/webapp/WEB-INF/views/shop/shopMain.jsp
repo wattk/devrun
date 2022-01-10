@@ -505,19 +505,17 @@
                    <div id="shopMainBestReviewsDiv">
                        <p id="bestReviewsP">이달의 Best Reviews</p>
                        <div class="row space-evenly">
-                           <div class="bestReview" id="bestReviewDiv1">
-                               <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
-                           </div>
-                           <div class="bestReview" id="bestReviewDiv3">
-                               <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
-                           </div> 
-                           <div class="bestReview" id="bestReviewDiv3">
-                               <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
-                           </div>
-                           <div class="bestReview" id="bestReviewDiv3">
-                               <a href=""><img src="https://i.ibb.co/Z6J4nTt/best-Review1.jpg" alt=""></a>
-                           </div>  
-                       </div>
+                       <c:if test="${reviewList != null}">
+	                       <c:forEach items="${reviewList}" var ="r">
+	                           <div class="bestReview">
+	                               <a href="${pageContext.request.contextPath}/shop/itemDetail/${r.productCode}">
+	                               	<img src="${pageContext.request.contextPath}/resources/upload/review/${r.attach.renamedFilename}" alt="">
+	                               	<span class="reviewSpan2">${r.id}님의</span>
+	                               	<span class="reviewSpan">리뷰상품보러가기</span>
+	                               </a>
+	                           </div>
+	                       </c:forEach>
+                       </c:if>
                    </div>
                    <!-- 베스트 리뷰 끝 -->
                    <hr id="hr2">
