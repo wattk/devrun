@@ -100,22 +100,12 @@
   
                    <!--반응형 사이드바 끝-->
                </div>
-               <div class = "col-md-3" id="shopTop-10Div">
+               <div class = "col-md-4" id="shopTop-10Div">
                    <div id="content">
                        <dl id="rank-list">
                            <dt>실시간 급상승 검색어</dt>
                            <dd>
-                               <ol>
-                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[1]}">1위 : ${tenArr[0]}</a></li>
-                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[3]}">2위 : ${tenArr[2]}</a></li>
-                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[5]}">3위 : ${tenArr[4]}</a></li>
-                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[7]}">4위 : ${tenArr[6]}</a></li>
-                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[9]}">5위 : ${tenArr[8]}</a></li>
-                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[11]}">6위 : ${tenArr[10]}</a></li>
-                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[13]}">7위 : ${tenArr[12]}</a></li>
-                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[15]}">8위 : ${tenArr[14]}</a></li>
-                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[17]}">9위 : ${tenArr[16]}</a></li>
-                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[19]}">10위 : ${tenArr[18]}</a></li>
+                               <ol id="rankOl">
                                </ol>
                            </dd>
                        </dl>
@@ -135,6 +125,34 @@
            </div>
 
 <script>
+window.onload=topTen;
+
+
+function topTen(){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/shop/topTen",
+		method : "GET",
+		success(data){
+			console.log(data);
+			const tenArr = data;
+			const a = `
+			    <li><a href="${pageContext.request.contextPath}/shop/itemDetail/\${tenArr[1]}">1위 : \${tenArr[0]}</a></li>
+                <li><a href="${pageContext.request.contextPath}/shop/itemDetail/\${tenArr[3]}">2위 : \${tenArr[2]}</a></li>
+                <li><a href="${pageContext.request.contextPath}/shop/itemDetail/\${tenArr[5]}">3위 : \${tenArr[4]}</a></li>
+                <li><a href="${pageContext.request.contextPath}/shop/itemDetail/\${tenArr[7]}">4위 : \${tenArr[6]}</a></li>
+                <li><a href="${pageContext.request.contextPath}/shop/itemDetail/\${tenArr[9]}">5위 : \${tenArr[8]}</a></li>
+                <li><a href="${pageContext.request.contextPath}/shop/itemDetail/\${tenArr[11]}">6위 : \${tenArr[10]}</a></li>
+                <li><a href="${pageContext.request.contextPath}/shop/itemDetail/\${tenArr[13]}">7위 : \${tenArr[12]}</a></li>
+                <li><a href="${pageContext.request.contextPath}/shop/itemDetail/\${tenArr[15]}">8위 : \${tenArr[14]}</a></li>
+                <li><a href="${pageContext.request.contextPath}/shop/itemDetail/\${tenArr[17]}">9위 : \${tenArr[16]}</a></li>
+                <li><a href="${pageContext.request.contextPath}/shop/itemDetail/\${tenArr[19]}">10위 : \${tenArr[18]}</a></li>`;
+			$('#rankOl').append(a);
+		},
+		error:console.log
+		
+	})
+}
+
 $(serviceCenter).click((e) => {
 	   location.href = "${pageContext.request.contextPath}/customerCenter/noticeList.do";
 });

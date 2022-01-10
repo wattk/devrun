@@ -200,7 +200,7 @@
    
    #rank-list {
        overflow: hidden;
-       width: 160px;
+       width: 430px;
        height: 20px;
        margin: 0;
    }
@@ -215,6 +215,7 @@
    }
    
    #rank-list ol {
+ 	   width: 430px;
        position: absolute;
        top: 0;
        left: 0;
@@ -224,6 +225,7 @@
    }
    
    #rank-list li {
+  	   width: 430px;
        height: 20px;
        line-height: 20px;
    }

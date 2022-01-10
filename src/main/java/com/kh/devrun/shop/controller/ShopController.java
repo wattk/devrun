@@ -292,6 +292,26 @@ public class ShopController {
 
 		return "shop/itemDetail";
 	}
+	
+	@ResponseBody
+	@GetMapping("/topTen")
+	public List<String> topTen(Model model) {
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 38) {
+				productName = productName.substring(0, 37);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+		
+		return tenArr;
+	}
 
 	// 헤더에서 Shop 눌렀을 시
 	@GetMapping("/shopMain.do")
@@ -300,23 +320,10 @@ public class ShopController {
 		// 베스트리뷰
 		List<Review> reviewList = shopService.topFourReview();
 		model.addAttribute("reviewList", reviewList);
-
-		// 인기상품10위
-		List<ProductEntity> tenList = shopService.topTenItems();
-		List<String> tenArr = new ArrayList<String>();
-
-		for (ProductEntity p : tenList) {
-			String productName = p.getName();
-			if (productName.length() > 7) {
-				productName =  productName.substring(0, 6);
-				log.debug("sub:{}", productName);
-			}
-			tenArr.add(productName);
-			tenArr.add(p.getProductCode());
-		}
-		log.debug("tenArr : {}", tenArr);
-
-		model.addAttribute("tenArr", tenArr);
+		
+		
+		
+		
 
 		return "shop/shopMain";
 	}
