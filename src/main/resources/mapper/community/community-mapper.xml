@@ -35,9 +35,9 @@
 		default,
 		default,
 		default,
+		#{thumbnail},
 		default,
 		#{hashtag},
-		#{thumbnail},
 		default
 	)
   </insert>
@@ -71,16 +71,43 @@
   		community_no = #{communityNo}
   </select>
   
+	<!--=========================== 최근답변순 리스트 시작 ===========================-->
+  		<select id="selectcurrentCommentBoardList" resultType="communityEntity">
+			select
+			    *
+			from
+			    community
+			where
+			    community_no in (
+			select
+			    a.community_no
+			from
+			(select
+			    ROW_NUMBER() over (partition by cc.community_no order by cc.reg_date desc) as rank,
+			    cc.comment_no,
+			    cc.community_no
+			from
+			    (community_comment cc inner join (select * from community where page_code = 2) c
+			        on cc.community_no = c.community_no)) a
+			where
+			    a.rank = 1)
+		 </select>
+	<!--=========================== 최근답변순 리스트 종료 ===========================-->
+  
   <!-- 좋아요순 리스트 -->
   <select id="selectLikeBoardList" resultType="communityEntity">
-	select 
+	select * from (
+    select 
         c.community_no,
 	    c.title,
 	    (select nickname from member where member_no = c.member_no) nickname,
         c.enroll_date,
 	   	c.like_count,
 	   	c.view_count,
-	    comment_count
+	    nvl(comment_count,0) as comment_count,
+	    c.study_join_yn,
+	    c.page_code,
+	    nvl(c.answer_yn, 'N') as answer_yn
 	from 
 		community c 
             left join(
@@ -93,9 +120,9 @@
 	on 
 		c.community_no = m.community_no
 	where
-		page_code = #{pageCode}
+		page_code = #{pageCode})
 	order by
-	    like_count desc  
+	    like_count desc 
   </select>
   
   <!-- 답변순 리스트 -->
@@ -108,7 +135,10 @@
         c.enroll_date,
 	   	c.like_count,
 	   	c.view_count,
-	    nvl(comment_count,0) as comment_count
+	    nvl(comment_count,0) as comment_count,
+	    c.study_join_yn,
+	    c.page_code,
+	    nvl(c.answer_yn, 'N') as answer_yn
 	from 
 		community c 
             left join(
@@ -282,7 +312,8 @@
         c.enroll_date,
 	   	c.like_count,
 	   	c.view_count,
-	    m.comment_count
+	    m.comment_count,
+	    c.answer_yn
 	from 
 		community c 
             left join(
@@ -339,159 +370,197 @@
   		page_code = 2
   </select>
   
-  <!-- 자유게시판 총 게시물 수 -->
-  <!-- select 태그의 resultType, 혹은 resultMap은 반드시 써준다. -->
-  <!-- 기본형 int일때는 _int라는 alias를 mybatis에서 제공한다. -->
-  <select id="selectFreeboardCount" resultType="_int">
-  	select
-  		count(*)
-  	from
-  		community
-  	where
-  		page_code = 4
-  </select>
+  	<!-- 자유게시판 총 게시물 수 -->
+  	<!-- select 태그의 resultType, 혹은 resultMap은 반드시 써준다. -->
+  	<!-- 기본형 int일때는 _int라는 alias를 mybatis에서 제공한다. -->
+	<!--=========================== 자유게시판 총 게시물 수 ===========================-->
+	<select id="selectFreeboardCount" resultType="_int">
+		select
+			count(*)
+		from
+			community
+		where
+			page_code = 4
+	</select>
+	<!--=========================== 자유게시판 총 게시물 수 ===========================-->
   
-  <!-- 커뮤니티 상세보기 -->
-  <select id="selectOneCommunity" resultType="communityEntity">
-	select
-	    c.*,
-	    (select nickname from member where member_no = c.member_no) nickname,
-	    (select authority from authorities where member_no = c.member_no) authority
-	from
-	    community c
-  	where
-  		community_no = #{community_no}
-  </select>
+	<!--=========================== 커뮤니티 상세보기 시작 ===========================-->
+		<select id="selectOneCommunity" resultType="communityEntity">
+		select
+		    c.*,
+		    (select nickname from member where member_no = c.member_no) nickname,
+		    (select authority from authorities where member_no = c.member_no) authority
+		from
+		    community c
+	  	where
+	  		community_no = #{community_no}
+		</select>
+	<!--=========================== 커뮤니티 상세보기 종료 ===========================-->
   
-  <!-- 모집중에서 모집완료로 변경 -->
-  <update id="updateJoinNo">
-  	update
-	    community
-	set
-		study_join_yn = 'N'
-	where
-	    community_no = #{communityNo}
-  </update>
-  
-  <!-- 모집완료에서 모집중으로 변경 -->
+	<!--=========================== 모집중 -> 모집완료 시작 ===========================-->
+	<update id="updateJoinNo">
+	 	update
+		    community
+		set
+			study_join_yn = 'N'
+		where
+		    community_no = #{communityNo}
+	</update>
+	<!--=========================== 모집중 -> 모집완료 시작 ===========================-->
+
+	<!--=========================== 답변완료 -> 답변중 시작 ===========================-->
+	<update id="updateAnswerNo">
+		update
+			community
+		set
+			answer_yn = 'N'
+		where
+			community_no = #{communityNo}
+	</update>
+	<!--=========================== 답변완료 -> 답변중 종료 ===========================-->
+
+	<!--=========================== 모집완료 -> 모집중 시작 ===========================-->
     <update id="updateJoinYes">
-  	update
-	    community
-	set
-		study_join_yn = 'Y'
-	where
-	    community_no = #{communityNo}
-  </update>
+ 		update
+    		community
+		set
+			study_join_yn = 'Y'
+		where
+    		community_no = #{communityNo}
+	</update>
+	<!--=========================== 모집완료 -> 모집중 종료 ===========================-->
   
-  <!-- 커뮤니티 수정하기 -->
-  <update id="updateCommunity">
-  	update
-	    community
-	set
-	    title = #{title},
-	    content = #{content},
-	    enroll_date = default,
-	    hashtag = #{hashtag},
-	    thumbnail = #{thumbnail}
-	where
-	    community_no = #{communityNo}
-  </update>
+	<!--=========================== 답변중 -> 답변완료 시작 ===========================-->
+	<update id="updateAnswerYes">
+		update
+			community
+		set
+			answer_yn = 'Y'
+		where
+			community_no = #{communityNo}
+	</update>
+	<!--=========================== 답변중 -> 답변완료 종료 ===========================-->
   
-  <!-- 자유게시판 삭제하기 -->
-  <delete id="communityDelete">
-  	delete from 
-    	community 
-	where
+	<!--=========================== 게시글 수정 시작 ===========================-->
+		<update id="updateCommunity">
+		 	update
+		    community
+		set
+		    title = #{title},
+		    content = #{content},
+		    enroll_date = default,
+		    hashtag = #{hashtag},
+		    thumbnail = #{thumbnail}
+		where
+		    community_no = #{communityNo}
+		</update>
+	<!--=========================== 게시글 수정 종료 ===========================-->
+  
+	<!--=========================== 게시글 삭제 시작 ===========================-->
+		<delete id="communityDelete">
+		 	delete from 
+		   	community 
+		where
+		   	community_no = #{communityNo}
+		</delete>
+	<!--=========================== 게시글 삭제 종료 ===========================-->
+  
+	<!--=========================== 댓글 조회 시작 ===========================-->
+		<select id="selectCommentList" resultType="communityCommentEntity">
+		 	select
+		    c.*,
+		    (select nickname from member where member_no = c.member_no) nickname
+		from
+		    community_comment c
+		where
+		    community_no = #{communityNo}
+		start with
+		    comment_level = 1
+		connect by
+		    prior comment_no = comment_ref_no
+		order siblings by
+		    reg_date desc
+		</select>
+	<!--=========================== 댓글 조회 종료 ===========================-->
+  
+	<!--=========================== 댓글 입력 시작 ===========================-->
+	<insert id="insertComment">
+		insert into community_comment
+		values(
+			seq_community_comment_no.nextval,
+			#{memberNo},
+			<choose>
+		<when test="commentRefNo eq 0">
+			null,
+		</when>
+		<when test="commentRefNo != 0">
+			#{commentRefNo},
+		</when>
+			</choose>
+			#{communityNo},
+			#{commentLevel},
+			#{content},
+			default
+		)
+	</insert>
+	<!--=========================== 댓글 입력 종료 ===========================-->
+  
+  	<!--=========================== 댓글 삭제 시작 ===========================-->
+	<delete id="commentDelete">
+ 		delete from 
+   		community_comment 
+		where
+   		comment_no = #{commentNo}
+   	</delete>
+  	<!--=========================== 댓글 삭제 종료 ===========================-->
+  
+	<!--=========================== 조회수 증가 시작 ===========================-->
+ 	<update id="viewCount">
+ 		update
+    		community
+		set
+    		view_count = view_count + 1
+		where
     	community_no = #{communityNo}
-  </delete>
+ 	</update>
+ 	<!--=========================== 조회수 증가 종료 ===========================-->
   
-  <!-- 자유게시판 댓글 -->
-  <select id="selectCommentList" resultType="communityCommentEntity">
-  	select
-	    c.*,
-	    (select nickname from member where member_no = c.member_no) nickname
-	from
-	    community_comment c
-	where
-	    community_no = #{communityNo}
-	start with
-	    comment_level = 1
-	connect by
-	    prior comment_no = comment_ref_no
-	order siblings by
-	    reg_date desc
-  </select>
+	<!--=========================== 타입별 검색 시작 ===========================-->
+	<select id="selectBoardListByType" resultType="communityEntity">
+		select
+		    c.community_no,
+		    c.title,
+		    n.nickname,
+		       c.enroll_date,
+		   	c.like_count,
+		   	c.view_count,
+		    m.commentCount,
+		    c.page_code,
+		    c.study_join_yn,
+		    c.answer_yn
+		from 
+			community c 
+		           left join( select  community_no,  count(comment_no) as commentCount 
+		               from 
+		                   community_comment 
+		               group by community_no) m
+		  	on 
+			c.community_no = m.community_no and
+			c.page_code = ${pageCode}
+		       left join (select member_no, nickname from member) n
+		on 
+		       n.member_no = c.member_no
+		   where
+			page_code = ${pageCode} and
+		       ${searchType} like '%'|| #{searchKeyword} ||'%'	
+		order by
+		    community_no desc
+	</select>
+	<!--=========================== 타입별 검색 종료 ===========================-->
   
-  <!-- 댓글 입력 -->
-  <insert id="insertComment">
-  	insert into community_comment
-  	values(
-  		seq_community_comment_no.nextval,
-  		#{memberNo},
-  		<choose>
-			<when test="commentRefNo eq 0">
-				null,
-			</when>
-			<when test="commentRefNo != 0">
-				#{commentRefNo},
-			</when>
-  		</choose>
-  		#{communityNo},
-  		#{commentLevel},
-  		#{content},
-  		default
-  	)
-  </insert>
   
-  <!-- 댓글 삭제 -->
-  <delete id="commentDelete">
-  	delete from 
-    	community_comment 
-	where
-    	comment_no = #{commentNo}
-  </delete>
-  
-  <!-- 조회수 증가 -->
-  <update id="viewCount">
-  	update
-	    community
-	set
-	    view_count = view_count + 1
-	where
-	    community_no = #{communityNo}
-  </update>
-  
-  <!-- 자유게시판 타입별 검색 -->
-  <select id="selectBoardListByType" resultType="communityEntity">
-	select
-        c.community_no,
-	    c.title,
-	    n.nickname,
-        c.enroll_date,
-	   	c.like_count,
-	   	c.view_count,
-	    m.commentCount
-	from 
-		community c 
-            left join( select  community_no,  count(comment_no) as commentCount 
-                from 
-                    community_comment 
-                group by community_no) m
-   	on 
-		c.community_no = m.community_no and
-		c.page_code = ${pageCode}
-        left join (select member_no, nickname from member) n
-	on 
-        n.member_no = c.member_no
-    where
-		page_code = ${pageCode} and
-        ${searchType} like '%'|| #{searchKeyword} ||'%'	
-	order by
-	    community_no desc
-  </select>
-  
-  <!-- 자유게시판 타입별 검색 결과 카운팅 -->
-  <select id="selectCommunityTotalCountByType" resultType="_int">
+	<!--=========================== 타입별 검색 결과 게시물 수 시작 ===========================-->
+	<select id="selectCommunityTotalCountByType" resultType="_int">
   	select
   		count(*)
   	from
@@ -502,61 +571,77 @@
   		${searchType} like '%'|| #{searchKeyword} || '%'
   	order by
   		community_no desc
-  </select>
+	</select>
+	<!--=========================== 타입별 검색 결과 게시물 수 종료 ===========================-->
+	
+	<!--=========================== 게시판 좋아요 선택 유무 확인 시작 ===========================-->
+  	<select id="didIHitLikes" resultType="_int">
+	  	select
+	  		count(*)
+	  	from
+	  		member_community_likee
+	  	where
+	  		member_no = #{memberNo} and
+	  		community_no = #{communityNo}
+  	</select>
+	<!--=========================== 게시판 좋아요 선택 유무 확인 종료 ===========================-->
   
-  <!-- 자유게시판 좋아요 선택 유무 확인 -->
-  <select id="didIHitLikes" resultType="_int">
-  	select
-  		count(*)
-  	from
-  		member_community_likee
-  	where
-  		member_no = #{memberNo} and
-  		community_no = #{communityNo}
-  </select>
+	<!--=========================== 게시판 좋아요 추가 시작 ===========================-->
+	<update id="freeboardLikeAdd">
+	  	update
+	  		community
+	  	set 
+	  		like_count = like_count + 1
+	  	where
+	  		community_no = #{communityNo}
+  	</update>
+  	
+	<insert id="insertMemberCommunityLike">
+		insert into
+			member_community_likee
+		values (#{communityNo}, #{memberNo})
+	</insert>
+	<!--=========================== 게시판 좋아요 추가 종료 ===========================-->
+	
+	<!--=========================== 게시판 좋아요 취소 시작 ===========================-->
+	<update id="freeboardLikeDelete">
+		update
+			community
+		set
+			like_count = like_count - 1
+		where
+			community_no = #{communityNo}
+	</update>
+	
+	<delete id="deleteMemberCommunityLike">
+		delete
+			member_community_likee
+		where
+			community_no = #{communityNo} and
+			member_no = #{memberNo}
+	</delete>
+	<!--=========================== 게시판 좋아요 취소 종료 ===========================-->
   
-  <!-- 자유게시판 좋아요 추가 -->
-  <update id="freeboardLikeAdd">
-  	update
-  		community
-  	set 
-  		like_count = like_count + 1
-  	where
-  		community_no = #{communityNo}
-  </update>
+  	<!--=========================== 게시판 좋아요 갱신 시작 ===========================-->
+	<select id="refreshCountLike" resultType="_int">
+		select
+			like_count
+		from
+			community
+		where
+			community_no = #{communityNo}
+	</select>
+  	<!--=========================== 게시판 좋아요 갱신 종료 ===========================-->
   
-  <insert id="insertMemberCommunityLike">
-  	insert into
-  		member_community_likee
-  	values (#{communityNo}, #{memberNo})
-  </insert>
   
-  <delete id="deleteMemberCommunityLike">
-  	delete
-  		member_community_likee
-  	where
-  		community_no = #{communityNo} and
-  		member_no = #{memberNo}
-  </delete>
   
-  <select id="refreshCountLike" resultType="_int">
-  	select
-  		like_count
-  	from
-  		community
-  	where
-  		community_no = #{communityNo}
-  </select>
   
-  <!-- 자유게시판 좋아요 삭제 -->
-  <update id="freeboardLikeDelete">
-  	update
-  		community
-  	set
-  		like_count = like_count - 1
-  	where
-  		community_no = #{communityNo}
-  </update>
+  
+  
+  
+  
+  
+  
   
   <!-- 지원 mapper 시작 -->
   <select id="selectAllPostOrderByLatest" resultType="communityEntity">
@@ -626,6 +711,17 @@
 	order by
 		c.enroll_date desc
   </select>
+  
+  <!-- 답변 많은순 전체 게시물 수 -->
+  <select id="selectCommentTotalCountByBoard" resultType="_int">
+  	select
+  		count(*)
+  	from
+  		community
+  	where
+  		page_code = #{pageCode}
+  </select>
+  
   
   <select id="selectLikeTotalCount" resultType="_int">
     select 

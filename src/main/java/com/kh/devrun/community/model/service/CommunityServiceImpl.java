@@ -281,7 +281,39 @@ public class CommunityServiceImpl implements CommunityService {
 	public int selectOneQnACount() {
 		return communityDao.selectOneQnACount();
 	}
+
+	@Override
+	public int updateAnswerNo(Map<String, Object> param) {
+		return communityDao.updateAnswerNo(param);
+	}
+
+	@Override
+	public int updateAnswerYes(Map<String, Object> param) {
+		return communityDao.updateAnswerYes(param);
+	}
+
+	@Override
+	public int selectCommentTotalCountByBoard(int pageCode) {
+		return communityDao.selectCommentTotalCountByBoard(pageCode);
+	}
 	
+	// 타입별 검색
+	@Override
+	public List<CommunityEntity> selectBoardListByType(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectBoardListByType(param, offset, limit);
+	}
+	
+	// 타입별 검색 총 게시물 수
+	@Override
+	public int selectCommunityTotalCountByType(Map<String, Object> param) {
+		return communityDao.selectCommunityTotalCountByType(param);
+	}
+
+	// 최근답변순 정렬
+	@Override
+	public List<CommunityEntity> selectcurrentCommentBoardList(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectcurrentCommentBoardList(param, offset, limit);
+	}
 
 
 

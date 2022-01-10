@@ -111,9 +111,23 @@
 					<!-- 모집중 버튼(N일 때) -->
 					<c:if test="${communityEntity.pageCode eq 3 && communityEntity.memberNo eq member.memberNo && communityEntity.studyJoinYn eq 'N'}"> 
 						<button type="button" class="btn btn-success" style="margin-right: 10px;" id="changeJoinYn" 
-							data-study-join-yn="${communityEntity.studyJoinYn}"
+							data-study-join-yn="${communityEntity.answerYn}"
 							data-community-no="${communityEntity.communityNo}">모집중</button>
 					</c:if>
+					<sec:authorize access="hasRole('AM')">
+						<!-- 답변완료 버튼(Y일 때) -->
+						<c:if test="${communityEntity.pageCode eq 2 && communityEntity.answerYn eq 'Y'}"> 
+							<button type="button" class="btn btn-success" style="margin-right: 10px;" id="changeAnswerYn" 
+								data-answer-yn="${communityEntity.answerYn}"
+								data-community-no="${communityEntity.communityNo}">답변중</button>
+						</c:if>
+						<!-- 답변중 버튼(N일 때) -->
+						<c:if test="${communityEntity.pageCode eq 2 && communityEntity.answerYn eq 'N'}"> 
+							<button type="button" class="btn btn-success" style="margin-right: 10px;" id="changeAnswerYn" 
+								data-answer-yn="${communityEntity.answerYn}"
+								data-community-no="${communityEntity.communityNo}">답변완료</button>
+						</c:if>
+					</sec:authorize>
 					<sec:authorize access="hasAnyRole('M1','M2')">
 						<button style="margin-right: 10px;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" id="reportButton">신고하기</button>
 						<jsp:include page="/WEB-INF/views/community/common/reportModal.jsp">
@@ -147,7 +161,15 @@
 								data-community-no = "${communityEntity.communityNo}"
 								data-page-code= "${communityEntity.pageCode}">삭제하기</button>
 					</sec:authorize>
-					<button type="button" class="btn btn-secondary btn-lg" onclick="location.href = '${pageContext.request.contextPath}/community/communityStudyList.do'">목록보기</button>
+					<c:if test="${communityEntity.pageCode eq '4' }">
+						<button type="button" class="btn btn-secondary btn-lg" onclick="location.href = '${pageContext.request.contextPath}/community/communityFreeboardList.do'">목록보기</button>
+					</c:if>
+					<c:if test="${communityEntity.pageCode eq '3' }">
+						<button type="button" class="btn btn-secondary btn-lg" onclick="location.href = '${pageContext.request.contextPath}/community/communityStudyList.do'">목록보기</button>
+					</c:if>
+					<c:if test="${communityEntity.pageCode eq '2' }">
+						<button type="button" class="btn btn-secondary btn-lg" onclick="location.href = '${pageContext.request.contextPath}/community/communityQnAList.do'">목록보기</button>
+					</c:if>
 				</div>
 			</div>
 		</div>
@@ -156,42 +178,86 @@
 	<hr />
 	
 	<!-- 회원일때만 댓글 등록창이 보이게끔 설정 -->
-	<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
 	<!-- 댓글 등록 시작 -->
-	<div class="card mb-2">
-		<div class="card-header bg-light">
-			<i class="fa fa-comment fa"></i> 댓글 작성
+	<c:if test="${communityEntity.pageCode ne '2'}">
+		<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
+		<div class="card mb-2">
+			<div class="card-header bg-light">
+				<i class="fa fa-comment fa"></i> 댓글 작성
+			</div>
+			<div class="card-body">
+				<ul class="list-group list-group-flush">
+				    <li class="list-group-item" id="comment-li">
+					<div class="form-inline mb-2">
+						<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
+					</div>
+					<form:form
+						name="commentForm"
+						action="${pageContext.request.contextPath}/community/communityCommentEnroll.do"
+						method="POST"
+						>
+						<textarea class="form-control" name="content" id="comment" rows="2"></textarea>
+						<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment" onclick="commentValidate()">등록</button>
+						
+						<input type="hidden" name="commentLevel" value="1" />
+						<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
+						<!-- <input type="hidden" name="memberNo" value='<c:if test="${member ne null}"><sec:authentication property="principal.memberNo" /></c:if>'>  -->
+						<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
+					</form:form>
+				    </li>
+				</ul>
+			</div>
 		</div>
-		<div class="card-body">
-			<ul class="list-group list-group-flush">
-			    <li class="list-group-item" id="comment-li">
-				<div class="form-inline mb-2">
-					<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
-				</div>
-				<form:form
-					name="commentForm"
-					action="${pageContext.request.contextPath}/community/communityCommentEnroll.do"
-					method="POST"
-					>
-					<textarea class="form-control" name="content" id="comment" rows="2"></textarea>
-					<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment" onclick="commentValidate()">등록</button>
-					
-					<input type="hidden" name="commentLevel" value="1" />
-					<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
-					<!-- <input type="hidden" name="memberNo" value='<c:if test="${member ne null}"><sec:authentication property="principal.memberNo" /></c:if>'>  -->
-					<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
-				</form:form>
-			    </li>
-			</ul>
-		</div>
-	</div>
+		</sec:authorize>
+	</c:if>
 	<!-- 댓글 등록 끝 -->
-	</sec:authorize>
+	
+	<!-- 관리자일때만 댓글 등록창이 보이게끔 설정 -->
+	<!-- 답변 등록 시작 -->
+	<c:if test="${communityEntity.pageCode eq '2'}">
+		<sec:authorize access="hasAnyRole('AM')">
+		<div class="card mb-2">
+			<div class="card-header bg-light">
+				<i class="fa fa-comment fa"></i> 답변 작성
+			</div>
+			<div class="card-body">
+				<ul class="list-group list-group-flush">
+				    <li class="list-group-item" id="comment-li">
+					<div class="form-inline mb-2">
+						<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
+					</div>
+					<form:form
+						name="commentForm"
+						action="${pageContext.request.contextPath}/community/communityCommentEnroll.do"
+						method="POST"
+						>
+						<textarea class="form-control" name="content" id="comment" rows="2"></textarea>
+						<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment" onclick="commentValidate()">등록</button>
+						
+						<input type="hidden" name="commentLevel" value="1" />
+						<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
+						<!-- <input type="hidden" name="memberNo" value='<c:if test="${member ne null}"><sec:authentication property="principal.memberNo" /></c:if>'>  -->
+						<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
+					</form:form>
+				    </li>
+				</ul>
+			</div>
+		</div>
+		</sec:authorize>
+	</c:if>
+	<!-- 댓글 등록 끝 -->
+	
+	
 	
 	<!-- 댓글 시작 -->
 	<div class="card mb-2">
 		<div class="card-header bg-light">
+			<c:if test="${communityEntity.pageCode ne '2'}">
 		        <i class="fa fa-comment fa"></i> 댓글
+			</c:if>
+			<c:if test="${communityEntity.pageCode eq '2'}">
+		        <i class="fa fa-comment fa"></i> 답변
+			</c:if>
 		</div>
 		<div class="card-body">
 			<c:if test="${null ne freeboardCommentList  && not empty freeboardCommentList}">
@@ -207,8 +273,10 @@
 							<textarea class="form-control" id="exampleFormControlTextarea1" rows="1" readonly="readonly">${communityCommentEntity.content}</textarea>
 							<!-- 회원일때만 답글 버튼이 나타나도록 처리 -->
 							<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
-								<div class="row float-right">
-								<button type="button" onclick="firstReply()" class="btn btn-dark mt-3 float-right btnReComment" value="${communityCommentEntity.commentNo}">답글</button>&nbsp;
+									<div class="row float-right">
+								<c:if test="${communityEntity.pageCode ne '2'}">
+									<button type="button" onclick="firstReply()" class="btn btn-dark mt-3 float-right btnReComment" value="${communityCommentEntity.commentNo}">답글</button>&nbsp;
+								</c:if>
 								<!-- 회원일 경우 -->
 								<sec:authorize access="hasAnyRole('M1', 'M2')">
 									<!-- 회원이고 글쓴이 본인일 경우 -->
@@ -262,6 +330,74 @@
 </div>
 
 <script>
+/* ---------------------------- 답변 기능 시작 ---------------------------- */
+// 답변완료 : Y
+// 답변중 : N
+
+$(document).on('click', '#changeAnswerYn', function(e){
+	e.preventDefault();
+	console.log("답변기능 도착했나요?");
+	console.log(e.target);
+	var $answerYn = $(e.target).data("answerYn");
+	const $communityNo = $(e.target).data("communityNo");
+	console.log("답변완료:Y,답변중:N --> " + $answerYn);
+	console.log("답변 게시글 번호 : " + $communityNo);
+		
+	// 답변완료 상태일때
+	if($answerYn == 'Y'){
+		
+		$.ajax({
+			url: "${pageContext.request.contextPath}/community/answerNo.do",
+			method: "GET",
+			data:{
+				answerYn : $answerYn,
+				communityNo : $communityNo
+			},
+			success(data){
+				const result = data["result"]
+				// 1이면 답변중 상태로 변경
+				if(result == 1){
+					alert("답변중 상태로 변경되었습니다.");
+					$("#changeAnswerYn").html('답변완료');
+					$(e.target).data("answerYn", "N");
+				}
+			},
+			error:function(xhr, status, err){
+				console.log(xhr, status, err)
+					alert("로그인 후 이용이 가능합니다.");
+			}
+		});
+	} else{
+		
+		console.log("답변중에서 답변완료로 변경");
+		$.ajax({
+			url: "${pageContext.request.contextPath}/community/answerYes.do",
+			method: "GET",
+			data: {
+				answerYn : $answerYn,
+				communityNo : $communityNo
+			},
+			success(data){
+				const result = data["result"]
+				// 1이면 답변완료 상태로 변경 
+				if(result == 1){
+					alert("답변완료 상태로 변경되었습니다.");
+					$("#changeAnswerYn").html("답변중");
+					$(e.target).data("answerYn", "Y");
+					
+				}
+			},
+			error:function(xhr, status, err){
+			console.log(xhr, status, err);
+				alert("로그인 후 이용이 가능합니다.");
+			}
+		});
+	}
+});
+
+/* ---------------------------- 답변 기능 종료 ---------------------------- */
+
+
 /* ---------------------------- 모집 기능 시작 ---------------------------- */
 // 모집중 : Y
 // 모집완료 : N
@@ -507,6 +643,8 @@ $('.btnCommentDelete').click((e) => {
 	
 });
 
+/* ---------------------------- 좋아요 기능 시작 ---------------------------- */
+
 </sec:authorize>
 // 좋아요 
 $(document).on('click', '#likeButton', function(e) {
@@ -581,6 +719,7 @@ $(document).on('click', '#likeButton', function(e) {
 	}
 });
 
+/* ---------------------------- 좋아요 기능 종료 ---------------------------- */
 
 </script>
 <script src="${pageContext.request.contextPath}/resources/js/community/communityColumnDetail/scripts.js"></script>
