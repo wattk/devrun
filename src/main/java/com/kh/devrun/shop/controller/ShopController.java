@@ -151,6 +151,22 @@ public class ShopController {
 		log.debug("pagebar = {}", pagebar);
 		model.addAttribute("pagebar", pagebar);
 
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 38) {
+				productName = productName.substring(0, 37);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+
+		model.addAttribute("tenArr", tenArr);
+		
 		return "/shop/shopSearch";
 
 	}
@@ -289,13 +305,7 @@ public class ShopController {
 			ProductEx product2 = productService.selectOneItem(productCode);
 			log.debug("조회수 증가 후 조회수는 : {}", product2.getViewCount());
 		}
-
-		return "shop/itemDetail";
-	}
-	
-	@ResponseBody
-	@GetMapping("/topTen")
-	public List<String> topTen(Model model) {
+		
 		// 인기상품10위
 		List<ProductEntity> tenList = shopService.topTenItems();
 		List<String> tenArr = new ArrayList<String>();
@@ -309,8 +319,10 @@ public class ShopController {
 			tenArr.add(productName);
 			tenArr.add(p.getProductCode());
 		}
-		
-		return tenArr;
+
+		model.addAttribute("tenArr", tenArr);
+
+		return "shop/itemDetail";
 	}
 
 	// 헤더에서 Shop 눌렀을 시
@@ -320,10 +332,22 @@ public class ShopController {
 		// 베스트리뷰
 		List<Review> reviewList = shopService.topFourReview();
 		model.addAttribute("reviewList", reviewList);
-		
-		
-		
-		
+
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 38) {
+				productName = productName.substring(0, 37);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+
+		model.addAttribute("tenArr", tenArr);
 
 		return "shop/shopMain";
 	}
@@ -370,6 +394,22 @@ public class ShopController {
 		String url = request.getRequestURI();
 		String pagebar = shopUtils.getPagebar(cPage, limit, total, url);
 		model.addAttribute("pagebar", pagebar);
+		
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 38) {
+				productName = productName.substring(0, 37);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+
+		model.addAttribute("tenArr", tenArr);
 
 		return "shop/shopCategory";
 	}
@@ -408,6 +448,22 @@ public class ShopController {
 		String url = request.getRequestURI();
 		String pagebar = shopUtils.getPagebar(cPage, limit, total, url);
 		model.addAttribute("pagebar", pagebar);
+		
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 38) {
+				productName = productName.substring(0, 37);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+
+		model.addAttribute("tenArr", tenArr);
 
 		return "shop/shopChildCate";
 	}
