@@ -232,4 +232,9 @@ public class ShopDaoImpl implements ShopDao {
 		return session.selectList("shop.shopSearchSort", param, rowBounds);
 	}
 
+	@Override
+	public List<Review> topFourReview() {
+		return session.selectList("shop.topFourReview");
+	}
+
 }

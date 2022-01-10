@@ -408,6 +408,21 @@
 			</choose>
 		</if>
 	</select>
+	
+	<select id="topFourReview" resultMap="review">
+		select rownum
+		,rr.*
+		from
+		(select
+		    r.* 
+		from 
+		     view_reviewInfo r
+		order by 
+		    r.like_count desc)rr
+		where 
+	    	<![CDATA[ rownum >=1 and rownum<5 ]]> 
+	    	and review_attach_no is not null
+	</select>
 
 	<!-- =================================================구분선 ================================================= -->
 

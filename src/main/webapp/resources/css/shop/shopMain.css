@@ -353,7 +353,7 @@
    /*오늘 본 상품 div 끝*/
    
    /*인기 키워드 시작*/
-   .keywordImg{
+   .keywordImg, .bestReview {
        position: relative;
    }
    .keywordSpan {
@@ -369,6 +369,31 @@
 
    }
    /*인기 키워드 끝*/
+   
+   /*베스트리뷰 span*/
+   .reviewSpan{
+	font-family: 'NanumSquareRound';
+    position: absolute;
+	top: 89%;
+    left: 32%;
+    z-index: 1;
+    color: #ffffff;
+    font-size: 18px;
+    width: 167px;
+    font-weight: bold;
+   
+   }
+   .reviewSpan2{
+	font-family: 'NanumSquareRound';
+    position: absolute;
+    top: 3%;
+    left: 12%;
+    z-index: 1;
+    color: #ffffff;
+    font-size: 14px;
+    width: 167px;
+    font-weight: bold;
+   }
    
    /*혜진상품시작*/
    .shop-like-icon{

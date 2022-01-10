@@ -101,7 +101,6 @@ public class ShopController {
 
 		String url = request.getContextPath();
 
-		
 		String productStr = DevrunUtils.getProductList(searchList, url);
 		resultMap.put("productStr", productStr);
 
@@ -296,7 +295,12 @@ public class ShopController {
 
 	// 헤더에서 Shop 눌렀을 시
 	@GetMapping("/shopMain.do")
-	public void shopMain() {
+	public String shopMain(Model model) {
+
+		List<Review> reviewList = shopService.topFourReview();
+		log.debug("reviewList : {}", reviewList);
+		model.addAttribute("reviewList", reviewList);
+		return "shop/shopMain";
 	}
 
 	@GetMapping("wishlist")

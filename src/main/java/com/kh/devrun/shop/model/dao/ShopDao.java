@@ -95,4 +95,6 @@ public interface ShopDao {
 
 	List<ProductEntity> shopSearchSort(int offset, int limit, Map<String, Object> param);
 
+	List<Review> topFourReview();
+
 }
