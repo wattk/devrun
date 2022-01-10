@@ -475,26 +475,26 @@
                        <div class="row space-evenly">
                            <div class="keyword" id="keywordDiv1">
                                <div class="keywordImg" >
-                                   <a href=""><img src="https://i.ibb.co/tQyHz8m/hot-Keyword.png" alt=""></a>
-                                   <a href=""><span class="keywordSpan">#신입개발자</span></a>
+                                   <a href="${pageContext.request.contextPath}/shop/shopSearch?searchKeyword=자세"><img class="keyword-pic" src="https://i.ibb.co/s1sg93V/4ca2ccf43-700x700-95-FIT-1.jpg" alt=""></a>
+                                   <a href="${pageContext.request.contextPath}/shop/shopSearch?searchKeyword=자세"><span class="keywordSpan">#자세보정</span></a>
                                </div>
                            </div>
                            <div class="keyword" id="keywordDiv2">
                                <div class="keywordImg" >
-                                   <a href=""><img src="https://i.ibb.co/M8vtK1H/hot-Keyword3.png" alt=""></a>
-                                   <a href=""><span class="keywordSpan">#5년대세일</span></a>
+                                   <a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ke"><img class="keyword-pic"  src="https://i.ibb.co/1LPhNct/keyboard.jpg" alt=""></a>
+                                   <a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ke"><span class="keywordSpan">#예쁜 키보드</span></a>
                                </div>
                            </div>
                            <div class="keyword" id="keywordDiv3">
                                <div class="keywordImg" >
-                                   <a href=""><img src="https://i.ibb.co/tQyHz8m/hot-Keyword.png" alt=""></a>
-                                   <a href=""><span class="keywordSpan">#겨울용품</span></a>
+                                   <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=3ot"><img class="keyword-pic"  src="https://i.ibb.co/02XgsZ1/ot-3ot-194.jpg" alt=""></a>
+                                   <a href="${pageContext.request.contextPath}/shop/shopChildCate?childCategoryCode=3ot"><span class="keywordSpan">#재밌는제품</span></a>
                                </div>
                            </div>
                            <div class="keyword" id="keywordDiv4">
                                <div class="keywordImg" >
-                                   <a href=""><img src="https://i.ibb.co/M8vtK1H/hot-Keyword3.png" alt=""></a>
-                                   <a href=""><span class="keywordSpan">#허허허헣허</span></a>
+                                   <a href="${pageContext.request.contextPath}/about.do"><img class="keyword-pic"  src="https://i.ibb.co/Pzt3ZKY/Giant-Thumb.jpg" alt=""></a>
+                                   <a href="${pageContext.request.contextPath}/about.do"><span class="keywordSpan">#우리이야기</span></a>
                                </div>
                            </div>
                        </div>
