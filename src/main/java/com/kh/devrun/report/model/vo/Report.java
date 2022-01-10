@@ -30,5 +30,7 @@ public class Report implements Serializable {
 	private int memberNo2;
 	private Date confirmDate;
 	private String reasonName;
+	
+	private int memberNo3;	// 피신고자 번호
 
 }

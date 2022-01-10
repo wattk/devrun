@@ -1,0 +1,9 @@
+@charset "UTF-8";
+/* 블랙리스트 관리 */
+.edit-icon {
+	cursor: pointer;
+}
+
+#note {
+	font-size: 1rem;
+}

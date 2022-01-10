@@ -1,6 +1,5 @@
 package com.kh.devrun.admin.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -339,7 +338,7 @@ public class AdminCustomerCenterController {
 	@PostMapping("/faqUpdate.do")
 	public String faqUpdate(Notice notice, RedirectAttributes redirectAttr, HttpServletRequest request) {
 		log.debug("notice = {}", notice);
-		int faqNo = notice.getNoticeNo();
+
 		try {
 			// 자주묻는질문 수정
 			int result = customerCenterService.updateFaq(notice);

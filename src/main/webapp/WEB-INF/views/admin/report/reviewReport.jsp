@@ -14,13 +14,33 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="reviewModalLabel">리뷰/쪽지 상세 내역</h5>
+        <h5 class="modal-title" id="reviewModalLabel">리뷰 상세 내역</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        어쩌구저쩌구
+        
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary short-cut-btn" data-target-pk-no="">바로가기</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="messageModalLabel">메시지 상세 내역</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
@@ -29,7 +49,7 @@
   </div>
 </div>
 <div class="report-container">
-	<h3 class="m-5">리뷰/쪽지 신고</h3>
+	<h3 class="m-5">리뷰/메시지 신고</h3>
 </div>
 <form:form>
 	<div class="report-search-container mt-5 ml-5">
@@ -37,7 +57,7 @@
 		<input type="radio" name="reportStatus" id="report0" />
 		<label for="report0">전체</label>
 		<input type="radio" name="reportStatus" id="report1" />
-		<label for="report1">진행중</label>
+		<label for="report1">처리중</label>
 		<input type="radio" name="reportStatus" id="report2" />
 		<label for="report2">처리 보류</label>
 		<input type="radio" name="reportStatus" id="report3" />
@@ -71,102 +91,177 @@
 	</div>
 </form:form>
 <hr class="w-100"/>
-<form:form>
-	<div class="review-list">
+
+	<div class="review-list mb-5">
 		<strong class="m-5">리뷰 신고 내역</strong>
 		<table class="admin-tbl table mx-auto mt-3">
 		  <thead>
 		    <tr>
 		      <th scope="col" >번호</th>
-		      <th scope="col" >신고 회원</th>
-		      <th scope="col" >처리 상태</th>
-		      <th scope="col" >등록일</th>
-		      <th scope="col" >신고 내역</th>
-		      <th scope="col" >신고 사유</th>
-		      <th scope="col" >신고 내용</th>
-		      <th scope="col" >경고 부여</th>
+		      <th scope="col" >신고분류</th>
+		      <th scope="col" >상세사유</th>
+		      <th scope="col" >리뷰내용</th>
+		      <th scope="col" >피신고자 번호</th>
+		      <th scope="col" >신고자 번호</th>
+		      <th scope="col" >신고일</th>
+		      <th scope="col" >처리상태</th>
 		      <th scope="col" >처리자</th>
 		    </tr>
 		  </thead>
 		  <tbody>
+		  <c:if test="${not empty reviewList}">
+		  	<c:forEach items="${reviewList}" var="review" varStatus="vs">
 		    <tr class="text-center">
-		      <th scope="row">1</th>
-		      <td>0</td>
+		      <th scope="row">${review.reportNo}</th>
+		      <td>${review.reasonName}</td>
 		      <td>
-		      	<select name="status" id="" class=" bg-light border-0 small">
-				 	<option value="status1" selected>처리중</option>
-				 	<option value="status2">처리 보류</option>
-				 	<option value="status3">처리 완료</option>
+		      	<c:if test="${review.sideNote ne null}">
+		      	<button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="${review.sideNote}">
+				  확인
+				</button>
+				</c:if>
+				<c:if test="${review.sideNote eq null}">
+				  없음
+				</c:if>
+			  </td>
+		      <td>
+		      	<button type="button" class="btn btn-light content-btn" data-toggle="modal" data-target="#reviewModal" data-content="${review.reportContent}" data-target-pk-no="${review.targetPkNo}">확인</button>
+		      </td>
+		      <td>${review.memberNo3}</td>
+		      <td>${review.memberNo}</td>
+		      <td><fmt:formatDate value="${review.regDate}" pattern="yy-MM-dd"/></td>
+		      <td>
+		      	<select name="status" id="statusSelect" class=" bg-light border-0 small" data-report-no="${review.reportNo}" data-target-no="${review.memberNo3}">
+				 	<option value="PR" ${review.status eq 'PR' ? 'selected' : ''}>처리중</option>
+				 	<option value="DR" ${review.status eq 'DR' ? 'selected' : ''}>처리 보류</option>
+				 	<option value="CF" ${review.status eq 'CF' ? 'selected' : ''}>처리 완료</option>
 				 </select>
 		      </td>
-		      <td>0</td>
-		      <td>0</td>
-		      <td>0</td>
 		      <td>
-		      	<button type="button" class="btn btn-light" data-toggle="modal" data-target="#reviewModal">확인</button>
+		      	<c:if test="${review.memberNo2 ne 0}">
+		      	  ${review.memberNo2}
+		      	</c:if>
+		      	<c:if test="${review.memberNo2 eq 0}">
+		      	  미처리
+		      	</c:if>
 		      </td>
-		      <td>
-		      	<select name="warningYn" id="" class=" bg-light border-0 small">
-				 	<option value="Y" selected>Y</option>
-				 	<option value="N">N</option>
-				 </select>
-		      </td>
-		      <td>0</td>
 		    </tr>
+		    </c:forEach>
+		  </c:if>
+		  <c:if test="${empty reviewList}">
+		  	<tr>
+				<td colspan="9" class="text-center">리뷰 신고 내역이 존재하지 않습니다.</td>
+			</tr>
+		  </c:if>
 		  </tbody>
 		</table>
-		<div class="report-save-btn text-right">
-			<button type="button" class="btn btn-primary">저장</button>
-		</div>
+
 	</div>
-</form:form>
-<form:form>
+
 	<div class="message-list">
-		<strong class="m-5">쪽지 신고 내역</strong>
+		<strong class="m-5">메시지 신고 내역</strong>
 		<table class="admin-tbl table mx-auto mt-3">
 		  <thead>
 		    <tr>
 		      <th scope="col" >번호</th>
-		      <th scope="col" >메세지 번호</th>
-		      <th scope="col" >신고 회원</th>
-		      <th scope="col" >처리 상태</th>
-		      <th scope="col" >발신 일시</th>
-		      <th scope="col" >메세지 내용</th>
-		      <th scope="col" >신고 사유</th>
-		      <th scope="col" >경고 부여</th>
+		      <th scope="col" >신고분류</th>
+		      <th scope="col" >상세사유</th>
+		      <th scope="col" >메시지내용</th>
+		      <th scope="col" >피신고자 번호</th>
+		      <th scope="col" >신고자 번호</th>
+		      <th scope="col" >신고일</th>
+		      <th scope="col" >처리상태</th>
 		      <th scope="col" >처리자</th>
 		    </tr>
 		  </thead>
 		  <tbody>
+		  <c:if test="${not empty messageList}">
+		  	<c:forEach items="${messageList}" var="message" varStatus="vs">
 		    <tr class="text-center">
-		      <th scope="row">1</th>
-		      <td>0</td>
-		      <td>0</td>
+		      <th scope="row">${message.reportNo}</th>
+		      <td>${message.reasonName}</td>
 		      <td>
-		      	<select name="status" id="" class=" bg-light border-0 small">
-				 	<option value="status1" selected>처리중</option>
-				 	<option value="status2">처리 보류</option>
-				 	<option value="status3">처리 완료</option>
+		      	<c:if test="${message.sideNote ne null}">
+		      	<button type="button" class="btn btn-light" data-bs-toggle="tooltip" data-bs-placement="top" title="${message.sideNote}">
+				  확인
+				</button>
+				</c:if>
+				<c:if test="${message.sideNote eq null}">
+				  없음
+				</c:if>
+			  </td>
+		      <td>
+		      	<button type="button" class="btn btn-light content-btn" data-toggle="modal" data-target="#messageModal" data-content="${message.reportContent}" data-target-pk-no="${message.targetPkNo}">확인</button>
+		      </td>
+		      <td>${message.memberNo3}</td>
+		      <td>${message.memberNo}</td>
+		      <td><fmt:formatDate value="${message.regDate}" pattern="yy-MM-dd"/></td>
+		      <td>
+		      	<select name="status" id="statusSelect" class=" bg-light border-0 small" data-report-no="${message.reportNo}" data-target-no="${message.memberNo3}">
+				 	<option value="PR" ${message.status eq 'PR' ? 'selected' : ''}>처리중</option>
+				 	<option value="DR" ${message.status eq 'DR' ? 'selected' : ''}>처리 보류</option>
+				 	<option value="CF" ${message.status eq 'CF' ? 'selected' : ''}>처리 완료</option>
 				 </select>
 		      </td>
-		      <td>0</td>
 		      <td>
-		      	<button type="button" class="btn btn-light" data-toggle="modal" data-target="#reviewModal">확인</button>
+		      	<c:if test="${message.memberNo2 ne 0}">
+		      	  ${message.memberNo2}
+		      	</c:if>
+		      	<c:if test="${message.memberNo2 eq 0}">
+		      	  미처리
+		      	</c:if>
 		      </td>
-		      <td>0</td>
-		      <td>
-		      	<select name="warningYn" id="" class=" bg-light border-0 small">
-				 	<option value="Y" selected>Y</option>
-				 	<option value="N">N</option>
-				 </select>
-		      </td>
-		      <td>0</td>
 		    </tr>
+		    </c:forEach>
+		  </c:if>
+		  <c:if test="${empty messageList}">
+		  	<tr>
+				<td colspan="9" class="text-center">메시지 신고 내역이 존재하지 않습니다.</td>
+			</tr>
+		  </c:if>
 		  </tbody>
 		</table>
-		<div class="report-save-btn text-right">
-			<button type="button" class="btn btn-primary">저장</button>
-		</div>
+
 	</div>
-</form:form>
+	
+	<%-- 처리상태 변경을 위한 폼 태그 --%>
+	<%-- 처리상태 처리중, 처리보류, 처리완료(PR/DR/CF)와 신고번호, 피신고자 번호(경고부여를 위함) 보낸다.--%>
+	<form:form
+		name="reportStatusUpdateFrm"
+		action="${pageContext.request.contextPath}/admin/report/reportStatusUpdate.do"
+		method="post">
+			<input type="hidden" name="reportNo" />
+			<input type="hidden" name="status" />
+			<input type="hidden" name="targetNo" />
+	</form:form>
+
+<script src="${pageContext.request.contextPath }/resources/js/admin/reportManage.js"></script>
+<script>
+
+// 바로가기 클릭 시 상세 화면 새창열기 비동기
+$(document).on('click', '.short-cut-btn', function(e) {
+	// pk번호를 이용하여 리뷰 글의 상품코드를 구해와서 새창으로 해당 리뷰신고글이 존재하는 상품상세글 띄운다.
+	const $target = $(e.target);
+	const no = $target.data('targetPkNo');
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/admin/report/searchProductCode.do`,
+		method : "GET", // GET방식 생략 가능
+		data : {
+			no : no
+		},
+		success(productCode) {
+			// 조회된 데이터가 있는 경우 
+			console.log(productCode);
+			if(productCode.length > 0) {
+				// 상품코드를 이용하여 새창으로 상품상세글 띄우기
+				window.open(`${pageContext.request.contextPath}/shop/itemDetail/\${productCode}`, 'newWindow');
+			}
+		},
+		error : console.log
+	});
+	
+});
+
+</script>
 <jsp:include page="/WEB-INF/views/admin/admin-common/footer.jsp"></jsp:include>
