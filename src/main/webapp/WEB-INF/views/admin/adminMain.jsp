@@ -100,7 +100,7 @@
 	                    <!-- Card Body -->
 	                    <div class="card-body">
 	                        <div class="chart-area">
-	                            <canvas id="salesChart" width="10vw" height="250px"> </canvas>
+	                            <canvas id="salesChart" width="300" height="100"> </canvas>
 	                        </div>
 	                    </div>
 	                </div>
@@ -191,10 +191,10 @@
 	                                <i class="fas fa-circle " style="color : #3e95cd"></i> 키보드
 	                            </span>
 	                            <span class="mr-2">
-	                                <i class="fas fa-circle" style="color : #e5d34d"></i> 책상
+	                                <i class="fas fa-circle" style="color : #e5d34d"></i> 의자
 	                            </span>
 	                            <span class="mr-2">
-	                                <i class="fas fa-circle" style="color : #c45850"></i> 의자
+	                                <i class="fas fa-circle" style="color : #c45850"></i> 책상
 	                            </span>
 	                            <span class="mr-2">
 	                                <i class="fas fa-circle" style="color : #8e5ea2"></i> 악세사리
@@ -283,7 +283,7 @@ function drawCharts(){
 let communityData = {
 		labels : communityChartLabels,
 		datasets : [{
-			 backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+			 backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9", "#e5d34d", "#c45850", "#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9", "#e5d34d", "#c45850", "#3e95cd"],
 			data : communityChartData
 		}]
 }
@@ -308,7 +308,7 @@ let orderData = {
 let productData = {
 		labels : salesProductChartLabels,
 		datasets : [{
-			backgroundColor : ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#e5d34d"],
+			backgroundColor : ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9", "#e5d34d", "#c45850"],
 			data : salesProductChartData
 		}]
 }
