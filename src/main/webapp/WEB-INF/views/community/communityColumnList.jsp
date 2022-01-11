@@ -4,12 +4,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <fmt:requestEncoding value="utf-8"/>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="" name="title"/>
-</jsp:include>
-<jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
-	<jsp:param value="" name="title"/>
-</jsp:include>
+<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp"></jsp:include>
         
 <div class="container-fluid container">
 	<div class="row">
@@ -158,5 +154,4 @@
 
 
 <script src="${pageContext.request.contextPath}/resources/js/community/communityColumnList/scripts.js"></script>
-
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
