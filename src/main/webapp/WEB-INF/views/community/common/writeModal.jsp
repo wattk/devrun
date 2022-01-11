@@ -183,6 +183,7 @@ $('#writeBtn').click(function(){
 		return false;
 	}
 	
+	$(window).unbind('beforeunload');
 	$(document.writeForm).submit();
 	
 });

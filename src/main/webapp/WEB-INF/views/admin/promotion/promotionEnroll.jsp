@@ -134,7 +134,7 @@ $(document).ready(function() {
 			success(data){
 				console.log(data);
 				//imgs 변수 안에 /filename 추가. /는 구분자
-				imgs += "/" + data["filename"];
+				imgs += "/" + data["filename"]; //resources/upload/promotion/dfjklsa
 				$('#summernoteEnroll').summernote('insertImage', "${pageContext.request.contextPath}/resources/upload/promotion/"+data["filename"]);
 			},
 			error : console.log
