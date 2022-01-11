@@ -82,7 +82,9 @@
     </div>
     <!-- <nav aria-label="..." class="mx-auto text-center"> -->
     <div class="banner mx-auto text-center">
-    	<img src="${pageContext.request.contextPath}/resources/upload/promotion/PROMO_0y7fZo5w789Pse8.png" alt="" />
+    	<a href="${pageContext.request.contextPath}/shop/promotionDetail/PROMO_0y7fZo5w789Pse8">
+	    	<img src="${pageContext.request.contextPath}/resources/upload/promotion/PROMO_0y7fZo5w789Pse8.png" alt="" />
+    	</a>
     </div>
     <ul class="pagination justify-content-center mt-5">
 	</ul>
