@@ -8,6 +8,10 @@
     font-style: normal;
 }
 
+#eventMain{
+	width:1300px;
+	height:160px;
+}
 
 /**인기키워드 사진 고정*/
 .keyword-pic{
