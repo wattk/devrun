@@ -52,10 +52,10 @@
 <div class="mx-5">
 
 <div class="report-container">
-	<h3 class="m-5">리뷰/메시지 신고</h3>
+	<h3 class="my-5">리뷰/메시지 신고</h3>
 </div>
-<form:form>
-	<div class="report-search-container mt-5 ml-5">
+<form:form class="m-0">
+	<div class="report-search-container mt-5">
 		<strong class="pr-3">처리 상태</strong>
 		<input type="radio" name="reportStatus" id="report0" />
 		<label for="report0">전체</label>
@@ -66,7 +66,7 @@
 		<input type="radio" name="reportStatus" id="report3" />
 		<label for="report3">처리 완료</label>
 	</div>
-	<div class="report-search-container mt-3 ml-5">
+	<div class="report-search-container mt-3">
 		<strong class="pr-3">날짜 선택</strong>
 		<input type="date" name="" id="" class=" bg-light border-0 small"/>
 		<span>~</span>
@@ -76,7 +76,7 @@
 		<span class="badge badge-secondary">이번달</span>
 		<span class="badge badge-secondary">전체</span>
 	</div>
-	<div class="report-search-container mt-3 ml-5">
+	<div class="report-search-container mt-3">
        <div class="input-group w-50">
 		 <select name="search-type" id="reviewReportSearch" class=" bg-light border-0 small">
 		 	<option value="all" selected>모든 신고 조회</option>
@@ -96,7 +96,7 @@
 <hr class="w-100"/>
 
 	<div class="review-list mb-5">
-		<strong class="m-5">리뷰 신고 내역</strong>
+		<strong>리뷰 신고 내역</strong>
 		<table class="admin-tbl table mx-auto mt-3">
 		  <thead>
 		    <tr>
@@ -162,7 +162,7 @@
 	</div>
 
 	<div class="message-list">
-		<strong class="m-5">메시지 신고 내역</strong>
+		<strong>메시지 신고 내역</strong>
 		<table class="admin-tbl table mx-auto mt-3">
 		  <thead>
 		    <tr>
