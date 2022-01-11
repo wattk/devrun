@@ -14,6 +14,7 @@ import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
+import com.kh.devrun.questionProductCus.model.vo.QuestionProductId;
 import com.kh.devrun.shop.model.dao.ShopDao;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
@@ -305,6 +306,11 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public List<ProductEntity> topTenItems() {
 		return shopDao.topTenItems();
+	}
+	
+	// 태영
+	public List<QuestionProductId> selectQuestionList(String productCode) {
+		return shopDao.selectQuestionList(productCode);
 	}
 
 }

@@ -7,6 +7,7 @@ import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
+import com.kh.devrun.questionProductCus.model.vo.QuestionProductId;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
@@ -86,5 +87,8 @@ public interface ShopService {
 	List<Review> topFourReview();
 
 	List<ProductEntity> topTenItems();
+
+	// 태영
+	List<QuestionProductId> selectQuestionList(String productCode);
 
 }
