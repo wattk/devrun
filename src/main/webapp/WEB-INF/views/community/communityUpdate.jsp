@@ -6,17 +6,10 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <fmt:requestEncoding value="utf-8"/>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="" name="title"/>
-</jsp:include>
-<jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
-	<jsp:param value="" name="title"/>
-</jsp:include>
-
+<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp"></jsp:include>
 <!-- 사이드바 css -->
 <link href="${pageContext.request.contextPath}/resources/css/community/style.css" rel="stylesheet">
-
-
 <!-- include summernote css/js -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" integrity="sha512-ZbehZMIlGA8CTIOtdE+M81uj3mrcgyrh6ZFeG33A4FHECakGrOsTPlPQ8ijjLkxgImrdmSVUHn1j+ApjodYZow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js" integrity="sha512-lVkQNgKabKsM1DA/qbhJRFQU8TuwkLF2vSN3iU/c7+iayKs08Y8GXqfFxxTZr1IcpMovXnf2N/ZZoMgmZep1YQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -148,10 +141,12 @@ function freeboardUpdateValidate(){
 						${communityEntity.content}
 					</textarea>
 				</div>
+				<!-- 
 				<div class="mb-3">
 					<label for="tag"><strong>해시태그</strong></label>
 					<input type="text" class="form-control" name="hashtag" id="hashtag" placeholder="태그를 입력해 주세요">
 				</div>
+				 -->
 		</form:form>
 			<div style="text-align: center">
 				<button type="button" class="btn btn-primary btn-lg" id="btnUpdate" onclick="freeboardUpdateValidate()">수정</button>
