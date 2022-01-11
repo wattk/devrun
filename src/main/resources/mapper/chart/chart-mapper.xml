@@ -130,15 +130,15 @@
 		        community
 		     where 
 		        enroll_date 
-		     		between to_date(extract(year from sysdate)||'01', 'YYYYMM')
-		               and to_date(extract(year from sysdate)||'12', 'YYYYMM') 
-		     group by enroll_date) a,
-		     (select 
-		    	to_char(add_months(to_date(extract(year from sysdate)||'01', 'YYYYMM'), level - 1), 'YYYY-MM') as mm 
+		     		between to_date(extract(year from (add_months(sysdate,-12)))||extract(month from sysdate), 'YYYYMM')
+               and sysdate+1
+     group by enroll_date, page_code) a,
+     (select 
+        to_char(add_months(to_date(extract(year from (add_months(sysdate,-12)))||extract(month from sysdate), 'YYYYMM'), level - 1), 'YYYY-MM') as mm 
 			  from 
 		    	dual
 		      connect by level <![CDATA[<=]]> 
-				months_between(to_date(extract(year from sysdate)||'12', 'YYYYMM'), to_date(extract(year from sysdate)||'01', 'YYYYMM') ) + 1) b
+				months_between(to_date(extract(year from sysdate)||extract(month from sysdate), 'YYYYMM') , to_date(extract(year from (add_months(sysdate,-12)))||extract(month from sysdate), 'YYYYMM')) + 1) b
 		where 
 			b.mm = a.enrolldate(+)
 		group by

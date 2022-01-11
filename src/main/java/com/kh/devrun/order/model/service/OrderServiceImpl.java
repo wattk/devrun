@@ -20,6 +20,8 @@ import com.kh.devrun.order.model.vo.OrderLog;
 import com.kh.devrun.order.model.vo.OrderLogExt;
 import com.kh.devrun.order.model.vo.Shipment;
 import com.kh.devrun.product.model.vo.Product;
+import com.kh.devrun.promotion.model.dao.PromotionDao;
+import com.kh.devrun.promotion.model.vo.Promotion;
 import com.kh.devrun.shop.model.vo.Cart;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,8 @@ public class OrderServiceImpl implements OrderService {
 	
 	@Autowired
 	private OrderDao orderDao;
+	@Autowired
+	private PromotionDao promotionDao;
 
 	@Override
 	@Transactional(
@@ -108,6 +112,10 @@ public class OrderServiceImpl implements OrderService {
 		//최근 주문 내역 3건
 		List<MerchantExt> orderList = orderDao.selectCurrentOrder(memberNo);
 		map.put("orderList", orderList);
+		
+		//이벤트 조회
+		Promotion promotion = promotionDao.selectOneLatestPromotionBanner();
+		map.put("promotion", promotion);
 		
 		return map;
 	}

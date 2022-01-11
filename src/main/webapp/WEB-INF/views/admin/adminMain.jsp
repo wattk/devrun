@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <jsp:include page="/WEB-INF/views/admin/admin-common/header.jsp">
 	<jsp:param value="admin" name="title"/>
@@ -98,7 +100,7 @@
 	                    <!-- Card Body -->
 	                    <div class="card-body">
 	                        <div class="chart-area">
-	                            <canvas id="salesChart" width="10vw" height="4vh"> </canvas>
+	                            <canvas id="salesChart" width="10vw" height="250px"> </canvas>
 	                        </div>
 	                    </div>
 	                </div>
@@ -176,7 +178,7 @@
 	                    <!-- Card Body -->
 	                    <div class="card-body">
 	                        <div class="chart-pie pt-4 pb-2">
-	                            <canvas id="productChart" height="3vh"></canvas>
+	                            <canvas id="productChart" height="130"></canvas>
 	                        </div>
 	                        <div class="mt-4 text-center small">
 	                            <span class="mr-2">
@@ -256,7 +258,9 @@ function drawCharts(){
 						dailySalesChartData.push(obj2['SUM']);
 					}
 					else if(i == 'salesProduct'){
-						salesProductChartLabels.push(obj2['PC'] == 'ke'?'키보드':obj2['PC'] == 'ot'?'기타':obj2['PC'] == 'mn'?'모니터':obj2['PC'] == 'mo'?'마우스':obj2['PC'] == 'ch'?'의자':'책상');
+						const productName = obj2['PC'] == 'ke'?'키보드':obj2['PC'] == 'ot'?'기타':obj2['PC'] == 'mn'?'모니터':obj2['PC'] == 'mo'?'마우스':obj2['PC'] == 'ch'?'의자':'책상';
+						salesProductChartLabels.push(productName);
+						console.log(productName);
 						salesProductChartData.push(obj2['SUM']);
 					}
 					else if(i == 'communityCnts'){
