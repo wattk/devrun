@@ -81,6 +81,7 @@
 			  	<input type="hidden" name="memberNo" id="member_no" value='<sec:authentication property="principal.memberNo"/>' />
 			  </sec:authorize>
 			</div>
+			<%-- 
 		  <br />	
 		  <p><strong>태그</strong></p>
 		  <hr />
@@ -90,6 +91,7 @@
 			  	<input type="text" class="form-control" placeholder="태그를 설정해주세요." aria-label="Username" aria-describedby="addon-wrapping">
 			  </sec:authorize>
 			</div>
+			 --%>
 		  <br />	
 		  <p><strong>내용</strong></p>
 		  <hr />	
