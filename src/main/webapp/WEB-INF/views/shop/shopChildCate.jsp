@@ -65,7 +65,9 @@
       <!-- 아이템 나열 끝 -->
     </div>
     <div class="banner mx-auto text-center mb-3">
-    	<img src="${pageContext.request.contextPath}/resources/upload/promotion/PROMO_f2z7M27K77UDWm9.png" alt="" />
+    	<a href="${pageContext.request.contextPath}/shop/promotionDetail/PROMO_f2z7M27K77UDWm9">
+	    	<img src="${pageContext.request.contextPath}/resources/upload/promotion/PROMO_f2z7M27K77UDWm9.png" alt="" />
+    	</a>
     </div>
 	  <ul class="pagination justify-content-center mt-5">
 	  </ul>
