@@ -63,11 +63,10 @@
 	<div id="productPromotionContainer" class="row">
 		<c:forEach items="${productList}" var="product" varStatus="vs">
 	        <div class="card-box-d col-md-3 p-5">
-	          <div class="card-img-d shop-item-img position-relative">
-	            <img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="img-thumbnail shop-img img-d img-fluid">
-	            <i class="shop-like-icon fas fa-heart position-absolute"></i>
-	          </div>
 		  	  <a href="${pageContext.request.contextPath}/shop/itemDetail/${product.productCode}">
+		          <div class="card-img-d shop-item-img position-relative">
+		            <img src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}" alt="" class="img-thumbnail shop-img img-d img-fluid">
+		          </div>
 		          <div>
 		          	<p class="product-name m-0">${product.name}</p>
 		          	<strong><fmt:formatNumber type="currency">${product.price}</fmt:formatNumber></strong>

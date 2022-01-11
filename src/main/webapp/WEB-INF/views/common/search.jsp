@@ -74,7 +74,7 @@
 	  		</c:if>
         </div>
         <c:if test="${map.productCnt > 4}">
-			<a href="" class="text-right d-block pb-3">더보기</a>
+			<a href="${pageContext.request.contextPath}/shop/shopSearch?searchKeyword=${map.searchKeyword}" class="text-right d-block pb-3">더보기</a>
 		</c:if>
         <hr />
 	  </li>

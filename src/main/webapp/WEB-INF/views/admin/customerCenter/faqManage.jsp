@@ -12,13 +12,6 @@
 <link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
 
 <style>
-.faq-write-btn {
-	margin-right: 5%;
-}
-
-.faq-search ul {
-	margin-left: 15%;
-}
 
 .faq-search ul li {
 	margin: 0 1%;
@@ -30,13 +23,10 @@
 	width: 300px;
 }
 
-.faq-search nav {
-	margin-left: 15%;
-}
 </style>
 <div class="container">
 <div class="faq-container">
-	<h3 class="m-5">자주묻는질문 관리</h3>
+	<h3 class="my-5">자주묻는질문 관리</h3>
 	
 	<div class="faq-search w-50">
 	
@@ -57,7 +47,7 @@
 		</ul>
 		<!-- 전체 / 쇼핑몰 / 카테고리 / 기타 선택 끝 -->
 		<!-- 검색 -->
-		<nav class="navbar navbar-light bg-light border my-2">
+		<nav class="navbar navbar-light bg-light border my-2 ml-1">
 		  <%-- action 속성을 생략하면 해당 페이지를 요청할 때와 같은 방식으로 처리가 된다. --%>
 		  <form class="form-inline">
 		    <input id="faqSearchKeyword" class="form-control mr-sm-2" type="search" name="searchKeyword" value="${param.searchKeyword}" placeholder="(제목+내용)" aria-label="Search">
@@ -73,11 +63,11 @@
 
 
 
-<form:form name="faqDeleteFrm" action="${pageContext.request.contextPath}/admin/customerCenter/faqDelete.do" method="post">
+<form:form name="faqDeleteFrm" action="${pageContext.request.contextPath}/admin/customerCenter/faqDelete.do" method="post" class="w-100">
 	<div class="faq-list col-md-12">
-		<span class="m-5 pl-4">[총 ${totalContent}개]</span>
+		<span class="my-5">[총 ${totalContent}개]</span>
 		<br />
-		<strong class="ml-5 mr-2 pl-4">선택한 항목을 </strong>
+		<strong class="mr-2">선택한 항목을 </strong>
 		<button type="button" id="faqListDeleteBtn" class="btn btn-secondary" data-dismiss="modal">삭제</button>
 		<table class="admin-tbl table table-hover mx-auto mt-3 text-center checkbox-group">
 			<thead>

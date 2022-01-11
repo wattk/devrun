@@ -65,7 +65,7 @@
 </head>
 
 <body id="pageTop">
-
+<sec:authentication property="principal" var="member"/>
 	<!-- Topbar -->
     <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow" id="topBar">
 	
@@ -75,7 +75,7 @@
         </button>
 
         <!-- Topbar Search -->
-        <form
+<%--         <form
             class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
                 <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -86,13 +86,13 @@
                     </button>
                 </div>
             </div>
-        </form>
+        </form> --%>
 
         <!-- Topbar Navbar -->
         <ul class="navbar-nav ml-auto">
 
             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-            <li class="nav-item dropdown no-arrow d-sm-none">
+            <%-- <li class="nav-item dropdown no-arrow d-sm-none">
                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-search fa-fw"></i>
@@ -231,7 +231,7 @@
                     </a>
                     <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                 </div>
-            </li>
+            </li> --%>
 
             <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -240,8 +240,14 @@
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="mr-2 d-none d-lg-inline text-gray-600 small">관리자</span>
-                    <img class="img-profile rounded-circle"
-                        src="${pageContext.request.contextPath }/resources/bootstrap/img/undraw_profile.svg">
+                    <c:if test="${member.proPhoto eq null}">
+	                    <img class="img-profile rounded-circle"
+	                        src="${pageContext.request.contextPath }/resources/images/common/blank-profile.png">
+                    </c:if>
+                    <c:if test="${member.proPhoto ne null }">
+	                    <img class="img-profile rounded-circle"
+	                        src="${pageContext.request.contextPath }/resources/upload/profilePhoto/${member.proPhoto}">
+                    </c:if>
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

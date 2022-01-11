@@ -11,23 +11,14 @@
 </jsp:include>
 <link href="${pageContext.request.contextPath}/resources/css/admin/adminManage.css" rel="stylesheet"/>
 
-<style>
-.notice-write-btn {
-	margin-right: 5%;
-}
-
-.notice-search {
-	margin-left: 5%;
-}
-</style>
 <div class="container">
 <div class="notice-container">
-	<h3 class="m-5">공지사항 관리</h3>
+	<h3 class="my-5">공지사항 관리</h3>
 	
 	<!-- 검색 -->
 	<div class="notice-search row py-3 search col-md-9">
 	
-		<div class="col-sm-2">
+		<div class="col-sm-2 p-0">
 			<!-- 검색타입 -->
 			<select id="searchType" class="custom-select">
 			  	<option value="title" ${param.searchType eq 'title' ? 'selected' : ''}>제목</option>
@@ -47,11 +38,11 @@
 	<!-- 검색 끝 -->
 	
 </div>
-<form:form name="noticeDeleteFrm" action="${pageContext.request.contextPath}/admin/customerCenter/noticeDelete.do" method="post">
+<form:form name="noticeDeleteFrm" action="${pageContext.request.contextPath}/admin/customerCenter/noticeDelete.do" method="post" class="w-100">
 	<div class="notice-list">
-		<span class="m-5 pl-4">[총 ${totalContent}개]</span>
+		<span class="my-5">[총 ${totalContent}개]</span>
 		<br />
-		<strong class="ml-5 mr-2 pl-4">선택한 항목을 </strong>
+		<strong class="mr-2">선택한 항목을 </strong>
 		<button type="button" id="noticeListDeleteBtn" class="btn btn-secondary" data-dismiss="modal">삭제</button>
 		<table class="admin-tbl table table-hover mx-auto mt-3 text-center checkbox-group">
 			<thead>

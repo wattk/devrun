@@ -64,10 +64,10 @@
 <div class="mx-5">
 
 <div class="report-container">
-	<h3 class="m-5">블랙리스트 관리</h3>
+	<h3 class="my-5">블랙리스트 관리</h3>
 </div>
-<form:form>
-	<div class="report-search-container mt-3 ml-5">
+<form:form class="m-0">
+	<div class="report-search-container mt-3">
 		<strong class="pr-3">날짜 선택</strong>
 		<input type="date" name="" id="" class=" bg-light border-0 small"/>
 		<span>~</span>
@@ -77,7 +77,7 @@
 		<span class="badge badge-secondary">이번달</span>
 		<span class="badge badge-secondary">전체</span>
 	</div>
-	<div class="report-search-container mt-3 ml-5">
+	<div class="report-search-container mt-3">
        <div class="input-group w-50">
 		 <select name="search-type" id="blacklistReportSearch" class=" bg-light border-0 small">
 		 	<option value="memberNo" selected>회원번호로 검색</option>
@@ -96,7 +96,7 @@
 <hr class="w-100"/>
 
 	<div class="blacklist-list">
-		<strong class="m-5">블랙리스트 목록</strong>
+		<strong>블랙리스트 목록</strong>
 		<table class="admin-tbl table mx-auto mt-3">
 		  <thead>
 		    <tr>
@@ -118,7 +118,7 @@
 		      <td>${blacklist.memberNo}</td>
 		      <td><fmt:formatDate value="${blacklist.regDate}" pattern="yy-MM-dd"/></td>
 		      <td><fmt:formatDate value="${blacklist.releaseDate}" pattern="yy-MM-dd"/></td>
-		      <td><i class="far fa-edit fa-lg edit-icon"  data-bs-toggle="modal" data-bs-target="#noteModal"></i>${blacklist.note}</td>
+		      <td><i class="far fa-edit edit-icon" data-bs-toggle="modal" data-bs-target="#noteModal">${blacklist.note}</i></td>
 		      <td>
 		      	<c:if test="${empty blacklist.releaseDate}">
 		      	<button type="button" class="btn btn-light release-btn" data-toggle="modal" data-target="#blacklistModal" data-member-no="${blacklist.memberNo}" data-blacklist-no="${blacklist.blacklistNo}">해제</button>		      	

@@ -41,7 +41,7 @@
 			  </li>
 			  <li class="nav-item mt-3 ">
 			    <a class="nav-link shopping-nav-item w-100" href="${pageContext.request.contextPath}/mypage/myPoint.do">
-			    	<span>포인트<span class="small-font-size font-weight-light ml-2"><sec:authentication property="principal.point"/> 포인트</span></span>
+			    	<span>포인트<span class="small-font-size font-weight-light ml-2">2400<%-- <sec:authentication property="principal.point"/> --%> 포인트</span></span>
 			    	<i class="fas fa-chevron-right"></i>
 			    </a>
 			  </li>
@@ -52,7 +52,7 @@
         		<form:form
 		    		method="POST"
 		    		action="${pageContext.request.contextPath}/member/memberLogout.do">
-		        	<p><img src="" alt="" />(으)로 로그인</p>
+		        	<!-- <p><img src="" alt="" />(으)로 로그인</p> -->
 				    	<button
 				    		class="col-9"
 				    		type="submit">로그아웃
@@ -96,15 +96,14 @@
       					<span class="cart-icon"><i class="bi bi-minecart-loaded"></i> &nbsp; 장바구니</span>
 	       			<i class="bi bi-chevron-right"></i>
       				</span>
-	       		<span class="col-6 row" onclick="location.href='${pageContext.request.contextPath}/member/wishlist.do';">
+	       		<span class="col-6 row" onclick="location.href='${pageContext.request.contextPath}/shop/wishlist.do';">
 		       		<span class="bi bi-bookmark"> &nbsp; 관심 상품</span>
 		       		<i class="bi bi-chevron-right"></i>
 	       		</span>
       			</section>
       			<!-- event : 최근 등록 이벤트 2개 -->
-      			<section class="row" id="eventBanner">
-      				<img src="https://i.ibb.co/w63RdmJ/2021121515051506481-11934059-1.jpg" alt="" class="col-6" onclick="location.href='#';"/>
-      				<img src="https://i.ibb.co/GFmzFXF/2021120917350947828-11922858-1.jpg" alt="" class="col-6" onclick="location.href='#';"/>
+      			<section class="" id="eventBanner">
+      				<img src="${pageContext.request.contextPath}/resources/upload/promotion/${promotion.banner}" alt="" class="col-12" style="cursor : pointer;" onclick="location.href='${pageContext.request.contextPath}/shop/promotionDetail/${promotion.promotionCode }';"/>
       			</section>
       			
       			<div class="d-flex justify-content-between mt-5">
