@@ -1412,7 +1412,36 @@ select * from dual;
 select * from product_parent_category;
 select * from product_child_category;
 
--- 상품- 분류
+--상품 문의
+
+select * from question_product order by enroll_date desc;
+select * from member;
+
+
+select 
+    *
+from 
+    question_product
+start with question_level = 1
+connect by NOCYCLE  prior  question_no = question_ref_no;
+
+
+
+insert into
+		question_product
+	values(
+		seq_question_product_no.nextval,
+		NULL,
+		48,
+		'mn-5mn-179',
+		'ㅠㅜ',
+		'ㅜㅜ',
+		current_date,
+		'Y',
+		1
+	)
+
+
 
 --대분류 코드 업데이트 트리거 -> 소분류 테이블의 parent_category_code 업데이트
 create or replace trigger trg_category_code_update

@@ -383,12 +383,13 @@ color: green;
 	margin: auto;
 }
 #reportText{
-	margin-top: 10px;
-	resize: none;
-	width: 100%;
-	height: 130px;
-	border-color: white;
-	background-color:rgb(209, 209, 209);
+	border-radius: 10px;
+    margin-top: 10px;
+    resize: none;
+    width: 100%;
+    height: 130px;
+    border-color: white;
+    background-color: rgb(209 209 209 / 9%);
 }
 .checkboxReport label{
 	height: 3px;
@@ -560,3 +561,69 @@ border: 3px solid darkkhaki;
 }
 
 /*-----------------------------------------------구분선 아래로 태영-----------------------------------------------------------------*/
+
+.answer-ok{
+	color : #0000ff94  !important;
+}
+.answer-no{
+	color : #ff0000a1 !important;
+}
+
+.question-content{
+	border:1px solid silver;
+	
+}
+.answer-content{
+	border:1px solid silver;
+
+}
+#qTitle{
+	color :#000000c4;
+	font-size: 20px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.admin-title{
+	margin-left: 8px;
+}
+.answer-container{
+	margin-bottom: 43px;
+}
+.question-answer-container span,.question-answer-container h6{
+	color :#000000a8;
+}
+.question-container{
+	margin-bottom: 35px;
+}
+
+
+#myQuestionModal{
+	background: rgb(147 144 144 / 74%);
+	padding-right:0px !important;
+}
+
+.private-yn{
+	padding-left:10px;
+}
+.question-answer-container{
+	margin-bottom:20px;
+}
+#myQuestionModalBtn{
+	display:none
+}
+#exampleModal2Btn{
+	display:none
+}
+#myQuestionModal .modal-content{
+	width:780px;
+	min-height: 200px;
+}
+
+
+
+
+
+
+
+
+
