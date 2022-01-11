@@ -918,6 +918,22 @@ public class ShopController {
 			e.printStackTrace();
 		}
 
+		// 인기상품10위
+		List<ProductEntity> tenList = shopService.topTenItems();
+		List<String> tenArr = new ArrayList<String>();
+
+		for (ProductEntity p : tenList) {
+			String productName = p.getName();
+			if (productName.length() > 38) {
+				productName = productName.substring(0, 37);
+				log.debug("sub:{}", productName);
+			}
+			tenArr.add(productName);
+			tenArr.add(p.getProductCode());
+		}
+
+		model.addAttribute("tenArr", tenArr);
+
 		return "/shop/promotionDetail";
 	}
 
