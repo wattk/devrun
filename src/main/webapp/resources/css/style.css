@@ -1464,7 +1464,7 @@ a:hover {
 
 .testimonial-text {
   font-style: italic;
-  margin-top: 25px;
+  /* margin-top: 25px; */
   padding: 1.5rem 1.5rem;
   background-color: #f3f3f3;
   position: relative;

@@ -70,28 +70,7 @@ $(document).ready(()=>{
    /*오늘 본 상품 div 끝*/
     
     
-   /*상품 카테고리 슬라이드 시작 */
-   var slideIndex = 1;
    showSlides(slideIndex);
-   
-   
-   
-   function showSlides(n) {
-     var i;
-     var slides = document.getElementsByClassName("mySlides");
-     var dots = document.getElementsByClassName("dot");
-     if (n > slides.length) {slideIndex = 1}    
-     if (n < 1) {slideIndex = slides.length}
-     for (i = 0; i < slides.length; i++) {
-         slides[i].style.display = "none";  
-     }
-     for (i = 0; i < dots.length; i++) {
-         dots[i].className = dots[i].className.replace(" active2", "");
-     }
-     slides[slideIndex-1].style.display = "block";  
-     dots[slideIndex-1].className += " active2";
-   }
-   /*상품 카테고리 슬라이드 끝 */
 	
 })
  
@@ -120,3 +99,26 @@ $(document).ready(()=>{
    function currentSlide(n) {
      showSlides(slideIndex = n);
    }
+   
+   /*상품 카테고리 슬라이드 시작 */
+   var slideIndex = 1;
+
+   
+   
+   
+   function showSlides(n) {
+     var i;
+     var slides = document.getElementsByClassName("mySlides");
+     var dots = document.getElementsByClassName("dot");
+     if (n > slides.length) {slideIndex = 1}    
+     if (n < 1) {slideIndex = slides.length}
+     for (i = 0; i < slides.length; i++) {
+         slides[i].style.display = "none";  
+     }
+     for (i = 0; i < dots.length; i++) {
+         dots[i].className = dots[i].className.replace(" active2", "");
+     }
+     slides[slideIndex-1].style.display = "block";  
+     dots[slideIndex-1].className += " active2";
+   }
+   /*상품 카테고리 슬라이드 끝 */

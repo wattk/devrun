@@ -30,7 +30,7 @@
 			       					<%-- profile image : 프로필 이미지가 null일 경우, 기본 이미지 출력 --%>
 				       				<article class="col-4">
 				     					<c:if test="${member.proPhoto eq null}"><img id="profileImg" src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt=""/></c:if>
-								      	<c:if test="${member.proPhoto ne null}"><img id="profileImg" src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.id}.png" alt=""/></c:if>
+								      	<c:if test="${member.proPhoto ne null}"><img id="profileImg" src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.proPhoto}" alt=""/></c:if>
 								       	<input type="file" name="upFile" id="upFile" class="form-control" accept="image/jpeg, image/jpg, image/png">
 								       	<i id="deleteBtn" class="bi bi-x-circle-fill cursor"></i>
 			       					</article>
@@ -39,7 +39,7 @@
 			       						<section id="profileInfo">
 				       						<div class>
 				       							<label for="email">이메일<sup class="text-danger">*</sup></label>
-				       							<input type="email" name="email" id="email" class="form-control duplicate-check" value="${member.email}">
+				       							<input type="email" name="email" id="email" class="form-control duplicate-check" value="${member.email}"  placeholder="이메일을 입력해주세요">
 				       							<div class="guide-box">
 													<span class="guide email-guide ok">사용 가능한 이메일입니다.</span>
 													<span class="guide email-guide error text-danger">사용할 수 없는 이메일입니다.</span>
@@ -49,11 +49,11 @@
 				       						</div>
 				       						<div>
 				       							<label for="url">개인 사이트</label>
-				       							<input type="text" name="url" id="url" class="form-control" value="${member.url}">
+				       							<input type="text" name="url" id="url" class="form-control" value="${member.url}" placeholder="개인 사이트 주소를 입력해주세요">
 				       						</div>
 				       						<div>
 				       							<label for="intro">한줄소개</label>
-				       							<textarea name="intro" id="intro" class="form-control">${member.intro}</textarea>
+				       							<textarea name="intro" id="intro" class="form-control" placeholder="한줄소개를 입력해주세요">${member.intro}</textarea>
 				       						</div>
 			       						</section>
 			       					</article>
@@ -84,7 +84,7 @@
 								        	<tr>
 								        		<td><label for="nickname">닉네임<sup class="text-danger">*</sup></label></td>
 								        		<td>
-								        			<input type="text" name="nickname" id="nickname" class="form-control duplicate-check" value="${member.nickname}" required>
+								        			<input type="text" name="nickname" id="nickname" class="form-control duplicate-check" value="${member.nickname}" maxlength="16" required>
 								        			<div class="guide-box">
 														<span class="guide nickname-guide ok">사용 가능한 닉네임입니다.</span>
 														<span class="guide nickname-guide error text-danger">사용할 수 없는 닉네임입니다.</span>
@@ -96,7 +96,7 @@
 								        	<tr>
 								        		<td><label for="name">이름<sup class="text-danger">*</sup></label></td>
 								        		<td>
-								        			<input type="text" name="name" id="name" class="form-control" value="${member.name}" required>
+								        			<input type="text" name="name" id="name" class="form-control" value="${member.name}" maxlength="16" required>
 								        			<div class="guide-box">
 														<span class="guide name-guide error text-danger">이름을 입력해 주세요.</span>
 													</div>
@@ -114,7 +114,7 @@
 								        	<tr>
 								        		<td><label for="phone">연락처<sup class="text-danger">*</sup></label></td>
 								        		<td>
-								        			<input type="tel" name="phone" id="phone" class="form-control" value="${member.phone}" maxlength="11" required>
+								        			<input type="tel" name="phone" id="phone" class="form-control" value="${member.phone}" maxlength="11" placeholder="숫자 11자리만 입력해주세요" required>
 								        			<div class="guide-box">
 														<span class="guide phone-guide error text-danger">연락처를 입력해 주세요.</span>
 													</div>
@@ -307,6 +307,12 @@ $(profileUpdateBtn).click((e)=>{
 	if(!/^.{1,}$/.test($password.val())){
 		$(".guide.password-guide.error").show();
 		$password.focus(); 
+		return;
+	}
+	const $memberNickname = $("#nickname");
+	if(!/^.{1,}$/.test($memberNickname.val())){
+		$(".guide.nickname-guide.error").show();
+		$memberNickname.focus();
 		return;
 	}
 	const $memberName = $("#name");

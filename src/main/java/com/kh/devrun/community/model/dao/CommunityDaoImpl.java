@@ -134,6 +134,7 @@ public class CommunityDaoImpl implements CommunityDao {
 		return session.update("community.freeboardLikeDelete", param);
 	}
 
+	// 글쓰기
 	@Override
 	public int insertCommunity(CommunityEntity communityEntity) {
 		return session.insert("community.insertCommunity", communityEntity);
