@@ -204,43 +204,7 @@
 	
 	<!-- 회원일때만 댓글 등록창이 보이게끔 설정 -->
 	<!-- 댓글 등록 시작 -->
-	<c:if test="${communityEntity.pageCode ne '2'}">
 		<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
-		<div class="card mb-2">
-			<div class="card-header bg-light">
-				<i class="fa fa-comment fa"></i> 댓글 작성
-			</div>
-			<div class="card-body">
-				<ul class="list-group list-group-flush">
-				    <li class="list-group-item" id="comment-li">
-					<div class="form-inline mb-2">
-						<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
-					</div>
-					<form:form
-						name="commentForm"
-						action="${pageContext.request.contextPath}/community/communityCommentEnroll.do"
-						method="POST"
-						>
-						<textarea class="form-control" name="content" id="comment" rows="2"></textarea>
-						<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment" onclick="commentValidate()">등록</button>
-						
-						<input type="hidden" name="commentLevel" value="1" />
-						<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
-						<!-- <input type="hidden" name="memberNo" value='<c:if test="${member ne null}"><sec:authentication property="principal.memberNo" /></c:if>'>  -->
-						<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
-					</form:form>
-				    </li>
-				</ul>
-			</div>
-		</div>
-		</sec:authorize>
-	</c:if>
-	<!-- 댓글 등록 끝 -->
-	
-	<!-- 관리자일때만 댓글 등록창이 보이게끔 설정 -->
-	<!-- 답변 등록 시작 -->
-	<c:if test="${communityEntity.pageCode eq '2'}">
-		<sec:authorize access="hasAnyRole('AM')">
 		<div class="card mb-2">
 			<div class="card-header bg-light">
 				<i class="fa fa-comment fa"></i> 답변 작성
@@ -269,19 +233,13 @@
 			</div>
 		</div>
 		</sec:authorize>
-	</c:if>
 	<!-- 댓글 등록 끝 -->
-	
+		
 	
 	<!-- 댓글 시작 -->
 	<div class="card mb-2">
 		<div class="card-header bg-light">
-			<c:if test="${communityEntity.pageCode ne '2'}">
-		        <i class="fa fa-comment fa"></i> 댓글
-			</c:if>
-			<c:if test="${communityEntity.pageCode eq '2'}">
-		        <i class="fa fa-comment fa"></i> 답변
-			</c:if>
+	        <i class="fa fa-comment fa"></i> 답변
 		</div>
 		<div class="card-body">
 			<c:if test="${null ne freeboardCommentList  && not empty freeboardCommentList}">
@@ -298,9 +256,7 @@
 							<!-- 회원일때만 답글 버튼이 나타나도록 처리 -->
 							<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
 									<div class="row float-right">
-								<c:if test="${communityEntity.pageCode ne '2'}">
 									<button type="button" onclick="firstReply()" class="btn btn-dark mt-3 float-right btnReComment" value="${communityCommentEntity.commentNo}">답글</button>&nbsp;
-								</c:if>
 								<!-- 회원일 경우 -->
 								<sec:authorize access="hasAnyRole('M1', 'M2')">
 									<!-- 회원이고 글쓴이 본인일 경우 -->
