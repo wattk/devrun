@@ -28,7 +28,7 @@
 		</jsp:include>
         <!--쇼핑몰 헤더부분-->
   
-
+	
            <div id="shopitemsDiv">
                <div id="shopEventSlideDiv" >
                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -39,13 +39,13 @@
                        </ol>
                        <div class="carousel-inner">
                          <div class="carousel-item active">
-                           <img class="d-block w-100" src="https://i.ibb.co/cDFYP1c/image.jpg" alt="First slide">
+                           <img class="d-block w-100" src="${pageContext.request.contextPath}/resources/images/shopMain1.png" alt="First slide">
                          </div>
                          <div class="carousel-item">
-                           <img class="d-block w-100"  src="https://i.ibb.co/MDTWkNY/2.png" alt="Second slide">
+                           <img class="d-block w-100"  src="${pageContext.request.contextPath}/resources/images/shopMain2.png" alt="Second slide">
                          </div>
                          <div class="carousel-item">
-                           <img class="d-block w-100" src="https://i.ibb.co/3F96Sy0/3.png" alt="Third slide">
+                           <img class="d-block w-100" src="${pageContext.request.contextPath}/resources/images/shopMain3.png" alt="Third slide">
                          </div>
                        </div>
                        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -59,7 +59,7 @@
                      </div>
                </div>
                <div id="shopIconCategoryDiv">
-                   <div id="iconBoxDiv" class="row space-evenly">
+                   <div id="iconBoxDiv" class="row space-evenly col-md-10">
                        <a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=mn"><img class="icon" src="https://i.ibb.co/7zcnV7J/monitor.png" alt=""></a>
                        <a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=ke"><img class="icon" src="https://i.ibb.co/vvXdtzx/keyboard.png" alt=""></a>
                        <a href="${pageContext.request.contextPath}/shop/categoryItemAll?parentCate=mo"><img class="icon" src="https://i.ibb.co/WxvDnGD/mouse.png" alt=""></a>
