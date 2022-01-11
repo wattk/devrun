@@ -26,8 +26,10 @@
 				   			<c:if test="${member.proPhoto eq null}"><img src="${pageContext.request.contextPath}/resources/images/common/blank-profile.png" alt="" id="profileImg"/></c:if>
 							<c:if test="${member.proPhoto ne null}"><img src="${pageContext.request.contextPath}/resources/upload/profilePhoto/${member.proPhoto}" alt="" id="profileImg"/></c:if>
 					       	<p class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo.do';">${member.nickname}님<i class="bi bi-chevron-right"></i></p>
-					       	<img src="https://i.ibb.co/HNQhz98/pencil.png" alt="" id="edit" class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';"/>
-					    	<img src="https://i.ibb.co/S7TZCYh/coding.png" alt="" id="badge" class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/activityBadge.do';"/>
+					       	<img src="${pageContext.request.contextPath}/resources/images/mypageEdit.png" alt="" id="edit" class="cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/profileUpdate.do';"/>
+					    	<c:if test="${member.authorities eq '[ROLE_M1]'}"><img src="${pageContext.request.contextPath}/resources/images/gradeBadge.png" alt="" id="m1Badge" class="gradeBadge"/></c:if>
+			       			<c:if test="${member.authorities eq '[ROLE_M2]'}"><img src="${pageContext.request.contextPath}/resources/images/gradeBadge.png" alt="" id="m2Badge" class="gradeBadge"/></c:if>
+			     			<c:if test="${member.authorities eq '[ROLE_AM]'}"><img src="${pageContext.request.contextPath}/resources/images/gradeBadge.png" alt="" id="amBadge" class="gradeBadge"/></c:if>
 					    </section>
 					    <!-- profile info -->
 				        <section>
@@ -70,23 +72,21 @@
 			       				<tr>
 			       					<td class="col-4">출석일수</td>
 			       					<td class="col-4">활동 등급</td>
-			       					<td class="col-4 cursor" onclick="location.href='${pageContext.request.contextPath}/mypage/myinfo/activityBadge.do';">활동 배지</td>
+			       					<td class="col-4 cursor">활동 배지</td>
 			       				</tr>
 			       				<tr>
 			       					<!-- 출석일수 -->
-			       					<td>일</td>
+			       					<td id="attendanceDays"><span>10</span><span>일</span></td>
 			       					<!-- 활동 등급 -->
 			       					<td>
-			       						<img src="https://i.ibb.co/jgyRRVB/badge.png" alt="" />
-			       						<span>
-			       							<!-- c:if 태그로 회원 권한에 따른 활동 등급명 분기 -->
-			       							<c:if test="${member.authorities eq '[ROLE_M1]'}">일반회원</c:if>
-			       							<c:if test="${member.authorities eq '[ROLE_M2]'}">지식인</c:if>
-			       							<c:if test="${member.authorities eq '[ROLE_AM]'}">관리자</c:if>
-			       						</span>
+			       						<img src="${pageContext.request.contextPath}/resources/images/gradeBadge.png" alt="" />
+			       						<!-- c:if 태그로 회원 권한에 따른 활동 등급명 분기 -->
+			       						<c:if test="${member.authorities eq '[ROLE_M1]'}"><span id="gradeM1">일반회원</span></c:if>
+			       						<c:if test="${member.authorities eq '[ROLE_M2]'}"><span id="gradeM2">지식인</span></c:if>
+			       						<c:if test="${member.authorities eq '[ROLE_AM]'}"><span id="gradeAM">관리자</span></c:if>
 			       					</td>
 			       					<!-- 활동 배지 -->
-			       					<td class="cursor">
+			       					<td id="mainBadge" class="cursor">
 			       						<!-- 대표배지 이미지와 이름 불러오기 -->
 			       						<img src="https://i.ibb.co/S7TZCYh/coding.png" alt=""/>
 			       						<span>지식인</span>
@@ -103,12 +103,12 @@
 			       			</span>
 		       				<span class="col-6 row" onclick="location.href='${pageContext.request.contextPath}/mypage/myPoint.do';">
 					       		<span class="bi bi-coin"> &nbsp; 포인트</span>
-					       		<span>사용 가능 ${member.point}포인트<i class="bi bi-chevron-right"></i></span>
+					       		<span>사용 가능 2400포인트<i class="bi bi-chevron-right"></i></span>
 				       		</span>
 		       			</section>
 		       			<!-- member activity info : wishList -->
 		       			<section id="myChat" class="activity col-6 row cursor">
-			       			<span class="col-12 row" onclick="location.href='${pageContext.request.contextPath}/member/wishlist.do';">
+			       			<span class="col-12 row" onclick="location.href='${pageContext.request.contextPath}/shop/wishlist.do';">
 					       		<span class="bi bi-bookmark"> &nbsp; 관심 상품</span>
 					       		<i class="bi bi-chevron-right"></i>
 				       		</span>
@@ -132,7 +132,7 @@
 		      					alt="" 
 		      					onclick="location.href='${pageContext.request.contextPath}/shop/promotionDetail/${promotion.promotionCode}'"
 		      					id="profileImg"
-		      					class="col-12"/>
+		      					class="col-12 cursor"/>
 			       		</section>
 			    	</article>
 			    	

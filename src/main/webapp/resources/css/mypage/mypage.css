@@ -14,7 +14,10 @@
 #profile section:not(:nth-of-type(2)) {text-align:center;}
 #profile #profileImg {width:100px; height:100px; margin:15px; border-radius:50%; position:relative;}
 #profile #edit {position:absolute; top:19%; right:31%; width:30px; height:30px;}
-#profile #badge {position:absolute; top:1%; left:28%; width:40px; height:40px; background-color:#2ECC71; border:5px solid #2ECC71; border-radius:50%; box-shadow:2px 2px 2px hsl(0deg 0% 0% / 0.38);}
+#profile .gradeBadge {position:absolute; top:1%; left:28%; width:40px; height:40px; border-radius:50%; box-shadow:2px 2px 2px hsl(0deg 0% 0% / 0.38);}
+#profile #m1Badge {background-color:#2ECC71; border:5px solid #2ECC71;}
+#profile #m2Badge {background-color:#9400D3; border:5px solid #9400D3;}
+#profile #amBadge {background-color:#66ABFF; border:5px solid #66ABFF;}
 #profile section:nth-of-type(2) p span:first-of-type {color:#1A81FF;}
 #profile #url {padding:5px 11px; border-radius:1rem; color:#1A81FF; background-color:rgb(26, 129, 255, 0.2); border:0; font-size:16px; line-height:17px;}
 #profile #url:hover {color:#FFFFFF; background-color:#1A81FF;}
@@ -24,7 +27,13 @@
 #myGrade {padding:30px 0; margin-bottom:20px; border-radius:10px;}
 #myGrade table tr td:not(:last-of-type) {border-right:1px solid #F1F1F2;}
 #myGrade img {width:40px; height:40px;}
-#myGrade span {display:block; width:80px; margin:0 auto; border:1px solid black; border-radius:20px; background-color:#66ABFF;}
+#myGrade span:not(#attendanceDays span) {display:block; width:80px; margin:0 auto; border:1px solid #FFFFFF; border-radius:20px; color:#FFFFFF;}
+#attendanceDays span:first-of-type {font-size:35px; font-weight:bold; display:inline-block; line-height:35px;}
+#attendanceDays span:nth-of-type(2) {font-size:20px; vertical-align:text-bottom;}
+#gradeM1 {background-color:#2ECC71;}
+#gradeM2 {background-color:#9400D3;}
+#gradeAM {background-color:#66ABFF;}
+#mainBadge span {background-color:#66ABFF;}
 
 /* member activity info */
 #myShopping {margin:0 auto; padding:20px 0; border-top:1px solid #F1F1F2; border-bottom:1px solid #F1F1F2; justify-content:space-around;}

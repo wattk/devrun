@@ -67,7 +67,7 @@ div#search-nickname {
 				<div id="search-title" class="search-type">
 		            <form class="form-inline search-form"> 
 		            	<input type="hidden" name="searchType" value="title" />
-						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
+						<input class="form-control" type="search" name="searchKeyword" placeholder="검색어를 입력하세요" aria-label="Search" name="searchKeyword">
 						<input type="hidden" name="pageCode" value="4" />
 						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
 				  	</form>
@@ -75,7 +75,7 @@ div#search-nickname {
 		        <div id="search-content" class="search-type">
 		            <form class="form-inline search-form">
 		            	<input type="hidden" name="searchType" value="content" />
-						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
+						<input class="form-control" type="search" name="searchKeyword" placeholder="검색어를 입력하세요" aria-label="Search" name="searchKeyword">
 						<input type="hidden" name="pageCode" value="4" />
 						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
 				  	</form>
@@ -83,7 +83,7 @@ div#search-nickname {
 		        <div id="search-nickname" class="search-type">
 		            <form class="form-inline search-form">
 		            	<input type="hidden" name="searchType" value="nickname" />
-						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
+						<input class="form-control" type="search" name="searchKeyword" placeholder="검색어를 입력하세요" aria-label="Search" name="searchKeyword">
 						<input type="hidden" name="pageCode" value="4" />
 						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
 				  	</form>
@@ -373,11 +373,6 @@ $("#nav-comment-tab").click(e => {
 /* ---------------------------------------------- 답변순 페이지 기능 종료 ---------------------------------------------- */	
 
 
-	
-
-
 </script>
-
-
 <script src="${pageContext.request.contextPath}/resources/js/community/communityQnAList/scripts.js"></script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

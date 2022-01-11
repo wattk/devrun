@@ -40,14 +40,8 @@ public class CommunityController {
 	@Autowired
 	private CommunityService communityService;
 	
-	// 커뮤니티 메인
-	@GetMapping("/communityMain.do")
-	public String communityMain() {
-		
-		return "community/communityMain";
-	}	
+	/* ---------------------------------------- 컬럼 리스트 시작 ---------------------------------------- */
 	
-	// 커뮤니티-칼럼 
 	@GetMapping("/communityColumnList.do")
 	public String communityColumnList(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request) {
 		int limit = 10;
@@ -72,12 +66,17 @@ public class CommunityController {
 		return "community/communityColumnList";
 	}
 	
+	/* ---------------------------------------- 컬럼 리스트 종료 ---------------------------------------- */
 	
-	// 칼럼-글쓰기
+	/* ---------------------------------------- 컬럼 글쓰기 시작 ---------------------------------------- */
+	
 	@GetMapping("/communityColumnForm.do")
 	public void communityColumnForm(){}
 	
-	// 칼럼-글등록
+	/* ---------------------------------------- 컬럼 글쓰기 종료 ---------------------------------------- */
+	
+	/* ---------------------------------------- 컬럼 글쓰기 시작 ---------------------------------------- */
+	
 	@PostMapping("/communityColumnEnroll.do")
 	public String communityColumnEnroll(Community community, RedirectAttributes redirectAttributes) {
 		log.debug("{}", "/communityColumnEnroll.do 요청!");
@@ -116,6 +115,8 @@ public class CommunityController {
 	  return "redirect:/community/communityColumnList.do";
 		 
 	}
+	
+	/* ---------------------------------------- 컬럼 글쓰기 종료 ---------------------------------------- */
 
 	/* ---------------------------------------- Q&A 리스트 시작 ---------------------------------------- */
 	
@@ -151,10 +152,7 @@ public class CommunityController {
 	/* ---------------------------------------- 스터디 리스트 시작 ---------------------------------------- */
 	
 	@GetMapping("/communityStudyList.do")
-	public String communityStudy(@RequestParam(defaultValue = "1") int cPage, 
-								 Model model, 
-								 HttpServletRequest request 
-								 ) {
+	public String communityStudy(@RequestParam(defaultValue = "1") int cPage, Model model, HttpServletRequest request ) {
 		
 		int limit = 10;
 		int offset = (cPage - 1) * limit;
@@ -180,88 +178,6 @@ public class CommunityController {
 	}
 	
 	/* ---------------------------------------- 스터디 리스트 종료 ---------------------------------------- */
-
-	/* ---------------------------------------- 스터디 종료 ---------------------------------------- */
-
-	// Q&A-글등록
-	@PostMapping("/qnaEnroll.do")
-	public String qnaEnroll(Community community, RedirectAttributes redirectAttributes) {
-		log.debug("{}", "/qnaEnroll.do 요청!");
-		log.debug("community = {}", community);
-		// img 데이터를 잘라오기 위한 Index 선언
-		int startIndex = 0;
-		int endIndex = 0;
-		String content = community.getContent();
-		// "startindex는 "<img" 전 부터를 의미한다.
-		startIndex = content.indexOf("<img");
-		
-		// 문자열은 -1이 나올 수 없다.
-		if(startIndex != -1) {
-			// endIndex는 ">" 전까지이다. \ : escaping
-			endIndex = content.substring(startIndex).indexOf("\">");
-			// ">"까지 포함해서 읽어와야 하므로 endIndex+2로 설정한다.
-			log.debug("startIndex : {} ~ endIndex : {}", startIndex, endIndex+2);
-			
-			// thumbnail에 img 데이터를 담는다.
-			String thumbnail = content.substring(startIndex, startIndex + endIndex+2);
-			log.debug("thumbnail = {}", thumbnail);
-			System.out.println(thumbnail);
-			// community에 tumbnail을 보낸다.
-			community.setThumbnail(thumbnail);
-		}
-		
-		try { 
-			int result = communityService.insertQna(community); 
-			String msg = result > 0 ? "게시글 등록 성공!" : "게시글 등록 실패!";
-			redirectAttributes.addFlashAttribute("msg", msg); 
-		} 
-		catch (Exception e) {
-			log.error("게시글 등록 오류", e); 
-			throw e; 
-		} 
-		return "redirect:communityQnAList.do";
-	}
-
-//--------------------------------------------------------------------------------------------------------------	
-	
-	// 스터디-글등록
-	@PostMapping("/studyEnroll.do")
-	public String studyEnroll(Community community, RedirectAttributes redirectAttributes) {
-		log.debug("{}", "/studyEnroll.do 요청!");
-		log.debug("community = {}", community);
-		// img 데이터를 잘라오기 위한 Index 선언
-		int startIndex = 0;
-		int endIndex = 0;
-		String content = community.getContent();
-		// "startindex는 "<img" 전 부터를 의미한다.
-		startIndex = content.indexOf("<img");
-		
-		// 문자열은 -1이 나올 수 없다.
-		if(startIndex != -1) {
-			// endIndex는 ">" 전까지이다. \ : escaping
-			endIndex = content.substring(startIndex).indexOf("\">");
-			// ">"까지 포함해서 읽어와야 하므로 endIndex+2로 설정한다.
-			log.debug("startIndex : {} ~ endIndex : {}", startIndex, endIndex+2);
-			
-			// thumbnail에 img 데이터를 담는다.
-			String thumbnail = content.substring(startIndex, startIndex + endIndex+2);
-			log.debug("thumbnail = {}", thumbnail);
-			System.out.println(thumbnail);
-			// community에 tumbnail을 보낸다.
-			community.setThumbnail(thumbnail);
-		}
-		
-		try { 
-			int result = communityService.insertStudy(community); 
-			String msg = result > 0 ? "게시글 등록 성공!" : "게시글 등록 실패!";
-			redirectAttributes.addFlashAttribute("msg", msg); 
-		} 
-		catch (Exception e) {
-			log.error("게시글 등록 오류", e); 
-			throw e; 
-		} 
-		return "redirect:communityStudyList.do";
-	}
 
 	/* ---------------------------------------- 자유게시판 리스트 시작 ---------------------------------------- */
 	
@@ -299,9 +215,11 @@ public class CommunityController {
 
 		return "community/communityFreeboardList";
 	}
+	
 	/* ---------------------------------------- 자유게시판 리스트 종료 ---------------------------------------- */
 	
 	/* ---------------------------------------- 타입별 검색 시작 ---------------------------------------- */
+	
 	// @ResponseBody : Http 요청 body를 Java 객체로 전달받을 수 있다.
 	@GetMapping("/communityFinder.do")
 	@ResponseBody
@@ -349,11 +267,11 @@ public class CommunityController {
 		
 		return resultMap;
 	}
+	
 	/* ---------------------------------------- 타입별 검색 종료 ---------------------------------------- */
 	
 	/* ---------------------------------------- 좋아요순 리스트 시작 ---------------------------------------- */
 	
-	// 좋아요순 게시글 뽑기
 	@GetMapping("/likeBoard.do")
 	@ResponseBody
 	public Map<String, Object> likeBoard(
@@ -533,7 +451,7 @@ public class CommunityController {
 	
 	/* ---------------------------------------- 모집진행순 리스트 종료 ---------------------------------------- */
 	
-/* ---------------------------------------- 모집진행순 리스트 시작 ---------------------------------------- */
+	/* ---------------------------------------- 모집완료순 리스트 시작 ---------------------------------------- */
 	
 	@GetMapping("/joinEndBoard.do")
 	@ResponseBody
@@ -576,46 +494,7 @@ public class CommunityController {
 		return resultMap;
 	}
 	
-	/* ---------------------------------------- 모집진행순 리스트 종료 ---------------------------------------- */
-	
-	// 자유게시판-글등록
-	@PostMapping("/freeboardEnroll.do")
-	public String freeboardEnroll(Community community, RedirectAttributes redirectAttributes) {
-		log.debug("{}", "/communityFreeboardEnroll.do 요청!");
-		log.debug("community = {}", community);
-		// img 데이터를 잘라오기 위한 Index 선언
-		int startIndex = 0;
-		int endIndex = 0;
-		String content = community.getContent();
-		// "startindex는 "<img" 전 부터를 의미한다.
-		startIndex = content.indexOf("<img");
-		
-		// 문자열은 -1이 나올 수 없다.
-		if(startIndex != -1) {
-			// endIndex는 ">" 전까지이다. \ : escaping
-			endIndex = content.substring(startIndex).indexOf("\">");
-			// ">"까지 포함해서 읽어와야 하므로 endIndex+2로 설정한다.
-			log.debug("startIndex : {} ~ endIndex : {}", startIndex, endIndex+2);
-			
-			// thumbnail에 img 데이터를 담는다.
-			String thumbnail = content.substring(startIndex, startIndex + endIndex+2);
-			log.debug("thumbnail = {}", thumbnail);
-			System.out.println(thumbnail);
-			// community에 tumbnail을 보낸다.
-			community.setThumbnail(thumbnail);
-		}
-		
-		  try { 
-			  int result = communityService.insertFreeboard(community); 
-			  String msg = result > 0 ? "게시글 등록 성공!" : "게시글 등록 실패!";
-			  redirectAttributes.addFlashAttribute("msg", msg); 
-		  } 
-		  catch (Exception e) {
-			  log.error("게시글 등록 오류", e); 
-		  throw e; 
-		  } 
-		  return "redirect:/community/communityFreeboardList.do";
-	}
+	/* ---------------------------------------- 모집완료순 리스트 종료 ---------------------------------------- */
 	
 	/* ---------------------------------------- 커뮤니티 상세보기 시작 ---------------------------------------- */	
 	
@@ -673,8 +552,8 @@ public class CommunityController {
 	}
 	/* ---------------------------------------- 커뮤니티 상세보기 종료 ---------------------------------------- */
 	
+	/* ---------------------------------------- 커뮤니티 좋아요 추가 시작 ---------------------------------------- */
 	
-	// 자유게시판-좋아요추가
 	@ResponseBody
 	@GetMapping("/freeboardLikeAdd")
 	public Map<String, Object> freeboardLikeAdd(@RequestParam int communityNo, @RequestParam int memberNo){
@@ -696,7 +575,10 @@ public class CommunityController {
 		return map;
 	}
 	
-	// 자유게시판-좋아요삭제
+	/* ---------------------------------------- 커뮤니티 좋아요 추가 종료 ---------------------------------------- */
+	
+	/* ---------------------------------------- 커뮤니티 좋아요 삭제 시작 ---------------------------------------- */
+	
 	@ResponseBody
 	@GetMapping("/freeboardLikeDelete")
 	public Map<String, Object> freeboardLikeDelete(@RequestParam int communityNo, @RequestParam int memberNo){
@@ -718,6 +600,8 @@ public class CommunityController {
 		
 		return map;
 	}
+	
+	/* ---------------------------------------- 커뮤니티 좋아요 삭제 종료 ---------------------------------------- */
 	
 	/* ---------------------------------------- 커뮤니티 수정하기 페이지 시작 ---------------------------------------- */
 
@@ -772,9 +656,7 @@ public class CommunityController {
 	/* ---------------------------------------- 커뮤니티 삭제하기 시작 ---------------------------------------- */
 	
 	@GetMapping("/communityDelete.do")
-	public String communityDelete(@RequestParam int communityNo,
-								  @RequestParam int pageCode,
-								  RedirectAttributes redirectAttributes) {
+	public String communityDelete(@RequestParam int communityNo, @RequestParam int pageCode, RedirectAttributes redirectAttributes) {
 		
 		log.debug("{}", "/communityDelete.do 요청!");
 		log.debug("communityNo = {}", communityNo);
@@ -793,31 +675,31 @@ public class CommunityController {
 		return "redirect:/community/communityFreeboardList.do";
 	}
 	
-		/* ---------------------------------------- 커뮤니티 삭제하기 종료 ---------------------------------------- */
+	/* ---------------------------------------- 커뮤니티 삭제하기 종료 ---------------------------------------- */
 	
-		/* ---------------------------------------- 모집중 --> 모집완료 시작 ---------------------------------------- */
+	/* ---------------------------------------- 모집중 --> 모집완료 시작 ---------------------------------------- */
 	
-		@ResponseBody
-		@GetMapping("/joinNo.do")
-		public Map<String, Object> joinNo(@RequestParam int communityNo, @RequestParam String studyJoinYn){
-			log.debug("{}", "/joinNo.do 요청!");
-			
-			Map<String, Object> param = new HashMap<>();
-			param.put("studyJoinYn", studyJoinYn);
-			param.put("communityNo", communityNo);
-			
-			int result = communityService.updateJoinNo(param);
-			log.debug("모집중에서 모집완료로 변경? = {}", result);
-			
-			Map<String, Object> map = new HashMap<>();
-			map.put("result", result);
-			
-			return map;
-		}
-	
-		/* ---------------------------------------- 모집중 --> 모집완료 종료 ---------------------------------------- */
+	@ResponseBody
+	@GetMapping("/joinNo.do")
+	public Map<String, Object> joinNo(@RequestParam int communityNo, @RequestParam String studyJoinYn){
+		log.debug("{}", "/joinNo.do 요청!");
 		
-		/* ---------------------------------------- 답변완료 --> 답변중 시작 ---------------------------------------- */
+		Map<String, Object> param = new HashMap<>();
+		param.put("studyJoinYn", studyJoinYn);
+		param.put("communityNo", communityNo);
+		
+		int result = communityService.updateJoinNo(param);
+		log.debug("모집중에서 모집완료로 변경? = {}", result);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", result);
+		
+		return map;
+	}
+	
+	/* ---------------------------------------- 모집중 --> 모집완료 종료 ---------------------------------------- */
+		
+	/* ---------------------------------------- 답변완료 --> 답변중 시작 ---------------------------------------- */
 		
 		@ResponseBody
 		@GetMapping("/answerNo.do")
@@ -837,10 +719,9 @@ public class CommunityController {
 			return map;
 		}
 	
-		/* ---------------------------------------- 답변완료 --> 답변중 종료 ---------------------------------------- */
+	/* ---------------------------------------- 답변완료 --> 답변중 종료 ---------------------------------------- */
 		
-		
-		/* ---------------------------------------- 모집완료 --> 모집중 시작 ---------------------------------------- */
+	/* ---------------------------------------- 모집완료 --> 모집중 시작 ---------------------------------------- */
 		
 		@ResponseBody
 		@GetMapping("/joinYes.do")
@@ -860,9 +741,9 @@ public class CommunityController {
 			return map;
 		}
 		
-		/* ---------------------------------------- 모집완료 --> 모집중 종료 ---------------------------------------- */
+	/* ---------------------------------------- 모집완료 --> 모집중 종료 ---------------------------------------- */
 		
-		/* ---------------------------------------- 답변중 --> 답변완료 시작 ---------------------------------------- */
+	/* ---------------------------------------- 답변중 --> 답변완료 시작 ---------------------------------------- */
 		
 		@ResponseBody
 		@GetMapping("/answerYes.do")
@@ -882,9 +763,10 @@ public class CommunityController {
 			return map;
 		}
 		
-		/* ---------------------------------------- 답변중 --> 답변완료 종료 ---------------------------------------- */
+	/* ---------------------------------------- 답변중 --> 답변완료 종료 ---------------------------------------- */
 		
-	/* ---------------------------------------- 커뮤니티 댓글 시작 ---------------------------------------- */
+	/* ---------------------------------------- 커뮤니티 댓글 등록 시작 ---------------------------------------- */
+		
 	@PostMapping("/communityCommentEnroll.do")
 	public String commentEnroll(CommunityComment communityComment, RedirectAttributes redirectAttributes) {
 		log.debug("{}", "/communityCommentEnroll.do 요청!");
@@ -898,7 +780,10 @@ public class CommunityController {
 		return "redirect:/community/communityDetail/" + communityComment.getCommunityNo();
 	}
 	
-	// 자유게시판-댓글삭제
+	/* ---------------------------------------- 커뮤니티 댓글 등록 종료 ---------------------------------------- */
+	
+	/* ---------------------------------------- 커뮤니티 댓글 삭제 시작 ---------------------------------------- */
+	
 	@GetMapping("/commentDelete.do")
 	public String commentDelete(@RequestParam(value="commentNo") int commentNo, @RequestParam(value="communityNo") int communityNo, RedirectAttributes redirectAttributes) {
 		log.debug("{}", "/commentDelete.do 요청!");
@@ -912,7 +797,10 @@ public class CommunityController {
 		return "redirect:/community/communityDetail/" + communityNo; 
 	}
 
-	// 글쓰기(Q&A, 스터디, 자유게시판)
+	/* ---------------------------------------- 커뮤니티 댓글 삭제 종료 ---------------------------------------- */
+	
+	/* ---------------------------------------- 커뮤니티 글쓰기 시작 ---------------------------------------- */
+	
 	@PostMapping("/communityWriteEnroll.do")
 	public String communityWriteEnroll(Community community, RedirectAttributes redirectAttributes) {
 		log.debug("{}", "/communityWriteEnroll.do 요청!");
@@ -940,7 +828,6 @@ public class CommunityController {
 			community.setThumbnail(thumbnail);
 		}
 		
-		
 		int result = communityService.insertCommunityWriteEnroll(community);
 		String msg = result > 0 ? "게시글 등록 성공!" : "게시글 등록 실패!";
 		redirectAttributes.addFlashAttribute("msg", msg);
@@ -954,7 +841,10 @@ public class CommunityController {
 		return "redirect:/community/communityFreeboardList.do";
 	}
 	
-	// 신고하기
+	/* ---------------------------------------- 커뮤니티 글쓰기 종료 ---------------------------------------- */
+	
+	/* ---------------------------------------- 커뮤니티 신고하기 시작 ---------------------------------------- */
+	
 	@PostMapping("/insertCommunityReport.do")
 	public String insertCommunityReport(Report report, @RequestParam int pageCode, RedirectAttributes redirectAttributes) {
 		log.debug("{}", "/insertCommunityReport.do 요청!");
@@ -973,6 +863,7 @@ public class CommunityController {
 		return "redirect:/community/communityFreeboardList.do";
 	}
 	
+	/* ---------------------------------------- 커뮤니티 신고하기 종료 ---------------------------------------- */
 	
 
 
