@@ -101,9 +101,9 @@ public class HomeController {
 		log.debug("file = {}, keyword = {}", upFile, keyword);
 		Map<String, Object> map = new HashMap<>();
 		
-		String saveDirectory = application.getRealPath("/resources/upload/"+keyword);
+		String saveDirectory = application.getRealPath("/resources/upload/"+keyword);// /resources/upload/promotion
 		String originalFilename = upFile.getOriginalFilename();
-		String renamedFilename = DevrunUtils.getRenamedFilename(originalFilename);
+		String renamedFilename = DevrunUtils.getRenamedFilename(originalFilename);//20210111129083908
 		
 		File dest = new File(saveDirectory, renamedFilename);
 		
@@ -129,7 +129,7 @@ public class HomeController {
 		log.debug("imgs = {}", imgs);
 		String saveDirectory = application.getRealPath("/resources/upload/"+keyword);
 		//csv형식으로 받은 이미지 업로드 파일 이름들 분리해서 String배열에 담기
-		String[] filenames = imgs.split("/");
+		String[] filenames = imgs.split("/"); // filenamefilenamefilname
 		
 		//특정 이름을 가진 파일이 디렉토리에 있을 경우 파일 삭제
 		for(String filename : filenames) {

@@ -116,8 +116,14 @@
 					      <th scope="row">${vs.count}</th>
 					      <td>
 					      	<a href="${pageContext.request.contextPath}/community/communityDetail/${c['NO']}">
-					      		<span>${c["PAGECODE"] eq 1?'[칼럼]': c["PAGECODE"] eq 2?'[QnA]':c["PAGECODE"] eq 3?'[스터디]':'[자유게시판]' }</span>
-					      		${c["TITLE"]}
+					      		<span>${c["PAGECODE"] eq 1?'[칼럼]': c["PAGECODE"] eq 2?'[QnA]':c["PAGECODE"] eq 3?'[스터디]':'[자유]' }</span>
+					      		<c:if test="${c['TITLE'].length() > 5 }">
+								    ${fn:substring(c['TITLE'],0,5)}...
+							    </c:if>
+							    <c:if test="${c['TITLE'].length() <= 5 }">
+								    ${c["TITLE"]}
+							    </c:if>
+					      		
 					      	</a>
 					      </td>
 					      <td>${c["NICKNAME"]}</td>
@@ -146,7 +152,13 @@
 			  		<c:forEach items="${map.freeboardList}" var="c" varStatus="vs">
 					    <tr>
 					      <th scope="row">${vs.count}</th>
-					      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${c.title}</a></td>
+					      <c:if test="${c.title.length() > 10 }">
+						      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${fn:substring(c.title,0,10)}...</a></td>
+					      </c:if>
+					      <c:if test="${c.title.length() <= 10 }">
+						      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${c.title}</a></td>
+					      </c:if>
+					      
 					      <td>${c.nickname}</td>
 					    </tr>
 			  		</c:forEach>
@@ -173,7 +185,12 @@
 			  		<c:forEach items="${map.qnaList}" var="c" varStatus="vs">
 					    <tr>
 					      <th scope="row">${vs.count}</th>
-					      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c['NO']}">${c["TITLE"]}</a></td>
+					      <c:if test="${c['TITLE'].length() > 10 }">
+						      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c['NO']}">${fn:substring(c['TITLE'],0,10)}...</a></td>
+					      </c:if>
+					      <c:if test="${c['TITLE'].length() <= 10 }">
+						      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c['TITLE']}">${c['TITLE']}</a></td>
+					      </c:if>
 					      <td>${c["NICKNAME"]}</td>
 					    </tr>
 			  		</c:forEach>

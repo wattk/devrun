@@ -8,7 +8,16 @@
 <fmt:requestEncoding value="utf-8"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp"></jsp:include>
-        
+<style>
+.card-img-top img{
+	width : 100%;
+	height : 100%;
+	object-fit : cover;
+}
+.card-img-top{
+	overflow : hidden;
+}
+</style>      
 <div class="container-fluid container">
 	<div class="row">
 		<div class="col-md-12">
@@ -74,12 +83,14 @@
 				  		<c:forEach items="${bestList}" var="c" varStatus="vs">
 					        <div class="col-md-4">
 								<div class="card" style="height:330px;">
-									<c:if test="${c.thumbnail eq null}">
-										<img class="card-img-top p-5" alt="" src="${pageContext.request.contextPath}/resources/images/logo-devrun.png">
-									</c:if>
-									<c:if test="${c.thumbnail ne null}">
-										<img class="card-img-top" alt="" src="${pageContext.request.contextPath}/resources/upload/community/${c.thumbnail}">
-									</c:if>
+									<div class="card-img-top">
+										<c:if test="${c.thumbnail eq null}">
+											<img class="p-5" alt="" src="${pageContext.request.contextPath}/resources/images/logo-devrun.png">
+										</c:if>
+										<c:if test="${c.thumbnail ne null}">
+											${c.thumbnail}
+										</c:if>
+									</div>
 									<div class="card-block p-3">
 										<h3 class="card-title">
 											<a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${c.title}</a>
