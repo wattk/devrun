@@ -365,7 +365,63 @@
 		order by
 			view_count desc
 	</select>
+	
+	<select id="findProductSearch" resultType="product">
+	  	select
+	  		product_code,
+	  		name,
+	  		price,
+	  		reg_date,
+	  		thumbnail
+	  	from
+	  		product
+	  	where
+	  		name like '%'||#{searchKeyword}||'%'
+	  			or price like '%'||#{searchKeyword}||'%'
+	  				or content like '%'||#{searchKeyword}||'%'
+	  	order by
+	  		reg_date desc
+	</select>
+	<select id="findProductCnt" resultType="_int">
+	  	select
+	  		nvl(count(*),0)
+	  	from
+	  		product
+	  	where
+	  		name like '%'||#{searchKeyword}||'%'
+	  			or price like '%'||#{searchKeyword}||'%'
+	  				or content like '%'||#{searchKeyword}||'%'
+	</select>
 	<!-- 혜진 mapper 끝 -->
+	
+	<!-- 지원 mapper 시작 -->
+	<select id="selectLatestProductList" resultType="productEntity">
+		select
+			*
+		from
+			(select product_code, name, price, thumbnail from product order by reg_date desc)
+		where
+			rownum between 1 and 12
+	</select>
+	
+	<select id="selectTop12ProductList" resultType="productEntity">
+		select
+			*
+		from
+			(select product_code, name, price, thumbnail from product order by view_count desc)
+		where
+			rownum between 1 and 12
+	</select>
+	
+	<select id="selectTenThousandWonProductList" resultType="productEntity">
+		select
+			*
+		from
+			(select product_code, name, price, thumbnail from product where price <![CDATA[<=]]> 10000 order by reg_date desc)
+		where
+			rownum between 1 and 12
+	</select>
+	<!-- 지원 mapper 끝 -->
 </mapper>
 
 

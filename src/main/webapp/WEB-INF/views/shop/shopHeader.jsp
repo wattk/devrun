@@ -1,11 +1,17 @@
+<%@page import="java.util.List"%>
+<%@page import="com.kh.devrun.product.model.vo.Product"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<!-- js 임포트 -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>	
+<fmt:requestEncoding value="utf-8"/>
 
 <!-- css 임포트 -->
 <link href="${pageContext.request.contextPath}/resources/css/shop/shopMain.css" rel="stylesheet">
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopMain.js" ></script>
 
                <!--쇼핑몰 헤더부분-->
            <div class = "row col-12 space-evenly" id="shopHeaderBarDiv" style="background-color: #f8f9fa">
@@ -90,22 +96,22 @@
   
                    <!--반응형 사이드바 끝-->
                </div>
-               <div class = "col-md-3" id="shopTop-10Div">
+               <div class = "col-md-4" id="shopTop-10Div">
                    <div id="content">
                        <dl id="rank-list">
                            <dt>실시간 급상승 검색어</dt>
                            <dd>
                                <ol>
-                                   <li><a href="#">1 순위</a></li>
-                                   <li><a href="#">2 순위</a></li>
-                                   <li><a href="#">3 순위</a></li>
-                                   <li><a href="#">4 순위</a></li>
-                                   <li><a href="#">5 순위</a></li>
-                                   <li><a href="#">6 순위</a></li>
-                                   <li><a href="#">7 순위</a></li>
-                                   <li><a href="#">8 순위</a></li>
-                                   <li><a href="#">9 순위</a></li>
-                                   <li><a href="#">10 순위</a></li>
+                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[1]}">1위 : ${tenArr[0]}</a></li>
+                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[3]}">2위 : ${tenArr[2]}</a></li>
+                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[5]}">3위 : ${tenArr[4]}</a></li>
+                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[7]}">4위 : ${tenArr[6]}</a></li>
+                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[9]}">5위 : ${tenArr[8]}</a></li>
+                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[11]}">6위 : ${tenArr[10]}</a></li>
+                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[13]}">7위 : ${tenArr[12]}</a></li>
+                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[15]}">8위 : ${tenArr[14]}</a></li>
+                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[17]}">9위 : ${tenArr[16]}</a></li>
+                                   <li><a href="${pageContext.request.contextPath}/shop/itemDetail/${tenArr[19]}">10위 : ${tenArr[18]}</a></li>
                                </ol>
                            </dd>
                        </dl>
@@ -113,10 +119,10 @@
                </div>
                <div id="shopSerachDiv">
                    <nav class="navbar navbar-light bg-light">
-                       <form class="form-inline" action="${pageContext.request.contextPath}/shop/shopSearch.do"> 
-                         <input class="form-control mr-sm-2" type="search" placeholder="검색어를 입력하세요" aria-label="Search">
+                       <form:form method="GET" class="form-inline" action="${pageContext.request.contextPath}/shop/shopSearch"> 
+                         <input name="searchKeyword" class="form-control mr-sm-2" type="search" placeholder="검색어를 입력하세요" aria-label="Search" required>
                          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                       </form>
+                       </form:form>
                      </nav>
                </div>
                <div id="shopMainEventBtnDiv">
@@ -127,5 +133,5 @@
 <script>
 $(serviceCenter).click((e) => {
 	   location.href = "${pageContext.request.contextPath}/customerCenter/noticeList.do";
-})
+});
 </script>                   

@@ -40,14 +40,14 @@ div#search-nickname {
 </style>
 
 <!-- 본문 시작 -->
-<div class="container-fluid">
+<div class="container-fluid container">
 	<div class="row">
 		<div class="col-md-12">
 			<!-- 헤더 시작 -->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="page-header">
-						<h1>
+						<h1 class="pt-5">
 							<strong>스터디</strong>
 						</h1>
 					</div>
@@ -105,7 +105,7 @@ div#search-nickname {
 			    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nac-home" role="tab" aria-controls="nav-home" aria-selected="true">최신순</a>
 			    <a class="nav-item nav-link" id="nav-comment-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" data-value="3">답변많은순</a>
 			    <a class="nav-item nav-link" id="nav-like-tab" data-toggle="tab" href="#nav-like" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">좋아요순</a>
-			    <a class="nav-item nav-link" id="nav-joinSatrt-tab" data-toggle="tab" href="#nav-joinStart" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">모집중</a>
+			    <a class="nav-item nav-link" id="nav-joinStart-tab" data-toggle="tab" href="#nav-joinStart" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">모집중</a>
 			    <a class="nav-item nav-link" id="nav-joinEnd-tab" data-toggle="tab" href="#nav-joinEnd" role="tab" aria-controls="nav-contact" aria-selected="false" data-value="3">모집완료</a>
 			  </div>
 			</nav>
@@ -115,12 +115,48 @@ div#search-nickname {
 		</div>
 	</div>
 	
-	<!-- 총 게시물 수 시작 -->
-	<div id="totalCountContainer">
-	 <p>총 게시물 수 : ${totalContent}</p>			  
+	<div id="totalCountContainer row" >
+		총 게시물 수 : ${totalContent}			  
+		<button class="btn btn-secondary float-right" data-toggle="modal" data-target="#bs-example-modal-lgtv"><i class="fas fa-question-circle"></i>&nbsp;&nbsp;스터디 가이드</button>
 	</div>
-	<!-- 총 게시물 수 종료 -->
 	
+	<!-- 스터디 가이드 모달 시작 -->
+	<div class="modal fade" id="bs-example-modal-lgtv" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h4 class="modal-title" id="myLargeModalLabel"><strong>스터디 가이드</strong></h4>
+	      </div>
+	      <br />
+	      <div class="modal-body">
+	      <p><strong>스터디 모집글에 아래 양식을 참고해 작성해주세요.</strong></p>
+	      <p><strong>꼼꼼히 작성하면 멋진 스터디 팀원을 만나실 수 있을거에요.</strong></p>
+	      <hr />
+			<div class="input-group flex-nowrap">
+
+ <textarea rows="13" cols="100" readonly="readonly">
+ 
+ [개발 스터디 모집 내용 예시]
+  
+ ● 스터디 주제 : 
+ ● 예상 스터디 일정(횟수) : 
+ ● 예상 커리큘럼 간략히 :
+ ● 예상 모집인원 : 
+ ● 스터디 소개와 개설 이유 :  
+ ● 스터디 관련 주의사항 : 
+ ● 스터디에 지원할 수 있는 방법을 남겨주세요. (이메일, 카카오 오픈채팅방, 구글폼 등.)	 
+ </textarea>
+			</div>
+		  <hr />	
+	      </div>
+	      <div class="modal-footer justify-content-center">
+			<button type="button" class="btn btn-secondary col-4" data-dismiss="modal" id="deleteReporBtn">확인</button>
+		  </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 스터디 가이드 모달 종료 -->
+
 	<br />
 			
 	<!-- 리스트 시작 -->
@@ -141,8 +177,13 @@ div#search-nickname {
 			<c:forEach items="${list}" var="communityEntity">
 				<tr data-no="${communityEntity.communityNo}" style="cursor: pointer;" class="whynot">
 					<td>${communityEntity.communityNo}</td>
-					<!-- 모집중 or 모집완료 'N':모집완료 / 'Y':모집중-->
-					<td id="studyCheck" data-study-join-yn="${communityEntity.studyJoinYn}"><span class="badge bg-primary" style="color: white;" id="closeJoinYn"></span>&nbsp;${communityEntity.title}</td>
+					<!-- 모집중 or 모집완료 'N':모집완료 / 'Y':모집중 -->
+					<c:if test="${communityEntity.studyJoinYn eq 'Y'}">
+						<td id="studyCheck" data-study-join-yn="${communityEntity.studyJoinYn}"><span class="badge bg-primary" style="color: white;" id="closeJoinYn">모집중</span>&nbsp;${communityEntity.title}</td>					
+					</c:if>
+					<c:if test="${communityEntity.studyJoinYn eq 'N'}">
+						<td id="studyCheck" data-study-join-yn="${communityEntity.studyJoinYn}"><span class="badge bg-primary" style="color: white;" id="closeJoinYn">모집완료</span>&nbsp;${communityEntity.title}</td>					
+					</c:if>
 					<td>${communityEntity.nickname}</td>
 					<td><fmt:formatDate value="${communityEntity.enrollDate}" pattern="yy-MM-dd"/></td>
 					<td><i class="fas fa-heart"></i> ${communityEntity.likeCount}</td>
@@ -167,24 +208,6 @@ div#search-nickname {
 </div>
 </div>
 <script>
-/* ---------------------------------------------- 모집 기능 시작 ---------------------------------------------- */
-
-$(document).ready(function(){
-	
-	// Detail에서 변경된 데이터 확인
-	var $studyCheck = $('#studyCheck').data('study-join-yn');
-	console.log("모집중:Y/모집완료:N --> ", $studyCheck);
-	
-	// Y or N에 따라 뱃지명 변경
-	if($studyCheck=="Y"){
-		$("#closeJoinYn").html("모집중");
-	}else {
-		$("#closeJoinYn").html("모집완료");
-	}
-		
-});
-
-/* ---------------------------------------------- 모집 기능 종료 ---------------------------------------------- */
 
 /* ---------------------------------------------- 게시글 상세보기 기능 시작 ---------------------------------------------- */
 /**
@@ -399,7 +422,97 @@ $("#nav-comment-tab").click(e => {
 	e.preventDefault();
 	commentGetPage();
 });
-/* ---------------------------------------------- 답변순 페이지 기능 종료 ---------------------------------------------- */	
+/* ---------------------------------------------- 답변순 페이지 기능 종료 ---------------------------------------------- */
+
+/* ---------------------------------------------- 모집중 페이지 기능 시작 ---------------------------------------------- */
+
+/* 전역 변수 */
+var $pageCode = "";
+
+/* 검색 결과 페이징 */
+function joinStartGetPage(cPage){
+	console.log($('#nav-joinStart-tab').data('value'));
+	const $pageCode = $('#nav-joinStart-tab').data('value');
+	
+	pageCode = $pageCode;
+	var cPage;
+	
+	console.log("pageCode = " + pageCode);
+	
+	// 객체로 담아서 보내야한다.
+	const joinStartSearch = {"pageCode" : $pageCode,
+							 "cPage" : cPage
+					   	  	};
+	
+	console.log(joinStartSearch);
+	console.log("joinStartSearch");
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/community/joinStartBoard.do",
+		data : joinStartSearch,
+		contentType : "application/json; charset=utf-8",
+		success(data){
+			console.log("ajaxData = " + data);
+			
+			$("#tbody").html(data["joinStartBoardStr"]);
+			$(".pagebar").detach();
+			$("#freeboardContainer").after(data["pagebar"]);
+			$("#totalCountContainer").html(`<span class="countTitle">총 게시물 수 : </span> <span class"countContent">\${data["totalContent"]}</span>`)
+		},
+		error:console.log
+	});	
+}
+$("#nav-joinStart-tab").click(e => {
+	console.log("모집중 페이지정렬 도착했나요?");
+	e.preventDefault();
+	joinStartGetPage();
+});
+/* ---------------------------------------------- 모집중 페이지 기능 종료 ---------------------------------------------- */
+
+/* ---------------------------------------------- 모집완료 페이지 기능 시작 ---------------------------------------------- */
+
+/* 전역 변수 */
+var $pageCode = "";
+
+/* 검색 결과 페이징 */
+function joinEndGetPage(cPage){
+	console.log($('#nav-joinEnd-tab').data('value'));
+	const $pageCode = $('#nav-joinEnd-tab').data('value');
+	
+	pageCode = $pageCode;
+	var cPage;
+	
+	console.log("pageCode = " + pageCode);
+	
+	// 객체로 담아서 보내야한다.
+	const joinEndSearch = {"pageCode" : $pageCode,
+							 "cPage" : cPage
+					   	  	};
+	
+	console.log(joinEndSearch);
+	console.log("joinEndSearch");
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/community/joinEndBoard.do",
+		data : joinEndSearch,
+		contentType : "application/json; charset=utf-8",
+		success(data){
+			console.log("ajaxData = " + data);
+			
+			$("#tbody").html(data["joinEndBoardStr"]);
+			$(".pagebar").detach();
+			$("#freeboardContainer").after(data["pagebar"]);
+			$("#totalCountContainer").html(`<span class="countTitle">총 게시물 수 : </span> <span class"countContent">\${data["totalContent"]}</span>`)
+		},
+		error:console.log
+	});	
+}
+$("#nav-joinEnd-tab").click(e => {
+	console.log("모집완료 페이지정렬 도착했나요?");
+	e.preventDefault();
+	joinEndGetPage();
+});
+/* ---------------------------------------------- 모집완료 페이지 기능 종료 ---------------------------------------------- */
 </script>
 <!-- footer include -->
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

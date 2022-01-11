@@ -40,12 +40,12 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 
 	@Override
-	public List<Community> selectColumnList() {
-		return communityDao.selectColumnList(); // 전달할 값이 없으므로 공란
+	public List<CommunityEntity> selectColumnList(int offset, int limit) {
+		return communityDao.selectColumnList(offset, limit); // 전달할 값이 없으므로 공란
 	}
 
 	@Override
-	public List<Community> columnBestList() {
+	public List<CommunityEntity> columnBestList() {
 		return communityDao.columnBestList();
 	}
 
@@ -241,12 +241,89 @@ public class CommunityServiceImpl implements CommunityService {
 	public List<CommunityEntity> selectAllLikeOrderBySelectType(Map<String, Object> param, int offset, int limit) {
 		return communityDao.selectAllLikeOrderBySelectType(param, offset, limit);
 	}
-	
+
 	/**
 	 * 지원 서비스 끝
 	 */
+	
+	// 모집진행 순 리스트
+	@Override
+	public List<CommunityEntity> selectJoinStartBoardList(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectJoinStartBoardList(param, offset, limit);
+	}
 
+	// 모집진행 게시물 수
+	@Override
+	public int selectOneStudyJoinStartCount() {
+		return communityDao.selectOneStudyJoinStartCount();
+	}
 
+	// 모집완료 순 리스트
+	@Override
+	public List<CommunityEntity> selectJoinEndBoardList(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectJoinEndBoardList(param, offset, limit);
+	}
 
+	// 모집완료 게시물 수
+	@Override
+	public int selectOneStudyJoinEndCount() {
+		return communityDao.selectOneStudyJoinEndCount();
+	}
+
+	// Q&A 리스트
+	@Override
+	public List<CommunityEntity> selectQnAList(int offset, int limit) {
+		return communityDao.selectQnAList(offset, limit);
+	}
+
+	// QnA 전체 게시물 수
+	@Override
+	public int selectOneQnACount() {
+		return communityDao.selectOneQnACount();
+	}
+
+	@Override
+	public int updateAnswerNo(Map<String, Object> param) {
+		return communityDao.updateAnswerNo(param);
+	}
+	
+	@Override
+	public int updateAnswerYes(Map<String, Object> param) {
+		return communityDao.updateAnswerYes(param);
+	}
+	
+	@Override
+	public int selectCommentTotalCountByBoard(int pageCode) {
+		return communityDao.selectCommentTotalCountByBoard(pageCode);}
+	
+	// 타입별 검색
+	@Override
+	public List<CommunityEntity> selectBoardListByType(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectBoardListByType(param, offset, limit);
+	}
+	
+	// 타입별 검색 총 게시물 수
+	@Override
+	public int selectCommunityTotalCountByType(Map<String, Object> param) {
+		return communityDao.selectCommunityTotalCountByType(param);
+	}
+
+	// 최근답변순 정렬
+	@Override
+	public List<CommunityEntity> selectcurrentCommentBoardList(Map<String, Object> param, int offset, int limit) {
+		return communityDao.selectcurrentCommentBoardList(param, offset, limit);
+	}
+
+	/**
+	 * 혜진 칼럼 시작
+	 */
+	@Override
+	public int selectColumnCount() {
+		return communityDao.selectColumnCount();
+	}
+	
+	/**
+	 * 혜진 칼럼 끝
+	 */
 	
 }

@@ -1,31 +1,15 @@
+var slideMq = window.matchMedia("(min-width: 479px)");
 
+$(document).ready(()=>{
+	
 	  /*반응형 사이드바 시작*/
-   var slideMq = window.matchMedia("(min-width: 479px)");
-  
-  /* Sliding side navigation */
-   function openSideNav() {
-  if (slideMq.matches) {
-    /* the viewport is at least 479 pixels wide */
-    document.getElementById("slidingSideNav").style.width = "30%";
-    
-  } else {
-    /* the viewport is less than 479 pixels wide */
-    document.getElementById("slidingSideNav").style.width = "100%";
-  }
   
   
-  }
   slideMq.addListener(function(changed) {
      
          document.getElementById("slidingSideNav").style.width = "0";
      
   });
-  
-  
-  
-  function closeSideNav() {
-      document.getElementById("slidingSideNav").style.width = "0%";
-  }
   
   /*Copyright (c) 2017 by Ryan Bobrowski (https://codepen.io/rbobrowski/pen/likvA)*/
   
@@ -81,7 +65,10 @@
        var position = $(window).scrollTop(); 
        $("#sidebox").stop()
                     .animate({"top":position+currentPosition+"px"},1000); 
+       
    });
+   
+   todayViewBox();
    /*오늘 본 상품 div 끝*/
     
     
@@ -89,13 +76,7 @@
    var slideIndex = 1;
    showSlides(slideIndex);
    
-   function plusSlides(n) {
-     showSlides(slideIndex += n);
-   }
    
-   function currentSlide(n) {
-     showSlides(slideIndex = n);
-   }
    
    function showSlides(n) {
      var i;
@@ -114,4 +95,30 @@
    }
    /*상품 카테고리 슬라이드 끝 */
 	
+})
  
+/* Sliding side navigation */
+   function openSideNav() {
+  if (slideMq.matches) {
+    /* the viewport is at least 479 pixels wide */
+    document.getElementById("slidingSideNav").style.width = "30%";
+    
+  } else {
+    /* the viewport is less than 479 pixels wide */
+    document.getElementById("slidingSideNav").style.width = "100%";
+  }
+  
+  
+  }
+  
+  function closeSideNav() {
+      document.getElementById("slidingSideNav").style.width = "0%";
+  }
+  
+  function plusSlides(n) {
+     showSlides(slideIndex += n);
+   }
+   
+   function currentSlide(n) {
+     showSlides(slideIndex = n);
+   }

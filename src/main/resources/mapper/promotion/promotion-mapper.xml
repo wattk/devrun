@@ -227,5 +227,52 @@
 		where
 			rownum = 1
 	</select>
+	
+	<select id="selectThreeCurrentPromotion" resultType="promotion">
+		select
+			*
+		from
+			(select * from promotion order by end_date desc)
+		where
+			rownum between 1 and 3
+		order by
+			start_date
+	</select>
+	
+	<select id="selectPromotionProductList1" resultType="product">
+		select
+		    product_code,
+		    thumbnail,
+		    name,
+		    price
+		from
+		    product
+		where
+		    product_code in (select product_code from product_promotion where promotion_code = #{promotionCode1})
+	</select>
+	
+	<select id="selectPromotionProductList2" resultType="product">
+		select
+		    product_code,
+		    thumbnail,
+		    name,
+		    price
+		from
+		    product
+		where
+		    product_code in (select product_code from product_promotion where promotion_code = #{promotionCode2})
+	</select>
+	
+	<select id="selectPromotionProductList3" resultType="product">
+		select
+		    product_code,
+		    thumbnail,
+		    name,
+		    price
+		from
+		    product
+		where
+		    product_code in (select product_code from product_promotion where promotion_code = #{promotionCode3})
+	</select>
 	<!-- 지원 mapper 끝 -->
 </mapper>

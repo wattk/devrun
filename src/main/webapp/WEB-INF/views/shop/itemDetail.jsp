@@ -949,9 +949,7 @@ function todayItemStorage(){
         	}
         });
     }
-  	
-  	
-  	console.log(`check 값은? : \${check}`);
+
   	if(check == 0){
 	    todayViewitems.push(aViewdItem);  		
   	}
@@ -1053,8 +1051,8 @@ $("#cartBtn").click((e)=>{
 
 
 <!-- shopHeader js  -->
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
+<%-- <script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script> --%>
 
 <!-- itemDetail js -->
 <script type="text/javascript"

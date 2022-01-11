@@ -60,6 +60,8 @@
 	alert("${msg}");
 </script>
 </c:if>
+
+
 </head>
 
 <body id="pageTop">
@@ -352,9 +354,10 @@
                 <div id="collapseNotify" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/reviewReport.do">리뷰/쪽지 신고</a>
-                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/boardReport.do">게시물 신고</a>
-                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/blacklistReport.do">블랙리스트 관리</a>                     
+                    	<a class="collapse-item" href="${pageContext.request.contextPath}/admin/report/memberReport.do">회원 신고</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/report/reviewReport.do">리뷰/메시지 신고</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/report/boardReport.do">게시물/댓글 신고</a>
+                        <a class="collapse-item" href="${pageContext.request.contextPath}/admin/report/blacklistReport.do">블랙리스트 관리</a>                     
                     </div>
                 </div>
             </li>

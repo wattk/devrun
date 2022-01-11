@@ -57,6 +57,16 @@ public class ShopServiceImpl implements ShopService {
 
 	}
 
+	@Override
+	public List<ProductEntity> selectProductListByChildCategory(Map<String, Object> param, int offset, int limit) {
+		return shopDao.selectProductListByChildCategory(param, offset, limit);
+	}
+
+	@Override
+	public int selectProductTotalCount(Map<String, Object> param) {
+		return shopDao.selectProductTotalCount(param);
+	}
+
 	/* 혜진 장바구니 끝 */
 
 //--------------------------------------------------------구분선---------------------------------------------------------
@@ -258,7 +268,7 @@ public class ShopServiceImpl implements ShopService {
 	}
 
 	@Override
-	public List<String> selectAllChildCateNames(String parentCate) {
+	public List<Map<String, String>> selectAllChildCateNames(String parentCate) {
 		return shopDao.selectAllChildCateNames(parentCate);
 	}
 
@@ -270,6 +280,31 @@ public class ShopServiceImpl implements ShopService {
 	@Override
 	public List<ProductEntity> selectItemsByChildCateBySort(int offset, int limit, Map<String, Object> param) {
 		return shopDao.selectItemsByChildCateBySort(offset, limit, param);
+	}
+
+	@Override
+	public List<ProductEntity> shopSearch(int offset, int limit, String searchKeyword) {
+		return shopDao.shopSearch(offset, limit, searchKeyword);
+	}
+
+	@Override
+	public int countShopSearch(String searchKeyword) {
+		return shopDao.countShopSearch(searchKeyword);
+	}
+
+	@Override
+	public List<ProductEntity> shopSearchSort(int offset, int limit, Map<String, Object> param) {
+		return shopDao.shopSearchSort(offset, limit, param);
+	}
+
+	@Override
+	public List<Review> topFourReview() {
+		return shopDao.topFourReview();
+	}
+
+	@Override
+	public List<ProductEntity> topTenItems() {
+		return shopDao.topTenItems();
 	}
 
 }

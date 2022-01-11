@@ -37,9 +37,11 @@
 </style>
 
 <!-- 글쓰기 버튼 -->
-	<div style="float: right">
-	<button class="btn btn-primary" data-toggle="modal" data-target="#bs-example-modal-lg">글쓰기</button>
-	</div>
+	<sec:authorize access="hasAnyRole('M1','M2','AM')">
+		<div style="float: right">
+		<button class="btn btn-primary" data-toggle="modal" data-target="#bs-example-modal-lg">글쓰기</button>
+		</div>
+	</sec:authorize>
 	
 	<!-- 게시판 글쓰기 모달 시작 -->
 	<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -75,14 +77,18 @@
 	      <hr />
 			<div class="input-group flex-nowrap">
 			  <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해주세요." aria-label="Username" aria-describedby="addon-wrapping">
-			  <input type="hidden" name="memberNo" id="member_no" value='<sec:authentication property="principal.memberNo"/>' />
+			  <sec:authorize access="hasAnyRole('M1','M2','AM')">
+			  	<input type="hidden" name="memberNo" id="member_no" value='<sec:authentication property="principal.memberNo"/>' />
+			  </sec:authorize>
 			</div>
 		  <br />	
 		  <p><strong>태그</strong></p>
 		  <hr />
 		  	<div class="input-group flex-nowrap">
 			  <span class="input-group-text" id="addon-wrapping">#</span>
-			  <input type="text" class="form-control" placeholder="태그를 설정해주세요." aria-label="Username" aria-describedby="addon-wrapping">
+			  <sec:authorize access="hasAnyRole('M2','AM')">
+			  	<input type="text" class="form-control" placeholder="태그를 설정해주세요." aria-label="Username" aria-describedby="addon-wrapping">
+			  </sec:authorize>
 			</div>
 		  <br />	
 		  <p><strong>내용</strong></p>
@@ -101,6 +107,7 @@
 	</div>
 	
 <script>
+let imgs = "";
 //summernote 웹 에디터 로딩
 $(document).ready(function(){
 	$('#summernote').summernote({
@@ -109,8 +116,43 @@ $(document).ready(function(){
 		maxHeight: null, // 최대 높이
 		focus: true, // 에디터 로딩 후 포커스를 맞출 지 여부
 		lang: "ko-KR", // 한글 설정
-		placeholder: "내용을 입력해 주세요"  // placeholder 설정
+		placeholder: "내용을 입력해 주세요",  // placeholder 설정
+		callbacks:{
+			onImageUpload : function(files){
+				uploadSummernoteImageFile(files[0], this);
+			},
+			onPaste : ((e)=>{
+				let clipboardData = e.originalEvent.clipboardData;
+				if(clipboardData && clipboardData.items && clipboardData.items.length){
+					let item = clipboardData.items[0];
+					if(item.kind === 'file' && item.type.indexof('image/') != -1){
+						e.preventDefault();
+					}
+				}
+			})
+		}
 	});
+	
+	function uploadSummernoteImageFile(file, editor){
+		const data = new FormData();
+		data.append("file", file);
+		data.append("keyword", "community");
+		$.ajax({
+			data : data,
+			type : "POST",
+			url : "${pageContext.request.contextPath}/uploadSummernoteImageFile",
+			contentType : false,
+			processData : false,
+			success(data){
+				console.log(data);
+				//imgs 변수 안에 /filename 추가. /는 구분자
+				imgs += "/" + data["filename"];
+				$('#summernote').summernote('insertImage', "${pageContext.request.contextPath}/resources/upload/community/"+data["filename"]);
+			},
+			error : console.log
+			
+		});
+	}
 });
 
 // 글쓰기 & 유효성검사
@@ -139,7 +181,30 @@ $('#writeBtn').click(function(){
 	
 });
 
-
+//페이지 벗어날 때 썸머노트 안의 이미지 파일을 서버 상에서 삭제
+$("#bs-example-modal-lg").on("hide.bs.modal",
+      	function (e) {  
+		console.log("닫기 이벤트 시작");
+		if(confirm("정말 나가시겠습니까?")){
+			$("input[type=radio]:checked").prop('checked', false);
+			
+			$(".form-control").val('');
+			$("#summernote").summernote('reset');
+			
+	    	$.ajax({
+	    		url : "${pageContext.request.contextPath}/deleteSummernoteImageFile",
+	    		data : {imgs : imgs,
+	    				keyword : "community"},
+	    		method : "POST",
+	    		success(data){
+	    		console.log(data);
+	    		},
+	    		error : console.log
+	    	});
+			return;
+		};
+    	//비동기 요청을 통해 서버에 저장된 이미지 파일 삭제
+	});
 
 
 </script>

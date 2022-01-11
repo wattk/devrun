@@ -16,16 +16,17 @@
 
 <link href="${pageContext.request.contextPath }/resources/css/admin/adminManage.css" rel="stylesheet"/>
 <script src="${pageContext.request.contextPath }/resources/js/admin/promotionDetail.js"></script>
+<div class="container">
 <div class="promotion-container">
 	<h3 class="mt-5 ml-5">이벤트 관리</h3>
 	<strong class="ml-5 pl-2">이벤트 상세보기</strong>
 </div>
 	<div class="event-list">
 		<hr />
-		<strong class="ml-5 pl-5">이벤트 정보</strong>
+		<strong class=" pl-5">이벤트 정보</strong>
 		<form:form name="promotionUpdateFrm" action="${pageContext.request.contextPath}/admin/promotionUpdate.do" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="promotionCode" value="${promotion.promotionCode}" />
-			<table id="promotionDetailTbl" class="admin-tbl table mx-auto mt-3 col-md-10">
+			<table id="promotionDetailTbl" class="admin-tbl table mx-auto mt-3 col-md-12">
 				<tbody>
 				    <tr>
 				    	<th>이벤트 등록일</th>
@@ -94,10 +95,10 @@
 				    </tr>
 		  	 	</tbody>
 			</table>
-			<div class="promotion-img col-10 mx-auto">
+			<div class="promotion-img col-12 mx-auto">
 				<img src="${pageContext.request.contextPath}/resources/upload/promotion/${promotion.banner}" alt="" class="img-thumbnail" />
 			</div>
-			<div class="col-md-10 mx-auto">
+			<div class="col-md-12 mx-auto">
 	            <label for="contents" class="col-form-label"></label>
 	            <textarea id="summernoteDetail" name="sideNote">${promotion.sideNote}</textarea>
 	        </div>
@@ -111,6 +112,7 @@
         	<input type="hidden" name="promotionCode" value="${promotion.promotionCode}" />
         </form:form>
 	</div>
+</div>
 <script>
 //수정 버튼 클릭 시 비활성화 풀기 & 수정 버튼 등록 버튼으로 변경하고 삭제/목록 버튼 대신 취소 버튼 만들기
 $(promotionEditBtn).click((e)=>{

@@ -113,10 +113,32 @@ public class PromotionDaoImpl implements PromotionDao {
 	/**
 	 * 지원 dao 시작
 	 */
+	
 	@Override
 	public Promotion selectOneLatestPromotionBanner() {
 		return session.selectOne("promotion.selectOneLatestPromotionBanner");
 	}
+
+	@Override
+	public List<Promotion> selectThreeCurrentPromotion() {
+		return session.selectList("promotion.selectThreeCurrentPromotion");
+	}
+	
+	@Override
+	public List<ProductEntity> selectPromotionProductList1(String promotionCode1) {
+		return session.selectList("promotion.selectPromotionProductList1", promotionCode1);
+	}
+
+	@Override
+	public List<ProductEntity> selectPromotionProductList2(String promotionCode2) {
+		return session.selectList("promotion.selectPromotionProductList2", promotionCode2);
+	}
+
+	@Override
+	public List<ProductEntity> selectPromotionProductList3(String promotionCode3) {
+		return session.selectList("promotion.selectPromotionProductList3", promotionCode3);
+	}
+
 	/**
 	 * 지원 dao 끝
 	 */

@@ -21,7 +21,7 @@ name="reviewFrm"
 method="POST"
 action="${pageContext.request.contextPath}/shop/review.do"
 enctype="multipart/form-data">
-	<div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+	<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -76,7 +76,7 @@ enctype="multipart/form-data">
 </form:form>
 <!--리뷰작성모달 끝-->
 <!-- 배송 조회 모달 -->
-<div class="modal fade" id="shipmentModal" tabindex="-1" role="dialog" aria-labelledby="shipmentModalLabel" aria-hidden="true">
+<div class="modal fade" id="shipmentModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -166,18 +166,18 @@ enctype="multipart/form-data">
      								<c:choose>
       								<c:when test="${item.csStatus eq 'COM' }">
        								<c:if test="${item.orderStatus eq 'OR' or item.orderStatus eq 'PP'}">
-       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary">주문취소</button>
+       									<button type="button" data-target="${item.merchantUid}" class="order-change-btn order-btn btn btn-outline-primary">주문취소</button>
        								</c:if>
        								
        								<c:if test="${item.orderStatus eq 'SS'}">
-       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary">반품/교환</button>
+       									<button type="button" data-target="${item.merchantUid}" class="order-change-btn order-btn btn btn-outline-primary">반품/교환</button>
        									<button type="button" id="${item.trackingNo}" data-toggle="modal" data-target="#shipmentModal" class="tracking-no btn btn-outline-primary">배송조회</button>
-       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary active">구매확정</button>
+       									<button type="button" data-target="${item.merchantUid}" class="order-clear-btn order-btn btn btn-outline-primary active">구매확정</button>
        								</c:if>
        								<c:if test="${item.orderStatus eq 'OC'}">
        									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary">반품/교환</button>
        									<button type="button" id="${item.trackingNo}" data-toggle="modal" data-target="#shipmentModal" class="tracking-no btn btn-outline-primary">배송조회</button>
-       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary active" data-toggle="modal" data-target="#exampleModal3">후기쓰기</button>
+       									<button type="button" data-target="${item.merchantUid}" class="order-btn btn btn-outline-primary active" data-toggle="modal" data-target="#reviewModal">후기쓰기</button>
        								</c:if>
       								</c:when>
       								<c:otherwise>
@@ -235,10 +235,15 @@ $(".tracking-no").click((e)=>{
 	});
 });
 
-$(".order-btn").click((e)=>{
+$(".order-change-btn").click((e)=>{
 	const merchantUid = $(e.target).data("target");
 	location.href = `${pageContext.request.contextPath}/mypage/changeOrder?merchantUid=\${merchantUid}`;
-})	
+});	
+
+$(".order-clear-btn").click((e)=>{
+	const merchantUid = $(e.target).data("target");
+	location.href = `${pageContext.request.contextPath}/mypage/clearOrder.do?merchantUid=\${merchantUid}`;
+});
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/itemDetail.js" ></script>
 <jsp:include page="/WEB-INF/views/mypage/common/footer.jsp"></jsp:include>

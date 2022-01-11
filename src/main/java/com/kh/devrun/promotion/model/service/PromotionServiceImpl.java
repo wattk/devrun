@@ -154,13 +154,34 @@ public class PromotionServiceImpl implements PromotionService {
 	/**
 	 * 지원 service 시작
 	 */
+	
 	@Override
 	public Promotion selectOneLatestPromotionBanner() {
 		return promotionDao.selectOneLatestPromotionBanner();
 	}
+
+	@Override
+	public List<Promotion> selectThreeCurrentPromotion() {
+		return promotionDao.selectThreeCurrentPromotion();
+	}
+
+	@Override
+	public List<ProductEntity> selectPromotionProductList1(String promotionCode1) {
+		return promotionDao.selectPromotionProductList1(promotionCode1);
+	}
+
+	@Override
+	public List<ProductEntity> selectPromotionProductList2(String promotionCode2) {
+		return promotionDao.selectPromotionProductList2(promotionCode2);
+	}
+
+	@Override
+	public List<ProductEntity> selectPromotionProductList3(String promotionCode3) {
+		return promotionDao.selectPromotionProductList3(promotionCode3);
+	}
+	
 	/**
 	 * 지원 service 끝
 	 */
-	
 	
 }

@@ -17,7 +17,7 @@
 
 <!-- shopSideBox 관련 임포트 -->
 <jsp:include page="/WEB-INF/views/shop/rightSideBox.jsp"/>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/rightSideBox.js"></script> --%>
 
 <link href="${pageContext.request.contextPath }/resources/css/shop/shopDetail.css" rel="stylesheet">
 
@@ -34,21 +34,10 @@
 	font-family: 'SANJUGotgam';
 	font-size: 23px;
 }
-.category-container{
-	border :0px;
-	background-color: beige;
-}
-.shop-item-img img {
-	width:200px;
-	height:200px;
-	padding: 0.25rem;
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 0.25rem;
-    max-width: 100%;
-
-}
 </style>
+
+
+<sec:authentication property="principal" var="member" />
 
 
 <div class="shop-container">
@@ -64,58 +53,153 @@
 	</div>
 	<div class="item-sort-container d-flex 	justify-content-between">
 		<div class="p-4">총 ${total}개</div>
-		<div class="p-4" id="">
-			<span class="pr-2 pl-2 shop-sort" data-target="new">신상품순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="recommend">추천순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="row">낮은 가격순</span>
-			<span class="pr-2 pl-2 shop-sort" data-target="high">높은 가격순</span>
+		<div class="p-4">
+			<span class="pr-2 pl-2 shop-sort" data-target="new" data-valid="1">신상품순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="recommend" data-valid="0">추천순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="row" data-valid="0">낮은 가격순</span>
+			<span class="pr-2 pl-2 shop-sort" data-target="high" data-valid="0">높은 가격순</span>
 		</div>
 	</div>
 	<div id = "productSortContainer" class="row">
 		<!-- 아이템 나열 시작 -->
-		<c:if test = "${itemList != null}">
-			<c:forEach items="${itemList}" var="l">
-		  	  <a href="${pageContext.request.contextPath}/shop/itemDetail/${l.productCode}" class="col-md-3 p-5">
-		        <div class="card-box-d">
-		          <div class="card-img-d shop-item-img position-relative">
-		            <img src="${pageContext.request.contextPath }/resources/upload/product/${l.thumbnail}" alt="" class="img-thumbnail shop-img img-d img-fluid">
-		            <i class="shop-like-icon fas fa-heart position-absolute"></i>
-		            <i class="shop-cart-icon fas fa-cart-plus position-absolute"></i>
-		          </div>
-		          <div>
-		          	<p class="m-0">${l.name}</p>
-		          	<strong><fmt:formatNumber value="${l.price}" pattern="₩#,###,###"/></strong>
-		          </div>
-		        </div>
-		      </a>
-			</c:forEach>
-		</c:if>
       <!-- 아이템 나열 끝 -->
     </div>
-    <nav aria-label="..." class="mx-auto text-center">
     <div class="banner mx-auto text-center mb-3">
     	<img src="${pageContext.request.contextPath}/resources/upload/promotion/PROMO_f2z7M27K77UDWm9.png" alt="" />
     </div>
 	  <ul class="pagination justify-content-center mt-5">
 	  </ul>
 	  <div id="pageBar">
-		  ${pagebar}
 	  </div>
-	</nav>
 </div>
 
 
 
+
+
+<!-- 위시리스트 로그인 했을 시 비동기 시작 -->
+<sec:authorize access="isAuthenticated()">
+	<script>
+$(document).on('click', '.wishBtn', function(e) {
+	console.log("도착?");
+	const $memberNo = ${member.memberNo};
+	const $productCode = $(e.target).data("productCode");
+
+	console.log(`$memberNo : \${$memberNo}`);
+	console.log(`$productCode : \${$productCode}`);
+	
+	const wishYn = $(e.target).data("wishyn");
+	
+	if(wishYn == 'N'){
+			$.ajax({
+				
+				url: "${pageContext.request.contextPath}/shop/wishlistAdd",
+				method: "Get",
+				data : {
+					memberNo:  $memberNo,
+					productCode : $productCode 
+					
+				},
+				success(data){
+					if(data == 1){
+						$(e.target).data('wishyn', 'Y');
+						$(e.target).attr('class', 'shop-like-icon fas fa-heart position-absolute wishBtn');							
+					}
+				},
+				error: console.log
+		});
+	}else{
+		$.ajax({
+			
+			url: "${pageContext.request.contextPath}/shop/wishlistDelete",
+			method: "Get",
+			data : {
+				memberNo:  $memberNo,
+				productCode : $productCode 
+				
+			},
+			success(data){
+				if(data == 1){
+					$(e.target).data('wishyn', 'N');
+					$(e.target).attr('class', 'shop-like-icon far fa-heart position-absolute wishBtn');							
+				}
+			},
+			error: console.log
+	});
+		
+		
+	}
+	
+})
+</script>
+</sec:authorize>
+<!-- 위시리스트 로그인 했을 시 비동기 끝 -->
+
+<!-- 위시리스트 비 로그인 시 비동기 시작 -->
+<sec:authorize access="isAnonymous()">
+	<script>
+$(document).on('click', '.wishBtn', function(e) {
+	alert("로그인 후 이용가능합니다.");
+	return;
+
+})
+
+</script>
+</sec:authorize>
+<!-- 위시리스트 비 로그인 시 비동기 끝 -->
+
+
+
 <script>
-//혜진코드 시작
+
+window.onload = basic;
+
+function basic(){
+	let cPage = 1;
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/shop/childCatePageSort",
+		method : "GET",
+		data : {
+				childCateCode : "${childCategoryCode}",
+				keyword : 'new',
+				total : ${total},
+				cPage : cPage
+				},
+		success(data){
+				console.log(data);
+				$("#productSortContainer").html(data["productStr"]);
+				$(".pagebar").detach();
+				$("#pageBar").after(data["pagebar"]);
+			
+		},
+		error : console.log
+	});
+	
+}
+
+
 //이벤트 상품 소분류 코드별 정렬
-$(".shop-sort").click((e)=>{
+$(document).on("click", ".shop-sort, .page-link", (e)=>{
+	let cPage = 1;
 	
 	let sort;
-	
 	if($(e.target).is(".shop-sort")){
+		$(".shop-sort").data("valid", 0);
 		sort = $(e.target).data("target");
+		$(e.target).data("valid", 1);
 	};
+	if($(e.target).is(".page-link")){
+		const $sortList = $(".shop-sort");
+		cPage = $(e.target).data("cPage");
+		$sortList.each((i, item)=>{
+			if($(item).data("valid") == 1){
+				sort = $(item).data("target");
+			}
+		});
+	};
+	console.log(cPage);
+	console.log(sort);
 	
 
 	$.ajax({
@@ -124,12 +208,14 @@ $(".shop-sort").click((e)=>{
 		data : {
 				childCateCode : "${childCategoryCode}",
 				keyword : sort,
-				total : ${total}
+				total : ${total},
+				cPage : cPage
 				},
 		success(data){
 				console.log(data);
 				$("#productSortContainer").html(data["productStr"]);
-				$(pageBar).html(data["pageBar"]);
+				$(".pagebar").detach();
+				$("#pageBar").after(data["pagebar"]);
 			
 		},
 		error : console.log
@@ -140,5 +226,5 @@ $(".shop-sort").click((e)=>{
 
 </script>
 <!-- shopHeader js  -->
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script> --%>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

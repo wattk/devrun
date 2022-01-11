@@ -328,7 +328,15 @@ function createChart(){
 		type : 'horizontalBar',
 		data : orderData,
 		options : {
-			legend : {display : false}
+			legend : {display : false},
+			scales: {
+	            xAxes: [{
+	                ticks: {
+	                    min: 0,
+	                    stepSize: 1
+	                }
+	            }]
+	        }
 		}
 		
 	});

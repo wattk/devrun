@@ -40,14 +40,14 @@ div#search-nickname {
 
 
 <!-- 본문 시작 -->
-<div class="container-fluid">
+<div class="container-fluid container">
 	<div class="row">
 		<div class="col-md-12">
 			<!-- 헤더 시작 -->
 			<div class="row">
 				<div class="col-md-12">
 					<div class="page-header">
-						<h1>
+						<h1 class="pt-5">
 							<strong>자유게시판</strong>
 						</h1>
 					</div>
@@ -68,24 +68,23 @@ div#search-nickname {
 		            <form class="form-inline search-form"> 
 		            	<input type="hidden" name="searchType" value="title" />
 						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
+						<input type="hidden" name="pageCode" value="4" />
 						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
 				  	</form>
 		        </div>
 		        <div id="search-content" class="search-type">
-		            <form
-		            	class="form-inline search-form" 
-		            	action="${pageContext.request.contextPath}/community/communityFreeboardFinder">
+		            <form class="form-inline search-form">
 		            	<input type="hidden" name="searchType" value="content" />
 						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
+						<input type="hidden" name="pageCode" value="4" />
 						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
 				  	</form>
 		        </div>
 		        <div id="search-nickname" class="search-type">
-		            <form 
-		            	class="form-inline search-form" 
-		            	action="${pageContext.request.contextPath}/community/communityFreeboardFinder">
+		            <form class="form-inline search-form">
 		            	<input type="hidden" name="searchType" value="nickname" />
 						<input class="form-control" type="search" name="searchKeyword" placeholder="Search" aria-label="Search" name="searchKeyword">
+						<input type="hidden" name="pageCode" value="4" />
 						<button class="btn btn-outline-primary my-2 my-sm-0 search-btn" type="submit">검색</button>
 				  	</form>
 		        </div>	
@@ -178,7 +177,7 @@ $("tr[data-no]").click((e) => {
 	
 	location.href = `${pageContext.request.contextPath}/community/communityDetail/\${communityNo}`; // \$ "EL이 아니라 JavaScript $다."를 표시
 });
-}
+
 /* ---------------------------------------------- 게시글 상세보기 기능 종료 ---------------------------------------------- */
 
 /* ---------------------------------------------- 검색된 게시글 상세보기 기능 시작 ---------------------------------------------- */
@@ -196,7 +195,6 @@ $(document).on("click", ".whynot", function(e){
 /* ---------------------------------------------- 검색된 게시글 상세보기 기능 종료 ---------------------------------------------- */
 
 /* ---------------------------------------------- 타입별 검색 기능 시작 ---------------------------------------------- */
-
 /**
  * searchType별 change 이벤트 핸들러를 이용해서 해당 div만 보여주고 나머지는 감춘다.
  */
@@ -226,6 +224,7 @@ $("input[name=searchKeyword]").change(e => {
 	//console.log("searchKeyword = " + $(e.target).val());
 	
 	$searchType = $(e.target).parent().children("input[name=searchType]").val();
+	$pageCode = $(e.target).parent().children("input[name=pageCode]").val();
 	$searchKeyword = $(e.target).val();
 });
 
@@ -233,19 +232,23 @@ $("input[name=searchKeyword]").change(e => {
 var $searchType = "";
 var $searchKeyword = "";
 
+
 /* 검색 결과 페이징 */
 function getPage(cPage){
 	const $btn = (".search-btn");
-	
+		
 	searchType = $searchType;
+	pageCode = $pageCode;
 	searchKeyword = $searchKeyword;
 	var cPage;
 	
 	console.log("searchType = " + searchType);
+	console.log("pageCode = " + pageCode);
 	console.log("searchKeyword = " + searchKeyword);
 	
 	const search = {
 			"searchType" : $searchType,
+			"pageCode" : $pageCode,
 			"searchKeyword" : $searchKeyword,
 			"cPage" : cPage
 	};
@@ -253,7 +256,7 @@ function getPage(cPage){
 	console.log(search);
 	
 	$.ajax({
-		url : "${pageContext.request.contextPath}/community/communityFreeboardFinder.do",
+		url : "${pageContext.request.contextPath}/community/communityFinder.do",
 		data : search,
 		constentType : "application/json; charset=utf-8",
 		success(data){
@@ -272,9 +275,7 @@ function getPage(cPage){
 $(".search-btn").click(e => {
 	e.preventDefault();
 	getPage();
-
 });
-
 /* ---------------------------------------------- 타입별 검색 기능 종료 ---------------------------------------------- */
 /* ---------------------------------------------- 타입별 페이지 기능 시작 ---------------------------------------------- */
 $("#nav-home-tab").click((e) =>{

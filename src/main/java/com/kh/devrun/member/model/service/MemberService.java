@@ -3,6 +3,8 @@ package com.kh.devrun.member.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.ui.Model;
+
 import com.kh.devrun.address.model.vo.Address;
 
 import com.kh.devrun.member.model.vo.Member;
@@ -18,6 +20,8 @@ public interface MemberService {
 	Member selectOneMemberByIdEmail(Map<String, Object> param);
 	
 	int updateMemberPassword(Member member);
+	
+	List<Map<String, Object>> selectWithdrawalReasonCategory();
 
 	int updateMemberProfile(Member member);
 
@@ -28,6 +32,8 @@ public interface MemberService {
 	Member selectOneMemberByCheckKeyword(Map<String, Object> param);
 	
 	int memberWithdrawal(String id);
+	
+	int memberWithdrawalReason(Map<String, Object> paramid);
 
 	//다현코드
 	Member selectOneMemberByMemberNo(int memberNo);

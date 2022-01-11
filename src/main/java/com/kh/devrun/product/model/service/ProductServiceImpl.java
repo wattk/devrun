@@ -231,10 +231,27 @@ public class ProductServiceImpl implements ProductService {
 		return productDetailList;
 	}
 
-
-
-	
-
 	/* 혜진 끝 */
 
+	/**
+	 * 지원 메인페이지 카테고리별 상품 조회
+	 */
+	@Override
+	public List<ProductEntity> selectLatestProductList() {
+		return productDao.selectLatestProductList();
+	}
+
+	@Override
+	public List<ProductEntity> selectTop12ProductList() {
+		return productDao.selectTop12ProductList();
+	}
+
+	@Override
+	public List<ProductEntity> selectTenThousandWonProductList() {
+		return productDao.selectTenThousandWonProductList();
+	}
+	/**
+	 * 지원 끝
+	 */
+	
 }

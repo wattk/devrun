@@ -11,7 +11,6 @@
 </jsp:include>
 <style>
 .about-container{
-	margin : 0 10% 0 10%;
 	padding-top : 5%;	
 }
 .about-detail{
@@ -23,7 +22,7 @@
 	font-weight : 700;
 }
 </style>
-<div class="about-container">
+<div class="about-container container">
 	<div class="about-page">
 		<h2 class="about-title mb-5">더 나은 개발 라이프를 위한 적절한 해결책</h2>
 		<img src="${pageContext.request.contextPath }/resources/images/developer.jpg" alt="" class="w-75 img-thumbnail about-title-img d-block mx-auto"/>

@@ -75,7 +75,12 @@ public class HomeController {
 	public void errorPage() {}
 	
 	@RequestMapping(value = "/common/search.do", method = RequestMethod.GET)
-	public void search() {}
+	public void search(@RequestParam String searchKeyword, Model model){
+		Map<String, Object> map = chartService.findUnifiedSearch(searchKeyword);
+		log.debug("map = {}", map);
+		
+		model.addAttribute("map", map);
+	}
 	
 	@RequestMapping(value = "/about.do", method = RequestMethod.GET)
 	public String about() {
@@ -92,11 +97,11 @@ public class HomeController {
 	
 	@PostMapping(value="/uploadSummernoteImageFile")
 	@ResponseBody
-	public Map<String, Object> uploadSummernoteImageFile(@RequestParam("file") MultipartFile upFile) {
-		log.debug("file = {}", upFile);
+	public Map<String, Object> uploadSummernoteImageFile(@RequestParam("file") MultipartFile upFile, @RequestParam String keyword) {
+		log.debug("file = {}, keyword = {}", upFile, keyword);
 		Map<String, Object> map = new HashMap<>();
 		
-		String saveDirectory = application.getRealPath("/resources/upload/promotion");
+		String saveDirectory = application.getRealPath("/resources/upload/"+keyword);
 		String originalFilename = upFile.getOriginalFilename();
 		String renamedFilename = DevrunUtils.getRenamedFilename(originalFilename);
 		
@@ -120,9 +125,9 @@ public class HomeController {
 	
 	@PostMapping(value="/deleteSummernoteImageFile")
 	@ResponseBody
-	public void deleteSummernoteImageFile(@RequestParam("imgs") String imgs) {
+	public void deleteSummernoteImageFile(@RequestParam("imgs") String imgs, @RequestParam String keyword) {
 		log.debug("imgs = {}", imgs);
-		String saveDirectory = application.getRealPath("/resources/upload/promotion");
+		String saveDirectory = application.getRealPath("/resources/upload/"+keyword);
 		//csv형식으로 받은 이미지 업로드 파일 이름들 분리해서 String배열에 담기
 		String[] filenames = imgs.split("/");
 		

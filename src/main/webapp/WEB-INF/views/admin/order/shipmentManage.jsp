@@ -41,6 +41,7 @@
 </div>
 
 <!-- 배송 관리 본문 시작 -->
+<div class="m-5">
 <div class="shipment-container">
 	<h3 class="m-5">배송내역</h3>
 </div>
@@ -117,8 +118,8 @@
 	  </thead>
 	  <tbody id="merchantShipment" class="order-body" >
 	  	<c:if test="${empty merchantList}">
-	  		<tr class="mx-auto">
-	  			<td colspan="4">처리 대기 중인 주문이 없습니다.</td>
+	  		<tr class="">
+	  			<td class="mx-auto text-center" colspan="4">처리 대기 중인 주문이 없습니다.</td>
 	  		</tr>
 	  	</c:if>
 	  	<c:forEach items="${merchantList}" var="m" varStatus="vs">
@@ -161,8 +162,8 @@
 	  </thead>
 	  <tbody id="orderLogShipment" class="order-body">
 	  	<c:if test="${empty orderLogList}">
-	  		<tr class="mx-auto">
-	  			<td colspan="4">처리 대기 중인 교환이 없습니다.</td>
+	  		<tr class="">
+	  			<td class="mx-auto text-center" colspan="4">처리 대기 중인 교환이 없습니다.</td>
 	  		</tr>
 	  	</c:if>
 	  	<c:forEach items="${orderLogList}" var="m" varStatus="vs">
@@ -191,6 +192,7 @@
 	   		저장
 	   	</button>
 	</div>
+</div>
 </div>
 <script>
 

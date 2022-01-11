@@ -102,7 +102,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
               aria-haspopup="true" aria-expanded="false">Community</a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityMain.do">전체</a>
+              <%-- <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityMain.do">전체</a> --%>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityColumnList.do">칼럼</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityQnAList.do">Q&A</a>
               <a class="dropdown-item" href="${pageContext.request.contextPath}/community/communityStudyList.do">스터디</a>
@@ -117,7 +117,7 @@
           </li>
           <li class="nav-item">
 			  <div class="search-box">
-		          <form class="form-inline" name="unifiedSearchFrm" action="${pageContext.request.contextPath}/common/search.do" method="GET">
+		          <form:form class="form-inline" name="unifiedSearchFrm" action="${pageContext.request.contextPath}/common/search.do" method="GET">
 				    <div class="input-group">
 				      <input type="text" id="searchKeyword" name="searchKeyword" class="form-control" placeholder="검색어를 입력하세요" aria-label="Username" aria-describedby="basic-addon1">
 				      <button type="button" id="unifiedSearchBtn" class="btn btn-b-n d-none d-md-block" data-toggle="collapse"
@@ -125,7 +125,7 @@
 				        <span class="fa fa-search" aria-hidden="true"></span>
 				      </button>
 				    </div>
-				  </form>
+				  </form:form>
 			  </div>
           </li>
           <li class="nav-item">

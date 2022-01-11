@@ -34,7 +34,7 @@
   </div>
 </div>
 
-<div id ="memberLevelContainer">
+<div id ="memberLevelContainer" class="container">
 	<h2>회원 등급 관리</h2>
 	 <div id="searchContainer">
 	 	<div id="serchTypeContainer">
@@ -111,15 +111,15 @@
 	<div id="memberListContainer">
 	  <br /><hr /><br />
 		<!-- 상품 리스트 테이블 -->
-		<table id="productList">
+		<table id="productList" class="mx-auto">
 			<thead id ="thead">
 				<tr>
-					<th>회원 번호</th>
-					<th>회원 아이디</th>
-					<th>회원 이름</th>
-					<th>회원 별명</th>
-					<th>가입입</th>
-					<th>권한</th>
+					<th style="width : 5vw;">회원 번호</th>
+					<th style="width : 10vw;">회원 아이디</th>
+					<th style="width : 10vw;">회원 이름</th>
+					<th style="width : 15vw;">회원 별명</th>
+					<th style="width : 7vw;">가입일</th>
+					<th style="width : 7vw;">권한</th>
 				</tr>	
 			</thead>
 			<tbody id = "tbody">
@@ -131,11 +131,11 @@
 					<td>${member.nickname }</td>
 					<td> <fmt:formatDate value="${member.enrollDate }" pattern="yyyy-MM-dd"/>  </td>
 					<td>
-						<select class="select-authority">
-				            <option value="ROLE_AM" ${member.authorities[0]  =="ROLE_AM" ? "selected" : "" }>관리자</option>		
-				            <option value="ROLE_M1" ${member.authorities[0]  =="ROLE_M1" ? "selected" : "" }>지식인</option>		
-				            <option value="ROLE_M2" ${member.authorities[0] =="ROLE_M2" ? "selected" : "" }>일반 회원</option>
-				        </select>
+				        <select class="select-authority bg-light border-0 small">
+						 	<option value="ROLE_AM" ${member.authorities[0]  =="ROLE_AM" ? "selected" : "" }>관리자</option>
+						 	<option value="ROLE_M1" ${member.authorities[0]  =="ROLE_M1" ? "selected" : "" }>지식인</option>
+						 	<option value="ROLE_M2" ${member.authorities[0] =="ROLE_M2" ? "selected" : "" }>일반 회원</option>
+						 </select>
 	        		</td>
 				</tr>
 			</c:forEach>	

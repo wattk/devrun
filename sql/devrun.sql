@@ -88,6 +88,7 @@ ALTER TABLE "MEMBER" ADD CONSTRAINT "PK_MEMBER_MEMBER_NO" PRIMARY KEY (
 ALTER TABLE "MEMBER" ADD CONSTRAINT "CK_MEMBER_BLACK_YN" CHECK(BLACK_YN IN ('Y', 'N'));
 ALTER TABLE "MEMBER" ADD CONSTRAINT "CK_MEMBER_SMS_YN" CHECK(SMS_YN IN ('Y', 'N'));
 
+drop trigger trg_delete_member;
 --회원 테이블 delete 트리거 추가
 create trigger trg_delete_member
 		after
@@ -114,7 +115,8 @@ begin
 					:old.warning_count,
 					:old.url,
 					:old.intro,
-					sysdate
+					sysdate,
+					null
 				);
 end;
 
@@ -160,6 +162,11 @@ COMMENT ON COLUMN "DELETE_MEMBER"."URL" IS '사이트 주소';
 COMMENT ON COLUMN "DELETE_MEMBER"."INTRO" IS '소개글';
 COMMENT ON COLUMN "DELETE_MEMBER"."QUIT_DATE" IS '탈퇴일';
 
+-- 삭제된 회원 테이블 탈퇴사유 컬럼 및 제약조건 추가
+ALTER TABLE DELETE_MEMBER ADD REASON_CATE CHAR(1) NOT NULL;
+COMMENT ON COLUMN "DELETE_MEMBER"."REASON_CATE" IS ‘탈퇴사유’;
+ALTER TABLE DELETE_MEMBER ADD CONSTRAINT “FK_DELETE_MEMBER_REASON_CATE” FOREIGN KEY(REASON_CATE) REFERENCES WITHDRAW_CATEGORY(REASON_CATE);
+
 -- 삭제된 권한 테이블 생성
 CREATE TABLE "DELETE_AUTHORITIES" (
 	"AUTHORITY"	VARCHAR2(30)		NOT NULL,
@@ -169,6 +176,25 @@ CREATE TABLE "DELETE_AUTHORITIES" (
 -- 삭제된 권한 테이블 코멘트 추가
 COMMENT ON COLUMN "DELETE_AUTHORITIES"."MEMBER_NO" IS '회원번호';
 COMMENT ON COLUMN "DELETE_AUTHORITIES"."AUTHORITY" IS '회원(M1, M2) , 관리자(AM)';
+
+-- 탈퇴사유 분류 테이블 생성
+CREATE TABLE WITHDRAW_CATEGORY (
+		REASON_CATE CHAR(1) NOT NULL,
+		REASON_NAME VARCHAR2(40) NOT NULL,
+		CONSTRAINT PK_WITHDRAW_CATEGORY_REASON_CATE PRIMARY KEY(REASON_CATE)
+);
+
+-- 탈퇴사유 분류 코멘트 추가
+COMMENT ON COLUMN "WITHDRAW_CATEGORY"."REASON_CATE" IS '탈퇴사유 분류번호';
+COMMENT ON COLUMN "WITHDRAW_CATEGORY"."REASON_NAME" IS '탈퇴사유 분류명';
+
+--탈퇴사유 분류 테이블 데이터 추가
+insert into WITHDRAW_CATEGORY values('1','아이디 변경 / 재가입 목적');
+insert into WITHDRAW_CATEGORY values('2','사생활 기록 삭제 목적');
+insert into WITHDRAW_CATEGORY values('3','서비스 기능 불편');
+insert into WITHDRAW_CATEGORY values('4','개인정보 및 보안 우려');
+insert into WITHDRAW_CATEGORY values('5','데브런 이용 안 함');
+insert into WITHDRAW_CATEGORY values('6','기타');
 
 -- 상품 테이블 생성
 CREATE TABLE "PRODUCT" (
@@ -456,8 +482,7 @@ commit;
 
 
 select * from community;
-alter table community drop column thumnail;
-alter table community add (thumbnail clob);
+
 commit;
 
 CREATE TABLE "MEMBER_REVIEW_LIKE" (
@@ -506,7 +531,9 @@ CREATE TABLE "COMMUNITY" (
     CONSTRAINT FK_COMMUNITY_MEMBER_NO FOREIGN KEY (MEMBER_NO) REFERENCES MEMBER (MEMBER_NO),
     CONSTRAINT CK_COMMUNITY_ANSWER_YN CHECK(ANSWER_YN IN ('Y', 'N'))
 );
-
+alter table community drop column answer_yn;
+alter table community add (answer_yn char(1) default 'N' not null);
+commit;
 
 ALTER TABLE  community DROP CONSTRAINT fk_community_member_no;
 ALTER TABLE  community DROP CONSTRAINT ck_community_answer_yn;
@@ -653,7 +680,7 @@ CREATE TABLE "REPORT" (
     "REPORT_ROOT_CATE" VARCHAR(2) NOT NULL,
 	"MEMBER_NO"	NUMBER NOT NULL,
     "ID"	VARCHAR2(50)		NOT NULL,
-    "TARGET_PK_NO" VARCHAR2(50) NOT NULL, 
+    "TARGET_PK_NO" VARCHAR2(50) NOT NULL,
     "REPORT_CONTENT" CLOB,
     "SIDENOTE" VARCHAR2(600),
 	"STATUS"	VARCHAR2(2)	DEFAULT 'PR' NOT NULL,
@@ -1003,7 +1030,7 @@ ALTER TABLE MERCHANT ADD CONSTRAINT CK_MERCHANT_CS_STATUS CHECK(CS_STATUS IN ('C
 CREATE TABLE MERCHANT_DETAIL (
 	DETAIL_NO	NUMBER	NOT NULL	,
 	MERCHANT_UID	VARCHAR2(50)	NOT NULL	,
-	BUY_COUNT	NUMBER	NULL	
+	BUY_COUNT	NUMBER	NULL
 );
 
 ALTER TABLE MERCHANT_DETAIL ADD CONSTRAINT PK_MERCHANT_DETAIL PRIMARY KEY (
@@ -1348,7 +1375,7 @@ insert into PRODUCT_PARENT_CATEGORY
 values('ot','기타');
 
 --소분류
-insert all 
+insert all
 into product_child_category values('1ch', 'ch', '게이밍의자')
 into product_child_category values('2ch', 'ch', '자세보정의자')
 into product_child_category values('3ch', 'ch', '컴퓨터의자')
@@ -1430,7 +1457,7 @@ begin
         parent_category_code =: new.parent_category_code
     where
         parent_category_code =:old.parent_category_code;
-        
+
 end;
 
 update
@@ -1579,8 +1606,8 @@ from(
 --                on c.detail_no = pd.detail_no
 --                    left join product p
 --                        on pd.product_code = p.product_code;
-                                
--- 다현 WISHLIST 테이블 조인한 거                                
+
+-- 다현 WISHLIST 테이블 조인한 거
 create view wishlistInfo
 as select
     w.wishlist_no,
@@ -1588,18 +1615,18 @@ as select
     w.REG_DATE,
     mw.MEMBER_NO
 from wishlist w join member_wishlist mw
- on w.wishlist_no = mw.wishlist_no;                                
+ on w.wishlist_no = mw.wishlist_no;
 
 
 -- 다현 wishlist_product 테이블 조인
-create view wishProduct    
+create view wishProduct
 as select
     wish.*,
     p.name,
     p.price,
     p.thumbnail,
     p.status
-from    
+from
     (select
     w.wishlist_no,
     w.PRODUCT_CODE,
@@ -1624,9 +1651,9 @@ from
         on cm.chat_id = cl.chat_id
 where
     cm.end_date < TO_TIMESTAMP('1970-01-01 09:00:00.0','YYYY-MM-DD HH24:MI:SS.FF') + NUMTODSINTERVAL(cl.log_time/1000, 'SECOND') or cm.end_date is null;
-    
-    
-    
+
+
+
 --김다현 sms 기록 테이블 시작 --
 create table sms_waitinglist(
     waitinglist_no number,
@@ -1656,7 +1683,7 @@ COMMENT ON COLUMN sms_waitinglist.reg_date IS '알림신청일';
 COMMENT ON COLUMN sms_waitinglist.status IS '메세지발송여부';
 
 
---재입고 문자 보낸 뒤 삭제된 대기 목록 
+--재입고 문자 보낸 뒤 삭제된 대기 목록
 create table delete_sms_waitinglist(
     waitinglist_no number not null,
     member_no number not null,
@@ -1705,7 +1732,6 @@ end;
 --김다현 sms 기록 테이블 끝 --
 
 ----주문 변경-상품-결제 뷰 생성(혜진)
-<<<<<<< HEAD
 --create or replace view view_order_log_imp
 --as
 --select
@@ -1725,29 +1751,12 @@ end;
 --                            left join product p
 --                                on pd.product_code = p.product_code;
 
-
-
-
-
-=======
-create or replace view view_order_log_imp
-as
-select
-    ol.*,
-    i.imp_uid,
-    i.name,
-    i.amount,
-    i.receipt_url,
-    p.thumbnail
-from
-    order_log ol left join imp i
-        on ol.merchant_uid = i.merchant_uid
-            left join merchant m
-                on ol.merchant_uid = m.merchant_uid
-                    left join merchant_detail md
-                        on ol.merchant_uid = md.merchant_uid
-                            left join product_detail pd
-                                on md.detail_no = pd.detail_no
-                                    left join product p
-                                        on pd.product_code = p.product_code;
->>>>>>> branch 'master' of https://github.com/wattk/devrun.git
+--다현 view
+    create view view_reviewInfo
+    as select
+    r.*,
+    ra.review_attach_no,
+    ra.original_filename,
+    ra.renamed_filename
+    from review r left join review_attachment ra
+    on r.review_no = ra.review_no;

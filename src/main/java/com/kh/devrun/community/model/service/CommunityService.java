@@ -17,9 +17,9 @@ public interface CommunityService {
 	// 모집완료에서 모집중으로 변경
 	int updateJoinYes(Map<String, Object> param);
 
-	List<Community> selectColumnList();
+	List<CommunityEntity> selectColumnList(int offset, int limit);
 
-	List<Community> columnBestList();
+	List<CommunityEntity> columnBestList();
 
 	List<CommunityEntity> selectFreeboardList(int offset, int limit);
 
@@ -98,11 +98,49 @@ public interface CommunityService {
 	//나의 커뮤니티 좋아요 내역(옵션순)
 	List<CommunityEntity> selectAllLikeOrderBySelectType(Map<String, Object> param, int offset, int limit);
 
+	// 스터디 모집중 순 리스트
+	List<CommunityEntity> selectJoinStartBoardList(Map<String, Object> param, int offset, int limit);
 
+	// 모집진행 게시물 수
+	int selectOneStudyJoinStartCount();
 
+	// 스터디 모집완료 순 리스트
+	List<CommunityEntity> selectJoinEndBoardList(Map<String, Object> param, int offset, int limit);
 
+	// 모집완료 게시물 수
+	int selectOneStudyJoinEndCount();
 
+	// QnA 리스트
+	List<CommunityEntity> selectQnAList(int offset, int limit);
 
-
+	// QnA 전체 게시물 수
+	int selectOneQnACount();
 	
+	// 답변완료 --> 답변중
+	int updateAnswerNo(Map<String, Object> param);
+
+	// 답변중 --> 답변완료
+	int updateAnswerYes(Map<String, Object> param);
+
+	// 답변많은순 전체 게시물 수
+	int selectCommentTotalCountByBoard(int pageCode);
+
+	// 타입별 검색
+	List<CommunityEntity> selectBoardListByType(Map<String, Object> param, int offset, int limit);
+	
+	// 전체 게시물 수
+	int selectCommunityTotalCountByType(Map<String, Object> param);
+
+	// 최근답변순 정렬
+	List<CommunityEntity> selectcurrentCommentBoardList(Map<String, Object> param, int offset, int limit);
+
+	/**
+	 * 혜진 칼럼 시작
+	 * @return
+	 */
+	int selectColumnCount();
+	/**
+	 * 혜진 칼럼 끝
+	 * @return
+	 */
 }

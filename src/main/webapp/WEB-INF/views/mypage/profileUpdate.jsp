@@ -157,14 +157,11 @@
 			      			<div>
 				      			<h5>데브런을 탈퇴하시는 이유는 무엇인가요?</h5>
 				      			<p>데브런을 탈퇴하는 이유를 알려주시면 보다 좋은 서비스 제공을 위해 노력하겠습니다.</p>
-				      			<select id="reason" class="custom-select cursor" required>
+				      			<select name="reasonCate" id="reasonCate" class="custom-select cursor" required>
 									<option value="" disabled selected>탈퇴사유를 선택하세요</option>
-								  	<option value="1">아이디 변경 / 재가입 목적</option>
-								  	<option value="2">사생활 기록 삭제 목적</option>
-								  	<option value="3">서비스 기능 불편</option>
-								  	<option value="4">개인정보 및 보안 우려</option>
-								  	<option value="5">데브런 이용 안 함</option>
-								  	<option value="6">기타</option>
+									<c:forEach items="${withdrawReasonList}" var="withdrawReason">
+								  		<option value="${withdrawReason.reasonCate}">${withdrawReason.reasonName}</option>
+								  	</c:forEach>
 								</select>
 			      			</div>
 			      			<div class="form-check">
