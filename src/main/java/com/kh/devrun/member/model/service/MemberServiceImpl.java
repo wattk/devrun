@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import com.kh.devrun.address.model.vo.Address;
 import com.kh.devrun.member.model.dao.MemberDao;
@@ -101,6 +102,14 @@ public class MemberServiceImpl implements MemberService {
 	 */
 	
 	/**
+	 * 탈퇴 사유명 조회
+	 */
+	@Override
+	public List<Map<String, Object>> selectWithdrawalReasonCategory() {
+		return memberDao.selectWithdrawalReasonCategory();
+	}
+	
+	/**
 	 * 프로필 수정(회원정보 수정)
 	 */
 	@Override
@@ -124,11 +133,19 @@ public class MemberServiceImpl implements MemberService {
 		return memberDao.selectOneMemberByCheckKeyword(param);
 	}
 
+	/**
+	 * 회원 탈퇴
+	 */
 	@Override
 	public int memberWithdrawal(String id) {
-		return memberDao.memberWithdrawal(id);
+		return memberDao.memberWithdrawal(id); 
 	}
-
+	
+	@Override
+	public int memberWithdrawalReason(Map<String, Object> param) {
+		return memberDao.memberWithdrawalReason(param);
+	}
+	
 	/**
 	 * 지원 서비스 끝
 	 */
@@ -138,5 +155,5 @@ public class MemberServiceImpl implements MemberService {
 	public Member selectOneMemberByMemberNo(int memberNo) {
 		return memberDao.selectOneMemberByMemberNo(memberNo);
 	}
-	
+
 }

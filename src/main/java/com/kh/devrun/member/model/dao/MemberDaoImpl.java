@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
 
 import com.kh.devrun.address.model.vo.Address;
 import com.kh.devrun.member.model.vo.Member;
@@ -68,6 +69,11 @@ public class MemberDaoImpl implements MemberDao {
 	 */
 
 	@Override
+	public List<Map<String, Object>> selectWithdrawalReasonCategory() {
+		return session.selectList("member.selectWithdrawalReasonCategory");
+	}
+
+	@Override
 	public int updateMemberProfile(Member member) {
 		return session.update("member.updateMemberProfile", member);
 	}
@@ -86,6 +92,11 @@ public class MemberDaoImpl implements MemberDao {
 	public int memberWithdrawal(String id) {
 		return session.delete("member.memberWithdrawal", id);
 	}
+	
+	@Override
+	public int memberWithdrawalReason(Map<String, Object> param) {
+		return session.update("member.memberWithdrawalReason", param);
+	}
 
 	/**
 	 * 지원 dao 끝
@@ -95,5 +106,5 @@ public class MemberDaoImpl implements MemberDao {
 	public Member selectOneMemberByMemberNo(int memberNo) {
 		return session.selectOne("member.selectOneMemberByMemberNo", memberNo);
 	}
-
+	
 }
