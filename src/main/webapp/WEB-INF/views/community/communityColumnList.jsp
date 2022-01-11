@@ -14,8 +14,13 @@
 	height : 100%;
 	object-fit : cover;
 }
+.card-img-top .regular-img{
+	height : 100%;
+	padding : 50px;
+}
 .card-img-top{
 	overflow : hidden;
+	height : 150px;
 }
 </style>      
 <div class="container-fluid container">
@@ -85,7 +90,7 @@
 								<div class="card" style="height:330px;">
 									<div class="card-img-top">
 										<c:if test="${c.thumbnail eq null}">
-											<img class="p-5" alt="" src="${pageContext.request.contextPath}/resources/images/logo-devrun.png">
+											<img class="regular-img" alt="" src="${pageContext.request.contextPath}/resources/images/logo-devrun.png">
 										</c:if>
 										<c:if test="${c.thumbnail ne null}">
 											${c.thumbnail}
@@ -96,7 +101,7 @@
 											<a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${c.title}</a>
 										</h3>
 										<p class="card-text">
-											<span>${fn:substring(c.content,0,30)}</span>
+											<span>${c.nickname }</span>
 										</p>
 									</div>
 								</div>
