@@ -145,10 +145,13 @@ public class MypageController {
 	 * 지원 나의 정보 > 프로필 수정 시작
 	 */
 	@GetMapping("/myinfo/profileUpdate.do")
-	public String profileUpdate() {
+	public String profileUpdate(Model model) {
+		
+		List<Map<String, Object>> withdrawReasonList = memberService.selectWithdrawalReasonCategory();
+		model.addAttribute("withdrawReasonList", withdrawReasonList);
+		log.debug("withdrawReasonList = {}", withdrawReasonList);
 		
 		return "mypage/profileUpdate";
-		
 	}
 	
 	/**
@@ -273,9 +276,12 @@ public class MypageController {
 	 * 회원 탈퇴
 	 */
 	@PostMapping("/myinfo/memberWithdrawal.do")
-	public String memberWithdrawal(@RequestParam String password, Authentication authentication, RedirectAttributes redirectAttr) {
+	public String memberWithdrawal(@RequestParam String reasonCate, @RequestParam String password, Authentication authentication, RedirectAttributes redirectAttr) {
+		Map<String, Object> param = new HashMap<>();
 		Member member = (Member) authentication.getPrincipal();
 		String id = member.getId();
+		param.put("id", id);
+		param.put("reasonCate", reasonCate);
 		
 		//비밀번호 확인
 		if(passwordEncoder.matches(password, member.getPassword())) {
@@ -287,11 +293,12 @@ public class MypageController {
 					if(proPhoto.exists()) proPhoto.delete();
 				}
 				int result = memberService.memberWithdrawal(id);
+				result = memberService.memberWithdrawalReason(param);
 				String msg = result > 0 ? "회원 탈퇴가 완료되었습니다." : "회원 탈퇴에 실패하였습니다.";
 				redirectAttr.addFlashAttribute("msg", msg);
 				
 			} catch (Exception e) {
-				log.error("회원 탈퇴 오류", e);
+				log.error("회원 탈퇴 오류", e); 
 				throw e;
 			}
 			return "redirect:/member/memberLogout.do";

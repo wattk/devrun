@@ -73,6 +73,19 @@
   <!-- 지영 mapper 끝 -->
   
   <!-- 지원 mapper 시작 -->
+  <select id="selectWithdrawalReasonCategory" resultMap="reasonCateMap">
+  	select
+  		*
+  	from
+  		withdraw_category
+  	order by
+  		reason_cate
+  </select>
+  <resultMap type="map" id="reasonCateMap">
+  	<id column="reason_cate" property="reasonCate"/>
+	<result column="reason_name" property="reasonName"/>
+  </resultMap>
+  
   <update id="updateMemberProfile">
   	update 
 	    member
@@ -140,6 +153,15 @@
   	where
   		id = #{id}
   </delete>
+  
+  <update id="memberWithdrawalReason">
+  	update
+  		delete_member
+  	set
+  		reason_cate = #{reasonCate}
+  	where
+  		id = #{id}
+  </update>
   <!-- 지원 mapper 끝 -->
   
   <!-- 다현 -->
