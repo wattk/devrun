@@ -492,28 +492,23 @@ CREATE TABLE "MEMBER_REVIEW_LIKE" (
     constraint FK_MEMBER_REVIEW_LIKE_REVIEW_NO foreign key(REVIEW_NO) references REVIEW(REVIEW_NO) on delete cascade,
     constraint FK_MEMBER_REVIEW_LIKE_MEMBER_NO foreign key(MEMBER_NO) references MEMBER(MEMBER_NO) on delete cascade
 );
-drop table member_community_like;
--- 회원-커뮤니티 좋아요
-create table member_community_likee(
-    community_no number not null,
-    member_no number not null,
-    constraint pk_member_community_likee primary key(community_no, member_no),
-    constraint fk_member_community_likee_community_no foreign key(community_no) references community(community_no) on delete cascade,
-    constraint fk_member_community_likee_member_no foreign key(member_no) references member(member_no) on delete cascade
- );
-commit;
 
-select * from member_community_like;
+-- DROP TABLE MEMBER_COMMUNITY_LIKEE;
+-- 회원_커뮤니티_좋아요 
+CREATE TABLE MEMBER_COMMUNITY_LIKEE(
+    COMMUNITY_NO NUMBER NOT NULL,
+    MEMBER_NO NUMBER NOT NULL,
+    CONSTRAINT PK_MEMBER_COMMUNITY_LIKEE PRIMARY KEY(COMMUNITY_NO, MEMBER_NO),
+    CONSTRAINT FK_MEMBER_COMMUNITY_LIKEE_COMUNITY_NO FOREIGN KEY(COMMUNITY_NO) REFERENCES COMMUNITY(COMMUNITY_NO) ON DELETE CASCADE,
+    CONSTRAINT FK_MEMBER_COMMUNITY_LIKEE_MEMBER_NO FOREGIN KEY(MEMBER_NO) REFERENCES MEMBER(MEMBER_NO) ON DELETE CASCADE
+);
+
+
 -- 커뮤니티 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_COMMUNITY_NO;
 
-
-
-select * from community_comment;
-select * from community;
-
-DROP TABLE community CASCADE CONSTRAINTS;
-DROP TABLE community;
+--DROP TABLE community CASCADE CONSTRAINTS;
+--DROP TABLE community;
 -- 커뮤니티 테이블 생성
 CREATE TABLE "COMMUNITY" (
 	"COMMUNITY_NO"	NUMBER NOT NULL,
@@ -531,14 +526,8 @@ CREATE TABLE "COMMUNITY" (
     CONSTRAINT FK_COMMUNITY_MEMBER_NO FOREIGN KEY (MEMBER_NO) REFERENCES MEMBER (MEMBER_NO),
     CONSTRAINT CK_COMMUNITY_ANSWER_YN CHECK(ANSWER_YN IN ('Y', 'N'))
 );
-alter table community drop column answer_yn;
-alter table community add (answer_yn char(1) default 'N' not null);
-commit;
 
-ALTER TABLE  community DROP CONSTRAINT fk_community_member_no;
-ALTER TABLE  community DROP CONSTRAINT ck_community_answer_yn;
-ALTER TABLE  community DROP CONSTRAINT pk_community_community_no;
-
+-- ALTER TABLE COMMUNITY MODIFY(ENROLL_DATE DEFAULT CURRENT_DATE);
 
 -- 커뮤니티 테이블 코멘트 추가
 COMMENT ON COLUMN "COMMUNITY"."COMMUNITY_NO" IS '게시글 번호 SEQ';
@@ -552,8 +541,6 @@ COMMENT ON COLUMN "COMMUNITY"."LIKE_COUNT" IS '좋아요 수';
 COMMENT ON COLUMN "COMMUNITY"."THUMNAIL" IS '썸네일';
 COMMENT ON COLUMN "COMMUNITY"."ANSWER_YN" IS '해결 Y 미해결N';
 COMMENT ON COLUMN "COMMUNITY"."HASHTAG" IS '글 관련 해시태그, 구분자/';
-
-commit;
 
 -- 커뮤니티 댓글 테이블 시퀀스 생성
 CREATE SEQUENCE SEQ_COMMUNITY_COMMENT_NO;
@@ -574,6 +561,7 @@ CREATE TABLE "COMMUNITY_COMMENT" (
     CONSTRAINT FK_COMMUNITY_COMMENT_COMMENT_REF_NO FOREIGN KEY(COMMENT_REF_NO) REFERENCES COMMUNITY_COMMENT(COMMENT_NO) ON DELETE CASCADE,
     CONSTRAINT FK_COMMUNITY_COMMENT_COMMUNITY_NO FOREIGN KEY(COMMUNITY_NO) REFERENCES COMMUNITY(COMMUNITY_NO) ON DELETE CASCADE
 );
+-- ALTER TABLE COMMUNITY_COMMENT MODIFY(REG_DATE DEFAULT CURRENT_DATE);
 
 -- 커뮤니티 댓글 테이블 코멘트 추가
 COMMENT ON COLUMN "COMMUNITY_COMMENT"."COMMENT_NO" IS 'SEQ';
