@@ -12,6 +12,7 @@ import com.kh.devrun.product.model.vo.Product;
 import com.kh.devrun.product.model.vo.ProductDetail;
 import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
+import com.kh.devrun.questionProductCus.model.vo.QuestionProductId;
 import com.kh.devrun.shop.model.vo.Attachment;
 import com.kh.devrun.shop.model.vo.Cart;
 import com.kh.devrun.shop.model.vo.Review;
@@ -240,6 +241,13 @@ public class ShopDaoImpl implements ShopDao {
 	@Override
 	public List<ProductEntity> topTenItems() {
 		return session.selectList("shop.topTenItems");
+	}
+
+	
+	// 태영
+	@Override
+	public List<QuestionProductId> selectQuestionList(String productCode) {
+		return session.selectList("questionProduct.selectQuestionList",productCode);
 	}
 
 }

@@ -93,7 +93,7 @@
               <h2 class="title-a">커뮤니티</h2>
             </div>
             <div class="title-link">
-              <a href="${pageContext.request.contextPath}/community/communityMain.do">더보기
+              <a href="${pageContext.request.contextPath}/community/communityColumnList.do">더보기
                 <span class="ion-ios-arrow-forward"></span>
               </a>
             </div>
@@ -257,7 +257,7 @@
               <h2 class="title-a">칼럼</h2>
             </div>
             <div class="title-link">
-              <a href="${pageContext.request.contextPath}/community/communityColumnMain.do">더보기
+              <a href="${pageContext.request.contextPath}/community/communityColumnList.do">더보기
                 <span class="ion-ios-arrow-forward"></span>
               </a>
             </div>

@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <jsp:include page="/WEB-INF/views/admin/admin-common/header.jsp">
 	<jsp:param value="admin" name="title"/>
@@ -98,7 +100,7 @@
 	                    <!-- Card Body -->
 	                    <div class="card-body">
 	                        <div class="chart-area">
-	                            <canvas id="salesChart" width="10vw" height="4vh"> </canvas>
+	                            <canvas id="salesChart" width="300" height="100"> </canvas>
 	                        </div>
 	                    </div>
 	                </div>
@@ -176,7 +178,7 @@
 	                    <!-- Card Body -->
 	                    <div class="card-body">
 	                        <div class="chart-pie pt-4 pb-2">
-	                            <canvas id="productChart" height="3vh"></canvas>
+	                            <canvas id="productChart" height="130"></canvas>
 	                        </div>
 	                        <div class="mt-4 text-center small">
 	                            <span class="mr-2">
@@ -189,10 +191,10 @@
 	                                <i class="fas fa-circle " style="color : #3e95cd"></i> 키보드
 	                            </span>
 	                            <span class="mr-2">
-	                                <i class="fas fa-circle" style="color : #e5d34d"></i> 책상
+	                                <i class="fas fa-circle" style="color : #e5d34d"></i> 의자
 	                            </span>
 	                            <span class="mr-2">
-	                                <i class="fas fa-circle" style="color : #c45850"></i> 의자
+	                                <i class="fas fa-circle" style="color : #c45850"></i> 책상
 	                            </span>
 	                            <span class="mr-2">
 	                                <i class="fas fa-circle" style="color : #8e5ea2"></i> 악세사리
@@ -256,7 +258,9 @@ function drawCharts(){
 						dailySalesChartData.push(obj2['SUM']);
 					}
 					else if(i == 'salesProduct'){
-						salesProductChartLabels.push(obj2['PC'] == 'ke'?'키보드':obj2['PC'] == 'ot'?'기타':obj2['PC'] == 'mn'?'모니터':obj2['PC'] == 'mo'?'마우스':obj2['PC'] == 'ch'?'의자':'책상');
+						const productName = obj2['PC'] == 'ke'?'키보드':obj2['PC'] == 'ot'?'기타':obj2['PC'] == 'mn'?'모니터':obj2['PC'] == 'mo'?'마우스':obj2['PC'] == 'ch'?'의자':'책상';
+						salesProductChartLabels.push(productName);
+						console.log(productName);
 						salesProductChartData.push(obj2['SUM']);
 					}
 					else if(i == 'communityCnts'){
@@ -279,7 +283,7 @@ function drawCharts(){
 let communityData = {
 		labels : communityChartLabels,
 		datasets : [{
-			 backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+			 backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9", "#e5d34d", "#c45850", "#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9", "#e5d34d", "#c45850", "#3e95cd"],
 			data : communityChartData
 		}]
 }
@@ -304,7 +308,7 @@ let orderData = {
 let productData = {
 		labels : salesProductChartLabels,
 		datasets : [{
-			backgroundColor : ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850", "#e5d34d"],
+			backgroundColor : ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9", "#e5d34d", "#c45850"],
 			data : salesProductChartData
 		}]
 }

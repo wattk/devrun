@@ -635,6 +635,7 @@ public class MypageController {
 		Map<String, Object> map = orderService.selectMyShopping(member.getMemberNo());
 		model.addAttribute("orderLogCnt", map.get("orderLogCnt"));
 		model.addAttribute("orderList", map.get("orderList"));
+		model.addAttribute("promotion", map.get("promotion"));
 	}
 	
 	/**

@@ -60,6 +60,7 @@ public class QuestionProductController {
 	@Autowired
 	CusQuestionProductService cusQuestionProductService;
 	
+	
 	@GetMapping("shop/itemDetail/ty/{productCode}")
 	private String questionProduct(
 			@PathVariable String productCode,
@@ -70,6 +71,8 @@ public class QuestionProductController {
 			
 			) {
 			
+		
+		// 태영 코드 ======================================================================================
 			Member loginMember = null;
 			String loginMemberId = null;
 			String authority = null;
@@ -80,9 +83,7 @@ public class QuestionProductController {
 				authority = loginMember.getAuthorities().toString();
 				log.debug("로그인 회원의 권한 = {}",authority);
 			}
-			
-
-		
+				
 			// 상품 조회
 			ProductEx product = productService.selectOneItem(productCode);
 			model.addAttribute("product", product);
@@ -100,6 +101,9 @@ public class QuestionProductController {
 			model.addAttribute("authority",authority);
 			model.addAttribute("productCode",productCode);
 			model.addAttribute("questionList",questionList);
+			
+			// 태영 코드 ========================================================================================================	
+			
 		return "/shop/itemDetailTaeYoung";
 	}
 	

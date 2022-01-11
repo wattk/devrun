@@ -201,9 +201,11 @@ $(".duplicate-check").keyup((e)=>{
 });
 
 //비밀번호 일치 확인
-$("[name=password]").keyup((e)=>{
+$("input[type=password]").keyup((e)=>{
 	const password1 = $(password).val();
 	const password2 = $(passwordCheck).val();
+	console.log(password1);
+	console.log(password2);
 	
 	//비밀번호, 비밀번호 확인 중 하나라도 공란이면 안내문구 숨기기
 	if(password1 == '' || password2 == ''){
