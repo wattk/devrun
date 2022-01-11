@@ -53,7 +53,7 @@
 	</div>
 	<div class="item-sort-container d-flex 	justify-content-between">
 		<div class="p-4">총 ${total}개</div>
-		<div class="p-4" id="">
+		<div class="p-4">
 			<span class="pr-2 pl-2 shop-sort" data-target="new" data-valid="1">신상품순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="recommend" data-valid="0">추천순</span>
 			<span class="pr-2 pl-2 shop-sort" data-target="row" data-valid="0">낮은 가격순</span>
@@ -64,16 +64,13 @@
 		<!-- 아이템 나열 시작 -->
       <!-- 아이템 나열 끝 -->
     </div>
-    <nav aria-label="..." class="mx-auto text-center">
     <div class="banner mx-auto text-center mb-3">
     	<img src="${pageContext.request.contextPath}/resources/upload/promotion/PROMO_f2z7M27K77UDWm9.png" alt="" />
     </div>
 	  <ul class="pagination justify-content-center mt-5">
 	  </ul>
 	  <div id="pageBar">
-		  ${pagebar}
 	  </div>
-	</nav>
 </div>
 
 
@@ -173,7 +170,7 @@ function basic(){
 				console.log(data);
 				$("#productSortContainer").html(data["productStr"]);
 				$(".pagebar").detach();
-				$(".banner").after(data["pagebar"]);
+				$("#pageBar").after(data["pagebar"]);
 			
 		},
 		error : console.log
@@ -218,7 +215,7 @@ $(document).on("click", ".shop-sort, .page-link", (e)=>{
 				console.log(data);
 				$("#productSortContainer").html(data["productStr"]);
 				$(".pagebar").detach();
-				$(".banner").after(data["pagebar"]);
+				$("#pageBar").after(data["pagebar"]);
 			
 		},
 		error : console.log
