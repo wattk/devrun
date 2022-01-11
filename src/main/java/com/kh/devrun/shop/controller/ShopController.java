@@ -37,6 +37,8 @@ import com.kh.devrun.product.model.vo.ProductEntity;
 import com.kh.devrun.product.model.vo.ProductEx;
 import com.kh.devrun.promotion.model.service.PromotionService;
 import com.kh.devrun.promotion.model.vo.Promotion;
+import com.kh.devrun.questionProductCus.model.service.CusQuestionProductService;
+import com.kh.devrun.questionProductCus.model.vo.QuestionProductId;
 import com.kh.devrun.report.model.service.ReportService;
 import com.kh.devrun.report.model.vo.Report;
 import com.kh.devrun.shop.model.service.ShopService;
@@ -79,6 +81,13 @@ public class ShopController {
 	@Autowired
 	Message message;
 
+	// 태영
+	@Autowired
+	CusQuestionProductService cusQuestionProductService;
+	
+	
+	
+	
 //--------------------주입-------------------------------------	
 
 	// 검색페이지 정렬
@@ -245,9 +254,10 @@ public class ShopController {
 
 		// 소분류로 리스트 가져오기
 		List<Product> recommendation = shopService.selectRecommendation(param);
-		log.debug("recommendation 몇 개? :{}", recommendation.size());
+		log.debug("recommendation 몇 개? :{}", recommendation);
 
 		Collections.shuffle(recommendation);
+		log.debug("recommendation 몇 개? :{}", recommendation);
 		model.addAttribute("recommendation", recommendation);
 
 		// 품절상품 정보
@@ -334,8 +344,73 @@ public class ShopController {
 
 		model.addAttribute("tenArr", tenArr);
 
+		
+		
+	// 태영 코드 ======================================================================================
+		Member loginMember = null;
+		String loginMemberId = null;
+		String authority = null;
+		if(authentication != null){
+			loginMember = (Member)authentication.getPrincipal();
+			loginMemberId = loginMember.getId();
+			log.debug("loginMemberId = {}",loginMemberId);				
+			authority = loginMember.getAuthorities().toString();
+			log.debug("로그인 회원의 권한 = {}",authority);
+		}
+			
+
+		// 해당 상품의 문의 내역 조회 
+		List<QuestionProductId>questionList = shopService.selectQuestionList(productCode); 
+		log.debug("questionList = {}",questionList);
+		
+		model.addAttribute("loginMemberId",loginMemberId);
+		model.addAttribute("authority",authority);
+		model.addAttribute("productCode",productCode);
+		model.addAttribute("questionList",questionList);
+		
+		// 태영 코드 ==================================================================================================
+		
+
+		
 		return "shop/itemDetail";
 	}
+
+	//  상품 문의 등록
+	@PostMapping("/shop/insertQuestionProduct.do")
+	public String insertQuestionProduct(
+				@RequestParam String productCode,
+				@RequestParam String title,
+				@RequestParam String content,
+				@RequestParam String privateYn,
+				RedirectAttributes redirectAttr,
+				Authentication authentication
+			) {
+		Map<String,Object>param = new HashMap<>();
+		
+		char cprivateYn = privateYn.charAt(0);
+		// 회원 번호는 현재 로그인중인 사용자의 member_no
+		Member member = (Member)authentication.getPrincipal();
+		log.debug("member = {}",member);
+		
+		// 질문이므로 레벨은 무조건 1
+		param.put("questionLevel",1);
+		param.put("questionRefNo",null);
+		param.put("productCode", productCode);
+		param.put("memberNo", member.getMemberNo());
+		param.put("title", title);
+		param.put("content", content);
+		param.put("privateYn", cprivateYn);
+		
+		log.debug("param = {}",param);
+		
+		int result = cusQuestionProductService.insertQuestionProduct(param);		
+		
+		
+		redirectAttr.addFlashAttribute("msg","상품 문의 등록 완료!");
+		return "redirect:/shop/itemDetail/ty/"+productCode;
+	}
+	
+	
 
 	// 헤더에서 Shop 눌렀을 시
 	@GetMapping("/shopMain.do")
