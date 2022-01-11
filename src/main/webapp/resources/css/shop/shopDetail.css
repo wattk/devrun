@@ -58,3 +58,11 @@
 	display : table-cell;
 	vertical-align : middle;
 }
+.answer-ok{
+	color : blue !important;
+}
+.answer-no{
+	color : #ff0000 !important;
+}
+
+
