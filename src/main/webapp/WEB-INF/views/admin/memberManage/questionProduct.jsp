@@ -47,7 +47,7 @@
 								<span>
 									<input type="text" id="questionTitle" name="title" value="문의 제목" readonly/>
 									<!-- <label for="privateYn">비공개</label> -->
-									<span>공개 여부 : </span>
+									<span>비공개 여부 : </span>
 									<span id="PY"></span>
 									<input type="hidden" value="N" name ="privateYn" id="privateYn" />																				
 								</span>
@@ -525,7 +525,7 @@
 				$("#tbody").html(data["questionStr"]);
 				$(".pagebar").detach();
 				$("#inquiryListTbl").after(data["pagebar"]);
-				$(totalCountContainer).html(`<span class="countTitle">검색된 회원 수 : </span> <span class="countContent">\${data["totalContent"]}</span>`)			
+				$(totalCountContainer).html(`<span class="countTitle">검색된 게시물 수 : </span> <span class="countContent">\${data["totalContent"]}</span>`)			
 			},
 			error:console.log			
 		});

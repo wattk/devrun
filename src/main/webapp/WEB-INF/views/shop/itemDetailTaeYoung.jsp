@@ -38,6 +38,27 @@
 
 <div id="shopItemDetailOuterDiv">
 	<div id="itemDetailDisplayDiv" class="row">
+	
+		<!-- Modal -->
+		<div class="modal fade" id="myQuestionModal" tabindex="-1" aria-labelledby="myQuestionModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">내 문의 보기</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		     
+		     
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary">Save changes</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	
 		<!-- sms 모달 시작-->
 		<form:form name="smsFrm" method="POST" action="#">
 			<div class="modal" id="exampleModal4" tabindex="-1" role="dialog">
@@ -158,6 +179,7 @@
 		</form:form>
 		<!--리뷰작성모달 끝-->
 		<!--문의 글 작성 시작(부트스트랩)-->
+
 		<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog"
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -169,36 +191,44 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
-					<div class="modal-body">
-						<div class="qm-body1">
-							<p>해당상품</p>
-							<div class="row" id="qItem">
-								<img id="qPIc"
-									src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}"
-									alt="">
-								<p>삼성 오로라 갤럭시 마우스 2021년 버전</p>
-								<input type="hidden" name="product_code">
+					<!--------------- 태영 수정 start ------------------------------>	
+					<form 
+						action="${pageContext.request.contextPath}/shop/insertQuestionProduct.do"
+						method="POST"
+						>
+												
+						<div class="modal-body">
+							<div class="qm-body1">
+								<p>해당상품</p>
+								<div class="row" id="qItem">
+									<img id="qPIc"
+										src="${pageContext.request.contextPath}/resources/upload/product/${product.thumbnail}"
+										alt="">								
+									<p>${product.name }</p>
+									<input type="hidden" name="productCode" value="${product.productCode }">
+								</div>
+							</div>
+							<div class="m-body2 mt-3">
+								<p>문의 사항</p>
+								<div class="checkboxReport">
+									<span>제목 : </span> <input type="text" name="title" id="qTitle" required>
+									<textarea name="content" id="reportText" cols="30" rows="10" required></textarea>
+								</div>
 							</div>
 						</div>
-						<div class="m-body2 mt-3">
-							<p>문의 사항</p>
-							<div class="checkboxReport">
-								<span>제목 : </span> <input type="text" name="" id="qTitle"
-									required>
-								<textarea name="" id="reportText" cols="30" rows="10" required></textarea>
-							</div>
+						<div class="" id="qSecret">
+							<input type="radio" name="privateYn" id="private" value="Y"> 
+							<label for="private">비밀글</label>
+							
+							<input type="radio" name="privateYn" id="public" value="N"> 
+							<label for="public">공개</label>
 						</div>
-					</div>
-					<div class="" id="qSecret">
-						<input type="checkbox" name="postSecret" id=""> <label
-							for="postSecret">비밀글 여부</label>
-
-					</div>
-					<div class="modal-footer justify-content-center">
-						<button type="button" class="btn btn-primary col-4">등록하기</button>
-						<button type="button" class="btn btn-secondary col-4"
-							data-dismiss="modal">취소하기</button>
-					</div>
+						<div class="modal-footer justify-content-center">
+							<button type="submit" class="btn btn-primary col-4">등록하기</button>
+							<button type="button" class="btn btn-secondary col-4" data-dismiss="modal">취소하기</button>
+						</div>
+					</form>
+					<!--------------- 태영 수정 end ------------------------------>	
 				</div>
 			</div>
 		</div>
@@ -413,7 +443,8 @@
 							<!--상단 갯수 및 선택 옵션 시작-->
 							<div class="item-sort-container d-flex 	justify-content-between">
 								<div class="p-4">
-									<button type="button" class="btn btn-danger">내 문의 보기</button>
+									<button type="button" class="btn btn-danger" id="myQuestionModalBtn" data-bs-toggle="modal" data-bs-target="#myQuestionModal">내 문의 보기</button>
+									<button type="button" class="btn btn-danger" id="myQuestionModalBtnSub">내 문의 보기</button>
 								</div>
 								<div class="p-4" id="sortBy">
 									<!--문의 부트스트랩 버튼-->
@@ -427,62 +458,44 @@
 							<!-- -------------------------- 태영 문의 파트 시작-------------------------------------- -->
 							<div class="question-div forFont">
 								<div class="a-question-div">
-									<!--문의 한 건 시작-->
-									<div class="customer-Q">
-										<!--아코디언 시작-->
-										<p>
-											<a class="" data-toggle="collapse" href="#collapseExample"
-												aria-expanded="false" aria-controls="collapseExample"> <span
-												class="sub">제목: 배송 언제 오나요?</span> | <span>답변완료</span> <br>
-												<span>greendory</span> | <span>2021년 12월 25일 12시30분</span> <br>
-
-												<img id="hr66" src="https://i.ibb.co/pwQZhVY/line.png">
-												<br> <i class="fab fa-quora"></i> <span>비밀글입니다.</span>
-											</a>
-										</p>
-										<div class="collapse" id="collapseExample">
-											<div class="card card-body">Anim pariatur cliche
-												reprehenderit, enim eiusmod high life accusamus terry
-												richardson ad squid. Nihil anim keffiyeh helvetica, craft
-												beer labore wes anderson cred nesciunt sapiente ea proident.
-											</div>
-											<div class="admin-a mt-3">
-												<i class="fas fa-font"></i> <span>관리자</span> | <span>2021년
-													12월 25일 12시30분</span>
-												<P class="card card-body">배송 출고 완료되어 3일 이내 도착예정입니다.</P>
-											</div>
+															
+									<c:forEach items="${questionList}" var="ql">	
+										<div class="question-answer-container">
+											<c:if test="${ql.questionLevel == 1 }">
+												<div class="question-container">
+													<div class="question-title">
+														<p><span id="qTitle">제목 : ${ql.title }</span>
+														 | <c:if test="${ql.questionRefNo == 0 }"><span class="answer-no">답변 대기</span></c:if>
+														   <c:if test="${ql.questionRefNo != 0 }"><span class="answer-ok">답변 완료</span></c:if>
+														 </p>
+													</div>
+													<div class="question-body">
+														<h6><span id="writer">${ql.id}</span> | <fmt:formatDate value="${ql.enrollDate}" pattern="yyyy-MM-dd HH:mm"/></h6>														
+														<img id="hr66" src="https://i.ibb.co/pwQZhVY/line.png"><br />													
+														<c:if test="${ql.privateYn eq 'Y'.charAt(0) }"><i class="fas fa-lock"></i><span class="private-yn">비공개 글입니다</span><input type="hidden" class="p-yn" value="Y" /></c:if>
+											   			<c:if test="${ql.privateYn eq 'N'.charAt(0)}"><i class="fas fa-lock-open"></i><span class="private-yn">공개 글입니다</span><input type="hidden" class="p-yn" value="N" /></c:if>
+													</div>
+												</div>
+												<div class="question-content slide-target">
+													<div class="card card-body">
+														<p>${ql.content }</p>
+													</div>
+												</div>
+											</c:if>
+											<c:if test="${ql.questionLevel == 2 }">
+												<div class="answer-container slide-target-answer" >
+													<div class="answer-title"></div>
+													<br />
+													<i class="fas fa-font"></i><span class="admin-title">관리자 | <fmt:formatDate value="${ql.enrollDate}" pattern="yyyy-MM-dd HH:mm"/></span>
+													<div class="answer-content">
+														<div class="card card-body">
+															<p>${ql.content }</p>
+														</div>
+													</div>
+												</div>
+											</c:if>
 										</div>
-										<!--아코디언 끝-->
-									</div>
-									<!--문의 한 건 끝-->
-									<!--문의 한 건 시작-->
-									<div class="customer-Q">
-										<!--아코디언 시작-->
-										<p>
-											<a class="" data-toggle="collapse" href="#collapseExample2"
-												aria-expanded="false" aria-controls="collapseExample"> <span
-												class="sub">제목: 배송 언제 오나요?</span> | <span>답변대기</span> <br>
-												<span>greendory</span> | <span>2021년 12월 25일 12시30분</span> <br>
-
-												<img id="hr66" src="https://i.ibb.co/pwQZhVY/line.png">
-												<br> <i class="fab fa-quora"></i> <span>비밀글입니다.</span>
-											</a>
-										</p>
-										<div class="collapse" id="collapseExample2">
-											<div class="card card-body">Anim pariatur cliche
-												reprehenderit, enim eiusmod high life accusamus terry
-												richardson ad squid. Nihil anim keffiyeh helvetica, craft
-												beer labore wes anderson cred nesciunt sapiente ea proident.
-											</div>
-											<div class="admin-a mt-3">
-												<i class="fas fa-font"></i> <span>관리자</span> | <span>2021년
-													12월 25일 12시30분</span>
-												<P class="card card-body">- 답변이 등록 되지 않았습니다.-</P>
-											</div>
-										</div>
-										<!--아코디언 끝-->
-									</div>
-									<!--문의 한 건 끝-->
+									</c:forEach>
 								</div>
 							</div>
 							<!-- -------------------------- 태영 문의 파트 끝------------------------------------- -->
@@ -1047,6 +1060,110 @@ $("#cartBtn").click((e)=>{
 
 
 //-------------------------------------------------------구분선 아래 태영----------------------------------------------------------
+
+// 글쓰기 내 문의 조회 로그인 권한 처리
+$("#myQuestionModalBtn, #exampleModal2").click(e=>{
+
+});
+
+
+// 비밀글 열람에 쓰일 로그인 정보
+var loginMemberId = "${loginMemberId}"
+var authority = "${authority}"
+
+console.log("로그인 회원의 ID = ",loginMemberId);
+console.log("로그인한 회원의 권한 = ",authority);
+
+
+// 내 상문 문의내역 확인
+$("#myQuestionModalBtnSub").click(e=>{
+	
+	if(!loginMemberId){
+		alert("로그인 후 이용해주세요");
+		$("#navLoginBtn").trigger("click");
+
+	else{
+		$("#myQuestionModal").trigger("click");
+		var  productCode = "${productCode}";
+		
+		console.log(productCode);
+		
+		$.ajax({
+			url : `${pageContext.request.contextPath}/shop/ch eckMyQuestionProduct`,
+			data : {"productCode" : productCode},
+			method : "GET",
+			success(data){
+				console.log(data);
+			},
+			error : console.log
+			
+		});
+	}
+
+	
+});
+
+// 상품 문의 리스트 
+$(()=>{
+ 	$(".slide-target, .slide-target-answer").slideUp(); 
+});
+ 
+var $target1;
+var $target2;
+
+var openQuestion = function(ta){
+	ta.slideToggle();
+}
+
+
+$(".question-container").click(e=>{
+	
+	$target1 = $(e.target).parents(".question-container").next();
+	$target2 = $(e.target).parents(".question-container").parent().next().children(".slide-target-answer");
+	
+	console.log($target1);
+	console.log($target2);
+
+
+	/* 클릭과 동시에 로그인 정보 확인하여 비밀글 보호 */
+	var $checkYn = $(e.target).parents(".question-answer-container").find(".p-yn").val();
+	var $checkLoginId = $(e.target).parents(".question-answer-container").find("#writer").text();
+	
+	console.log($checkYn);
+	console.log($checkLoginId);
+	
+
+	/* 열람은 해당글의 작성자나 관리자만 가능*/
+	if($checkYn == 'Y'){
+		if(authority == "[ROLE_AM]" || $checkLoginId == loginMemberId ){
+			openQuestion($target1);
+			openQuestion($target2);
+		}
+		else{
+			alert("비밀글로 작성자와 관리자만 열람 가능합니다.");
+		}
+	}
+	else{
+		openQuestion($target1);
+		openQuestion($target2);
+
+	}
+	
+	
+});
+
+
+
+
+
+
+
+/* hover */
+$(".question-answer-container").hover(e=>{
+	$(e.target).css("cursor","pointer");
+})
+
+
 
 </script>
 <!-- body 영역 끝 -->

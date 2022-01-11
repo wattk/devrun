@@ -39,7 +39,7 @@
 		
 </select>
 
-<!-- 상품 답변 추가	 -->
+<!-- 상품 질문/답변 추가	 -->
 <insert id="insertQuestionProduct">
 	insert into
 		question_product
@@ -50,7 +50,7 @@
 		#{productCode},
 		#{title},
 		#{content},
-		#{enrollDate},
+		current_date,
 		#{privateYn},
 		#{questionLevel}
 	)	
@@ -260,7 +260,34 @@
 
 
 
+<!--  회원 상품 문의  -->
 
+<select id="selectQuestionList" resultType="QuestionProductId">
+	select 
+	    qp.*,
+	    m.id
+	from 
+	    question_product qp join member m on qp.member_no = m.member_no
+	where
+	    product_code = #{productCode}
+	start with question_level = 1
+	connect by NOCYCLE prior question_no = question_ref_no
+
+</select> 
+
+<!-- 나의 문의 내역 가져오기 -->
+<select id="checkMyQuestionProduct" resultType="QuestionProduct">
+	select 
+	    qp.*,
+	    m.id
+	from 
+	    question_product qp join member m on qp.member_no = m.member_no
+	where
+	    product_code = #{productCode}
+	start with question_level = 1
+	connect by NOCYCLE prior question_no = question_ref_no
+
+</select>
 
 
 
