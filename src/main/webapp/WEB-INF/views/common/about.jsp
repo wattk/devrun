@@ -21,6 +21,28 @@
 	margin-left : 10%;
 	font-weight : 700;
 }
+.about-text{
+	word-break : keep-all;
+}
+.about-thumbnail {
+	width : 80px;
+	height : 80px;
+	overflow : hidden;
+	border : 1px solid rgba(0,0,0,.125);
+}
+.about-main-img{
+	overflow : hidden;
+	width : 525px;
+	height : 363.45px;
+	border-radius : 10px;
+	border : 1px solid rgba(0,0,0,.125);
+}
+.about-thumbnail img, .about-main-img img{
+	width : 100%;
+	height : 100%;
+	object-fit : cover;
+}
+
 </style>
 <div class="about-container container">
 	<div class="about-page">
@@ -76,23 +98,27 @@
           <div class="testimonials-box">
             <div class="row">
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-img">
+                <div class="about-main-img testimonial-img">
                   <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-ico">
+<!--
+                 <div class="testimonial-ico">
                   <span class="ion-ios-quote"></span>
                 </div>
-                <div class="testimonials-content">
-                  <p class="testimonial-text">
+ -->               
+ 				<div class="testimonials-content">
+                  <p class="about-text testimonial-text">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
                     debitis hic ber quibusdam
                     voluptatibus officia expedita corpori.
                   </p>
                 </div>
-                <div class="testimonial-author-box">
-                  <img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="testimonial-avatar">
+                <div class="testimonial-author-box d-flex">
+                  <div class="about-thumbnail testimonial-avatar align-items-center">
+                  	<img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="">
+                  </div>
                   <h5 class="testimonial-author">권혜진</h5>
                 </div>
               </div>
@@ -103,23 +129,22 @@
           <div class="testimonials-box">
             <div class="row">
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-img">
+                <div class="about-main-img testimonial-img">
                   <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-ico">
-                  <span class="ion-ios-quote"></span>
-                </div>
                 <div class="testimonials-content">
-                  <p class="testimonial-text">
+                  <p class="about-text testimonial-text">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
                     debitis hic ber quibusdam
                     voluptatibus officia expedita corpori.
                   </p>
                 </div>
-                <div class="testimonial-author-box">
-                  <img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="testimonial-avatar">
+                <div class="testimonial-author-box d-flex">
+                  <div class="about-thumbnail  testimonial-avatar align-items-center">
+                  	<img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="">
+                  </div>
                   <h5 class="testimonial-author">염지영</h5>
                 </div>
               </div>
@@ -130,23 +155,22 @@
           <div class="testimonials-box">
             <div class="row">
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-img">
+                <div class="about-main-img testimonial-img">
                   <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-ico">
-                  <span class="ion-ios-quote"></span>
-                </div>
                 <div class="testimonials-content">
-                  <p class="testimonial-text">
+                  <p class="about-text testimonial-text">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
                     debitis hic ber quibusdam
                     voluptatibus officia expedita corpori.
                   </p>
                 </div>
-                <div class="testimonial-author-box">
-                  <img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="testimonial-avatar">
+                <div class="testimonial-author-box d-flex">
+                  <div class="about-thumbnail  testimonial-avatar align-items-center">
+                  	<img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="">
+                  </div>
                   <h5 class="testimonial-author">김다현</h5>
                 </div>
               </div>
@@ -155,25 +179,34 @@
         </div>
         <div class="carousel-item-a">
           <div class="testimonials-box">
-            <div class="row">
+            <div class="row align-items-center">
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-img">
-                  <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
+                <div class="about-main-img testimonial-img">
+                  <img src="${pageContext.request.contextPath }/resources/images/about/taeyoung1.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-ico">
-                  <span class="ion-ios-quote"></span>
-                </div>
                 <div class="testimonials-content">
-                  <p class="testimonial-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
-                    debitis hic ber quibusdam
-                    voluptatibus officia expedita corpori.
+                  <p class="about-text testimonial-text">
+                    안녕하세요. back-end 개발자를 꿈꾸는 있는 민태영입니다.
+
+					항상 마음속 한 켠에 코딩에 대한 호기심이 있었지만 전공을 하지 않았다는 이유로
+					
+					용기가 나지 않아 시작조차 못하고 있었지만 학원에 들어오고 지난 7개월 동안
+					
+					정말 많은 것을 배우고 가서 의미가 깊습니다! 그리고 파이널 프로젝트를 진행 하면서
+					
+					그동안 배웠던 거의 모든 것들을 다시 한번 공부하는 계기가 되었고, 많이 힘들기도 했지만
+					
+					직접 서비스를 구현한다는 재미를 느낄 수 있는 기회가 되었습니다.
+					
+					DEV-RUN 팀원분들 정말 고생하셨고 감사합니다~!
                   </p>
                 </div>
-                <div class="testimonial-author-box">
-                  <img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="testimonial-avatar">
+                <div class="testimonial-author-box d-flex">
+                  <div class="about-thumbnail testimonial-avatar align-items-center">
+                  	<img src="${pageContext.request.contextPath }/resources/images/about/taeyoung2.jpg" alt="" class="">
+                  </div>
                   <h5 class="testimonial-author">민태영</h5>
                 </div>
               </div>
@@ -184,23 +217,23 @@
           <div class="testimonials-box">
             <div class="row">
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-img">
-                  <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
+                <div class="about-main-img testimonial-img">
+                  <img src="${pageContext.request.contextPath }/resources/images/about/jongseo1.png" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-ico">
+              	<div class="testimonial-ico pb-3">
                   <span class="ion-ios-quote"></span>
                 </div>
                 <div class="testimonials-content">
-                  <p class="testimonial-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
-                    debitis hic ber quibusdam
-                    voluptatibus officia expedita corpori.
+                  <p class="about-text testimonial-text">
+                    내가 가는 이길이 어디로 가는지 어디로 날 데려가는지 그곳은 어딘지 알 수 없지만 개발자라는 꿈이라는 터널속을 유랑하는 방랑자 박종서입니다.
                   </p>
                 </div>
-                <div class="testimonial-author-box">
-                  <img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="testimonial-avatar">
+                <div class="testimonial-author-box d-flex">
+                  <div class="about-thumbnail testimonial-avatar align-items-center">
+                  	<img src="${pageContext.request.contextPath }/resources/images/about/jongseo2.jpg" alt="" class="">
+                  </div>
                   <h5 class="testimonial-author">박종서</h5>
                 </div>
               </div>
@@ -211,23 +244,22 @@
           <div class="testimonials-box">
             <div class="row">
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-img">
+                <div class="about-main-img testimonial-img">
                   <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
-                <div class="testimonial-ico">
-                  <span class="ion-ios-quote"></span>
-                </div>
                 <div class="testimonials-content">
-                  <p class="testimonial-text">
+                  <p class="about-text testimonial-text">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
                     debitis hic ber quibusdam
                     voluptatibus officia expedita corpori.
                   </p>
                 </div>
-                <div class="testimonial-author-box">
-                  <img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="testimonial-avatar">
+                <div class="testimonial-author-box d-flex">
+                  <div class="about-thumbnail testimonial-avatar align-items-center">
+                  	<img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="">
+                  </div>
                   <h5 class="testimonial-author">최지원</h5>
                 </div>
               </div>
