@@ -443,7 +443,7 @@
 							<!--상단 갯수 및 선택 옵션 시작-->
 							<div class="item-sort-container d-flex 	justify-content-between">
 								<div class="p-4">
-									<button type="button" class="btn btn-danger" id="myQuestionModalBtn" data-bs-toggle="modal" data-bs-target="#myQuestionModal">내 문의 보기</button>
+					
 									<button type="button" class="btn btn-danger" id="myQuestionModalBtnSub">내 문의 보기</button>
 								</div>
 								<div class="p-4" id="sortBy">
@@ -1170,8 +1170,8 @@ $(".question-answer-container").hover(e=>{
 
 
 <!-- shopHeader js  -->
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script>
+<%-- <script type="text/javascript"
+	src="${pageContext.request.contextPath}/resources/js/shop/shopHeader.js"></script> --%>
 
 <!-- itemDetail js -->
 <script type="text/javascript"

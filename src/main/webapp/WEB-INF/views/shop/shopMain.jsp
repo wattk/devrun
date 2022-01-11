@@ -147,7 +147,7 @@
                    </div>
                    <!-- 이벤트 배너 시작 -->
                    <div id="shopMainMidEventBannerDiv">
-                       <a href=""><img src="https://i.ibb.co/zRCKwsF/image.png" alt=""></a>
+                       <a href="${pageContext.request.contextPath}/shop/promotionDetail/PROMO_hST27XJ6s4b60z0"><img id ="eventMain" src="${pageContext.request.contextPath}/resources/upload/promotion/PROMO_hST27XJ6s4b60z0.png" alt=""></a>
                    </div>
                    <!-- 이벤트 배너 끝 -->
                    <hr>
