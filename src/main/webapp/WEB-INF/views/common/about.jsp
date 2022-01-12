@@ -111,7 +111,7 @@
  				<div class="testimonials-content">
                   <p class="about-text testimonial-text">
                     천방지축 어리둥절 빙글빙글 돌아가는 코드네임200의 하루 속,
-                    유치원 선생님을 맡고 있는 권혜진입니다.
+                    병아리반 닭 선생님을 맡고 있는 권혜진입니다.
                   </p>
                 </div>
                 <div class="testimonial-author-box d-flex align-items-center">
