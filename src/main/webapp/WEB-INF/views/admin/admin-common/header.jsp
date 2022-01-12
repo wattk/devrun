@@ -15,6 +15,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="">
 	<meta name="author" content="">
+	
+	<!-- Favicons -->
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}}/resources/favicon/favicon.ico">
+    <link rel="icon" href="${pageContext.request.contextPath}/resources/favicon/favicon.ico">
+	
 	<!-- 구글 차트를 이용하기 위한 script	 -->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	

@@ -25,9 +25,8 @@
 
 
   <!-- Favicons -->
-  <!--   <link href="#" rel="icon">
-  <link href="#" rel="apple-touch-icon"> -->
-
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}}/resources/favicon/favicon.ico">
+  <link rel="icon" href="${pageContext.request.contextPath}/resources/favicon/favicon.ico">
 
   
     <!-- Google Fonts -->
