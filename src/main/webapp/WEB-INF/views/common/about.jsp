@@ -28,7 +28,7 @@
 	width : 80px;
 	height : 80px;
 	overflow : hidden;
-	border : 1px solid rgba(0,0,0,.125);
+	/* border : 1px solid rgba(0,0,0,.125); */
 }
 .about-main-img{
 	overflow : hidden;
@@ -99,25 +99,24 @@
             <div class="row">
               <div class="col-sm-12 col-md-6">
                 <div class="about-main-img testimonial-img">
-                  <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
+                  <img src="${pageContext.request.contextPath }/resources/images/about/hyejin1.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
-<!--
-                 <div class="testimonial-ico">
+
+                 <div class="testimonial-ico pb-3">
                   <span class="ion-ios-quote"></span>
                 </div>
- -->               
+           
  				<div class="testimonials-content">
                   <p class="about-text testimonial-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
-                    debitis hic ber quibusdam
-                    voluptatibus officia expedita corpori.
+                    천방지축 어리둥절 빙글빙글 돌아가는 코드네임200의 하루 속,
+                    유치원 선생님을 맡고 있는 권혜진입니다.
                   </p>
                 </div>
                 <div class="testimonial-author-box d-flex">
                   <div class="about-thumbnail testimonial-avatar align-items-center">
-                  	<img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="">
+                  	<img src="${pageContext.request.contextPath }/resources/images/about/hyejin2.png" alt="" class="">
                   </div>
                   <h5 class="testimonial-author">권혜진</h5>
                 </div>
