@@ -1183,7 +1183,10 @@ public class AdminController {
 	
 	@PostMapping("/orderLogUpdate")
 	@ResponseBody
-	public Map<String, Object> orderLogUpdate(@RequestBody String jsonStr, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttr){
+	public Map<String, Object> orderLogUpdate(@RequestBody String jsonStr, 
+												HttpServletRequest request, 
+												HttpServletResponse response,
+												RedirectAttributes redirectAttr){
 		Map<String, Object> param = new HashMap<>();
 		Map<String, Object> resultMap = new HashMap<>();
 		int result = 0;

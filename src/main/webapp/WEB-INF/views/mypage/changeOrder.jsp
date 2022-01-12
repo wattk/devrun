@@ -255,6 +255,7 @@ $("[name=csStatus]").change((e)=>{
 	const itemArr = [];
 	const $products = $(".one-product");
 	
+	//기존 상품 정보를 배열에 저장
 	for(let i = 0; i < $products.length; i++){
 		productArr[i] = $products.eq(i).data("productCode");
 		itemArr[i] = {
@@ -273,11 +274,9 @@ $("[name=csStatus]").change((e)=>{
 			productArr : productArr
 		},	
 		success(data){
-			console.log(data);
 			
 			for(let i = 0; i < itemArr.length; i++){
 				const item = data[`\${itemArr[i].productCode}`];
-				console.log(item);
 				
 			 	$("#exchangeContainer").append(`<div class="ml-2">
 			 		<strong class="mr-2">\${itemArr[i].name}</strong>
@@ -292,16 +291,11 @@ $("[name=csStatus]").change((e)=>{
 							 \${item[j].optionContent == null? '' : item[j].optionContent}
 	      	 		</option>`);
 				}
-				
 			
 			 	$(`#\${itemArr[i].productCode} [name=currDetailNo]`).append(`</select>
 					  	</div>`);
 			 	
-				
 			};
-			
-				  	
-		      	 		
 		},
 		error : console.log
 	});

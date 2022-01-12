@@ -7,6 +7,21 @@
 	<jsp:param value="데브런" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/index.css" rel="stylesheet">
+<style>
+.card-img-top img{
+	width : 100%;
+	height : 100%;
+	object-fit : cover;
+}
+.card-img-top .regular-img{
+	height : 100%;
+	padding : 50px;
+}
+.card-img-top{
+	overflow : hidden;
+	height : 150px;
+}
+</style>
   <!--/ Carousel Star /-->
   <div class="intro intro-carousel">
     <div id="carousel" class="owl-carousel owl-theme">
@@ -286,18 +301,20 @@
 	  		<c:forEach items="${map.columnList}" var="c" varStatus="vs">
 		        <div class="col-md-4">
 					<div class="card" style="height:330px;">
-						<c:if test="${c.thumbnail eq null}">
-							<img class="card-img-top p-5" alt="" src="${pageContext.request.contextPath}/resources/images/logo-devrun.png">
-						</c:if>
-						<c:if test="${c.thumbnail ne null}">
-							<img class="card-img-top" alt="" src="${pageContext.request.contextPath}/resources/upload/community/${c.thumbnail}">
-						</c:if>
+						<div class="card-img-top">
+							<c:if test="${c.thumbnail eq null}">
+								<img class="regular-img" alt="" src="${pageContext.request.contextPath}/resources/images/logo-devrun.png">
+							</c:if>
+							<c:if test="${c.thumbnail ne null}">
+								${c.thumbnail}
+							</c:if>
+						</div>
 						<div class="card-block p-3">
 							<h3 class="card-title">
 								<a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${c.title}</a>
 							</h3>
 							<p class="card-text">
-								<span>${fn:substring(c.content,0,30)}</span>
+								<span>${c.nickname }</span>
 							</p>
 						</div>
 					</div>

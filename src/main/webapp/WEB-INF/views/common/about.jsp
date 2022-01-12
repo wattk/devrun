@@ -28,7 +28,7 @@
 	width : 80px;
 	height : 80px;
 	overflow : hidden;
-	border : 1px solid rgba(0,0,0,.125);
+	/* border : 1px solid rgba(0,0,0,.125); */
 }
 .about-main-img{
 	overflow : hidden;
@@ -49,7 +49,7 @@
 		<h2 class="about-title mb-5">더 나은 개발 라이프를 위한 적절한 해결책</h2>
 		<img src="${pageContext.request.contextPath }/resources/images/developer.jpg" alt="" class="w-75 img-thumbnail about-title-img d-block mx-auto"/>
 		<div class="about-detail">
-			<strong>데브런은 개발자 개개인의 보다 나은 개발 라이프를 지원합니다.</strong> 
+			<h3>데브런은 개발자 개개인의 보다 나은 개발 라이프를 지원합니다.</h3> 
 			<br />
 			수많은 개발자들이 다수의 편의를 위해 일에 매진하지만, 개개인의 편의에 대해서는 잠시 잊어버리곤 합니다.
 			<br />
@@ -58,7 +58,7 @@
 			당신의 더 나은 개발 라이프를 위해 데브런이 함께 하겠습니다.
 		</div>
 		<div class="about-detail">
-			<strong>Run Productive Lives</strong>
+			<h3>Run Productive Lives</h3>
 			<br />
 			<strong>당신의 생산성 높은 개발 환경 조성을 돕는 개발자 전문 쇼핑몰</strong>
 			<br />
@@ -69,7 +69,7 @@
 			개발자들이 쓰는 제품, 개발자들이 선호하는 제품을 한 데 모았습니다.
 		</div>
 		<div class="about-detail">
-			<strong>Learn Development Better</strong>
+			<h3>Learn Development Better</h3>
 			<br />
 			<strong>당신의 지식을 함께 공유하고 성장하는 개발자 전문 커뮤니티</strong>
 			<br />
@@ -99,25 +99,24 @@
             <div class="row">
               <div class="col-sm-12 col-md-6">
                 <div class="about-main-img testimonial-img">
-                  <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
+                  <img src="${pageContext.request.contextPath }/resources/images/about/hyejin1.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
-<!--
-                 <div class="testimonial-ico">
+
+                 <div class="testimonial-ico pb-3">
                   <span class="ion-ios-quote"></span>
                 </div>
- -->               
+           
  				<div class="testimonials-content">
                   <p class="about-text testimonial-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
-                    debitis hic ber quibusdam
-                    voluptatibus officia expedita corpori.
+                    천방지축 어리둥절 빙글빙글 돌아가는 코드네임200의 하루 속,
+                    병아리반 닭 선생님을 맡고 있는 권혜진입니다.
                   </p>
                 </div>
-                <div class="testimonial-author-box d-flex">
-                  <div class="about-thumbnail testimonial-avatar align-items-center">
-                  	<img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="">
+                <div class="testimonial-author-box d-flex align-items-center">
+                  <div class="about-thumbnail testimonial-avatar ">
+                  	<img src="${pageContext.request.contextPath }/resources/images/about/hyejin2.png" alt="" class="">
                   </div>
                   <h5 class="testimonial-author">권혜진</h5>
                 </div>
@@ -130,20 +129,28 @@
             <div class="row">
               <div class="col-sm-12 col-md-6">
                 <div class="about-main-img testimonial-img">
-                  <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
+                  <img src="${pageContext.request.contextPath }/resources/images/about/jiyeong1.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
                 <div class="testimonials-content">
                   <p class="about-text testimonial-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
-                    debitis hic ber quibusdam
-                    voluptatibus officia expedita corpori.
+                    같이 일하고 싶은 개발자가 되고 싶은 염지영 입니다 : )
+                    <br />
+					세미 때 웹소켓을 이용해 보고 싶었는데 
+					파이널에 구현할 수 있게 되어 뿌듯하네요!
+					많은 것을 배우고 느끼게 된 7개월이 정말 값져서 
+					끝날 때가 되니 많이 아쉽지만 여러분들 끝이 아니라고 믿어요! 
+					신입 개발자로 다시 만납시다!
+					<br />
+					자정에 퇴근해도 일찍 퇴근하는 것만 같은 
+					쉽지 않았던 우리의 작업들 속에서
+					웃으면서 할 수 있었던 건 여러분들 덕분이었어요!
                   </p>
                 </div>
-                <div class="testimonial-author-box d-flex">
-                  <div class="about-thumbnail  testimonial-avatar align-items-center">
-                  	<img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="">
+                <div class="testimonial-author-box d-flex align-items-center">
+                  <div class="about-thumbnail  testimonial-avatar">
+                  	<img src="${pageContext.request.contextPath }/resources/images/about/jiyeong2.png" alt="" class="">
                   </div>
                   <h5 class="testimonial-author">염지영</h5>
                 </div>
@@ -167,8 +174,8 @@
                     voluptatibus officia expedita corpori.
                   </p>
                 </div>
-                <div class="testimonial-author-box d-flex">
-                  <div class="about-thumbnail  testimonial-avatar align-items-center">
+                <div class="testimonial-author-box d-flex align-items-center">
+                  <div class="about-thumbnail  testimonial-avatar">
                   	<img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="">
                   </div>
                   <h5 class="testimonial-author">김다현</h5>
@@ -203,8 +210,8 @@
 					DEV-RUN 팀원분들 정말 고생하셨고 감사합니다~!
                   </p>
                 </div>
-                <div class="testimonial-author-box d-flex">
-                  <div class="about-thumbnail testimonial-avatar align-items-center">
+                <div class="testimonial-author-box d-flex align-items-center">
+                  <div class="about-thumbnail testimonial-avatar">
                   	<img src="${pageContext.request.contextPath }/resources/images/about/taeyoung2.jpg" alt="" class="">
                   </div>
                   <h5 class="testimonial-author">민태영</h5>
@@ -230,8 +237,8 @@
                     내가 가는 이길이 어디로 가는지 어디로 날 데려가는지 그곳은 어딘지 알 수 없지만 개발자라는 꿈이라는 터널속을 유랑하는 방랑자 박종서입니다.
                   </p>
                 </div>
-                <div class="testimonial-author-box d-flex">
-                  <div class="about-thumbnail testimonial-avatar align-items-center">
+                <div class="testimonial-author-box d-flex align-items-center">
+                  <div class="about-thumbnail testimonial-avatar">
                   	<img src="${pageContext.request.contextPath }/resources/images/about/jongseo2.jpg" alt="" class="">
                   </div>
                   <h5 class="testimonial-author">박종서</h5>
@@ -256,8 +263,8 @@
                     voluptatibus officia expedita corpori.
                   </p>
                 </div>
-                <div class="testimonial-author-box d-flex">
-                  <div class="about-thumbnail testimonial-avatar align-items-center">
+                <div class="testimonial-author-box d-flex align-items-center">
+                  <div class="about-thumbnail testimonial-avatar">
                   	<img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="">
                   </div>
                   <h5 class="testimonial-author">최지원</h5>
