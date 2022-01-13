@@ -163,20 +163,26 @@
             <div class="row">
               <div class="col-sm-12 col-md-6">
                 <div class="about-main-img testimonial-img">
-                  <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
+                  <img src="${pageContext.request.contextPath }/resources/images/about/dahyun1.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
                 <div class="testimonials-content">
                   <p class="about-text testimonial-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
-                    debitis hic ber quibusdam
-                    voluptatibus officia expedita corpori.
+                    데브런 프로젝트, 쇼핑몰의 아버지 김다현입니다. 
+					제가 만들어놓고도 내가 해냈다고?!를 외치게 됩니다. 
+					한 없는 애정이 가네요. 자꾸 계속 클릭해보고 말도 걸어봅니다. 하하 
+					<br />
+					그리고 역시나 팀원들이 없었더라면 중간에 멈췄을거에요. 벌써 보고싶어지네요. 저는 사람복이 많은 것 같아요. 우리 팀 너무 고마워요. 
+					<br />
+					산책 러버인 저를,  하루 평균 걸음수 500으로 만들었던 파이널 프젝이 끝나고 나니 다시 한번 와닿는 말이 있습니다. 그 말을 외치며 마무리 하겠습니다.
+					<br />
+					운동!!! 운동만이 살 길이다!!!!
                   </p>
                 </div>
                 <div class="testimonial-author-box d-flex align-items-center">
                   <div class="about-thumbnail  testimonial-avatar">
-                  	<img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="">
+                  	<img src="${pageContext.request.contextPath }/resources/images/about/dahyun2.jpg" alt="" class="">
                   </div>
                   <h5 class="testimonial-author">김다현</h5>
                 </div>
