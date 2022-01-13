@@ -81,6 +81,7 @@
 			  	<input type="hidden" name="memberNo" id="member_no" value='<sec:authentication property="principal.memberNo"/>' />
 			  </sec:authorize>
 			</div>
+			<%-- 
 		  <br />	
 		  <p><strong>태그</strong></p>
 		  <hr />
@@ -90,6 +91,7 @@
 			  	<input type="text" class="form-control" placeholder="태그를 설정해주세요." aria-label="Username" aria-describedby="addon-wrapping">
 			  </sec:authorize>
 			</div>
+			 --%>
 		  <br />	
 		  <p><strong>내용</strong></p>
 		  <hr />	
@@ -117,8 +119,11 @@ $(document).ready(function(){
 		focus: true, // 에디터 로딩 후 포커스를 맞출 지 여부
 		lang: "ko-KR", // 한글 설정
 		placeholder: "내용을 입력해 주세요",  // placeholder 설정
+		// 2. callbacks로 함수 설정
 		callbacks:{
+			// 1. 이미지를 업로드를 할 때(onImageUpload라는 key값)
 			onImageUpload : function(files){
+				// 3. 0번째에 있는 메소드를 실행해줘
 				uploadSummernoteImageFile(files[0], this);
 			},
 			onPaste : ((e)=>{
@@ -133,6 +138,7 @@ $(document).ready(function(){
 		}
 	});
 	
+	// 4. ForamData()에 file, keyword(어디서 왔는지 알아보기 위해)를 설정
 	function uploadSummernoteImageFile(file, editor){
 		const data = new FormData();
 		data.append("file", file);
@@ -177,6 +183,7 @@ $('#writeBtn').click(function(){
 		return false;
 	}
 	
+	$(window).unbind('beforeunload');
 	$(document.writeForm).submit();
 	
 });

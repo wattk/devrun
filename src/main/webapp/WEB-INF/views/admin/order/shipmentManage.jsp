@@ -198,14 +198,13 @@
 
 
 //배송 통합검색
-$("#orderSearchBtn").click((e)=>{
+$("#shipmentSearchBtn").click((e)=>{
 	const searchType = $("[name=searchType]:selected").val();
 	const searchKeyword = $("[name=searchKeyword]").val();
 	const startDate = $("[name=startDate]").val(); 
 	const endDate = $("[name=endDate]").val();
 	const time = $(".badge-primary").data("target");
-	console.log(orderStatus);
-	console.log(csStatus);
+	
 	$.ajax({
 		url : "${pageContext.request.contextPath}/admin/shipmentSearch",
 		method : "GET",
@@ -217,7 +216,8 @@ $("#orderSearchBtn").click((e)=>{
 		},
 		success(data){
 			console.log(data);
-			$("#shipmentBody").html(data.shipmentStr);
+			console.log(data.shipmentStr);
+			$("#shipmentBody").html(`\${data.shipmentStr}`);
 		},
 		error : console.log
 	});

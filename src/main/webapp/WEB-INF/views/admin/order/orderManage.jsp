@@ -126,7 +126,7 @@
 	      <th scope="col">총 주문 금액</th>
 	    </tr>
 	  </thead>
-	  <tbody class="order-body" style="-ms-overflow-style: none;">
+	  <tbody id="orderBody" class="order-body" style="-ms-overflow-style: none;">
 	  	<c:forEach items="${list}" var="m" varStatus="vs">
 	    <tr>
 	      <td>${m.merchantUid}</td>
@@ -320,7 +320,8 @@ $("#orderSearchBtn").click((e)=>{
 		},
 		success(data){
 			console.log(data);
-			$("#orderBody").html(data.merchantStr);
+			console.log(data.merchantStr);
+			$("#orderBody").html(`\${data.merchantStr}`);
 		},
 		error : console.log
 	});

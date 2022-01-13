@@ -1059,10 +1059,6 @@ public class AdminController {
 			@RequestParam(required = false) Date startDate,
 			@RequestParam(required = false) Date endDate,
 			HttpServletRequest request){
-		Calendar cal = Calendar.getInstance();	 //날짜 계산을 위해 Calendar 추상클래스 선언 getInstance()메소드 사용	
-		cal.setTime(endDate);	
-		cal.add(Calendar.DATE, 1);	//하루 더하기
-		Date date = cal.getTime();
 		Map<String, Object> resultMap = new HashMap<>();
 		
 		Map<String, Object> param = new HashMap<>();
@@ -1071,7 +1067,13 @@ public class AdminController {
 		param.put("searchType", searchType);
 		param.put("searchKeyword", searchKeyword);
 		param.put("startDate", startDate);
-		param.put("endDate", date);
+		if(endDate != null) {
+			Calendar cal = Calendar.getInstance();	 //날짜 계산을 위해 Calendar 추상클래스 선언 getInstance()메소드 사용	
+			cal.setTime(endDate);	
+			cal.add(Calendar.DATE, 1);	//하루 더하기
+			Date date = cal.getTime();
+			param.put("endDate", date);
+		}
 		log.debug("param = {}", param);
 		
 		String url = request.getContextPath();
@@ -1174,7 +1176,10 @@ public class AdminController {
 	
 	@PostMapping("/orderLogUpdate")
 	@ResponseBody
-	public Map<String, Object> orderLogUpdate(@RequestBody String jsonStr, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttr){
+	public Map<String, Object> orderLogUpdate(@RequestBody String jsonStr, 
+												HttpServletRequest request, 
+												HttpServletResponse response,
+												RedirectAttributes redirectAttr){
 		Map<String, Object> param = new HashMap<>();
 		Map<String, Object> resultMap = new HashMap<>();
 		int result = 0;

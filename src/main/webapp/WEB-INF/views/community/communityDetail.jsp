@@ -6,12 +6,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <fmt:requestEncoding value="utf-8"/>
-<jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="" name="title"/>
-</jsp:include>
-<jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp">
-	<jsp:param value="" name="title"/>
-</jsp:include>
+<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/community/common/communitySidebar.jsp"></jsp:include>
 <!-- include summernote css/js -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" integrity="sha512-ZbehZMIlGA8CTIOtdE+M81uj3mrcgyrh6ZFeG33A4FHECakGrOsTPlPQ8ijjLkxgImrdmSVUHn1j+ApjodYZow==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js" integrity="sha512-lVkQNgKabKsM1DA/qbhJRFQU8TuwkLF2vSN3iU/c7+iayKs08Y8GXqfFxxTZr1IcpMovXnf2N/ZZoMgmZep1YQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -37,7 +33,9 @@
 </style>
 <!-- authentication에 저장된(member) principal 객체를 member 변수에 담아서 사용한다. -->
 <sec:authentication property="principal" var="member"/>
-
+	
+	<!-- 디테일 헤더 시작 -->
+	<!-- 제목 -->
     <div class="container-fluid container">
 	<div class="row">
 		<div class="col-md-12">
@@ -48,12 +46,14 @@
 			</div>
 		</div>
 	</div>
+	<!-- 제목 -->
 
 	<hr />
 	
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row align-self-center" id="contentName">
+				<!-- 작성자 -->
 				<div class="col-md-4">
 					<h4>
 						<strong>
@@ -61,6 +61,8 @@
 						</strong>
 					</h4>
 				</div>
+				<!-- 작성자 -->
+				<!-- 작성자 등급 -->
 				<div class="col-md-4">
 					<h4>
 						<strong>
@@ -72,32 +74,39 @@
 		                </strong>
                     </h4>
 				</div>
+				<!-- 작성자 등급 -->
+				<!-- 작성일 -->
 				<div class="col-md-4">
 					<h4><strong>작성일</strong>
 					<fmt:formatDate value="${communityEntity.enrollDate}" pattern="yyyy-MM-dd HH:mm"/>
 					</h4>
 				</div>
+				<!-- 작성일 -->
 			</div>
 			
 			<hr />
 			
+			<!-- 내용 -->
 			<div class="row">
 				<div class="col-md-12">
 					<textarea class="form-control" rows="5" name="content" id="summernote" readonly="readonly">${communityEntity.content}</textarea>
-				</div>
-				
+				</div>	
 			</div>
+			<!-- 내용 -->
 			
 			<hr />
 			
+			<!-- 
 			<div class="row">
 				<div class="col-md-12">
 					<label for="tag"><strong>해시태그</strong></label>
 					<input type="text" class="form-control" name="hashtag" id="hashtag" placeholder="태그를 입력해 주세요">
 				</div>
 			</div>
-			
 			<hr />
+			 -->
+			 
+			 <!-- 버튼 시작 -->
 			<div class="row" >
 				<div class="col-md-12 row justify-content-end">
 					<!-- 스터디 게시판이고 글쓴이 본인일 경우에만 노출 -->
@@ -128,24 +137,35 @@
 								data-community-no="${communityEntity.communityNo}">답변완료</button>
 						</c:if>
 					</sec:authorize>
+					
+					<!-- 신고하기 -->
 					<sec:authorize access="hasAnyRole('M1','M2')">
 						<button style="margin-right: 10px;" type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" id="reportButton">신고하기</button>
 						<jsp:include page="/WEB-INF/views/community/common/reportModal.jsp">
 							<jsp:param value="" name="title"/>
 						</jsp:include>
 					</sec:authorize>
+					<!-- 신고하기 -->
 					
+					<!-- 좋아요 -->
 					<button type="button" class="btn btn-primary" id="likeButton" 
 						data-community-no="${communityEntity.communityNo}"
 						data-member-no="${communityEntity.memberNo}"
 						data-like-yes-no="${likeYesNo}">좋아요</button>
+					<!-- 좋아요 -->
 				</div>
 			</div>
-				<hr />
+			<!-- 버튼 종료 -->
+			
+			<hr />
 				
+			<!-- 수정/삭제/목록 시작 -->
 			<div class="row">
 				<div class="col-md-12" id="bottomButton">
+					<!-- 수정하기 -->
 					<button type="button" class="btn btn-secondary btn-lg" id="communityUpdateBtn">수정하기</button>
+					<!-- 수정하기 -->
+					<!-- 삭제하기 -->
 					<!-- 회원일 경우 -->
 					<sec:authorize access="hasAnyRole('M1', 'M2')">
 						<!-- 회원이고 글쓴이 본인일 경우 -->
@@ -161,6 +181,9 @@
 								data-community-no = "${communityEntity.communityNo}"
 								data-page-code= "${communityEntity.pageCode}">삭제하기</button>
 					</sec:authorize>
+					<!-- 삭제하기 -->
+					<!-- 목록보기 -->
+					<!-- 4 : 자유게시판 / 3 : 스터디 / 2 : Q&A -->
 					<c:if test="${communityEntity.pageCode eq '4' }">
 						<button type="button" class="btn btn-secondary btn-lg" onclick="location.href = '${pageContext.request.contextPath}/community/communityFreeboardList.do'">목록보기</button>
 					</c:if>
@@ -170,8 +193,10 @@
 					<c:if test="${communityEntity.pageCode eq '2' }">
 						<button type="button" class="btn btn-secondary btn-lg" onclick="location.href = '${pageContext.request.contextPath}/community/communityQnAList.do'">목록보기</button>
 					</c:if>
+					<!-- 목록보기 -->
 				</div>
 			</div>
+			<!-- 수정/삭제/목록 종료 -->
 		</div>
 	</div>
 	
@@ -179,43 +204,7 @@
 	
 	<!-- 회원일때만 댓글 등록창이 보이게끔 설정 -->
 	<!-- 댓글 등록 시작 -->
-	<c:if test="${communityEntity.pageCode ne '2'}">
 		<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
-		<div class="card mb-2">
-			<div class="card-header bg-light">
-				<i class="fa fa-comment fa"></i> 댓글 작성
-			</div>
-			<div class="card-body">
-				<ul class="list-group list-group-flush">
-				    <li class="list-group-item" id="comment-li">
-					<div class="form-inline mb-2">
-						<label for="replyId"><i class="fa fa-user-circle-o fa-2x"></i></label>
-					</div>
-					<form:form
-						name="commentForm"
-						action="${pageContext.request.contextPath}/community/communityCommentEnroll.do"
-						method="POST"
-						>
-						<textarea class="form-control" name="content" id="comment" rows="2"></textarea>
-						<button type="button" class="btn btn-dark mt-3 float-right" id="btnComment" onclick="commentValidate()">등록</button>
-						
-						<input type="hidden" name="commentLevel" value="1" />
-						<input type="hidden" name="memberNo" value='<sec:authentication property="principal.memberNo" />' />
-						<!-- <input type="hidden" name="memberNo" value='<c:if test="${member ne null}"><sec:authentication property="principal.memberNo" /></c:if>'>  -->
-						<input type="hidden" name="communityNo" value="${communityEntity.communityNo}" />
-					</form:form>
-				    </li>
-				</ul>
-			</div>
-		</div>
-		</sec:authorize>
-	</c:if>
-	<!-- 댓글 등록 끝 -->
-	
-	<!-- 관리자일때만 댓글 등록창이 보이게끔 설정 -->
-	<!-- 답변 등록 시작 -->
-	<c:if test="${communityEntity.pageCode eq '2'}">
-		<sec:authorize access="hasAnyRole('AM')">
 		<div class="card mb-2">
 			<div class="card-header bg-light">
 				<i class="fa fa-comment fa"></i> 답변 작성
@@ -244,20 +233,13 @@
 			</div>
 		</div>
 		</sec:authorize>
-	</c:if>
 	<!-- 댓글 등록 끝 -->
-	
-	
+		
 	
 	<!-- 댓글 시작 -->
 	<div class="card mb-2">
 		<div class="card-header bg-light">
-			<c:if test="${communityEntity.pageCode ne '2'}">
-		        <i class="fa fa-comment fa"></i> 댓글
-			</c:if>
-			<c:if test="${communityEntity.pageCode eq '2'}">
-		        <i class="fa fa-comment fa"></i> 답변
-			</c:if>
+	        <i class="fa fa-comment fa"></i> 답변
 		</div>
 		<div class="card-body">
 			<c:if test="${null ne freeboardCommentList  && not empty freeboardCommentList}">
@@ -274,9 +256,7 @@
 							<!-- 회원일때만 답글 버튼이 나타나도록 처리 -->
 							<sec:authorize access="hasAnyRole('M1', 'M2', 'AM')">
 									<div class="row float-right">
-								<c:if test="${communityEntity.pageCode ne '2'}">
 									<button type="button" onclick="firstReply()" class="btn btn-dark mt-3 float-right btnReComment" value="${communityCommentEntity.commentNo}">답글</button>&nbsp;
-								</c:if>
 								<!-- 회원일 경우 -->
 								<sec:authorize access="hasAnyRole('M1', 'M2')">
 									<!-- 회원이고 글쓴이 본인일 경우 -->

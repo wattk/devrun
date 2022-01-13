@@ -259,8 +259,8 @@
        border-radius: 30;
    }
    #iconBoxDiv{
-       border: solid 5px sandybrown;
-       width: 85%;
+       border : 1px solid rgba(0,0,0,.125);
+	   border-radius : 1.5rem;
        margin-left: 50px;
        margin: auto;
        padding: 5px 5px;
@@ -277,7 +277,6 @@
        display: table;
        margin: auto auto;
 	   width: 100%;
-	   background-color: lightcoral;
 	   text-align: center;
 	   padding: 10px 10px;
 	}
@@ -383,7 +382,7 @@
 	top: 89%;
     left: 32%;
     z-index: 1;
-    color: #ffffff;
+    color: #a9a9a9;
     font-size: 18px;
     width: 167px;
     font-weight: bold;
@@ -395,7 +394,7 @@
     top: 3%;
     left: 12%;
     z-index: 1;
-    color: #ffffff;
+    color: #a9a9a9;
     font-size: 14px;
     width: 167px;
     font-weight: bold;

@@ -15,6 +15,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="">
 	<meta name="author" content="">
+	
+	<!-- Favicons -->
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}}/resources/favicon/favicon.ico">
+    <link rel="icon" href="${pageContext.request.contextPath}/resources/favicon/favicon.ico">
+	
 	<!-- 구글 차트를 이용하기 위한 script	 -->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	
@@ -31,6 +36,7 @@
     <!-- Core plugin JavaScript-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js" integrity="sha512-0QbL0ph8Tc8g5bLhfVzSqxe9GERORsKhIn1IrpxDAgUsbBGz/V7iSav2zzW325XGd1OMLdL4UiqRJj702IeqnQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
+    <link href="${pageContext.request.contextPath }/resources/css/style.css" rel="stylesheet">
 	<!--  
 	-->
 
@@ -65,7 +71,7 @@
 </head>
 
 <body id="pageTop">
-
+<sec:authentication property="principal" var="member"/>
 	<!-- Topbar -->
     <nav class="navbar navbar-expand navbar-light bg-white topbar static-top shadow" id="topBar">
 	
@@ -75,7 +81,8 @@
         </button>
 
         <!-- Topbar Search -->
-        <form
+        <a class="navbar-brand text-brand" href="${pageContext.request.contextPath}/"><h3 style="font-weight:700; margin-left:40px;">Dev<span class="color-b">Run</span></h3></a>
+<%--         <form
             class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">
                 <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -86,13 +93,13 @@
                     </button>
                 </div>
             </div>
-        </form>
+        </form> --%>
 
         <!-- Topbar Navbar -->
         <ul class="navbar-nav ml-auto">
 
             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-            <li class="nav-item dropdown no-arrow d-sm-none">
+            <%-- <li class="nav-item dropdown no-arrow d-sm-none">
                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-search fa-fw"></i>
@@ -231,22 +238,28 @@
                     </a>
                     <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                 </div>
-            </li>
+            </li> --%>
 
-            <div class="topbar-divider d-none d-sm-block"></div>
+            <!-- <div class="topbar-divider d-none d-sm-block"></div> -->
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">관리자</span>
-                    <img class="img-profile rounded-circle"
-                        src="${pageContext.request.contextPath }/resources/bootstrap/img/undraw_profile.svg">
+                    <strong class="text-primary">${member.nickname }</strong><span class="mr-2 d-none d-lg-inline text-gray-600 small">님 안녕하세요</span>
+                    <c:if test="${member.proPhoto eq null}">
+	                    <img class="img-profile rounded-circle"
+	                        src="${pageContext.request.contextPath }/resources/images/common/blank-profile.png">
+                    </c:if>
+                    <c:if test="${member.proPhoto ne null }">
+	                    <img class="img-profile rounded-circle"
+	                        src="${pageContext.request.contextPath }/resources/upload/profilePhoto/${member.proPhoto}">
+                    </c:if>
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                     aria-labelledby="userDropdown">
-                    <a class="dropdown-item" href="#">
+                    <!-- <a class="dropdown-item" href="#">
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                         Profile
                     </a>
@@ -262,7 +275,20 @@
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                         Logout
-                    </a>
+                    </a> -->
+                  <a class="dropdown-item" href="${pageContext.request.contextPath}/mypage/mypage.do">마이페이지</a>
+	              <a class="dropdown-item" id="chat">채팅</a>
+	              <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/adminMain.do">관리페이지</a>
+	              <a class="dropdown-item" href="#">
+	              	<form:form
+				    	id="navLogoutFrm"
+				    	method="POST"
+				    	action="${pageContext.request.contextPath}/member/memberLogout.do">
+				    	<button
+				    		class="btn btn-primary log-con"
+				    		type="submit">로그아웃</button>
+				    </form:form>
+	              </a>
                 </div>
             </li>
 
@@ -275,9 +301,6 @@
        	<!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">	        
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${pageContext.request.contextPath}/">      
-                <div class="sidebar-brand-text mx-3">dev_run</div>
-            </a>
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${pageContext.request.contextPath}/admin/adminMain.do">      
                 <div class="sidebar-brand-text mx-3">관리자</div>
             </a>
@@ -422,3 +445,37 @@
         <div id="content">
 			
 
+<script>
+  	// 채팅 클릭
+	$('#chat').click((e) => {
+
+		// 팝업요청 // url 부분 로그인 회원 받게 수정할 것
+		const url = `${pageContext.request.contextPath}/chat/chatList.do`;
+		const name = 'chatList'; // 팝업창 Window객체의 name.
+		const spec = "width=400px, height=600px";
+		open(url, name, spec);
+
+	});
+  	
+	// 로그인 후
+  	// 비동기 - 전체안읽음 메시지 건수 조회해서 존재할 시 #chat 자식 태그로 
+  	
+  	const $target = $('#chat').parent().prev();
+  	
+  	$target.click((e) => {
+  		$.ajax({
+  			url : `${pageContext.request.contextPath}/chat/selectMessageTotalUnreadCount.do`,
+  			method : "GET", // GET방식 생략 가능
+  			success(data) { // 이 안에 들어가는 data는 변수명이다. 다른 이름으로 사용해도 된다. 위의 data : 에서 사용한 부분과 헷갈리지 말자
+  				//console.log(data);
+  				// 1건 이상 조회될 시 뱃지 추가
+  				if(data > 0) {
+  					// 자식노드 있을 경우 대비(이전에 추가된 경우)
+  					$("#chat").children().remove();
+  					$("#chat").append(`<span class="badge badge-pill badge-danger">\${data}</span>`);
+  				}
+  			},
+  			error : console.log
+  		});
+	});
+  </script>

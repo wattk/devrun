@@ -40,7 +40,7 @@
 			     						<td>${address.title}</td>
 			     						<td>${address.addressee}</td>
 			     						<td>${address.postalCode}</td>
-			     						<td>${address.address1} ${address.address2}</td>
+			     						<td class="col-5">${address.address1} ${address.address2}</td>
 			     						<td>${address.phone}</td>
 			     					</tr>
 			     				</c:forEach>
@@ -49,7 +49,6 @@
 	       						<tr id="noList"><td colspan="6">등록된 주소가 없습니다.</td></tr>
 	       					</c:if>
 	       				</table>
-	       				<!-- pagebar : 등록된 주소가 있는 경우에만 제공 -->
 	       				<c:if test="${totalContent ne 0}">${pagebar}</c:if>
      				</section>
 	       			
@@ -64,7 +63,7 @@
 			       				<tr>
 			       					<th><label for="title">배송지명</label></th>
 			       					<td>
-			       						<input type="text" name="title" id="title" class="form-control col-4 duplicate-check"/>
+			       						<input type="text" name="title" id="title" class="form-control col-4 duplicate-check" maxlength="6"/>
 			       						<div class="title guide-box">
 				       						<span class="guide title-guide ok">사용 가능한 배송지명입니다.</span>
 											<span class="guide title-guide error text-danger">사용할 수 없는 배송지명입니다.</span>
@@ -76,7 +75,7 @@
 			       				<tr>
 			       					<th><label for="addressee">수령인<sup class="text-danger">*</sup></label></th>
 			       					<td>
-			       						<input type="text" name="addressee" id="addressee" class="form-control col-4" required/>
+			       						<input type="text" name="addressee" id="addressee" class="form-control col-4" maxlength="3" required/>
 			       						<div class="addressee guide-box">
 											<span class="guide addressee-guide error text-danger">최소 2자 이상 한글로 입력해 주세요.</span>
 										</div>
@@ -86,7 +85,7 @@
 			       					<th><label for="postalCode">우편번호<sup class="text-danger">*</sup></label></th>
 			       					<td>
 			       						<div class="input-group">
-				       						<input type="text" name="postalCode" id="postalCode" class="form-control col-3" required/>
+				       						<input type="text" name="postalCode" id="postalCode" class="form-control col-3" maxlength="7" required/>
 				       						<div class="input-group-append">
 												<button type="button" id="searchPostcodeBtn">우편번호 검색</button>
 											</div>
@@ -99,7 +98,7 @@
 			       				<tr>
 			       					<th><label for="address1">주소<sup class="text-danger">*</sup></label></th>
 			       					<td>
-			       						<input type="text" name="address1" id="address1" class="form-control col-10" required/>
+			       						<input type="text" name="address1" id="address1" class="form-control col-10" maxlength="33" required/>
 			       						<div class="address1 guide-box">
 											<span class="guide address1-guide error text-danger">주소를 입력해 주세요.</span>
 										</div>
@@ -107,12 +106,12 @@
 			       				</tr>
 			       				<tr>
 			       					<th><label for="address2">상세주소</label></th>
-			       					<td><input type="text" name="address2" id="address2" class="form-control col-10"/></td>
+			       					<td><input type="text" name="address2" id="address2" class="form-control col-10" maxlength="33"/></td>
 			       				</tr>
 			       				<tr>
 			       					<th><label for="phone">연락처<sup class="text-danger">*</sup></label></th>
 			       					<td>
-			       						<input type="tel" name="phone" id="phone" class="form-control col-4" required/>
+			       						<input type="tel" name="phone" id="phone" class="form-control col-4" maxlength="11" required/>
 			       						<div class="phone guide-box">
 											<span class="guide phone-guide error text-danger">'-'를 제외한 숫자 11자리만 입력해 주세요.</span>
 										</div>

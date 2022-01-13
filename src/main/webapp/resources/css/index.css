@@ -5,6 +5,7 @@
 }
 .card-box-d{
 	max-height : 19.5rem;
+	border : 1px solid rgba(0,0,0,.08);
 }
 
 .card-box-d img{

@@ -366,7 +366,6 @@ public class MypageController {
 	
 	/**
 	 * 베송지명 중복 체크
-	 * select * from address where ${checkKeyword} = #{value} and id != #{id}
 	 */
 	@ResponseBody
 	@GetMapping("/myinfo/addressManage/checkDuplicate")
@@ -635,6 +634,7 @@ public class MypageController {
 		Map<String, Object> map = orderService.selectMyShopping(member.getMemberNo());
 		model.addAttribute("orderLogCnt", map.get("orderLogCnt"));
 		model.addAttribute("orderList", map.get("orderList"));
+		model.addAttribute("promotion", map.get("promotion"));
 	}
 	
 	/**

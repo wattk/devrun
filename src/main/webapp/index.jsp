@@ -7,6 +7,21 @@
 	<jsp:param value="데브런" name="title"/>
 </jsp:include>
 <link href="${pageContext.request.contextPath }/resources/css/index.css" rel="stylesheet">
+<style>
+.card-img-top img{
+	width : 100%;
+	height : 100%;
+	object-fit : cover;
+}
+.card-img-top .regular-img{
+	height : 100%;
+	padding : 50px;
+}
+.card-img-top{
+	overflow : hidden;
+	height : 150px;
+}
+</style>
   <!--/ Carousel Star /-->
   <div class="intro intro-carousel">
     <div id="carousel" class="owl-carousel owl-theme">
@@ -93,7 +108,7 @@
               <h2 class="title-a">커뮤니티</h2>
             </div>
             <div class="title-link">
-              <a href="${pageContext.request.contextPath}/community/communityMain.do">더보기
+              <a href="${pageContext.request.contextPath}/community/communityColumnList.do">더보기
                 <span class="ion-ios-arrow-forward"></span>
               </a>
             </div>
@@ -116,8 +131,14 @@
 					      <th scope="row">${vs.count}</th>
 					      <td>
 					      	<a href="${pageContext.request.contextPath}/community/communityDetail/${c['NO']}">
-					      		<span>${c["PAGECODE"] eq 1?'[칼럼]': c["PAGECODE"] eq 2?'[QnA]':c["PAGECODE"] eq 3?'[스터디]':'[자유게시판]' }</span>
-					      		${c["TITLE"]}
+					      		<span>${c["PAGECODE"] eq 1?'[칼럼]': c["PAGECODE"] eq 2?'[QnA]':c["PAGECODE"] eq 3?'[스터디]':'[자유]' }</span>
+					      		<c:if test="${c['TITLE'].length() > 5 }">
+								    ${fn:substring(c['TITLE'],0,5)}...
+							    </c:if>
+							    <c:if test="${c['TITLE'].length() <= 5 }">
+								    ${c["TITLE"]}
+							    </c:if>
+					      		
 					      	</a>
 					      </td>
 					      <td>${c["NICKNAME"]}</td>
@@ -146,7 +167,13 @@
 			  		<c:forEach items="${map.freeboardList}" var="c" varStatus="vs">
 					    <tr>
 					      <th scope="row">${vs.count}</th>
-					      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${c.title}</a></td>
+					      <c:if test="${c.title.length() > 10 }">
+						      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${fn:substring(c.title,0,10)}...</a></td>
+					      </c:if>
+					      <c:if test="${c.title.length() <= 10 }">
+						      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${c.title}</a></td>
+					      </c:if>
+					      
 					      <td>${c.nickname}</td>
 					    </tr>
 			  		</c:forEach>
@@ -173,7 +200,12 @@
 			  		<c:forEach items="${map.qnaList}" var="c" varStatus="vs">
 					    <tr>
 					      <th scope="row">${vs.count}</th>
-					      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c['NO']}">${c["TITLE"]}</a></td>
+					      <c:if test="${c['TITLE'].length() > 10 }">
+						      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c['NO']}">${fn:substring(c['TITLE'],0,10)}...</a></td>
+					      </c:if>
+					      <c:if test="${c['TITLE'].length() <= 10 }">
+						      <td><a href="${pageContext.request.contextPath}/community/communityDetail/${c['TITLE']}">${c['TITLE']}</a></td>
+					      </c:if>
 					      <td>${c["NICKNAME"]}</td>
 					    </tr>
 			  		</c:forEach>
@@ -257,7 +289,7 @@
               <h2 class="title-a">칼럼</h2>
             </div>
             <div class="title-link">
-              <a href="${pageContext.request.contextPath}/community/communityColumnMain.do">더보기
+              <a href="${pageContext.request.contextPath}/community/communityColumnList.do">더보기
                 <span class="ion-ios-arrow-forward"></span>
               </a>
             </div>
@@ -269,18 +301,20 @@
 	  		<c:forEach items="${map.columnList}" var="c" varStatus="vs">
 		        <div class="col-md-4">
 					<div class="card" style="height:330px;">
-						<c:if test="${c.thumbnail eq null}">
-							<img class="card-img-top p-5" alt="" src="${pageContext.request.contextPath}/resources/images/logo-devrun.png">
-						</c:if>
-						<c:if test="${c.thumbnail ne null}">
-							<img class="card-img-top" alt="" src="${pageContext.request.contextPath}/resources/upload/community/${c.thumbnail}">
-						</c:if>
+						<div class="card-img-top">
+							<c:if test="${c.thumbnail eq null}">
+								<img class="regular-img" alt="" src="${pageContext.request.contextPath}/resources/images/logo-devrun.png">
+							</c:if>
+							<c:if test="${c.thumbnail ne null}">
+								${c.thumbnail}
+							</c:if>
+						</div>
 						<div class="card-block p-3">
 							<h3 class="card-title">
 								<a href="${pageContext.request.contextPath}/community/communityDetail/${c.communityNo}">${c.title}</a>
 							</h3>
 							<p class="card-text">
-								<span>${fn:substring(c.content,0,30)}</span>
+								<span>${c.nickname }</span>
 							</p>
 						</div>
 					</div>
