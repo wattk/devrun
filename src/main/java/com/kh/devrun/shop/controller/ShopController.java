@@ -407,7 +407,7 @@ public class ShopController {
 		
 		
 		redirectAttr.addFlashAttribute("msg","상품 문의 등록 완료!");
-		return "redirect:/shop/itemDetail/ty/"+productCode;
+		return "redirect:/shop/itemDetail/"+productCode;
 	}
 	
 	

@@ -215,10 +215,12 @@
 			    		<td>${qu.privateYn}</td>		    	
 			    		<c:choose>
 			    			<c:when test="${0 eq qu.questionRefNo}">
-				    			<td><button type="button" class="btn btn-warning answer-btn" data-bs-toggle="modal" data-bs-target="#questionModal">답변 대기</button></td>	
+				    			<td><button type="button" class="btn btn-warning answer-btn" 
+				    				data-bs-toggle="modal" data-bs-target="#questionModal">답변 대기</button></td>	
 			    			</c:when>
 			    			<c:when test="${0 ne qu.questionRefNo}">
-				    			<td><button type="button" class="btn btn-primary answer-btn" data-bs-toggle="modal" data-bs-target="#questionModal">답변 완료</button></td>	
+				    			<td><button type="button" class="btn btn-primary answer-btn" 
+				    				data-bs-toggle="modal" data-bs-target="#questionModal">답변 완료</button></td>	
 			    			</c:when>
 			    		</c:choose>
 			    		

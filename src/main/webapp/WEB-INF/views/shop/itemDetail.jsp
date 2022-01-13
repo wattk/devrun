@@ -423,8 +423,10 @@
 							
 								<div class="p-4" id="sortBy">
 									<!--문의 부트스트랩 버튼-->
-									<button type="button" class="btn btn-warning 2"
-										data-toggle="modal" data-target="#exampleModal2">문의작성하기</button>
+									<!-- 로그인 했을때만 버튼 노출 -->
+									<c:if test="${loginMemberId ne null }">
+										<button type="button" class="btn btn-warning 2" data-toggle="modal" data-target="#exampleModal2">문의작성하기</button>
+									</c:if>
 								</div>
 							</div>
 							<hr>
@@ -1035,6 +1037,10 @@ $("#cartBtn").click((e)=>{
 //-------------------------------------------------------구분선 아래 태영----------------------------------------------------------
 
 
+// 상품 문의 로그인 검사
+
+
+
 
 // 비밀글 열람에 쓰일 로그인 정보
 var loginMemberId = "${loginMemberId}"
@@ -1053,6 +1059,7 @@ $(()=>{
 var $target1;
 var $target2;
 
+// 슬라이드를 통해 해당 질문글의 내용과 답변을 보여주게 된다.
 var openQuestion = function(ta){
 	ta.slideToggle();
 }
@@ -1088,10 +1095,7 @@ $(".question-container").click(e=>{
 	else{
 		openQuestion($target1);
 		openQuestion($target2);
-
-	}
-	
-	
+	}		
 });
 
 

@@ -93,6 +93,7 @@ public class AdminController {
 	@Autowired
 	ChartService chartService;
 	
+
 	@GetMapping("/adminMain.do")
 	public void adminMain(Model model) {
 		
@@ -877,30 +878,20 @@ public class AdminController {
 		// 회원 번호는 현재 로그인중인 사용자의 member_no
 		Member member = (Member)authentication.getPrincipal();
 		log.debug("member = {}",member);
-
 		// 답변글의 title은 answer로 고정시킨다.
 		questionProduct.setTitle("answer");
-		
 		// 대상의 문의 번호를 현재 답변의 참조 문의 번호에 넣어준다
 		questionProduct.setQuestionRefNo(questionProduct.getQuestionNo());
-		
 		// 답변이므로 레벨은 무조건 2 
 		questionProduct.setQuestionLevel(2);
-		
 		// 비공개 체크 값이 없다면 'N'로 채우기
 		if(questionProduct.getPrivateYn() == '\u0000') {
 			questionProduct.setPrivateYn('N');
 		}
-				
-		
 		log.debug("questionProduct = {}",questionProduct);
 		
-		
-		
 		int reuslt = questionProductService.insertQuestionProduct(questionProduct);
-		  
 		String msg = "답변을 달았습니다."; redirectAttr.addFlashAttribute("msg",msg);
-		 
 		return "redirect:/admin/memberManage/questionProduct.do";
 	}
 	

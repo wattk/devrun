@@ -1096,11 +1096,8 @@ $("#myQuestionModalBtnSub").click(e=>{
 				console.log(data);
 			},
 			error : console.log
-			
 		});
-	}
-
-	
+	}	
 });
 
 // 상품 문의 리스트 
