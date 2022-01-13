@@ -92,16 +92,15 @@
 	</select>
 	<select id="countSalesProduct" resultType="map">
 		select
-		    a.product_category pc,
+		    substr(b.product_code, 1,2) pc,
 		    nvl(sum(a.buy_count),0) sum
 		from
-		    (select
-		        substr(pd.product_code, 1,2) product_category,
-		        (select md.buy_count from merchant_detail md where md.detail_no = pd.detail_no) buy_count
-		from
-		    product_detail pd) a
+		    merchant_detail a,
+		    product_detail b
+		where
+		    b.detail_no = a.detail_no
 		group by
-		   a.product_category
+		    substr(b.product_code, 1,2)
 	</select>
 	<select id="countOrderCnt" resultType="_int">
 		select
