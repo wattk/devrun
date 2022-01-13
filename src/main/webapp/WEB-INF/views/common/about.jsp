@@ -252,20 +252,22 @@
             <div class="row">
               <div class="col-sm-12 col-md-6">
                 <div class="about-main-img testimonial-img">
-                  <img src="${pageContext.request.contextPath }/resources/images/650x450.jpg" alt="" class="img-fluid">
+                  <img src="${pageContext.request.contextPath }/resources/images/about/jiwon1.jpg" alt="" class="img-fluid">
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
                 <div class="testimonials-content">
                   <p class="about-text testimonial-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, cupiditate ea nam praesentium
-                    debitis hic ber quibusdam
-                    voluptatibus officia expedita corpori.
+                    모두와 함께하는, 지속가능한 개발을 꿈꾸는 최지원입니다. 
+                    <br />
+                    든든한 팀장님과 유머 감각이 뛰어난 팀원들로 이루어진 코드네임200의 팀원이어서 행복했습니다! 
+                    <br />
+                    여러분과 함께해서 삽질하는 시간조차 유쾌했어요!
                   </p>
                 </div>
                 <div class="testimonial-author-box d-flex align-items-center">
                   <div class="about-thumbnail testimonial-avatar">
-                  	<img src="${pageContext.request.contextPath }/resources/images/80x80.jpg" alt="" class="">
+                  	<img src="${pageContext.request.contextPath }/resources/images/about/jiwon2.png" alt="" class="">
                   </div>
                   <h5 class="testimonial-author">최지원</h5>
                 </div>
