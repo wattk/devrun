@@ -44,7 +44,6 @@ public class AdminUtils {
 					+ "<td>&#8361;"+ fmt.format(m.getProductPrice())+"</td>\r\n"
 					+ "<td>&#8361;"+fmt.format(m.getShippingFee())+"</td>\r\n"
 					+ "<td>&#8361;"+fmt.format(m.getTotalPrice())+"</td>\r\n"
-					+ "<td>"+(m.getShippingReq() == null? "": m.getShippingReq())+"</td>\r\n"
 					+ "</tr>");
 		}
 		return sb.toString();
