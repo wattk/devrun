@@ -256,6 +256,9 @@
                 </div>
               </div>
               <div class="col-sm-12 col-md-6">
+              	<div class="testimonial-ico pb-3">
+                  <span class="ion-ios-quote"></span>
+                </div>
                 <div class="testimonials-content">
                   <p class="about-text testimonial-text">
                     모두와 함께하는, 지속가능한 개발을 꿈꾸는 최지원입니다. 
