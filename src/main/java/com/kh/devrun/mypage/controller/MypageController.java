@@ -366,7 +366,6 @@ public class MypageController {
 	
 	/**
 	 * 베송지명 중복 체크
-	 * select * from address where ${checkKeyword} = #{value} and id != #{id}
 	 */
 	@ResponseBody
 	@GetMapping("/myinfo/addressManage/checkDuplicate")

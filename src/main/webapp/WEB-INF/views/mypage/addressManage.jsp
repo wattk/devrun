@@ -40,7 +40,7 @@
 			     						<td>${address.title}</td>
 			     						<td>${address.addressee}</td>
 			     						<td>${address.postalCode}</td>
-			     						<td>${address.address1} ${address.address2}</td>
+			     						<td class="col-5">${address.address1} ${address.address2}</td>
 			     						<td>${address.phone}</td>
 			     					</tr>
 			     				</c:forEach>
@@ -49,7 +49,6 @@
 	       						<tr id="noList"><td colspan="6">등록된 주소가 없습니다.</td></tr>
 	       					</c:if>
 	       				</table>
-	       				<!-- pagebar : 등록된 주소가 있는 경우에만 제공 -->
 	       				<c:if test="${totalContent ne 0}">${pagebar}</c:if>
      				</section>
 	       			
