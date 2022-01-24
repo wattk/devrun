@@ -451,7 +451,7 @@ $(()=>{
 	});
 	
 	/* 모달 관련 */
-	$(".option-modal-btn").click((e)=>{
+	$(document).on("click",".option-modal-btn",(e)=>{
 		const productCode = $(e.target).data("code");
 		console.log(productCode);
 		$.ajax({
