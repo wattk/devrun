@@ -412,6 +412,8 @@ public class AdminController {
 		Map<String,Object>param = new HashMap<>();
 		List<ProductDetail>insertProductDetailList = new ArrayList<>();
 		
+		log.debug("quantity = {}", quantity[0]);
+		
 		if(insertOption != null) {			
 			for(int i = 0; i < insertOption.length; i++) {
 				ProductDetail insertProductDetail = new ProductDetail();
@@ -462,6 +464,7 @@ public class AdminController {
 		param.put("productDetailList", productDetailList);
 				
 		log.debug("product = {}",product); 
+		log.debug("productDetailList = {}",productDetailList); 
 					
 		
 		String fileDirectory = application.getRealPath("/resources/upload/product/")+productCode+".png";
@@ -1362,9 +1365,11 @@ public class AdminController {
 		try {
 			//서버 파일 삭제
 			String saveDirectory = application.getRealPath("/resources/upload/promotion/");
-			File banner = new File(saveDirectory+promotionCode+".png");
-			
-			if(banner.exists()) banner.delete();
+			for(String str : promotionCode) {
+				File banner = new File(saveDirectory+str+".png");
+				log.debug("banner = {}", banner);
+				if(banner.exists()) banner.delete();
+			}
 			
 			int result = promotionService.deletePromotion(promotionCode);
 			log.debug("result = {}", result);
