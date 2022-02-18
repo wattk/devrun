@@ -25,25 +25,5 @@ $(".promotion-is-checked").on("click", ((e)=>{
     $("#checkAll").prop("checked", isChecked);
 }));
 
-$("#promotionListDeleteBtn").click((e)=>{
-    let isChecked = false;
-    
-    $(".promotion-is-checked").each((i, item)=>{
-        isChecked = isChecked || $(item).is(":checked");
-        let target = $(item).data("target");
-        
-        if($(item).is(":checked")){
-        	$(item).after(`<input type="hidden" name="promotionCode" value="\${target}"/>`);
-        }
-    });
-    
-    if(!isChecked){
-    	alert("선택된 이벤트가 없습니다.");
-    	return;
-    }
-	
-    console.log("클릭");
-    console.log($(document.promotionDeleteFrm));
-    $(document.promotionDeleteFrm).submit();
-});
+
 });

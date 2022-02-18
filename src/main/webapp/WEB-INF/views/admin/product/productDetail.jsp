@@ -257,11 +257,11 @@ function checkFrm(){
 		return false;
 	}
 	
-	if($("#imgInput").val() == "") {
+/* 	if($("#imgInput").val() == "") {
 		alert("상품 이미지를 선택해주세요");
 	    $("#imgInput").trigger("click");
 	    return false;
-	}
+	} */
 	
 	if($("#summernote").value == ""){
 		alert("내용을 입력하세요");

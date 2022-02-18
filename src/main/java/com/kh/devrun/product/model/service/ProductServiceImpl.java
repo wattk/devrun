@@ -130,7 +130,7 @@ public class ProductServiceImpl implements ProductService {
 		int result = 0;
 		ProductEntity product = (ProductEntity) param.get("product");
 		List<ProductDetail> insertProductDetailList = (List<ProductDetail>) param.get("insertProductDetailList");
-		List<ProductDetail> productDetailList = (List<ProductDetail>) param.get("ProductDetailList");
+		List<ProductDetail> productDetailList = (List<ProductDetail>) param.get("productDetailList");
 
 		try {
 			result = productDao.updateProduct(product);
@@ -139,6 +139,7 @@ public class ProductServiceImpl implements ProductService {
 				for (ProductDetail productDetail : productDetailList) {
 					productDetail.setProductCode(product.getProductCode());
 
+					log.debug("productDetail = {}", productDetail);
 					result = updateOption(productDetail, param);
 				}
 			}
